@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<project name="REDLAKEELECTRICCOOP" basedir=".." default="warning">
+<project name="GIGAZONEGAMING" basedir=".." default="warning">
     <target name="warning">
         <echo message=""/>
     </target>
 
     <!-- project name/main directory -->
-    <property name="project.name" value="REDLAKEELECTRICCOOP" />
+    <property name="project.name" value="GIGAZONEGAMING" />
     <!-- environment, default to staging for deployment/testing -->
     <property name="env" value="development" override="true" />
     <!-- base paths for project -->
