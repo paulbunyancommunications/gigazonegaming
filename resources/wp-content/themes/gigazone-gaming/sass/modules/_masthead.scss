@@ -1,0 +1,92 @@
+@import "compass/css3";
+
+$masthead-logo-graphic: 'images/logos/gigazone-gaming-championship-stacked-white.svg';
+$masthead-logo-base-height: 126px;
+$masthead-logo-base-width: 254px;
+$masthead-logo-multiplier: 1;
+.masthead {
+
+  // .masthead-container class
+  &-container {
+    background: $color-black;
+    overflow: hidden;
+  }
+
+  // .masthead-logo class
+  &-logo {
+    @include padding-top(1);
+    @include padding-bottom(1);
+    @include mq_phone {
+      width: 100%;
+      @include padding-top(.5);
+      @include padding-bottom(.5);
+    }
+    a {
+      background: transparent url($theme-directory + $masthead-logo-graphic) top left no-repeat;
+      height: $masthead-logo-base-height * $masthead-logo-multiplier;
+      width: $masthead-logo-base-width * $masthead-logo-multiplier;
+      display: block;
+      text-decoration: none;
+
+      @include mq-phone {
+        @include background-size(contain);
+        background-position-x: center;
+        width: 100%;
+      }
+    }
+  }
+
+  // .masthead-navigation class
+  &-navigation {
+    text-align: right;
+    @include margin-top(1);
+    @include margin-bottom(1);
+    width: 100%;
+    height: $masthead-logo-base-height;
+    position: relative;
+    @include mq-phone {
+      height: 23px;
+      display: table;
+      margin-left: auto;
+      margin-right: auto;
+      @include margin-top(.5);
+      @include margin-bottom(.5);
+    }
+    // .masthead-navigation-menu
+    ul {
+      padding: 0;
+      margin: 0;
+      li {
+        @include margin(0, .25, .25, 0);
+        padding: 0;
+        list-style: none;
+        background: none;
+        @include inline-block();
+
+        &::before {
+          display: none;
+        }
+        a {
+          display: block;
+          width: 100%;
+          background: $color-white;
+          text-decoration: none;
+          text-align: center;
+          color: $color-gz-gray;
+          @include padding(0, .375);
+          border: 5px solid $color-gz-orange;
+          @include border-radius(4px);
+          font-family: $font-family-display;
+          @include font-size(1.125);
+          text-transform: uppercase;
+
+          &:hover {
+            border-color: tint($color-gz-orange, 50%);
+            color: $color-black;
+          }
+        }
+      }
+    }
+
+  }
+}

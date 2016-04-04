@@ -1,0 +1,35 @@
+$territory-district-1: #1022fa;
+$territory-district-2: #9bcdfd;
+$territory-district-3: #cdfece;
+$territory-district-4: #fecc30;
+$territory-district-5: #fffda2;
+$territory-district-6: #3bcbcb;
+$territory-district-7: #983562;
+$territory-district-8: #cc9cfc;
+$territory-district-9: #9ecd29;
+$territory-district-class-slug: territory-district !default;
+
+$districts: (
+        1: $territory-district-1,
+        2: $territory-district-2,
+        3: $territory-district-3,
+        4: $territory-district-4,
+        5: $territory-district-5,
+        6: $territory-district-6,
+        7: $territory-district-7,
+        8: $territory-district-8,
+        9: $territory-district-9,
+);
+
+@mixin districtColorSet($num) {
+  background: map-get($districts, $num);
+  height: $grid-gutter-width;
+  width: $grid-gutter-width;
+  border: 1px solid darken(map-get($districts, $num), 50);
+  display: block;
+}
+@for $i from 1 through 9 {
+  .#{$territory-district-class-slug}-#{$i} {
+    @include districtColorSet($i)
+  }
+}

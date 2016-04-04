@@ -1,0 +1,61 @@
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+}
+
+.main-container {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto -#{ $sticky-footer-height-desktop * $leading + 'px'};
+  margin: 0 auto -#{ $sticky-footer-height-desktop * $leading-rem + 'rem'};
+  padding: 0 0 #{ $sticky-footer-height-desktop * $leading + 'px'};
+  padding: 0 0 #{ $sticky-footer-height-desktop * $leading-rem + 'rem'};
+
+  @include mq_cinema {
+    margin: 0 auto -#{ $sticky-footer-height * $leading + 'px'};
+    margin: 0 auto -#{ $sticky-footer-height * $leading-rem + 'rem'};
+    padding: 0 0 #{ $sticky-footer-height * $leading + 'px'};
+    padding: 0 0 #{ $sticky-footer-height * $leading-rem + 'rem'};
+  }
+
+  @include mq_tablet {
+    margin: 0 auto -#{ $sticky-footer-height-tablet * $leading + 'px'};
+    margin: 0 auto -#{ $sticky-footer-height-tablet * $leading-rem + 'rem'};
+    padding: 0 0 #{ $sticky-footer-height-tablet * $leading + 'px'};
+    padding: 0 0 #{ $sticky-footer-height-tablet * $leading-rem + 'rem'};
+  }
+
+  @include mq_phone {
+    margin: 0 auto -#{ $sticky-footer-height-phone * $leading + 'px'};
+    margin: 0 auto -#{ $sticky-footer-height-phone * $leading-rem + 'rem'};
+    padding: 0 0 #{ $sticky-footer-height-phone * $leading + 'px'};
+    padding: 0 0 #{ $sticky-footer-height-phone * $leading-rem + 'rem'};
+  }
+
+}
+
+.footer-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: table;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  @include height($sticky-footer-height-desktop);
+  background-color: $color-dark-gray;
+
+  @include mq_cinema {
+    @include height($sticky-footer-height);
+  }
+
+  @include mq-tablet {
+    @include height($sticky-footer-height-tablet);
+  }
+
+  @include mq-phone {
+    @include height($sticky-footer-height-phone);
+  }
+
+}

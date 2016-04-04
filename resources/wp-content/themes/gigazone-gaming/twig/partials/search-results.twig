@@ -1,0 +1,17 @@
+<h1 class="search-result-page-title">Search Results for &#8220;{{ function('get_search_query')|escape }}&#8221;</h1>
+{% if function('have_posts') != false %}
+    <p><span id="search-result-count"></span> results found.</p>
+    {% for result in posts %}
+        <div class="search-result-container">
+            <h1 class="search-result-title"><a href="{{ result.permalink }}">{{ result.post_title }}</a></h1>
+            <p class="search-result-link"><a href="{{ result.permalink }}">{{ result.permalink }}</a></p>
+            <div class="search-result-content">
+                {{ function("apply_filters","the_content", result.post_content) }}
+            </div>
+        </div>
+
+    {% endfor %}
+{% else %}
+    <p>No results where found for &#8220;{{ function('get_search_query')|escape }}&#8221;</p>
+{% endif %}
+<div class="hidden search-value">{{ function('get_search_query')|escape }}</div>

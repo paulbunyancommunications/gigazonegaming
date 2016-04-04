@@ -1,0 +1,7 @@
+a {
+  color: $color-gz-gray;
+  text-decoration: underline;
+  &:hover, &:active {
+    color: darken($color-gz-gray, 50);
+  }
+}

@@ -1,0 +1,148 @@
+
+@mixin base_typography($multiplier:1) {
+
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $color-black;
+  }
+  h1 {
+    font-family: $font-family-display;
+    @include font-size(7.375 * $multiplier);
+    @include line-height(5.125 * $multiplier);
+    @include margin-bottom(1.375 * $multiplier);
+  }
+
+  h2 {
+    font-family: $font-family-display;
+    @include font-size(4.5 * $multiplier);
+    @include line-height(3 * $multiplier);
+    @include margin-bottom(1.325 * $multiplier);
+  }
+
+  h3 {
+    font-family: $font-family-display;
+    font-weight: normal;
+    @include font-size(3 * $multiplier);
+    @include line-height(2 * $multiplier);
+    @include margin-bottom(.625 * $multiplier);
+  }
+
+  h4 {
+    font-family: $font-family-display;
+    font-weight: normal;
+    @include font-size(2.5 * $multiplier);
+    @include line-height(1 * $multiplier);
+    @include margin-bottom(1 * $multiplier);
+  }
+
+  h5 {
+    font-family: $font-family-display;
+    font-weight: normal;
+    @include font-size(2 * $multiplier);
+    @include line-height(1.25 * $multiplier);
+    @include margin-bottom(1 * $multiplier);
+  }
+
+  h6 {
+    font-family: $font-family-display;
+    font-weight: normal;
+    @include font-size(1.5 * $multiplier);
+    @include line-height(0.5 * $multiplier);
+    @include margin-bottom(1 * $multiplier);
+  }
+
+  p {
+    font-family: $font-family-sans-serif;
+    @include font-size(1.75 * $multiplier);
+    @include line-height(1.875 * $multiplier);
+    @include margin-bottom(1.75 * $multiplier);
+    color: $color-dark-gray;
+  }
+
+  li {
+    @include font-size(1.5 * $multiplier);
+    @include line-height(1.375 * $multiplier);
+    @include margin-bottom(0.675 * $multiplier);
+    list-style: none;
+    color: $color-dark-gray;
+    font-family: $font-family-sans-serif;
+
+    ul &::before {
+      $diamondScale: 0.625 * $multiplier;
+      content: "";
+      background: url('../images/icons/diamond.php?bg=' + str-slice(inspect($color-gz-orange), 2));
+      background-size: floor(15px*$diamondScale) floor(25px*$diamondScale);
+      text-indent: -9999px;
+      width: floor(15px*$diamondScale);
+      height: floor(25px*$diamondScale);
+      color: $color-gz-gray;
+      @include inline-block();
+      @include margin(-0.25, .5 * $multiplier, 0, 0);
+    }
+
+    ol & {
+      list-style: decimal;
+    }
+
+    ol & ol & {
+      list-style: upper-alpha;
+    }
+
+  }
+
+  p, ul, ol, blockquote {
+
+    & + p {
+      @include margin-top(1.5 * $multiplier);
+    }
+
+    & + ul, & + ol {
+      @include margin-top(1.8 * $multiplier);
+    }
+
+    h1 + & {
+      @include margin-top(2.6 * $multiplier);
+    }
+
+    & + h2 {
+      @include margin-top(2.4 * $multiplier);
+    }
+
+    h2 + & {
+      @include margin-top(1.8 * $multiplier);
+    }
+
+    & + h3 {
+      @include margin-top(1.7 * $multiplier);
+    }
+
+    h3 + & {
+      @include margin-top(1.5 * $multiplier);
+    }
+
+    & + h4 {
+      @include margin-top(1.3 * $multiplier);
+    }
+
+    h4 + & {
+      @include margin-top(1.4 * $multiplier);
+    }
+
+    & + h5 {
+      @include margin-top(1.4 * $multiplier);
+    }
+
+    h5 + & {
+      @include margin-top(1.1 * $multiplier);
+
+    }
+    & + h6 {
+      @include margin-top(1.3 * $multiplier);
+    }
+
+    h6 + & {
+      @include margin-top(1.45 * $multiplier);
+    }
+  }
+
+}

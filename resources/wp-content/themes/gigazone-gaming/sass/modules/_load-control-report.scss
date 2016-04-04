@@ -1,0 +1,47 @@
+.load-control-report {
+
+  h1 {
+    @include font-size(3.5);
+    @include line-height(3);
+    @include margin-bottom(1);
+  }
+
+  .head {
+    width: 100%;
+
+    &:before,
+    &:after {
+      content: " "; // 1
+      display: table; // 2
+    }
+    &:after {
+      clear: both;
+    }
+    img {
+      max-width: #{$leading * 12}px;
+      height: auto;
+    }
+
+    a {
+      @include mq-tablet {
+        display: table;
+        text-align: center;
+        margin: 0 auto;
+        @include margin-bottom(1);
+      }
+
+      @include mq-phone {
+        display: table;
+        text-align: center;
+        margin: 0 auto;
+        @include margin-bottom(1);
+      }
+    }
+  }
+
+  #loadcat li {
+    &::before {
+      display: none;
+    }
+  }
+}

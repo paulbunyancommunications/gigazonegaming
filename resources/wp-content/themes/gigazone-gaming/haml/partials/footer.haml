@@ -1,0 +1,44 @@
+%div{:id=>"footer-content"}
+  .footer-items-container
+    .container
+      %div{:class=>"row row-flex row-flex-wrap"}
+        {% if footer_highlight_links is defined and footer_highlight_links|length > 0 %}
+        {% for link in footer_highlight_links %}
+        .col-sm-4
+          %div{:class=>"sidebar-highlight-link footer-highlight-link  flex-col"}
+            .sidebar-highlight-link-title
+              {% if link.link_image|length > 0 %}
+              %a{:href=>"{{link.link_url}}", :target=>"{{ link.link_target }}"}
+                %img{:src => "{{link.link_image}}", :alt => "{{ link.link_name }}", :class=>"footer-hightlight-title"}
+              {% else %}
+              %h3{:class=>"sidebar-highlight-title"}
+                %a{:href=>"{{link.link_url}}", :target=>"{{ link.link_target }}"} {{ link.link_name }}
+              {% endif %}
+            %p{:class=>"sidebar-highlight-link-description footer-highlight-link-description"}
+              {% if link.link_image|length > 0 %}
+              %strong {{ link.link_name }}
+              {% endif %}
+              {{ link.link_description }}
+              %br/
+              %a{:href=>"{{link.link_url}}", :target=>"{{ link.link_target }}"}
+                %strong Learn More&#8230;
+        {% endfor %}
+        {% endif %}
+  .footer-bottom
+    .container
+      .row
+        .col-sm-6
+          %p{:class=>"text-left"}
+            &copy; {{ "now"|date('Y') }} {{ site.name }}, All rights reserved
+        .col-sm-6
+          %ul{:class=>"text-right inline-list"}
+            %li
+              %a{:href=>"/about/terms-of-use/"} Terms of Use
+            %li
+              %a{:href=>"/about/privacy-policy/"} Privacy Policy
+
+
+
+%script{:src=>"{{ (theme_dir~'/js/common-require.js') | auto_version_path }}"}
+%script{:src=>"{{ '/bower_components/requirejs/require.js'|auto_version_path }}"}
+%script{:src=>"{{ (theme_dir~'/js/main-require.js') | auto_version_path }}"}

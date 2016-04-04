@@ -1,0 +1,9 @@
+{% extends "base/base.twig" %}
+{% block article %}
+.container
+  .row
+    .col-md-12
+      %h1{:class=>"title-page"} {{ function('_e', 'Oops! That page can&rsquo;t be found.', 'greater-bemidji')}}
+    .col-md-12
+      %p {{function('_e', 'It looks like nothing was found at this location.', 'greater-bemidji')}}
+{% endblock %}

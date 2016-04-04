@@ -1,0 +1,31 @@
+@mixin height($number) {
+  height: #{ $number * $leading + 'px'};
+  height: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin width($number) {
+  width: #{ $number * $leading + 'px'};
+  width: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin top($number) {
+  top: #{ $number * $leading + 'px'};
+  top: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin right($number) {
+  top: #{ $number * $leading + 'px'};
+  top: #{ $number * $leading-rem + 'rem'};
+}
+
+// Margin-top
+@mixin padding-top($number) {
+  padding-top: #{ $number * $leading + 'px'};
+  padding-top: #{ $number * $leading-rem + 'rem'};
+}
+
+// Margin-bottom
+@mixin padding-bottom($number) {
+  padding-bottom: #{ $number * $leading + 'px'};
+  padding-bottom: #{ $number * $leading-rem + 'rem'};
+}

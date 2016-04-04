@@ -1,0 +1,7 @@
+@import "photo-rotator";
+
+.no-masthead-photo-rotator {
+  @include height(1);
+  background: $color-dark-gray;
+  width: 100%;
+}

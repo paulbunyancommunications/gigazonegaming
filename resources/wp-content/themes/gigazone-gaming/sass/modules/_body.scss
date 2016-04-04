@@ -1,0 +1,37 @@
+@import "../variables";
+@import "compass/css3";
+
+body {
+  font-family: $font-family-sans-serif;
+  width: 100%;
+  @include padding-equal(0);
+  @include margin(0, 0, 0, 0);
+  background-color: $color-white;
+  @include font-size(1.4);
+  @include line-height(1.6);
+
+  @include mq-phone {
+    overflow-x: hidden;
+  }
+}
+
+.meter {
+  background: transparent inline_image('backgrounds/meter-16.png') repeat;
+  height: 1000%;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+  z-index: 10000;
+  @include opacity(0.5);
+}
+.meter-8 {
+  background: transparent inline_image('backgrounds/meter-16.png') repeat;
+  height: 1000%;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+  z-index: 10000;
+  margin-top: 8px;
+  @include opacity(0.5);
+
+}

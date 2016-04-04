@@ -1,0 +1,357 @@
+<?xml version="1.0"?>
+<project name="REDLAKEELECTRICCOOP" basedir=".." default="warning">
+    <target name="warning">
+        <echo message=""/>
+    </target>
+
+    <!-- project name/main directory -->
+    <property name="project.name" value="REDLAKEELECTRICCOOP" />
+    <!-- environment, default to staging for deployment/testing -->
+    <property name="env" value="development" override="true" />
+    <!-- base paths for project -->
+    <property name="dir.build" value="build"/>
+    <property name="dir.tests" value="build"/>
+    <property name="dir.www" value="public_html"/>
+    <property name="dir.src" value="src"/>
+    <property name="dir.vendor" value="vendor"/>
+    <property name="dir.wp-content" value="${dir.www}/wp-content"/>
+    <property name="dir.reports" value="${dir.build}/reports"/>
+    <property name="dir.package" value="${dir.build}/packaging"/>
+    <property name="dir.node" value="node_modules" />
+    <property name="dir.sql" value="sql" />
+    <property name="dir.vagrant" value=".vagrant" />
+    <property name="dir.phpstorm" value=".idea" />
+    <property name="dir.puphpet" value="puphpet" />
+    <property name="dir.archive" value="archive" />
+    <property name="dir.originals" value="originals" />
+    <property name="dir.cache" value="cache" />
+
+    <!-- get config file for this environment -->
+    <property name="configFile" value="${project.basedir}/${dir.build}/config/${env}.config" />
+    <available file="${configFile}" property="configFileFound" value="true"/>
+    <fail unless="configFileFound" message="Missing host configuration file (${configFile})! Deployment environment was set to '${env}'" />
+    <property file="${configFile}" />
+
+    <!-- get host file for this environment -->
+    <property name="hostFile" value="${project.basedir}/${dir.build}/config/hosts/${env}.host" />
+    <available file="${hostFile}" property="hostFileFound" value="true"/>
+    <fail unless="hostFileFound" message="Missing host configuration file (${hostFile})! Deployment environment was set to '${env}'" />
+    <property file="${hostFile}" />
+
+    <!-- release name -->
+    <property name="releaseName" value="master" override="true"/>
+
+    <!-- ============================================  -->
+    <!-- Fileset: project source files, all files      -->
+    <!-- that should be bundled when deployed to       -->
+    <!-- staging/production                            -->
+    <!-- ============================================  -->
+    <fileset dir="." id="project.source" defaultexcludes="true">
+        <!-- includes -->
+        <include name="*/**" />
+        <!-- excludes -->
+        <exclude name=".git/" />
+        <exclude name=".env" />
+        <exclude name="${dir.tests}/" />
+        <exclude name="${dir.cache}/" />
+        <exclude name="${dir.build}/" />
+        <exclude name="${dir.node}/" />
+        <exclude name="${dir.phpstorm}/" />
+        <exclude name="${dir.vagrant}/" />
+        <exclude name="${dir.puphpet}/" />
+        <exclude name="Vagrantfile" />
+        <exclude name="${dir.archive}/" />
+        <exclude name="${dir.originals}/" />
+        <exclude name="**/README.*" />
+        <exclude name="**/HISTORY.*" />
+
+        <!-- exclude composer bin folder -->
+        <exclude name="${dir.vendor}/bin/" />
+
+        <!-- exclude wordpress uploads folder -->
+        <exclude name="${dir.wp-content}/uploads/" />
+
+        <!-- VCS files -->
+        <exclude name=".gitignore" />
+        <!-- folders created by puppet -->
+        <exclude name="${dir.www}/icons/**/*" />
+        <exclude name="${dir.www}/html/**/*" />
+        <exclude name="${dir.www}/error/**/*" />
+        <exclude name="${dir.www}/manual/**/*" />
+        <exclude name="icons/**/*" />
+        <exclude name="html/**/*" />
+        <exclude name="error/**/*" />
+        <exclude name="manual/**/*" />
+    </fileset>
+
+    <!-- ============================================  -->
+    <!-- Fileset: project source files sans            -->
+    <!-- library files                                 -->
+    <!-- ============================================  -->
+    <fileset dir="." id="project.source.sans.libs">
+        <include name="**/*.php"/>
+        <exclude name="${dir.vendor}/**/*.php" />
+        <exclude name="${dir.build}/**/*" />
+    </fileset>
+
+    <!-- ============================================  -->
+    <!-- Target: Collect uncommitted files             -->
+    <!-- ============================================  -->
+    <target name="collect_uncommitted_files">
+        <exec command="hg status -m -a -r -d" output="${dir.build}/uncommitted_files.txt" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare tests                         -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <delete dir="${dir.package}"/>
+        <delete dir="${dir.package}/${env}" />
+        <delete dir="${dir.package}/${env}/${phing.project.name}" />
+        <delete dir="${dir.deploy}" />
+        <mkdir dir="${dir.package}"/>
+        <mkdir dir="${dir.reports}"/>
+
+        <!-- run install -->
+        <exec command="bash install.sh" level="verbose" />
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: metrics                               -->
+    <!-- ============================================  -->
+    <target name="metrics" depends="prepare, lint">
+        <echo message="Some of these targets are *very* memory intensive. You may have to increase your memory_limit in php.ini" />
+        <!--<phingcall target="phploc" />-->
+        <!--<phingcall target="depend" />-->
+        <!--<phingcall target="cpd" />-->
+        <!--<phingcall target="churn-grep" />-->
+        <!--<phingcall target="phpmd" />-->
+        <!--<phingcall target="codesniffer" />-->
+        <!--<phingcall target="run-tests" />
+        <phingcall target="cleanup-phpunit-report" />-->
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Linting and Metrics                   -->
+    <!-- ============================================  -->
+    <target name="standards" depends="lint, metrics" />
+
+    <!-- ============================================  -->
+    <!-- Target: Package                               -->
+    <!-- ============================================  -->
+    <target name="package" depends="prepare, standards" description="Packages source file for deployment to remote host">
+
+        <delete file="${dir.build}/${phing.project.name}-${env}-${releaseName}.tar.gz" />
+        <delete file="${dir.build}/${phing.project.name}-${env}-${releaseName}.zip" />
+        <delete dir="${dir.package}" />
+        <mkdir dir="${dir.package}" />
+        <mkdir dir="${dir.package}/${env}" />
+        <mkdir dir="${dir.package}/${env}/${phing.project.name}" />
+
+        <!-- copy all source files to package directory -->
+        <echo msg="Copying files to build directory" />
+        <copy todir="${dir.package}" overwrite="true" includeemptydirs="false">
+            <fileset refid="project.source" />
+        </copy>
+        <delete>
+            <fileset dir="${dir.package}">
+                <include name="*.git" />
+                <include name="*.gitignore" />
+                <include name="**/tests/**/*" />
+            </fileset>
+        </delete>
+
+        <phplint haltonfailure="true">
+            <fileset dir="${dir.package}">
+                <include name="**/*.php"/>
+                <exclude name="${dir.vendor}/**/*.php" />
+            </fileset>
+        </phplint>
+
+        <tar destfile="${dir.build}/${phing.project.name}-${env}-${releaseName}.tar.gz" compression="gzip">
+            <fileset dir="${dir.package}">
+                <include name="**/**" />
+            </fileset>
+        </tar>
+        <zip destfile="${dir.build}/${phing.project.name}-${env}-${releaseName}.zip">
+            <fileset dir="${dir.package}">
+                <include name="**/**" />
+            </fileset>
+        </zip>
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: cleanup after packaging               -->
+    <!-- ============================================  -->
+    <target name="cleanup">
+        <delete dir="${dir.package}" />
+        <delete dir="${dir.package}/${env}" />
+        <delete dir="${dir.package}/${env}/${phing.project.name}" />
+        <delete dir="${dir.deploy}" />
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Composer Refresh                      -->
+    <!-- Refreshes remote install of Composer          -->
+    <!-- ============================================  -->
+    <target name="composer-refresh" description="refresh composer install">
+
+        <!--
+     install fresh version of composer over on server side
+      -->
+        <if>
+            <equals arg1="${env}" arg2="development" />
+            <then>
+                <echo message="Composer install is not required for ${env} environment" />
+            </then>
+            <else>
+                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; rm -Rf vendor; php composer.phar install" display="true"  />
+                <!--<exec command="&quot; cd /home/${ftp.username} &amp;&amp; rm -Rf vendor &amp;&amp; php composer.phar install &quot; | sshpass -p &quot;${ftp.password}&quot; ssh ${ftp.username}@${ftp.host}" level="verbose" />-->
+            </else>
+        </if>
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Deployment                            -->
+    <!-- Depends on "env" for server deployment        -->
+    <!-- ============================================  -->
+
+    <target name="deploy" depends="package" description="Deploys the current working copy to a remote host">
+
+        <if>
+            <equals arg1="${env}" arg2="development" />
+            <then>
+                <echo message="deployment not needed in ${env} environment" />
+            </then>
+            <else>
+                <echo message="Resetting ${env} deploy files" />
+                <delete dir="${dir.deploy}" />
+                <mkdir dir="${dir.deploy}" />
+                <untar file="${dir.build}/${phing.project.name}-${env}-${releaseName}.tar.gz" todir="${dir.deploy}" />
+
+                <echo message="Deploying files to ${ftp.host}" />
+                <ftpdeploy
+                        host="${ftp.host}"
+                        password="${ftp.password}"
+                        username="${ftp.username}"
+                        dir="${ftp.destinationDir}"
+                        mode="${ftp.mode}"
+                        port="${ftp.port}">
+                    <fileset dir="${dir.deploy}" />
+                </ftpdeploy>
+
+                <echo message="${env} deploy complete!"/>
+                <delete dir="${dir.deploy}" />
+
+            </else>
+        </if>
+
+        <!-- install fresh version of composer over on server side -->
+        <phingcall target="composer-refresh" />
+
+        <!-- run final cleanup task -->
+        <phingcall target="cleanup" />
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP Lint                              -->
+    <!-- ============================================  -->
+    <target name="lint">
+        <phplint haltonfailure="true" level="verbose">
+            <fileset refid="project.source.sans.libs"/>
+        </phplint>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP Copy paste detector               -->
+    <!-- ============================================  -->
+    <!--  -->
+    <target name="cpd" depends="prepare">
+        <!-- http://www.unit_tests.info/trac/ticket/1061
+        <phpcpd>
+            <fileset refid="project.source.sans.libs" />
+            <formatter type="pmd" outfile="${dir.reports}/cpd.xml" />
+        </phpcpd>-->
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP mess detector                     -->
+    <!-- ============================================  -->
+    <target name="phpmd" depends="prepare">
+        <phpmd>
+            <fileset refid="project.source.sans.libs" />
+            <formatter type="xml" outfile="${dir.reports}/pmd.xml"/>
+        </phpmd>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP depend                            -->
+    <!-- ============================================  -->
+    <target name="depend" depends="prepare">
+        <phpdepend>
+            <fileset refid="project.source.sans.libs" />
+            <logger type="jdepend-xml" outfile="${dir.reports}/jdepend.xml"/>
+            <analyzer type="coderank-mode" value="method"/>
+        </phpdepend>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP code sniffer                      -->
+    <!-- ============================================  -->
+    <target name="codesniffer" depends="prepare">
+        <echo message="If you don't have the PSR standards installed, just follow the instructions here: https://github.com/klaussilveira/phpcs-psr"/>
+        <phpcodesniffer standard="PSR1" verbosity="1">
+            <fileset refid="project.source.sans.libs"/>
+            <formatter type="checkstyle" outfile="/wamp/www/${project.name}/${dir.reports}/codesniffer.xml"/>
+            <formatter type="summary"
+                       outfile="/wamp/www/${project.name}/${dir.reports}/codesniffer-summary.xml"/>
+        </phpcodesniffer>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP LOC                               -->
+    <!-- ============================================  -->
+    <target name="phploc" depends="prepare">
+        <exec command="phploc --log-xml ${dir.reports}/phploc.xml --exclude xxx ${project.basedir}/" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP DOC                               -->
+    <!-- ============================================  -->
+    <target name="phpdoc" depends="prepare">
+        <exec command="phpdoc -d classes,includes,modules,styles -t ${dir.reports}/docs --template=responsive-twig" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Run Tests                             -->
+    <!-- ============================================  -->
+    <target name="run-tests" depends="prepare">
+        <mkdir dir="${dir.build}/tests/${dir.reports}" />
+        <phpunit bootstrap="${dir.build}/tests/bootstrap.php" codecoverage="false" printsummary="true" haltonfailure="false" haltonerror="false">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir=".">
+                    <include name="**/*Test*.php"/>
+                </fileset>
+            </batchtest>
+            <formatter  type="xml" todir="${dir.reports}" outfile="test-logs.xml"/>
+        </phpunit>
+        <phpunitreport infile="${dir.build}/tests/${dir.reports}/test-logs.xml" styledir="${phing.data}/etc/" todir="${dir.reports}" format="noframes" usesorttable="true" />
+
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP Unit Cleanup                      -->
+    <!-- ============================================  -->
+    <target name="cleanup-phpunit-report">
+        <copy file="${dir.build}/tests/${dir.reports}/test-logs.xml" tofile="${dir.reports}/test-logs.xml" overwrite="true"/>
+        <delete dir="${dir.build}/tests/${dir.build}" verbose="true" failonerror="true" />
+    </target>
+
+</project>

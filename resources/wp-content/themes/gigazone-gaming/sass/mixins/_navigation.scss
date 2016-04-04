@@ -1,0 +1,141 @@
+@mixin toggled-navigation {
+
+  @include bs-full-width-columns;
+
+  .main-navigation {
+    display: none;
+  }
+  .main-navigation-toggle {
+    display: table;
+    margin: 0 auto;
+    background: $color-gz-gray;
+  }
+
+  .main-navigation-toggler, .social-media {
+    @include inline-block();
+    float: none;
+    @include font-size(1.4);
+    border: none;
+  }
+
+  // don't initially show the sub nav,
+  ul li:hover > ul {
+    display: none;
+  }
+  ul>li:last-child ul {
+    right: 0;
+  }
+
+  ul li:hover {
+    background: $color-gz-gray;
+  }
+
+  ul {
+    display: block;
+    li {
+      float: none;
+      position: relative;
+      display: block;
+    }
+
+    ul {
+      display: none;
+      position: relative;
+    }
+  }
+
+  a {
+    border-bottom: 1px solid $color-light-gray;
+    position: relative;
+  }
+
+  .main-navigation-toggle {
+    @include height(3);
+    overflow: hidden;
+  }
+
+  .main-navigation-toggle > div {
+    @include height(3);
+    & > a {
+      border-bottom: 0;
+      &:hover, &:active {
+        border-bottom: 0;
+      }
+
+      &::before {
+        display: none;
+      }
+    }
+
+    &:last-child > a::after {
+      display: none;
+    }
+  }
+  .main-navigation-menu > li:hover {
+    background: rgba(256, 256, 256, .90);
+    text-decoration: none;
+    color: $color-dark-gray;
+
+    & > a {
+      color: $color-dark-gray;
+      background: none;
+      &:hover, &:active {
+        color: $color-white;
+        background: $color-dark-gray;
+      }
+    }
+
+  }
+
+  ul ul {
+    @include border-bottom-radius(0);
+
+    li a {
+      border-left: none;
+      border-right: none;
+      padding-left: 0;
+      padding-right: 0;
+
+    }
+    li:last-child a {
+      @include border-radius(0);
+    }
+  }
+
+  // carrot for toggling sub navigation on mobile
+  .sub-navigation-caret {
+    color: $color-white;
+    position: absolute;
+    right: #{ 2 * $leading + 'px'};
+    right: #{ 2 * $leading-rem + 'rem'};
+    top: #{ 0.75 * $leading + 'px'};
+    top: #{ 0.75 * $leading-rem + 'rem'};
+    display: block;
+    z-index: 1000;
+
+    & > a {
+      position: relative;
+      @include padding-equal(.125);
+      @include height(1.5);
+      @include line-height(1.25);
+      @include font-size(1.625);
+      @include width(1.5);
+      @include border-radius(#{ 1.5 * $leading + 'px'});
+      @include border-radius(#{ 1.5 * $leading-rem + 'rem'});
+      background: $color-white;
+      color: $color-gz-gray;
+      border: none;
+      &:hover, &:active {
+        background: $color-gz-orange;
+        border: none;
+        color: $color-dark-gray;
+      }
+
+      &::before, &::after {
+        display: none;
+      }
+
+    }
+  }
+
+}

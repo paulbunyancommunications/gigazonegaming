@@ -1,0 +1,139 @@
+.footer-items-container {
+  background: $color-gz-gray;
+  @include padding(1.875, 0, 0, 0);
+
+      @include mq-phone {
+        @include bs-full-width-columns;
+        .container {
+          width: 90%;
+          margin-right: auto;
+          margin-left: auto;
+        }
+      }
+}
+.footer-highlight-link {
+  background: rgba($color-white, 0.1);
+  @include padding-equal(1);
+  @include margin-bottom(1.5);
+  @include border-radius(10px);
+  @include font-size(1.5);
+  @include line-height(1);
+  color: $color-white;
+  text-transform: uppercase;
+
+  &-description {
+    text-align: left;
+  }
+
+  .sidebar-highlight-link-title img {
+    max-width: 250px;
+  }
+
+
+  h2 {
+    @include font-size(2.125);
+    @include line-height(1.675);
+    font-family: $font-family-sans-serif;
+    @include margin-bottom(.5);
+    margin-top: 0;
+    font-weight: 700;
+  }
+
+  & h2 + p {
+    margin-top: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+    @include font-size(1.5);
+    @include line-height(1.125);
+    color: $color-black;
+    @include margin-bottom(.5);
+  }
+
+
+
+  a {
+    color: $color-gz-orange;
+    text-decoration: none;
+
+    &:hover {
+      color: saturate($color-gz-orange, 50%);
+    }
+  }
+  strong, b {
+    color: $color-gz-orange;
+    //white-space: nowrap;
+    font-family: $font-family-display;
+    @include font-size(1.625);
+    @include margin-bottom(.75);
+    display: block;
+
+    &:hover {
+      color: saturate($color-gz-orange, 50%);
+    }
+  }
+}
+
+.footer-bottom {
+  background: $color-dark-gray;
+  color: $color-light-gray;
+
+  .text-left, .text-right {
+    @include mq_phone {
+      text-align: center;
+      margin-bottom: 0;
+      @include padding-equal(0.25);
+      margin: 0;
+
+      li {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  p {
+    @include padding(0.75, 0);
+    margin: 0;
+    color: $color-light-gray;
+    @include font-size(1.25);
+
+
+  }
+
+  ul {
+    margin: 0;
+    @include padding(0.75, 0);
+
+  }
+
+
+  li {
+    list-style: none;
+    color: $color-light-gray;
+    margin-bottom: 0;
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      content: "|";
+      @include inline-block();
+      @include margin(0,0,0,.375);
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+
+    a {
+      color: $color-light-gray;
+      &:hover {
+        color: $color-white
+      }
+    }
+  }
+
+
+
+}

@@ -1,0 +1,5 @@
+{% if function('is_front_page') != true %}
+.sidebar-section-nav
+    %h2{:id=>"section-title"}{% if page.post_type == 'page' %}{{page.post_title}}{% else %}{ section.post_title }}{% endif %}
+    #sidebar-section-nav
+{% endif %}

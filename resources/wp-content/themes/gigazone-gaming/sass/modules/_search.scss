@@ -1,0 +1,51 @@
+.search-container {
+  background: $color-gz-gray;
+  @include padding(1, 0);
+}
+
+.search-result-page-title {
+  @include margin-bottom(.5);
+
+  &+p {
+    @include margin-top(0);
+  }
+}
+
+.search-result-highlight {
+  background: tint($color-gz-gray, 75%);
+}
+
+.search-result-container {
+  @include padding-equal(1.5);
+  @include base_typography(0.875);
+  border-top: #{$leading * .5}px solid $color-dark-gray;
+
+  &::after {
+    clear: both;
+  }
+
+  .search-result-title {
+    @include margin-bottom(.5);
+    @include line-height(4.5);
+    a {
+      text-decoration: none;
+    }
+
+  }
+
+  .search-result-link {
+    @include font-size(1.125);
+    @include line-height(1.125);
+    @include margin(0, 0, 1, 0);
+    @include padding(0, .25);
+    border-left: 2px solid $color-light-gray;
+    a {
+      color: $color-light-gray;
+      &:hover, &:active {
+        color: $color-dark-gray;
+      }
+    }
+
+  }
+}
+

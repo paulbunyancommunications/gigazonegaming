@@ -1,0 +1,5 @@
+{% for social in social_links %}
+%div{:class=>"social-media"}
+  %a{:href=>"{{ social.link_url }}", :target=>"{{ social.link_target }}"}
+    %i{:class=>"fa fa-{{ social.link_name|slugify }}"}
+{% endfor %}

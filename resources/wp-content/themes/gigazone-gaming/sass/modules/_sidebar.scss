@@ -1,0 +1,178 @@
+.sidebar {
+  @include background-image(linear-gradient($color-white, tint($color-light-gray, 85), tint($color-light-gray, 50)));
+  @include border-radius(#{ 1 * $leading + 'px'});
+  @include border-radius(#{ 1 * $leading-rem + 'rem'});
+  overflow: hidden;
+  @include padding(0,0);
+  @include margin-bottom(1);
+  @include margin-top(1);
+
+  @include mq-phone {
+    margin-bottom: 0;
+    @include border-radius(0);
+  }
+
+
+  &-highlight-link {
+    @include padding(.5, .5, 1, .5);
+    background: rgba($color-white, 0.25);
+    @include border-radius(#{ 1 * $leading + 'px'});
+    @include border-radius(#{ 1 * $leading-rem + 'rem'});
+    @include margin(0, .5, .5, .5);
+
+    &-title {
+      text-align: center;
+      @include padding-equal(.75);
+      //@include height(4);
+      @include line-height(0);
+      background: $color-white;
+      @include border-radius(#{ .5 * $leading + 'px'});
+      @include border-radius(#{ .5 * $leading-rem + 'rem'});
+      @include font-size(2);
+      font-weight: 700;
+
+      @include mq_tablet {
+        @include height(3);
+      }
+
+      @include mq_phone {
+        @include height(4.5);
+        @include line-height(3.5);
+      }
+
+      & a {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+
+      img {
+        max-height: 100%;
+        width: auto;
+        max-width: 100%;
+
+        @include mq-phone {
+          max-height: 100%;
+        }
+      }
+    }
+
+    &-description {
+      @include line-height(1.25);
+      @include font-size(1.375);
+      text-align: center;
+      @include margin-top(1);
+      @include margin-bottom(0);
+      padding: 0;
+    }
+
+  }
+
+  &-social-media {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .social-media {
+    $sidebar-social-media-size: 1.9;
+    @include inline-block();
+    @include height($sidebar-social-media-size);
+    @include width($sidebar-social-media-size);
+    @include border-radius(#{ $sidebar-social-media-size * $leading + 'px'});
+    @include border-radius(#{ $sidebar-social-media-size * $leading-rem + 'rem'});
+    background: $color-white;
+    border: 5px solid $color-gz-orange;
+    @include line-height($sidebar-social-media-size);
+    color: $color-gz-gray;
+    @include font-size($sidebar-social-media-size);
+    text-align: center;
+    position: relative;
+    @include margin(0, .5, .5, 0);
+    @include font-size(1.625);
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      //background: $color-gz-orange;
+      //color: $color-black;
+      border-color: tint($color-gz-orange, 50%);
+      color: $color-black;
+    }
+
+    a {
+      color: $color-gz-gray;
+      text-decoration: none;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include line-height($sidebar-social-media-size/1.625);
+
+      &:hover {
+        color: $color-black;
+      }
+
+    }
+  }
+
+  &-section-nav {
+    @include margin-top(.5);
+    @include margin-bottom(.5);
+    h2 {
+      @include font-size(2);
+      @include line-height(1.5);
+      @include margin-top(0);
+      @include margin-bottom(0);
+      @include padding(1, .5, .5, .5);
+      background-color: $color-gz-gray;
+      color: $color-white;
+      text-align: center;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      width: 100%;
+
+      &.current_page_item > a, &.current-menu-item > a {
+        background: tint($color-gz-gray, 65);
+        color: $color-dark-gray;
+      }
+
+      a {
+        border-bottom: 1px solid $color-light-gray;
+        color: $color-black;
+        @include font-size(1.5);
+        @include line-height(1.25);
+        @include padding-equal(.5);
+        display: block;
+        background: tint($color-gz-gray, 90);
+        text-decoration: none;
+
+        &:hover {
+          background: tint($color-gz-gray, 65);
+          color: $color-dark-gray;
+          text-decoration: none;
+
+        }
+
+      }
+
+      &::before {
+        display: none;
+      }
+    }
+
+  }
+
+}

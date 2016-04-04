@@ -1,0 +1,136 @@
+{
+  "name": "paulbunyannet/gigazone-gaming",
+  "description": "Gigazone Gaming website",
+  "authors": [
+    {
+      "name": "Nate Nolting",
+      "email": "naten@paulbunyan.net"
+    }
+  ],
+  "minimum-stability": "stable",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "wordpress",
+        "type": "webroot",
+        "version": "4.4.2",
+        "dist": {
+          "type": "zip",
+          "url": "https://github.com/WordPress/WordPress/archive/4.4.2.zip"
+        },
+        "require": {
+          "fancyguy/webroot-installer": "1.0.0"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pmenard/media-tags",
+        "type": "wordpress-plugin",
+        "version": "3.2.0.2",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/media-tags.3.2.0.2.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "nacin/link-manager",
+        "type": "wordpress-plugin",
+        "version": "0.1-beta",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/link-manager.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "archetyped/cornerstone",
+        "type": "wordpress-plugin",
+        "version": "0.7.5",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/cornerstone.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "mungobbq/enable-media-replace",
+        "type": "wordpress-plugin",
+        "version": "3.0.4",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/enable-media-replace.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "wordpress": "4.*",
+    "fancyguy/webroot-installer": "1.0.0",
+    "symfony/yaml": "~2.4",
+    "vlucas/phpdotenv": "~1.1@dev",
+    "paulbunyannet/autoversion": "~1.0",
+    "jarednova/timber": "^0.22.5",
+    "pmenard/media-tags": "3.2.0.2",
+    "nacin/link-manager": "0.1-beta",
+    "paulbunyannet/bandolier": "^1.0",
+    "twig/twig": "^1.24",
+    "cocur/slugify": "^1.4",
+    "archetyped/cornerstone": "0.7.5",
+    "anahkiasen/underscore-php": "^2.0",
+    "mungobbq/enable-media-replace":"3.0.4",
+    "tedivm/stash": "^0.14.1"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "mockery/mockery": "0.9.*",
+    "phpunit/phpunit": "~4.0",
+    "phpspec/phpspec": "~2.1"
+  },
+  "extra": {
+    "webroot-dir": "public_html/wp",
+    "webroot-package": "wordpress",
+    "installer-paths": {
+      "public_html/wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "public_html/wp-content/themes/{$name}/": [
+        "type:wordpress-theme"
+      ]
+    }
+  },
+  "autoload": {
+    "files": [
+      "src/Wordpress/functions.php"
+    ],
+    "psr-4": {
+      "Wordpress\\": "src/Wordpress/",
+      "GigaZone\\": "src/GigaZone/"
+    }
+  },
+  "config": {
+    "preferred-install": "dist"
+  }
+}

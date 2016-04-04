@@ -1,0 +1,17 @@
+{% if masthead_photo_rotator is defined and masthead_photo_rotator|length > 0 %}
+.container
+  .row
+    .col-md-12
+      .photo-rotator
+        .masthead-photo-rotator-outer-container
+          %ul{:class=>"masthead-photo-rotator-container", :id=>"front-photo-cycle"}
+            {% for img in masthead_photo_rotator %}
+            %li{:class=>"masthead-photo-rotator-item imager"}
+              %div{:class=>"responsive-image", :"data-src"=>"{{ http_host }}{{ img.imager }}", "data-alt"=>"img.post_excerpt"}
+              {% if img.post_content|length > 0 %}
+              %span{:class=>"masthead-photo-rotator-caption"} {{ img.post_content }}
+              {% endif %}
+            {% endfor %}
+{% else %}
+.no-masthead-photo-rotator
+{% endif %}

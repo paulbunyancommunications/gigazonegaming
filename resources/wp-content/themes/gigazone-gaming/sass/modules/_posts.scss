@@ -1,0 +1,81 @@
+@import "compass/css3";
+
+.article-container {
+  @include margin-top(.25);
+
+  @include mq-phone {
+    @include bs-full-width-columns;
+  }
+}
+
+.title-page {
+  @include font-size(6.25);
+  @include line-height(4);
+  @include margin-bottom(1.375);
+  @include margin-top(1.375);
+
+  @include mq-cinema {
+    @include font-size(7.125);
+    @include line-height(5.125);
+    @include margin-bottom(1.375);
+    @include margin-top(2);
+  }
+  @include mq-phone {
+    @include font-size(5.25);
+    @include line-height(3.5);
+    @include margin(1.35, 1.35)
+  }
+
+}
+
+.child-post {
+  @include border-radius(10px);
+  @include padding-equal(1);
+  @include margin-bottom(1);
+  @include background-image(linear-gradient(to right, tint($color-light-gray, 85), $color-white));
+
+}
+
+.title-child {
+  font-family: $font-family-display;
+  @include font-size(5.2);
+  @include line-height(4);
+  @include margin-bottom(1.2);
+}
+
+.post-content {
+  @include padding(0,0,0,1);
+  @include margin-bottom(2);
+  @include margin-top(-0.125);
+
+  @include mq-phone {
+    @include padding(0,1.5);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.post-child-sub-menu {
+  & ul li {
+    display: none;
+  }
+  & ul li.current_page_item,  & ul li.current_page_item li{
+    display: block;
+  }
+}
+
+// alignment of media
+
+.alignleft {
+  float: left;
+  @include margin(.5, 0.5, 0.5, 0);
+}
+
+.alignright {
+  float: right;
+  @include margin(.5, 0, 0.5, 0.5);
+}
+

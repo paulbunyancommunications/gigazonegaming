@@ -1,0 +1,100 @@
+@import "compass/css3";
+
+
+.photo-rotator-container {
+  position: relative;
+  background:  $color-dark-gray;
+  z-index: 1;
+  &::before {
+    z-index: 2;
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+}
+.masthead-photo-rotator-outer-container {
+  position: relative;
+}
+.masthead-photo-rotator-container {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.masthead-photo-rotator-item {
+  @extend .masthead-photo-rotator-container;
+  list-style: none;
+  text-align: center;
+
+  &:before {
+    display: none;
+  }
+  & > img {
+    max-height: none;
+    height: auto;
+    max-width: 100%;
+  }
+}
+
+.masthead-photo-rotator-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba($color-black, 0.75);
+  color: $color-white;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  font-size: 1em;
+}
+
+
+.rslides_nav {
+  position: absolute;
+  top: 0;
+  z-index: 99;
+  @include opacity(0);
+  //text-indent: -9999px;
+  overflow: hidden;
+  text-decoration: none;
+  height: 100%;
+  width: 50%;
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 5em;
+  background: transparent;
+  border: none;
+  text-align: center;
+
+  &:hover {
+    display: block;
+    color: rgba($color-white, 0.85);
+    @include opacity(1);
+    z-index: 9999;
+
+  }
+
+  &.next {
+    right: 0;
+}
+
+  .rotator-nav-item {
+    position: absolute;
+    width: 60px;
+    height: 70px;
+    line-height: 56px;
+    top: 42%;
+    left: 10%;
+  }
+
+  &.next .rotator-nav-item {
+    right: 10%;
+    left: auto;
+  }
+}
+

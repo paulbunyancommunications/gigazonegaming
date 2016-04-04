@@ -1,0 +1,15 @@
+originals/*
+vendor/*
+.env
+.idea/*
+puphpet/config.yaml
+build/config/**/production*
+build/config/**/staging*
+public_html/wp-content/plugins/*
+public_html/wp-content/uploads/*
+public_html/wp-content/themes/twentysixteen
+.vagrant
+public_html/wp
+public_html/wp-content/themes/gigazone-gaming/css
+public_html/wp-content/themes/gigazone-gaming/js
+public_html/wp-content/themes/gigazone-gaming/views

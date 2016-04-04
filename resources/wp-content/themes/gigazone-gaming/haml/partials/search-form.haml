@@ -1,0 +1,10 @@
+%form{:role=>"search", :method=>"get", :class=>"search-form", :action=>"{{ function('esc_url', function('home_url', '/')) }}", :id=>"search-form"}
+  .container
+    .row
+      .col-xs-12
+        %label{:class=>"sr-only", :for=>"search-field"}{{ function('_x', 'Search For:', site.theme.slug) }}
+        .input-group
+          %input{:type=>"text", :class=>"form-control", :id=>"search-field", :placeholder=>"{{ function('esc_attr_x','Search For:', 'placeholder', site.theme.slug) }}", :value=>"{{ function('get_search_query') }}", :name=>"s", :title=>"{{ function('esc_attr_x','Search For:', 'label', site.theme.slug) }}"}/
+          %span{:class=>"input-group-btn"}
+            %button{:type=>"submit", :class=>"btn btn-default", :id=>"doSiteSearch"}
+              %i{:class=>"fa fa-search"}
