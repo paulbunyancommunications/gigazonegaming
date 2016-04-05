@@ -15,24 +15,8 @@
  */
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
-Dotenv::load(dirname(__DIR__));
-Dotenv::required([
-    'APP_ENV',
-    'DB_DATABASE',
-    'DB_USERNAME',
-    'DB_PASSWORD',
-    'DB_HOST',
-    'DB_CHARSET',
-    'DB_PREFIX',
-    'WP_AUTH_KEY',
-    'WP_SECURE_AUTH_KEY',
-    'WP_LOGGED_IN_KEY',
-    'WP_NONCE_KEY',
-    'WP_AUTH_SALT',
-    'WP_SECURE_AUTH_SALT',
-    'WP_LOGGED_IN_SALT',
-    'WP_NONCE_SALT',
-]);
+$dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
+$dotenv->load();
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */

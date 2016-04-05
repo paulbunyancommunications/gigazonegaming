@@ -91,7 +91,6 @@
     "wordpress": "4.*",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
-    "vlucas/phpdotenv": "~2.2.0",
     "paulbunyannet/autoversion": "~1.0",
     "jarednova/timber": "^0.22.5",
     "pmenard/media-tags": "3.2.0.2",
@@ -102,7 +101,8 @@
     "archetyped/cornerstone": "0.7.5",
     "anahkiasen/underscore-php": "^2.0",
     "mungobbq/enable-media-replace":"3.0.4",
-    "tedivm/stash": "^0.14.1"
+    "tedivm/stash": "^0.14.1",
+    "vlucas/phpdotenv": "^2.2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
