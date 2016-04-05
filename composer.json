@@ -139,7 +139,10 @@
   "autoload-dev": {
     "classmap": [
       "tests/TestCase.php"
-    ]
+    ],
+    "psr-4": {
+      "Codeception\\" : "src/Codeception/"
+    }
   },
   "scripts": {
     "post-root-package-install": [
