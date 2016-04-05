@@ -2,4 +2,7 @@
 /**
  * Current page content
  */
-$context['page'] = Timber::get_post();
+$posts = Timber::get_posts();
+if (count($posts) === 1) {
+    $context['page'] = array_shift($posts);
+}
