@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-sm-8 col-md-9">
         {% if posts.post_count > 1 %}
+            {% include 'partials/page-title.twig' with {'page' : section} %}
 
         {% else %}
 
