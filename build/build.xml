@@ -9,22 +9,22 @@
     <!-- environment, default to staging for deployment/testing -->
     <property name="env" value="development" override="true" />
     <!-- base paths for project -->
-    <property name="dir.build" value="build"/>
-    <property name="dir.tests" value="build"/>
-    <property name="dir.www" value="public_html"/>
-    <property name="dir.src" value="src"/>
+    <property name="dir.build" value="./build"/>
+    <property name="dir.tests" value="./tests"/>
+    <property name="dir.www" value="./public_html"/>
+    <property name="dir.src" value="./src"/>
     <property name="dir.vendor" value="vendor"/>
     <property name="dir.wp-content" value="${dir.www}/wp-content"/>
     <property name="dir.reports" value="${dir.build}/reports"/>
     <property name="dir.package" value="${dir.build}/packaging"/>
     <property name="dir.node" value="node_modules" />
-    <property name="dir.sql" value="sql" />
-    <property name="dir.vagrant" value=".vagrant" />
-    <property name="dir.phpstorm" value=".idea" />
-    <property name="dir.puphpet" value="puphpet" />
-    <property name="dir.archive" value="archive" />
-    <property name="dir.originals" value="originals" />
-    <property name="dir.cache" value="cache" />
+    <property name="dir.sql" value="./sql" />
+    <property name="dir.vagrant" value="./.vagrant" />
+    <property name="dir.phpstorm" value="./.idea" />
+    <property name="dir.puphpet" value="./puphpet" />
+    <property name="dir.archive" value="./archive" />
+    <property name="dir.originals" value="./originals" />
+    <property name="dir.cache" value="./cache" />
 
     <!-- get config file for this environment -->
     <property name="configFile" value="${project.basedir}/${dir.build}/config/${env}.config" />
@@ -52,24 +52,23 @@
         <!-- excludes -->
         <exclude name=".git/" />
         <exclude name=".env" />
-        <exclude name="${dir.tests}/" />
-        <exclude name="${dir.cache}/" />
-        <exclude name="${dir.build}/" />
-        <exclude name="${dir.node}/" />
-        <exclude name="${dir.phpstorm}/" />
-        <exclude name="${dir.vagrant}/" />
-        <exclude name="${dir.puphpet}/" />
+        <exclude name="${dir.cache}/**/*" />
+        <exclude name="${dir.build}/**/*" />
+        <exclude name="${dir.node}/**/*" />
+        <exclude name="${dir.phpstorm}/**/*" />
+        <exclude name="${dir.vagrant}/**/*" />
+        <exclude name="${dir.puphpet}/**/*" />
         <exclude name="Vagrantfile" />
-        <exclude name="${dir.archive}/" />
-        <exclude name="${dir.originals}/" />
+        <exclude name="${dir.archive}/**/*" />
+        <exclude name="${dir.originals}/**/*" />
         <exclude name="**/README.*" />
         <exclude name="**/HISTORY.*" />
 
-        <!-- exclude composer bin folder -->
-        <exclude name="${dir.vendor}/bin/" />
+        <!-- exclude composer vendor folder, it will be populated on server -->
+        <exclude name="${dir.vendor}/**/*" />
 
         <!-- exclude wordpress uploads folder -->
-        <exclude name="${dir.wp-content}/uploads/" />
+        <exclude name="${dir.wp-content}/uploads/**/*" />
 
         <!-- VCS files -->
         <exclude name=".gitignore" />
