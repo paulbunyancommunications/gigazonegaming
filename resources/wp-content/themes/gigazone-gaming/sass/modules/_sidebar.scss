@@ -80,7 +80,7 @@
     @include width($sidebar-social-media-size);
     @include border-radius(#{ $sidebar-social-media-size * $leading + 'px'});
     @include border-radius(#{ $sidebar-social-media-size * $leading-rem + 'rem'});
-    background: $color-white;
+    background: $color-gz-orange;
     border: 5px solid $color-gz-orange;
     @include line-height($sidebar-social-media-size);
     color: $color-gz-gray;
@@ -95,10 +95,9 @@
     }
 
     &:hover {
-      //background: $color-gz-orange;
-      //color: $color-black;
-      border-color: tint($color-gz-orange, 50%);
-      color: $color-black;
+      background: $color-gz-gray;
+      color: $color-white;
+      border-color: $color-gz-gray;
     }
 
     a {
@@ -113,7 +112,7 @@
       @include line-height($sidebar-social-media-size/1.625);
 
       &:hover {
-        color: $color-black;
+        color: $color-white;
       }
 
     }
