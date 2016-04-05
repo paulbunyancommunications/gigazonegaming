@@ -57,14 +57,16 @@ $masthead-logo-multiplier: 1.75;
   // .masthead-navigation class
   &-navigation {
     text-align: right;
-    @include margin-top(1);
-    @include margin-bottom(1);
+    @include padding-top(.75);
+    @include padding-bottom(.75);
     width: 100%;
-    height: $masthead-logo-base-height;
+    height: $masthead-logo-base-height * $masthead-logo-multiplier;
     position: relative;
+    vertical-align: bottom;
     @include mq-phone {
       height: 23px;
       display: table;
+      width: auto;
       margin-left: auto;
       margin-right: auto;
       @include margin-top(.5);
