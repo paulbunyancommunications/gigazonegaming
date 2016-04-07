@@ -1,5 +1,13 @@
 @include base_typography(1);
 
+@include mq-tablet {
+  @include base_typography(.9);
+}
+
+@include mq-phone {
+  @include base_typography(.825);
+}
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -10,6 +18,9 @@
 .text-left {
   text-align: left;
 }
+
+
+
 
 
 

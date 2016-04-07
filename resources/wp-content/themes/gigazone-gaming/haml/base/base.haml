@@ -1,22 +1,20 @@
-!!!
-%html{:lang=>"en"}
-  {% include "partials/header.twig" %}
-  %body{:class=>"{{ body_class }}"}
-    /.meter
-    /.meter-8
-    %div{:class=>"main-container", :id=>"main-container"}
-      .masthead-container
-        {% include "partials/masthead.twig" %}
-      .main-navigation-container
-        {% include "partials/main-navigation.twig" %}
-      .photo-rotator-container
-        {% include "partials/masthead-photo-rotator.twig" %}
-      .search-container
-        {% include "partials/search-form.twig" %}
-      .content-container
-        .article-container
-          {% block article %}welcome to the site{% endblock %}
-    %div{:class=>"footer-container", :id=>"footer-container"}
-      {% include "partials/footer.twig" %}
-      {% block footer %}{% endblock %}
-    {{ function('wp_footer') }}
+{% extends "base/skeleton.twig" %}
+{% block body %}
+/.meter
+/.meter-8
+%div{:class=>"main-container", :id=>"main-container"}
+  .masthead-container
+    {% include "partials/masthead.twig" %}
+  .main-navigation-container
+    {% include "partials/main-navigation.twig" %}
+  .photo-rotator-container
+    {% include "partials/masthead-photo-rotator.twig" %}
+  .search-container
+    {% include "partials/search-form.twig" %}
+  .content-container
+    .article-container
+      {% block article %}welcome to the site{% endblock %}
+%div{:class=>"footer-container", :id=>"footer-container"}
+  {% include "partials/footer.twig" %}
+  {% block footer %}{% endblock %}
+{% endblock %}

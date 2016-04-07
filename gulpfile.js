@@ -13,6 +13,7 @@ var themeFolder = './public_html/wp-content/themes/gigazone-gaming',
 require('gulp-util');
 require('laravel-elixir-sass-compass');
 require('laravel-elixir-livereload');
+require('dotenv').config();
 
 /*
  |--------------------------------------------------------------------------
@@ -106,8 +107,11 @@ elixir(function (mix) {
     })
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
         .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
-        .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views')
-        .cleanCss(themeFolder + '/css')
-        .minifyJs(themeFolder + '/js')
-        .livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
+        .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views');
+
+        if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
+            mix.cleanCss(themeFolder + '/css')
+                .minifyJs(themeFolder + '/js');
+        }
+        mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
 });

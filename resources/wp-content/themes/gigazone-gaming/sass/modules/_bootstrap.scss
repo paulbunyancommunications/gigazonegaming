@@ -1,0 +1,18 @@
+.well-gz {
+  background: rgba(tint($color-gz-gray, 80%), .5);
+  border-color: $color-gz-gray;
+}
+
+.btn-gz {
+  background-color: $color-gz-orange;
+  border-color: shade($color-gz-orange, 10%);
+  color: $color-gz-gray;
+  font-family: $font-family-display;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: tint($color-gz-orange, 45%);
+    border-color: shade($color-gz-orange, 10%);
+    color: $color-black;
+  }
+}

@@ -19,6 +19,8 @@ require =
     links: ["modules/links"]
     stickyFooter: ["modules/sticky-footer"]
     searchResults: ["modules/search-results"]
+    form: ["modules/form"],
+    Utility: ["modules/Utility"]
   shim:
     "bootstrap": [ "jquery" ]
     "responsiveSlides": [ "jquery" ]

@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/updates/signup', ['as' => 'updates.store','uses' => 'Frontend\Updates\UpdatesController@store']);

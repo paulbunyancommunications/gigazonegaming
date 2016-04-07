@@ -1,15 +1,14 @@
 @import "compass/css3";
 
-$masthead-logo-graphic: 'images/logos/gigazone-gaming-championship-z-horizontal-white.svg';
+$masthead-logo-graphic: 'images/logos/gigazone-gaming-championship-x-horizontal-white.svg';
 $masthead-logo-base-height: 46px;
 $masthead-logo-base-width: 295px;
 $masthead-logo-multiplier: 1.75;
 
 .masthead {
-
   // .masthead-container class
   &-container {
-    background: transparent inline_image('backgrounds/social-banner-v-1.jpg') repeat-x center left;
+    background: transparent url($theme-directory + 'images/backgrounds/social-banner-v-1.jpg') repeat-x center left;
     overflow: hidden;
     height: auto;
     width: 100%;

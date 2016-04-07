@@ -2,7 +2,7 @@
   .row
     .col-sm-8
       .masthead-logo
-        %a{:class=>"masthead-logo-ink", :href=>"{{ function('home_url','/') }}"} {{ function("bloginfo","name") }}
+        %a{:class=>"masthead-logo-link", :href=>"{{ function('home_url','/') }}"} {{ function("bloginfo","name") }}
     .col-sm-4
       {{ function('wp_nav_menu', {'menu':'Masthead Navigation', 'container_class':'masthead-navigation', 'menu_class':'masthead-navigation-menu'}) }}
 

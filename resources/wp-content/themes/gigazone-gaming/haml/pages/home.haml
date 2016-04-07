@@ -1,0 +1,18 @@
+{% extends "base/skeleton.twig" %}
+{% block body %}
+
+.home-outer
+  .home-container
+    .container
+      .row
+        .col-md-12
+          .home-inner-container
+            .home-inner-container-bg
+            .masthead-logo
+              %h1
+                %a{:class=>"masthead-logo-link", :href=>"{{ function('home_url','/') }}"} {{ function("bloginfo","name") }}
+            .home-content
+              {{ function("apply_filters","the_content", page.post_content) }}
+    .home-footer
+    {% include "partials/footer-js.twig" %}
+{% endblock %}

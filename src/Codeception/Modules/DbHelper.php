@@ -30,4 +30,12 @@ class DbHelper extends Module
         $I->runShellCommand('mysql -h "'.$config['server'].'" -u "'.$config['user'].'" "-p'.$config['password'].'" "'.$config['database'].'" < '.$root.'/'.$config['dump'] . ' 2> nul');
     }
 
+    /**
+     * @param \AcceptanceTester|\FunctionalTester $I
+     */
+    public function runMigration($I)
+    {
+        $I->runShellCommand('php artisan migrate:refresh');
+    }
+
 }

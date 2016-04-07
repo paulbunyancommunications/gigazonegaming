@@ -1,0 +1,28 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: 'http://gigazonegaming.local'
+            host: localhost
+            browser: firefox
+            port: 4444
+            window_size: 1280x1024
+            clear_cookies: 1
+            restart: 1
+            capabilities:
+               unexpectedAlertBehaviour: 'accept'
+               javascriptEnabled: true
+        - \Helper\Acceptance
+        - DbHelper
+        - Asserts
+        - Cli
+        - Db:
+           populate: true
+           cleanup: true
+           reconnect: true

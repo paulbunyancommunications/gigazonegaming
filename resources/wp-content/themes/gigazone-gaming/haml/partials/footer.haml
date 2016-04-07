@@ -36,9 +36,4 @@
               %a{:href=>"/about/terms-of-use/"} Terms of Use
             %li
               %a{:href=>"/about/privacy-policy/"} Privacy Policy
-
-
-
-%script{:src=>"{{ (theme_dir~'/js/common-require.js') | auto_version_path }}"}
-%script{:src=>"{{ '/bower_components/requirejs/require.js'|auto_version_path }}"}
-%script{:src=>"{{ (theme_dir~'/js/main-require.js') | auto_version_path }}"}
+{% include "partials/footer-js.twig" %}

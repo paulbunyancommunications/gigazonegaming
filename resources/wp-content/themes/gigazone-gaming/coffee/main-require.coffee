@@ -38,5 +38,9 @@ require [
         searchResults.init()
         return
 
+    if $('.doForm').length
+      require ['form'], (form) ->
+        form.init()
+
     return
   return
