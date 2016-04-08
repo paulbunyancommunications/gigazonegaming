@@ -13,9 +13,15 @@
                 %a{:class=>"masthead-logo-link", :href=>"{{ function('home_url','/') }}"} {{ function("bloginfo","name") }}
             .home-content
               {{ function("apply_filters","the_content", page.post_content) }}
+              .disclaimer.sidebar
+                {% set disclaimer = function('get_posts',{'name':'riot-disclaimer', 'post_type':'post', 'post_status':'publish', 'numberposts': 1}) %}
+                {% if disclaimer|length == 1 %}
+                {{ function("apply_filters","the_content", disclaimer[0].post_content) }}
+                {% endif %}
               .sidebar
                 .sidebar-social-media
                   {% include "partials/social-media.twig" %}
     .home-footer
     {% include "partials/footer-js.twig" %}
+
 {% endblock %}

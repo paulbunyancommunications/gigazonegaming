@@ -8,8 +8,8 @@ new \GigaZone\Timber\GigaZoneGamingTimber();
 /** @var Stash\Driver\FileSystem $cacheDriver */
 $cacheDriver = new Stash\Driver\FileSystem(['path' => dirname($_SERVER['DOCUMENT_ROOT']) . '/cache/']);
 
-// [bartag foo="foo-value"]
-function updateSignUpForm( $atts ) {
+// [update-sign-up]
+function gzUpdateSignUpForm( $atts ) {
     $a = shortcode_atts( array(
         'foo' => 'something',
         'bar' => 'something else',
@@ -17,4 +17,15 @@ function updateSignUpForm( $atts ) {
 
     return Timber::compile('forms/update-sign-up.twig', $a);
 }
-add_shortcode( 'update-sign-up', 'updateSignUpForm' );
+add_shortcode( 'update-sign-up', 'gzUpdateSignUpForm' );
+
+function gzBlogInfoShortcode( $atts ) {
+    extract(shortcode_atts(array(
+        'key' => '',
+        'filter' => ''
+    ), $atts));
+    /** @var string $key */
+    /** @var string $filter */
+    return get_bloginfo($key, $filter);
+}
+add_shortcode('bloginfo', 'gzBlogInfoShortcode');
