@@ -162,7 +162,6 @@
             <fileset dir="${dir.package}">
                 <include name="*.git" />
                 <include name="*.gitignore" />
-                <include name="**/tests/**/*" />
             </fileset>
         </delete>
 
@@ -170,6 +169,9 @@
             <fileset dir="${dir.package}">
                 <include name="**/*.php"/>
                 <exclude name="${dir.vendor}/**/*.php" />
+                <exclude name=".phpstorm.meta.php" />
+                <exclude name="_ide_helper.php" />
+                <exclude name="c3.php" />
             </fileset>
         </phplint>
 
