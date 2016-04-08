@@ -4,6 +4,8 @@ use \AcceptanceTester;
 
 class SignUpForUpdatesCest
 {
+    const DEFAULT_WAIT = 5;
+
     public function _before(AcceptanceTester $I)
     {
         $I->runMigration($I);
@@ -25,7 +27,7 @@ class SignUpForUpdatesCest
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->checkOption(['id' => 'updateSignUpForm-participate']);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(5);
+        $I->wait(self::DEFAULT_WAIT);
         $I->see('Thanks for signing up!');
         $I->seeInDatabase('update_recipients', array('email' => $email, 'participate' => 1));
     }
@@ -39,7 +41,7 @@ class SignUpForUpdatesCest
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->uncheckOption(['id' => 'updateSignUpForm-participate']);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(5);
+        $I->wait(self::DEFAULT_WAIT);
         $I->see('Thanks for signing up!');
         $I->seeInDatabase('update_recipients', array('email' => $email, 'participate' => 0));
     }
@@ -54,7 +56,7 @@ class SignUpForUpdatesCest
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->checkOption(['id' => 'updateSignUpForm-participate']);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(5);
+        $I->wait(self::DEFAULT_WAIT);
         $I->see('The email must be a valid email address.');
         $I->dontSeeInDatabase('update_recipients', array('email' => $email));
     }
@@ -68,13 +70,13 @@ class SignUpForUpdatesCest
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(5);
+        $I->wait(self::DEFAULT_WAIT);
         $I->see('Thanks for signing up!');
         // do it a second time
         $I->seeInDatabase('update_recipients', array('email' => $email));
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(5);
+        $I->wait(self::DEFAULT_WAIT);
         $I->see('That email address has already been submitted.');
 
 
