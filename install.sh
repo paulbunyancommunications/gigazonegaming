@@ -7,13 +7,13 @@ npm install &>/dev/null
 
 
 # install bower dependencies
-command -v bower >/dev/null 2>&1 || { echo "Bower is not installed. Please install by runnning 'npm install -g bower'. Aborting" >&2; exit 1; }
+command -v bower >/dev/null 2>&1 || { echo "Bower is not installed. Please install by running 'npm install -g bower'. Aborting" >&2; exit 1; }
 echo "Installing Bower dependencies!"
 bower install &>/dev/null
 
 
 # install bower dependencies
-command -v gulp >/dev/null 2>&1 || { echo "Gulp is not installed. Please install by runnning 'npm install -g gulp'. aborting" >&2; exit 1; }
+command -v gulp >/dev/null 2>&1 || { echo "Gulp is not installed. Please install by running 'npm install -g gulp'. aborting" >&2; exit 1; }
 echo "Running gulp for the first time!"
 gulp &>/dev/null
 
@@ -52,7 +52,7 @@ then
     echo "puphpet config.yaml file was created from example file"
 fi
 
-# cleanup wordpress instal
+# cleanup Wordpress install
 if [ -d "public_html/wp/wp-content" ]
 then
     rm -rf public_html/wp/wp-content
