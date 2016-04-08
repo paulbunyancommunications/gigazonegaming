@@ -10,9 +10,9 @@
   font-family: $font-family-display;
   text-transform: uppercase;
 
-  &:hover {
-    background-color: tint($color-gz-orange, 45%);
-    border-color: shade($color-gz-orange, 10%);
-    color: $color-black;
+  &:hover, &:active {
+    background-color: $color-gz-gray;
+    border-color: shade($color-gz-gray, 10%);
+    color: $color-white;
   }
 }

@@ -1,0 +1,46 @@
+@mixin social-media($multiplier:1, $sm-color:$color-gz-gray, $sm-color-hover:$color-white, $sm-background:$color-gz-orange, $sm-background-hover:$color-gz-gray) {
+
+  .social-media {
+    @include inline-block();
+    @include height($multiplier);
+    @include width($multiplier);
+    @include border-radius(#{ $multiplier * $leading + 'px'});
+    @include border-radius(#{ $multiplier * $leading-rem + 'rem'});
+    background: $sm-background;
+    //border: 5px solid $color-gz-orange;
+    color: $sm-color;
+
+    text-align: center;
+    position: relative;
+    @include margin(0, ($multiplier * .25), ($multiplier * .25), 0);
+
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background: $sm-background-hover;
+      color: $sm-color-hover;
+    }
+
+    a {
+      color: $sm-color;
+      text-decoration: none;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      @include line-height($multiplier);
+      position: absolute;
+      @include font-size($multiplier * .9);
+      top: 0;
+      left: 0;
+
+      &:hover, &:active {
+        color: $sm-color-hover;
+      }
+
+    }
+  }
+  @content;
+}

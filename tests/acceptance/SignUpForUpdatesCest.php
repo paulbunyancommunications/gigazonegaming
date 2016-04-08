@@ -75,7 +75,7 @@ class SignUpForUpdatesCest
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(5);
-        $I->see('The email has already been taken.');
+        $I->see('That email address has already been submitted.');
 
 
     }

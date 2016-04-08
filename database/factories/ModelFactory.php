@@ -10,3 +10,11 @@
 | database. Just tell the factory how a default model should look.
 |
 */
+
+$factory->define(App\Models\UpdateRecipients::class, function (Faker\Generator $faker) {
+
+    return [
+        'email' => $faker->email,
+        'participate' => $faker->boolean(),
+    ];
+});

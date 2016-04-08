@@ -25,6 +25,7 @@
     <property name="dir.archive" value="./archive" />
     <property name="dir.originals" value="./originals" />
     <property name="dir.cache" value="./cache" />
+    <property name="dir.remote.coverage" value="${dir.www}/c3" />
 
     <!-- get config file for this environment -->
     <property name="configFile" value="${project.basedir}/${dir.build}/config/${env}.config" />
@@ -53,6 +54,7 @@
         <exclude name=".git/" />
         <exclude name=".env" />
         <exclude name="${dir.cache}/**/*" />
+        <exclude name="${dir.remote.coverage}/**/*" />
         <exclude name="${dir.build}/**/*" />
         <exclude name="${dir.node}/**/*" />
         <exclude name="${dir.phpstorm}/**/*" />
@@ -91,6 +93,9 @@
         <include name="**/*.php"/>
         <exclude name="${dir.vendor}/**/*.php" />
         <exclude name="${dir.build}/**/*" />
+        <exclude name=".phpstorm.meta.php" />
+        <exclude name="_ide_helper.php" />
+        <exclude name="c3.php" />
     </fileset>
 
     <!-- ============================================  -->
@@ -121,14 +126,14 @@
     <!-- ============================================  -->
     <target name="metrics" depends="prepare, lint">
         <echo message="Some of these targets are *very* memory intensive. You may have to increase your memory_limit in php.ini" />
+        <phingcall target="run-tests" />
         <!--<phingcall target="phploc" />-->
         <!--<phingcall target="depend" />-->
         <!--<phingcall target="cpd" />-->
         <!--<phingcall target="churn-grep" />-->
         <!--<phingcall target="phpmd" />-->
         <!--<phingcall target="codesniffer" />-->
-        <!--<phingcall target="run-tests" />
-        <phingcall target="cleanup-phpunit-report" />-->
+        <!--<phingcall target="cleanup-phpunit-report" />-->
     </target>
 
     <!-- ============================================  -->
@@ -198,17 +203,35 @@
     <!-- ============================================  -->
     <target name="composer-refresh" description="refresh composer install">
 
-        <!--
-     install fresh version of composer over on server side
-      -->
+        <!-- install fresh version of composer over on server side-->
         <if>
             <equals arg1="${env}" arg2="development" />
             <then>
                 <echo message="Composer install is not required for ${env} environment" />
             </then>
             <else>
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; rm -Rf vendor; php composer.phar install" display="true"  />
+                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; wget https://getcomposer.org/composer.phar; rm -Rf vendor; php composer.phar install; rm -f composer.phar" display="true"  />
                 <!--<exec command="&quot; cd /home/${ftp.username} &amp;&amp; rm -Rf vendor &amp;&amp; php composer.phar install &quot; | sshpass -p &quot;${ftp.password}&quot; ssh ${ftp.username}@${ftp.host}" level="verbose" />-->
+            </else>
+        </if>
+
+    </target>
+    <!-- ============================================  -->
+    <!-- Target: Artisan Migrate                       -->
+    <!-- Run migration on remote                       -->
+    <!-- ============================================  -->
+    <target name="artisan-migrate" description="run laravel artisan migrate on remote">
+
+        <!--
+     install fresh version of composer over on server side
+      -->
+        <if>
+            <equals arg1="${env}" arg2="development" />
+            <then>
+                <echo message="migration is not required for ${env} environment" />
+            </then>
+            <else>
+                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; php artisan migrate" display="true"  />
             </else>
         </if>
 
@@ -251,6 +274,9 @@
 
         <!-- install fresh version of composer over on server side -->
         <phingcall target="composer-refresh" />
+        <!-- run migrations on remote -->
+        <phingcall target="artisan-migrate" />
+
 
         <!-- run final cleanup task -->
         <phingcall target="cleanup" />
@@ -262,7 +288,7 @@
     <!-- ============================================  -->
     <target name="lint">
         <phplint haltonfailure="true" level="verbose">
-            <fileset refid="project.source.sans.libs"/>
+            <fileset refid="project.source.sans.libs" />
         </phplint>
     </target>
 
@@ -329,21 +355,19 @@
     <!-- ============================================  -->
     <!-- Target: Run Tests                             -->
     <!-- ============================================  -->
-    <target name="run-tests" depends="prepare">
-        <mkdir dir="${dir.build}/tests/${dir.reports}" />
-        <phpunit bootstrap="${dir.build}/tests/bootstrap.php" codecoverage="false" printsummary="true" haltonfailure="false" haltonerror="false">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset dir=".">
-                    <include name="**/*Test*.php"/>
-                </fileset>
-            </batchtest>
-            <formatter  type="xml" todir="${dir.reports}" outfile="test-logs.xml"/>
-        </phpunit>
-        <phpunitreport infile="${dir.build}/tests/${dir.reports}/test-logs.xml" styledir="${phing.data}/etc/" todir="${dir.reports}" format="noframes" usesorttable="true" />
-
-
+    <target name="run-tests" depends="vagrant">
+        <exec command="bash testing.sh" checkreturn="true" passthru="true" />
     </target>
+
+
+    <!-- ============================================  -->
+    <!-- Target: Vagrant                               -->
+    <!-- Spin up a vagrant box                         -->
+    <!-- ============================================  -->
+    <target name="vagrant">
+        <exec command="vagrant up" />
+    </target>
+
 
     <!-- ============================================  -->
     <!-- Target: PHP Unit Cleanup                      -->

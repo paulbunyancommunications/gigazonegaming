@@ -86,4 +86,10 @@
   .alert, .alert * {
     color: $color-black;
   }
+
+  .sidebar {
+    background: none;
+    margin-bottom: 0;
+    @include social-media(3);
+  }
 }

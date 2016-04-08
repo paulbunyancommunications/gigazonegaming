@@ -12,7 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $path = env('APP_URL', 'http://example.local');
+    try {
+        return \Cache::remember('front-page-from-wp', 2, function () use ($path) {
+            return file_get_contents($path);
+        });
+    } catch (\Illuminate\Database\QueryException $ex) {
+        \Log::error($ex->getMessage());
+        return file_get_contents($path);
+    }
 });
-
+// update signup route
 Route::post('/updates/signup', ['as' => 'updates.store','uses' => 'Frontend\Updates\UpdatesController@store']);
+
+/**
+ * For Codeception Coverage
+ */
+// @codeCoverageIgnoreStart
+Route::get('/report/{extra}', function () {
+    require base_path('c3.php');
+})->where('extra', '.*');
+// @codeCoverageIgnoreEnd
