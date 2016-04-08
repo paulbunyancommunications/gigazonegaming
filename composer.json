@@ -110,7 +110,8 @@
     "phpunit/phpunit": "~4.0",
     "symfony/css-selector": "2.8.*|3.0.*",
     "symfony/dom-crawler": "2.8.*|3.0.*",
-    "barryvdh/laravel-ide-helper": "^2.1"
+    "barryvdh/laravel-ide-helper": "^2.1",
+    "codeception/c3": "^2.0"
   },
   "extra": {
     "webroot-dir": "public_html/wp",
@@ -163,7 +164,11 @@
       "php artisan ide-helper:generate",
       "php artisan ide-helper:meta",
       "php artisan optimize"
+    ],
+    "test": [
+      "test"
     ]
+
   },
   "config": {
     "preferred-install": "dist"
