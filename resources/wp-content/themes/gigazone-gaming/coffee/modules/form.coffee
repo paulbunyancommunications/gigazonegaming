@@ -27,10 +27,7 @@ define ['jquery', 'Utility'], ($, Utility) ->
     .fail (jqXHR, textStatus)->
       progress.hide()
       message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
-    return setTimeout (->
-      message.fadeOut 'slow', ->
-        return message.html('').hide();
-    ), 7500
+    return
   )
     
   return form
