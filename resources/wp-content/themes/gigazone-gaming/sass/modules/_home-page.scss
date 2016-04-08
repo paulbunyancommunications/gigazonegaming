@@ -111,4 +111,16 @@
     }
 
   }
+
+  .well-gz {
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    @include mq-phone {
+      width: 100%;
+    }
+    @include mq-tablet {
+      width: 75%;
+    }
+  }
 }
