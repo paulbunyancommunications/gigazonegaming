@@ -17,9 +17,11 @@ Route::get('/', function () {
         return \Cache::remember('front-page-from-wp', 2, function () use ($path) {
             return file_get_contents($path);
         });
+        // @codeCoverageIgnoreStart
     } catch (\Illuminate\Database\QueryException $ex) {
         \Log::error($ex->getMessage());
         return file_get_contents($path);
+        // @codeCoverageIgnoreEnd
     }
 });
 // update signup route
