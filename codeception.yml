@@ -19,3 +19,11 @@ modules:
             user: 'root'
             password: 'root'
             dump: 'sql/gzgaming_wp.sql'
+coverage:
+    enabled: true
+    whitelist:
+        include:
+            - app/*
+        exclude:
+            - app/Console/*
+            - app/Exceptions/*
