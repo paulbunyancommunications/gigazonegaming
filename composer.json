@@ -166,7 +166,7 @@
       "php artisan optimize"
     ],
     "test": [
-      "test"
+      "bash testing.sh"
     ]
 
   },
