@@ -59,9 +59,9 @@ define('NONCE_SALT', getenv('WP_NONCE_SALT'));
  * Path configuration
  */
 define('WP_CONTENT_DIR', __DIR__ . '/wp-content');
-define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-content');
-define('WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp');
-define('WP_HOME', 'http://' . $_SERVER['SERVER_NAME']);
+define('WP_CONTENT_URL', getenv('WP_HTTP_SCHEME').'://' . $_SERVER['SERVER_NAME'] . '/wp-content');
+define('WP_SITEURL', getenv('WP_HTTP_SCHEME').'://' . $_SERVER['SERVER_NAME'] . '/wp');
+define('WP_HOME', getenv('WP_HTTP_SCHEME').'://' . $_SERVER['SERVER_NAME']);
 
 
 /**#@-*/
