@@ -233,7 +233,7 @@
                 <echo message="migration is not required for ${env} environment" />
             </then>
             <else>
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; php artisan migrate" display="true"  />
+                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; php artisan down; php artisan migrate --force; php artisan up;" display="true"  />
             </else>
         </if>
 
