@@ -1,8 +1,8 @@
 {
-  "name": "paulbunyannet/red-lake-electric",
+  "name": "paulbunyannet/gigazone-gaming",
   "version": "1.0.0",
-  "description": "Red Lake Electric Coop",
-  "homepage": "http://redlakeelectric.com/",
+  "description": "Gigazome Gaming",
+  "homepage": "https://gigazonegaming.com/",
   "dependencies": {
     "requirejs": "2.1.15",
     "bootstrap": "3.3.6",
