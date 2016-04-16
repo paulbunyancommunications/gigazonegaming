@@ -18,6 +18,7 @@ modules:
             capabilities:
                unexpectedAlertBehaviour: 'accept'
                javascriptEnabled: true
+               locationContextEnabled: true
         - \Helper\Acceptance
         - DbHelper
         - Asserts

@@ -34,7 +34,7 @@ class UpdatesControllerTest extends \TestCase
         $this->assertJson($response->getContent());
         $decode = json_decode($response->getContent());
         $this->assertObjectHasAttribute('success', $decode);
-        $this->assertNotFalse(strpos($decode->success, 'Thanks for signing up!'));
+        $this->assertNotFalse(strpos(implode(' ', $decode->success), 'Thanks for signing up!'));
     }
 
     /**
@@ -50,6 +50,24 @@ class UpdatesControllerTest extends \TestCase
 
         $update = UpdateRecipients::findUpdateByEmail($email);
         $this->assertTrue($update->participate);
+
+    }
+    /**
+     * @test
+     */
+    public function it_has_geo_location_data()
+    {
+        $faker = \Faker\Factory::create();
+
+        $email = $faker->email;
+        $latitude = $faker->latitude();
+        $longitude = $faker->longitude();
+        $response = $this->call('POST', '/updates/signup', ['email' => $email, 'participate' => true, 'geo_lat' => $latitude, 'geo_long' => $longitude]);
+        $this->assertTrue($response->isOk());
+
+        $update = UpdateRecipients::findUpdateByEmail($email);
+        $this->assertEquals($update->geo_lat, $latitude, 'the stored value of "'.$update->geo_lat.'" equals  "'. $latitude .'"');
+        $this->assertEquals($update->geo_long, $longitude, 'the stored value of "'.$update->geo_long.'" equals  "'. $longitude .'"');
 
     }
 
@@ -96,7 +114,7 @@ class UpdatesControllerTest extends \TestCase
         $this->assertJson($response->getContent());
         $decode = json_decode($response->getContent());
         $this->assertObjectHasAttribute('success', $decode);
-        $this->assertNotFalse(strpos($decode->success, 'Thanks for signing up!'));
+        $this->assertNotFalse(strpos(implode(' ', $decode->success), 'Thanks for signing up!'));
 
         // the second one will fail
         $response2 = $this->call('POST', '/updates/signup', ['email' => $email]);

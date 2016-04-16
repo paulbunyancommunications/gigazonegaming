@@ -47,6 +47,26 @@ class UpdateRecipients extends Model
     }
 
     /**
+     * Get geo_lat attribute and round to nearest millionth up
+     *
+     * @param $value
+     * @return float
+     */
+    public function getGeoLatAttribute($value) {
+        return round($value, 6, PHP_ROUND_HALF_UP);
+    }
+
+    /**
+     * Get geo_long attribute and round to nearest millionth up
+     *
+     * @param $value
+     * @return float
+     */
+    public function getGeoLongAttribute($value) {
+        return round($value, 6, PHP_ROUND_HALF_UP);
+    }
+
+    /**
      * set the participate attribute to boolean
      *
      * @param $value
