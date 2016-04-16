@@ -2,7 +2,7 @@
 .home {
   // .home.page
   &.page {
-    background: $color-gz-gray url($theme-directory + 'images/backgrounds/gray-texture.png') repeat top center;
+    background: $color-primary-4 url($theme-directory + 'images/backgrounds/gray-texture.png') repeat top center;
   }
   &-outer {
     display: table;
