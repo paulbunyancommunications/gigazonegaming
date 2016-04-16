@@ -7,7 +7,7 @@
 
      # force non www
      RewriteCond %{HTTP_HOST} ^www\.gigazonegaming\.com [NC]
-     RewriteRule ^(.*)$ https://example.com/$1 [L,R=301]
+     RewriteRule ^(.*)$ https://gigazonegaming\.com/$1 [L,R=301]
 
     # force https for all but local development
     RewriteCond %{HTTPS} off
