@@ -24,3 +24,5 @@ _ide_helper.php
 tests/_support/_generated
 codecept-result.log
 c3.php
+build/GIGAZONEGAMING-production-master.tar.gz
+build/GIGAZONEGAMING-production-master.zip
