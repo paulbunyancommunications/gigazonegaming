@@ -167,6 +167,9 @@
     ],
     "test": [
       "bash testing.sh"
+    ],
+    "test-failed": [
+      "bash testing.sh failed"
     ]
 
   },

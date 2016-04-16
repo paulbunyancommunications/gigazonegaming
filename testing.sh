@@ -4,7 +4,12 @@ finished=false
 touch ${log}
 echo -n "" >${log}
 # run tests inside vagrant box
-vagrant ssh -c "cd /var/www; php artisan down; php artisan config:clear; php artisan migrate --force; php artisan up; php codecept.phar clean; php codecept.phar build; php codecept.phar run --coverage-html --coverage-xml;" > ${log} 2>&1
+failed=$1
+if [[ -n "$failed" ]]; then
+    vagrant ssh -c "cd /var/www; php artisan config:clear; php artisan migrate; php codecept.phar run -g ${failed} --debug" > ${log} 2>&1
+else
+    vagrant ssh -c "cd /var/www; php artisan config:clear; php artisan migrate; php codecept.phar clean; php codecept.phar build; php codecept.phar run --coverage-html --coverage-xml;" > ${log} 2>&1
+fi
 cat ${log}
 # reset the migrations in the box
 vagrant ssh -c "cd /var/www; php artisan migrate;"
