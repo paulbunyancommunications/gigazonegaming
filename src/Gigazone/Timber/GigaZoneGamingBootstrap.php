@@ -13,7 +13,7 @@ use Twig_SimpleFunction;
  * Class RedLakeElectricTimber
  * @package Wordpress\Timber
  */
-class GigaZoneGamingTimber extends TimberSite {
+class GigaZoneGamingBootstrap extends TimberSite {
 
     /**
      *
@@ -91,4 +91,24 @@ class GigaZoneGamingTimber extends TimberSite {
         return $av->file($value);
     }
 
+    // [update-sign-up]
+    function updateSignUpFormShortCode( $atts ) {
+        $a = shortcode_atts( array(
+            'foo' => 'something',
+            'bar' => 'something else',
+        ), $atts );
+
+        return \Timber::compile('forms/update-sign-up.twig', $a);
+    }
+
+    function blogInfoShortcode( $atts ) {
+        extract(shortcode_atts(array(
+            'key' => '',
+            'filter' => ''
+        ), $atts));
+        /** @var string $key */
+        /** @var string $filter */
+        return get_bloginfo($key, $filter);
+    }
+    
 }
