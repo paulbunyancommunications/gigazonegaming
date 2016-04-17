@@ -26,3 +26,5 @@ codecept-result.log
 c3.php
 build/GIGAZONEGAMING-production-master.tar.gz
 build/GIGAZONEGAMING-production-master.zip
+build/GIGAZONEGAMING-staging-master
+.phing_targets
