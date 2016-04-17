@@ -9,32 +9,31 @@
     <!-- environment, default to staging for deployment/testing -->
     <property name="env" value="development" override="true" />
     <!-- base paths for project -->
-    <property name="dir.build" value="./build"/>
-    <property name="dir.tests" value="./tests"/>
-    <property name="dir.www" value="./public_html"/>
-    <property name="dir.src" value="./src"/>
-    <property name="dir.vendor" value="vendor"/>
-    <property name="dir.wp-content" value="${dir.www}/wp-content"/>
-    <property name="dir.reports" value="${dir.build}/reports"/>
-    <property name="dir.package" value="${dir.build}/packaging"/>
-    <property name="dir.node" value="node_modules" />
-    <property name="dir.sql" value="./sql" />
-    <property name="dir.vagrant" value="./.vagrant" />
-    <property name="dir.phpstorm" value="./.idea" />
-    <property name="dir.puphpet" value="./puphpet" />
-    <property name="dir.archive" value="./archive" />
-    <property name="dir.originals" value="./originals" />
-    <property name="dir.cache" value="./cache" />
-    <property name="dir.remote.coverage" value="${dir.www}/c3" />
+    <property name="dir.build" value="build/"/>
+    <property name="dir.tests" value="tests"/>
+    <property name="dir.www" value="public_html/"/>
+    <property name="dir.vendor" value="vendor/"/>
+    <property name="dir.wp-content" value="${dir.www}wp-content/"/>
+    <property name="dir.reports" value="${dir.build}reports/"/>
+    <property name="dir.package" value="${dir.build}packaging/"/>
+    <property name="dir.node" value="node_modules/" />
+    <property name="dir.sql" value="sql/" />
+    <property name="dir.vagrant" value=".vagrant/" />
+    <property name="dir.phpstorm" value=".idea/" />
+    <property name="dir.puphpet" value="puphpet/" />
+    <property name="dir.archive" value="archive/" />
+    <property name="dir.originals" value="originals/" />
+    <property name="dir.cache" value="storage/framework/cache/" />
+    <property name="dir.remote.coverage" value="${dir.www}c3/" />
 
     <!-- get config file for this environment -->
-    <property name="configFile" value="${project.basedir}/${dir.build}/config/${env}.config" />
+    <property name="configFile" value="${project.basedir}/${dir.build}config/${env}.config" />
     <available file="${configFile}" property="configFileFound" value="true"/>
     <fail unless="configFileFound" message="Missing host configuration file (${configFile})! Deployment environment was set to '${env}'" />
     <property file="${configFile}" />
 
     <!-- get host file for this environment -->
-    <property name="hostFile" value="${project.basedir}/${dir.build}/config/hosts/${env}.host" />
+    <property name="hostFile" value="${project.basedir}/${dir.build}config/hosts/${env}.host" />
     <available file="${hostFile}" property="hostFileFound" value="true"/>
     <fail unless="hostFileFound" message="Missing host configuration file (${hostFile})! Deployment environment was set to '${env}'" />
     <property file="${hostFile}" />
@@ -53,32 +52,43 @@
         <!-- excludes -->
         <exclude name=".git/" />
         <exclude name=".env" />
-        <exclude name="${dir.cache}/**/*" />
-        <exclude name="${dir.remote.coverage}/**/*" />
-        <exclude name="${dir.build}/**/*" />
-        <exclude name="${dir.node}/**/*" />
-        <exclude name="${dir.phpstorm}/**/*" />
-        <exclude name="${dir.vagrant}/**/*" />
-        <exclude name="${dir.puphpet}/**/*" />
+        <exclude name="${dir.cache}**/*" />
+        <exclude name="${dir.remote.coverage}**/*" />
+        <exclude name="${dir.build}**/*" />
+        <exclude name="${dir.node}**/*" />
+        <exclude name="${dir.phpstorm}**/*" />
+        <exclude name="${dir.vagrant}**/*" />
+        <exclude name="${dir.puphpet}**/*" />
         <exclude name="Vagrantfile" />
-        <exclude name="${dir.archive}/**/*" />
-        <exclude name="${dir.originals}/**/*" />
+        <exclude name="${dir.archive}**/*" />
+        <exclude name="${dir.originals}**/*" />
         <exclude name="**/README.*" />
         <exclude name="**/HISTORY.*" />
 
+        <!-- exclude laravel session storage -->
+        <exclude name="storage/framework/sessions/**/*" />
+        <include name="storage/framework/sessions/.gitignore" />
+
+        <!-- exclude laravel view storage -->
+        <exclude name="storage/framework/views/**/*" />
+        <include name="storage/framework/views/.gitignore" />
+
+        <!-- exclude laravel log storage -->
+        <exclude name="storage/logs/**/*.log" />
+
         <!-- exclude composer vendor folder, it will be populated on server -->
-        <exclude name="${dir.vendor}/**/*" />
+        <exclude name="${dir.vendor}**/*" />
 
         <!-- exclude wordpress uploads folder -->
-        <exclude name="${dir.wp-content}/uploads/**/*" />
+        <exclude name="${dir.wp-content}uploads/**/*" />
 
         <!-- VCS files -->
         <exclude name=".gitignore" />
         <!-- folders created by puppet -->
-        <exclude name="${dir.www}/icons/**/*" />
-        <exclude name="${dir.www}/html/**/*" />
-        <exclude name="${dir.www}/error/**/*" />
-        <exclude name="${dir.www}/manual/**/*" />
+        <exclude name="${dir.www}icons/**/*" />
+        <exclude name="${dir.www}html/**/*" />
+        <exclude name="${dir.www}error/**/*" />
+        <exclude name="${dir.www}manual/**/*" />
         <exclude name="icons/**/*" />
         <exclude name="html/**/*" />
         <exclude name="error/**/*" />
@@ -91,8 +101,8 @@
     <!-- ============================================  -->
     <fileset dir="." id="project.source.sans.libs">
         <include name="**/*.php"/>
-        <exclude name="${dir.vendor}/**/*.php" />
-        <exclude name="${dir.build}/**/*" />
+        <exclude name="${dir.vendor}**/*.php" />
+        <exclude name="${dir.build}**/*" />
         <exclude name=".phpstorm.meta.php" />
         <exclude name="_ide_helper.php" />
         <exclude name="c3.php" />
@@ -102,7 +112,7 @@
     <!-- Target: Collect uncommitted files             -->
     <!-- ============================================  -->
     <target name="collect_uncommitted_files">
-        <exec command="hg status -m -a -r -d" output="${dir.build}/uncommitted_files.txt" />
+        <exec command="hg status -m -a -r -d" output="${dir.build}uncommitted_files.txt" />
     </target>
 
     <!-- ============================================  -->
@@ -110,8 +120,8 @@
     <!-- ============================================  -->
     <target name="prepare">
         <delete dir="${dir.package}"/>
-        <delete dir="${dir.package}/${env}" />
-        <delete dir="${dir.package}/${env}/${phing.project.name}" />
+        <delete dir="${dir.package}${env}" />
+        <delete dir="${dir.package}${env}/${phing.project.name}" />
         <delete dir="${dir.deploy}" />
         <mkdir dir="${dir.package}"/>
         <mkdir dir="${dir.reports}"/>
@@ -146,12 +156,12 @@
     <!-- ============================================  -->
     <target name="package" depends="prepare, standards" description="Packages source file for deployment to remote host">
 
-        <delete file="${dir.build}/${phing.project.name}-${env}-${releaseName}.tar.gz" />
-        <delete file="${dir.build}/${phing.project.name}-${env}-${releaseName}.zip" />
+        <delete file="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz" />
+        <delete file="${dir.build}${phing.project.name}-${env}-${releaseName}.zip" />
         <delete dir="${dir.package}" />
         <mkdir dir="${dir.package}" />
-        <mkdir dir="${dir.package}/${env}" />
-        <mkdir dir="${dir.package}/${env}/${phing.project.name}" />
+        <mkdir dir="${dir.package}${env}" />
+        <mkdir dir="${dir.package}${env}/${phing.project.name}" />
 
         <!-- copy all source files to package directory -->
         <echo msg="Copying files to build directory" />
@@ -168,19 +178,19 @@
         <phplint haltonfailure="true">
             <fileset dir="${dir.package}">
                 <include name="**/*.php"/>
-                <exclude name="${dir.vendor}/**/*.php" />
+                <exclude name="${dir.vendor}**/*.php" />
                 <exclude name=".phpstorm.meta.php" />
                 <exclude name="_ide_helper.php" />
                 <exclude name="c3.php" />
             </fileset>
         </phplint>
 
-        <tar destfile="${dir.build}/${phing.project.name}-${env}-${releaseName}.tar.gz" compression="gzip">
+        <tar destfile="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz" compression="gzip">
             <fileset dir="${dir.package}">
                 <include name="**/**" />
             </fileset>
         </tar>
-        <zip destfile="${dir.build}/${phing.project.name}-${env}-${releaseName}.zip">
+        <zip destfile="${dir.build}${phing.project.name}-${env}-${releaseName}.zip">
             <fileset dir="${dir.package}">
                 <include name="**/**" />
             </fileset>
@@ -193,8 +203,8 @@
     <!-- ============================================  -->
     <target name="cleanup">
         <delete dir="${dir.package}" />
-        <delete dir="${dir.package}/${env}" />
-        <delete dir="${dir.package}/${env}/${phing.project.name}" />
+        <delete dir="${dir.package}${env}" />
+        <delete dir="${dir.package}${env}/${phing.project.name}" />
         <delete dir="${dir.deploy}" />
 
     </target>
@@ -255,7 +265,7 @@
                 <echo message="Resetting ${env} deploy files" />
                 <delete dir="${dir.deploy}" />
                 <mkdir dir="${dir.deploy}" />
-                <untar file="${dir.build}/${phing.project.name}-${env}-${releaseName}.tar.gz" todir="${dir.deploy}" />
+                <untar file="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz" todir="${dir.deploy}" />
 
                 <echo message="Deploying files to ${ftp.host}" />
                 <ftpdeploy
@@ -302,7 +312,7 @@
         <!-- http://www.unit_tests.info/trac/ticket/1061
         <phpcpd>
             <fileset refid="project.source.sans.libs" />
-            <formatter type="pmd" outfile="${dir.reports}/cpd.xml" />
+            <formatter type="pmd" outfile="${dir.reports}cpd.xml" />
         </phpcpd>-->
     </target>
 
@@ -312,7 +322,7 @@
     <target name="phpmd" depends="prepare">
         <phpmd>
             <fileset refid="project.source.sans.libs" />
-            <formatter type="xml" outfile="${dir.reports}/pmd.xml"/>
+            <formatter type="xml" outfile="${dir.reports}pmd.xml"/>
         </phpmd>
     </target>
 
@@ -322,7 +332,7 @@
     <target name="depend" depends="prepare">
         <phpdepend>
             <fileset refid="project.source.sans.libs" />
-            <logger type="jdepend-xml" outfile="${dir.reports}/jdepend.xml"/>
+            <logger type="jdepend-xml" outfile="${dir.reports}jdepend.xml"/>
             <analyzer type="coderank-mode" value="method"/>
         </phpdepend>
     </target>
@@ -334,9 +344,9 @@
         <echo message="If you don't have the PSR standards installed, just follow the instructions here: https://github.com/klaussilveira/phpcs-psr"/>
         <phpcodesniffer standard="PSR1" verbosity="1">
             <fileset refid="project.source.sans.libs"/>
-            <formatter type="checkstyle" outfile="/wamp/www/${project.name}/${dir.reports}/codesniffer.xml"/>
+            <formatter type="checkstyle" outfile="/wamp/www/${project.name}/${dir.reports}codesniffer.xml"/>
             <formatter type="summary"
-                       outfile="/wamp/www/${project.name}/${dir.reports}/codesniffer-summary.xml"/>
+                       outfile="/wamp/www/${project.name}/${dir.reports}codesniffer-summary.xml"/>
         </phpcodesniffer>
     </target>
 
@@ -344,14 +354,14 @@
     <!-- Target: PHP LOC                               -->
     <!-- ============================================  -->
     <target name="phploc" depends="prepare">
-        <exec command="phploc --log-xml ${dir.reports}/phploc.xml --exclude xxx ${project.basedir}/" />
+        <exec command="phploc --log-xml ${dir.reports}phploc.xml --exclude xxx ${project.basedir}/" />
     </target>
 
     <!-- ============================================  -->
     <!-- Target: PHP DOC                               -->
     <!-- ============================================  -->
     <target name="phpdoc" depends="prepare">
-        <exec command="phpdoc -d classes,includes,modules,styles -t ${dir.reports}/docs --template=responsive-twig" />
+        <exec command="phpdoc -d classes,includes,modules,styles -t ${dir.reports}docs --template=responsive-twig" />
     </target>
 
     <!-- ============================================  -->
@@ -375,8 +385,8 @@
     <!-- Target: PHP Unit Cleanup                      -->
     <!-- ============================================  -->
     <target name="cleanup-phpunit-report">
-        <copy file="${dir.build}/tests/${dir.reports}/test-logs.xml" tofile="${dir.reports}/test-logs.xml" overwrite="true"/>
-        <delete dir="${dir.build}/tests/${dir.build}" verbose="true" failonerror="true" />
+        <copy file="${dir.build}tests/${dir.reports}test-logs.xml" tofile="${dir.reports}test-logs.xml" overwrite="true"/>
+        <delete dir="${dir.build}tests/${dir.build}" verbose="true" failonerror="true" />
     </target>
 
 </project>
