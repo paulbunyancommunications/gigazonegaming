@@ -76,6 +76,10 @@
         <!-- exclude laravel log storage -->
         <exclude name="storage/logs/**/*.log" />
 
+        <!-- exclude wordpress storage -->
+        <exclude name="storage/framework/wordpress/**/*" />
+        <include name="storage/framework/wordpress/.gitignore" />
+
         <!-- exclude composer vendor folder, it will be populated on server -->
         <exclude name="${dir.vendor}**/*" />
 
