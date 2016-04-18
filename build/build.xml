@@ -247,7 +247,8 @@
                 <echo message="migration is not required for ${env} environment" />
             </then>
             <else>
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; php artisan down; php artisan migrate --force; php artisan up;" display="true"  />
+                <!-- ssh into server and turn down laravel and wordpress, then run migrations and bring both wordpress and laravel back up -->
+                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; php artisan down; php artisan wp:down; php artisan migrate --force; php artisan up; php artisan wp:up" display="true"  />
             </else>
         </if>
 
