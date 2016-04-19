@@ -8,6 +8,7 @@ use App\Models\UpdateRecipients;
 use Illuminate\Http\Request;
 use Response;
 use Validator;
+use View;
 
 class UpdatesController extends Controller
 {
@@ -37,7 +38,6 @@ class UpdatesController extends Controller
                 $update->geo_lat = $request->input('geo_lat');
                 $update->geo_long = $request->input('geo_long');
             }
-            
             $update->save();
             return Response::json(['success' => [trans('UpdatesController.store-success')]]);
             // @codeCoverageIgnoreStart
@@ -45,5 +45,20 @@ class UpdatesController extends Controller
             return Response::json(['error' => [$ex->getMessage()]]);
             // @codeCoverageIgnoreEnd
         }
+    }
+
+    /**
+     * Get recipients from database and generate map
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function map()
+    {
+        $context = [];
+        $context['update_recipients'] = \App\Models\UpdateRecipients::all();
+        $context['home_latitude'] = 47.4875361;
+        $context['home_longitude'] = -94.8858492;
+        $context['google_maps_api_key'] = env('GOOGLE_MAP_API_KEY', 'my_google_api_key');
+        return View::make('UpdatesController.map', $context);
     }
 }

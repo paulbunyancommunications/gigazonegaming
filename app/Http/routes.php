@@ -26,6 +26,7 @@ Route::get('/', function () {
 });
 // update signup route
 Route::post('/updates/signup', ['as' => 'updates.store','uses' => 'Frontend\Updates\UpdatesController@store']);
+Route::get('/updates/map', ['as' => 'updates.map','uses' => 'Frontend\Updates\UpdatesController@map']);
 
 /**
  * For Codeception Coverage
