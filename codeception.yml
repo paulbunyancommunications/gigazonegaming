@@ -25,5 +25,4 @@ coverage:
         include:
             - app/*
         exclude:
-            - app/Console/*
             - app/Exceptions/*
