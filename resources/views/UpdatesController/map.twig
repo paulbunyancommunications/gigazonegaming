@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipient locations</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map;
+    var markers = [{% if update_recipients|length > 0 %}{% for recipient in update_recipients %}
+                            ["{{ recipient.email|split('@')|join(' at ') }}",{{ recipient.geo_lat }},{{ recipient.geo_long }}]{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}];
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: {{ home_latitude }}, lng: {{ home_longitude }}},
+            zoom: 10
+        });
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < markers.length; i++) {
+            if (markers[i][1] != 0 && markers[i][2] != 0) {
+                var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+                bounds.extend(position);
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: markers[i][0]
+                });
+            }
+        }
+    };
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+        async defer></script>
+</body>
+</html>
