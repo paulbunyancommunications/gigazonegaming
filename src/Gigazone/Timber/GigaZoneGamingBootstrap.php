@@ -4,6 +4,7 @@ namespace GigaZone\Timber;
 use Cocur\Slugify\Slugify;
 use Pbc\AutoVersion;
 use Pbc\Bandolier\Type\Strings;
+use Timber;
 use TimberSite;
 use Twig_Extension_StringLoader;
 use Twig_SimpleFilter;
@@ -98,7 +99,7 @@ class GigaZoneGamingBootstrap extends TimberSite {
             'bar' => 'something else',
         ), $atts );
 
-        return \Timber::compile('forms/update-sign-up.twig', $a);
+        return Timber::compile('forms/update-sign-up.twig', $a);
     }
 
     function blogInfoShortcode( $atts ) {
@@ -131,6 +132,7 @@ class GigaZoneGamingBootstrap extends TimberSite {
             /** @var array $context */
             // set correct body class (mimic home styles)
             $context['body_class'] = 'home page page-template-default';
+            $context['maintenance'] = true;
             Timber::render('pages/maintenance.twig', $context);
             die();
         }

@@ -1,9 +1,18 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Wordpress;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Class WpUp
+ *
+ * Pull Wordpress out of maintenance mode
+ * Maintenance mode is handled by Wordpress theme with a
+ * int hook to check for the maintenance file
+ * @package App\Console\Commands
+ */
 class WpUp extends WpDown
 {
 
@@ -12,7 +21,7 @@ class WpUp extends WpDown
      *
      * @var string
      */
-    protected $signature = 'wp:up';
+    protected $signature = 'wp:up {--dir=wordpress} {--file=.wp-maintenance}';
 
     /**
      * The console command description.
@@ -20,6 +29,7 @@ class WpUp extends WpDown
      * @var string
      */
     protected $description = 'Bring Wordpress back out of maintenance mode';
+    protected $destroyer;
 
     /**
      * Create a new command instance.
@@ -29,6 +39,7 @@ class WpUp extends WpDown
     public function __construct()
     {
         parent::__construct();
+        $this->destroyer = new WpDestroy($this);
     }
 
     /**
@@ -40,7 +51,7 @@ class WpUp extends WpDown
     {
         $path = $this->getFilePath();
         if(file_exists($this->getFilePath())) {
-            exec('rm -f '. $path);
+            $this->destroyer->removeMaintenanceFile($path);
             $this->info(PHP_EOL.'Wordpress is back up.'.PHP_EOL);
         } else {
             $this->error(PHP_EOL.'Wordpress is already up'.PHP_EOL);
