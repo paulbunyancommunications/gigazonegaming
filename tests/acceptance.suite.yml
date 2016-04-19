@@ -23,6 +23,7 @@ modules:
         - DbHelper
         - Asserts
         - Cli
+        - Filesystem
         - Db:
            populate: true
            cleanup: true
