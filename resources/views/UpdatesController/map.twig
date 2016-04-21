@@ -20,7 +20,7 @@
 <script>
     var map;
     var markers = [{% if update_recipients|length > 0 %}{% for recipient in update_recipients %}
-                            ["{{ recipient.email|split('@')|join(' at ') }}",{{ recipient.geo_lat }},{{ recipient.geo_long }}]{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}];
+                            ["{{ recipient.id }}",{{ recipient.geo_lat }},{{ recipient.geo_long }}]{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}];
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: {{ home_latitude }}, lng: {{ home_longitude }}},
