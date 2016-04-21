@@ -226,8 +226,7 @@
                 <echo message="Composer install is not required for ${env} environment" />
             </then>
             <else>
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; wget https://getcomposer.org/composer.phar; rm -Rf vendor; php composer.phar install; rm -f composer.phar" display="true"  />
-                <!--<exec command="&quot; cd /home/${ftp.username} &amp;&amp; rm -Rf vendor &amp;&amp; php composer.phar install &quot; | sshpass -p &quot;${ftp.password}&quot; ssh ${ftp.username}@${ftp.host}" level="verbose" />-->
+                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}" command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; rm -Rf vendor; php composer.phar install; rm -f composer.phar" display="true"  />
             </else>
         </if>
 
