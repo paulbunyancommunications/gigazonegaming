@@ -32,7 +32,7 @@ gulp &>/dev/null
     fi
 
 # download codecept.phar for running tests
- if [ ! -f "composer.phar" ]
+ if [ ! -f "codecept.phar" ]
     then
         echo "Downloading codecept.phar"
         wget http://codeception.com/codecept.phar
@@ -68,12 +68,10 @@ then
     rm -f public_html/wp/.htaccess
 fi
 
-# generate the APP_KEY for laravel
-echo "Generating Laravel App Key"
-php artisan key:generate
-
 # do vagrant up and ssh into the box to install composer dependencies
 vagrant up
 vagrant ssh -c "cd /var/www; php composer.phar install;"
+# generate new Laravel app key
+vagrant ssh -c "cd /var/www; php artisan key:generate;"
 
 #fin
