@@ -3,6 +3,8 @@ vendor/*
 .env
 .idea/*
 puphpet/config.yaml
+puphpet/config-custom.yaml
+puphpet/config-local.yaml
 build/config/**/production*
 build/config/**/staging*
 public_html/wp-content/plugins/*
@@ -28,3 +30,4 @@ build/GIGAZONEGAMING-production-master.tar.gz
 build/GIGAZONEGAMING-production-master.zip
 build/GIGAZONEGAMING-staging-master
 .phing_targets
+jenkins.sh
