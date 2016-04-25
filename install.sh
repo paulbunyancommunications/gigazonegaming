@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 
+tools=(vagrant npm sass compass gulp ruby gem compass bower)
+# for each tool, make sure it's available to the current user
+for i in "${tools[@]}"; do
+	command -v ${i} >/dev/null 2>&1 || { echo "${i} not installed, aborting!" >&2; exit 1;}
+done
+
 # install npm libraries
-command -v npm >/dev/null 2>&1 || { echo "NPM is not installed, aborting." >&2; exit 1; }
 echo "Installing Node dependencies!"
 npm install &>/dev/null
 
-
 # install bower dependencies
-command -v bower >/dev/null 2>&1 || { echo "Bower is not installed. Please install by running 'npm install -g bower'. Aborting" >&2; exit 1; }
 echo "Installing Bower dependencies!"
 bower install &>/dev/null
 
-
 # install bower dependencies
-command -v gulp >/dev/null 2>&1 || { echo "Gulp is not installed. Please install by running 'npm install -g gulp'. aborting" >&2; exit 1; }
 echo "Running gulp for the first time!"
 gulp &>/dev/null
 
@@ -22,6 +23,8 @@ gulp &>/dev/null
     then
         echo "Downloading composer.phar"
         wget https://getcomposer.org/composer.phar
+    else
+        php composer.phar self-update
     fi
 
 #download c3.php for running Codeception remote coverage
@@ -36,21 +39,17 @@ gulp &>/dev/null
     then
         echo "Downloading codecept.phar"
         wget http://codeception.com/codecept.phar
+    else
+        php codecept.phar self-update
     fi
 
 # make .env if not already created
- if [ ! -f ".env" ]
- then
+if [ ! -f ".env" ]
+    then
     cp .env.example .env
     echo ".env was created from example file"
- fi
+    fi
 
-# create puphet config if not already created
-if [ ! -f "puphpet/config.yaml" ]
-then
-    cp puphpet/config.yaml.example puphpet/config.yaml
-    echo "puphpet config.yaml file was created from example file"
-fi
 
 # cleanup Wordpress install
 if [ -d "public_html/wp/wp-content" ]
@@ -69,6 +68,10 @@ then
 fi
 
 # do vagrant up and ssh into the box to install composer dependencies
+if [ -d ".vagrant" ]
+    then
+        vagrant destroy -f
+    fi
 vagrant up
 vagrant ssh -c "cd /var/www; php composer.phar install;"
 # generate new Laravel app key
