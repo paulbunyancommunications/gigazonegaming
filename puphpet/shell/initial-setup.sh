@@ -20,7 +20,7 @@ fi
 touch '/.puphpet-stuff/vagrant-core-folder.txt'
 echo "${VAGRANT_CORE_FOLDER}" > '/.puphpet-stuff/vagrant-core-folder.txt'
 
-if [[ ! -f '/.puphpet-stuff/init-apt-get-update' ]] && [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
+if [[ ! -f '/.puphpet-stuff/init-apt-get-update' ]] && [[ "${OS}" == 'debian' || "${OS}" == 'ubuntu' ]]; then
     apt-get update
 
     touch '/.puphpet-stuff/init-apt-get-update'
@@ -56,10 +56,16 @@ fi
 
 # Digital Ocean seems to be missing iptables-persistent!
 # See https://github.com/puphpet/puphpet/issues/1575
-if [[ ! -f '/.puphpet-stuff/iptables-persistent-installed' ]] && [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
+if [[ ! -f '/.puphpet-stuff/iptables-persistent-installed' ]] && [[ "${OS}" == 'debian' || "${OS}" == 'ubuntu' ]]; then
     apt-get -y install iptables-persistent
 
     touch '/.puphpet-stuff/iptables-persistent-installed'
+fi
+
+if [[ ! -f '/.puphpet-stuff/software-properties-common' ]] && [[ "${OS}" == 'debian' || "${OS}" == 'ubuntu' ]]; then
+    apt-get -y install software-properties-common python-software-properties
+
+    touch '/.puphpet-stuff/software-properties-common'
 fi
 
 if [[ -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then

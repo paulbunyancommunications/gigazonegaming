@@ -102,19 +102,24 @@
 
   .disclaimer {
     background: none;
-    border-color: $color-gz-gray;
-    @include padding-equal(1);
-    color: $color-gz-gray;
-    color: rgba($color-white, .5);
+    border: none;
 
-    p {
+    &.sidebar {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .disclaimer, p.disclaimer, .disclaimer p {
       @include margin-bottom(.5);
+      margin-top: 0;
       @include font-size(1.25);
       @include line-height(1.375);
       color: $color-gz-gray;
       color: rgba($color-white, .5);
-    }
-
+      @include padding-equal(1);
+      color: $color-gz-gray;
+      color: rgba($color-white, .5);
   }
 
   .well-gz {

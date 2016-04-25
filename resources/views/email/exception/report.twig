@@ -1,0 +1,6 @@
+{% extends 'email/base/layout.twig' %}
+{% block title %}{{ subject }}{% endblock %}
+{% block body %}
+    <p>An error occurred on line {{ error.getLine() }} of file {{ error.getFile() }} </p>
+    <p>{{ error.getMessage() }}</p>
+{% endblock %}
