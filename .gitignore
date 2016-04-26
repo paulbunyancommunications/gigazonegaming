@@ -4,6 +4,7 @@ vendor/*
 .env.jenkins
 .idea/*
 puphpet/config.yaml
+parse_yaml.sh
 puphpet/config-custom.yaml
 puphpet/config-local.yaml
 build/config/**/production*
