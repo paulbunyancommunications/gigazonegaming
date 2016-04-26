@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Wordpress;
+namespace App\Console\Commands\Wordpress\Maintenance;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
  * int hook to check for the maintenance file
  * @package App\Console\Commands
  */
-class WpUp extends WpDown
+class Up extends Down
 {
 
     /**
@@ -39,7 +39,7 @@ class WpUp extends WpDown
     public function __construct()
     {
         parent::__construct();
-        $this->destroyer = new WpDestroy($this);
+        $this->destroyer = new Destroy($this);
     }
 
     /**

@@ -10,17 +10,17 @@
  * @subpackage Subpackage
  */
 
-namespace App\Console\Commands\Wordpress;
+namespace App\Console\Commands\Wordpress\Maintenance;
 
 
 /**
  * Class WpGenerate
  * @package App\Console\Commands\Wordpress
  */
-class WpGenerate
+class Generate
 {
 
-    public function __construct(WpDown $wpDown)
+    public function __construct(Down $wpDown)
     {
         $this->wpDown = $wpDown;
     }

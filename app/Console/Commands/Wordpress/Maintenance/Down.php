@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Wordpress;
+namespace App\Console\Commands\Wordpress\Maintenance;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
  * int hook to check for the maintenance file
  * @package App\Console\Commands
  */
-class WpDown extends Command
+class Down extends Command
 {
     /**
      * The name and signature of the console command.
@@ -40,7 +40,7 @@ class WpDown extends Command
     {
         parent::__construct();
         
-        $this->generator = new WpGenerate($this);
+        $this->generator = new Generate($this);
     }
 
     /**

@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
-        Commands\Wordpress\WpDown::class,
-        Commands\Wordpress\WpUp::class,
+        Commands\Wordpress\Maintenance\Down::class,
+        Commands\Wordpress\Maintenance\Up::class,
     ];
 
     /**

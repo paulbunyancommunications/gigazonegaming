@@ -9,18 +9,18 @@
  * @package App\Console\Commands\Wordpress
  */
 
-namespace App\Console\Commands\Wordpress;
+namespace App\Console\Commands\Wordpress\Maintenance;
 
 
 /**
  * Class WpDestroy
  * @package App\Console\Commands\Wordpress
  */
-class WpDestroy
+class Destroy
 {
     protected $wpUp;
 
-    public function __construct(WpUp $wpup)
+    public function __construct(Up $wpup)
     {
         $this->wpUp = $wpup;
     }
