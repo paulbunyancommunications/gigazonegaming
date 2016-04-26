@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         // Commands\Inspire::class,
         Commands\Wordpress\Maintenance\Down::class,
         Commands\Wordpress\Maintenance\Up::class,
+        Commands\Wordpress\SecretKey\Create::class,
     ];
 
     /**
