@@ -77,4 +77,7 @@ vagrant ssh -c "cd /var/www; php composer.phar install;"
 # generate new Laravel app key
 vagrant ssh -c "cd /var/www; php artisan key:generate;"
 
+# generate new wordpress auth keys
+vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
+
 #fin
