@@ -1,6 +1,7 @@
 originals/*
 vendor/*
 .env
+.env.jenkins
 .idea/*
 puphpet/config.yaml
 puphpet/config-custom.yaml
@@ -31,3 +32,4 @@ build/GIGAZONEGAMING-production-master.zip
 build/GIGAZONEGAMING-staging-master
 .phing_targets
 jenkins.sh
+jenkins_setup.sh

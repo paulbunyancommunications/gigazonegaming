@@ -20,7 +20,7 @@ vagrantfile:
                         update_guest_tools: 0
                 machines:
                     machine_one:
-                        id: gigazonegaming
+                        id: machine1
                         hostname: machine1.puphpet
                         network:
                             private_network: 192.168.56.101
@@ -289,7 +289,7 @@ ruby:
                 - activesupport
                 - vine
 python:
-    install: '1'
+    install: '0'
     packages: {  }
     versions: {  }
 nodejs:
