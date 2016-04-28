@@ -103,7 +103,8 @@
     "mungobbq/enable-media-replace":"3.0.4",
     "tedivm/stash": "^0.14.1",
     "vlucas/phpdotenv": "^2.2",
-    "rcrowe/twigbridge": "0.9.x"
+    "rcrowe/twigbridge": "0.9.x",
+    "paulbunyannet/wordpress-artisan": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

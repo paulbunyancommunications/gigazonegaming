@@ -10,5 +10,3 @@ $cacheDriver = new Stash\Driver\FileSystem(['path' => dirname($_SERVER['DOCUMENT
 add_shortcode('update-sign-up', [$bootstrap, 'updateSignUpFormShortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 
-add_action( 'init', [$bootstrap, 'maintenance_mode']);
-
