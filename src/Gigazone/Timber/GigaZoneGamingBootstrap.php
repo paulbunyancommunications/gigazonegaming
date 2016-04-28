@@ -111,31 +111,4 @@ class GigaZoneGamingBootstrap extends TimberSite {
         /** @var string $filter */
         return get_bloginfo($key, $filter);
     }
-
-    /**
-     * Check for maintenance mode and if set return maintenance view
-     */
-    function maintenance_mode(){
-        $path = explode('public_html', ABSPATH);
-        $storage = $path[0] . '/storage/wordpress/.wp-maintenance';
-        if(file_exists($storage)) {
-            include(locate_template('get-context.php'));
-            /**
-             * Set 503 headers for maintenance mode
-             * http://stackoverflow.com/a/2760908/405758
-             */
-            header('HTTP/1.1 503 Service Temporarily Unavailable');
-            header('Status: 503 Service Temporarily Unavailable');
-            // recheck in 300 seconds
-            header('Retry-After: 300');
-            
-            /** @var array $context */
-            // set correct body class (mimic home styles)
-            $context['body_class'] = 'home page page-template-default';
-            $context['maintenance'] = true;
-            Timber::render('pages/maintenance.twig', $context);
-            die();
-        }
-    }
-    
 }

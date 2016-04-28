@@ -162,6 +162,9 @@ return [
         // twig bridge
         'TwigBridge\ServiceProvider',
 
+        // wordpress artisan commands
+        Pbc\WordpressArtisan\WordpressArtisanServiceProvider::class,
+
     ],
 
     /*
