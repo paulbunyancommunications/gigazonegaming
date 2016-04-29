@@ -5,7 +5,7 @@ if [ ! -f "parse_yaml.sh" ]
     then
         wget https://gist.githubusercontent.com/pkuczynski/8665367/raw/ -O parse_yaml.sh
     fi
-. parse_yaml.sh
+. "${PWD}/parse_yaml.sh"
 
 tools=(vagrant VBoxManage npm sass compass gulp ruby gem compass bower)
 
@@ -59,7 +59,7 @@ if [ ! -f ".env" ]
     fi
 
 # load env vars
-. ".env"
+. "${PWD}/.env"
 
 
 # make puphpet/config.yaml if not already created
@@ -90,29 +90,12 @@ eval $(parse_yaml puphpet/machines.yaml "config__")
 
 # get host name
 hostname=$(basename ${APP_URL})
-# start the boxes array, we'll look for each of these and destroy the box if found
-boxes=()
-boxes+=("${hostname}")
-boxes+=("${config__machines__machine_one__hostname}")
-boxes+=("${PWD##*/}_${config__machines__machine_one__id}")
 
-# go though all the boxes and find the matching box
-# to unset, should be named [directory]_[box_id]_[hash]
-while read -r line; do
-    if [[ $line == *"${PWD##*/}_${config__machines__machine_one__id}"* ]]
-        then
-           echo $line > tmp_vm.txt
-           # http://unix.stackexchange.com/questions/137030/how-do-i-extract-the-content-of-quoted-strings-from-the-output-of-a-command
-           boxes+=($(grep -o '".*"' tmp_vm.txt | sed 's/"//g'))
-           rm -f tmp_vm.txt
-        fi
-done <<< "$(VBoxManage list vms)"
-
-# for each of the boxes found, unset it with VBoxManage
-for i in "${boxes[@]}"; do
-    echo ${i}
-	VBoxManage unregistervm "${i}" --delete >/dev/null 2>&1
-done
+# flush any old virtual boxes
+if [ ! -f "vm_flush.sh" ]; then
+    wget https://raw.githubusercontent.com/paulbunyannet/bash/master/virtualbox/vm_flush.sh
+fi
+. "${PWD}/vm_flush.sh" -h "${hostname}" -m "${config__machines__machine_one__hostname}" -i "${config__machines__machine_one__id}"
 
 # do vagrant stuff
 vagrant destroy -f
