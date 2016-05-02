@@ -35,3 +35,4 @@ build/GIGAZONEGAMING-staging-master
 jenkins.sh
 jenkins_setup.sh
 vm_flush.sh
+!public_html/wp-content/index.php
