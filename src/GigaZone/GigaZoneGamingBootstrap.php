@@ -1,5 +1,5 @@
 <?php
-namespace GigaZone\Timber;
+namespace GigaZone;
 
 use Cocur\Slugify\Slugify;
 use Pbc\AutoVersion;
@@ -14,7 +14,7 @@ use Twig_SimpleFunction;
  * Class RedLakeElectricTimber
  * @package Wordpress\Timber
  */
-class GigaZoneGamingBootstrap extends TimberSite {
+class GigaZoneGamingBootstrap extends \TimberSite {
 
     /**
      *

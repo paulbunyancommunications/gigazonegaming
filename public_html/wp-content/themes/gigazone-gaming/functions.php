@@ -2,7 +2,7 @@
 global $cachePool;
 
 register_nav_menu('Main Navigation', __('Primary Menu'));
-$bootstrap = new \GigaZone\Timber\GigaZoneGamingBootstrap();
+$bootstrap = new \GigaZone\GigaZoneGamingBootstrap();
 
 /** @var Stash\Driver\FileSystem $cacheDriver */
 $cacheDriver = new Stash\Driver\FileSystem(['path' => dirname($_SERVER['DOCUMENT_ROOT']) . '/cache/']);
