@@ -111,4 +111,28 @@ class GigaZoneGamingBootstrap extends \TimberSite {
         /** @var string $filter */
         return get_bloginfo($key, $filter);
     }
+
+    /**
+     * Get Gigazone info block
+     *
+     * @param $atts
+     * @return string
+     */
+    public function getGigazoneInfo($atts)
+    {
+        extract(shortcode_atts(array(
+            'wrap_tag' => 'div',
+            'wrap_class' => 'gigazone-info',
+        ), $atts));
+
+        /** @var string $wrap_tag tag to wrap the content block */
+        /** @var string $wrap_class class to add to wrap tag */
+        /** @var \Gigazone\Info\GigaZoneFromPaulBunyan $gigazone */
+        $gigazone = new \GigaZone\Info\GigaZoneFromPaulBunyan();
+
+        /** @var string $content */
+        $content = $gigazone->getGigazoneInfo();
+        wp_enqueue_style('gigazone-info', get_bloginfo('stylesheet_directory') . '/css/gigazone.css');
+        return '<'.$wrap_tag.' class="'.$wrap_class.'">' . $content . '</'.$wrap_tag.'>';
+    }
 }

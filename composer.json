@@ -14,10 +14,10 @@
       "package": {
         "name": "wordpress",
         "type": "webroot",
-        "version": "4.5",
+        "version": "4.5.1",
         "dist": {
           "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.5.zip"
+          "url": "https://github.com/WordPress/WordPress/archive/4.5.1.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -88,7 +88,8 @@
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
-    "wordpress": "4.*",
+    "doctrine/dbal": "v2.4.5",
+    "wordpress": "*",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
     "paulbunyannet/autoversion": "~1.0",
@@ -98,13 +99,14 @@
     "paulbunyannet/bandolier": "^1.0",
     "twig/twig": "^1.24",
     "cocur/slugify": "^1.4",
-    "archetyped/cornerstone": "0.7.5",
+    "archetyped/cornerstone": "*",
     "anahkiasen/underscore-php": "^2.0",
-    "mungobbq/enable-media-replace":"3.0.4",
+    "mungobbq/enable-media-replace":"*",
     "tedivm/stash": "^0.14.1",
     "vlucas/phpdotenv": "^2.2",
     "rcrowe/twigbridge": "0.9.x",
-    "paulbunyannet/wordpress-artisan": "^1.0"
+    "paulbunyannet/wordpress-artisan": "^1.0",
+    "sunra/php-simple-html-dom-parser": "v1.5.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
