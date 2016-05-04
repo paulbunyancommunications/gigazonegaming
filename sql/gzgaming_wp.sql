@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.30)
 # Database: gzgaming_wp
-# Generation Time: 2016-05-04 13:23:08 +0000
+# Generation Time: 2016-05-04 13:40:34 +0000
 # ************************************************************
 
 
@@ -52,25 +52,12 @@ VALUES
 	('2016_04_06_184419_make_update_recipients_table',1),
 	('2016_04_07_161308_make_cache_table',1),
 	('2016_04_08_152924_make_riot_disclaimer_post',1),
-	('2016_04_16_013749_update_updates_table_with_geo_location',2);
+	('2016_04_16_013749_update_updates_table_with_geo_location',2),
+	('2016_05_04_132956_remove_laravel_user_table',3),
+	('2016_05_04_132957_remove_laravel_password_recovery_table',4);
 
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-# Dump of table password_resets
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `password_resets`;
-
-CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  KEY `password_resets_email_index` (`email`),
-  KEY `password_resets_token_index` (`token`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 
 
 # Dump of table update_recipients
@@ -88,25 +75,6 @@ CREATE TABLE `update_recipients` (
   `geo_long` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
-
-# Dump of table users
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users`;
-
-CREATE TABLE `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
