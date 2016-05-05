@@ -13,7 +13,12 @@ fi
 cat ${log}
 # reset the migrations in the box
 vagrant ssh -c "cd /var/www; php artisan migrate;"
+# check for errors
 if grep "FAILURES!" ${log}
     then
-       echo "TESTS FAILED!"; exit 1;
+       echo "TESTS FAILED. See ${log} for output."; exit 1;
+    fi
+if grep "PHPUnit_Framework_Exception" ${log}
+    then
+        echo "PHPUnit_Framework_Exception thrown, see ${log} for output."; exit 1;
     fi
