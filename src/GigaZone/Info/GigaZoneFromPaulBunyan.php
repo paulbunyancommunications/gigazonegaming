@@ -21,7 +21,7 @@ class GigaZoneFromPaulBunyan
 
     public function __construct()
     {
-        $options = ['path' => dirname(dirname(dirname(__DIR__))) . '/cache'];
+        $options = ['path' => dirname(dirname(dirname(__DIR__))) . '/storage/framework/cache'];
         $driver = new \Stash\Driver\FileSystem($options);
         $this->pool = new \Stash\Pool($driver);
     }
