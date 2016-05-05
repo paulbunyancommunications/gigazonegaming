@@ -221,8 +221,6 @@ RabbitMQ Environment Variables in rabbitmq_env.config
 
 The erlang cookie to use for clustering - must be the same between all nodes.
 This value has no default and must be set explicitly if using clustering.
-If you run Pacemaker and you don't want to use RabbitMQ buildin cluster, you can
-set config_cluster to 'False' and set 'erlang_cookie'.
 
 ####`file_limit`
 
@@ -273,13 +271,6 @@ Boolean, whether or not to manage package repositories.
 ####`management_port`
 
 The port for the RabbitMQ management interface.
-
-####`management_ssl`
-
-Enable/Disable SSL for the management port.
-Has an effect only if ssl => true.
-Default is true.
-Valid values are true or false.
 
 ####`node_ip_address`
 
@@ -390,11 +381,6 @@ Functionality can be tested with cipherscan or similar tool: https://github.com/
 
 The port to use for Stomp.
 
-####`stomp_ssl_only`
-
-Configures STOMP to only use SSL.  No cleartext STOMP TCP listeners will be created.
-Requires setting ssl_stomp_port also.
-
 ####`stomp_ensure`
 
 Boolean to install the stomp plugin.
@@ -456,7 +442,7 @@ rabbitmq_user { 'dan':
 query all current vhosts: `$ puppet resource rabbitmq_vhost`
 
 ```puppet
-rabbitmq_vhost { 'myvhost':
+rabbitmq_vhost { 'myhost':
   ensure => present,
 }
 ```
@@ -464,7 +450,7 @@ rabbitmq_vhost { 'myvhost':
 ### rabbitmq\_exchange
 
 ```puppet
-rabbitmq_exchange { 'myexchange@myvhost':
+rabbitmq_exchange { 'myexchange@myhost':
   user     => 'dan',
   password => 'bar',
   type     => 'topic',
@@ -481,7 +467,7 @@ rabbitmq_exchange { 'myexchange@myvhost':
 ### rabbitmq\_queue
 
 ```puppet
-rabbitmq_queue { 'myqueue@myvhost':
+rabbitmq_queue { 'myqueue@myhost':
   user        => 'dan',
   password    => 'bar',
   durable     => true,
@@ -497,7 +483,7 @@ rabbitmq_queue { 'myqueue@myvhost':
 ### rabbitmq\_binding
 
 ```puppet
-rabbitmq_binding { 'myexchange@myqueue@myvhost':
+rabbitmq_binding { 'myexchange@myqueue@myhost':
   user             => 'dan',
   password         => 'bar',
   destination_type => 'queue',
@@ -510,7 +496,7 @@ rabbitmq_binding { 'myexchange@myqueue@myvhost':
 ### rabbitmq\_user\_permissions
 
 ```puppet
-rabbitmq_user_permissions { 'dan@myvhost':
+rabbitmq_user_permissions { 'dan@myhost':
   configure_permission => '.*',
   read_permission      => '.*',
   write_permission     => '.*',
@@ -520,7 +506,7 @@ rabbitmq_user_permissions { 'dan@myvhost':
 ### rabbitmq\_policy
 
 ```puppet
-rabbitmq_policy { 'ha-all@myvhost':
+rabbitmq_policy { 'ha-all@myhost':
   pattern    => '.*',
   priority   => 0,
   applyto    => 'all',
@@ -539,28 +525,6 @@ query all currently enabled plugins `$ puppet resource rabbitmq_plugin`
 rabbitmq_plugin {'rabbitmq_stomp':
   ensure => present,
 }
-```
-
-### rabbitmq\_parameter
-
-```puppet
-  rabbitmq_parameter { 'documentumShovel@/':
-    component_name => '',
-    value          => {
-        'src-uri'    => 'amqp://',
-        'src-queue'  => 'my-queue',
-        'dest-uri'   => 'amqp://remote-server',
-        'dest-queue' => 'another-queue',
-    },
-  }
-
-  rabbitmq_parameter { 'documentumFed@/':
-    component_name => 'federation-upstream',
-    value          => {
-        'uri'    => 'amqp://myserver',
-        'expires' => '360000',
-    },
-  }
 ```
 
 ### rabbitmq\_erlang\_cookie
@@ -585,10 +549,6 @@ The module has been tested on:
 * Ubuntu 12.04/14.04
 
 Testing on other platforms has been light and cannot be guaranteed.
-
-### Apt module compatibility
-
-While this module supports both 1.x and 2.x versions of the puppetlabs-apt module, it does not support puppetlabs-apt 2.0.0 or 2.0.1.
 
 ### Module dependencies
 

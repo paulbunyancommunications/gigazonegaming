@@ -22,7 +22,6 @@ class puphpet::php::wordpress::wpcli (
   composer::exec { 'wp-cli':
     cmd     => 'install',
     cwd     => $location,
-    dev     => false,
     require => Vcsrepo[$location],
   } ->
   file { "${location}/bin/wp":

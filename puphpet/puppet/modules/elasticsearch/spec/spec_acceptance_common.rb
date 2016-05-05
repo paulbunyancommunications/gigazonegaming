@@ -1,6 +1,5 @@
   test_settings['cluster_name'] = SecureRandom.hex(10)
 
-  test_settings['repo_version2x'] = '2.x'
   case fact('osfamily')
     when 'RedHat'
       test_settings['repo_version']    = '1.3'

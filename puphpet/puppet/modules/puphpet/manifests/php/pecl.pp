@@ -7,7 +7,7 @@
 
 define puphpet::php::pecl (
   $service_autorestart,
-  $prefix = $puphpet::php::settings::pecl_prefix
+  $prefix = $puphpet::php::settings::prefix
 ){
 
   $ignore = {
@@ -17,16 +17,18 @@ define puphpet::php::pecl (
 
   $pecl = $::osfamily ? {
     'Debian' => {
-      'mongo' => 'mongodb',
+      'mongo' => $::lsbdistcodename ? {
+        'precise' => 'mongo',
+        default   => false,
+      },
     },
     'Redhat' => {
-      'mongo' => 'mongodb',
+      #
     }
   }
 
   $pecl_beta = $::osfamily ? {
     'Debian' => {
-      'amqp'          => 'amqp',
       'augeas'        => 'augeas',
       'mcrypt_filter' => 'mcrypt_filter',
       'pdo_user'      => 'pdo_user',
@@ -36,7 +38,7 @@ define puphpet::php::pecl (
       },
     },
     'Redhat' => {
-      'amqp' => 'amqp',
+      #
     }
   }
 
@@ -50,33 +52,29 @@ define puphpet::php::pecl (
       'imagick'     => "${prefix}imagick",
       'memcache'    => "${prefix}memcache",
       'memcached'   => "${prefix}memcached",
-      'redis'       => $puphpet::php::settings::version ? {
-        '54'    => false,
-        '5.4'   => false,
-        default => "${prefix}redis",
+      'mongo'       => $::lsbdistcodename ? {
+        'precise' => false,
+        default   => "${prefix}mongo",
       },
+      'redis'       => "${prefix}redis",
       'sqlite'      => "${prefix}sqlite",
       'zendopcache' => "${prefix}zendopcache",
     },
     'Redhat' => {
-      'amqp'        => "${prefix}amqp",
-      'apc'         => $puphpet::php::settings::version ? {
-        '53'    => "${prefix}apc",
-        '5.3'   => "${prefix}apc",
-        default => "${prefix}apcu",
-      },
-      'apcu'        => "${prefix}apcu",
-      'imagick'     => "${prefix}imagick",
-      'memcache'    => "${prefix}memcache",
-      'memcached'   => "${prefix}memcached",
-      'redis'       => "${prefix}redis",
-      'sqlite'      => "${prefix}sqlite",
-      'zendopcache' => "${prefix}zendopcache",
+      'apc'         => 'php-pecl-apcu',
+      'apcu'        => 'php-pecl-apcu',
+      'imagick'     => 'php-pecl-imagick',
+      'memcache'    => 'php-pecl-memcache',
+      'memcached'   => 'php-pecl-memcached',
+      'mongo'       => 'php-pecl-mongo',
+      'redis'       => 'php-pecl-redis',
+      'sqlite'      => 'php-pecl-sqlite',
+      'zendopcache' => 'php-pecl-zendopcache',
     }
   }
 
   $auto_answer_hash = {
-    #
+    'mongo' => 'no\n'
   }
 
   $downcase_name = downcase($name)
@@ -120,23 +118,13 @@ define puphpet::php::pecl (
       auto_answer         => $auto_answer,
       service_autorestart => $service_autorestart,
     }
-
-    if ! defined(Puphpet::Php::Ini[$pecl_name]) {
-      puphpet::php::ini { $pecl_name:
-        entry        => 'MODULE/extension',
-        value        => "${pecl_name}.so",
-        php_version  => $puphpet::php::settings::version,
-        webserver    => $puphpet::php::settings::service,
-        ini_filename => "${pecl_name}.ini",
-      }
-    }
   }
   elsif $package_name and ! defined(Package[$package_name])
     and $puphpet::php::settings::enable_pecl
   {
     package { $package_name:
       ensure  => present,
-      require => Package[$puphpet::php::settings::package_devel]
+      require => Class['Php::Devel'],
     }
   }
 

@@ -101,32 +101,28 @@ class puphpet_server (
           release           => $::lsbdistcodename,
           repos             => 'all',
           required_packages => 'debian-keyring debian-archive-keyring',
-          key               => {
-            'id'      => '89DF5277',
-            'server'  => 'hkp://keyserver.ubuntu.com:80',
-          },
-          include           => { 'src' => true }
+          key               => '89DF5277',
+          key_server        => 'hkp://keyserver.ubuntu.com:80',
+          include_src       => true
         }
       }
 
       $lsbdistcodename = downcase($::lsbdistcodename)
 
-      if ! defined(Package['git']) {
-        package { 'git':
-          ensure          => present,
-          install_options => "-t ${lsbdistcodename}-backports"
-        }
+      apt::force { 'git':
+        release => "${lsbdistcodename}-backports",
+        timeout => 60
       }
     }
     'ubuntu': {
       if ! defined(Apt::Key['14AA40EC0831756756D7F66C4F4EA0AAE5267A6C']){
         apt::key { '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C':
-          server => 'hkp://keyserver.ubuntu.com:80'
+          key_server => 'hkp://keyserver.ubuntu.com:80'
         }
       }
       if ! defined(Apt::Key['945A6177078449082DDCC0E5551CE2FB4CBEDD5A']){
         apt::key { '945A6177078449082DDCC0E5551CE2FB4CBEDD5A':
-          server => 'hkp://keyserver.ubuntu.com:80'
+          key_server => 'hkp://keyserver.ubuntu.com:80'
         }
       }
 
@@ -148,13 +144,7 @@ class puphpet_server (
     }
   }
 
-  # config file could contain no packages key
-  $packages = array_true($server, 'packages') ? {
-    true    => $server['packages'],
-    default => { }
-  }
-
-  each( $packages ) |$package| {
+  each( $server['packages'] ) |$package| {
     if ! defined(Package[$package]) {
       package { $package:
         ensure => present,

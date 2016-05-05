@@ -7,16 +7,16 @@ describe 'blackfire class' do
 
   describe 'running puppet code' do
 
-    it 'requires server_id and server_token' do
+    it 'server_id and server_token are not empty' do
       expect(server_id).not_to be_empty
       expect(server_token).not_to be_empty
     end
 
-    it 'contains the puppet module' do
+    it 'we have copied the puppet module' do
       shell("ls #{default['distmoduledir']}/blackfire/metadata.json", {:acceptable_exit_codes => 0})
     end
 
-    it 'should work without errors' do
+    it 'should work with no errors' do
       pp = <<-EOS
         class { 'blackfire':
           server_id => '#{server_id}',
@@ -45,11 +45,11 @@ describe 'blackfire class' do
       it { should be_running }
     end
 
-    it 'contains blackfire CLI' do
+    it 'CLI is installed' do
       shell("blackfire version", {:acceptable_exit_codes => 0})
     end
 
-    it 'contains PHP extension' do
+    it 'PHP extension is installed' do
       shell("php -m | grep blackfire", {:acceptable_exit_codes => 0})
     end
 

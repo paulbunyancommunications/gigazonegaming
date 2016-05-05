@@ -1,35 +1,28 @@
 vagrantfile:
     target: local
     vm:
+        box: puphpet/centos65-x64
+        box_url: puphpet/centos65-x64
+        hostname: gigazonegaming.local
+        memory: '512'
+        cpus: '1'
+        chosen_provider: virtualbox
+        network:
+            private_network: 192.168.56.123
+            forwarded_port:
+                vflnp_4c4ytsh1rqbt:
+                    host: '8907'
+                    guest: '22'
+        post_up_message: ''
         provider:
-            local:
-                box: puphpet/centos65-x64
-                box_url: puphpet/centos65-x64
-                box_version: '0'
-                chosen_virtualizer: virtualbox
-                virtualizers:
-                    virtualbox:
-                        modifyvm:
-                            natdnshostresolver1: false
-                        showgui: 0
-                    vmware:
-                        numvcpus: 1
-                    parallels:
-                        use_linked_clone: 0
-                        check_guest_tools: 0
-                        update_guest_tools: 0
-                machines:
-                    machine_one:
-                        id: machine1
-                        hostname: machine1.gigazonegaming
-                        network:
-                            private_network: 192.168.56.101
-                            forwarded_port:
-                                vflmnfp_clt2vtkkmiyv:
-                                    host: '5333'
-                                    guest: '22'
-                        memory: '512'
-                        cpus: '1'
+            virtualbox:
+                modifyvm:
+                    natdnshostresolver1: 'on'
+                showgui: '0'
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
         provision:
             puppet:
                 manifests_path: puphpet/puppet/manifests
@@ -38,7 +31,7 @@ vagrantfile:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
         synced_folder:
-            vflsf_xtz34gqjo5g4:
+            vflsf_u4s258k41iay:
                 source: ./
                 target: /var/www
                 sync_type: default
@@ -46,9 +39,6 @@ vagrantfile:
                     smb_host: ''
                     smb_username: ''
                     smb_password: ''
-                    mount_options:
-                        dir_mode: '0775'
-                        file_mode: '0664'
                 rsync:
                     args:
                         - '--verbose'
@@ -63,25 +53,19 @@ vagrantfile:
         usable_port_range:
             start: 10200
             stop: 10500
-        post_up_message: ''
     ssh:
-        host: 'false'
-        port: 'false'
-        private_key_path: 'false'
+        host: null
+        port: null
+        private_key_path: null
         username: vagrant
-        guest_port: 'false'
-        keep_alive: '1'
-        forward_agent: 'false'
-        forward_x11: 'false'
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
         shell: 'bash -l'
-        insert_key: 'false'
+        insert_key: false
     vagrant:
         host: detect
-    proxy:
-        http: ''
-        https: ''
-        ftp: ''
-        no_proxy: ''
 server:
     install: '1'
     packages: {  }
@@ -92,11 +76,10 @@ users_groups:
 locale:
     install: '1'
     settings:
-        default_locale: en_US.UTF-8
+        default_locale: ''
         locales:
             - en_GB.UTF-8
             - en_US.UTF-8
-        timezone: UTC
 firewall:
     install: '1'
     rules: {  }
@@ -115,9 +98,11 @@ nginx:
         names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_qbuvhjh0l4h8:
-            server_name: gigazonegaming.local
-            www_root: /var/www/public_html
+        nxv_ybtk8fj8zgz7:
+            server_name: awesome.dev
+            server_aliases:
+                - www.awesome.dev
+            www_root: /var/www/awesome
             listen_port: '80'
             index_files:
                 - index.html
@@ -133,8 +118,10 @@ nginx:
             rewrite_to_https: '1'
             spdy: '1'
             locations:
-                nxvl_gq361n2k9sa8:
+                nxvl_g0sf8eec4rw4:
                     location: /
+                    autoindex: 'off'
+                    internal: 'false'
                     try_files:
                         - $uri
                         - $uri/
@@ -144,8 +131,10 @@ nginx:
                     fastcgi_split_path: ''
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_9iqjk5azudbc:
+                nxvl_p4vyke2ihjzz:
                     location: '~ \.php$'
+                    autoindex: 'off'
+                    internal: 'false'
                     try_files:
                         - $uri
                         - $uri/
@@ -164,7 +153,6 @@ nginx:
 apache:
     install: '1'
     settings:
-        version: 2.4
         user: www-data
         group: www-data
         default_vhost: true
@@ -180,7 +168,7 @@ apache:
             docroot: /var/www/public_html
             port: '80'
             setenv:
-                - 'APP_ENV local'
+                - 'APP_ENV dev'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             custom_fragment: ''
@@ -204,17 +192,12 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_rg7abx5nqt5y:
+                        avdfm_skoiw6oajop1:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
                             provider: filesmatch
                     provider: directory
-letsencrypt:
-    install: '1'
-    settings:
-        email: ''
-    domains: {  }
 php:
     install: '1'
     settings:
@@ -224,8 +207,8 @@ php:
             - cli
             - intl
             - mcrypt
-            - memcache
             - mbstring
+            - xml
             - gd
         pear: {  }
         pecl: {  }
@@ -237,14 +220,14 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_kz5ajwfj9ig2:
+        phpfp_phec1vcf3z0h:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
                 security.limit_extensions: .php
                 user: www-user
                 group: www-data
-    composer: '1'
+    composer: '0'
     composer_home: ''
 xdebug:
     install: '1'
@@ -273,29 +256,19 @@ xhprof:
     install: '0'
 wpcli:
     install: '0'
-    version: v0.21.1
+    version: v0.19.0
 drush:
     install: '0'
-    version: 8.0.5
+    version: 6.3.0
 ruby:
     install: '1'
-    versions:
-        rv_9w0t44xehdfl:
-            default: '1'
-            bundler: '1'
-            version: 1.9.3
-            gems:
-                - deep_merge
-                - activesupport
-                - vine
+    versions: {  }
 python:
     install: '0'
     packages: {  }
     versions: {  }
 nodejs:
     install: '0'
-    settings:
-        version: '5'
     npm_packages: {  }
 hhvm:
     install: '0'
@@ -320,15 +293,15 @@ mariadb:
         override_options: {  }
     adminer: 0
     users:
-        mariadbnu_xioaqj3tqaqb:
+        mariadbnu_9sysbnjisa01:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_a3ehyk6viy40:
+        mariadbnd_rz7tb43jq5f4:
             name: dbname
             sql: ''
     grants:
-        mariadbng_61o71vgfx0h6:
+        mariadbng_l8djgd8oxopa:
             user: dbuser
             table: '*.*'
             privileges:
@@ -336,7 +309,7 @@ mariadb:
 mysql:
     install: '1'
     settings:
-        version: '5.6'
+        version: '5.5'
         root_password: root
         override_options: {  }
     adminer: 0
@@ -351,35 +324,14 @@ postgresql:
             version: '9.4'
         server:
             postgres_password: '123'
-    users:
-        mysql_user_one:
-            name: 'user'
-            password: 'password'
-        mysql_user_two:
-            name: 'test'
-            password: 'password'
-    databases:
-        mysql_database_one:
-            name: 'database'
-            sql: '/var/www/sql/gzgaming_wp.sql'
-        mysql_database_two:
-            name: 'database_test'
-            sql: '/var/www/sql/gzgaming_wp.sql'
-    grants:
-        mysql_grants_one:
-            user: 'user'
-            table: 'database.*'
-            privileges:
-                - ALL
-        mysql_grants_two:
-            user: 'test'
-            table: 'database_test.*'
-            privileges:
-                - ALL
+    databases: {  }
+    users: {  }
+    grants: {  }
     adminer: 0
 mongodb:
     install: '0'
     settings:
+        auth: 1
         bind_ip: 127.0.0.1
         port: '27017'
     globals:
@@ -388,7 +340,7 @@ mongodb:
 redis:
     install: '0'
     settings:
-        port: '6379'
+        conf_port: '6379'
 sqlite:
     install: '0'
     adminer: 0
@@ -422,11 +374,8 @@ rabbitmq:
 elastic_search:
     install: '0'
     settings:
-        version: 2.3.1
+        version: 2.1.0
         java_install: true
-    instances:
-        esi_x9076x3rvi18:
-            name: es-01
 solr:
     install: '0'
     settings:

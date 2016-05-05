@@ -7,11 +7,9 @@ class puphpet::apache::repo::debian {
     release           => 'wheezy-experimental',
     repos             => 'main',
     required_packages => 'debian-keyring debian-archive-keyring',
-    key               => {
-      'id'      => '9EB5E8A3DF17D0B3',
-      'server'  => 'hkp://keyserver.ubuntu.com:80',
-    },
-    include           => { 'src' => true }
+    key               => '9EB5E8A3DF17D0B3',
+    key_server        => 'hkp://keyserver.ubuntu.com:80',
+    include_src       => true
   }
 
 }

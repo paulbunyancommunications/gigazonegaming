@@ -50,9 +50,6 @@
 # [*init_template*]
 #   Service file as a template
 #
-# [*service_flags*]
-#   Service flags, used on OpenBSD for service configuration
-#
 # === Authors
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
@@ -63,7 +60,6 @@ define elasticsearch::service(
   $init_defaults_file = undef,
   $init_defaults      = undef,
   $init_template      = undef,
-  $service_flags      = undef,
 ) {
 
   case $elasticsearch::real_service_provider {
@@ -77,25 +73,8 @@ define elasticsearch::service(
         init_template      => $init_template,
       }
     }
-    'openbsd': {
-      elasticsearch::service::openbsd { $name:
-        ensure        => $ensure,
-        status        => $status,
-        init_template => $init_template,
-        service_flags => $service_flags,
-      }
-    }
     'systemd': {
       elasticsearch::service::systemd { $name:
-        ensure             => $ensure,
-        status             => $status,
-        init_defaults_file => $init_defaults_file,
-        init_defaults      => $init_defaults,
-        init_template      => $init_template,
-      }
-    }
-    'openrc': {
-      elasticsearch::service::openrc { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,

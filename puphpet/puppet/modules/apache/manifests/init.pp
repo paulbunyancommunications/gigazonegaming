@@ -28,12 +28,10 @@ class apache (
   $default_ssl_crl        = undef,
   $default_ssl_crl_check  = undef,
   $default_type           = 'none',
-  $dev_packages           = $::apache::params::dev_packages,
   $ip                     = undef,
   $service_enable         = true,
   $service_manage         = true,
   $service_ensure         = 'running',
-  $service_restart        = undef,
   $purge_configs          = true,
   $purge_vhost_dir        = undef,
   $purge_vdir             = false,
@@ -47,15 +45,11 @@ class apache (
   $confd_dir              = $::apache::params::confd_dir,
   $vhost_dir              = $::apache::params::vhost_dir,
   $vhost_enable_dir       = $::apache::params::vhost_enable_dir,
-  $vhost_include_pattern  = $::apache::params::vhost_include_pattern,
   $mod_dir                = $::apache::params::mod_dir,
   $mod_enable_dir         = $::apache::params::mod_enable_dir,
   $mpm_module             = $::apache::params::mpm_module,
-  $lib_path               = $::apache::params::lib_path,
   $conf_template          = $::apache::params::conf_template,
   $servername             = $::apache::params::servername,
-  $pidfile                = $::apache::params::pidfile,
-  $rewrite_lock           = undef,
   $manage_user            = true,
   $manage_group           = true,
   $user                   = $::apache::params::user,
@@ -76,7 +70,6 @@ class apache (
   $allow_encoded_slashes  = undef,
   $package_ensure         = 'installed',
   $use_optional_includes  = $::apache::params::use_optional_includes,
-  $use_systemd            = $::apache::params::use_systemd,
 ) inherits ::apache::params {
   validate_bool($default_vhost)
   validate_bool($default_ssl_vhost)
@@ -131,14 +124,16 @@ class apache (
     }
   }
 
-  validate_apache_log_level($log_level)
+  $valid_log_level_re = '(emerg|alert|crit|error|warn|notice|info|debug)'
+
+  validate_re($log_level, $valid_log_level_re,
+  "Log level '${log_level}' is not one of the supported Apache HTTP Server log levels.")
 
   class { '::apache::service':
-    service_name    => $service_name,
-    service_enable  => $service_enable,
-    service_manage  => $service_manage,
-    service_ensure  => $service_ensure,
-    service_restart => $service_restart,
+    service_name   => $service_name,
+    service_enable => $service_enable,
+    service_manage => $service_manage,
+    service_ensure => $service_ensure,
   }
 
   # Deprecated backwards-compatibility
@@ -252,20 +247,24 @@ class apache (
   if $::apache::conf_dir and $::apache::params::conf_file {
     case $::osfamily {
       'debian': {
+        $pidfile              = "\${APACHE_PID_FILE}"
         $error_log            = 'error.log'
         $scriptalias          = '/usr/lib/cgi-bin'
         $access_log_file      = 'access.log'
       }
       'redhat': {
+        $pidfile              = 'run/httpd.pid'
         $error_log            = 'error_log'
         $scriptalias          = '/var/www/cgi-bin'
         $access_log_file      = 'access_log'
       }
       'freebsd': {
+        $pidfile              = '/var/run/httpd.pid'
         $error_log            = 'httpd-error.log'
         $scriptalias          = '/usr/local/www/apache24/cgi-bin'
         $access_log_file      = 'httpd-access.log'
       } 'gentoo': {
+        $pidfile              = '/run/apache2.pid'
         $error_log            = 'error.log'
         $error_documents_path = '/usr/share/apache2/error'
         $scriptalias          = '/var/www/localhost/cgi-bin'
@@ -282,11 +281,6 @@ class apache (
           require => Package['httpd'],
         }
       }
-      'Suse': {
-        $error_log            = 'error.log'
-        $scriptalias          = '/usr/lib/cgi-bin'
-        $access_log_file      = 'access.log'
-      }
       default: {
         fail("Unsupported osfamily ${::osfamily}")
       }
@@ -295,10 +289,6 @@ class apache (
     $apxs_workaround = $::osfamily ? {
       'freebsd' => true,
       default   => false
-    }
-
-    if $rewrite_lock {
-      validate_absolute_path($rewrite_lock)
     }
 
     # Template uses:
@@ -322,12 +312,11 @@ class apache (
     # - $server_tokens
     # - $server_signature
     # - $trace_enable
-    # - $rewrite_lock
     file { "${::apache::conf_dir}/${::apache::params::conf_file}":
       ensure  => file,
       content => template($conf_template),
       notify  => Class['Apache::Service'],
-      require => [Package['httpd'], File[$ports_file]],
+      require => Package['httpd'],
     }
 
     # preserve back-wards compatibility to the times when default_mods was
@@ -388,8 +377,4 @@ class apache (
       manage_docroot  => $default_ssl_vhost,
     }
   }
-
-  # This anchor can be used as a reference point for things that need to happen *after*
-  # all modules have been put in place.
-  anchor { '::apache::modules_set_up': }
 }

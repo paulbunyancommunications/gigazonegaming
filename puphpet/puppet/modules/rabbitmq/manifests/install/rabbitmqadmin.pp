@@ -1,17 +1,16 @@
 #
 class rabbitmq::install::rabbitmqadmin {
 
-  if($rabbitmq::ssl and $rabbitmq::management_ssl) {
+  if($rabbitmq::ssl) {
     $management_port = $rabbitmq::ssl_management_port
-    $protocol        = 'https'
   }
   else {
     $management_port = $rabbitmq::management_port
-    $protocol        = 'http'
   }
 
   $default_user = $rabbitmq::default_user
   $default_pass = $rabbitmq::default_pass
+  $protocol = $rabbitmq::ssl ? { false => 'http', default => 'https' }
 
   staging::file { 'rabbitmqadmin':
     target      => "${rabbitmq::rabbitmq_home}/rabbitmqadmin",

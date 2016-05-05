@@ -7,42 +7,13 @@ class puphpet_apache (
   include ::puphpet::apache::params
   include ::apache::params
 
+  class { 'puphpet::apache::repo': }
+
   # this variable is required by apache module templates
-  if array_true($apache['settings'], 'version')
-    and $apache['settings']['version'] in ['2.2', '22', 2.2, 22]
-  {
-    $apache_version = '2.2'
-  } else {
-    $apache_version = '2.4'
-  }
-
-  if $apache_version == '2.4' {
-    $apache_name = $::osfamily ? {
-      'Debian' => $::apache::params::apache_name,
-      'Redhat' => 'httpd24u'
-    }
-
-    $apache_mod = $::osfamily ? {
-      'Debian' => 'mod',
-      'Redhat' => 'mod24u'
-    }
-
-    class { 'puphpet::apache::repo': }
-  } else {
-    $apache_name = $::osfamily ? {
-      'Debian' => $::apache::params::apache_name,
-      'Redhat' => 'httpd'
-    }
-
-    $apache_mod = $::osfamily ? {
-      'Debian' => 'mod',
-      'Redhat' => 'mod'
-    }
-  }
-
+  $apache_version = '2.4'
   $modules = delete($apache['modules'], ['pagespeed', 'ssl'])
 
-  if array_true($php, 'install') and ! ($php['settings']['version'] in ['5.3', '53']) {
+  if array_true($php, 'install') {
     $php_engine    = true
     $php_fcgi_port = '9000'
   } elsif array_true($hhvm, 'install') {
@@ -83,24 +54,21 @@ class puphpet_apache (
     default => 'Off'
   }
 
-  $settings = delete(merge($apache['settings'], {
+  $apache_name = $::osfamily ? {
+    'Debian' => $::apache::params::apache_name,
+    'Redhat' => 'httpd24u'
+  }
+
+  $settings = merge($apache['settings'], {
     'apache_name'    => $apache_name,
     'default_vhost'  => false,
     'mpm_module'     => 'worker',
     'conf_template'  => $::apache::params::conf_template,
     'sendfile'       => $sendfile,
     'apache_version' => $apache_version
-  }), 'version')
+  })
 
   create_resources('class', { 'apache' => $settings })
-
-  if ! defined(Puphpet::Firewall::Port['80']) {
-    puphpet::firewall::port { '80': }
-  }
-
-  if ! defined(Puphpet::Firewall::Port['443']) {
-    puphpet::firewall::port { '443': }
-  }
 
   if $php_engine {
     $default_vhost_directories = {'default' => {
@@ -202,23 +170,6 @@ class puphpet_apache (
       default => join($allowed_ciphers, ':'),
     }
 
-    $ssl_cert_real = ($ssl_cert == 'LETSENCRYPT') ? {
-      true    => "/etc/letsencrypt/live/${vhost['servername']}/cert.pem",
-      default => $ssl_cert,
-    }
-    $ssl_key_real = ($ssl_key == 'LETSENCRYPT') ? {
-      true    => "/etc/letsencrypt/live/${vhost['servername']}/privkey.pem",
-      default => $ssl_key,
-    }
-    $ssl_chain_real = ($ssl_chain == 'LETSENCRYPT') ? {
-      true    => "/etc/letsencrypt/live/${vhost['servername']}/chain.pem",
-      default => $ssl_chain,
-    }
-    $ssl_certs_dir_real = ($ssl_certs_dir == 'LETSENCRYPT') ? {
-      true    => "/etc/letsencrypt/live/${vhost['servername']}",
-      default => $ssl_certs_dir,
-    }
-
     if array_true($vhost, 'directories') {
       $directories_hash   = $vhost['directories']
       $files_match        = template('puphpet/apache/files_match.erb')
@@ -235,10 +186,10 @@ class puphpet_apache (
     $vhost_merged = merge($vhost, {
       'directories'     => values_no_error($directories_merged),
       'ssl'             => $ssl,
-      'ssl_cert'        => $ssl_cert_real,
-      'ssl_key'         => $ssl_key_real,
-      'ssl_chain'       => $ssl_chain_real,
-      'ssl_certs_dir'   => $ssl_certs_dir_real,
+      'ssl_cert'        => $ssl_cert,
+      'ssl_key'         => $ssl_key,
+      'ssl_chain'       => $ssl_chain,
+      'ssl_certs_dir'   => $ssl_certs_dir,
       'ssl_protocol'    => $ssl_protocol,
       'ssl_cipher'      => "\"${ssl_cipher}\"",
       'custom_fragment' => $vhost_custom_fragment,
@@ -272,10 +223,10 @@ class puphpet_apache (
   }
 
   # CentOS will be using IUS which has different prefix for packages
-  if $::osfamily == 'redhat' and $apache_version == '2.4' {
+  if $::osfamily == 'redhat' {
     # Install all available modules by default
-    each( ["${apache_name}-filesystem", "${apache_name}-tools", "${apache_mod}_ldap",
-           "${apache_mod}_proxy_html", "${apache_mod}_session"] ) |$package|
+    each( ['httpd24u-filesystem', 'httpd24u-tools', 'mod24u_ldap',
+           'mod24u_proxy_html', 'mod24u_session'] ) |$package|
     {
       if ! defined(Package[$package]) {
         package { $package:
@@ -287,7 +238,7 @@ class puphpet_apache (
     }
 
     class { 'apache::mod::ssl':
-      package_name => "${apache_mod}_ssl",
+      package_name => 'mod24u_ssl',
     }
   }
 

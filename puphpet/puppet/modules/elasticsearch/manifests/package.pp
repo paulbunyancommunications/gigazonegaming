@@ -33,29 +33,8 @@ class elasticsearch::package {
 
   #### Package management
 
-
   # set params: in operation
   if $elasticsearch::ensure == 'present' {
-
-    Package[$elasticsearch::package_name] ~> Elasticsearch::Service <| |>
-    Package[$elasticsearch::package_name] ~> Exec['remove_plugin_dir']
-
-    # Create directory to place the package file
-    $package_dir = $elasticsearch::package_dir
-    exec { 'create_package_dir_elasticsearch':
-      cwd     => '/',
-      path    => ['/usr/bin', '/bin'],
-      command => "mkdir -p ${package_dir}",
-      creates => $package_dir,
-    }
-
-    file { $package_dir:
-      ensure  => 'directory',
-      purge   => $elasticsearch::purge_package_dir,
-      force   => $elasticsearch::purge_package_dir,
-      backup  => false,
-      require => Exec['create_package_dir_elasticsearch'],
-    }
 
     # Check if we want to install a specific version or not
     if $elasticsearch::version == false {
@@ -68,7 +47,7 @@ class elasticsearch::package {
     } else {
 
       # install specific version
-      $package_ensure = $elasticsearch::pkg_version
+      $package_ensure = $elasticsearch::real_version
 
     }
 
@@ -80,6 +59,23 @@ class elasticsearch::package {
         default:   { fail("software provider \"${elasticsearch::package_provider}\".") }
       }
 
+      $package_dir = $elasticsearch::package_dir
+
+      # Create directory to place the package file
+      exec { 'create_package_dir_elasticsearch':
+        cwd     => '/',
+        path    => ['/usr/bin', '/bin'],
+        command => "mkdir -p ${elasticsearch::package_dir}",
+        creates => $elasticsearch::package_dir,
+      }
+
+      file { $package_dir:
+        ensure  => 'directory',
+        purge   => $elasticsearch::purge_package_dir,
+        force   => $elasticsearch::purge_package_dir,
+        backup  => false,
+        require => Exec['create_package_dir_elasticsearch'],
+      }
 
       $filenameArray = split($elasticsearch::package_url, '/')
       $basefilename = $filenameArray[-1]
@@ -145,38 +141,47 @@ class elasticsearch::package {
       if ($elasticsearch::package_provider == 'package') {
 
         case $ext {
-          'deb':   { Package { provider => 'dpkg', source => $pkg_source } }
-          'rpm':   { Package { provider => 'rpm', source => $pkg_source } }
+          'deb':   { $pkg_provider = 'dpkg' }
+          'rpm':   { $pkg_provider = 'rpm'  }
           default: { fail("Unknown file extention \"${ext}\".") }
         }
 
       }
 
+    } else {
+      $pkg_source = undef
+      $pkg_provider = undef
     }
 
   # Package removal
   } else {
 
+    $pkg_source = undef
     if ($::operatingsystem == 'OpenSuSE') {
-      Package {
-        provider  => 'rpm',
-      }
+      $pkg_provider = 'rpm'
+    } else {
+      $pkg_provider = undef
     }
     $package_ensure = 'purged'
+
+    $package_dir = $elasticsearch::package_dir
+
+    file { $package_dir:
+      ensure => 'absent',
+      purge  => true,
+      force  => true,
+      backup => false,
+    }
 
   }
 
   if ($elasticsearch::package_provider == 'package') {
 
     package { $elasticsearch::package_name:
-      ensure => $package_ensure,
+      ensure   => $package_ensure,
+      source   => $pkg_source,
+      provider => $pkg_provider,
     }
-
-    exec { 'remove_plugin_dir':
-      refreshonly => true,
-      command     => "rm -rf ${elasticsearch::plugindir}",
-    }
-
 
   } else {
     fail("\"${elasticsearch::package_provider}\" is not supported")

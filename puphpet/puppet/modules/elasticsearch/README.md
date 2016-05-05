@@ -1,5 +1,7 @@
 #Elasticsearch Puppet module
 
+[![Build Status](https://travis-ci.org/elastic/puppet-elasticsearch.png?branch=master)](https://travis-ci.org/elastic/puppet-elasticsearch)
+
 ####Table of Contents
 
 1. [Overview](#overview)
@@ -23,7 +25,7 @@ This module manages Elasticsearch (http://www.elasticsearch.org/overview/elastic
 
 The elasticsearch module sets up Elasticsearch instances and can manage plugins and templates.
 
-This module has been tested against all versions of ES 1.x and 2.x
+This module has been tested against ES 1.0 and up.
 
 ##Setup
 
@@ -40,13 +42,12 @@ This module has been tested against all versions of ES 1.x and 2.x
 
 * The [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) Puppet library.
 * [ceritsc/yum](https://forge.puppetlabs.com/ceritsc/yum) For yum version lock.
-* [richardc/datacat](https://forge.puppetlabs.com/richardc/datacat)
-* [Augeas](http://augeas.net/)
+* Augeas
 
 #### Repository management
 When using the repository management you will need the following dependency modules:
 
-* Debian/Ubuntu: [Puppetlabs/apt](http://forge.puppetlabs.com/puppetlabs/apt)
+* Debian/Ubuntu: [Puppetlabs/apt](http://forge.puppetlabs.com/puppetlabs/apt) Version 1.8.x or lower.
 * OpenSuSE: [Darin/zypprepo](https://forge.puppetlabs.com/darin/zypprepo)
 
 ##Usage
@@ -64,7 +65,7 @@ class { 'elasticsearch':
 Note: This will only work when using the repository.
 
 ####Automatic upgrade of the software ( default set to false )
-```puppet
+```
 class { 'elasticsearch':
   autoupgrade => true
 }
@@ -127,6 +128,7 @@ elasticsearch::plugin{ 'jetty':
 }
 ```
 
+
 ####Using a proxy
 You can also use a proxy if required by setting the `proxy_host` and `proxy_port` options:
 ```puppet
@@ -159,15 +161,10 @@ elasticsearch::plugin { 'elasticsearch/elasticsearch-cloud-aws/2.4.1':
 
 Please note that this does not work when you specify 'latest' as a version number.
 
-####ES 2.x official plugins
-For the Elasticsearch commercial plugins you can refer them to the simple name.
-
-See the [Plugin installation](https://www.elastic.co/guide/en/elasticsearch/plugins/current/installation.html) for more details.
-
 ###Scripts
 
 Install [scripts](http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) to be used by Elasticsearch.
-These scripts are shared across all defined instances on the same host.
+These scripts are shared accross all defined instances on the same host.
 
 ```puppet
 elasticsearch::script { 'myscript':
@@ -334,7 +331,8 @@ class { 'elasticsearch':
 #####hash representation
 ```puppet
 $config_hash = {
-  'ES_HEAP_SIZE' => '30g',
+  'ES_USER' => 'elasticsearch',
+  'ES_GROUP' => 'elasticsearch',
 }
 
 class { 'elasticsearch':

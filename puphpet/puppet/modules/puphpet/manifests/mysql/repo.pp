@@ -2,6 +2,10 @@ class puphpet::mysql::repo(
   $version
 ) {
 
+  if ! ($version in ['55', '5.5', '56', '5.6']) {
+    fail ( 'puphpet::mysql::repo only supports MySQL version 5.5 and 5.6' )
+  }
+
   if $version in ['55', '5.5'] {
     case $::operatingsystem {
       'debian': {
@@ -11,18 +15,16 @@ class puphpet::mysql::repo(
             release           => $::lsbdistcodename,
             repos             => 'all',
             required_packages => 'debian-keyring debian-archive-keyring',
-            key               => {
-              'id'      => '89DF5277',
-              'server'  => 'hkp://keyserver.ubuntu.com:80',
-            },
-            include           => { 'src' => true }
+            key               => '89DF5277',
+            key_server        => 'hkp://keyserver.ubuntu.com:80',
+            include_src       => true
           }
         }
       }
       'ubuntu': {
         if ! defined(Apt::Key['14AA40EC0831756756D7F66C4F4EA0AAE5267A6C']){
           apt::key { '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C':
-            server => 'hkp://keyserver.ubuntu.com:80'
+            key_server => 'hkp://keyserver.ubuntu.com:80'
           }
         }
 
@@ -46,58 +48,41 @@ class puphpet::mysql::repo(
   }
 
   if $version in ['56', '5.6'] {
-    case $::osfamily {
+    case $::operatingsystem {
       'debian': {
-        $os = downcase($::operatingsystem)
-
-        ::apt::pin { 'repo.mysql.com-apt':
-          priority   => 1000,
-          originator => 'repo.mysql.com-apt',
-        }
-
-        if ! defined(Apt::Source['repo.mysql.com-apt']) {
-          apt::source { 'repo.mysql.com-apt':
-            location          => "http://repo.mysql.com/apt/${os}",
+        if ! defined(Apt::Source['packages.dotdeb.org-repo.puphpet']) {
+          apt::source { 'packages.dotdeb.org-repo.puphpet':
+            location          => 'http://repo.puphpet.com/dotdeb/',
             release           => $::lsbdistcodename,
-            repos             => 'mysql-5.6',
+            repos             => 'all',
             required_packages => 'debian-keyring debian-archive-keyring',
-            include           => { 'src' => true },
-            require           => Apt::Pin['repo.mysql.com-apt'],
+            key               => '89DF5277',
+            key_server        => 'hkp://keyserver.ubuntu.com:80',
+            include_src       => true
           }
         }
       }
-      'redhat': {
+      'ubuntu': {
+        if ! defined(Apt::Key['14AA40EC0831756756D7F66C4F4EA0AAE5267A6C']){
+          apt::key { '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C':
+            key_server => 'hkp://keyserver.ubuntu.com:80'
+          }
+        }
+
+        if $::lsbdistcodename in ['lucid', 'precise'] {
+          apt::ppa { 'ppa:ondrej/mysql-5.6':
+            require => Apt::Key['14AA40EC0831756756D7F66C4F4EA0AAE5267A6C'],
+            options => ''
+          }
+        } else {
+          apt::ppa { 'ppa:ondrej/mysql-5.6':
+            require => Apt::Key['14AA40EC0831756756D7F66C4F4EA0AAE5267A6C']
+          }
+        }
+      }
+      'redhat', 'centos': {
         class { 'yum::repo::mysql_community':
           enabled_version => '5.6',
-        }
-      }
-    }
-  }
-
-  if $version in ['57', '5.7'] {
-    case $::osfamily {
-      'debian': {
-        $os = downcase($::operatingsystem)
-
-        ::apt::pin { 'repo.mysql.com-apt':
-          priority   => 1000,
-          originator => 'repo.mysql.com-apt',
-        }
-
-        if ! defined(Apt::Source['repo.mysql.com-apt']) {
-          apt::source { 'repo.mysql.com-apt':
-            location          => "http://repo.mysql.com/apt/${os}",
-            release           => $::lsbdistcodename,
-            repos             => 'mysql-5.7',
-            required_packages => 'debian-keyring debian-archive-keyring',
-            include           => { 'src' => true },
-            require           => Apt::Pin['repo.mysql.com-apt'],
-          }
-        }
-      }
-      'redhat': {
-        class { 'yum::repo::mysql_community':
-          enabled_version => '5.7',
         }
       }
     }

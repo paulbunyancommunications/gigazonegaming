@@ -4,29 +4,15 @@
 
 module Puppet::Parser::Functions
   newfunction(:bool2str, :type => :rvalue, :doc => <<-EOS
-    Converts a boolean to a string using optionally supplied arguments. The
-    optional second and third arguments represent what true and false will be
-    converted to respectively. If only one argument is given, it will be
-    converted from a boolean to a string containing 'true' or 'false'.
-
-    *Examples:*
-
-    bool2str(true)                    => 'true'
-    bool2str(true, 'yes', 'no')       => 'yes'
-    bool2str(false, 't', 'f')         => 'f'
-
+    Converts a boolean to a string.
     Requires a single boolean as an input.
     EOS
   ) do |arguments|
 
-    unless arguments.size == 1 or arguments.size == 3
-      raise(Puppet::ParseError, "bool2str(): Wrong number of arguments " +
-                                "given (#{arguments.size} for 3)")
-    end
+    raise(Puppet::ParseError, "bool2str(): Wrong number of arguments " +
+      "given (#{arguments.size} for 1)") if arguments.size < 1
 
     value = arguments[0]
-    true_string = arguments[1] || 'true'
-    false_string = arguments[2] || 'false'
     klass = value.class
 
     # We can have either true or false, and nothing else
@@ -34,11 +20,7 @@ module Puppet::Parser::Functions
       raise(Puppet::ParseError, 'bool2str(): Requires a boolean to work with')
     end
 
-    unless [true_string, false_string].all?{|x| x.kind_of?(String)}
-      raise(Puppet::ParseError, "bool2str(): Requires strings to convert to" )
-    end
-
-    return value ? true_string : false_string
+    return value.to_s
   end
 end
 

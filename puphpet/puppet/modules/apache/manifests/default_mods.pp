@@ -1,8 +1,7 @@
 class apache::default_mods (
   $all            = true,
   $mods           = undef,
-  $apache_version = $::apache::apache_version,
-  $use_systemd    = $::apache::use_systemd,
+  $apache_version = $::apache::apache_version
 ) {
   # These are modules required to run the default configuration.
   # They are not configurable at this time, so we just include
@@ -13,10 +12,8 @@ class apache::default_mods (
       if versioncmp($apache_version, '2.4') >= 0 {
         # Lets fork it
         # Do not try to load mod_systemd on RHEL/CentOS 6 SCL.
-        if ( !($::osfamily == 'redhat' and versioncmp($::operatingsystemrelease, '7.0') == -1) and !($::operatingsystem == 'Amazon') ) {
-          if ($use_systemd) {
-            ::apache::mod { 'systemd': }
-          }
+        if ( !($::osfamily == 'redhat' and versioncmp($::operatingsystemrelease, '7.0') == -1) and !($::operatingsystem == 'Amazon' and versioncmp($::operatingsystemrelease, '2014.09') <= 0  ) ) {
+          ::apache::mod { 'systemd': }
         }
         ::apache::mod { 'unixd': }
       }
@@ -24,9 +21,6 @@ class apache::default_mods (
     'freebsd': {
       ::apache::mod { 'log_config': }
       ::apache::mod { 'unixd': }
-    }
-    'Suse': {
-      ::apache::mod { 'log_config': }
     }
     default: {}
   }
@@ -40,17 +34,14 @@ class apache::default_mods (
   if $all {
     case $::osfamily {
       'debian': {
-        include ::apache::mod::authn_core
         include ::apache::mod::reqtimeout
-        if versioncmp($apache_version, '2.4') < 0 {
-          ::apache::mod { 'authn_alias': }
+        if versioncmp($apache_version, '2.4') >= 0 {
+          ::apache::mod { 'authn_core': }
         }
       }
       'redhat': {
         include ::apache::mod::actions
-        include ::apache::mod::authn_core
         include ::apache::mod::cache
-        include ::apache::mod::ext_filter
         include ::apache::mod::mime
         include ::apache::mod::mime_magic
         include ::apache::mod::rewrite
@@ -64,19 +55,22 @@ class apache::default_mods (
         ::apache::mod { 'authz_dbm': }
         ::apache::mod { 'authz_owner': }
         ::apache::mod { 'expires': }
+        ::apache::mod { 'ext_filter': }
         ::apache::mod { 'include': }
         ::apache::mod { 'logio': }
         ::apache::mod { 'substitute': }
         ::apache::mod { 'usertrack': }
 
-        if versioncmp($apache_version, '2.4') < 0 {
+        if versioncmp($apache_version, '2.4') >= 0 {
+          ::apache::mod { 'authn_core': }
+        }
+        else {
           ::apache::mod { 'authn_alias': }
           ::apache::mod { 'authn_default': }
         }
       }
       'freebsd': {
         include ::apache::mod::actions
-        include ::apache::mod::authn_core
         include ::apache::mod::cache
         include ::apache::mod::disk_cache
         include ::apache::mod::headers
@@ -94,6 +88,7 @@ class apache::default_mods (
         ::apache::mod { 'auth_digest': }
         ::apache::mod { 'auth_form': }
         ::apache::mod { 'authn_anon': }
+        ::apache::mod { 'authn_core': }
         ::apache::mod { 'authn_dbm': }
         ::apache::mod { 'authn_socache': }
         ::apache::mod { 'authz_dbd': }

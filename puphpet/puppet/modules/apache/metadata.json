@@ -1,16 +1,12 @@
 {
   "name": "puppetlabs-apache",
-  "version": "1.7.1",
+  "version": "1.4.0",
   "author": "puppetlabs",
   "summary": "Installs, configures, and manages Apache virtual hosts, web services, and modules.",
   "license": "Apache-2.0",
   "source": "git://github.com/puppetlabs/puppetlabs-apache.git",
   "project_page": "https://github.com/puppetlabs/puppetlabs-apache",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
-  "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">= 2.4.0 < 5.0.0"},
-    {"name":"puppetlabs/concat","version_requirement":">= 1.1.1 < 2.0.0"}
-  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -51,12 +47,6 @@
       ]
     },
     {
-      "operatingsystem": "SLES",
-      "operatingsystemrelease": [
-        "11 SP1"
-      ]
-    },
-    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "10.04",
@@ -68,12 +58,16 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.7.0 < 2015.4.0"
+      "version_requirement": "3.x"
     },
     {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 5.0.0"
+      "version_requirement": "3.x"
     }
   ],
-  "description": "Module for Apache configuration"
+  "description": "Module for Apache configuration",
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 2.4.0 < 5.0.0"},
+    {"name":"puppetlabs/concat","version_requirement":">= 1.1.1 < 2.0.0"}
+  ]
 }

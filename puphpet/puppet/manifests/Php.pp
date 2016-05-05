@@ -15,6 +15,9 @@ class puphpet_php (
   $package_devel = $puphpet::php::settings::package_devel
   $service       = $puphpet::php::settings::service
 
+  Class['Puphpet::Php::Settings']
+  -> Package[$package]
+
   class { 'puphpet::php::repos':
     php_version => $version,
   }
@@ -36,13 +39,7 @@ class puphpet_php (
       service_autorestart => false,
       config_file         => $base_ini,
     }
-
-    if ! defined(Package[$package_devel]) {
-      package { $package_devel :
-        ensure  => present,
-        require => Class['php']
-      }
-    }
+    -> class { 'php::devel': }
   }
 
   # config file could contain no fpm_ini key
@@ -97,8 +94,7 @@ class puphpet_php (
     }
   }
 
-  $php_modules = $php['modules']['php'];
-  each( $php_modules ) |$name| {
+  each( $php['modules']['php'] ) |$name| {
     if ! defined(Puphpet::Php::Module[$name]) {
       puphpet::php::module { $name:
         service_autorestart => true,

@@ -5,10 +5,6 @@ class puphpet_rabbitmq (
   $php
 ) {
 
-  if $::operatingsystem == 'debian' {
-     fail('RabbitMQ is not supported on Debian. librabbitmq-dev is too old.')
-  }
-
   if array_true($apache, 'install') or array_true($nginx, 'install') {
     $webserver_restart = true
   } else {
@@ -80,25 +76,9 @@ class puphpet_rabbitmq (
   }
 
   if array_true($php, 'install') and ! defined(Puphpet::Php::Pecl['amqp']) {
-    $rabbitmq_dev_pkg = $::osfamily ? {
-      'debian' => 'librabbitmq-dev',
-      'redhat' => 'librabbitmq-devel',
-    }
-
-    if ! defined(Package[$rabbitmq_dev_pkg]) {
-      package { $rabbitmq_dev_pkg:
-        ensure => present,
-      }
-    }
-
-    $pecl_pkg = 'amqp'
-
-    puphpet::php::pecl { $pecl_pkg:
+    puphpet::php::pecl { 'amqp':
       service_autorestart => $webserver_restart,
-      require             => [
-        Package['rabbitmq-server'],
-        Package[$rabbitmq_dev_pkg],
-      ]
+      require             => Package['rabbitmq-server']
     }
   }
 

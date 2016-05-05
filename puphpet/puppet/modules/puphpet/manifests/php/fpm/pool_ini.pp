@@ -51,18 +51,6 @@ define puphpet::php::fpm::pool_ini (
         $dir_name = 'php'
       }
     }
-  } elsif $fpm_version in ['5.6', '56'] {
-    case $::operatingsystem {
-      'debian': {
-        $dir_name = 'php5'
-      }
-      'ubuntu': {
-        $dir_name = 'php/5.6'
-      }
-      'redhat', 'centos': {
-        $dir_name = 'php5'
-      }
-    }
   } else {
     $dir_name = 'php5'
   }
@@ -78,16 +66,9 @@ define puphpet::php::fpm::pool_ini (
 
   $conf_filename = delete("${pool_dir}/${pool_name}.conf", ' ')
 
-  if '=' in $value {
-    $changes = $ensure ? {
-      present => [ "set '${pool_name}/${entry}' \"'${value}'\"" ],
-      absent  => [ "rm \"'${pool_name}/${entry}'\"" ],
-    }
-  } else {
-    $changes = $ensure ? {
-      present => [ "set '${pool_name}/${entry}' '${value}'" ],
-      absent  => [ "rm \"'${pool_name}/${entry}'\"" ],
-    }
+  $changes = $ensure ? {
+    present => [ "set '${pool_name}/${entry}' '${value}'" ],
+    absent  => [ "rm '${pool_name}/${entry}'" ],
   }
 
   if ! defined(File[$conf_filename]) {

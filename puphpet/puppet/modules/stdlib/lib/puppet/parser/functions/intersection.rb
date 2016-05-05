@@ -4,13 +4,13 @@
 
 module Puppet::Parser::Functions
   newfunction(:intersection, :type => :rvalue, :doc => <<-EOS
-This function returns an array of the intersection of two.
+This function returns an array an intersection of two.
 
 *Examples:*
 
-    intersection(["a","b","c"],["b","c","d"])  # returns ["b","c"]
-    intersection(["a","b","c"],[1,2,3,4])      # returns [] (true, when evaluated as a Boolean)
+    intersection(["a","b","c"],["b","c","d"])
 
+Would return: ["b","c"]
     EOS
   ) do |arguments|
 

@@ -157,7 +157,6 @@ describe 'apache::mod::worker', :type => :class do
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^\s+ThreadsPerChild\s+25$/) }
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^\s+MaxRequestsPerChild\s+0$/) }
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^\s+ThreadLimit\s+64$/) }
-      it { should contain_file("/etc/httpd/conf.d/worker.conf").with(:content => /^\s*ListenBacklog\s*511/) }
     end
 
     context 'setting params' do
@@ -170,8 +169,7 @@ describe 'apache::mod::worker', :type => :class do
           :maxsparethreads      => 14,
           :threadsperchild      => 15,
           :maxrequestsperchild  => 16,
-          :threadlimit          => 17,
-          :listenbacklog        => 8,
+          :threadlimit          => 17
         }
       end
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^<IfModule mpm_worker_module>$/) }
@@ -183,7 +181,6 @@ describe 'apache::mod::worker', :type => :class do
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^\s+ThreadsPerChild\s+15$/) }
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^\s+MaxRequestsPerChild\s+16$/) }
       it { should contain_file('/etc/httpd/conf.d/worker.conf').with(:content => /^\s+ThreadLimit\s+17$/) }
-      it { should contain_file("/etc/httpd/conf.d/worker.conf").with(:content => /^\s*ListenBacklog\s*8/) }
     end
   end
 end

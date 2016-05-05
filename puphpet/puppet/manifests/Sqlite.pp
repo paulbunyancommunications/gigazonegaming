@@ -42,20 +42,8 @@ class puphpet_sqlite(
     })
   }
 
-  case $::operatingsystem {
-    'debian': {
-      $php_sqlite = 'sqlite'
-    }
-    'ubuntu': {
-      $php_sqlite = 'sqlite3'
-    }
-    'redhat', 'centos': {
-      $php_sqlite = 'sqlite3'
-    }
-  }
-
-  if $php_package == 'php' and ! defined(Puphpet::Php::Module[$php_sqlite]) {
-    puphpet::php::module { $php_sqlite:
+  if $php_package == 'php' and ! defined(Puphpet::Php::Pecl['sqlite']) {
+    puphpet::php::pecl { 'sqlite':
       service_autorestart => true,
     }
   }
@@ -80,8 +68,9 @@ class puphpet_sqlite(
     }
 
     class { 'puphpet::adminer':
-      location => "${$adminer_webroot}/adminer",
-      owner    => 'www-data',
+      location    => "${$adminer_webroot}/adminer",
+      owner       => 'www-data',
+      php_package => $php_package
     }
   }
 

@@ -3,8 +3,7 @@ class apache::mod::deflate (
     'text/html text/plain text/xml',
     'text/css',
     'application/x-javascript application/javascript application/ecmascript',
-    'application/rss+xml',
-    'application/json'
+    'application/rss+xml'
   ],
   $notes = {
     'Input'  => 'instream',

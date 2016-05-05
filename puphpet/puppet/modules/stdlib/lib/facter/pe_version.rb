@@ -10,13 +10,8 @@
 #
 Facter.add("pe_version") do
   setcode do
-    puppet_ver = Facter.value("puppetversion")
-    if puppet_ver != nil
-      pe_ver = puppet_ver.match(/Puppet Enterprise (\d+\.\d+\.\d+)/)
-      pe_ver[1] if pe_ver
-    else
-      nil
-    end
+    pe_ver = Facter.value("puppetversion").match(/Puppet Enterprise (\d+\.\d+\.\d+)/)
+    pe_ver[1] if pe_ver
   end
 end
 

@@ -15,21 +15,12 @@ class puphpet_locale (
       default => ['en_US.UTF-8', 'en_GB.UTF-8']
     }
 
-    $merged = delete(merge($settings, {
+    $merged = merge($settings, {
       'default_locale' => $default_locale,
       'locales'        => suffix($user_locale, ' UTF-8'),
-    }), 'timezone')
+    })
 
     create_resources('class', { 'locales' => $merged })
-  }
-
-  $timezone = array_true($settings, 'timezone') ? {
-    true    => $settings['timezone'],
-    default => 'UTC'
-  }
-
-  class { 'timezone':
-    timezone => $timezone,
   }
 
 }

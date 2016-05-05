@@ -49,13 +49,12 @@ define apache::custom_config (
   }
 
   if $ensure == 'present' and $verify_config {
-    exec { "syntax verification for ${name}":
+    exec { "service notify for ${name}":
       command     => $verify_command,
       subscribe   => File["apache_${name}"],
       refreshonly => true,
       notify      => Class['Apache::Service'],
       before      => Exec["remove ${name} if invalid"],
-      require     => Anchor['::apache::modules_set_up']
     }
 
     exec { "remove ${name} if invalid":

@@ -11,12 +11,12 @@ class puphpet::mysql::params {
   }
 
   $mysql_server_56 = $::osfamily ? {
-    'debian' => 'mysql-server',
+    'debian' => 'mysql-server-5.6',
     'redhat' => 'mysql-community-server',
   }
 
   $mysql_client_56 = $::osfamily ? {
-    'debian' => 'mysql-client',
+    'debian' => 'mysql-client-5.6',
     'redhat' => 'mysql-community-client',
   }
 

@@ -14,7 +14,7 @@ class puphpet_xhprof (
     ]
   {
     apt::key { '8D0DC64F':
-      server => 'hkp://keyserver.ubuntu.com:80'
+      key_server => 'hkp://keyserver.ubuntu.com:80'
     }
     apt::ppa { 'ppa:brianmercer/php5-xhprof':
       require => Apt::Key['8D0DC64F']
