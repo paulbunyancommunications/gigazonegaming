@@ -16,7 +16,7 @@ use Sunra\PhpSimple\HtmlDomParser;
 
 class GigaZoneFromPaulBunyan
 {
-    const PBC_PATH = "http://www.paulbunyan.net";
+    const PBC_PATH = "https://www.paulbunyan.net";
     protected $pool;
 
     public function __construct()
