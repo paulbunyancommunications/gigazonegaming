@@ -30,7 +30,7 @@ gulp &>/dev/null
  if [ ! -f "composer.phar" ]
     then
         echo "Downloading composer.phar"
-        wget https://getcomposer.org/composer.phar
+        wget -q -N https://getcomposer.org/composer.phar -O composer.phar
     else
         php composer.phar self-update
     fi
@@ -39,16 +39,14 @@ gulp &>/dev/null
  if [ ! -f "c3.php" ]
     then
         echo "Downloading c3.php"
-        wget https://raw.github.com/Codeception/c3/2.0/c3.php
+        wget -q -N https://raw.github.com/Codeception/c3/2.0/c3.php -O c3.php
     fi
 
 # download codecept.phar for running tests
  if [ ! -f "codecept.phar" ]
     then
         echo "Downloading codecept.phar"
-        wget http://codeception.com/codecept.phar
-    else
-        yes | php codecept.phar self-update
+        wget -q -N http://codeception.com/codecept.phar -O codecept.phar
     fi
 
 # make .env if not already created

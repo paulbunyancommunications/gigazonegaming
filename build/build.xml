@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project name="GIGAZONEGAMING" basedir=".." default="warning">
-    <target name="warning">
+<project name="GIGAZONEGAMING" basedir=".." default="build:deploy">
+    <target name="message:warning">
         <echo message=""/>
     </target>
 
@@ -9,20 +9,9 @@
     <!-- environment, default to staging for deployment/testing -->
     <property name="env" value="development" override="true"/>
 
+    <property name="releaseName" value="master" override="true"/>
+
     <property name="dir.build" value="build/"/>
-
-    <!-- default configuration variables -->
-    <property name="dir.deploy" value="${dir.build}/${env}-deployment"/>
-    <property name="url.deploy" value="http://example.local" override="true"/>
-
-    <!-- default host variables -->
-    <property name="ftp.host" value="ftp.example.local" override="true"/>
-    <property name="ftp.port" value="21" override="true"/>
-    <property name="ftp.username" value="username" override="true"/>
-    <property name="ftp.password" value="password" override="true"/>
-    <property name="ftp.destinationDir" value="/" override="true"/>
-    <property name="ftp.mode" value="binary" override="true"/>
-    <property name="ssh.port" value="22" override="true"/>
 
     <!-- base paths for project -->
     <property name="dir.tests" value="tests"/>
@@ -38,56 +27,64 @@
     <property name="dir.puphpet" value="puphpet/"/>
     <property name="dir.archive" value="archive/"/>
     <property name="dir.originals" value="originals/"/>
-    <property name="dir.cache" value="storage/framework/cache/"/>
+
+    <!-- Laravel storage paths -->
+    <property name="dir.storage" value="storage/"/>
+    <property name="dir.storage.framework" value="${dir.storage}framework/"/>
+    <property name="dir.storage.framework.cache" value="${dir.storage.framework}cache/"/>
+    <property name="dir.storage.framework.session" value="${dir.storage.framework}sessions/"/>
+    <property name="dir.storage.framework.views" value="${dir.storage.framework}views/"/>
+    <property name="dir.storage.wordpress" value="${dir.storage}wordpress/"/>
+    <property name="dir.storage.logs" value="${dir.storage}logs/"/>
+    <property name="dir.storage.app.public" value="${dir.storage}app/public/"/>
+
+    <!-- path to remote coverage -->
     <property name="dir.remote.coverage" value="${dir.www}c3/"/>
 
     <!-- get config file for this environment -->
     <property name="configFile" value="${project.basedir}/${dir.build}config/${env}.config"/>
-    <available file="${configFile}" property="configFileFound" value="true"/>
-    <if id="configFileFound">
+    <available file="${configFile}" property="configFileFound" type="file"/>
+    <if>
+        <equals arg1="${configFileFound}" arg2="true" />
         <then>
-            <property file="${configFile}"/>
+            <property file="${configFile}" />
         </then>
         <else>
-            <echo message="Missing configuration file (${hostFile})! Deployment environment was set to '${env}', a config file was created"/>
-            <echo file="${configFile}"
-                  append="false"
-                  message="dir.deploy=${dir.deploy}${line.separator}url.deploy=${url.deploy}${line.separator}"/>
-            <property file="${configFile}"/>
+            <!-- default configuration variables -->
+            <property name="dir.deploy" value="${dir.build}${env}-deployment" override="true"/>
+            <property name="url.deploy" value="http://example.local" override="true"/>
         </else>
     </if>
 
     <!-- get host file for this environment -->
     <property name="hostFile" value="${project.basedir}/${dir.build}config/hosts/${env}.host"/>
-    <available file="${hostFile}" property="hostFileFound" value="true"/>
-    <if id="hostFileFound">
+    <available file="${hostFile}" property="hostFileFound" type="file"/>
+    <if>
+        <equals arg1="${hostFileFound}" arg2="true" />
         <then>
             <property file="${hostFile}"/>
         </then>
         <else>
-            <echo message="Missing host file (${hostFile})! Deployment environment was set to '${env}', a host file was created"/>
-            <echo file="${hostFile}"
-                  append="false"
-                  message="ftp.host=${ftp.host}${line.separator}ftp.port=${ftp.port}${line.separator}ftp.username=${ftp.username}${line.separator}ftp.password=${ftp.password}${line.separator}ftp.destinationDir=${ftp.destinationDir}${line.separator}ftp.mode=${ftp.mode}${line.separator}ssh.port=${ssh.port}"/>
-            <property file="${hostFile}"/>
+            <!-- default host variables -->
+            <property name="ftp.host" value="ftp.example.local" override="true"/>
+            <property name="ftp.port" value="21" override="true"/>
+            <property name="ftp.username" value="username" override="true"/>
+            <property name="ftp.password" value="password" override="true"/>
+            <property name="ftp.destinationDir" value="/" override="true"/>
+            <property name="ftp.mode" value="binary" override="true"/>
+            <property name="ssh.port" value="22" override="true"/>
         </else>
     </if>
 
-    <!-- release name -->
-    <property name="releaseName" value="master" override="true"/>
+    <!-- for rsync rollback -->
+    <property name="dir.rsync.recover" value="rsync-${env}-recover"/>
 
-    <!-- ============================================  -->
-    <!-- Fileset: project source files, all files      -->
-    <!-- that should be bundled when deployed to       -->
-    <!-- staging/production                            -->
-    <!-- ============================================  -->
-    <fileset dir="." id="project.source" defaultexcludes="true">
+    <!-- release name -->
+    <fileset dir="." id="source:project" defaultexcludes="true">
         <!-- includes -->
         <include name="*/**"/>
         <!-- excludes -->
-        <exclude name=".git/"/>
         <exclude name=".env"/>
-        <exclude name="${dir.cache}**/*"/>
         <exclude name="${dir.remote.coverage}**/*"/>
         <exclude name="${dir.build}**/*"/>
         <exclude name="${dir.node}**/*"/>
@@ -97,23 +94,21 @@
         <exclude name="Vagrantfile"/>
         <exclude name="${dir.archive}**/*"/>
         <exclude name="${dir.originals}**/*"/>
-        <exclude name="**/README.*"/>
-        <exclude name="**/HISTORY.*"/>
+
+        <!-- exclude laravel cache storage -->
+        <exclude name="${dir.storage.framework.cache}**/*"/>
 
         <!-- exclude laravel session storage -->
-        <exclude name="storage/framework/sessions/**/*"/>
-        <include name="storage/framework/sessions/.gitignore"/>
+        <exclude name="${dir.storage.framework.session}**/*"/>
 
         <!-- exclude laravel view storage -->
-        <exclude name="storage/framework/views/**/*"/>
-        <include name="storage/framework/views/.gitignore"/>
+        <exclude name="${dir.storage.framework.views}**/*"/>
 
         <!-- exclude laravel log storage -->
-        <exclude name="storage/logs/**/*.log"/>
+        <exclude name="${dir.storage.logs}**/*.log"/>
 
         <!-- exclude wordpress storage -->
-        <exclude name="storage/framework/wordpress/**/*"/>
-        <include name="storage/framework/wordpress/.gitignore"/>
+        <exclude name="${dir.storage.wordpress}**/*"/>
 
         <!-- exclude composer vendor folder, it will be populated on server -->
         <exclude name="${dir.vendor}**/*"/>
@@ -121,8 +116,6 @@
         <!-- exclude wordpress uploads folder -->
         <exclude name="${dir.wp-content}uploads/**/*"/>
 
-        <!-- VCS files -->
-        <exclude name=".gitignore"/>
         <!-- folders created by puppet -->
         <exclude name="${dir.www}icons/**/*"/>
         <exclude name="${dir.www}html/**/*"/>
@@ -134,13 +127,35 @@
         <exclude name="manual/**/*"/>
     </fileset>
 
+    <fileset dir="." id="source:app_storage" defaultexcludes="true">
+        <!-- Include placeholders in storage so
+        that folders get included -->
+        <include name="${dir.storage}**/README.md" />
+    </fileset>
+
+    <!-- ============================================  -->
+    <!-- Build: Storage placeholders                   -->
+    <!-- make sure there's a place holder file         -->
+    <!-- for the storage storage directories           -->
+    <!-- ============================================  -->
+
+    <target name="build:storage_placeholders">
+        <echo file="${dir.storage.framework.cache}README.md" message="Cache storage for Laravel" append="false" />
+        <echo file="${dir.storage.framework.session}README.md" message="Session storage for Laravel" append="false" />
+        <echo file="${dir.storage.logs}README.md" message="Log storage for Laravel" append="false" />
+        <echo file="${dir.storage.framework.views}README.md" message="View storage for Laravel" append="false" />
+        <echo file="${dir.storage.wordpress}README.md" message="Storage for Wordpress" append="false" />
+        <echo file="${dir.storage.app.public}README.md" message="Storage for App" append="false" />
+    </target>
+
     <!-- ============================================  -->
     <!-- Fileset: project source files sans            -->
     <!-- library files                                 -->
     <!-- ============================================  -->
-    <fileset dir="." id="project.source.sans.libs">
+    <fileset dir="." id="source:php">
         <include name="**/*.php"/>
         <exclude name="${dir.vendor}**/*.php"/>
+        <exclude name="${dir.www}wp/**/*.php"/>
         <exclude name="${dir.build}**/*"/>
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="_ide_helper.php"/>
@@ -150,7 +165,7 @@
     <!-- ============================================  -->
     <!-- Target: Confirm config and host files exist   -->
     <!-- ============================================  -->
-    <target name="confirm_config">
+    <target name="task:confirm_config">
         <!-- check that the env.config file exists-->
         <available file="${configFile}" property="configFileFound" value="true"/>
         <fail unless="configFileFound" message="Missing host configuration file (${configFile})!"/>
@@ -161,16 +176,9 @@
     </target>
 
     <!-- ============================================  -->
-    <!-- Target: Collect uncommitted files             -->
-    <!-- ============================================  -->
-    <target name="collect_uncommitted_files">
-        <exec command="hg status -m -a -r -d" output="${dir.build}uncommitted_files.txt"/>
-    </target>
-
-    <!-- ============================================  -->
     <!-- Target: prepare tests                         -->
     <!-- ============================================  -->
-    <target name="prepare">
+    <target name="build:prepare">
         <delete dir="${dir.package}"/>
         <delete dir="${dir.package}${env}"/>
         <delete dir="${dir.package}${env}/${phing.project.name}"/>
@@ -178,35 +186,48 @@
         <mkdir dir="${dir.package}"/>
         <mkdir dir="${dir.reports}"/>
 
-        <!-- run install -->
-        <exec command="bash install.sh" level="verbose"/>
+        <!-- run build commands -->
+        <exec command="npm update" level="info" checkreturn="true" />
+        <exec command="gulp" level="info" checkreturn="true" />
+        <exec command="bower update" level="info" checkreturn="true" />
+        <!-- run download of tools -->
+        <exec command="wget -q -N https://getcomposer.org/composer.phar -O composer.phar; php composer.phar update" level="info" checkreturn="true" />
+        <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
+        <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
 
     </target>
 
     <!-- ============================================  -->
     <!-- Target: metrics                               -->
     <!-- ============================================  -->
-    <target name="metrics" depends="prepare, lint">
-        <echo message="Some of these targets are *very* memory intensive. You may have to increase your memory_limit in php.ini"/>
-        <phingcall target="run-tests"/>
-        <!--<phingcall target="phploc" />-->
-        <!--<phingcall target="depend" />-->
-        <!--<phingcall target="cpd" />-->
-        <!--<phingcall target="churn-grep" />-->
-        <!--<phingcall target="phpmd" />-->
-        <!--<phingcall target="codesniffer" />-->
-        <!--<phingcall target="cleanup-phpunit-report" />-->
+    <target name="task:metrics" depends="build:prepare, task:lint">
+        <property name="do_metrics" value="true" override="true"/>
+        <echo message="do_metrics is set to '${do_metrics}'" />
+        <if>
+            <equals arg1="${do_metrics}" arg2="1" />
+            <then>
+                <echo message="Some of these targets are *very* memory intensive. You may have to increase your memory_limit in php.ini"/>
+                <phingcall target="task:run_tests"/>
+                <!--<phingcall target="task:phploc" />-->
+                <!--<phingcall target="task:depend" />-->
+                <!--<phingcall target="task:cpd" />-->
+                <!--<phingcall target="churn-grep" />-->
+                <!--<phingcall target="task:phpmd" />-->
+                <!--<phingcall target="task:codesniffer" />-->
+                <!--<phingcall target="task:cleanup_phpunit_report" />-->
+            </then>
+        </if>
     </target>
 
     <!-- ============================================  -->
     <!-- Target: Linting and Metrics                   -->
     <!-- ============================================  -->
-    <target name="standards" depends="lint, metrics"/>
+    <target name="task:standards" depends="task:lint, task:metrics"/>
 
     <!-- ============================================  -->
     <!-- Target: Package                               -->
     <!-- ============================================  -->
-    <target name="package" depends="prepare, standards"
+    <target name="build:package" depends="task:standards, build:prepare, build:storage_placeholders"
             description="Packages source file for deployment to remote host">
 
         <delete file="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz"/>
@@ -219,7 +240,8 @@
         <!-- copy all source files to package directory -->
         <echo msg="Copying files to build directory"/>
         <copy todir="${dir.package}" overwrite="true" includeemptydirs="false">
-            <fileset refid="project.source"/>
+            <fileset refid="source:project" />
+            <fileset refid="source:app_storage" />
         </copy>
         <delete>
             <fileset dir="${dir.package}">
@@ -227,53 +249,49 @@
                 <include name="*.gitignore"/>
             </fileset>
         </delete>
+        <exec command="tar czf ${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz ${dir.package}" passthru="true" level="info" />
+    </target>
 
-        <phplint haltonfailure="true">
-            <fileset dir="${dir.package}">
-                <include name="**/*.php"/>
-                <exclude name="${dir.vendor}**/*.php"/>
-                <exclude name=".phpstorm.meta.php"/>
-                <exclude name="_ide_helper.php"/>
-                <exclude name="c3.php"/>
-            </fileset>
-        </phplint>
+    <!-- ============================================  -->
+    <!-- Target: Extract Package                       -->
+    <!-- Clean and extract the packaged archive        -->
+    <!-- ============================================  -->
 
-        <tar destfile="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz" compression="gzip">
-            <fileset dir="${dir.package}">
-                <include name="**/**"/>
-            </fileset>
-        </tar>
-
+    <target name="build:extract_package" description="extract the current build archive">
+        <echo message="Resetting ${env} deploy files"/>
+        <delete dir="${dir.deploy}"/>
+        <mkdir dir="${dir.deploy}"/>
+        <exec command="tar -xf ${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz -C ${dir.deploy}" passthru="true" level="info" />
     </target>
 
     <!-- ============================================  -->
     <!-- Target: Post deployment actions               -->
     <!-- ============================================  -->
-    <target name="post_deploy">
+    <target name="build:post_deploy">
         <!-- install fresh version of composer over on server side -->
-        <phingcall target="composer_refresh"/>
+        <phingcall target="task:composer_refresh"/>
         <!-- run migrations on remote -->
-        <phingcall target="artisan_migrate"/>
+        <phingcall target="task:artisan_migrate"/>
         <!-- run key generation on remote -->
-        <phingcall target="artisan_keys"/>
+        <phingcall target="task:artisan_keys"/>
     </target>
 
     <!-- ============================================  -->
     <!-- Target: cleanup after packaging               -->
     <!-- ============================================  -->
-    <target name="cleanup">
+    <target name="build:cleanup">
         <delete dir="${dir.package}"/>
         <delete dir="${dir.package}${env}"/>
         <delete dir="${dir.package}${env}/${phing.project.name}"/>
         <delete dir="${dir.deploy}"/>
-
+        <delete dir="${dir.build}${dir.build}"/>
     </target>
 
     <!-- ============================================  -->
     <!-- Target: Composer Refresh                      -->
     <!-- Refreshes remote install of Composer          -->
     <!-- ============================================  -->
-    <target name="composer_refresh" description="refresh composer install">
+    <target name="task:composer_refresh" description="refresh composer install">
 
         <!-- install fresh version of composer over on server side-->
         <if>
@@ -282,7 +300,11 @@
                 <echo message="Composer install is not required for ${env} environment"/>
             </then>
             <else>
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}"
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub"
                      command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; rm -Rf vendor; php composer.phar install; rm -f composer.phar"
                      display="true"/>
             </else>
@@ -293,7 +315,7 @@
     <!-- Target: Artisan Migrate                       -->
     <!-- Run migration on remote                       -->
     <!-- ============================================  -->
-    <target name="artisan_migrate" description="run laravel artisan migrate on remote">
+    <target name="task:artisan_migrate" description="run laravel artisan migrate on remote">
 
         <if>
             <equals arg1="${env}" arg2="development"/>
@@ -302,7 +324,11 @@
             </then>
             <else>
                 <!-- ssh into server and turn down laravel and wordpress, then run migrations and bring both wordpress and laravel back up -->
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}"
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub"
                      command="cd /home/${ftp.username}; php artisan down; php artisan wp:down; php artisan migrate --force; php artisan up; php artisan wp:up"
                      display="true"/>
             </else>
@@ -311,10 +337,10 @@
     </target>
 
     <!-- ============================================  -->
-    <!-- Target: Artisan Keys                       -->
+    <!-- Target: Artisan Keys                          -->
     <!-- Run migration on remote                       -->
     <!-- ============================================  -->
-    <target name="artisan_keys" description="run laravel and wordpress artisan keys on remote">
+    <target name="task:artisan_keys" description="run laravel and wordpress artisan keys on remote">
 
         <if>
             <equals arg1="${env}" arg2="development"/>
@@ -323,31 +349,25 @@
             </then>
             <else>
                 <!-- ssh into server and turn down laravel and wordpress, then run migrations and bring both wordpress and laravel back up -->
-                <ssh username="${ftp.username}" password="${ftp.password}" host="${ftp.host}" port="${ssh.port}"
-                     command="cd /home/${ftp.username}; php artisan key:generate; php artisan wp:keys;" display="true"/>
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa" pubkeyfile="~/.ssh/id_rsa.pub"
+                     command="cd /home/${ftp.username}; php artisan key:generate; php artisan wp:keys;"
+                     display="true"/>
             </else>
         </if>
 
     </target>
 
-    <!-- ============================================  -->
-    <!-- Target: Extract Package                       -->
-    <!-- Clean and extract the packaged archive        -->
-    <!-- ============================================  -->
 
-    <target name="extract_package" description="extract the current build archive">
-        <echo message="Resetting ${env} deploy files"/>
-        <delete dir="${dir.deploy}"/>
-        <mkdir dir="${dir.deploy}"/>
-        <untar file="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz" todir="${dir.deploy}"/>
-    </target>
 
     <!-- ============================================  -->
     <!-- Target: Deployment                            -->
     <!-- Depends on "env" for server deployment        -->
     <!-- ============================================  -->
 
-    <target name="deploy" depends="package" description="Deploys the current working copy to a remote host">
+    <target name="build:deploy" depends="build:package" description="Deploys the current working copy to a remote host">
 
         <if>
             <equals arg1="${env}" arg2="development"/>
@@ -355,18 +375,14 @@
                 <echo message="deployment not needed in ${env} environment"/>
             </then>
             <else>
-                <phingcall target="extract_package"/>
+                <phingcall target="build:extract_package"/>
 
-                <echo message="Deploying files to ${ftp.host}"/>
-                <ftpdeploy
-                        host="${ftp.host}"
-                        password="${ftp.password}"
-                        username="${ftp.username}"
-                        dir="${ftp.destinationDir}"
-                        mode="${ftp.mode}"
-                        port="${ftp.port}">
-                    <fileset dir="${dir.deploy}"/>
-                </ftpdeploy>
+                <echo message="Deploying to ${env} on ${ftp.host} -> /home/${ftp.username}"/>
+                <exec command="
+                        cd ${dir.deploy}/${dir.package};
+                        scp -r -P ${ssh.port} . ${ftp.username}@${ftp.host}:/home/${ftp.username}"
+                      passthru="true"
+                      checkreturn="true" />
 
                 <echo message="${env} deploy complete!"/>
                 <delete dir="${dir.deploy}"/>
@@ -375,19 +391,19 @@
         </if>
 
         <!-- run post deploy actions -->
-        <phingcall target="post_deploy"/>
+        <phingcall target="build:post_deploy"/>
 
         <!-- run final cleanup task -->
-        <phingcall target="cleanup"/>
+        <phingcall target="build:cleanup"/>
 
     </target>
 
     <!-- ============================================  -->
     <!-- Target: PHP Lint                              -->
     <!-- ============================================  -->
-    <target name="lint">
+    <target name="task:lint">
         <phplint haltonfailure="true" level="verbose">
-            <fileset refid="project.source.sans.libs"/>
+            <fileset refid="source:php"/>
         </phplint>
     </target>
 
@@ -395,10 +411,10 @@
     <!-- Target: PHP Copy paste detector               -->
     <!-- ============================================  -->
     <!--  -->
-    <target name="cpd" depends="prepare">
+    <target name="task:cpd" depends="build:prepare">
         <!-- http://www.unit_tests.info/trac/ticket/1061
         <phpcpd>
-            <fileset refid="project.source.sans.libs" />
+            <fileset refid="source:php" />
             <formatter type="pmd" outfile="${dir.reports}cpd.xml" />
         </phpcpd>-->
     </target>
@@ -406,9 +422,9 @@
     <!-- ============================================  -->
     <!-- Target: PHP mess detector                     -->
     <!-- ============================================  -->
-    <target name="phpmd" depends="prepare">
+    <target name="task:phpmd" depends="build:prepare">
         <phpmd>
-            <fileset refid="project.source.sans.libs"/>
+            <fileset refid="source:php"/>
             <formatter type="xml" outfile="${dir.reports}pmd.xml"/>
         </phpmd>
     </target>
@@ -416,9 +432,9 @@
     <!-- ============================================  -->
     <!-- Target: PHP depend                            -->
     <!-- ============================================  -->
-    <target name="depend" depends="prepare">
+    <target name="task:depend" depends="build:prepare">
         <phpdepend>
-            <fileset refid="project.source.sans.libs"/>
+            <fileset refid="source:php"/>
             <logger type="jdepend-xml" outfile="${dir.reports}jdepend.xml"/>
             <analyzer type="coderank-mode" value="method"/>
         </phpdepend>
@@ -427,10 +443,10 @@
     <!-- ============================================  -->
     <!-- Target: PHP code sniffer                      -->
     <!-- ============================================  -->
-    <target name="codesniffer" depends="prepare">
+    <target name="task:codesniffer" depends="build:prepare">
         <echo message="If you don't have the PSR standards installed, just follow the instructions here: https://github.com/klaussilveira/phpcs-psr"/>
         <phpcodesniffer standard="PSR1" verbosity="1">
-            <fileset refid="project.source.sans.libs"/>
+            <fileset refid="source:php"/>
             <formatter type="checkstyle" outfile="/wamp/www/${project.name}/${dir.reports}codesniffer.xml"/>
             <formatter type="summary"
                        outfile="/wamp/www/${project.name}/${dir.reports}codesniffer-summary.xml"/>
@@ -440,22 +456,29 @@
     <!-- ============================================  -->
     <!-- Target: PHP LOC                               -->
     <!-- ============================================  -->
-    <target name="phploc" depends="prepare">
+    <target name="task:phploc" depends="build:prepare">
         <exec command="phploc --log-xml ${dir.reports}phploc.xml --exclude xxx ${project.basedir}/"/>
     </target>
 
     <!-- ============================================  -->
     <!-- Target: PHP DOC                               -->
     <!-- ============================================  -->
-    <target name="phpdoc" depends="prepare">
+    <target name="task:phpdoc" depends="build:prepare">
         <exec command="phpdoc -d classes,includes,modules,styles -t ${dir.reports}docs --template=responsive-twig"/>
     </target>
 
     <!-- ============================================  -->
     <!-- Target: Run Tests                             -->
     <!-- ============================================  -->
-    <target name="run-tests" depends="vagrant">
-        <exec command="bash testing.sh" checkreturn="true" passthru="true"/>
+    <target name="task:run_tests" depends="build:vagrant">
+        <!-- run tests in vagrant box, if an "Could not open input file" is
+        found that likely means that vagrant box is faulty and should
+        be recreated -->
+        <exec command="bash testing.sh" checkreturn="true" passthru="true" level="info" />
+        <!-- test the return content, if it has
+        "Could not open input file" in it
+        rebuild the box and rerun tests -->
+        <exec command="if grep -Fxq &quot;Could not open input file&quot; codecept-result.log; then vagrant destroy -f &amp;&amp; vagrant up &amp;&amp; bash testing.sh; fi;" checkreturn="true" passthru="true" level="info" />
     </target>
 
 
@@ -463,15 +486,15 @@
     <!-- Target: Vagrant                               -->
     <!-- Spin up a vagrant box                         -->
     <!-- ============================================  -->
-    <target name="vagrant">
-        <exec command="vagrant up"/>
+    <target name="build:vagrant">
+        <exec command="vagrant up" checkreturn="true" passthru="true" level="info" />
     </target>
 
 
     <!-- ============================================  -->
     <!-- Target: PHP Unit Cleanup                      -->
     <!-- ============================================  -->
-    <target name="cleanup-phpunit-report">
+    <target name="task:cleanup_phpunit_report">
         <copy file="${dir.build}tests/${dir.reports}test-logs.xml" tofile="${dir.reports}test-logs.xml"
               overwrite="true"/>
         <delete dir="${dir.build}tests/${dir.build}" verbose="true" failonerror="true"/>
