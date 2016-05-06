@@ -18,13 +18,13 @@ class WpMantienceModeCest
     {
         $I->runShellCommand('php artisan wp:down');
         $I->amOnPage('/');
-        $I->see('The site down for maintenance.');
+        $I->see('Briefly unavailable for scheduled maintenance. Check back in a minute.');
     }
     
     public function checkThatTheMaintenanceFileWasCreated(AcceptanceTester $I)
     {
         $I->runShellCommand('php artisan wp:down');
-        $I->seeFileFound('storage/wordpress/.wp-maintenance');
+        $I->seeFileFound('public_html/wp/.maintenance');
         $I->seeInShellOutput('Wordpress set to maintenance mode.');
 
 
