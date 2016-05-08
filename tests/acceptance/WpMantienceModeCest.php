@@ -11,6 +11,7 @@ class WpMantienceModeCest
     public function _after(AcceptanceTester $I)
     {
         $I->runShellCommand('php artisan wp:up');
+        exec("rm -f public_html/.gitignore || true");
     }
 
     // tests
@@ -26,8 +27,6 @@ class WpMantienceModeCest
         $I->runShellCommand('php artisan wp:down');
         $I->seeFileFound('public_html/wp/.maintenance');
         $I->seeInShellOutput('Wordpress set to maintenance mode.');
-
-
     }
     public function checkThatTheMaintenanceFileWasDestroyed(AcceptanceTester $I)
     {
@@ -37,6 +36,8 @@ class WpMantienceModeCest
         $I->runShellCommand('php artisan wp:up --dir='.$dir.' --file='.$file);
         $I->dontSeeFileFound('storage/wordpress/.wp-maintenance');
         $I->runShellCommand('php artisan wp:up --dir='.$dir.' --file='.$file);
+        // cleanup
+        exec("rm -rf public_html/".$dir.' || true');
 
     }
 }
