@@ -145,4 +145,17 @@
     }
   }
 
+  /** Classes added to base elements */
+
+  .disclaimer, p.disclaimer, .disclaimer p {
+    @include font-size(1.125 * $multiplier);
+    @include line-height(1.375 * $multiplier);
+    color: $color-gz-gray;
+    color: rgba($color-gz-gray, .5);
+    @include padding-equal(1);
+  }
+
+
+
+
 }

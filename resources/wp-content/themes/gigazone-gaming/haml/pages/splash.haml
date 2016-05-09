@@ -1,17 +1,17 @@
 {% extends "base/skeleton.twig" %}
 {% block body %}
 
-.home-outer
-  .home-container
+.splash-outer
+  .splash-container
     .container
       .row
         .col-md-12
-          .home-inner-container
-            .home-inner-container-bg
+          .splash-inner-container
+            .splash-inner-container-bg
             .masthead-logo
               %h1
                 %a{:class=>"masthead-logo-link", :href=>"{{ function('home_url','/') }}"} {{ function("bloginfo","name") }}
-            .home-content
+            .splash-content
               {{ function("apply_filters","the_content", page.post_content) }}
               .disclaimer.sidebar
                 {% set disclaimer = function('get_posts',{'name':'riot-disclaimer', 'post_type':'post', 'post_status':'publish', 'numberposts': 1}) %}
@@ -21,7 +21,7 @@
               .sidebar
                 .sidebar-social-media
                   {% include "partials/social-media.twig" %}
-    .home-footer
+    .splash-footer
     {% include "partials/footer-js.twig" %}
 
 {% endblock %}

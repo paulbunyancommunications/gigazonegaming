@@ -12,3 +12,20 @@ add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
 
 
+// if the WP_FRONT_PAGE_ONLY flat is true then relay all requests to the front page post
+add_action('init', 'showSplashPageOnly', 1);
+function showSplashPageOnly()
+{
+    if(filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
+        include(locate_template('get-context.php'));
+        $homeId = get_option('page_on_front');
+        $context['page'] = Timber::get_post(get_option('page_on_front'));
+        $context['body_class'] = 'splash page page-id-'.$homeId.' page-template-default';
+        Timber::render('pages/splash.twig', $context);
+        die();
+    }
+
+}
+
+
+

@@ -59,6 +59,12 @@
 
   }
 
+  // hide border on right side of the last top level nav item
+  ul > li:last-child > a::after {
+    display: none;
+
+  }
+
   ul > li:first-child > a::before {
     display: none;
   }
@@ -89,6 +95,7 @@
         @include border-bottom-radius(5px);
         overflow: hidden;
       }
+
       a {
         @include padding(0, 0.675);
         background: tint($color-gz-gray, 90%);
@@ -176,7 +183,7 @@
 
   .hovering-on-child {
 
-    & + .menu-item > a::after, & + .menu-item > a::before,  {
+    & + .menu-item > a::after, & + .menu-item > a::before  {
       display: none !important;
     }
 

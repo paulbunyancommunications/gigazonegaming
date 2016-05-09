@@ -1,6 +1,6 @@
 .well-gz {
   background: rgba(tint($color-gz-gray, 80%), .5);
-  border-color: $color-gz-gray;
+  border-color: rgba(tint($color-gz-gray, 60%), .5);
 }
 
 .btn-gz {
@@ -16,3 +16,5 @@
     color: $color-white;
   }
 }
+
+
