@@ -165,6 +165,10 @@ return [
         // wordpress artisan commands
         Pbc\WordpressArtisan\WordpressArtisanServiceProvider::class,
 
+        // formmail provider
+        Pbc\FormMail\Providers\FormMailServiceProvider::class,
+        Pbc\FormMailTemplate\Providers\FormMailTemplateServiceProvider::class,
+
     ],
 
     /*

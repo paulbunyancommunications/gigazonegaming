@@ -13,6 +13,9 @@
     "image.php": "~1.4.2",
     "bootstrap-sass": "~3.3.6",
     "ResponsiveSlides": "master",
-    "Gutenberg": "git@github.com:matejlatin/Gutenberg.git"
+    "Gutenberg": "git@github.com:matejlatin/Gutenberg.git",
+    "bootstrap-slider": "*",
+    "seiyria-bootstrap-slider": "~7.0.1",
+    "bootstrap-switch": "~3.3.2"
   }
 }

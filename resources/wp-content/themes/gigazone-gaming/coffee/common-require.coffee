@@ -10,6 +10,8 @@ require =
     imager: [ "../../../../bower_components/imager.js/dist/Imager.min" ]
     responsiveSlides: [ "../../../../bower_components/ResponsiveSlides/responsiveslides.min" ]
     iFrameResize: [ "../../../../bower_components/iframe-resizer/js/iframeResizer.min" ]
+    Slider: [ "../../../../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min" ]
+    Switch: [ "../../../../bower_components/bootstrap-switch/dist/js/bootstrap-switch.min" ]
     # modules
     variables: ["variables"]
     functions: ["functions"]

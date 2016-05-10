@@ -135,4 +135,58 @@ class GigaZoneGamingBootstrap extends \TimberSite {
         wp_enqueue_style('gigazone-info', get_bloginfo('stylesheet_directory') . '/css/gigazone.css');
         return '<'.$wrap_tag.' class="'.$wrap_class.'">' . $content . '</'.$wrap_tag.'>';
     }
+
+    // [contact-us new_line="," delimiter="|" questions=""]
+    public function formFieldsShortCode( $atts, $content, $tag ) {
+        /** @var string $questions */
+        /** @var string $new_line */
+        /** @var string $delimiter */
+        /** @var string $inputs */
+        $a = shortcode_atts( array(
+            "questions" => "",
+            "new_line" => ",",
+            "delimiter" => "|",
+            "inputs" => ""
+        ), $atts );
+        extract($a);
+        $context = Timber::get_context();
+        try {
+            if (!is_array($questions) && strlen($questions) > 0) {
+                $questions = str_replace($new_line, "\r\n", $questions);
+                $csv = \League\Csv\Reader::createFromString($questions);
+                $csv->setDelimiter($delimiter);
+                $csv->setNewline("\n\r");
+                $context['inputs'] = $csv->fetchAll();
+            }
+        } catch (\Exception $ex) {
+            $context = ['inputs' => [$ex->getMessage(), false]];
+        }
+        try {
+            if (!is_array($inputs) && strlen($inputs) > 0) {
+                $inputs = str_replace($new_line, "\r\n", $inputs);
+                $csv = \League\Csv\Reader::createFromString($inputs);
+                $csv->setDelimiter($delimiter);
+                $csv->setNewline("\n\r");
+                $context['real_inputs'] = $csv->fetchAll();
+            }
+        } catch (\Exception $ex) {
+            $context = ['real_inputs' => [$ex->getMessage(), false]];
+        }
+        $autoversion = new \Pbc\AutoVersion;
+        // add styles ass needed
+        if (stripos($questions, 'range') !== false) {
+            wp_enqueue_style('bootstrap-slider',
+                '/../' . $autoversion->file('/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css'));
+        }
+
+        if (stripos($questions, 'boolean') !== false) {
+            wp_enqueue_style('bootstrap-switch',
+                '/../' . $autoversion->file('/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'));
+        }
+        $context['action'] = '/app/'.$tag;
+        $context['method'] = 'POST';
+        $context['content'] = $content;
+        return Timber::compile('forms/form-template.twig', $context);
+    }
+
 }

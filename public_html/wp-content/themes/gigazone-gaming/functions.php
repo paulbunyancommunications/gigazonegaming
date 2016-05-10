@@ -10,6 +10,7 @@ $cacheDriver = new Stash\Driver\FileSystem(['path' => dirname($_SERVER['DOCUMENT
 add_shortcode('update-sign-up', [$bootstrap, 'updateSignUpFormShortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
+add_shortcode('contact-us', [$bootstrap, 'formFieldsShortCode']);
 
 
 // if the WP_FRONT_PAGE_ONLY flat is true then relay all requests to the front page post

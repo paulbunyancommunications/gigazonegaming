@@ -28,6 +28,9 @@ Route::get('/', function () {
 Route::post('/updates/signup', ['as' => 'updates.store','uses' => 'Frontend\Updates\UpdatesController@store']);
 Route::get('/updates/map', ['as' => 'updates.map','uses' => 'Frontend\Updates\UpdatesController@map']);
 
+// contact us form
+Route::post('/contact-us', ['uses' => '\\Pbc\\FormMail\\Http\\Controllers\\FormMailController@requestHandler', 'as' => 'contact-us']);
+
 /**
  * For Codeception Coverage
  */
