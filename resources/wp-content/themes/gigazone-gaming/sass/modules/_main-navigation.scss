@@ -20,6 +20,8 @@
     }
   }
 
+
+
   ul ul {
     display: none;
   }
@@ -100,9 +102,9 @@
         @include padding(0, 0.675);
         background: tint($color-gz-gray, 90%);
         color: $color-black;
-        @include line-height(3);
-        @include height(3);
-        @include font-size(1.2);
+        @include line-height(3.125);
+        @include height(3.125);
+        @include font-size(1.25);
         display: block;
         border-bottom: 1px solid $color-light-gray;
         border-left: 1px solid $color-light-gray;
@@ -196,6 +198,17 @@
       }
     }
   }
+
+}
+
+/**
+* For top level of main navigation
+*/
+.main-navigation > ul > li > a, .main-navigation > ul > li {
+  font-family: $font-family-display;
+  text-transform: uppercase;
+  @include font-size(1.875);
+  @include padding(0, 1.25);
 
 }
 
