@@ -208,8 +208,9 @@
   font-family: $font-family-display;
   text-transform: uppercase;
   @include font-size(1.875);
+}
+.main-navigation > ul > li > a {
   @include padding(0, 1.25);
-
 }
 
 
