@@ -86,7 +86,10 @@
     },
     {
       "type": "vcs",
-      "url": "git@github.com:paulbunyannet/form_mail.git"
+      "url": "git@github.com:paulbunyannet/form_mail.git",
+      "require": {
+        "paulbunyannet/form_mail_template":"^1.0"
+      }
     },
     {
       "type": "vcs",
@@ -116,7 +119,6 @@
     "paulbunyannet/premailer": "^1.0",
     "paulbunyannet/wordpress-artisan": "^1.0",
     "paulbunyannet/form_mail": "^1.0",
-    "paulbunyannet/form_mail_template": "^1.0",
     "sunra/php-simple-html-dom-parser": "v1.5.0",
     "league/csv": "^8.0"
   },
