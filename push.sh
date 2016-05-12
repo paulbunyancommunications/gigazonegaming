@@ -2,7 +2,7 @@
 
 #http://stackoverflow.com/a/12142066/405758
 branch="$(git rev-parse --abbrev-ref HEAD)"
-if [ "$branch" -eq "master" ]; then
+if [ "$branch" == "master" ]; then
     echo "You should not be doing commits directly to the ${branch} branch!"; exit 1;
 fi;
 
