@@ -67,6 +67,13 @@ if [ ! -f "puphpet/config.yaml" ]
     echo "puphpet/config.yaml was created from example file"
     fi
 
+# make puphpet/config-custom.yaml if not already created
+if [ ! -f "puphpet/config-custom.yaml" ]
+    then
+    cp puphpet/config-custom.yaml.example puphpet/config-custom.yaml
+    echo "puphpet/config-custom.yaml was created from example file"
+    fi
+
 # cleanup Wordpress install
 if [ -d "public_html/wp/wp-content" ]
 then
