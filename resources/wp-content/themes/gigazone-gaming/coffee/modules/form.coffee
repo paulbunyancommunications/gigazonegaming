@@ -5,8 +5,15 @@ define ['jquery', 'Utility'], ($, Utility) ->
   form.ranges = $('.range-group')
   
   form.init = ->
+    form.getCsrf()
     return
-    
+
+  # get the csrf token add add it to the jquery ajax setup
+  form.getCsrf = ->
+    $.get('/app/frontend/session/csrf', (csrf) ->
+      $.ajaxSetup({ headers: { 'X-CSRF-TOKEN' : csrf } });
+    )
+
   # if form.doGeoLocate is found get the location and create form inputs
   $ ->
     if "geolocation" of navigator
