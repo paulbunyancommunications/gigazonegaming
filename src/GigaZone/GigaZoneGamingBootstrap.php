@@ -2,26 +2,29 @@
 namespace GigaZone;
 
 use Cocur\Slugify\Slugify;
+use GigaZone\Info\GigaZoneFromPaulBunyan;
+use League\Csv\Reader;
 use Pbc\AutoVersion;
 use Pbc\Bandolier\Type\Strings;
 use Timber;
 use TimberSite;
 use Twig_Extension_StringLoader;
 use Twig_SimpleFilter;
-use Twig_SimpleFunction;
 
 /**
  * Class RedLakeElectricTimber
  * @package Wordpress\Timber
  */
-class GigaZoneGamingBootstrap extends \TimberSite {
+class GigaZoneGamingBootstrap extends \TimberSite
+{
 
     /**
      *
      */
-    function __construct() {
-        add_filter( 'timber_context', array( $this, 'add_to_context' ) );
-        add_filter( 'get_twig', array( $this, 'add_to_twig' ) );
+    public function __construct()
+    {
+        add_filter('timber_context', array($this, 'addToContext'));
+        add_filter('get_twig', array($this, 'addToTwig'));
         parent::__construct();
     }
 
@@ -31,7 +34,8 @@ class GigaZoneGamingBootstrap extends \TimberSite {
      * @param $context
      * @return mixed
      */
-    function add_to_context( $context ) {
+    public function addToContext($context)
+    {
         $context['menu'] = new \TimberMenu();
         $context['site'] = $this;
         return $context;
@@ -40,12 +44,13 @@ class GigaZoneGamingBootstrap extends \TimberSite {
     /**
      * Twig filters and functions
      *
-     * @param $twig
+     * @param $twig \Twig
      * @return mixed
      */
-    function add_to_twig( $twig ) {
+    public function addToTwig($twig)
+    {
         /* this is where you can add your own functions to twig */
-        $twig->addExtension( new Twig_Extension_StringLoader() );
+        $twig->addExtension(new Twig_Extension_StringLoader());
         /**
          * Deprecated: Twig_Filter_Function, use Twig_SimpleFilter
          * http://twig.sensiolabs.org/doc/deprecated.html#filters
@@ -53,7 +58,10 @@ class GigaZoneGamingBootstrap extends \TimberSite {
          */
         $twig->addFilter('format_for_title', new Twig_SimpleFilter('format_for_title', array($this, 'titleFilter')));
         $twig->addFilter('slugify', new Twig_SimpleFilter('slugify', array($this, 'slugify')));
-        $twig->addFilter('auto_version_path', new Twig_SimpleFilter('auto_version_path', array($this, 'autoVersionFilter')));
+        $twig->addFilter(
+            'auto_version_path',
+            new Twig_SimpleFilter('auto_version_path', array($this, 'autoVersionFilter'))
+        );
         return $twig;
     }
 
@@ -65,7 +73,7 @@ class GigaZoneGamingBootstrap extends \TimberSite {
      */
     public function slugify($string)
     {
-        $slugify  = new Slugify();
+        $slugify = new Slugify();
         return $slugify->slugify($string);
     }
 
@@ -88,105 +96,160 @@ class GigaZoneGamingBootstrap extends \TimberSite {
      */
     public function autoVersionFilter($value)
     {
-        $av = new AutoVersion(getenv('DOCUMENT_ROOT'));
-        return $av->file($value);
+        $autoVersion = new AutoVersion(getenv('DOCUMENT_ROOT'));
+        return $autoVersion->file($value);
     }
 
     // [update-sign-up]
-    function updateSignUpFormShortCode( $atts ) {
-        $a = shortcode_atts( array(
+    /**
+     * @param $attributes
+     * @return bool|string
+     */
+    public function updateSignUpFormShortCode($attributes)
+    {
+        $attr = shortcode_atts(array(
             'foo' => 'something',
             'bar' => 'something else',
-        ), $atts );
+        ), $attributes);
 
-        return Timber::compile('forms/update-sign-up.twig', $a);
+        return Timber::compile('forms/update-sign-up.twig', $attr);
     }
 
-    function blogInfoShortcode( $atts ) {
-        extract(shortcode_atts(array(
+    /**
+     * @param $attributes
+     * @return mixed
+     */
+    public function blogInfoShortCode($attributes)
+    {
+        $attr = shortcode_atts(array(
             'key' => '',
             'filter' => ''
-        ), $atts));
+        ), $attributes);
         /** @var string $key */
         /** @var string $filter */
-        return get_bloginfo($key, $filter);
+        return get_bloginfo($attr['key'], $attr['filter']);
     }
 
     /**
      * Get Gigazone info block
      *
-     * @param $atts
+     * @param $attributes
      * @return string
      */
-    public function getGigazoneInfo($atts)
+    public function getGigazoneInfo($attributes)
     {
-        extract(shortcode_atts(array(
+        $attr = shortcode_atts(array(
             'wrap_tag' => 'div',
             'wrap_class' => 'gigazone-info',
-        ), $atts));
-
-        /** @var string $wrap_tag tag to wrap the content block */
-        /** @var string $wrap_class class to add to wrap tag */
-        /** @var \Gigazone\Info\GigaZoneFromPaulBunyan $gigazone */
-        $gigazone = new \GigaZone\Info\GigaZoneFromPaulBunyan();
+        ), $attributes);
+        
+        /** @var GigaZoneFromPaulBunyan $gigazone */
+        $gigazone = new GigaZoneFromPaulBunyan();
 
         /** @var string $content */
         $content = $gigazone->getGigazoneInfo();
         wp_enqueue_style('gigazone-info', get_bloginfo('stylesheet_directory') . '/css/gigazone.css');
-        return '<'.$wrap_tag.' class="'.$wrap_class.'">' . $content . '</'.$wrap_tag.'>';
+        return '<' . $attr['wrap_tag'] . ' class="' . $attr['wrap_class'] . '">'
+        . $content
+        . '</' . $attr['wrap_tag'] . '>';
     }
 
-    // [contact-us new_line="," delimiter="|" questions=""]
-    public function formFieldsShortCode( $atts, $content, $tag ) {
+
+    /**
+     * Form Fields short code
+     * For generating a form from short code values
+     * Example:
+     * [contact-us new_line="," delimiter="|" questions="Your Name,Your Email|email" headings="A title prior to Your Name Field|your-name" inputs="your-name|name"]This is the form description[/contact-us]
+     * In this example:
+     * * The tag is "contact-us", which will be in the "tag" key for the view
+     * * The questions csv has a new line character of "," and a delimiter of "|" so if this was a csv file/string it would look like this:
+     *
+     *      "Your Name",
+     *      "Your Email"|"email",
+     *
+     *      The first column is the field label and used as the field name run through slugify
+     *      These values get parsed add applied to the "questions" key
+     *
+     * * There's a title of "A title prior to Your Name Field" that gets applied prior to the "your-name" field
+     * * The actual name of the input for "your-name" (slugify the label) will be "name" set in the inputs
+     *
+     * @param $attributes
+     * @param $content
+     * @param $tag
+     * @return bool|string
+     */
+    public function formFieldsShortCode($attributes, $content, $tag)
+    {
         /** @var string $questions */
         /** @var string $new_line */
         /** @var string $delimiter */
         /** @var string $inputs */
-        $a = shortcode_atts( array(
+        /** @var string $headings */
+        $defaults = array(
             "questions" => "",
             "new_line" => ",",
             "delimiter" => "|",
-            "inputs" => ""
-        ), $atts );
-        extract($a);
+            "inputs" => "",
+            "headings" => "",
+        );
+        $attr = shortcode_atts($defaults, $attributes);
+        extract($attr);
         $context = Timber::get_context();
-        try {
-            if (!is_array($questions) && strlen($questions) > 0) {
-                $questions = str_replace($new_line, "\r\n", $questions);
-                $csv = \League\Csv\Reader::createFromString($questions);
-                $csv->setDelimiter($delimiter);
-                $csv->setNewline("\n\r");
-                $context['inputs'] = $csv->fetchAll();
+        foreach (array_keys($defaults) as $default) {
+            switch ($default) {
+                case ('new_line'):
+                case ('delimiter'):
+                    break;
+                default:
+                    $this->parseCsv($context, $$default, $default, $delimiter, $new_line);
             }
-        } catch (\Exception $ex) {
-            $context = ['inputs' => [$ex->getMessage(), false]];
         }
-        try {
-            if (!is_array($inputs) && strlen($inputs) > 0) {
-                $inputs = str_replace($new_line, "\r\n", $inputs);
-                $csv = \League\Csv\Reader::createFromString($inputs);
-                $csv->setDelimiter($delimiter);
-                $csv->setNewline("\n\r");
-                $context['real_inputs'] = $csv->fetchAll();
-            }
-        } catch (\Exception $ex) {
-            $context = ['real_inputs' => [$ex->getMessage(), false]];
-        }
-        $autoversion = new \Pbc\AutoVersion;
+        $autoVersion = new AutoVersion;
         // add styles ass needed
         if (stripos($questions, 'range') !== false) {
-            wp_enqueue_style('bootstrap-slider',
-                '/../' . $autoversion->file('/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css'));
+            wp_enqueue_style(
+                'bootstrap-slider',
+                '/../' . $autoVersion->file('/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css')
+            );
         }
 
         if (stripos($questions, 'boolean') !== false) {
-            wp_enqueue_style('bootstrap-switch',
-                '/../' . $autoversion->file('/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'));
+            wp_enqueue_style(
+                'bootstrap-switch',
+                '/../' . $autoVersion->file('/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')
+            );
         }
-        $context['action'] = '/app/'.$tag;
+        $context['action'] = '/app/' . $tag;
         $context['method'] = 'POST';
         $context['content'] = $content;
+        $context['tag'] = $tag;
+
         return Timber::compile('forms/form-template.twig', $context);
     }
 
+    /**
+     * Parse scv values and add them to view context
+     *
+     * @param $context
+     * @param $list
+     * @param $key
+     * @param string $delimiter
+     * @param string $newLine
+     */
+    private function parseCsv(&$context, $list, $key, $delimiter = "|", $newLine = ",")
+    {
+
+        try {
+            if (!is_array($list) && strlen($list) > 0) {
+                $list = str_replace($newLine, "\r\n", $list);
+                $csv = Reader::createFromString($list);
+                $csv->setDelimiter($delimiter);
+                $csv->setNewline("\n\r");
+                $context[$key] = $csv->fetchAll();
+            }
+        } catch (\Exception $ex) {
+            $context[$key] = [$ex->getMessage(), false];
+        }
+
+    }
 }
