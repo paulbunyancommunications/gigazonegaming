@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MakeIndividualSignupTable extends Migration
+class CreateTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,10 @@ class MakeIndividualSignupTable extends Migration
      */
     public function up()
     {
-        Schema::create('individual_players', function ($table) {
+        Schema::connection('mysql_champ')->create('teams', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
+            $table->string('emblem');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ class MakeIndividualSignupTable extends Migration
      */
     public function down()
     {
-        Schema::drop('individual_players');
+        Schema::connection('mysql_champ')->drop('teams');
     }
 }

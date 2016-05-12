@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MakeTeamsTable extends Migration
+class CreatePlayersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -11,8 +12,11 @@ class MakeTeamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('teams', function ($table) {
+        Schema::connection('mysql_champ')->create('players', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('username');
+            $table->string('email');
+            $table->string('phone');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ class MakeTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('teams');
+        Schema::connection('mysql_champ')->drop('players');
     }
 }

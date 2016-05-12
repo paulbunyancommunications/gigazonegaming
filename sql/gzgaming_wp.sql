@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.49)
 # Database: gzgaming_wp
-# Generation Time: 2016-05-10 15:41:18 +0000
+# Generation Time: 2016-05-12 22:20:44 +0000
 # ************************************************************
 
 
@@ -56,7 +56,18 @@ VALUES
 	('2016_05_04_132956_remove_laravel_user_table',1),
 	('2016_05_04_132957_remove_laravel_password_recovery_table',1),
 	('2016_05_04_161101_change_cache_value_column_type_to_long_text',1),
-	('2016_05_04_192010_add_gigazone_info_shortcode_to_homepage_footer',1);
+	('2016_05_04_192010_add_gigazone_info_shortcode_to_homepage_footer',1),
+	('2016_05_10_152845_add_contact_form_to_contact_page',2),
+	('2016_05_10_161033_make_sure_there_is_a_sign_up_section',2),
+	('2016_05_12_173940_make_team_sign_up_post',2),
+	('2016_05_12_173956_make_individual_sign_up_post',2),
+	('2016_05_12_190128_set_blog_description',2),
+	('2016_05_12_202505_create_games_table',2),
+	('2016_05_12_202507_create_teams_table',2),
+	('2016_05_12_202509_create_players_table',2),
+	('2016_05_12_202510_create_individual_players_table',2),
+	('2016_05_12_211224_make_championship_foreign_keys',2),
+	('2016_05_12_215616_make_championship_default_game',2);
 
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -729,7 +740,10 @@ VALUES
 	(460,1,'2016-05-10 14:22:52','2016-05-10 14:22:52','[contact-us new_line=\",\" delimiter=\"|\" questions=\"Please list any comments or suggestions.|textarea,Your Name,Your Email Address|email\"]Have comments or questions, please let us know![/contact-us]','Contact Us','','inherit','closed','closed','','401-revision-v1','','','2016-05-10 14:22:52','2016-05-10 14:22:52','',401,'http://gigazonegaming.local/%postpath%/401-revision-v1/',0,'revision','',0),
 	(461,1,'2016-05-10 14:54:44','2016-05-10 14:54:44','[contact-us new_line=\",\" delimiter=\"|\" questions=\"Please list any comments or suggestions.|textarea,Your Name|text,Your Email Address|email\" inputs=\"your-name|name,your-email-address|email\"]Have comments or questions, please let us know![/contact-us]','Contact Us','','inherit','closed','closed','','401-autosave-v1','','','2016-05-10 14:54:44','2016-05-10 14:54:44','',401,'http://gigazonegaming.local/%postpath%/401-autosave-v1/',0,'revision','',0),
 	(462,1,'2016-05-10 14:47:33','2016-05-10 14:47:33','[contact-us new_line=\",\" delimiter=\"|\" questions=\"Please list any comments or suggestions.|textarea,Your Name|text|name,Your Email Address|email|email\"]Have comments or questions, please let us know![/contact-us]','Contact Us','','inherit','closed','closed','','401-revision-v1','','','2016-05-10 14:47:33','2016-05-10 14:47:33','',401,'http://gigazonegaming.local/%postpath%/401-revision-v1/',0,'revision','',0),
-	(463,1,'2016-05-10 14:57:44','2016-05-10 14:57:44','[contact-us new_line=\",\" delimiter=\"|\" questions=\"Please list any comments or suggestions.|textarea,Your Name|text,Your Email Address|email\" inputs=\"your-name|name,your-email-address|email\"]Have comments or questions, please let us know![/contact-us]','Contact Us','','inherit','closed','closed','','401-revision-v1','','','2016-05-10 14:57:44','2016-05-10 14:57:44','',401,'http://gigazonegaming.local/%postpath%/401-revision-v1/',0,'revision','',0);
+	(463,1,'2016-05-10 14:57:44','2016-05-10 14:57:44','[contact-us new_line=\",\" delimiter=\"|\" questions=\"Please list any comments or suggestions.|textarea,Your Name|text,Your Email Address|email\" inputs=\"your-name|name,your-email-address|email\"]Have comments or questions, please let us know![/contact-us]','Contact Us','','inherit','closed','closed','','401-revision-v1','','','2016-05-10 14:57:44','2016-05-10 14:57:44','',401,'http://gigazonegaming.local/%postpath%/401-revision-v1/',0,'revision','',0),
+	(464,1,'2016-05-12 22:19:50','2016-05-12 22:19:50','If you&#39;re looking to participate in the [bloginfo key=\"description\"] you can sign up as either <a href=\"http://gigazonegaming.local/sign-up/team-sign-up/\">a team</a> or <a href=\"http://gigazonegaming.local/sign-up/individual-sign-up/\">an individual player</a>.','Sign Up','','publish','closed','closed','','sign-up','','','2016-05-12 22:19:50','2016-05-12 22:19:50','',0,'http://gigazonegaming.local/?page_id=464',0,'page','',0),
+	(465,1,'2016-05-12 22:19:50','2016-05-12 22:19:50','[team-sign-up new_line=\",\" delimiter=\"|\" questions=\"Team Captain,Team Captain LOL Username,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One LOL Username,Teammate One Email Address|email,Teammate Two LOL Username,Teammate Two Email Address|email,Teammate Three LOL Username,Teammate Three Email Address|email,Teammate Four LOL Username,Teammate Four Email Address|email\" inputs=\"team-captain|name,team-captain-email-address|email\" headings=\"Team Captain|team-captain,Team Members|teammate-one-lol-username\"]Please fill out the form below to let us know that your are interested in participating in the event[/team-sign-up]','Team Sign Up','','publish','open','open','','team-sign-up','','','2016-05-12 22:19:50','2016-05-12 22:19:50','',464,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
+	(466,1,'2016-05-12 22:19:50','2016-05-12 22:19:50','[individual-sign-up new_line=\",\" delimiter=\"|\" questions=\"Your Name,Your LOL Username,Your Email Address|email,Your Phone|tel\" inputs=\"your-name|name,your-email-address|email\"]Please fill out the form below to let us know that your are interested in participating in the event but don&#39;t have a team to compete with. We will try and find you a team[/individual-sign-up]','Individual Sign Up','','publish','open','open','','individual-sign-up','','','2016-05-12 22:19:50','2016-05-12 22:19:50','',464,'http://gigazonegaming.local/auto-draft/',0,'post','',0);
 
 /*!40000 ALTER TABLE `wp_posts` ENABLE KEYS */;
 UNLOCK TABLES;
