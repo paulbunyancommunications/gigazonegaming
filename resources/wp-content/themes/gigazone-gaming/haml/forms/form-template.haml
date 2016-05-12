@@ -1,30 +1,44 @@
-{% if inputs is defined and inputs|length > 0 %}
+{% if questions is defined and questions|length > 0 %}
 <input class="hidden" type="hidden" id="{{action|slugify}}-fields" value="{% for input in inputs %}{{input.0|slugify}}{% if input.1 is defined %}-{{input.1}}{% endif %}{% if loop.last == false %},{% endif %}{% endfor %}" />
 {% if content is defined %}
 %p {{content}}
 {% endif %}
 .well.well-gz
   %form{:class=>"form doAjaxForm doGeoLocate doForm form-horizontal ", :method=>"{% if method is defined %}{{method|upper}}{% else %}POST{% endif %}", :action=>"{{site.url}}{% if action is defined %}{{ action }}{% endif %}", :id=>"{% if action is defined %}{{ action|slugify }}-form{% endif %}", :name=>"{% if action is defined %}{{ action|slugify }}-form{% endif %}", :novalidate=>"novalidate"}
-    {% for input in inputs %}
+
+    {% if tag is defined %}
+    %legend {{tag|format_for_title|replace({'-':' '})}}
+    {% endif %}
+
+    {% for input in questions %}
     -# if there's a real_input field that matched the current input use that for the name otherwise use default, {{ input.0|slugify }}
-    \ {% set inputName = input.0|slugify %}
-    \ {% if real_inputs is defined %}
-    \   {% for real_input in real_inputs %}
-    \     {% if real_input.0 is defined and real_input.1 is defined and real_input.0 == inputName %}
-    \       {% set inputName = real_input.1 %}
+    \ {% set questionInputName = input.0|slugify %}
+    \ {% if inputs is defined %}
+    \   {% for real_input in inputs %}
+    \     {% if real_input.0 is defined and real_input.1 is defined and real_input.0 == questionInputName %}
+    \       {% set questionInputName = real_input.1|slugify %}
     \     {% endif %}
     \   {% endfor %}
     \ {% endif %}
 
+    -# try and match the headings to the current input, if matched prepend the input with a title
+    \ {% if headings is defined %}
+    \   {% for heading in headings %}
+    \       {% if heading.1 is defined and heading.1 == input.0|slugify %}
+    %h3 {{heading.0}}
+    \       {% endif %}
+    \   {% endfor %}
+    \ {% endif %}
+
     -# add current input to the fields array
-    %input{:type=>"hidden", :name=>"fields[]", :value=>"{{ inputName }}"}/
+    %input{:type=>"hidden", :name=>"fields[]", :value=>"{{ questionInputName }}"}/
     %div{:class=>"form-group{% if input.1 is defined %} {{ input.1 }}-group{% endif %}"}
       %label{:for=>"{{ input.0|slugify }}", :class=>"col-md-3 control-label", :id=>"{{ input.0|slugify }}-label"}{{ input.0 }}
-      %input{:type=>"hidden", :name=>"{{ inputName }}-label", :value=>"{{ input.0|escape }}"}
+      %input{:type=>"hidden", :name=>"{{ questionInputName }}-label", :value=>"{{ input.0|escape }}"}
       -# if input is of type email
       {% if input.1 is defined and input.1 == 'email' %}
       .col-md-9
-        %input{:type=>"email", :class=>"email form-control full-width", :name=>"{{ inputName }}", :value=>"", :id=>"{{ input.0|slugify }}"}/
+        %input{:type=>"email", :class=>"email form-control full-width", :name=>"{{ questionInputName }}", :value=>"", :id=>"{{ input.0|slugify }}"}/
       -# if input is of type range
       {% elseif input.1 is defined and input.1 == 'range' %}
       .col-md-9
@@ -34,17 +48,17 @@
         .col-xs-3
           %p{:class=>"small strong uppercase text-center"}Very<br>dissatisfied
         .col-xs-6
-          %input{:id=>"{{ input.0|slugify }}", :name=>"{{ inputName }}", :type=>"text"}/
+          %input{:id=>"{{ input.0|slugify }}", :name=>"{{ questionInputName }}", :type=>"text"}/
         .col-xs-3
           %p{:class=>"small strong uppercase text-center"}Very<br>satisfied
       -# if input is of type boolean
       {% elseif input.1 is defined and input.1 == 'boolean' %}
       .col-md-9
-        %input{:type=>"checkbox", :class=>"boolean", :name=>"{{ inputName }}", :value=>"No", :id=>"{{ input.0|slugify }}"}/
+        %input{:type=>"checkbox", :class=>"boolean", :name=>"{{ questionInputName }}", :value=>"No", :id=>"{{ input.0|slugify }}"}/
       -# if input is of type textarea
       {% elseif input.1 is defined and input.1 == 'textarea' %}
       .col-md-9
-        %textarea{:name=>"{{ inputName }}", :id=>"{{ input.0|slugify }}", :rows=>5, :class=>"form-control full-width"}
+        %textarea{:name=>"{{ questionInputName }}", :id=>"{{ input.0|slugify }}", :rows=>5, :class=>"form-control full-width"}
       -# if input is of type checklist
       {% elseif input.1 is defined and input.1 == 'checklist' and input.2 is defined %}
       .col-md-9
@@ -52,13 +66,13 @@
         {% for i in input|keys|slice(2,(input|length - 2)) %}
         .checkbox
           %label
-            %input{:type=>"checkbox",:name=>"{{ inputName }}[]", :value=>"{{input[i]|escape}}", :id=>"{{ input[i]|slugify }}-{{input.1}}"}
+            %input{:type=>"checkbox",:name=>"{{ questionInputName }}[]", :value=>"{{input[i]|escape}}", :id=>"{{ input[i]|slugify }}-{{input.1}}"}
             {{input[i]}}
         {% endfor %}
       -# otherwise default to text field
       {% else %}
       .col-md-9
-        %input{:id=>"{{ input.0|slugify }}", :class=>"form-control full-width", :name=>"{{ inputName }}", :type=>"text"}/
+        %input{:id=>"{{ input.0|slugify }}", :class=>"form-control full-width", :name=>"{{ questionInputName }}", :type=>"text"}/
       {% endif %}
     {% endfor %}
     .form-group
