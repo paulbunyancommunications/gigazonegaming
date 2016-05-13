@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Championship;
+namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,5 +13,10 @@ class Player extends Model
     public function team()
     {
         return $this->belongsTo('App\Models\Championship\Team');
+    }
+    
+    public function getCaptainAttribute($value)
+    {
+        return (bool)$value;
     }
 }

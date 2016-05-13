@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Championship;
+namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,5 +38,10 @@ class Game extends Model
     public function individualPlayers()
     {
         return $this->hasMany('App\Models\Championship\IndividualPlayer');
+    }
+
+    public function scopeByName($query, $name)
+    {
+        return $query->where('name', $name)->first();
     }
 }

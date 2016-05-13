@@ -9,21 +9,25 @@
  * @package Test\Functional
  */
 
-namespace Test\Functional;
+namespace Test\Functional\Http\Controllers\Updates;
 
 use App\Models\UpdateRecipients;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 
 class UpdatesControllerTest extends \TestCase
 {
 
     use DatabaseTransactions;
-    use DatabaseMigrations;
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        exec('php artisan migrate:refresh');
+    }
 
     /**
      * @test
+     * @covers \App\Http\Controllers\Frontend\Updates\UpdatesController::store
      */
     public function it_returns_a_success_when_email_is_sent()
     {
@@ -39,6 +43,7 @@ class UpdatesControllerTest extends \TestCase
 
     /**
      * @test
+     * @covers \App\Http\Controllers\Frontend\Updates\UpdatesController::store
      */
     public function it_has_a_participate_flag()
     {
@@ -54,6 +59,7 @@ class UpdatesControllerTest extends \TestCase
     }
     /**
      * @test
+     * @covers \App\Http\Controllers\Frontend\Updates\UpdatesController::store
      */
     public function it_has_geo_location_data()
     {
@@ -73,6 +79,7 @@ class UpdatesControllerTest extends \TestCase
 
     /**
      * @test
+     * @covers \App\Http\Controllers\Frontend\Updates\UpdatesController::store
      */
     public function it_fails_without_email()
     {
@@ -88,6 +95,7 @@ class UpdatesControllerTest extends \TestCase
 
     /**
      * @test
+     * @covers \App\Http\Controllers\Frontend\Updates\UpdatesController::store
      */
     public function it_fails_with_bad_email()
     {
@@ -103,6 +111,7 @@ class UpdatesControllerTest extends \TestCase
 
     /**
      * @test
+     * @covers \App\Http\Controllers\Frontend\Updates\UpdatesController::store
      */
     public function it_fails_if_duplicate_email_present()
     {

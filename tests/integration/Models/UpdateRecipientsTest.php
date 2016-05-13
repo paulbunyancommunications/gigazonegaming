@@ -10,11 +10,10 @@
  * @subpackage Subpackage
  */
 
-namespace Tests\Integration\Model;
+namespace Tests\Integration\Models;
 
 use App\Models\UpdateRecipients;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * Class RoleTest
@@ -24,7 +23,6 @@ class UpdateRecipientsTest extends \TestCase
 {
 
     use DatabaseTransactions;
-    use DatabaseMigrations;
 
     /**
      * @var
@@ -38,6 +36,12 @@ class UpdateRecipientsTest extends \TestCase
     {
         parent::setUp();
         $this->faker = \Faker\Factory::create();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -74,6 +78,36 @@ class UpdateRecipientsTest extends \TestCase
 
         $this->assertTrue($update->participate);
     }
+    /**
+     *
+     * Test to see when getting a role by name
+     * we get the correct name attribute
+     *
+     * @test
+     */
+    public function it_has_geo_lat_attribute()
+    {
+        $latitude = $this->faker->latitude;
+        $item = factory(UpdateRecipients::class)->create(['geo_lat' => $latitude]);
 
+        $update = UpdateRecipients::find($item->id);
 
+        $this->assertSame($update->geo_lat, round($latitude, 6, PHP_ROUND_HALF_UP));
+    }
+    /**
+     *
+     * Test to see when getting a role by name
+     * we get the correct name attribute
+     *
+     * @test
+     */
+    public function it_has_geo_long_attribute()
+    {
+        $longitude = $this->faker->longitude;
+        $item = factory(UpdateRecipients::class)->create(['geo_long' => $longitude]);
+
+        $update = UpdateRecipients::find($item->id);
+
+        $this->assertSame($update->geo_long, round($longitude, 6, PHP_ROUND_HALF_UP));
+    }
 }

@@ -24,8 +24,6 @@ class MakeChampionshipForeignKeys extends Migration
          * Add foreign keys for the teams table to captain and game
          */
         Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->integer('captain_id')->unsigned();
-            $table->foreign('captain_id')->references('id')->on('players');
             $table->integer('game_id')->unsigned();
             $table->foreign('game_id')->references('id')->on('games');
         });
@@ -51,7 +49,6 @@ class MakeChampionshipForeignKeys extends Migration
         });
 
         Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->dropForeign(['captain_id']);
             $table->dropForeign(['game_id']);
         });
 

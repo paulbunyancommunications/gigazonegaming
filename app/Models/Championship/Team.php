@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Championship;
+namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,9 +37,9 @@ class Team extends Model
      */
     public function captain()
     {
-        return $this->belongsTo('App\Models\Championship\Player');
+        return $this->players()->where('captain', '=', 1);
     }
-    
+
     public function players()
     {
         return $this->hasMany('App\Models\Championship\Player');

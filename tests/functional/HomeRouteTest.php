@@ -11,15 +11,19 @@
 
 namespace Test\Functional;
 use Cache;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
 class HomeRouteTest extends \TestCase
 {
     use DatabaseTransactions;
-    use DatabaseMigrations;
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        exec('php artisan migrate:refresh');
+    }
+    
     /**
      * @test
      */

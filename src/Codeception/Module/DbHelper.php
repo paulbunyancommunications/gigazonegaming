@@ -11,13 +11,13 @@
 
 namespace Codeception\Module;
 
-use Codeception\Module;
+use Codeception\Module as CodeceptionModule;
 
 /**
  * Class DbHelper
  * @package Codeception\Module
  */
-class DbHelper extends Module
+class DbHelper extends CodeceptionModule
 {
 
     /**
@@ -37,5 +37,4 @@ class DbHelper extends Module
     {
         $I->runShellCommand('php artisan migrate:refresh');
     }
-
 }

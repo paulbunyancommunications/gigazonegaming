@@ -49,7 +49,7 @@ class UpdatesController extends Controller
 
     /**
      * Get recipients from database and generate map
-     *
+     * @codeCoverageIgnore
      * @return \Illuminate\Contracts\View\View
      */
     public function map()
