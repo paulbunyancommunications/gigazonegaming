@@ -1,0 +1,21 @@
+{# messages #}
+{% set error_types = ['success','warning','error'] %}
+{% set error_class = ['success','warning','danger'] %}
+{% for key, type in error_types %}
+    {% if session_has(type) %}
+        <div class="alert alert-{{ error_class[key] }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i
+                            class="fa fa-times"></i></span></button>
+            {{ session_get(type) }}
+        </div>
+    {% endif %}
+{% endfor %}
+{% if errors is defined and errors.any %}
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i
+                        class="fa fa-times"></i></span></button>
+        {% for error in errors.all %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
