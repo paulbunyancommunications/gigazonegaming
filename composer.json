@@ -118,7 +118,7 @@
     "rcrowe/twigbridge": "0.9.x",
     "paulbunyannet/premailer": "^1.0",
     "paulbunyannet/wordpress-artisan": "^1.0",
-    "paulbunyannet/form_mail": "^1.0",
+    "paulbunyannet/form_mail": "^1.1",
     "sunra/php-simple-html-dom-parser": "v1.5.0",
     "league/csv": "^8.0"
   },
