@@ -18,10 +18,10 @@ apache:
 mysql:
     users:
         mysql_user_one:
-            name: 'gzgaming_user'
+            name: 'user'
             password: 'password'
         mysql_user_two:
-            name: 'gzgaming_champ'
+            name: 'user_2'
             password: 'password'
     databases:
         mysql_database_one:
@@ -32,12 +32,12 @@ mysql:
             sql: '/var/www/sql/gzgaming_champ_db.sql'
     grants:
         mysql_grants_one:
-            user: 'gzgaming_user'
+            user: 'user'
             table: 'gzgaming_wp.*'
             privileges:
                 - ALL
         mysql_grants_two:
-            user: 'gzgaming_champ'
+            user: 'user_2'
             table: 'gzgaming_champ_db.*'
             privileges:
                 - ALL
