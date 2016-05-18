@@ -14,8 +14,7 @@ class CreateTournamentsTable extends Migration
     {
         Schema::connection('mysql_champ')->create('tournaments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('token');
-            $table->integer('game_id')->unsigned();
+            $table->string('name')->index()->unique();
             $table->timestamps();
         });
     }
