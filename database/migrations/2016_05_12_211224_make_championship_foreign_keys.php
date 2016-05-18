@@ -13,6 +13,13 @@ class MakeChampionshipForeignKeys extends Migration
     public function up()
     {
         /**
+         * Add foreign keys for tournament table
+         */
+        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+            $table->foreign('game_id')->references('id')->on('games');
+        });
+        
+        /**
          * Add foreign keys for the players table to game
          */
         Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
@@ -44,6 +51,10 @@ class MakeChampionshipForeignKeys extends Migration
      */
     public function down()
     {
+        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+            $table->dropForeign(['game_id']);
+        });
+
         Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
             $table->dropForeign(['team_id']);
         });
