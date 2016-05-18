@@ -20,14 +20,24 @@ class Team extends Model
      */
     protected $fillable = ['username','email','phone','parent_id'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        // cause a delete of a team to cascade to children so they are also deleted
+        static::deleted(function ($team) {
+            $team->players()->delete();
+        });
+    }
+    
     /**
-     * Get game which team is playing in
+     * Get tournament which team is playing in
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function game()
+    public function tournament()
     {
-        return $this->belongsTo('App\Models\Championship\Game');
+        return $this->belongsTo('App\Models\Championship\Tournament');
     }
 
     /**

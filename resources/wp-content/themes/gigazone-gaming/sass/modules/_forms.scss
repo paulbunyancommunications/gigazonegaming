@@ -4,3 +4,45 @@ legend {
   font-family: $font-family-display;
   text-transform: uppercase;
 }
+
+.form-group.hidden-group {
+  margin-bottom: 0;
+}
+
+.form-control:focus {
+  border-color: $color-gz-orange;
+  @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6));
+}
+
+.bootstrap-switch {
+  & .bootstrap-switch-handle-on, & .bootstrap-switch-handle-off, & .bootstrap-switch-label {
+    font-family: $font-family-display;
+    text-transform: uppercase;
+  }
+
+  &:hover .bootstrap-switch-handle-off {
+    background: tint($color-gz-gray, 75) !important;
+  }
+
+  &:hover .bootstrap-switch-handle-on {
+    background: tint($color-gz-orange, 10) !important;
+  }
+
+  &.bootstrap-switch-focused {
+    border-color: $color-gz-orange !important;
+    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6) !important);
+
+  }
+
+  & .bootstrap-switch-handle-on {
+    background: $color-gz-orange !important;
+    color: $color-gz-gray !important;
+
+  }
+
+  & .bootstrap-switch-handle-off {
+    background: tint($color-gz-gray, 65) !important;
+    color: $color-gz-gray !important;
+  }
+
+}

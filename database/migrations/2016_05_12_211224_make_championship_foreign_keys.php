@@ -25,7 +25,10 @@ class MakeChampionshipForeignKeys extends Migration
          */
         Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
             $table->integer('team_id')->unsigned();
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('team_id')
+                ->references('id')
+                ->on('teams')
+                ->onDelete('cascade');
         });
 
         /**

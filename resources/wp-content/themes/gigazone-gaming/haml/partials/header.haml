@@ -2,6 +2,10 @@
   %meta{:charset=>"utf-8"}/
   %meta{:"http-equiv"=>"X-UA-Compatible", :content=>"IE=edge"}/
   %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1"}/
+  -# get request_token if set
+  {% if request_token is defined %}
+  %meta{:name=>"request_token", :content=>"{{ request_token }}"}/
+  {% endif %}
   {% if function('is_singular') and function('pings_open', function('get_queried_object')) %}
   %link{:rel=>"pingback", :href=>"{{ function('bloginfo','pingback_url') }}"}/
   {% endif %}

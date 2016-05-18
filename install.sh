@@ -91,7 +91,7 @@ then
 fi
 
 # eval the machines.yaml config (parse_yaml can't go deep enough to reach machines)
-eval $(parse_yaml puphpet/machines.yaml "config__")
+eval $(parse_yaml puphpet/config-custom.yaml "config__")
 
 # get host name
 hostname=$(basename ${APP_URL})
@@ -100,7 +100,7 @@ hostname=$(basename ${APP_URL})
 if [ ! -f "vm_flush.sh" ]; then
     wget https://raw.githubusercontent.com/paulbunyannet/bash/master/virtualbox/vm_flush.sh
 fi
-. "${PWD}/vm_flush.sh" -h "${hostname}" -m "${config__machines__machine_one__hostname}" -i "${config__machines__machine_one__id}"
+. "${PWD}/vm_flush.sh" -h "${hostname}" -m "${config__vm__hostname}"
 
 # do vagrant stuff
 vagrant destroy -f
@@ -111,5 +111,8 @@ vagrant ssh -c "cd /var/www; php artisan key:generate;"
 
 # generate new wordpress auth keys
 vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
+
+# run artisan migration
+vagrant ssh -c "cd /var/www; php artisan migrate"
 
 #fin

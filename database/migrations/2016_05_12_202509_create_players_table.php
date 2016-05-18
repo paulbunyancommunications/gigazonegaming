@@ -16,6 +16,7 @@ class CreatePlayersTable extends Migration
             $table->increments('id');
             $table->string('username');
             $table->string('email');
+            $table->string('name');
             $table->string('phone');
             $table->boolean('captain')->default(0);
             $table->timestamps();

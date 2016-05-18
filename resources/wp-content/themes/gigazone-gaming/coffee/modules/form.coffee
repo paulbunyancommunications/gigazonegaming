@@ -24,6 +24,7 @@ define ['jquery', 'Utility'], ($, Utility) ->
           glForm.prepend('<input type="hidden" name="geo_long" value="' + position.coords.longitude + '" />');
           return
 
+  form.getRequestToken = ->
 
   # on submit of an ajax form
   $('.doAjaxForm').on('submit', (e)->
@@ -47,10 +48,10 @@ define ['jquery', 'Utility'], ($, Utility) ->
       success: (data)->
         progress.hide()
         if data.hasOwnProperty('success')
-          message.html('<div class="alert alert-success"><p>' + data.success.join(' ') + '</p></div>').show()
+          message.html('<div class="alert alert-success"><p>' + data.success.join('<br>') + '</p></div>').show()
           thisForm[0].reset()
         else if data.hasOwnProperty('error')
-          message.html('<div class="alert alert-warning"><p>' + data.error.join(' ') + '</p></div>').show()
+          message.html('<div class="alert alert-warning"><p>' + data.error.join('<br>') + '</p></div>').show()
       error:  (jqXHR, textStatus)->
         progress.hide()
         message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
@@ -91,9 +92,8 @@ define ['jquery', 'Utility'], ($, Utility) ->
           thisSwitch.on('switchChange.bootstrapSwitch', (event, state)->
             $(this).attr('checked', state);
             if state
-              $(this).val('Yes')
+              $(this).val('yes')
             else
               $(this).val('')
-    
           )
   return form

@@ -5,7 +5,7 @@
 {% endif %}
 .well.well-gz
   %form{:class=>"form doAjaxForm doGeoLocate doForm form-horizontal ", :method=>"{% if method is defined %}{{method|upper}}{% else %}POST{% endif %}", :action=>"{{site.url}}{% if action is defined %}{{ action }}{% endif %}", :id=>"{% if action is defined %}{{ action|slugify }}-form{% endif %}", :name=>"{% if action is defined %}{{ action|slugify }}-form{% endif %}", :novalidate=>"novalidate"}
-
+    -# if tag is set then display it here in the legend tag
     {% if tag is defined %}
     %legend {{tag|format_for_title|replace({'-':' '})}}
     {% endif %}
@@ -30,11 +30,15 @@
     \   {% endfor %}
     \ {% endif %}
 
-    -# add current input to the fields array
+    -# add current input to the fields array if not a hidden field
+    {% if input.1 is not defined or input.1 != 'hidden' %}
     %input{:type=>"hidden", :name=>"fields[]", :value=>"{{ questionInputName }}"}/
+    {% endif %}
     %div{:class=>"form-group{% if input.1 is defined %} {{ input.1 }}-group{% endif %}"}
+      {% if input.1 is not defined or input.1 != 'hidden' %}
       %label{:for=>"{{ input.0|slugify }}", :class=>"col-md-3 control-label", :id=>"{{ input.0|slugify }}-label"}{{ input.0 }}
       %input{:type=>"hidden", :name=>"{{ questionInputName }}-label", :value=>"{{ input.0|escape }}"}
+      {% endif %}
       -# if input is of type email
       {% if input.1 is defined and input.1 == 'email' %}
       .col-md-9
@@ -54,7 +58,7 @@
       -# if input is of type boolean
       {% elseif input.1 is defined and input.1 == 'boolean' %}
       .col-md-9
-        %input{:type=>"checkbox", :class=>"boolean", :name=>"{{ questionInputName }}", :value=>"No", :id=>"{{ input.0|slugify }}"}/
+        %input{:type=>"checkbox", :class=>"boolean", :name=>"{{ questionInputName }}", :value=>"no", :id=>"{{ input.0|slugify }}"}/
       -# if input is of type textarea
       {% elseif input.1 is defined and input.1 == 'textarea' %}
       .col-md-9
@@ -69,6 +73,9 @@
             %input{:type=>"checkbox",:name=>"{{ questionInputName }}[]", :value=>"{{input[i]|escape}}", :id=>"{{ input[i]|slugify }}-{{input.1}}"}
             {{input[i]}}
         {% endfor %}
+      -# If hidden field set it up here
+      {% elseif input.1 is defined and input.1 == 'hidden' and input.2 is defined %}
+      %input{:type=>"{{ input.1 }}", :value=>"{{ input.2 }}", :name=>"{{input.0 }}"}
       -# otherwise default to text field
       {% else %}
       .col-md-9

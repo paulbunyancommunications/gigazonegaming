@@ -21,6 +21,20 @@ class Game extends Model
     protected $fillable = ['name','description','uri'];
 
     /**
+     * Bootup model
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // cause a delete of a game to cascade to children so they are also deleted
+        static::deleted(function ($game) {
+            $game->tournaments()->delete();
+            $game->teams()->delete();
+            $game->individualPlayers()->delete();
+        });
+    }
+    /**
      * Get teams playing this game
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -28,6 +42,16 @@ class Game extends Model
     public function teams()
     {
         return $this->hasMany('App\Models\Championship\Team');
+    }
+
+    /**
+     * Get teams playing this game
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tournaments()
+    {
+        return $this->hasMany('App\Models\Championship\Tournament');
     }
 
     /**
@@ -40,6 +64,11 @@ class Game extends Model
         return $this->hasMany('App\Models\Championship\IndividualPlayer');
     }
 
+    /**
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
     public function scopeByName($query, $name)
     {
         return $query->where('name', $name)->first();

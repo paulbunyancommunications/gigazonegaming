@@ -32,21 +32,27 @@ Route::get('/frontend/session/csrf', ['as' => 'get_csrf', 'uses' => 'Frontend\Se
 Route::post('/updates/signup', ['as' => 'updates.store', 'uses' => 'Frontend\Updates\UpdatesController@store']);
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
 
-// contact us form
-Route::post(
-    '/contact-us',
-    ['uses' => 'Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us']
-);
-// team sign up request
-Route::post(
-    '/team-sign-up',
-    ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'team-sign-up']
-);
-// individual sign up request
-Route::post(
-    '/individual-sign-up',
-    ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'free-agent-sign-up']
-);
+Route::group(['middleware' => ['UpdateRecipient']], function () {
+    // contact us form
+    Route::post(
+        '/contact-us',
+        ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us']
+    );
+    // team sign up request
+    Route::post(
+        '/team-sign-up',
+        [
+            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+            'as' => 'team-sign-up',
+            'middleware' => 'LolTeamSignUp'
+        ]
+    );
+    // individual sign up request
+    Route::post(
+        '/individual-sign-up',
+        ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'free-agent-sign-up']
+    );
+});
 
 Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
