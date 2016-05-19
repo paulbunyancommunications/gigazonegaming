@@ -18,7 +18,7 @@ class Team extends Model
     /**
      * @var array
      */
-    protected $fillable = ['username', 'email', 'phone', 'parent_id'];
+    protected $fillable = ['name', 'emblem', 'captain', 'tournament_id'];
 
     public static function boot()
     {
