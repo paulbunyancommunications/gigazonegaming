@@ -4,6 +4,10 @@ namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Tournament
+ * @package App\Models\Championship
+ */
 class Tournament extends Model
 {
     /**
@@ -16,21 +20,34 @@ class Tournament extends Model
      */
     protected $fillable = ['name', 'game_id'];
 
+    /**
+     *
+     */
     public static function boot()
     {
         parent::boot();
 
         // cause a delete of a tournament to cascade to children so they are also deleted
-        static::deleted(function ($tournament) {
+
+        static::deleting(function ($tournament) {
+
+            /** @var Tournament $tournament */
             $tournament->teams()->delete();
+
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function game()
     {
         return $this->belongsTo('App\Models\Championship\Game');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function teams()
     {
         return $this->hasMany('App\Models\Championship\Team');

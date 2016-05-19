@@ -11,6 +11,7 @@ define ['jquery', 'Utility'], ($, Utility) ->
   # get the csrf token add add it to the jquery ajax setup
   form.getCsrf = ->
     $.get('/app/frontend/session/csrf', (csrf) ->
+      #$('body').append('<div style="color: #000000; background: #ffffff; z-index: 99999; position: absolute; top: 0; left: 0;">' + csrf + '</div>')
       $.ajaxSetup({ headers: { 'X-CSRF-TOKEN' : csrf } });
     )
 
@@ -54,6 +55,7 @@ define ['jquery', 'Utility'], ($, Utility) ->
           message.html('<div class="alert alert-warning"><p>' + data.error.join('<br>') + '</p></div>').show()
       error:  (jqXHR, textStatus)->
         progress.hide()
+        #message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
         message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
     })
     return true

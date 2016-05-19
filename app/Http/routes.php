@@ -40,17 +40,21 @@ Route::group(['middleware' => ['UpdateRecipient']], function () {
     );
     // team sign up request
     Route::post(
-        '/team-sign-up',
+        '/lol-team-sign-up',
         [
             'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-            'as' => 'team-sign-up',
+            'as' => 'lol-team-sign-up',
             'middleware' => 'LolTeamSignUp'
         ]
     );
     // individual sign up request
     Route::post(
-        '/individual-sign-up',
-        ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'free-agent-sign-up']
+        '/lol-individual-sign-up',
+        [
+            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+            'as' => 'lol-individual-sign-up',
+            'middleware' => 'LolIndividualSignUp'
+        ]
     );
 });
 

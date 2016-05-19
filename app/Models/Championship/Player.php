@@ -8,15 +8,10 @@ class Player extends Model
 {
     protected $connection = 'mysql_champ';
     
-    protected $fillable = ['username','email','phone','parent_id'];
+    protected $fillable = ['username','email','phone'];
 
     public function team()
     {
         return $this->belongsTo('App\Models\Championship\Team');
-    }
-    
-    public function getCaptainAttribute($value)
-    {
-        return (bool)$value;
     }
 }

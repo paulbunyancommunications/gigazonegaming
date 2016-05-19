@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.49)
 # Database: gzgaming_champ_db
-# Generation Time: 2016-05-12 22:21:16 +0000
+# Generation Time: 2016-05-19 16:15:46 +0000
 # ************************************************************
 
 
@@ -43,7 +43,8 @@ LOCK TABLES `games` WRITE;
 
 INSERT INTO `games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`)
 VALUES
-	(1,'unknown','','Unknown game','',NULL,NULL);
+	(1,'unknown','','Unknown game','',NULL,NULL),
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-19 16:14:00','2016-05-19 16:14:00');
 
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -78,13 +79,14 @@ CREATE TABLE `players` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `team_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `players_team_id_foreign` (`team_id`),
-  CONSTRAINT `players_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`)
+  CONSTRAINT `players_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -98,17 +100,43 @@ CREATE TABLE `teams` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `emblem` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `captain` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `captain_id` int(10) unsigned NOT NULL,
-  `game_id` int(10) unsigned NOT NULL,
+  `tournament_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `teams_captain_id_foreign` (`captain_id`),
-  KEY `teams_game_id_foreign` (`game_id`),
-  CONSTRAINT `teams_game_id_foreign` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`),
-  CONSTRAINT `teams_captain_id_foreign` FOREIGN KEY (`captain_id`) REFERENCES `players` (`id`)
+  KEY `teams_tournament_id_foreign` (`tournament_id`),
+  CONSTRAINT `teams_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+
+# Dump of table tournaments
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tournaments`;
+
+CREATE TABLE `tournaments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `game_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tournaments_name_unique` (`name`),
+  KEY `tournaments_game_id_foreign` (`game_id`),
+  CONSTRAINT `tournaments_game_id_foreign` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+LOCK TABLES `tournaments` WRITE;
+/*!40000 ALTER TABLE `tournaments` DISABLE KEYS */;
+
+INSERT INTO `tournaments` (`id`, `name`, `created_at`, `updated_at`, `game_id`)
+VALUES
+	(1,'gigazone-gaming-2016-league-of-legends','2016-05-19 16:14:00','2016-05-19 16:14:00',2);
+
+/*!40000 ALTER TABLE `tournaments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 

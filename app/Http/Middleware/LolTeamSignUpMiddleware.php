@@ -22,7 +22,6 @@ class LolTeamSignUpMiddleware
     {
         $rules = new LolTeamSignUpRequest;
         $validator = \Validator::make($request->all(), $rules->rules(), $rules->messages());
-        //dd($request->all());
         if ($validator->fails()) {
             return \Response::json(['error' => $validator->errors()->all()]);
         }
@@ -42,7 +41,6 @@ class LolTeamSignUpMiddleware
         $captain->setAttribute('email', $request->input('email'));
         $captain->setAttribute('name', $request->input('name'));
         $captain->setAttribute('phone', $request->input('team-captain-phone'));
-        $captain->setAttribute('captain', true);
         $captain->setAttribute('team_id', $team->id);
         $captain->save();
 
@@ -51,7 +49,6 @@ class LolTeamSignUpMiddleware
             $player = new Player();
             $player->setAttribute('username', $request->input('teammate-'.Numbers::toWord($i).'-lol-summoner-name'));
             $player->setAttribute('email', $request->input('teammate-'.Numbers::toWord($i).'-email-address'));
-            $player->setAttribute('captain', false);
             $player->setAttribute('team_id', $team->id);
             $player->save();
         }

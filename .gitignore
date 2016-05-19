@@ -1,5 +1,6 @@
 originals/*
 vendor/*
+!resources/lang/vendor
 .env
 .env.jenkins
 .idea/*
@@ -39,3 +40,4 @@ vm_flush.sh
 !public_html/wp-content/plugins/gzg-manager
 cache
 config/ide-helper.php
+coverage-checker.php

@@ -51,6 +51,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'WPAdmin' => \App\Http\Middleware\WPAdminMiddleware::class,
         'UpdateRecipient' => \App\Http\Middleware\UpdateRecipientMiddleware::class,
-        'LolTeamSignUp' => \App\Http\Middleware\LolTeamSignUpMiddleware::class
+        'LolTeamSignUp' => \App\Http\Middleware\LolTeamSignUpMiddleware::class,
+        'LolIndividualSignUp' => \App\Http\Middleware\LolIndividualSignUp::class,
     ];
 }

@@ -18,18 +18,19 @@ class Team extends Model
     /**
      * @var array
      */
-    protected $fillable = ['username','email','phone','parent_id'];
+    protected $fillable = ['username', 'email', 'phone', 'parent_id'];
 
     public static function boot()
     {
         parent::boot();
 
         // cause a delete of a team to cascade to children so they are also deleted
-        static::deleted(function ($team) {
+        static::deleting(function ($team) {
             $team->players()->delete();
+
         });
     }
-    
+
     /**
      * Get tournament which team is playing in
      *
@@ -47,9 +48,16 @@ class Team extends Model
      */
     public function captain()
     {
-        return $this->players()->where('captain', '=', 1);
+        if (!$this->getAttribute('captain')) {
+            return false;
+        }
+        return Player::findOrFail($this->getAttribute('captain'));
     }
 
+    /**
+     * Get players
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function players()
     {
         return $this->hasMany('App\Models\Championship\Player');

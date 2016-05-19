@@ -5,7 +5,7 @@ use \AcceptanceTester;
 use Pbc\Bandolier\Type\Numbers;
 class LolTeamSignUpCest
 {
-    const DEFAULT_WAIT = 8;
+    const DEFAULT_WAIT = 15;
 
     public function _before(AcceptanceTester $I)
     {
@@ -21,7 +21,7 @@ class LolTeamSignUpCest
     public function submitATeamToTheSystemFromForm(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create();
-        $I->wantTo('Submit the team sign up form');
+        $I->wantTo('Submit the LOL team sign up form');
         $I->amOnPage('/sign-up/lol-team-sign-up/');
         $I->see('League of Legends Team Sign Up');
         $teamName = $faker->company;
@@ -29,7 +29,7 @@ class LolTeamSignUpCest
         $teamCaptain = $faker->name;
         $I->fillField(['name' => 'name'], $teamCaptain);
         $teamCaptainLol = $faker->userName;
-        $I->fillField(['name' => 'team-captain-lol-username'], $teamCaptainLol);
+        $I->fillField(['name' => 'team-captain-lol-summoner-name'], $teamCaptainLol);
         $teamCaptainEmail = $faker->email;
         $I->fillField(['name' => 'email'], $teamCaptainEmail);
         $teamCaptainPhone = $faker->phoneNumber;
@@ -46,7 +46,7 @@ class LolTeamSignUpCest
                 $teamMembers[$i]['email']
             );
             $I->fillField(
-                ['name' => 'teammate-' . Numbers::toWord($i) . '-lol-username'],
+                ['name' => 'teammate-' . Numbers::toWord($i) . '-lol-summoner-name'],
                 $teamMembers[$i]['username']
             );
         }
@@ -54,7 +54,7 @@ class LolTeamSignUpCest
         $I->click(['id' => 'doFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
 
-        $I->see('Thanks for signing up your team!');
+        $I->see('Thanks for signing up your team to play League of Legends!');
         $I->see($teamName, ['id' => 'team-name-response-value']);
         $I->see($teamCaptain, ['id' => 'name-response-value']);
         $I->see($teamCaptainLol, ['id' => 'team-captain-lol-summoner-name-response-value']);

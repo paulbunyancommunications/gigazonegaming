@@ -12,11 +12,12 @@
 
 namespace Tests\Integration\Models\Championship;
 
-use App\Models\Championship\Game;
+
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 
 /**
  * Class RoleTest
@@ -26,6 +27,7 @@ class PlayerTest extends \TestCase
 {
 
     use DatabaseTransactions;
+
 
     /**
      * @var
@@ -95,22 +97,6 @@ class PlayerTest extends \TestCase
         $getPlayer = Player::find($item->id);
 
         $this->assertSame($getPlayer->phone, $phone);
-    }
-    /**
-     *
-     * Test to see when getting a player we
-     * get back the game the captain attribute
-     *
-     * @test
-     */
-    public function it_has_a_captain_attribute()
-    {
-        $captain = true;
-        $player = factory(Player::class)->create(['captain' => $captain]);
-
-        $getPlayer = Player::find($player->id);
-
-        $this->assertSame($getPlayer->captain, $captain);
     }
 
     /**
