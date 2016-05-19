@@ -5,7 +5,7 @@ use AcceptanceTester;
 
 class ContactFormCest
 {
-    const DEFAULT_WAIT = 8;
+    const DEFAULT_WAIT = 15;
     
     public function _before(AcceptanceTester $I)
     {

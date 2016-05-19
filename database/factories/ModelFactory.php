@@ -37,8 +37,9 @@ $factory->define(App\Models\Championship\Team::class, function (Faker\Generator 
     return [
         'name' => implode('-', $faker->words()),
         'emblem' => $faker->imageUrl(),
-        'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
-        
+        'tournament_id' => factory(App\Models\Championship\Tournament::class)->create([])->id,
+        'captain' => 0,
+
     ];
 });
 
@@ -48,10 +49,7 @@ $factory->define(App\Models\Championship\Player::class, function (Faker\Generato
         'username' => $faker->userName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
-        'team_id' => factory(App\Models\Championship\Team::class)->create(
-            ['game_id' => factory(App\Models\Championship\Game::class)->create([])->id]
-        )->id,
-        'captain' => false,
+        'team_id' => factory(App\Models\Championship\Team::class)->create([])->id,
     ];
 });
 
@@ -61,6 +59,14 @@ $factory->define(App\Models\Championship\IndividualPlayer::class, function (Fake
         'username' => $faker->userName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
+        'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
+    ];
+});
+
+$factory->define(App\Models\Championship\Tournament::class, function (Faker\Generator $faker) {
+
+    return [
+        'name' => implode('-', $faker->words(4)),
         'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
     ];
 });

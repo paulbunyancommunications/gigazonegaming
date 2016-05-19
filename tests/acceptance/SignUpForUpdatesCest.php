@@ -11,7 +11,7 @@ class SignUpForUpdatesCest
     /**
      *
      */
-    const DEFAULT_WAIT = 8;
+    const DEFAULT_WAIT = 15;
 
     /**
      * @param AcceptanceTester $I

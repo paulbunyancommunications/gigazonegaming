@@ -14,7 +14,7 @@ namespace Tests\Integration\Models\Championship;
 
 use App\Models\Championship\Game;
 use App\Models\Championship\IndividualPlayer;
-use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -64,6 +64,7 @@ class GameTest extends \TestCase
 
         $this->assertSame($name, $getName->name);
     }
+
     /**
      *
      * Test to see when getting a game we
@@ -80,6 +81,7 @@ class GameTest extends \TestCase
 
         $this->assertSame($title, $getName->title);
     }
+
     /**
      *
      * Test to see when getting a game we
@@ -131,21 +133,20 @@ class GameTest extends \TestCase
     }
 
     /**
-     * check that teams are attached to game
+     * check that teams are attached to tournament
      *
      * @test
      */
-    public function it_has_teams()
+    public function it_has_tournaments()
     {
-        $name = $this->faker->sentence;
-        $game = factory(Game::class)->create(['name' => $name]);
-        for ($i = 0; $i < 10; $i++) {
-            Factory(Team::class)->create(['game_id' => $game->id]);
-        }
 
-        $getGame = Game::find($game->id);
-        $this->assertSame(count($getGame->teams->toArray()), 10);
+        $game = Factory(Game::class)->create();
+        factory(Tournament::class, 10)->create(['game_id' => $game->id]);
+
+
+        $this->assertSame(count($game->tournaments()->get()->toArray()), 10);
     }
+
     /**
      * check that teams are attached to game
      *

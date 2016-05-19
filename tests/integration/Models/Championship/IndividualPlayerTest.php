@@ -14,8 +14,6 @@ namespace Tests\Integration\Models\Championship;
 
 use App\Models\Championship\Game;
 use App\Models\Championship\IndividualPlayer;
-use App\Models\Championship\Player;
-use App\Models\Championship\Team;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

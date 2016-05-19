@@ -15,8 +15,10 @@ namespace Tests\Integration\Models\Championship;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 
 /**
  * Class RoleTest
@@ -59,7 +61,7 @@ class TeamTest extends \TestCase
     {
 
         $name = $this->faker->name;
-        $item = factory(Team::class)->create(['name' => $name, 'game_id' => factory(Game::class)->create()->id]);
+        $item = factory(Team::class)->create(['name' => $name, 'tournament_id' => factory(Tournament::class)->create()->id]);
         $getName = Team::find($item->id);
 
         $this->assertSame($name, $getName->name);
@@ -74,7 +76,7 @@ class TeamTest extends \TestCase
     public function it_has_a_emblem_attribute()
     {
         $imageUrl = $this->faker->imageUrl();
-        $item = factory(Team::class)->create(['emblem' => $imageUrl, 'game_id' => factory(Game::class)->create()->id]);
+        $item = factory(Team::class)->create(['emblem' => $imageUrl]);
 
         $getName = Team::find($item->id);
 
@@ -87,14 +89,14 @@ class TeamTest extends \TestCase
      *
      * @test
      */
-    public function it_has_a_game_attribute()
+    public function it_has_a_tournament_attribute()
     {
-        $game = factory(Game::class)->create();
-        $item = factory(Team::class)->create(['game_id' => $game->id]);
+        $tournament = factory(Tournament::class)->create();
+        $item = factory(Team::class)->create(['tournament_id' => $tournament->id]);
 
         $getGame = Team::find($item->id);
 
-        $this->assertSame($getGame->game->id, $game->id);
+        $this->assertSame($getGame->tournament->id, $tournament->id);
     }
     /**
      *
@@ -105,13 +107,13 @@ class TeamTest extends \TestCase
      */
     public function it_has_a_captain_attribute()
     {
-        $game = factory(Game::class)->create();
-        $item = factory(Team::class)->create(['game_id' => $game->id]);
-        $player = factory(Player::class)->create(['team_id' => $item->id, 'captain' => true]);
-
+        $item = factory(Team::class)->create();
+        $player = factory(Player::class)->create(['team_id' => $item->id]);
+        $item->captain = $player->id;
+        $item->save();
+        
         $getTeam = Team::find($item->id);
-
-        $this->assertSame($getTeam->captain->first()->id, $player->id);
+        $this->assertSame($getTeam->captain()->id, $player->id);
     }
     /**
      *
@@ -122,11 +124,8 @@ class TeamTest extends \TestCase
      */
     public function it_has_a_players_attribute()
     {
-        $game = factory(Game::class)->create();
-        $team = factory(Team::class)->create(['game_id' => $game->id]);
-        for ($i=0; $i < 10; $i++) {
-            factory(Player::class)->create(['team_id' => $team->id]);
-        }
+        $team = factory(Team::class)->create();
+        factory(Player::class, 10)->create(['team_id' => $team->id]);
 
         $getTeam = Team::find($team->id);
 

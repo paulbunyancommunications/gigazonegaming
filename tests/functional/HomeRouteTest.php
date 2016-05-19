@@ -9,7 +9,7 @@
  * @package Test\Functional
  */
 
-namespace Test\Functional;
+namespace Tests\Functional;
 use Cache;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

@@ -28,20 +28,11 @@ class Game extends Model
         parent::boot();
 
         // cause a delete of a game to cascade to children so they are also deleted
-        static::deleted(function ($game) {
+        static::deleting(function ($game) {
             $game->tournaments()->delete();
-            $game->teams()->delete();
             $game->individualPlayers()->delete();
+
         });
-    }
-    /**
-     * Get teams playing this game
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function teams()
-    {
-        return $this->hasMany('App\Models\Championship\Team');
     }
 
     /**
