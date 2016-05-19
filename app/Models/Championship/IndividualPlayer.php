@@ -18,7 +18,7 @@ class IndividualPlayer extends Model
     /**
      * @var array
      */
-    protected $fillable = ['username', 'email', 'phone', 'game_id'];
+    protected $fillable = ['username', 'email', 'phone', 'name', 'game_id'];
 
     /**
      * Get game the individual player want to be in
