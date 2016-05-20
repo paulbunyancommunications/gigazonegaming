@@ -18,11 +18,7 @@ class Game extends Model
     /**
      * @var array
      */
-<<<<<<< HEAD
     protected $fillable = ['name','description','uri','updated_by','updated_on'];
-=======
-    protected $fillable = ['name','title','description','uri'];
->>>>>>> b5e78b393775e5d3b63516a2dfdfdda32a228eb4
 
     /**
      * Bootup model
