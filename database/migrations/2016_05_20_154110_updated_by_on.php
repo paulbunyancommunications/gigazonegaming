@@ -13,23 +13,23 @@ class UpdatedByOn extends Migration
     public function up()
     {
         Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
-            $table->string('updated_by');
+            $table->integer('updated_by');
             $table->timestamp('updated_on');
         });
         Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->string('updated_by');
+            $table->integer('updated_by');
             $table->timestamp('updated_on');
         });
         Schema::connection('mysql_champ')->table('games', function (Blueprint $table) {
-            $table->string('updated_by');
+            $table->integer('updated_by');
             $table->timestamp('updated_on');
         });
         Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->string('updated_by');
+            $table->integer('updated_by');
             $table->timestamp('updated_on');
         });
         Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
-            $table->string('updated_by');
+            $table->integer('updated_by');
             $table->timestamp('updated_on');
         });
     }
