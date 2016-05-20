@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Models\Championship\Game;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class GamesController extends Controller
 {
+    private $gameList;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,10 @@ class GamesController extends Controller
      */
     public function index()
     {
-        //
+//        $games = DB::table("mysql_champ.games")->select("id","name")->get();
+        $this->gameList = Game::all()->toArray();
+//        dd($games);
+        return View::make('game/game')->with("games", $this->gameList);
     }
 
     /**
@@ -58,7 +65,9 @@ class GamesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $theGame = DB::table('games')->get($id)->first();
+
+        return View::make('game/game')->with("games", $this->gameList)->with("theGame", $theGame);
     }
 
     /**

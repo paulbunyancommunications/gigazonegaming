@@ -8,7 +8,7 @@ class Player extends Model
 {
     protected $connection = 'mysql_champ';
     
-    protected $fillable = ['username','email','phone'];
+    protected $fillable = ['username','email','phone','updated_by','updated_on'];
 
     public function team()
     {
