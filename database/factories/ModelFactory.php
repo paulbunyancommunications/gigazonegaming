@@ -70,3 +70,14 @@ $factory->define(App\Models\Championship\Tournament::class, function (Faker\Gene
         'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
     ];
 });
+
+$factory->define(App\Models\WpUser::class, function (Faker\Generator $faker) {
+
+    return [
+        'user_login' => $faker->userName,
+        'user_pass' => md5($faker->password()),
+        'user_nicename' => $faker->name,
+        'user_email' => $faker->email,
+        'display_name' => $faker->name,
+    ];
+});
