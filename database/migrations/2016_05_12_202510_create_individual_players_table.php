@@ -15,6 +15,7 @@ class CreateIndividualPlayersTable extends Migration
         Schema::connection('mysql_champ')->create('individual_players', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username');
+            $table->string('name');
             $table->string('email');
             $table->string('phone');
             $table->timestamps();
