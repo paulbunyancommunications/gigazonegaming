@@ -60,9 +60,9 @@ Route::group(['middleware' => ['UpdateRecipient']], function () {
     );
 });
 
-Route::group(['middleware' => ['WPAdmin']], function () {
-    Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
-});
+//Route::group(['middleware' => ['WPAdmin']], function () {
+//    Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
+//});
 
 
 /**
