@@ -169,6 +169,9 @@ return [
         Pbc\FormMail\Providers\FormMailServiceProvider::class,
         Pbc\FormMailTemplate\Providers\FormMailTemplateServiceProvider::class,
 
+        //laravel collective html and form
+        Collective\Html\HtmlServiceProvider::class,
+
     ],
 
     /*
@@ -217,6 +220,10 @@ return [
 
         // twig bridge
         'Twig' => 'TwigBridge\Facade\Twig',
+
+        //laravel html and form
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 
