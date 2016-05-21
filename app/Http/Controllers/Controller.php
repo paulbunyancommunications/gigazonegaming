@@ -18,4 +18,7 @@ class Controller extends BaseController
     {
         $this->context = [];
     }
+    public function getUserId(){
+        return get_current_user_id();
+    }
 }
