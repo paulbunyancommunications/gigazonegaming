@@ -6,7 +6,7 @@
     <title>Controller</title>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="">
+    <style type="text/css" href="">@yield('css')</style>
 </head>
 <body>
 <div class="container" id="page-content">
@@ -19,5 +19,6 @@
 </div>
 <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">@yield('js')</script>
 </body>
 </html>
