@@ -44,3 +44,4 @@ coverage-checker.php
 .sass-cache/*
 node_modules/*
 public_html/bower_components/*
+ModelFactory.php.orig

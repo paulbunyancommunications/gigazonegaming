@@ -15,6 +15,7 @@ namespace Tests\Integration\Models\Championship;
 use App\Models\Championship\Game;
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Tournament;
+use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -63,6 +64,35 @@ class GameTest extends \TestCase
         $getName = Game::find($item->id);
 
         $this->assertSame($name, $getName->name);
+    }
+    /**
+     *
+     * Test to see when getting a game we
+     * get back the correct updated by attribute
+     *
+     * @test
+     */
+    public function it_has_a_updated_by_attribute()
+    {
+        $user_name = $this->faker->userName;
+        $user = factory(\App\Models\WpUser::class)->create(['user_login' => $user_name]);
+        $game = factory(Game::class)->create(['updated_by' => $user->ID]);
+        $getGame = Game::find($game->id);
+        $this->assertSame($user->ID, $getGame->updated_by);
+    }
+
+    /**
+     *
+     * Test to see when getting a game we
+     * get back the correct updated on attribute
+     *
+     * @test
+     */
+    public function it_has_a_updated_on_attribute()
+    {
+        $time_stamp = Carbon::now("CMT");
+        $game = factory(Game::class)->create(['updated_on' => $time_stamp]);
+        $this->assertSame($time_stamp, $game->updated_on);
     }
 
     /**

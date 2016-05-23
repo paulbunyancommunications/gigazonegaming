@@ -15,6 +15,7 @@ namespace Tests\Integration\Models\Championship;
 
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
+use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -111,5 +112,34 @@ class PlayerTest extends \TestCase
         $getPlayer = Player::find($player->id);
 
         $this->assertInstanceOf(Team::class, $getPlayer->team);
+    }
+    /**
+     *
+     * Test to see when getting a Player we
+     * get back the correct updated by attribute
+     *
+     * @test
+     */
+    public function it_has_a_updated_by_attribute()
+    {
+        $user_name = $this->faker->userName;
+        $user = factory(\App\Models\WpUser::class)->create(['user_login' => $user_name]);
+        $player = factory(Player::class)->create(['updated_by' => $user->ID]);
+        $getPlayer = Player::find($player->id);
+        $this->assertSame($user->ID, $getPlayer->updated_by);
+    }
+
+    /**
+     *
+     * Test to see when getting a game we
+     * get back the correct updated on attribute
+     *
+     * @test
+     */
+    public function it_has_a_updated_on_attribute()
+    {
+        $time_stamp = Carbon::now("CMT");
+        $player = factory(Player::class)->create(['updated_on' => $time_stamp]);
+        $this->assertSame($time_stamp, $player->updated_on);
     }
 }

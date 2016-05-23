@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     $path = env('APP_URL', 'http://example.local');
     try {
@@ -24,6 +25,7 @@ Route::get('/', function () {
         // @codeCoverageIgnoreEnd
     }
 });
+
 
 // get csrf token for forms outside app
 Route::get('/frontend/session/csrf', ['as' => 'get_csrf', 'uses' => 'Frontend\SessionController@csrfToken']);
@@ -58,9 +60,9 @@ Route::group(['middleware' => ['UpdateRecipient']], function () {
     );
 });
 
-Route::group(['middleware' => ['WPAdmin']], function () {
-    Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
-});
+//Route::group(['middleware' => ['WPAdmin']], function () {
+//    Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
+//});
 
 
 /**
@@ -71,3 +73,10 @@ Route::get('/report/{extra}', function () {
     require base_path('c3.php');
 })->where('extra', '.*');
 // @codeCoverageIgnoreEnd
+
+
+
+
+foreach(File::allFiles(__DIR__.'/Routes') as $partials){
+    require_once $partials->getPathname();
+}

@@ -97,3 +97,14 @@ $factory->define(App\Models\WpPost::class, function (Faker\Generator $faker) {
         'comment_count' => ''
     ];
 });
+
+$factory->define(App\Models\WpUser::class, function (Faker\Generator $faker) {
+
+    return [
+        'user_login' => $faker->userName,
+        'user_pass' => md5($faker->password()),
+        'user_nicename' => $faker->name,
+        'user_email' => $faker->email,
+        'display_name' => $faker->name,
+    ];
+});
