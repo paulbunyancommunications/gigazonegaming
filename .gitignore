@@ -46,3 +46,5 @@ node_modules/*
 public_html/bower_components/*
 ModelFactory.php.orig
 composer.lock
+build/packaging
+build/staging-deployment/build/packaging
