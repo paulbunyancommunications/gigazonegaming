@@ -28,11 +28,6 @@ class GameRequest extends Request
      */
     public function rules()
     {
-        $id = $this->route()->game_id->id;
-        $name = $this->route()->game_id->name;
-//        dd($name);
-//        dd($this->all());
-//        dd($this->request);
         switch($this->method())
         {
             case 'GET':
@@ -50,6 +45,9 @@ class GameRequest extends Request
             case 'PUT':
             case 'PATCH':
             {
+
+//                $id = $this->route()->game_id->id;
+                $name = $this->route()->game_id->name;
 //                dd("passed put patch");
                 return [
 //                    'id' => 'required|unique:mysql_champ.games,id,'.$id.',id',
