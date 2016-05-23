@@ -106,7 +106,7 @@
     //@include margin(2.125,0,.5,.25);
     //text-decoration: none;
     //text-transform: uppercase;
-    @include margin-bottom(0);
+    @include margin-bottom(1);
 
     @include mq_tablet {
       @include font-size(4.5);
