@@ -45,3 +45,4 @@ coverage-checker.php
 node_modules/*
 public_html/bower_components/*
 ModelFactory.php.orig
+composer.lock
