@@ -1,5 +1,5 @@
+@import "../../../../../../public_html/bower_components/Gutenberg/src/style/gutenberg-mixins";
 @mixin toggled-navigation {
-
   @include bs-full-width-columns;
 
   .main-navigation {
@@ -56,7 +56,8 @@
 
   .main-navigation-toggle > div {
     @include height(3);
-    & > a {
+     > a {
+      @include font-size(1.4);
       border-bottom: 0;
       &:hover, &:active {
         border-bottom: 0;
@@ -136,6 +137,10 @@
       }
 
     }
+  }
+
+  .main-navigation-toggle > div > a {
+    @include font-size(2);
   }
 
 }

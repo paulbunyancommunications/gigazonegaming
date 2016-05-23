@@ -66,6 +66,28 @@
       padding: 0;
     }
 
+    .well-gz {
+      background-color: $color-white;
+      border: none;
+      margin: 0;
+      @include border-radius(#{ .5 * $leading + 'px'});
+      @include border-radius(#{ .5 * $leading-rem + 'rem'});
+    }
+
+    label, .checkbox label, .radio label {
+      @include font-size(1.375);
+      @include line-height(1.25);
+      font-weight: 700;
+
+    }
+
+    legend {
+      @include font-size(1.625);
+      @include line-height(1.375);
+      @include margin-bottom(1);
+      text-align: center;
+    }
+
   }
 
   &-social-media {

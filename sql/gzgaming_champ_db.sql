@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.49)
 # Database: gzgaming_champ_db
-# Generation Time: 2016-05-19 16:15:46 +0000
+# Generation Time: 2016-05-20 14:03:27 +0000
 # ************************************************************
 
 
@@ -44,7 +44,7 @@ LOCK TABLES `games` WRITE;
 INSERT INTO `games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`)
 VALUES
 	(1,'unknown','','Unknown game','',NULL,NULL),
-	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-19 16:14:00','2016-05-19 16:14:00');
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-20 13:21:45','2016-05-20 13:21:45');
 
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -58,6 +58,7 @@ DROP TABLE IF EXISTS `individual_players`;
 CREATE TABLE `individual_players` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -133,7 +134,7 @@ LOCK TABLES `tournaments` WRITE;
 
 INSERT INTO `tournaments` (`id`, `name`, `created_at`, `updated_at`, `game_id`)
 VALUES
-	(1,'gigazone-gaming-2016-league-of-legends','2016-05-19 16:14:00','2016-05-19 16:14:00',2);
+	(1,'gigazone-gaming-2016-league-of-legends','2016-05-20 13:21:45','2016-05-20 13:21:45',2);
 
 /*!40000 ALTER TABLE `tournaments` ENABLE KEYS */;
 UNLOCK TABLES;

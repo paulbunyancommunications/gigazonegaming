@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying home page
+ * The template for displaying pages
  *
  * @package WordPress
  * @subpackage gigazone-gaming
@@ -10,6 +10,6 @@ include(locate_template('get-context.php'));
 /**
  * Output page to browser
  */
+$context['post'] = Timber::get_post(get_post()->ID);
 Timber::render('pages/page.twig', $context);
-var_dump(__FILE__);
 var_dump($context);

@@ -1,7 +1,7 @@
 @import "compass/css3";
 
 .article-container {
-  @include margin-top(.25);
+  margin-top: -1px;
 
   @include mq-phone {
     @include bs-full-width-columns;
@@ -13,6 +13,22 @@
   @include line-height(4);
   @include margin-bottom(1.375);
   @include margin-top(1.375);
+  color: $color-gz-gray;
+
+  a {
+    text-decoration: none;
+    border-bottom: 8px solid $color-white;
+    @include line-height(4.875);
+
+    &:hover, &:active {
+      border-bottom-color: $color-gz-gray;
+      color: $color-gz-gray;
+    }
+
+    &.title-section {
+      @include line-height(1);
+    }
+  }
 
   @include mq-cinema {
     @include font-size(7.125);
@@ -21,11 +37,38 @@
     @include margin-top(2);
   }
   @include mq-phone {
-    @include font-size(5.25);
-    @include line-height(3.5);
-    @include margin(1.35, 1.35)
+    @include font-size(3);
+    @include line-height(1.875);
+    @include margin(1, 0)
+  }
+}
+
+.title-section {
+  @include font-size(1.875);
+  @include line-height(1);
+  @include margin(2.125,0,.5,.25);
+  @include padding-bottom(.625);
+  color: tint($color-gz-orange, 50%);
+  text-decoration: none;
+  display: block;
+  border-bottom: 1px solid tint($color-gz-orange, 75%);
+  text-transform: uppercase;
+
+  @include mq-phone {
+    @include margin(2.125,0,.25,0);
+    @include font-size(1.5);
+    @include line-height(.875);
   }
 
+  &:hover {
+    text-decoration: none;
+    color: $color-light-gray;
+    border-bottom-color: $color-light-gray;
+  }
+
+  & + .title-page {
+    margin-top: 0;
+  }
 }
 
 .child-post {
@@ -43,30 +86,6 @@
   @include margin-bottom(1.2);
 }
 
-.post-content {
-  @include padding(0,0,0,1);
-  @include margin-bottom(2);
-  @include margin-top(-0.125);
-
-  @include mq-phone {
-    @include padding(0,1.5);
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-.post-child-sub-menu {
-  & ul li {
-    display: none;
-  }
-  & ul li.current_page_item,  & ul li.current_page_item li{
-    display: block;
-  }
-}
-
 // alignment of media
 
 .alignleft {
@@ -79,3 +98,79 @@
   @include margin(.5, 0, 0.5, 0.5);
 }
 
+.post {
+
+  &-title {
+    //@include font-size(1.875);
+    //@include line-height(1);
+    //@include margin(2.125,0,.5,.25);
+    //text-decoration: none;
+    //text-transform: uppercase;
+    @include margin-bottom(0);
+
+    @include mq_tablet {
+      @include font-size(4.5);
+      @include line-height(3.125);
+    }
+
+  }
+
+  &-content {
+    @include padding(0,0,0,1);
+    @include margin-bottom(2);
+    @include margin-top(-0.125);
+
+    @include mq-phone {
+      @include padding(0,1.5);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  &-child-sub-menu {
+    & ul li {
+      display: none;
+    }
+    & ul li.current_page_item,  & ul li.current_page_item li{
+      display: block;
+    }
+  }
+
+  &-permalink {
+    background: tint($color-light-gray, 50%);
+    @include font-size(1.25);
+    line-height: normal;
+    color: $color-gz-gray;
+    @include padding-equal(.5);
+    @include border-radius(10px);
+    @include margin-top(1);
+    @include margin-bottom(1);
+    display: table;
+
+    a {
+      color: $color-gz-gray;
+      text-decoration: none;
+      &:hover, &:active {
+        color: $color-black;
+      }
+    }
+  }
+  &-list-item {
+    border-bottom: 1px solid $color-light-gray;
+    padding: 0;
+    &:last-child {
+      border-bottom: none;
+    }
+    &:first-of-type {
+      border-top: none;
+    }
+  }
+}
+
+// special cases
+h1.title-page + .post-list-item > .title-page:first-of-type {
+  margin-top: 0;
+}

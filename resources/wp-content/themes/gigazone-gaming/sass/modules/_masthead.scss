@@ -115,4 +115,42 @@ $masthead-logo-multiplier: 1.75;
     }
 
   }
+  &-event {
+    &-date {
+      color: $color-white;
+      font-family: $font-family-display;
+      text-transform: uppercase;
+      @include font-size(2);
+      @include padding-equal(.5);
+      text-align: right;
+      margin: 0;
+      @include margin-top(1);
+    }
+
+    &-location {
+      color: $color-gz-orange;
+      font-family: $font-family-display;
+      text-transform: uppercase;
+      @include font-size(2);
+      @include padding-equal(.5);
+      text-align: right;
+      margin: 0;
+    }
+
+    &-date + &-location {
+      padding-top: 0;
+      @include margin-top(-.625)
+    }
+
+    &-date, &-location {
+      @include mq-cinema {
+        @include font-size(2.25);
+      }
+      @include mq-phone {
+        text-align: center;
+        @include font-size(1.75);
+        margin-top: 0;
+      }
+    }
+  }
 }

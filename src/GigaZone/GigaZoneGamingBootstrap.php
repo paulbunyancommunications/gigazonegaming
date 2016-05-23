@@ -108,11 +108,10 @@ class GigaZoneGamingBootstrap extends \TimberSite
     public function updateSignUpFormShortCode($attributes)
     {
         $attr = shortcode_atts(array(
-            'foo' => 'something',
-            'bar' => 'something else',
+            'type' => '',
         ), $attributes);
 
-        return Timber::compile('forms/update-sign-up.twig', $attr);
+        return Timber::compile('forms/update-sign-up'.($attr['type'] ? '-'.$attr['type'] : '').'.twig', $attr);
     }
 
     /**
@@ -142,7 +141,7 @@ class GigaZoneGamingBootstrap extends \TimberSite
             'wrap_tag' => 'div',
             'wrap_class' => 'gigazone-info',
         ), $attributes);
-        
+
         /** @var GigaZoneFromPaulBunyan $gigazone */
         $gigazone = new GigaZoneFromPaulBunyan();
 

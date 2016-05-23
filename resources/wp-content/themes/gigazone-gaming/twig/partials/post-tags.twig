@@ -1,0 +1,42 @@
+{% if post.terms is defined and post.terms|length > 0 and function('is_front_page') == false %}
+    {# before building the tag lists, check if there are any tags or categories  #}
+    {% set show_tags=false %}
+    {% set show_categories=false %}
+    {% for term in post.terms %}
+        {% if term.taxonomy == 'post_tag' %}
+            {% set show_tags=true %}
+        {% endif %}
+        {% if term.taxonomy == 'category' %}
+            {% set show_categories=true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if show_tags %}
+        <div class="tag">
+            <div class="alignleft">
+                <div class="tag-list-label">{% if tag_label is defined %}{{ tag_label }}{% else %}Tags{% endif %}</div>
+            </div>
+            <ul class="tag-list">
+                {% for term in post.terms %}
+                    {% if term.taxonomy == 'post_tag' %}
+                        <li class="tag-list-item"><a href="{{ site.url }}/tag/{{ term.slug }}/">{{ term.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if show_categories %}
+        <div class="tag ">
+            <div class="alignleft">
+                <div class="tag-list-label">{% if category_label is defined %}{{ category_label }}{% else %}Categories{% endif %}</div>
+            </div>
+            <ul class="tag-list">
+                {% for term in post.terms %}
+                    {% if term.taxonomy == 'category' %}
+                        <li class="tag-list-item"><a href="{{ site.url }}/category/{{ term.slug }}/">{{ term.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endif %}

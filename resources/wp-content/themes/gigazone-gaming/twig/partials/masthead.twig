@@ -1,0 +1,13 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-sm-6'>
+      <div class='masthead-logo'>
+        <a class='masthead-logo-link' href="{{ function('home_url','/') }}">{{ function("bloginfo","name") }}</a>
+      </div>
+    </div>
+    <div class='col-sm-6'>
+      <p class='masthead-event-date'>{{ function('get_option','event_date') }}</p>
+      <p class='masthead-event-location'>{{ function('get_option','event_location') }}</p>
+    </div>
+  </div>
+</div>

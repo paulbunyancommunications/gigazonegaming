@@ -4,4 +4,14 @@ a {
   &:hover, &:active {
     color: darken($color-gz-gray, 50);
   }
+  &:visited {
+    color: $color-complement-2;
+  }
+}
+
+.page {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }

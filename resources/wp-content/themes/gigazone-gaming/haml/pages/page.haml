@@ -2,8 +2,9 @@
 {% block article %}
 .container
   .row
-    .col-md-12
-      {% include "partials/content.twig" %}
+    {% set layout = (page.layout is defined ? page.layout|slugify : "") %}
+    %div{:class=>"{{layout}}"}
+      {% include ["partials/layouts/layout-" ~ layout ~ ".twig", "partials/layouts/layout-sidebar.twig"] %}
 {% endblock %}
 
 

@@ -16,7 +16,8 @@
     "gulp-uglify": "^1.5.3",
     "laravel-elixir": "^4.0.0",
     "laravel-elixir-livereload": "^1.1.4",
-    "laravel-elixir-sass-compass": "^0.5.0"
+    "laravel-elixir-sass-compass": "^0.5.0",
+    "gulp-watch": "4.3.5"
   },
   "dependencies": {
     "dotenv": "^2.0.0"

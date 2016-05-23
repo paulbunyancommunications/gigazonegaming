@@ -1,6 +1,6 @@
 <?php
 global $cachePool;
-
+require_once __DIR__ . '/theme-panel.php';
 register_nav_menu('Main Navigation', __('Primary Menu'));
 $bootstrap = new \GigaZone\GigaZoneGamingBootstrap();
 
@@ -15,8 +15,14 @@ add_shortcode('lol-team-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
 
 
+
 // if the WP_FRONT_PAGE_ONLY flat is true then relay all requests to the front page post
 add_action('init', 'showSplashPageOnly', 1);
+
+// add wordpress settings page action for this theme
+
+
+
 function showSplashPageOnly()
 {
     if(filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
@@ -27,8 +33,4 @@ function showSplashPageOnly()
         Timber::render('pages/splash.twig', $context);
         die();
     }
-
 }
-
-
-

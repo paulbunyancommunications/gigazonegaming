@@ -1,5 +1,6 @@
 <div class="sidebar">
     <div class="sidebar-social-media">{% include 'partials/social-media.twig' %}</div>
     {% include 'partials/sidebar-section-nav.twig' %}
+    <div class="sidebar-highlight-link">{{ function('do_shortcode', '[update-sign-up type="stacked"]') }}</div>
     {% include 'partials/sidebar-highlight-links.twig' %}
 </div>

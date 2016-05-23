@@ -1,17 +1,25 @@
-<div class="row">
-    <div class="col-sm-8 col-md-9">
-        {% if posts.post_count > 1 %}
-            {% include 'partials/page-title.twig' with {'page' : section} %}
+{% if tag is defined %}
+    {% include "partials/tag-title.twig" %}
+{% endif %}
+{% if category is defined %}
+    {% include "partials/category-title.twig" %}
+{% endif %}
+{% if posts is defined and posts|length > 1 %}
+    {% include "partials/section-title.twig" %}
+    {% for p in posts %}
+        <div class="post-list-item {{ post.class }}">
+            {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
+            {% if p.post_excerpt != '' %}
+                {{ function("apply_filters","the_content", post.post_excerpt) }}
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="{{ post.class }}">
+        {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
+        {{ function("apply_filters","the_content", post.post_content) }}
+        {% include "partials/post-permalink.twig" %}
+        {% include "partials/post-tags.twig" %}
 
-        {% else %}
-
-        {% include 'partials/page-title.twig' %}
-            <div class="post-content">
-            {{ function("apply_filters","the_content", page.post_content) }}
-            </div>
-        {% endif %}
     </div>
-    <div class="col-sm-4 col-md-3">
-        {% include 'partials/sidebar.twig' %}
-    </div>
-</div>
+{% endif %}

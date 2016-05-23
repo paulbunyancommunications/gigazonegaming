@@ -70,3 +70,30 @@ $factory->define(App\Models\Championship\Tournament::class, function (Faker\Gene
         'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
     ];
 });
+$factory->define(App\Models\WpPost::class, function (Faker\Generator $faker) {
+
+    return [
+        'post_author' => 1,
+        'post_date' => $faker->date("Y-m-d H:i:s"),
+        'post_date_gmt' => $faker->date("Y-m-d H:i:s"),
+        'post_content' => $faker->paragraph(10),
+        'post_title' => $faker->sentence,
+        'post_excerpt' => $faker->paragraph,
+        'post_status' => 'publish',
+        'comment_status' => 'closed',
+        'ping_status' => 'closed',
+        'post_password' => '',
+        'post_name' => implode('-', $faker->words()),
+        'to_ping' => '',
+        'pinged' => '',
+        'post_modified' => $faker->date("Y-m-d H:i:s"),
+        'post_modified_gmt' => $faker->date("Y-m-d H:i:s"),
+        'post_content_filtered' => '',
+        'post_parent' => '',
+        'guid' => 'http://gigazonegaming.local/auto-draft/',
+        'menu_order' => 0,
+        'post_type' => 'post',
+        'post_mime_type' => '',
+        'comment_count' => ''
+    ];
+});
