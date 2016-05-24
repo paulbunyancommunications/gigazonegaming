@@ -12,4 +12,3 @@ include(locate_template('get-context.php'));
  */
 $context['post'] = Timber::get_post(get_post()->ID);
 Timber::render('pages/page.twig', $context);
-var_dump($context);
