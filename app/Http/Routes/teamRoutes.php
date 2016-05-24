@@ -6,10 +6,10 @@
  * Time: 4:44 PM
  */
 
-Route::get('/manage/tournament', ['as' => 'manage.tournament.index', 'uses' => 'Backend\Manage\TournamentsController@index']); //no need for middleware as we return the names only
+Route::get('/manage/team', ['as' => 'manage.team.index', 'uses' => 'Backend\Manage\TeamsController@index']); //no need for middleware as we return the names only
 Route::group(['middleware' => ['WPAdmin']], function () {
-    Route::get('/manage/tournament/edit/{tournament_id}', ['as' => 'manage.tournament.edit', 'uses' => 'Backend\Manage\TournamentsController@edit']);
-    Route::put('/manage/tournament/edit/{tournament_id}', ['as' => 'manage.tournament.edited', 'uses' => 'Backend\Manage\TournamentsController@update']);
-    Route::post('/manage/tournament/new/', ['as' => 'manage.tournament.new', 'uses' => 'Backend\Manage\TournamentsController@create']);
-    Route::delete('/manage/tournament/delete/{tournament_id}', ['as' => 'manage.tournament.delete', 'uses' => 'Backend\Manage\TournamentsController@destroy']);
+    Route::get('/manage/team/edit/{team_id}', ['as' => 'manage.team.edit', 'uses' => 'Backend\Manage\TeamsController@edit']);
+    Route::put('/manage/team/edit/{team_id}', ['as' => 'manage.team.edited', 'uses' => 'Backend\Manage\TeamsController@update']);
+    Route::post('/manage/team/new/', ['as' => 'manage.team.new', 'uses' => 'Backend\Manage\TeamsController@create']);
+    Route::delete('/manage/team/delete/{team_id}', ['as' => 'manage.team.delete', 'uses' => 'Backend\Manage\TeamsController@destroy']);
 });
