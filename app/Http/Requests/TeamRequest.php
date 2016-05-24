@@ -30,8 +30,6 @@ class TeamRequest extends Request
      */
     public function rules()
     {
-//        protected $fillable = ['name', 'game_id','updated_by','updated_on'];
-//        dd($this->route());
         switch($this->method())
         {
             case 'GET':
