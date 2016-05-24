@@ -55,6 +55,18 @@
             </div>
         </div>
         </form>
+        <div id="filter">
+            {{ Form::open(array('id' => "tournamentFilter", 'action' => array('Backend\Manage\TournamentsController@filter'))) }}
+            <input name="_method" type="hidden" value="POST">
+            <
+            {!!
+                Form::submit(
+                    'Filter',
+                    array('class'=>'btn btn-default list fa fa-search')
+                )
+            !!}
+            {{ Form::close() }}
+        </div>
         <ul id="listOfTournaments" class="listing">
             @if(!isset($tournaments) || $tournaments == [])
                 <li>There are no Tournaments yet</li>

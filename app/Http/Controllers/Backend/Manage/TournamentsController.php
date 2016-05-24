@@ -87,6 +87,20 @@ class TournamentsController extends Controller
     {
         return View::make('game/tournament')->with("theTournament", $tournament);
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  variable $t_id
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Game $id)
+    {
+//        dd($id);
+
+        $tournament =  Tournament::where("game_id", $id->id)->get()->toArray();
+//        dd($tournament);
+        return View::make('game/tournament')->with("tournaments", $tournament);
+    }
 
     /**
      * Show the form for editing the specified resource.

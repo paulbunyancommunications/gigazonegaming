@@ -55,7 +55,7 @@
         @else
             @foreach($games as $id => $game)
                 <li>
-                    {{ Html::linkAction('Backend\Manage\GamesController@index', $game["name"]."   url: ".$game["uri"], array('class' => 'btn btn-default list')) }}
+                    {{ Html::linkAction('Backend\Manage\TournamentsController@filter', $game["id"]."   url: ".$game["uri"], ["id" => $game["id"]], array('class' => 'btn btn-default list')) }}
                     &nbsp;&nbsp;
                     {{ Html::linkAction('Backend\Manage\GamesController@edit', 'Edit', array('game_id'=>$game["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                     &nbsp;&nbsp;

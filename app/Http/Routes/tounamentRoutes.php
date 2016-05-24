@@ -7,6 +7,7 @@
  */
 
 Route::get('/manage/tournament', ['as' => 'manage.tournament.index', 'uses' => 'Backend\Manage\TournamentsController@index']); //no need for middleware as we return the names only
+Route::get('/manage/tournament/filter/{game_id}', ['as' => 'manage.tournament.filter', 'uses' => 'Backend\Manage\TournamentsController@filter']); //no need for middleware as we return the names only
 Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/manage/tournament/edit/{tournament_id}', ['as' => 'manage.tournament.edit', 'uses' => 'Backend\Manage\TournamentsController@edit']);
     Route::put('/manage/tournament/edit/{tournament_id}', ['as' => 'manage.tournament.edited', 'uses' => 'Backend\Manage\TournamentsController@update']);
