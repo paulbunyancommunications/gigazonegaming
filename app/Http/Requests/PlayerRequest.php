@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-use App\Models\Championship\Team;
+use App\Models\Championship\Player;
 
-class TeamRequest extends Request
+class PlayerRequest extends Request
 {
 
     /**
@@ -40,21 +40,21 @@ class TeamRequest extends Request
             case 'POST':
             {
                 return [
-                    'name' => 'required|unique:mysql_champ.teams,name',
-                    'tournament_id' => 'required:mysql_champ.teams,tournament_id',
+                    'username' => 'required|unique:mysql_champ.players,username',
+                    'team_id' => 'required:mysql_champ.players,team_id',
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
 //                dd($this->route());
-//                $id = $this->route()->tournament_id->team_id;
-                $t_id = $this->route()->team_id->tournament_id;
-                $name = $this->route()->team_id->name;
+//                $id = $this->route()->team_id->player_id;
+                $t_id = $this->route()->player_id->team_id;
+                $name = $this->route()->player_id->username;
 //                dd("passed put patch");
                 return [
-                    'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
-                    'tournament_id' => 'required:mysql_champ.teams,tournament_id,'.$t_id.',tournament_id',
+                    'username' => 'required|unique:mysql_champ.players,username,'.$name.',username',
+                    'team_id' => 'required:mysql_champ.players,team_id,'.$t_id.',team_id',
                 ];
             }
             default:break;

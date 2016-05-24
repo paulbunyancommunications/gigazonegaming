@@ -6,10 +6,10 @@
  * Time: 4:44 PM
  */
 
-Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']); //no need for middleware as we return the names only
+Route::get('/manage/player', ['as' => 'manage.player.index', 'uses' => 'Backend\Manage\PlayersController@index']); //no need for middleware as we return the names only
 Route::group(['middleware' => ['WPAdmin']], function () {
-    Route::get('/manage/game/edit/{game_id}', ['as' => 'manage.game.edit', 'uses' => 'Backend\Manage\GamesController@edit']);
-    Route::put('/manage/game/edit/{game_id}', ['as' => 'manage.game.edited', 'uses' => 'Backend\Manage\GamesController@update']);
-    Route::post('/manage/game/new/', ['as' => 'manage.game.new', 'uses' => 'Backend\Manage\GamesController@create']);
-    Route::delete('/manage/game/delete/{game_id}', ['as' => 'manage.game.delete', 'uses' => 'Backend\Manage\GamesController@destroy']);
+    Route::get('/manage/player/edit/{player_id}', ['as' => 'manage.player.edit', 'uses' => 'Backend\Manage\PlayersController@edit']);
+    Route::put('/manage/player/edit/{player_id}', ['as' => 'manage.player.edited', 'uses' => 'Backend\Manage\PlayersController@update']);
+    Route::post('/manage/player/new/', ['as' => 'manage.player.new', 'uses' => 'Backend\Manage\PlayersController@create']);
+    Route::delete('/manage/player/delete/{player_id}', ['as' => 'manage.player.delete', 'uses' => 'Backend\Manage\PlayersController@destroy']);
 });
