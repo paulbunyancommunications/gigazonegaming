@@ -76,11 +76,14 @@
 @endsection
 @section('js')
     $(document).ready(function() {
-         $('.list.fa-times').click(function() {
-            if (confirm('Are you sure?')) {
+        $('.fa-times').click(function() {
+            var conf = confirm('Are you sure?');
+            if (conf) {
                 var url = $(this).attr('href');
                 $(document).load(url);
+            }else{
+                return false;
             }
-         });
+        });
     });
 @endsection
