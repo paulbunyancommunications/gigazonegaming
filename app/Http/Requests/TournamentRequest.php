@@ -30,6 +30,7 @@ class TournamentRequest extends Request
     public function rules()
     {
 //        protected $fillable = ['name', 'game_id','updated_by','updated_on'];
+//        dd($this->route());
         switch($this->method())
         {
             case 'GET':
@@ -40,20 +41,20 @@ class TournamentRequest extends Request
             case 'POST':
             {
                 return [
-                    'name' => 'required|unique:mysql_champ.tournament',
-                    'game_id' => 'required|unique:mysql_champ.tournament',
+                    //'game_id' => 'required|exists:mysql_champ.games:id', TODO
+                    'name' => 'required|unique:mysql_champ.tournaments',
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
-                dd($this->route());
-                $id = $this->route()->game_id->id;
-                $name = $this->route()->game_id->name;
+//                dd($this->route());
+                $id = $this->route()->tournament_id->id;
+                $name = $this->route()->tournament_id->name;
 //                dd("passed put patch");
                 return [
-                    'game_id' => 'required|unique:mysql_champ.tournament,game_id,'.$id.',game_id',
-                    'name' => 'required|unique:mysql_champ.tournament,name,'.$name.',name',
+                    //'game_id' => 'required|exists:mysql_champ.games:id', TODO
+                    'name' => 'required|unique:mysql_champ.tournaments,name,'.$name.',name',
                 ];
             }
             default:break;
