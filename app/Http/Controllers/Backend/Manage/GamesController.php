@@ -15,9 +15,6 @@ use App\Http\Requests\GameRequest;
 
 class GamesController extends Controller
 {
-    private function retrieveGames(){
-        return Game::all()->toArray();
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +22,7 @@ class GamesController extends Controller
      */
     public function index()
     {
-        return View::make('game/game')->with("games", $this->retrieveGames());
+        return View::make('game/game');
     }
 
     /**
@@ -86,7 +83,7 @@ class GamesController extends Controller
      */
     public function show(Game $game)
     {
-        return View::make('game/game')->with("games", $this->retrieveGames())->with("theGame", $game);
+        return View::make('game/game')->with("theGame", $game);
     }
 
     /**
@@ -97,7 +94,7 @@ class GamesController extends Controller
      */
     public function edit(Game $game)
     {
-        return View::make('game/game')->with("games", $this->retrieveGames())->with("theGame", $game);
+        return View::make('game/game')->with("theGame", $game);
     }
 
     /**
@@ -126,7 +123,7 @@ class GamesController extends Controller
 //        Game::where('id', $game->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/game')->with("games", $this->retrieveGames())->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
+        return View::make('game/game')->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
     }
 
     /**
