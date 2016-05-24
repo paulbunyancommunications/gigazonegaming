@@ -5,6 +5,23 @@
     .deletingForms{
     display:inline-block;
     }
+    .separator{
+        font-weight:bold;
+        font-size:2em;
+        font-color:red;
+        text-decoration:underline;
+    }
+    .username, .name{
+        min-width:220px!important;
+        width:220px!important;
+        max-width:220px!important;
+        display:inline-block;
+    }
+    hr{
+        height: 12px;
+        border: 0;
+        box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+    }
 @endsection
 @section('content')
 
@@ -13,9 +30,15 @@
             @if(!isset($players) || $players == [])
                 <li>There are no Players yet</li>
             @else
+                {{-- */ $a = 0; /*--}}
                 @foreach($players as $id => $player)
+                    @if($player["team_id"]!= $a)
+                        <hr />
+                        <li class="separator">Team: {{$teams[$player["team_id"]-1]['name']}}</li>
+                        {{-- */ $a = $player["team_id"]; /*--}}
+                    @endif
                     <li>
-                        <span class='username' id='{{$player["username"]}}'> Username: {{$player["username"]}}</span> <span class='name' id='{{$player["name"]}}'>Name: {{$player["name"]}}</span> <span class='team_id' id='{{$player["team_id"]}}'>Team: {{$player["team_id"]}}</span>
+                        <span class='username' id='{{$player["username"]}}'> Username: {{$player["username"]}}</span> <span class='name' id='{{$player["name"]}}'>Name: {{$player["name"]}}</span>
                         &nbsp;&nbsp;
                         {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                         &nbsp;&nbsp;
@@ -30,6 +53,7 @@
                         {{ Form::close() }}
                     </li>
                 @endforeach
+                <hr />
             @endif
         </ul>
         @if (count($errors) > 0)
@@ -57,18 +81,24 @@
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name">Player Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
-            </div>
-            <div class="form-group">
-                <label for="emblem">Player Emblem: </label> &nbsp; <input type="text" name="emblem" id="emblem" placeholder="The url to the emblem of the player" @if(isset($thePlayer->emblem))value="{{$thePlayer->emblem}}"@endif/>
-            </div>
-            <div class="form-group">
-                <label for="team_id">Player Team ID: </label> &nbsp;
+                <label for="team_id">Player's Team ID: </label> &nbsp;
                 <select type="text" name="team_id" id="team_id" >
                     @foreach($teams as $key => $team)
                         <option value="{{$team['id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['id']) selected @endif>{{ $team['name'] }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="username">Player's Username: </label> &nbsp; <input type="text" name="username" id="username" placeholder="The Username of the player" @if(isset($thePlayer->username))value="{{$thePlayer->username}}"@endif/>
+            </div>
+                <div class="form-group">
+                    <label for="name">Player's Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The Name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
+                </div>
+            <div class="form-group">
+                <label for="email">Player's Email: </label> &nbsp; <input type="text" name="email" id="email" placeholder="The email of the player" @if(isset($thePlayer->email))value="{{$thePlayer->email}}"@endif/>
+            </div>
+            <div class="form-group">
+                <label for="phone">Player's Phone: </label> &nbsp; <input type="text" name="phone" id="phone" placeholder="The phone of the player" @if(isset($thePlayer->phone))value="{{$thePlayer->phone}}"@endif/>
             </div>
             <div class="form-group">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
