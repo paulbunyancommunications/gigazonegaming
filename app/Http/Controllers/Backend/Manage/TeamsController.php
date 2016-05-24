@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\Team;
+use Illuminate\Http\Request;
+
 use App\Models\WpUser;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use App\Http\Requests\GameRequest;
-
-class GamesController extends Controller
+use App\Http\Requests\TeamRequest;
+class TeamsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,43 +23,44 @@ class GamesController extends Controller
      */
     public function index()
     {
-        return View::make('game/game');
+        return View::make('game/team');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Game  $game
+     * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function create(GameRequest $request)
+    public function create(TeamRequest $request)
     {
-        $game = new Game();
-        $game->uri = $request['uri'];
-        $game->description = $request['description'];
-        $game->name = $request['name'];
-        $game->updated_by =  $this->getUserId();
-        $game->updated_on = Carbon::now("CST");
-        $game->save();
+        $team = new Team();
+//        dd($request->all());
+        $team->tournament_id = $request['tournament_id'];
+        $team->name = $request['name'];
+        $team->emblem = $request['emblem'];
+        $team->updated_by =  $this->getUserId();
+        $team->updated_on = Carbon::now("CST");
+        $team->save();
 //        dd($toUpdate);
 //        dd("passed request");
 //        $request->save('id', $request->getRouteKey())->update(
-////        Game::where('id', $game->getRouteKey())->update(
+////        Team::where('id', $team->getRouteKey())->update(
 //            $toUpdate
 //        );
-//        return View::make('game/game')->with("games", $this->retrieveGames())->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
-//        $game->save();
+//        return View::make('team/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
+//        $team->save();
         return $this->index();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Game  $game
+     * @param  Team  $team
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Game $game)
+    public function store(Team $team)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
 //        $updatedBy = $this->getUserId();
@@ -72,39 +74,39 @@ class GamesController extends Controller
 //        unset($toUpdate['id']);
 //        unset($toUpdate['reset']);
 //        unset($toUpdate['submit']);
-//        Game::save($toUpdate);
+//        Team::save($toUpdate);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Game  $game
+     * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function show(Game $game)
+    public function show(Team $team)
     {
-        return View::make('game/game')->with("theGame", $game);
+        return View::make('game/team')->with("theTeam", $team);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Game  $game
+     * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function edit(Game $game)
+    public function edit(Team $team)
     {
-        return View::make('game/game')->with("theGame", $game);
+        return View::make('game/team')->with("theTeam", $team);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param   Game  $game
+     * @param   Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function update(GameRequest $request, Game $game) //have to update it to my request
+    public function update(TeamRequest $request, Team $team) //have to update it to my request
     {
         $updatedBy = $this->getUserId();
         $updatedOn = Carbon::now("CST");
@@ -119,23 +121,23 @@ class GamesController extends Controller
         unset($toUpdate['submit']);
 //        dd($toUpdate);
 //        dd("passed request");
-        $game->where('id', $game->getRouteKey())->update(
-//        Game::where('id', $game->getRouteKey())->update(
+        $team->where('id', $team->getRouteKey())->update(
+//        Team::where('id', $team->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/game')->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
+        return View::make('game/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Game  $game
+     * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Game $game)
+    public function destroy(Team $team)
     {
-        $game->where('id', $game->getRouteKey())->delete();
-//        return View::make('game/game')->with("games", $this->retrieveGames());
-        return redirect('/manage/game');
+        $team->where('id', $team->getRouteKey())->delete();
+//        return View::make('team/team');
+        return redirect('/manage/team');
     }
 }

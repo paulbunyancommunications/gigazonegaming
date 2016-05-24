@@ -29,6 +29,9 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot($router);
 
         $router->model('game_id', 'App\Models\Championship\Game');
+        $router->model('tournament_id', 'App\Models\Championship\Tournament');
+        $router->model('team_id', 'App\Models\Championship\Team');
+        $router->model('player_id', 'App\Models\Championship\Player');
     }
 
     /**

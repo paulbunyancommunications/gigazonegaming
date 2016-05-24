@@ -4,10 +4,11 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-use App\Models\Championship\Tournament;
+use App\Models\Championship\Team;
 
-class TournamentRequest extends Request
+class TeamRequest extends Request
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,8 +30,6 @@ class TournamentRequest extends Request
      */
     public function rules()
     {
-//        protected $fillable = ['name', 'game_id','updated_by','updated_on'];
-//        dd($this->route());
         switch($this->method())
         {
             case 'GET':
@@ -41,20 +40,21 @@ class TournamentRequest extends Request
             case 'POST':
             {
                 return [
-                    //'game_id' => 'required|exists:mysql_champ.games:id', TODO
-                    'name' => 'required|unique:mysql_champ.tournaments',
+                    'name' => 'required|unique:mysql_champ.teams,name',
+                    'tournament_id' => 'required:mysql_champ.teams,tournament_id',
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
 //                dd($this->route());
-                $id = $this->route()->tournament_id->id;
-                $name = $this->route()->tournament_id->name;
+//                $id = $this->route()->tournament_id->team_id;
+                $t_id = $this->route()->team_id->tournament_id;
+                $name = $this->route()->team_id->name;
 //                dd("passed put patch");
                 return [
-                    //'game_id' => 'required|exists:mysql_champ.games:id', TODO
-                    'name' => 'required|unique:mysql_champ.tournaments,name,'.$name.',name',
+                    'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
+                    'tournament_id' => 'required:mysql_champ.teams,tournament_id,'.$t_id.',tournament_id',
                 ];
             }
             default:break;

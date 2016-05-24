@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Models\Championship\Game;
+use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
 
-use App\Models\Championship\Tournament;
 use App\Models\WpUser;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
@@ -16,9 +17,6 @@ use App\Http\Requests\TournamentRequest;
 
 class TournamentsController extends Controller
 {
-    private function retrieveTournaments(){
-        return Tournament::all()->toArray();
-    }
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +24,7 @@ class TournamentsController extends Controller
      */
     public function index()
     {
-        return View::make('game/tournament')->with("tournaments", $this->retrieveTournaments());
+        return View::make('game/tournament');
     }
 
     /**
@@ -38,8 +36,8 @@ class TournamentsController extends Controller
     public function create(TournamentRequest $request)
     {
         $tournament = new Tournament();
-        $tournament->uri = $request['uri'];
-        $tournament->description = $request['description'];
+//        dd($tournament);
+        $tournament->game_id = $request['game_id'];
         $tournament->name = $request['name'];
         $tournament->updated_by =  $this->getUserId();
         $tournament->updated_on = Carbon::now("CST");
@@ -87,7 +85,21 @@ class TournamentsController extends Controller
      */
     public function show(Tournament $tournament)
     {
-        return View::make('game/tournament')->with("tournaments", $this->retrieveTournaments())->with("theTournament", $tournament);
+        return View::make('game/tournament')->with("theTournament", $tournament);
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  variable $t_id
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Game $id)
+    {
+//        dd($id);
+
+        $tournament =  Tournament::where("game_id", $id->id)->get()->toArray();
+//        dd($tournament);
+        return View::make('game/tournament')->with("tournaments", $tournament);
     }
 
     /**
@@ -98,7 +110,8 @@ class TournamentsController extends Controller
      */
     public function edit(Tournament $tournament)
     {
-        return View::make('game/tournament')->with("tournaments", $this->retrieveTournaments())->with("theTournament", $tournament);
+//        dd($tournament->all());
+        return View::make('game/tournament')->with("theTournament", $tournament);
     }
 
     /**
@@ -127,7 +140,7 @@ class TournamentsController extends Controller
 //        Tournament::where('id', $tournament->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/tournament')->with("tournaments", $this->retrieveTournaments())->with("theTournament", $tournament->where('id', $tournament->getRouteKey())->first())->with("cont_updated", true);
+        return View::make('game/tournament')->with("theTournament", $tournament->where('id', $tournament->getRouteKey())->first())->with("cont_updated", true);
     }
 
     /**

@@ -172,6 +172,8 @@ return [
         //laravel collective html and form
         Collective\Html\HtmlServiceProvider::class,
 
+        \App\Providers\ChampionshipGameComposerProvider::class,
+
     ],
 
     /*
