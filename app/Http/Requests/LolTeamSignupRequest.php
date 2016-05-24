@@ -35,7 +35,7 @@ class LolTeamSignUpRequest extends Request
             'team-captain-phone' => 'required',
             'tournament' => 'required|exists:mysql_champ.tournaments,name',
         ];
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $rules['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] = 'required';
             $rules['teammate-'.Numbers::toWord($i).'-email-address'] = 'required|email';
         }
