@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +26,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         });
         View::composer(['game.team'], function ($view) {
             $view->with('teams', Team::all()->toArray())->with('tournaments', Tournament::all()->toArray());
+        });
+        View::composer(['game.player'], function ($view) {
+            $view->with('games', Game::all()->toArray())->with('teams', Team::all()->toArray())->with('players', Player::orderBy('team_id')->get()->toArray());
         });
     }
 
