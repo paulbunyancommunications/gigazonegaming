@@ -20,7 +20,7 @@ class GamesControllerTest extends \TestCase
 //        $faker = \Faker\Factory::create();
 
         $response = $this->call('GET', '/manage/game');
-        dd($response);
+
 //        $this->assertEquals(200, $response->getStatusCode());
 //        $this->assertNotFalse(strpos(implode(' ', $this->success), 'There are no games yet') or strpos(implode(' ', $this->success), 'There are no games yet'));
     }
