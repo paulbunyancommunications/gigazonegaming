@@ -9,29 +9,6 @@
 @section('content')
 
     @if(isset($tournaments) || $tournaments != [])
-        <ul id="listOfTeams" class="listing">
-            @if(!isset($teams) || $teams == [])
-                <li>There are no Teams yet</li>
-            @else
-                @foreach($teams as $id => $team)
-                    <li>
-                        {{ Html::linkAction('Backend\Manage\TeamsController@index', $team["name"], array('class' => 'btn btn-default list')) }}
-                        &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
-                        &nbsp;&nbsp;
-                        {{ Form::open(array('id' => "teamForm".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy', $team["id"]), 'class' => "deletingForms")) }}
-                        <input name="_method" type="hidden" value="DELETE">
-                        {!!
-                            Form::submit(
-                                'Delete',
-                                array('class'=>'btn btn-danger list fa fa-times')
-                            )
-                        !!}
-                        {{ Form::close() }}
-                    </li>
-                @endforeach
-            @endif
-        </ul>
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -79,6 +56,30 @@
             </div>
         </div>
         </form>
+        <ul id="listOfTeams" class="listing">
+            @if(!isset($teams) || $teams == [])
+                <li>There are no Teams yet</li>
+            @else
+                @foreach($teams as $id => $team)
+                    <li>
+                        {{ Html::linkAction('Backend\Manage\TeamsController@index', $team["name"], array('class' => 'btn btn-default list')) }}
+                        &nbsp;&nbsp;
+                        {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                        &nbsp;&nbsp;
+                        {{ Form::open(array('id' => "teamForm".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy', $team["id"]), 'class' => "deletingForms")) }}
+                        <input name="_method" type="hidden" value="DELETE">
+                        {!!
+                            Form::submit(
+                                'Delete',
+                                array('class'=>'btn btn-danger list fa fa-times')
+                            )
+                        !!}
+                        {{ Form::close() }}
+                    </li>
+                @endforeach
+            @endif
+        </ul>
+
     @else
         <h1>Sorry, no tournaments where found on the database!, please create a tournament before proceding with a team</h1>
         {{ Html::link('/manage/tournament/', 'Create a Tournament', array('id' => 'new_tournament', 'class' => 'btn btn-default'))}}

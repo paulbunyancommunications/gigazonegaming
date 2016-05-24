@@ -78,7 +78,8 @@
                 {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
             </div>
         </div>
-        </form><ul id="listOfPlayers" class="listing">
+        </form>
+        <ul id="listOfPlayers" class="listing">
             @if(!isset($players) || $players == [])
                 <li>There are no Players yet</li>
             @else
