@@ -26,36 +26,6 @@
 @section('content')
 
     @if(isset($teams) || $teams != [])
-        <ul id="listOfPlayers" class="listing">
-            @if(!isset($players) || $players == [])
-                <li>There are no Players yet</li>
-            @else
-                {{-- */ $a = 0; /*--}}
-                @foreach($players as $id => $player)
-                    @if($player["team_id"]!= $a)
-                        <hr />
-                        <li class="separator">Team: {{$teams[$player["team_id"]-1]['name']}}</li>
-                        {{-- */ $a = $player["team_id"]; /*--}}
-                    @endif
-                    <li>
-                        <span class='username' id='{{$player["username"]}}'> Username: {{$player["username"]}}</span> <span class='name' id='{{$player["name"]}}'>Name: {{$player["name"]}}</span>
-                        &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
-                        &nbsp;&nbsp;
-                        {{ Form::open(array('id' => "playerForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["id"]), 'class' => "deletingForms")) }}
-                        <input name="_method" type="hidden" value="DELETE">
-                        {!!
-                            Form::submit(
-                                'Delete',
-                                array('class'=>'btn btn-danger list fa fa-times')
-                            )
-                        !!}
-                        {{ Form::close() }}
-                    </li>
-                @endforeach
-                <hr />
-            @endif
-        </ul>
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -108,7 +78,36 @@
                 {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
             </div>
         </div>
-        </form>
+        </form><ul id="listOfPlayers" class="listing">
+            @if(!isset($players) || $players == [])
+                <li>There are no Players yet</li>
+            @else
+                {{-- */ $a = 0; /*--}}
+                @foreach($players as $id => $player)
+                    @if($player["team_id"]!= $a)
+                        <hr />
+                        <li class="separator">Team: {{$teams[$player["team_id"]-1]['name']}}</li>
+                        {{-- */ $a = $player["team_id"]; /*--}}
+                    @endif
+                    <li>
+                        <span class='username' id='{{$player["username"]}}'> Username: {{$player["username"]}}</span> <span class='name' id='{{$player["name"]}}'>Name: {{$player["name"]}}</span>
+                        &nbsp;&nbsp;
+                        {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                        &nbsp;&nbsp;
+                        {{ Form::open(array('id' => "playerForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["id"]), 'class' => "deletingForms")) }}
+                        <input name="_method" type="hidden" value="DELETE">
+                        {!!
+                            Form::submit(
+                                'Delete',
+                                array('class'=>'btn btn-danger list fa fa-times')
+                            )
+                        !!}
+                        {{ Form::close() }}
+                    </li>
+                @endforeach
+                <hr />
+            @endif
+        </ul>
     @else
         <h1>Sorry, no teams where found on the database!, please create a team before proceding with a player</h1>
         {{ Html::link('/manage/team/', 'Create a Team', array('id' => 'new_team', 'class' => 'btn btn-default'))}}
