@@ -22,7 +22,7 @@ mysql:
             password: 'password'
         mysql_user_two:
             name: 'user_2'
-            password: 'password'
+            password: 'password_2'
     databases:
         mysql_database_one:
             name: 'gzgaming_wp'
