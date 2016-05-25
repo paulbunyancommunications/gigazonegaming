@@ -60,6 +60,6 @@ class Team extends Model
      */
     public function players()
     {
-        return $this->hasMany('App\Models\Championship\Player');
+        return $this->hasMany('App\Models\Championship\Player', 'team_id', 'id');
     }
 }
