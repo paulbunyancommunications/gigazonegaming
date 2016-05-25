@@ -43,6 +43,7 @@ class LolIndividualSignUp
         $individual->username = $request->input('your-lol-summoner-name');
         $individual->email = $request->input('email');
         $individual->phone = $request->input('your-phone');
+        $individual->name = $request->input('name');
 
         $individual->save();
 
