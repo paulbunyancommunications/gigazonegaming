@@ -53,5 +53,8 @@ class Tournament extends Model
         return $this->hasMany('App\Models\Championship\Team');
     }
 
- 
+    public function getGameAttribute()
+    {
+        return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id')->getResults();
+    }
 }
