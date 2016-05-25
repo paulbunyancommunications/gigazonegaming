@@ -7,21 +7,12 @@ if [ ! -f "parse_yaml.sh" ]
     fi
 . "${PWD}/parse_yaml.sh"
 
-tools=(vagrant VBoxManage npm sass compass gulp ruby gem compass bower)
+tools=(vagrant VBoxManage npm sass compass gulp ruby gem bower)
 
 # for each tool, make sure it's available to the current user
 for i in "${tools[@]}"; do
 	command -v ${i} >/dev/null 2>&1 || { echo "${i} not installed, aborting!" >&2; exit 1;}
 done
-
-# install gem haml
-echo "Installing Gem Haml, sass, compass, laravel-elixir-livereload and laravel-elixir-compass-sass!"
-gem install haml
-gem install sass
-gem install compass
-gem install laravel-elixir@4.0.0
-gem install laravel-elixir-compass-sass
-gem install laravel-elixir-livereload
 
 # install npm libraries
 echo "Installing Node dependencies!"
