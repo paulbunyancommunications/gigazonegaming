@@ -2,9 +2,6 @@
 @extends('game.base')
 
 @section('css')
-    .deletingForms{
-    display:inline-block;
-    }
     .separator{
         font-weight:bold;
         font-size:2em;
@@ -21,6 +18,13 @@
         height: 12px;
         border: 0;
         box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+    }
+    .deletingForms, .toForms{
+    display:inline-block;
+    }
+    .gameName{
+    display:inline-block;
+    min-width:300px;
     }
 @endsection
 @section('content')
