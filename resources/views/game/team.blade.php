@@ -2,8 +2,12 @@
 @extends('game.base')
 
 @section('css')
-    .deletingForms{
-    display:inline-block;
+    .deletingForms, .toForms{
+        display:inline-block;
+    }
+    .teamName{
+        display:inline-block;
+        min-width:300px;
     }
 @endsection
 @section('content')
@@ -56,17 +60,78 @@
             </div>
         </div>
         </form>
+        {{ Form::open(array('id' => "teamFilter", 'action' => array('Backend\Manage\TeamsController@filter'))) }}
+        <input name="_method" type="hidden" value="POST">
+        <label for="game_sort">Show options only for this Game: </label> <select name="game_sort" id="game_sort">
+
+            <option> --- </option>
+            @foreach($games as $g)
+                <option id="t_option{{$g['id']}}" value="{{$g['id']}}" class="gameSelector"
+                        @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
+                >{{$g['name']}}</option>
+            @endforeach
+        </select>
+        <br />
+        <label for="tournament_sort">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort">
+            <option> --- </option>
+            @foreach($tournaments as $g)
+                <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
+                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
+                >{{$g['name']}}</option>
+            @endforeach
+        </select>
+        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
+        {{ Form::close() }}
         <ul id="listOfTeams" class="listing">
-            @if(!isset($teams) || $teams == [])
-                <li>There are no Teams yet</li>
+            @if(!isset($teams_filter))
+                @if(!isset($teams) || $teams == [])
+                    <li>There are no Teams yet</li>
+                @else
+                    @foreach($teams as $id => $team)
+                        <li>{{ Form::open(array('id' => "toForm".$team["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
+                            <input name="_method" type="hidden" value="POST">
+                            <input name="team_sort" type="hidden" value="{{$team["id"]}}">
+                            {!!
+                                Form::submit(
+                                    $team["name"],
+                                    array('class'=>'teamName btn btn-default list')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                            &nbsp;&nbsp;
+                            {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                            &nbsp;&nbsp;
+                            {{ Form::open(array('id' => "teamForm".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy', $team["id"]), 'class' => "deletingForms")) }}
+                            <input name="_method" type="hidden" value="DELETE">
+                            {!!
+                                Form::submit(
+                                    'Delete',
+                                    array('class'=>'btn btn-danger list fa fa-times')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                        </li>
+                    @endforeach
+                @endif
+            @elseif($teams_filter == [] or $teams_filter == [ ])
+                <li>There are no results with the selected filter.</li>
             @else
-                @foreach($teams as $id => $team)
+                <li>Filtered results: </li>
+                @foreach($teams_filter as $id => $team)
                     <li>
-                        {{ Html::linkAction('Backend\Manage\TeamsController@index', $team["name"], array('class' => 'btn btn-default list')) }}
+                        {{ Form::open(array('id' => "toForm".$team["team_id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
+                        <input name="_method" type="hidden" value="POST">
+                        <input name="team_sort" type="hidden" value="{{$team["team_id"]}}">
+                        {!!
+                            Form::submit(
+                                $team["team_name"],
+                                array('class'=>'teamName btn btn-default list')
+                            )
+                        !!}
                         &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                        {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$team["tournament_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                         &nbsp;&nbsp;
-                        {{ Form::open(array('id' => "teamForm".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy', $team["id"]), 'class' => "deletingForms")) }}
+                        {{ Form::open(array('id' => "tournamentForm".$team["tournament_id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $team["tournament_id"]), 'class' => "deletingForms")) }}
                         <input name="_method" type="hidden" value="DELETE">
                         {!!
                             Form::submit(
@@ -88,6 +153,13 @@
 @endsection
 @section('js')
     $(document).ready(function() {
+        $('#game_sort').on("change", function() {
+            var val_g = $('#game_sort option:selected').val();
+            var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
+            $('#tournament_sort option').hide();
+            $('#tournament_sort option[id^="'+d_id+'_"]').show();
+            $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+        });
         $('.fa-times').click(function() {
             var conf = confirm('Are you sure?');
             if (conf) {

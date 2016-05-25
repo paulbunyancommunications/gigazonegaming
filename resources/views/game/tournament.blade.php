@@ -2,8 +2,12 @@
 @extends('game.base')
 
 @section('css')
-    .deletingForms{
+    .deletingForms, .toForms{
     display:inline-block;
+    }
+    .tournamentName{
+    display:inline-block;
+    min-width:300px;
     }
 @endsection
 @section('content')
@@ -54,30 +58,79 @@
                 {{ Html::link('/manage/tournament/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
             </div>
         </div>
-        </form>
-        <div id="filter">
-            {{ Form::open(array('id' => "tournamentFilter", 'action' => array('Backend\Manage\TournamentsController@filter'))) }}
-            <input name="_method" type="hidden" value="POST">
-            <
-            {!!
-                Form::submit(
-                    'Filter',
-                    array('class'=>'btn btn-default list fa fa-search')
-                )
-            !!}
-            {{ Form::close() }}
-        </div>
+        {{ Form::close() }}
+        {{ Form::open(array('id' => "tournamentFilter", 'action' => array('Backend\Manage\TournamentsController@filter'))) }}
+        <input name="_method" type="hidden" value="POST">
+        <label for="game_sort">Filter by Game: </label> <select name="game_sort" id="game_sort">
+            @foreach($games as $g)
+                <option id="g_option{{$g['id']}}" value="{{$g['id']}}"
+                @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
+                >{{$g['name']}}</option>
+            @endforeach
+        </select>
+        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
+        {{ Form::close() }}
         <ul id="listOfTournaments" class="listing">
-            @if(!isset($tournaments) || $tournaments == [])
-                <li>There are no Tournaments yet</li>
+            @if(!isset($tournaments_filter))
+                @if(!isset($tournaments) || $tournaments == [])
+                    <li>There are no Tournaments yet.</li>
+                @else
+                    @foreach($tournaments as $id => $tournament)
+                        {{--@if(!isset($theId) or $theId!=$tournament['game_id'])--}}
+                            {{--*/ $theId = $tournament['game_id']; /*--}}
+                            {{--@foreach($games as $key => $g)--}}
+                                {{--@if($g['id'] ==  $tournament['game_id'])--}}
+                                    {{--<li>{{$g['name']}}</li>--}}
+                                {{--@endif--}}
+                            {{--@endforeach--}}
+                        {{--@endif--}}
+                        <li>{{ Form::open(array('id' => "toForm".$tournament["id"], 'action' => array('Backend\Manage\TeamsController@filter'), 'class' => "toForms")) }}
+                            <input name="_method" type="hidden" value="POST">
+                            <input name="team_sort" type="hidden" value="{{$tournament["id"]}}">
+                            {!!
+                                Form::submit(
+                                    $tournament["name"],
+                                    array('class'=>'tournamentName btn btn-default list')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                            &nbsp;&nbsp;
+                            {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                            &nbsp;&nbsp;
+                            {{ Form::open(array('id' => "tournamentForm".$tournament["id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["id"]), 'class' => "deletingForms")) }}
+                            <input name="_method" type="hidden" value="DELETE">
+                            {!!
+                                Form::submit(
+                                    'Delete',
+                                    array('class'=>'btn btn-danger list fa fa-times')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                        </li>
+                    @endforeach
+                @endif
+            @elseif($tournaments_filter == [] or $tournaments_filter == [ ])
+                <li>There are no results with the selected filter.</li>
             @else
-                @foreach($tournaments as $id => $tournament)
+                <li>Filtered results: </li>
+                @foreach($tournaments_filter as $id => $tournament)
+                    @if($tournament!=[] and isset($tournament["tournament_id"]) and $tournament["tournament_id"]!='')
                     <li>
-                        {{ Html::linkAction('Backend\Manage\TournamentsController@index', $tournament["name"], array('class' => 'btn btn-default list')) }}
+                        {{--<span>Game: {{ $tournament["game_name"]}}</span>--}}
+                        {{ Form::open(array('id' => "toForm".$tournament["tournament_id"], 'action' => array('Backend\Manage\TeamsController@filter'), 'class' => "toForms")) }}
+                        <input name="_method" type="hidden" value="POST">
+                        <input name="team_sort" type="hidden" value="{{$tournament["tournament_id"]}}">
+                        {!!
+                            Form::submit(
+                                $tournament["tournament_name"],
+                                array('class'=>'tournamentName btn btn-default list')
+                            )
+                        !!}
+                        {{ Form::close() }}
                         &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                        {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                         &nbsp;&nbsp;
-                        {{ Form::open(array('id' => "tournamentForm".$tournament["id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["id"]), 'class' => "deletingForms")) }}
+                        {{ Form::open(array('id' => "tournamentForm".$tournament["tournament_id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["tournament_id"]), 'class' => "deletingForms")) }}
                         <input name="_method" type="hidden" value="DELETE">
                         {!!
                             Form::submit(
@@ -87,12 +140,13 @@
                         !!}
                         {{ Form::close() }}
                     </li>
+                    @endif
                 @endforeach
             @endif
         </ul>
     @else
         <h1>Sorry, no games where found on the database!, please create a game before proceding with a tournament</h1>
-        {{ Html::link('/manage/game/', 'Create a Game', array('id' => 'new_game', 'class' => 'btn btn-default'))}}
+        {{ Html::link('/manage/game/', 'Create a Game', array('id' => 'new_game', 'class' => 'btn btn-default')) }}
     @endif
 
 @endsection

@@ -140,4 +140,14 @@ class PlayersController extends Controller
 //        return View::make('player/player')->with("players", $this->retrievePlayers());
         return redirect('/manage/player');
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  Request $ids
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $ids)
+    {
+     dd('here');
+    }
 }

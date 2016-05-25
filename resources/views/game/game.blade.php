@@ -2,8 +2,12 @@
 @extends('game.base')
 
 @section('css')
-    .deletingForms{
+    .deletingForms, .toForms{
         display:inline-block;
+    }
+    .gameName{
+        display:inline-block;
+    min-width:300px;
     }
 @endsection
 @section('content')
@@ -55,7 +59,16 @@
         @else
             @foreach($games as $id => $game)
                 <li>
-                    {{ Html::linkAction('Backend\Manage\TournamentsController@filter', $game["id"]."   url: ".$game["uri"], ["id" => $game["id"]], array('class' => 'btn btn-default list')) }}
+                    {{ Form::open(array('id' => "toForm".$game["id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms")) }}
+                    <input name="_method" type="hidden" value="POST">
+                    <input name="game_sort" type="hidden" value="{{$game["id"]}}">
+                    {!!
+                        Form::submit(
+                            $game["name"],
+                            array('class'=>'gameName btn btn-default list')
+                        )
+                    !!}
+                    {{ Form::close() }}
                     &nbsp;&nbsp;
                     {{ Html::linkAction('Backend\Manage\GamesController@edit', 'Edit', array('game_id'=>$game["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                     &nbsp;&nbsp;

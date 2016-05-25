@@ -88,21 +88,6 @@ class TournamentsController extends Controller
         return View::make('game/tournament')->with("theTournament", $tournament);
     }
     /**
-     * Display the specified resource.
-     *
-     * @param  variable $t_id
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Game $id)
-    {
-//        dd($id);
-
-        $tournament =  Tournament::where("game_id", $id->id)->get()->toArray();
-//        dd($tournament);
-        return View::make('game/tournament')->with("tournaments", $tournament);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  Tournament  $tournament
@@ -110,7 +95,6 @@ class TournamentsController extends Controller
      */
     public function edit(Tournament $tournament)
     {
-//        dd($tournament->all());
         return View::make('game/tournament')->with("theTournament", $tournament);
     }
 
@@ -155,4 +139,36 @@ class TournamentsController extends Controller
 //        return View::make('tournament/tournament')->with("tournaments", $this->retrieveTournaments());
         return redirect('/manage/tournament');
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  Request $ids
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $ids)
+    {
+//        dd($ids);
+        if(trim($ids->game_sort) != "" and $ids->game_sort!=[]) {
+            if(is_numeric($ids->tournament_sort)){
+                $game = trim($ids->game_sort);
+            }else {
+                $game = "%" . trim($ids->game_sort) . "%";
+            }
+            $tournament =  Tournament::
+            join('games', 'games.id', '=', 'tournaments.game_id')
+                ->where('games.name', 'like', $game)
+                ->orWhere('tournaments.game_id', 'like', $game)
+                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->orderBy('game_name', 'asc')
+                ->orderBy('tournament_name', 'asc')
+                ->get()
+                ->toArray();
+        }else{
+            $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
+                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->get()
+                ->toArray();}
+        return View::make('game/tournament')->with("tournaments_filter", $tournament)->with("sorts", $ids);
+    }
+
 }

@@ -19,16 +19,16 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function boot()
     {
         View::composer(['game.game'], function ($view) {
-            $view->with('games', Game::all()->toArray());
+            $view->with('games', Game::orderBy('name')->get()->toArray());
         });
         View::composer(['game.tournament'], function ($view) {
-            $view->with('games', Game::all()->toArray())->with('tournaments', Tournament::all()->toArray());
+            $view->with('games', Game::orderBy('name')->get()->toArray())->with('tournaments', Tournament::orderBy('name')->get()->toArray());
         });
         View::composer(['game.team'], function ($view) {
-            $view->with('teams', Team::all()->toArray())->with('tournaments', Tournament::all()->toArray());
+            $view->with('games', Game::orderBy('name')->get()->toArray())->with('tournaments', Tournament::orderBy('name')->get()->toArray())->with('teams', Team::orderBy('name')->get()->toArray());
         });
         View::composer(['game.player'], function ($view) {
-            $view->with('games', Game::all()->toArray())->with('teams', Team::all()->toArray())->with('players', Player::orderBy('team_id')->get()->toArray());
+            $view->with('games', Game::orderBy('name')->get()->toArray())->with('tournaments', Tournament::orderBy('name')->get()->toArray())->with('teams', Team::all()->toArray())->with('players', Player::orderBy('team_id')->get()->toArray());
         });
     }
 

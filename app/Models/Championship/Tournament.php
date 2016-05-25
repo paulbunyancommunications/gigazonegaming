@@ -40,7 +40,7 @@ class Tournament extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function game()
+    public function games()
     {
         return $this->belongsTo('App\Models\Championship\Game');
     }
