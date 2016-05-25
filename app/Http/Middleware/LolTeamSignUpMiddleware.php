@@ -43,6 +43,10 @@ class LolTeamSignUpMiddleware
         $captain->setAttribute('phone', $request->input('team-captain-phone'));
         $captain->setAttribute('team_id', $team->id);
         $captain->save();
+        
+        // add captain to team
+        $team->captain = $captain->id;
+        $team->save();
 
         // add other players
         for ($i = 1; $i <= 4; $i++) {
