@@ -13,7 +13,7 @@ else
     vagrant ssh -c "cd /var/www; php artisan config:clear; php artisan migrate; php codecept.phar clean; php codecept.phar build; php codecept.phar run --coverage-html --coverage-xml;" > ${log} 2>&1
 fi
 # kill the tail
-kill %tail 2>&1
+kill %tail >/dev/null 2>&1
 # reset the migrations in the box
 vagrant ssh -c "cd /var/www; php artisan migrate;"
 # check for errors
