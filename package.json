@@ -2,7 +2,6 @@
   "name": "gigazone-gaming",
   "version": "0.1.0",
   "private": true,
-  "preferGlobal": true,
   "devDependencies": {
     "bootstrap-sass": "^3.0.0",
     "del": "^2.2.0",
