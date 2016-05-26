@@ -20,7 +20,7 @@ class UpdateRecipients extends Model
      * @var array
      */
     protected $fillable = [
-        'email', 'participate',
+        'email', 'participate', 'geo_lat', 'geo_long'
     ];
 
     /**
@@ -75,5 +75,4 @@ class UpdateRecipients extends Model
     {
         $this->attributes['participate'] = $this->getParticipateAttribute($value);
     }
-
 }
