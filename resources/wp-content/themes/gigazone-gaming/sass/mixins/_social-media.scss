@@ -28,11 +28,11 @@
       color: $sm-color;
       text-decoration: none;
       position: absolute;
-      height: 100%;
+      @include height($multiplier);
       width: 100%;
       @include line-height($multiplier);
       position: absolute;
-      @include font-size($multiplier * .9);
+      @include font-size($multiplier * 1);
       top: 0;
       left: 0;
 
