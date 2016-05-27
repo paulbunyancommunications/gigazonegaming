@@ -18,8 +18,10 @@
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
         {{ function("apply_filters","the_content", post.post_content) }}
-        {% include "partials/post-permalink.twig" %}
-        {% include "partials/post-tags.twig" %}
+        {% if section is not defined or ( section is defined and section.post_name == 'blog' ) %}
+            {% include "partials/post-permalink.twig" %}
+            {% include "partials/post-tags.twig" %}
+        {% endif %}
 
     </div>
 {% endif %}
