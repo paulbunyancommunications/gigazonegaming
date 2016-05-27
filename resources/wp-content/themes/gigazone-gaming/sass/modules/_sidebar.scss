@@ -88,6 +88,11 @@
       text-align: center;
     }
 
+    .alert, .alert p {
+      @include font-size(1.25);
+      @include line-height(1.125);
+    }
+
   }
 
   &-social-media {
