@@ -7,7 +7,7 @@
         </a>
     {% endif %}
     {% if this_post.post_title is defined %}
-        {% if single is defined and single == true %}
+        {% if (single is defined and single == true) or (link is defined and link == false) %}
             {{ this_post.post_title }}
         {% else %}
             <a href="{{ this_post.permalink }}">{{ this_post.post_title }}</a>

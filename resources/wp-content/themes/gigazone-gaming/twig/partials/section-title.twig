@@ -1,5 +1,5 @@
 <h1 class="title-page{% if single is defined and single == true %} post-title{% endif %}">
-{% if ((section.id is defined and section.id == this_post.post_parent) and (single is defined and single == true)) or (section.id is defined and section.id == page.id) %}
+{% if (section.id is defined and this_post is defined and section.id == this_post.post_parent and single is defined and single == true) or (section.id is defined and section.id == page.id) %}
     <a href="{{ site.url }}/{{ section.slug }}" class="title-section">
         {{ section.post_title }}
     </a>
