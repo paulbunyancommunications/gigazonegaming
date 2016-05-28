@@ -5,17 +5,19 @@
 
   &-title-label {
     @include font-size(1.625);
-    @include line-height(1);
-    @include margin(.5, .5, 0, 0);
+    @include line-height(0);
+    margin: 0;
+    @include margin-top(1.25);
+    padding-right: (.25px * $leading);
     @include padding-bottom(.325);
     color: tint($color-gz-orange, 50%);
     text-decoration: none;
-    display: block;
     text-aligh: right;
     text-transform: uppercase;
+    @include inline-block();
 
     @include mq_cinema {
-      @include margin(1.325, 0, .5, .25);
+      @include margin-top(1.25);
     }
   }
 
