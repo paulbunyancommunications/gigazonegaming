@@ -11,4 +11,5 @@ include(locate_template('get-context.php'));
  * Output page to browser
  */
 $context['post'] = Timber::get_post(get_post()->ID);
+$context['single'] = true;
 Timber::render('pages/page.twig', $context);
