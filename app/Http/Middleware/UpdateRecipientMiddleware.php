@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Requests\GeoLocationRequest;
 use App\Models\UpdateRecipients;
 use Closure;
 
@@ -12,26 +13,19 @@ use Closure;
 class UpdateRecipientMiddleware
 {
 
-    protected $rules = ['email' => 'required|email|unique:update_recipients,email', 'update-recipient' => 'required|in:yes'];
+    protected $rules = [
+        'email' => 'required|email|unique:update_recipients,email',
+        'update-recipient' => 'required|in:yes'
+    ];
 
     /**
-     * Handle an incoming request.
+     * Handle an incoming request and add email to update recipients if validation passes.
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
-     * @return mixed
+     * @return
      */
     public function handle($request, Closure $next)
-    {
-
-        return $next($request);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response $response
-     */
-    public function terminate($request, $response)
     {
         // check for base rules, if pass then setup the insert of a new update recipient
         $validator = \Validator::make($request->all(), $this->rules, []);
@@ -40,13 +34,17 @@ class UpdateRecipientMiddleware
             $updates->email = $request->input('email');
 
             // check if geo_lat and geo_long exist in the request
-            if (!\Validator::make(
-                $request->all(),
-                [
-                    'geo_lat' => 'required|regex:/^\d*(\.\d{2})?$/',
-                    'geo_long' => 'required_with:geo_lat|regex:/^\d*(\.\d{2})?$/'
-                ]
-            )->fails()
+            $geoLocations = array_map(function ($e) {
+                return floatval($e);
+            }, $request->all());
+            $geoValidation = new GeoLocationRequest();
+            $geoValidator = \Validator::make(
+                $geoLocations,
+                $geoValidation->rules(),
+                $geoValidation->messages()
+            );
+
+            if (!$geoValidator->fails()
             ) {
                 $updates->geo_lat = $request->input('geo_lat');
                 $updates->geo_long = $request->input('geo_long');
@@ -58,5 +56,6 @@ class UpdateRecipientMiddleware
             }
             $updates->save();
         }
+        return $next($request);
     }
 }
