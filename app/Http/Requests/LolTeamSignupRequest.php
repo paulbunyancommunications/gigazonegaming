@@ -2,14 +2,14 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as BaseRequest;
 use Pbc\Bandolier\Type\Numbers;
 
 /**
  * Class LolTeamSignUpRequest
  * @package App\Http\Requests
  */
-class LolTeamSignUpRequest extends Request
+class LolTeamSignUpRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,6 +34,7 @@ class LolTeamSignUpRequest extends Request
             'team-captain-lol-summoner-name' => 'required',
             'team-captain-phone' => 'required',
             'tournament' => 'required|exists:mysql_champ.tournaments,name',
+            'team-name' => 'required'
         ];
         for ($i = 1; $i <= 2; $i++) {
             $rules['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] = 'required';
@@ -55,6 +56,7 @@ class LolTeamSignUpRequest extends Request
             'name.required' => 'The name of the team captain is required.',
             'team-captain-lol-summoner-name.required' => 'The team captain LOL summoner name is required.',
             'team-captain-phone.required' => 'The team captain phone number is required.',
+            'team-name.required' => 'The team name is required.',
         ];
         
         for ($i = 1; $i <= 4; $i++) {

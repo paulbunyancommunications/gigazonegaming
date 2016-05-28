@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as BaseRequest;
 
-class LolIndividualSignUpRequest extends Request
+class LolIndividualSignUpRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
