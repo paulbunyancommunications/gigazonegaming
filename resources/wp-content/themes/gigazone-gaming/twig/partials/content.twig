@@ -4,16 +4,24 @@
 {% if category is defined %}
     {% include "partials/category-title.twig" %}
 {% endif %}
-{% if posts is defined and posts|length > 1 %}
+
+{% if posts is defined and posts|length >= 1 and single is not defined %}
     {% include "partials/section-title.twig" %}
     {% for p in posts %}
-        <div class="post-list-item {{ post.class }}">
+        <div class="post-list-item {{ p.class }}">
             {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
             {% if p.post_excerpt != '' %}
-                {{ function("apply_filters","the_content", post.post_excerpt) }}
+                {{ function("apply_filters","the_content", p.post_excerpt) }}
             {% endif %}
         </div>
     {% endfor %}
+
+{% elseif post is defined and single is not defined %}
+    <div class="post-list-item {% if post.class is defined %}{{ post.class }}{% endif %}">
+        {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':false, 'link':false} %}
+            {{ function("apply_filters","the_content", post.post_content) }}
+    </div>
+
 {% else %}
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
