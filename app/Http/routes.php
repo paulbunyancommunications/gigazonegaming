@@ -34,31 +34,32 @@ Route::get('/frontend/session/csrf', ['as' => 'get_csrf', 'uses' => 'Frontend\Se
 Route::post('/updates/signup', ['as' => 'updates.store', 'uses' => 'Frontend\Updates\UpdatesController@store']);
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
 
-Route::group(['middleware' => ['UpdateRecipient']], function () {
-    // contact us form
-    Route::post(
-        '/contact-us',
-        ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us']
-    );
-    // team sign up request
-    Route::post(
-        '/lol-team-sign-up',
-        [
-            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-            'as' => 'lol-team-sign-up',
-            'middleware' => 'LolTeamSignUp'
-        ]
-    );
-    // individual sign up request
-    Route::post(
-        '/lol-individual-sign-up',
-        [
-            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-            'as' => 'lol-individual-sign-up',
-            'middleware' => 'LolIndividualSignUp'
-        ]
-    );
-});
+
+// contact us form
+Route::post(
+    '/contact-us',
+    ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us', 'middleware' => ['UpdateRecipient']]
+);
+
+// team sign up request
+Route::post(
+    '/lol-team-sign-up',
+    [
+        'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+        'as' => 'lol-team-sign-up',
+        'middleware' => ['LolTeamSignUp', 'UpdateRecipient']
+    ]
+);
+
+// individual sign up request
+Route::post(
+    '/lol-individual-sign-up',
+    [
+        'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+        'as' => 'lol-individual-sign-up',
+        'middleware' => ['LolIndividualSignUp', 'UpdateRecipient']
+    ]
+);
 
 //Route::group(['middleware' => ['WPAdmin']], function () {
 //    Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
