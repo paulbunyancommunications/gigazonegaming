@@ -173,6 +173,9 @@ return [
         Collective\Html\HtmlServiceProvider::class,
 
         \App\Providers\ChampionshipGameComposerProvider::class,
+        
+        // validation provider for custom rules
+        \App\Providers\ValidationServiceProvider::class,
 
     ],
 
