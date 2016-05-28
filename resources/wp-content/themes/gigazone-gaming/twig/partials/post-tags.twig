@@ -2,14 +2,14 @@
     {# before building the tag lists, check if there are any tags or categories  #}
     {% set show_tags=false %}
     {% set show_categories=false %}
-    {% for term in post.terms %}
-        {% if term.taxonomy == 'post_tag' %}
-            {% set show_tags=true %}
-        {% endif %}
-        {% if term.taxonomy == 'category' %}
-            {% set show_categories=true %}
-        {% endif %}
-    {% endfor %}
+        {% for term in post.terms %}
+            {% if term.taxonomy == 'post_tag' %}
+                {% set show_tags=true %}
+            {% endif %}
+            {% if term.taxonomy == 'category' %}
+                {% set show_categories=true %}
+            {% endif %}
+        {% endfor %}
 
     {% if show_tags %}
         <div class="tag">
