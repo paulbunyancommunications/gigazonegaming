@@ -13,4 +13,3 @@ $context['posts'] = Timber::get_posts('post_parent=' . $context['section']->id.'
  * Output page to browser
  */
 Timber::render('pages/page.twig', $context);
-var_dump($context);
