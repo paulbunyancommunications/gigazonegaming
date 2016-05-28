@@ -5,7 +5,7 @@ divider="\n==========================================\n"
 packagePath="https://raw.githubusercontent.com/paulbunyannet/gigazonegaming/master/package.json"
 modulesDir="node_modules"
 modulesPath="${WORKSPACE}/${modulesDir}"
-archivePath="${WORKSPACE}/nm_cache.tar"
+archivePath="${WORKSPACE}/npm_cache.tar"
 list="package.json"
 installMsg=$divider"Attempting to do an npm install!"$divider
 updateMsg=$divider"Attempting to do an npm update!"$divider
