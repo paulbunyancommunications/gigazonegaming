@@ -18,15 +18,14 @@ done
 echo "Getting Node dependencies!"
 /usr/bin/cp -f ${WORKSPACE}_assets/nm_cache.tar ${WORKSPACE}
 /usr/bin/tar xf nm_cache.tar
-/usr/bin/npm prune
-/usr/bin/npm install
+/usr/bin/npm update
 /usr/bin/rm -f ${WORKSPACE}/nm_cache.tar
 
 # install bower dependencies
 echo "Getting Bower dependencies!"
 /usr/bin/cp -f ${WORKSPACE}_assets/bower_cache.tar ${WORKSPACE}/public_html
 /usr/bin/tar xf ${WORKSPACE}/public_html/bower_cache.tar
-/usr/bin/bower install
+/usr/bin/bower update
 /usr/bin/rm -f ${WORKSPACE}/public_html/bower_cache.tar
 
 # install bower dependencies
