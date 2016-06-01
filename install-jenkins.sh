@@ -23,6 +23,7 @@ echo "Getting Bower dependencies!"
 
 # install bower dependencies
 echo "Running gulp for the first time!"
+/usr/bin/npm install --save-dev gulp
 /usr/bin/gulp
 
 # copy the development deploy config to jenkins one
