@@ -62,6 +62,7 @@
         {{ Form::open(array('id' => "tournamentFilter", 'action' => array('Backend\Manage\TournamentsController@filter'))) }}
         <input name="_method" type="hidden" value="POST">
         <label for="game_sort">Filter by Game: </label> <select name="game_sort" id="game_sort">
+            <option> --- </option>
             @foreach($games as $g)
                 <option id="g_option{{$g['id']}}" value="{{$g['id']}}"
                 @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif

@@ -22,13 +22,12 @@
     .deletingForms, .toForms{
     display:inline-block;
     }
-    .gameName{
+    .playerName{
     display:inline-block;
     min-width:300px;
     }
 @endsection
 @section('content')
-
     @if(isset($teams) || $teams != [])
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -55,24 +54,24 @@
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="team_id">Player's Team ID: </label> &nbsp;
+                <label for="name">Player Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
+            </div>
+            <div class="form-group">
+                <label for="username">Player Username: </label> &nbsp; <input type="text" name="username" id="username" placeholder="The username of the player" @if(isset($thePlayer->username))value="{{$thePlayer->username}}"@endif/>
+            </div>
+            <div class="form-group">
+                <label for="email">Player Email: </label> &nbsp; <input type="text" name="email" id="email" placeholder="The email of the player" @if(isset($thePlayer->email))value="{{$thePlayer->email}}"@endif/>
+            </div>
+            <div class="form-group">
+                <label for="phone">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" placeholder="The phone of the player" @if(isset($thePlayer->phone))value="{{$thePlayer->phone}}"@endif/>
+            </div>
+            <div class="form-group">
+                <label for="team_id">Player Team ID: </label> &nbsp;
                 <select type="text" name="team_id" id="team_id" >
                     @foreach($teams as $key => $team)
                         <option value="{{$team['id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['id']) selected @endif>{{ $team['name'] }}</option>
                     @endforeach
                 </select>
-            </div>
-            <div class="form-group">
-                <label for="username">Player's Username: </label> &nbsp; <input type="text" name="username" id="username" placeholder="The Username of the player" @if(isset($thePlayer->username))value="{{$thePlayer->username}}"@endif/>
-            </div>
-                <div class="form-group">
-                    <label for="name">Player's Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The Name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
-                </div>
-            <div class="form-group">
-                <label for="email">Player's Email: </label> &nbsp; <input type="text" name="email" id="email" placeholder="The email of the player" @if(isset($thePlayer->email))value="{{$thePlayer->email}}"@endif/>
-            </div>
-            <div class="form-group">
-                <label for="phone">Player's Phone: </label> &nbsp; <input type="text" name="phone" id="phone" placeholder="The phone of the player" @if(isset($thePlayer->phone))value="{{$thePlayer->phone}}"@endif/>
             </div>
             <div class="form-group">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -83,19 +82,83 @@
             </div>
         </div>
         </form>
+        {{ Form::open(array('id' => "playerFilter", 'action' => array('Backend\Manage\PlayersController@filter'))) }}
+        <input name="_method" type="hidden" value="POST">
+        <label for="game_sort">Show options only for this Game: </label> <select name="game_sort" id="game_sort">
+
+            <option> --- </option>
+            @foreach($games as $g)
+                <option id="t_option{{$g['id']}}" value="{{$g['id']}}" class="gameSelector"
+                        @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
+                >{{$g['name']}}</option>
+            @endforeach
+        </select>
+        <br />
+        <label for="tournament_sort">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort">
+            <option> --- </option>
+            @foreach($tournaments as $g)
+                <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
+                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
+                >{{$g['name']}}</option>
+            @endforeach
+        </select>
+        <br />
+        <label for="team_sort">Filter by Team: </label> <select name="team_sort" id="team_sort">
+            <option> --- </option>
+            @foreach($teams as $g)
+                <option id="t_option{{$g['tournament_id']}}_{{$g['id']}}" value="{{$g['id']}}"
+                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
+                >{{$g['name']}}</option>
+            @endforeach
+        </select>
+        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
+        {{ Form::close() }}
         <ul id="listOfPlayers" class="listing">
-            @if(!isset($players) || $players == [])
-                <li>There are no Players yet</li>
+            @if(!isset($players_filter))
+                @if(!isset($players) || $players == [])
+                    <li>There are no Players yet</li>
+                @else
+                    @foreach($players as $id => $player)
+                        <li>{{ Form::open(array('id' => "toForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
+                            <input name="_method" type="hidden" value="POST">
+                            <input name="player_sort" type="hidden" value="{{$player["id"]}}">
+                            {!!
+                                Form::submit(
+                                    $player["username"],
+                                    array('class'=>'playerName btn btn-default list')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                            &nbsp;&nbsp;
+                            {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                            &nbsp;&nbsp;
+                            {{ Form::open(array('id' => "playerForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["id"]), 'class' => "deletingForms")) }}
+                            <input name="_method" type="hidden" value="DELETE">
+                            {!!
+                                Form::submit(
+                                    'Delete',
+                                    array('class'=>'btn btn-danger list fa fa-times')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                        </li>
+                    @endforeach
+                @endif
+            @elseif($players_filter == [] or $players_filter == [ ])
+                <li>There are no results with the selected filter.</li>
             @else
-                {{-- */ $a = 0; /*--}}
-                @foreach($players as $id => $player)
-                    @if($player["team_id"]!= $a)
-                        <hr />
-                        <li class="separator">Team: {{$teams[$player["team_id"]-1]['name']}}</li>
-                        {{-- */ $a = $player["team_id"]; /*--}}
-                    @endif
-                    <li>
-                        <span class='username' id='{{$player["username"]}}'> Username: {{$player["username"]}}</span> <span class='name' id='{{$player["name"]}}'>Name: {{$player["name"]}}</span>
+                <li>Filtered results: </li>
+                @foreach($players_filter as $id => $player)
+                    <li>{{ Form::open(array('id' => "toForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
+                        <input name="_method" type="hidden" value="POST">
+                        <input name="player_sort" type="hidden" value="{{$player["id"]}}">
+                        {!!
+                            Form::submit(
+                                $player["username"],
+                                array('class'=>'playerName btn btn-default list')
+                            )
+                        !!}
+                        {{ Form::close() }}
                         &nbsp;&nbsp;
                         {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                         &nbsp;&nbsp;
@@ -110,17 +173,33 @@
                         {{ Form::close() }}
                     </li>
                 @endforeach
-                <hr />
             @endif
         </ul>
+
     @else
-        <h1>Sorry, no teams where found on the database!, please create a team before proceding with a player</h1>
-        {{ Html::link('/manage/team/', 'Create a Team', array('id' => 'new_team', 'class' => 'btn btn-default'))}}
+        <h1>Sorry, no players where found on the database!, please create a player before proceding with a player</h1>
+        {{ Html::link('/manage/player/', 'Create a Player', array('id' => 'new_player', 'class' => 'btn btn-default'))}}
     @endif
 
 @endsection
 @section('js')
     $(document).ready(function() {
+        $('#game_sort').on("change", function() {
+            var val_g = $('#game_sort option:selected').val();
+            var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
+            $('#tournament_sort option').hide();
+            $('#tournament_sort option[id^="'+d_id+'_"]').show();
+            $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+        });
+        $('#tournament_sort').on("change", function() {
+            var val_g = $('#tournament_sort option:selected').val();
+            var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
+            d_id = d_id.split('_')[2];
+    console.log(d_id);
+            $('#team_sort option').hide();
+            $('#team_sort option[id^="t_option'+d_id+'_"]').show();
+            $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
+        });
         $('.fa-times').click(function() {
             var conf = confirm('Are you sure?');
             if (conf) {
