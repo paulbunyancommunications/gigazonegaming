@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Championship\Game;
 use \View;
+use Cache;
 
 class ChampionshipGameComposerProvider extends ServiceProvider
 {
@@ -19,24 +21,58 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['game.game'], function ($view) {
-            $view->with('games', Game::orderBy('name')->get()->toArray());
+        $expiresAt = Carbon::now('CMT')->addMinute(1)->toDateTimeString(); // 1 min
+        if(Cache::has('games_c')){
+            $games = Cache::get('games_c');
+        }else{
+            $games = Game::orderBy('name')->get()->toArray();
+            Cache::put('games_c', $games, $expiresAt);
+        }
+        if(Cache::has('tournaments_c')){
+            $tournaments = Cache::get('tournaments_c');
+        }else{
+            $tournaments = Tournament::orderBy('name')->get()->toArray();
+            Cache::put('tournament_c', $tournaments, $expiresAt);
+        }
+        if(Cache::has('teams_c')){
+            $teams = Cache::get('teams_c');
+        }else{
+            $teams = Team::orderBy('name')->get()->toArray();
+            $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+
+            foreach($teams as $key => $team){
+                foreach($times as $k => $t){
+                    if($team['id'] == $t['team_id']){
+                        $teams[$key]['team_count'] = $t['team_count'];
+                        break;
+                    }
+                }
+            }
+            Cache::put('teams_c', $teams, $expiresAt);
+        }
+        if(Cache::has('players_c')){
+            $players = Cache::get('players_c');
+        }else{
+            $players = Player::orderBy('team_id')->get()->toArray();
+            Cache::put('players_c', $players, $expiresAt);
+        }
+        View::composer(['game.game'],  function ($view) use ($games) {
+            $view->with('games', $games);
         });
-        View::composer(['game.tournament'], function ($view) {
-            $view->with('games', Game::orderBy('name')->get()->toArray())
-                ->with('tournaments', Tournament::orderBy('name')->get()->toArray());
+        View::composer(['game.tournament'], function ($view) use ($games, $tournaments) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments);
         });
-        View::composer(['game.team'], function ($view) {
-            $view->with('games', Game::orderBy('name')->get()->toArray())
-                ->with('tournaments', Tournament::orderBy('name')->get()->toArray())
-                ->with('count', Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray())
-                ->with('teams', Team::orderBy('name')->get()->toArray());
+        View::composer(['game.team'], function ($view) use ($games, $tournaments, $teams) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams);
         });
-        View::composer(['game.player'], function ($view) {
-            $view->with('games', Game::orderBy('name')->get()->toArray())
-                ->with('tournaments', Tournament::orderBy('name')->get()->toArray())
-                ->with('teams', Team::all()->toArray())
-                ->with('players', Player::orderBy('team_id')->get()->toArray());
+        View::composer(['game.player'], function ($view) use ($games, $tournaments, $teams, $players) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', $players);
         });
     }
 
