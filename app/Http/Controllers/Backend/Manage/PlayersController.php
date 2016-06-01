@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Player;
 use App\Models\WpUser;
+use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -125,6 +126,8 @@ class PlayersController extends Controller
 //        Player::where('id', $player->getRouteKey())->update(
             $toUpdate
         );
+
+        $this->DBProcessCachePlayersForced();
         return View::make('game/player')->with("thePlayer", $player->where('id', $player->getRouteKey())->first())->with("cont_updated", true);
     }
 
@@ -148,6 +151,7 @@ class PlayersController extends Controller
      */
     public function filter(Request $ids)
     {
+
         if(trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
             if(is_numeric($ids->team_sort)){
                 $tourn = trim($ids->team_sort);
@@ -215,6 +219,7 @@ class PlayersController extends Controller
                 ->get()
                 ->toArray();
         }
-        return View::make('game/player')->with("players_filter", $players);
+        return View::make('game/player')->with("players_filter", $players)->with('sorts',$ids);
+
     }
 }
