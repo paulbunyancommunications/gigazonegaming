@@ -74,7 +74,6 @@
         <label for="tournament_sort">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort">
             <option> --- </option>
             @foreach($tournaments as $g)
-            @foreach($tournaments as $g)
                 <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
                         @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
                 >{{$g['name']}}</option>
