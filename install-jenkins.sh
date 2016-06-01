@@ -84,6 +84,17 @@ if [ ! -f "${PWD}/puphpet/config-custom.yaml" ]
     echo "${PWD}/puphpet/config-custom.yaml was created from example file"
     fi
 
+/usr/bin/vagrant up
+/usr/bin/vagrant ssh -c "cd /var/www; php composer.phar install;"
+# generate new Laravel app key
+/usr/bin/vagrant ssh -c "cd /var/www; php artisan key:generate;"
+
+# generate new wordpress auth keys
+/usr/bin/vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
+
+# run artisan migration
+/usr/bin/vagrant ssh -c "cd /var/www; php artisan migrate"
+
 # cleanup Wordpress install
 if [ -d "${PWD}/public_html/wp/wp-content" ]
 then
@@ -99,17 +110,5 @@ if [ -f "${PWD}/public_html/wp/.htaccess" ]
 then
     rm -f ${PWD}/public_html/wp/.htaccess
 fi
-
-
-/usr/bin/vagrant up
-/usr/bin/vagrant ssh -c "cd /var/www; php composer.phar install;"
-# generate new Laravel app key
-/usr/bin/vagrant ssh -c "cd /var/www; php artisan key:generate;"
-
-# generate new wordpress auth keys
-/usr/bin/vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
-
-# run artisan migration
-/usr/bin/vagrant ssh -c "cd /var/www; php artisan migrate"
 
 #fin
