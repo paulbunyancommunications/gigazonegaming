@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# if not already downloaded, get the parse_yaml.sh script for parsing yaml config files
-if [ ! -f "parse_yaml.sh" ]
-    then
-        wget https://gist.githubusercontent.com/pkuczynski/8665367/raw/ -O parse_yaml.sh
-    fi
-. "${PWD}/parse_yaml.sh"
-
 tools=(/usr/bin/vagrant /usr/bin/VBoxManage /usr/bin/npm /usr/local/bin/sass /usr/local/bin/compass /usr/bin/gulp /usr/bin/ruby /usr/bin/gem /usr/bin/bower)
 
 # for each tool, make sure it's available to the current user
