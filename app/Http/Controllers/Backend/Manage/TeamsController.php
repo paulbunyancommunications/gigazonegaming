@@ -154,16 +154,37 @@ class TeamsController extends Controller
             }else {
                 $tourn = "%" . trim($ids->tournament_sort) . "%";
             }
-        }else{$tourn = "%";}
-//        dd($tourn);
-//        dd($team);
-        $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-            ->join('games', 'games.id', '=', 'tournaments.game_id')
-            ->where('teams.tournament_id', 'like', $tourn)
-            ->orWhere('tournaments.name', 'like', $tourn)
-            ->select(['teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
-            ->get()
-            ->toArray();
+
+            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->where('tournaments.id', 'like', $tourn)
+                ->orWhere('tournaments.name', 'like', $tourn)
+                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->groupBy('id')
+                ->get()
+                ->toArray();
+        }elseif(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+            if(is_numeric($ids->game_sort)){
+                $tourn = trim($ids->game_sort);
+            }else {
+                $tourn = "%" . trim($ids->game_sort) . "%";
+            }
+            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->where('games.id', 'like', $tourn)
+                ->orWhere('games.name', 'like', $tourn)
+                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->groupBy('id')
+                ->get()
+                ->toArray();
+        }else {
+            $teams = Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->select(['teams.id as id', 'teams.name as name', 'teams.emblem as emblem', 'teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id', 'games.name as game_name'])
+                ->groupBy('id')
+                ->get()
+                ->toArray();
+        }
 //        dd($teams);
         return View::make('game/team')->with("teams_filter", $teams);
     }
