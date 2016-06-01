@@ -100,18 +100,7 @@ then
     rm -f ${PWD}/public_html/wp/.htaccess
 fi
 
-# flush out old virtual machines
-# eval the config-custom.yaml config to get the machine name
-eval $(parse_yaml ${PWD}/puphpet/config-custom.yaml "config__")
-# get host name
-hostname=$(basename ${APP_URL})
-if [ ! -f "vm_flush.sh" ]; then
-    wget https://raw.githubusercontent.com/paulbunyannet/bash/master/virtualbox/vm_flush.sh
-fi
-. "${PWD}/vm_flush.sh" -h "${hostname}" -m "${config__vm__hostname}"
 
-# do vagrant stuff
-/usr/bin/vagrant destroy -f
 /usr/bin/vagrant up
 /usr/bin/vagrant ssh -c "cd /var/www; php composer.phar install;"
 # generate new Laravel app key
