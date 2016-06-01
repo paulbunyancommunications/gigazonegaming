@@ -11,7 +11,7 @@
     }
 @endsection
 @section('content')
-
+    @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($tournaments) || $tournaments != [])
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -96,7 +96,16 @@
                                     array('class'=>'teamName btn btn-default list')
                                 )
                             !!}
+                            <div class="btn disabled
+                            @if(!isset($team['team_count']) or $team['team_count'] < $maxNumOfPlayers) btn-danger
+                            @else btn-success
+                            @endif ">
+                            @if(isset($team['team_count'])){{$team['team_count']}}
+                            @else 0
+                            @endif / {{$maxNumOfPlayers}}
+                            </div>
                             {{ Form::close() }}
+
                             &nbsp;&nbsp;
                             {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                             &nbsp;&nbsp;
