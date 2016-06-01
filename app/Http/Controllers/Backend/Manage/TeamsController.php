@@ -186,7 +186,7 @@ class TeamsController extends Controller
                 ->toArray();
         }
 //        dd($teams);
-        return View::make('game/team')->with("teams_filter", $teams);
+        return View::make('game/team')->with("teams_filter", $teams)->with('sorts',$ids);
     }
 
 }
