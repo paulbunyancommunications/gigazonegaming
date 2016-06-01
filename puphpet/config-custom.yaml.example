@@ -2,10 +2,8 @@ vagrantfile:
     vm:
         hostname: gigazonegaming.local
         network:
-            private_network: 192.168.56.123
-        provider:
-            virtualbox:
-                showgui: '1'
+            private_network: 192.168.56.100
+
 apache:
     vhosts:
         vhost_one:
@@ -16,6 +14,7 @@ apache:
             directories:
                 directories_one:
                     path: /var/www/public_html
+
 mysql:
     users:
         mysql_user_one:
