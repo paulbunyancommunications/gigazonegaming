@@ -8,7 +8,11 @@
  */
 include(locate_template('get-context.php'));
 
-$context['post'] = $context['section'] ? Timber::get_post($context['section']->ID) : Timber::get_post(get_post()->ID);
+if(is_front_page()) {
+    $context['post'] = get_post(get_option('page_on_front'));
+} else {
+    $context['post'] = $context['section'] ? Timber::get_post($context['section']->ID) : Timber::get_post(get_post()->ID);
+}
 /**
  * Output page to browser
  */

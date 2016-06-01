@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# if not already downloaded, get the parse_yaml.sh script for parsing yaml config files
-if [ ! -f "parse_yaml.sh" ]
-    then
-        wget https://gist.githubusercontent.com/pkuczynski/8665367/raw/ -O parse_yaml.sh
-    fi
-. "${PWD}/parse_yaml.sh"
-
 tools=(/usr/bin/vagrant /usr/bin/VBoxManage /usr/bin/npm /usr/local/bin/sass /usr/local/bin/compass /usr/bin/gulp /usr/bin/ruby /usr/bin/gem /usr/bin/bower)
 
 # for each tool, make sure it's available to the current user
@@ -30,6 +23,7 @@ echo "Getting Bower dependencies!"
 
 # install bower dependencies
 echo "Running gulp for the first time!"
+/usr/bin/npm install --save-dev gulp
 /usr/bin/gulp
 
 # copy the development deploy config to jenkins one
@@ -84,6 +78,17 @@ if [ ! -f "${PWD}/puphpet/config-custom.yaml" ]
     echo "${PWD}/puphpet/config-custom.yaml was created from example file"
     fi
 
+/usr/bin/vagrant up
+/usr/bin/vagrant ssh -c "cd /var/www; php composer.phar install;"
+# generate new Laravel app key
+/usr/bin/vagrant ssh -c "cd /var/www; php artisan key:generate;"
+
+# generate new wordpress auth keys
+/usr/bin/vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
+
+# run artisan migration
+/usr/bin/vagrant ssh -c "cd /var/www; php artisan migrate"
+
 # cleanup Wordpress install
 if [ -d "${PWD}/public_html/wp/wp-content" ]
 then
@@ -99,28 +104,5 @@ if [ -f "${PWD}/public_html/wp/.htaccess" ]
 then
     rm -f ${PWD}/public_html/wp/.htaccess
 fi
-
-# flush out old virtual machines
-# eval the config-custom.yaml config to get the machine name
-eval $(parse_yaml ${PWD}/puphpet/config-custom.yaml "config__")
-# get host name
-hostname=$(basename ${APP_URL})
-if [ ! -f "vm_flush.sh" ]; then
-    wget https://raw.githubusercontent.com/paulbunyannet/bash/master/virtualbox/vm_flush.sh
-fi
-. "${PWD}/vm_flush.sh" -h "${hostname}" -m "${config__vm__hostname}"
-
-# do vagrant stuff
-/usr/bin/vagrant destroy -f
-/usr/bin/vagrant up
-/usr/bin/vagrant ssh -c "cd /var/www; php composer.phar install;"
-# generate new Laravel app key
-/usr/bin/vagrant ssh -c "cd /var/www; php artisan key:generate;"
-
-# generate new wordpress auth keys
-/usr/bin/vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
-
-# run artisan migration
-/usr/bin/vagrant ssh -c "cd /var/www; php artisan migrate"
 
 #fin

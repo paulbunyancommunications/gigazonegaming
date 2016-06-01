@@ -18,12 +18,10 @@ if (is_tag()) {
     $terms = get_terms($taxonomy, $args);
     $context['tag'] = $terms[0];
     $tagPosts = get_posts('tag=' . $context['tag']->name);
-    $context['posts'] = Timber::get_posts(
-        array_map(function ($post) {
-            return $post->ID;
-        },
-            $tagPosts)
-    );
+    $ids = array_map(function ($post) {
+        return $post->ID;
+    }, $tagPosts);
+    $context['posts'] = Timber::get_posts(['post__in' => $ids]);
     $context['tag_label'] = "Tag";
 }
 

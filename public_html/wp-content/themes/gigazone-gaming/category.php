@@ -15,12 +15,10 @@ if (is_category()) {
     $terms = get_category(get_query_var('cat'));
     $context['category'] = $terms;
     $tagPosts = get_posts('category_name=' . $context['category']->name);
-    $context['posts'] = Timber::get_posts(
-        array_map(function ($post) {
-            return $post->ID;
-        },
-            $tagPosts)
-    );
+    $ids = array_map(function ($post) {
+        return $post->ID;
+    }, $tagPosts);
+    $context['posts'] = Timber::get_posts(['post__in' => $ids]);
     $context['category_label'] = "Categories";
 }
 

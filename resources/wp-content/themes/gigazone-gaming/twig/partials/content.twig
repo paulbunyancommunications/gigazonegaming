@@ -5,15 +5,17 @@
     {% include "partials/category-title.twig" %}
 {% endif %}
 
-{% if posts is defined and posts|length >= 1 and single is not defined %}
+{% if posts is defined and posts|length >= 1 and single is not defined and post is not defined %}
     {% include "partials/section-title.twig" %}
     {% for p in posts %}
+        {% if p.post_title is defined %}
         <div class="post-list-item {{ p.class }}">
             {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
             {% if p.post_excerpt != '' %}
                 {{ function("apply_filters","the_content", p.post_excerpt) }}
             {% endif %}
         </div>
+        {% endif %}
     {% endfor %}
 
 {% elseif post is defined and single is not defined %}
