@@ -148,6 +148,73 @@ class PlayersController extends Controller
      */
     public function filter(Request $ids)
     {
-     dd('here');
+        if(trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
+            if(is_numeric($ids->team_sort)){
+                $tourn = trim($ids->team_sort);
+            }else {
+                $tourn = "%" . trim($ids->team_sort) . "%";
+            }
+
+            $players =  Player::join('teams', 'teams.id', '=', 'players.team_id')
+                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->where('teams.id', 'like', $tourn)
+                ->orWhere('teams.name', 'like', $tourn)
+                ->select(['players.id','players.username','players.email','players.phone','players.name',
+                    'teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id',
+                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
+                    'games.name as game_name'])
+                ->get()
+                ->toArray();
+        }elseif(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
+
+            if(is_numeric($ids->tournament_sort)){
+                $tourn = trim($ids->tournament_sort);
+            }else {
+                $tourn = "%" . trim($ids->tournament_sort) . "%";
+            }
+
+            $players =  Player::join('teams', 'teams.id', '=', 'players.team_id')
+                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->where('tournaments.id', 'like', $tourn)
+                ->orWhere('tournaments.name', 'like', $tourn)
+                ->select(['players.id','players.username','players.email','players.phone','players.name',
+                    'teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id',
+                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
+                    'games.name as game_name'])
+                ->get()
+                ->toArray();
+        }elseif(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+
+            if(is_numeric($ids->game_sort)){
+                $tourn = trim($ids->game_sort);
+            }else {
+                $tourn = "%" . trim($ids->game_sort) . "%";
+            }
+
+            $players =  Player::join('teams', 'teams.id', '=', 'players.team_id')
+                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->where('games.id', 'like', $tourn)
+                ->orWhere('games.name', 'like', $tourn)
+                ->select(['players.id','players.username','players.email','players.phone','players.name',
+                    'teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id',
+                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
+                    'games.name as game_name'])
+                ->get()
+                ->toArray();
+        }else {
+            $players = Player::join('teams', 'teams.id', '=', 'players.team_id')
+                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+                ->join('games', 'games.id', '=', 'tournaments.game_id')
+                ->select(['players.id', 'players.username', 'players.email', 'players.phone', 'players.name',
+                    'teams.id as team_id', 'teams.name as team_name', 'teams.emblem as team_emblem', 'teams.tournament_id as tournament_id',
+                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
+                    'games.name as game_name'])
+                ->get()
+                ->toArray();
+        }
+        return View::make('game/player')->with("players_filter", $players);
     }
 }
