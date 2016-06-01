@@ -20,14 +20,19 @@
         box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
     }
     .deletingForms, .toForms{
-    display:inline-block;
+        display:inline-block;
     }
     .playerName{
-    display:inline-block;
+        display:inline-block;
     min-width:300px;
+    }
+    .playerTeam{
+        display:inline-block;
+        min-width:50px;
     }
 @endsection
 @section('content')
+    @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($teams) || $teams != [])
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -113,22 +118,25 @@
         </select>
         {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
         {{ Form::close() }}
+        {{--*/
+            $teamNum = -1;
+        /*--}}
         <ul id="listOfPlayers" class="listing">
             @if(!isset($players_filter))
                 @if(!isset($players) || $players == [])
                     <li>There are no Players yet</li>
                 @else
                     @foreach($players as $id => $player)
-                        <li>{{ Form::open(array('id' => "toForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
-                            <input name="_method" type="hidden" value="POST">
-                            <input name="player_sort" type="hidden" value="{{$player["id"]}}">
-                            {!!
-                                Form::submit(
-                                    $player["username"],
-                                    array('class'=>'playerName btn btn-default list')
-                                )
-                            !!}
-                            {{ Form::close() }}
+                        @if(!isset($teamNum) or $teamNum !=  $player["team_id"])
+                        {{--*/
+                            $teamNum = $player["team_id"];
+                        /*--}}
+                        {{dd($player)}}
+                            <li><h3>Team {{$player["team_name"]}}</h3></li>
+                        @endif
+                        <li> <div class="playerName btn btn-default list disabled" >{{$player["username"]}}</div>
+                            &nbsp;&nbsp;
+                            <div class="playerTeam btn btn-success list disabled" >{{$player["team_id"]}}</div>
                             &nbsp;&nbsp;
                             {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                             &nbsp;&nbsp;
