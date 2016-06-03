@@ -219,6 +219,16 @@ class PlayersController extends Controller
                 ->get()
                 ->toArray();
         }
+
+        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        foreach ($players as $key => $player) {
+            foreach ($times as $k => $t) {
+                if ($player['team_id'] == $t['team_id']) {
+                    $players[$key]['team_count'] = $t['team_count'];
+                    break;
+                }
+            }
+        }
         return View::make('game/player')->with("players_filter", $players)->with('sorts',$ids);
 
     }
