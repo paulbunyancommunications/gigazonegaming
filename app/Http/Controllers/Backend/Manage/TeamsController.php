@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use Illuminate\Http\Request;
 
@@ -184,6 +185,16 @@ class TeamsController extends Controller
                 ->groupBy('id')
                 ->get()
                 ->toArray();
+        }
+
+        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        foreach ($teams as $key => $team) {
+            foreach ($times as $k => $t) {
+                if ($team['id'] == $t['team_id']) {
+                    $teams[$key]['team_count'] = $t['team_count'];
+                    break;
+                }
+            }
         }
 //        dd($teams);
         return View::make('game/team')->with("teams_filter", $teams)->with('sorts',$ids);
