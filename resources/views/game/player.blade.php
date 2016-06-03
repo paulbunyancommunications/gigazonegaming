@@ -59,20 +59,20 @@
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name">Player Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
+                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px; text-align:left;" placeholder="The name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="username">Player Username: </label> &nbsp; <input type="text" name="username" id="username" placeholder="The username of the player" @if(isset($thePlayer->username))value="{{$thePlayer->username}}"@endif/>
+                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px; text-align:left;" placeholder="The username of the player" @if(isset($thePlayer->username))value="{{$thePlayer->username}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="email">Player Email: </label> &nbsp; <input type="text" name="email" id="email" placeholder="The email of the player" @if(isset($thePlayer->email))value="{{$thePlayer->email}}"@endif/>
+                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px; text-align:left;" placeholder="The email of the player" @if(isset($thePlayer->email))value="{{$thePlayer->email}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="phone">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" placeholder="The phone of the player" @if(isset($thePlayer->phone))value="{{$thePlayer->phone}}"@endif/>
+                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px; text-align:left;" placeholder="The phone of the player" @if(isset($thePlayer->phone))value="{{$thePlayer->phone}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="team_id">Player Team ID: </label> &nbsp;
-                <select type="text" name="team_id" id="team_id" >
+                <label for="team_id" style="width:120px; text-align:right;">Player Team ID: </label> &nbsp;
+                <select type="text" name="team_id" id="team_id"  style="width:350px; text-align:left;">
                     @foreach($teams as $key => $team)
                         <option value="{{$team['id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['id']) selected @endif>{{ $team['name'] }}</option>
                     @endforeach
@@ -89,7 +89,8 @@
         </form>
         {{ Form::open(array('id' => "playerFilter", 'action' => array('Backend\Manage\PlayersController@filter'))) }}
         <input name="_method" type="hidden" value="POST">
-        <label for="game_sort">Show options only for this Game: </label> <select name="game_sort" id="game_sort">
+        <label for="game_sort" style="width:180px; text-align:right;">Show options only for this Game: </label>
+        <select name="game_sort" id="game_sort" style="width:350px; text-align:left;">
 
             <option> --- </option>
             @foreach($games as $g)
@@ -99,7 +100,8 @@
             @endforeach
         </select>
         <br />
-        <label for="tournament_sort">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort">
+        <label for="tournament_sort" style="width:180px; text-align:right;">Filter by Tournament: </label>
+        <select name="tournament_sort" id="tournament_sort" style="width:350px; text-align:left;">
             <option> --- </option>
             @foreach($tournaments as $g)
                 <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
@@ -108,7 +110,8 @@
             @endforeach
         </select>
         <br />
-        <label for="team_sort">Filter by Team: </label> <select name="team_sort" id="team_sort">
+        <label for="team_sort" style="width:180px; text-align:right;">Filter by Team: </label>
+        <select name="team_sort" id="team_sort" style="width:350px; text-align:left;">
             <option> --- </option>
             @foreach($teams as $g)
                 <option id="t_option{{$g['tournament_id']}}_{{$g['id']}}" value="{{$g['id']}}"
@@ -116,7 +119,7 @@
                 >{{$g['name']}}</option>
             @endforeach
         </select>
-        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
+        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search', 'style'=>'width:350px; text-align:center;margin-left:150px;')) !!}
         {{ Form::close() }}
         {{--*/
             $teamNum = -1;
@@ -131,12 +134,9 @@
                         {{--*/
                             $teamNum = $player["team_id"];
                         /*--}}
-                        {{dd($player)}}
                             <li><h3>Team {{$player["team_name"]}}</h3></li>
                         @endif
                         <li> <div class="playerName btn btn-default list disabled" >{{$player["username"]}}</div>
-                            &nbsp;&nbsp;
-                            <div class="playerTeam btn btn-success list disabled" >{{$player["team_id"]}}</div>
                             &nbsp;&nbsp;
                             {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                             &nbsp;&nbsp;
@@ -149,6 +149,10 @@
                                 )
                             !!}
                             {{ Form::close() }}
+                            &nbsp;&nbsp;
+                            p#:<div class="playerTeam btn btn-success list disabled" >{{$player["team_count"]}} / {{$maxNumOfPlayers}}</div>
+                            &nbsp;&nbsp;
+                            t#:<div class="playerTeam btn btn-success list disabled" >{{$player["team_id"]}}</div>
                         </li>
                     @endforeach
                 @endif
@@ -157,16 +161,13 @@
             @else
                 <li>Filtered results: </li>
                 @foreach($players_filter as $id => $player)
-                    <li>{{ Form::open(array('id' => "toForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
-                        <input name="_method" type="hidden" value="POST">
-                        <input name="player_sort" type="hidden" value="{{$player["id"]}}">
-                        {!!
-                            Form::submit(
-                                $player["username"],
-                                array('class'=>'playerName btn btn-default list')
-                            )
-                        !!}
-                        {{ Form::close() }}
+                    @if(!isset($teamNum) or $teamNum !=  $player["team_id"])
+                        {{--*/
+                            $teamNum = $player["team_id"];
+                        /*--}}
+                        <li><h3>Team {{$player["team_name"]}}</h3></li>
+                    @endif
+                    <li> <div class="playerName btn btn-default list disabled" >{{$player["username"]}}</div>
                         &nbsp;&nbsp;
                         {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
                         &nbsp;&nbsp;
@@ -179,6 +180,10 @@
                             )
                         !!}
                         {{ Form::close() }}
+                        &nbsp;&nbsp;
+                        p#:<div class="playerTeam btn btn-success list disabled" >{{$player["team_count"]}} / {{$maxNumOfPlayers}}</div>
+                        &nbsp;&nbsp;
+                        t#:<div class="playerTeam btn btn-success list disabled" >{{$player["team_id"]}}</div>
                     </li>
                 @endforeach
             @endif

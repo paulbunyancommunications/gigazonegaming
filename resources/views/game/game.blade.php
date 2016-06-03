@@ -36,13 +36,13 @@
             <input name="_method" type="hidden" value="POST">
         @endif
         <div class="form-group">
-            <label for="name">Game Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The name of the game" @if(isset($theGame->name))value="{{$theGame->name}}"@endif/>
+            <label for="name" style="width:180px; text-align:right;">Game Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px; text-align:left;" placeholder="The name of the game" @if(isset($theGame->name))value="{{$theGame->name}}"@endif/>
         </div>
         <div class="form-group">
-            <label for="uri">Game URI: </label> &nbsp; <input type="text" name="uri" id="uri" placeholder="The uri of the game" @if(isset($theGame->uri))value="{{$theGame->uri}}"@endif />
+            <label for="uri" style="width:180px; text-align:right;">Game URI: </label> &nbsp; <input type="text" name="uri" id="uri" style="width:350px; text-align:left;" placeholder="The uri of the game" @if(isset($theGame->uri))value="{{$theGame->uri}}"@endif />
         </div>
         <div class="form-group">
-            <label for="description">Game Description: </label> &nbsp; <textarea name="description" id="description" placeholder="The descrition of the game"  >@if(isset($theGame->description)){{$theGame->description}}@endif</textarea>
+            <label for="description" style="width:180px; text-align:right;">Game Description: </label> &nbsp; <textarea name="description" id="description" style="width:350px; text-align:left;" placeholder="The descrition of the game"  >@if(isset($theGame->description)){{$theGame->description}}@endif</textarea>
         </div>
         <div class="form-group">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

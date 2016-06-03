@@ -37,14 +37,14 @@
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name">Team Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The name of the team" @if(isset($theTeam->name))value="{{$theTeam->name}}"@endif/>
+                <label for="name" style="width:120px; text-align:right;">Team Name: </label> &nbsp; <input type="text" name="name" id="name" style="width:350px; text-align:left;" placeholder="The name of the team" @if(isset($theTeam->name))value="{{$theTeam->name}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="emblem">Team Emblem: </label> &nbsp; <input type="text" name="emblem" id="emblem" placeholder="The url to the emblem of the team" @if(isset($theTeam->emblem))value="{{$theTeam->emblem}}"@endif/>
+                <label for="emblem" style="width:120px; text-align:right;">Team Emblem: </label> &nbsp; <input type="text" name="emblem" id="emblem" style="width:350px; text-align:left;" placeholder="The url to the emblem of the team" @if(isset($theTeam->emblem))value="{{$theTeam->emblem}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="tournament_id">Team Tournament ID: </label> &nbsp;
-                <select type="text" name="tournament_id" id="tournament_id" >
+                <label for="tournament_id" style="width:120px; text-align:right;">Team Tournament ID: </label> &nbsp;
+                <select type="text" name="tournament_id" id="tournament_id"  style="width:350px; text-align:left;">
                     @foreach($tournaments as $key => $tournament)
                         <option value="{{$tournament['id']}}" @if(isset($theTeam['tournament_id']) and $theTeam['tournament_id'] == $tournament['id']) selected @endif>{{ $tournament['name'] }}</option>
                     @endforeach
@@ -61,7 +61,7 @@
         </form>
         {{ Form::open(array('id' => "teamFilter", 'action' => array('Backend\Manage\TeamsController@filter'))) }}
         <input name="_method" type="hidden" value="POST">
-        <label for="game_sort">Show options only for this Game: </label> <select name="game_sort" id="game_sort">
+        <label for="game_sort" style="width:120px; text-align:right;">Show options only for this Game: </label> <select name="game_sort" id="game_sort" style="width:350px; text-align:right;">
 
             <option> --- </option>
             @foreach($games as $g)
@@ -71,7 +71,7 @@
             @endforeach
         </select>
         <br />
-        <label for="tournament_sort">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort">
+        <label for="tournament_sort" style="width:180px; text-align:right;">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort" style="width:280px; text-align:left;">
             <option> --- </option>
             @foreach($tournaments as $g)
                 <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
@@ -79,7 +79,7 @@
                 >{{$g['name']}}</option>
             @endforeach
         </select>
-        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
+        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search', 'style'=>'width:70px; text-align:center;')) !!}
         {{ Form::close() }}
         <ul id="listOfTeams" class="listing">
             @if(!isset($teams_filter))
