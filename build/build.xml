@@ -191,7 +191,7 @@
         <exec command="gulp" level="info" checkreturn="true" />
         <exec command="bower update" level="info" checkreturn="true" />
         <!-- run download of tools -->
-        <exec command="wget -q -N https://getcomposer.org/composer.phar -O composer.phar; php composer.phar update" level="info" checkreturn="true" />
+        <!--<exec command="wget -q -N https://getcomposer.org/composer.phar -O composer.phar; php composer.phar update" level="info" checkreturn="true" />-->
         <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
         <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
 
@@ -481,7 +481,7 @@
     <!-- ============================================  -->
     <!-- Target: Run Tests                             -->
     <!-- ============================================  -->
-    <target name="task:run_tests" depends="build:vagrant">
+    <target name="task:run_tests" depends="build:vagrant, build:composer">
         <!-- run tests in vagrant box, if an "Could not open input file" is
         found that likely means that vagrant box is faulty and should
         be recreated -->
@@ -499,6 +499,14 @@
     <!-- ============================================  -->
     <target name="build:vagrant">
         <exec command="vagrant up" checkreturn="true" passthru="true" level="info" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Composer                              -->
+    <!-- Update composer via vagrant ssh               -->
+    <!-- ============================================  -->
+    <target name="build:composer">
+        <exec command="vagrant ssh -c &quot;cd /var/www &amp;&amp; php composer.phar update&quot;" checkreturn="true" passthru="true" level="info" />
     </target>
 
 
