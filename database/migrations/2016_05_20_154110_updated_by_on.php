@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class UpdatedByOn extends Migration
 {
+    protected $tables = ['players', 'teams', 'games', 'tournaments', 'individual_players'];
+    protected $columns = ['updated_by', 'updated_on'];
+
     /**
      * Run the migrations.
      *
@@ -12,26 +15,16 @@ class UpdatedByOn extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
-            $table->integer('updated_by');
-            $table->timestamp('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->integer('updated_by');
-            $table->timestamp('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('games', function (Blueprint $table) {
-            $table->integer('updated_by');
-            $table->timestamp('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->integer('updated_by');
-            $table->timestamp('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
-            $table->integer('updated_by');
-            $table->timestamp('updated_on');
-        });
+        for ($t = 0; $t < count($this->tables); $t++) {
+            $columns = DB::connection('mysql_champ')->getSchemaBuilder()->getColumnListing($this->tables[$t]);
+            Schema::connection('mysql_champ')->table($this->tables[$t], function (Blueprint $table) use ($columns) {
+                for ($c = 0; $c < count($this->columns); $c++) {
+                    if (!in_array($this->columns[$c], $columns)) {
+                        $table->integer($this->columns[$c]);
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -41,25 +34,15 @@ class UpdatedByOn extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
-            $table->dropColumn('updated_by');
-            $table->dropColumn('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->dropColumn('updated_by');
-            $table->dropColumn('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('games', function (Blueprint $table) {
-            $table->dropColumn('updated_by');
-            $table->dropColumn('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->dropColumn('updated_by');
-            $table->dropColumn('updated_on');
-        });
-        Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
-            $table->dropColumn('updated_by');
-            $table->dropColumn('updated_on');
-        });
+        for ($t = 0; $t < count($this->tables); $t++) {
+            $columns = DB::connection('mysql_champ')->getSchemaBuilder()->getColumnListing($this->tables[$t]);
+            Schema::connection('mysql_champ')->table($this->tables[$t], function (Blueprint $table) use ($columns) {
+                for ($c = 0; $c < count($this->columns); $c++) {
+                    if (in_array($this->columns[$c], $columns)) {
+                        $table->dropColumn($this->columns[$c]);
+                    }
+                }
+            });
+        }
     }
 }
