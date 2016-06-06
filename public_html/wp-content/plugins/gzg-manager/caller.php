@@ -19,9 +19,7 @@ global $db_functions;
 
 function gzLoaderAddCss()
 {
-    echo '
-        <link rel="stylesheet" media="all" href="' . plugin_dir_url(__FILE__) . 'css/gzg-manager.css" type="text/css" />
-    ';
+    echo '<link rel="stylesheet" media="all" href="' . plugin_dir_url(__FILE__) . 'css/gzg-manager.css" type="text/css" />';
 }
 
 add_action('admin_head', 'gzLoaderAddCss');
@@ -29,14 +27,15 @@ add_action('admin_head', 'gzLoaderAddCss');
 function gzLoader()
 {
     $title = __(get_plugin_data(__FILE__)['Name']);
-
+    $url = 'http://'.$_SERVER['HTTP_HOST']."/app/manage/";
     echo
         '<div class="wrap gzg-wrap">
             <h1>' . esc_html($title) . '</h1>
             <div class="gzg-iframe-wrap"> 
-                <iframe src="/app/manage/game" class="gzg-iframe"></iframe>
+                <iframe src="/app/manage/game" id="theIframe" class="gzg-iframe"></iframe>
             </div>
-        </div>';
+        </div>
+        ';
 
     return null;
 }

@@ -167,7 +167,8 @@ class TournamentsController extends Controller
             $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
                 ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
                 ->get()
-                ->toArray();}
+                ->toArray();
+        }
         return View::make('game/tournament')->with("tournaments_filter", $tournament)->with("sorts", $ids);
     }
 

@@ -37,11 +37,11 @@
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name">Tournament Name: </label> &nbsp; <input type="text" name="name" id="name" placeholder="The name of the tournament" @if(isset($theTournament->name))value="{{$theTournament->name}}"@endif/>
+                <label for="name" style="width:180px; text-align:right;">Tournament Name: </label> &nbsp; <input type="text" name="name" id="name" style="width:350px; text-align:left;" placeholder="The name of the tournament" @if(isset($theTournament->name))value="{{$theTournament->name}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="game_id">Tournament Game ID: </label> &nbsp;
-                <select type="text" name="game_id" id="game_id" >
+                <label for="game_id" style="width:180px; text-align:right;">Tournament Game ID: </label> &nbsp;
+                <select type="text" name="game_id" id="game_id"  style="width:350px; text-align:left;">
                     @foreach($games as $key => $game)
 
                         <option value="{{$game['id']}}"
@@ -61,14 +61,16 @@
         {{ Form::close() }}
         {{ Form::open(array('id' => "tournamentFilter", 'action' => array('Backend\Manage\TournamentsController@filter'))) }}
         <input name="_method" type="hidden" value="POST">
-        <label for="game_sort">Filter by Game: </label> <select name="game_sort" id="game_sort">
+        <label for="game_sort" style="width:180px; text-align:right;">Filter by Game: </label>
+        <select name="game_sort" id="game_sort" style="width:280px; text-align:left;">
+            <option> --- </option>
             @foreach($games as $g)
                 <option id="g_option{{$g['id']}}" value="{{$g['id']}}"
                 @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
                 >{{$g['name']}}</option>
             @endforeach
         </select>
-        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search')) !!}
+        {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search', 'style'=>'width:70px; text-align:center;')) !!}
         {{ Form::close() }}
         <ul id="listOfTournaments" class="listing">
             @if(!isset($tournaments_filter))

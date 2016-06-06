@@ -50,9 +50,9 @@ class Game extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function individualPlayers()
+    public function players()
     {
-        return $this->hasMany('App\Models\Championship\IndividualPlayer');
+        return $this->hasMany('App\Models\Championship\Player');
     }
 
     /**
