@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# if not already downloaded, get the parse_yaml.sh script for parsing yaml config files
-if [ ! -f "parse_yaml.sh" ]
-    then
-        wget https://gist.githubusercontent.com/pkuczynski/8665367/raw/ -O parse_yaml.sh
-    fi
-. "${PWD}/parse_yaml.sh"
-
 tools=(vagrant VBoxManage npm sass compass gulp ruby gem bower)
 
 # for each tool, make sure it's available to the current user
@@ -90,21 +83,8 @@ then
     rm -f public_html/wp/.htaccess
 fi
 
-# eval the machines.yaml config (parse_yaml can't go deep enough to reach machines)
-eval $(parse_yaml puphpet/config-custom.yaml "config__")
-
-# get host name
-hostname=$(basename ${APP_URL})
-
-# flush any old virtual boxes
-if [ ! -f "vm_flush.sh" ]; then
-    wget https://raw.githubusercontent.com/paulbunyannet/bash/master/virtualbox/vm_flush.sh
-fi
-. "${PWD}/vm_flush.sh" -h "${hostname}" -m "${config__vm__hostname}"
-
 # do vagrant stuff
-vagrant destroy -f
-vagrant up
+vagrant up --provision
 vagrant ssh -c "cd /var/www; php composer.phar install;"
 # generate new Laravel app key
 vagrant ssh -c "cd /var/www; php artisan key:generate;"
