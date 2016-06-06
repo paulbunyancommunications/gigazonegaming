@@ -73,7 +73,7 @@ class ContactFormCest
     public function tryAndSubmitContactFormWithMissingEmail(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create();
-        $I->wantTo('Submit the contact form and check that an error will return if name is missing');
+        $I->wantTo('Submit the contact form and check that an error will return if email missing');
         $I->amOnPage('/about/contact-us/');
         $I->see('Contact Us', ['class' => 'title-page']);
         $name = $faker->name;
@@ -86,7 +86,7 @@ class ContactFormCest
     public function tryAndSubmitContactFormWithInvalidEmail(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create();
-        $I->wantTo('Submit the contact form and check that an error will return if name is missing');
+        $I->wantTo('Submit the contact form and check that an error will return if email submitted is not valid');
         $I->amOnPage('/about/contact-us/');
         $I->see('Contact Us', ['class' => 'title-page']);
         $name = $faker->name;
