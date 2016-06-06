@@ -306,7 +306,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; rm -Rf vendor; php composer.phar install; rm -f composer.phar"
+                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget -N -q https://getcomposer.org/composer.phar; fi; php composer.phar self-update; rm -Rf vendor; php composer.phar install; rm -f composer.phar"
                      display="true"/>
             </else>
         </if>
