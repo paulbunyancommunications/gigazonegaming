@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
@@ -22,6 +23,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
+        $maximunNumberOfPlayer = 5; //here we would get the max number of players
         if(isset($flush) and $flush){
             Cache::flush();
             $flush = false;
@@ -32,7 +34,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             $games = $this->DBGetGames();
             $tournaments = $this->DBGetTournaments();
             $teams = $this->DBGetTeams();
+            $shortTeams = $this->DBGetShortTeams($maximunNumberOfPlayer);
             $players = $this->DBGetPlayers($teams);
+            $individualPlayers = $this->DBGetIndividualPlayers();
         }
         View::composer(['game.game'],  function ($view) use ($games) {
             $view->with('games', $games);
@@ -51,6 +55,12 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
                 ->with('players', $players);
+        });
+        View::composer(['game.individualPlayer'], function ($view) use ($games, $tournaments, $shortTeams, $individualPlayers) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $shortTeams)
+                ->with('individualPlayers', $individualPlayers);
         });
     }
 
@@ -94,6 +104,12 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             $teams = $this->DBGetTeams();
             Cache::put('teams_c', $teams, $expiresAt);
         }
+        if (Cache::has('short_teams_c') or $expiredAt != null) {
+            $shortTeams = Cache::get('short_teams_c');
+        } else {
+            $shortTeams = $this->DBGetTeams();
+            Cache::put('short_teams_c', $shortTeams, $expiresAt);
+        }
         if (Cache::has('players_c') or $expiredAt != null) {
             $players = Cache::get('players_c');
             return array($games, $tournaments, $teams, $players);
@@ -101,6 +117,14 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             $players = $this->DBGetPlayers($teams);
             Cache::put('players_c', $players, $expiresAt);
             return array($games, $tournaments, $teams, $players);
+        }
+        if (Cache::has('individual_players_c') or $expiredAt != null) {
+            $players = Cache::get('individual_players_c');
+            return array($games, $tournaments, $shortTeams, $players);
+        } else {
+            $players = $this->DBGetIndividualPlayers();
+            Cache::put('individual_players_c', $players, $expiresAt);
+            return array($games, $tournaments, $shortTeams, $players);
         }
     }
 
@@ -124,6 +148,32 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     }
 
     /**
+     * @return array
+     */
+    public function DBGetShortTeams($maximunNumberOfPlayer)
+    {
+        $teams = Team::orderBy('name')->get()->toArray();
+        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+
+        foreach ($teams as $key => $team) {
+            foreach ($times as $k => $t) {
+                if ($team['id'] == $t['team_id']) {
+                    if($maximunNumberOfPlayer <= $t['team_count']){
+                        unset($teams[$key]);
+                        break;
+                    }
+                    $teams[$key]['team_count'] = $t['team_count'];
+                    break;
+                }
+            }
+            if(!isset($teams[$key]['team_count']) and isset($teams[$key])){
+                $teams[$key]['team_count'] = 0;
+            }
+        }
+        return $teams;
+    }
+
+    /**
      * @param $teams
      * @return mixed
      */
@@ -134,11 +184,18 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             foreach ($teams as $k => $t) {
                 if ($t['id'] == $player['team_id']) {
                     $players[$key]['team_count'] = $t['team_count'];
-                    $players[$key]['team_name'] = $t['name'];
-                    break;
                 }
             }
         }
+    }
+
+    /**
+     * @param $teams
+     * @return mixed
+     */
+    public function DBGetIndividualPlayers()
+    {
+        $players = IndividualPlayer::all()->toArray();
         return $players;
     }
 
