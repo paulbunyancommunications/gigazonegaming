@@ -6,6 +6,7 @@ vagrantfile:
         hostname: gigazonegaming.local
         memory: '512'
         cpus: '1'
+
         chosen_provider: virtualbox
         network:
             private_network: 192.168.56.123
@@ -19,6 +20,7 @@ vagrantfile:
                 modifyvm:
                     natdnshostresolver1: 'on'
                 showgui: '0'
+                boot_timeout: '600'
             vmware:
                 numvcpus: 1
             parallels:
