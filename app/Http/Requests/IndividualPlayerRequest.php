@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-use App\Models\Championship\Player;
+use App\Models\Championship\IndividualPlayer;
 
-class PlayerRequest extends Request
+class IndividualPlayerRequest extends Request
 {
 
     /**
@@ -40,21 +40,15 @@ class PlayerRequest extends Request
             case 'POST':
             {
                 return [
-                    'username' => 'required|unique:mysql_champ.players,username',
-                    'team_id' => 'required:mysql_champ.players,team_id',
+                    'username' => 'required|unique:mysql_champ.individual_players,username',
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
-//                dd($this->route());
-//                $id = $this->route()->team_id->player_id;
-                $t_id = $this->route()->player_id->team_id;
                 $name = $this->route()->player_id->username;
-//                dd("passed put patch");
                 return [
-                    'username' => 'required|unique:mysql_champ.players,username,'.$name.',username',
-                    'team_id' => 'required:mysql_champ.players,team_id,'.$t_id.',team_id',
+                    'username' => 'required|unique:mysql_champ.individual_players,username,'.$name.',username',
                 ];
             }
             default:break;
