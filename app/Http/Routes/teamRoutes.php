@@ -6,9 +6,9 @@
  * Time: 4:44 PM
  */
 
-Route::get('/manage/team', ['as' => 'manage.team.index', 'uses' => 'Backend\Manage\TeamsController@index']); //no need for middleware as we return the names only
-Route::post('/manage/team', ['as' => 'manage.team.filter', 'uses' => 'Backend\Manage\TeamsController@filter']); //no need for middleware as we return the names only
 Route::group(['middleware' => ['WPAdmin']], function () {
+    Route::get('/manage/team', ['as' => 'manage.team.index', 'uses' => 'Backend\Manage\TeamsController@index']);
+    Route::post('/manage/team', ['as' => 'manage.team.filter', 'uses' => 'Backend\Manage\TeamsController@filter']);
     Route::get('/manage/team/edit/{team_id}', ['as' => 'manage.team.edit', 'uses' => 'Backend\Manage\TeamsController@edit']);
     Route::put('/manage/team/edit/{team_id}', ['as' => 'manage.team.edited', 'uses' => 'Backend\Manage\TeamsController@update']);
     Route::post('/manage/team/new/', ['as' => 'manage.team.new', 'uses' => 'Backend\Manage\TeamsController@create']);
