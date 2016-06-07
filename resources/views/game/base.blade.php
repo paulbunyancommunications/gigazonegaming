@@ -60,6 +60,12 @@
                         array('class' => '')) }}
                         </li>
 
+                        <li>{{ Html::linkAction('Backend\Manage\IndividualPlayersController@index',
+                        'Individual Players',
+                        array('team_id'=>"individualPlayers"),
+                        array('class' => '')) }}
+                        </li>
+
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -75,7 +81,6 @@
 <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script type="text/javascript">
-    @yield('js')
 
     $(document).ready(function() {
         $('select').select2({
@@ -88,6 +93,7 @@
             var toAdd = '</div><div id="pageLinker2" class="btn-group btn-group-justified" role="group" aria-label="Justified button group">';
         });
     });
+    @yield('js')
 </script>
 </body>
 </html>
