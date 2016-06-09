@@ -1,5 +1,6 @@
 %form{:class=>"form-horizontal doAjaxForm doGeoLocate doForm well well-gz", :id=>"updateSignUpForm", :method=>"post", :action=>"/app/updates/signup", :novalidate=>"novalidate"}
   %fieldset
+    %input{:type=>"hidden", :name=>"update-recipient", :value=>"yes"}/
     %legend Sign up for updates
     .form-group
       %label{:class=>"col-md-3 control-label", :for=>"updateSignUpForm-email"}Your Email
