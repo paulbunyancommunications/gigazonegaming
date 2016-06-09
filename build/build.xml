@@ -94,6 +94,7 @@
         <exclude name="Vagrantfile"/>
         <exclude name="${dir.archive}**/*"/>
         <exclude name="${dir.originals}**/*"/>
+        <exclude name="${dir.sql}**/*"/>
 
         <!-- exclude laravel cache storage -->
         <exclude name="${dir.storage.framework.cache}**/*"/>
@@ -110,9 +111,6 @@
         <!-- exclude wordpress storage -->
         <exclude name="${dir.storage.wordpress}**/*"/>
 
-        <!-- exclude composer vendor folder, it will be populated on server -->
-        <exclude name="${dir.vendor}**/*"/>
-
         <!-- exclude wordpress uploads folder -->
         <exclude name="${dir.wp-content}uploads/**/*"/>
 
@@ -125,6 +123,9 @@
         <exclude name="html/**/*"/>
         <exclude name="error/**/*"/>
         <exclude name="manual/**/*"/>
+
+        <!-- archives created by bash scripts -->
+        <exclude name="bash/**/*.tar"/>
     </fileset>
 
     <fileset dir="." id="source:app_storage" defaultexcludes="true">
@@ -191,7 +192,6 @@
         <exec command="gulp" level="info" checkreturn="true" />
         <exec command="bower update" level="info" checkreturn="true" />
         <!-- run download of tools -->
-        <!--<exec command="wget -q -N https://getcomposer.org/composer.phar -O composer.phar; php composer.phar update" level="info" checkreturn="true" />-->
         <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
         <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
 
@@ -306,7 +306,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; rm -Rf vendor; php composer.phar install; rm -f composer.phar"
+                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; php composer.phar update;"
                      display="true"/>
             </else>
         </if>
@@ -378,7 +378,6 @@
             </then>
             <else>
                 <phingcall target="build:extract_package"/>
-
                 <echo message="Deploying to ${env} on ${ftp.host} -> /home/${ftp.username}"/>
 <!--                <exec command="
                         cd ${dir.deploy}/${dir.package};
@@ -392,7 +391,7 @@
                      level="info"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub">
-                    <fileset dir="${dir.deploy}"/>
+                    <fileset dir="${dir.deploy}/build/packaging"/>
                 </scp>
 
                 <echo message="${env} deploy complete!"/>
