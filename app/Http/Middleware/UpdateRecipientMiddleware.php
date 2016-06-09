@@ -13,11 +13,6 @@ use Closure;
 class UpdateRecipientMiddleware
 {
 
-    protected $rules = [
-        'email' => 'required|email|unique:update_recipients,email',
-        'update-recipient' => 'required|in:yes'
-    ];
-
     /**
      * Handle an incoming request and add email to update recipients if validation passes.
      *
@@ -27,8 +22,9 @@ class UpdateRecipientMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $updateRequest = new \App\Http\Requests\UpdateRecipientRequest();
         // check for base rules, if pass then setup the insert of a new update recipient
-        $validator = \Validator::make($request->all(), $this->rules, []);
+        $validator = \Validator::make($request->all(), $updateRequest->rules(), []);
         if (!$validator->fails()) {
             $updates = new UpdateRecipients();
             $updates->email = $request->input('email');
