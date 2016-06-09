@@ -43,7 +43,7 @@
                 <label for="game_id" style="width:180px; text-align:right;">Tournament Game ID: </label> &nbsp;
                 <select type="text" name="game_id" id="game_id"  style="width:350px; text-align:left;">
                     @foreach($games as $key => $game)
-
+                        <option>---</option>
                         <option value="{{$game['id']}}"
                                 @if(isset($theTournament['game_id']) and $theTournament['game_id'] == $game['id']) selected @endif
                         >{{ $game['name'] }}</option>

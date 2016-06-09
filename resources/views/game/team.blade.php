@@ -45,6 +45,7 @@
             <div class="form-group">
                 <label for="tournament_id" style="width:120px; text-align:right;">Team Tournament ID: </label> &nbsp;
                 <select type="text" name="tournament_id" id="tournament_id"  style="width:350px; text-align:left;">
+                    <option>---</option>
                     @foreach($tournaments as $key => $tournament)
                         <option value="{{$tournament['id']}}" @if(isset($theTeam['tournament_id']) and $theTeam['tournament_id'] == $tournament['id']) selected @endif>{{ $tournament['name'] }}</option>
                     @endforeach
@@ -172,9 +173,12 @@
         $('#game_sort').on("change", function() {
             var val_g = $('#game_sort option:selected').val();
             var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
-            $('#tournament_sort option').hide();
-            $('#tournament_sort option[id^="'+d_id+'_"]').show();
+            $('#tournament_sort option').prop("disabled", true);
+            $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+            $('#tournament_sort').select2({
+                allowClear: true
+            });
         });
         $('.fa-times').click(function() {
             var conf = confirm('Are you sure?');

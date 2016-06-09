@@ -73,6 +73,7 @@
             <div class="form-group">
                 <label for="team_id" style="width:120px; text-align:right;">Player Team ID: </label> &nbsp;
                 <select type="text" name="team_id" id="team_id"  style="width:350px; text-align:left;">
+                    <option>---</option>
                     @foreach($teams as $key => $team)
                         <option value="{{$team['id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['id']) selected @endif>{{ $team['name'] }}</option>
                     @endforeach
@@ -119,6 +120,7 @@
                 >{{$g['name']}}</option>
             @endforeach
         </select>
+        <br />
         {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search', 'style'=>'width:350px; text-align:center;margin-left:150px;')) !!}
         {{ Form::close() }}
         {{--*/
@@ -200,18 +202,24 @@
         $('#game_sort').on("change", function() {
             var val_g = $('#game_sort option:selected').val();
             var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
-            $('#tournament_sort option').hide();
-            $('#tournament_sort option[id^="'+d_id+'_"]').show();
+            $('#tournament_sort option').prop("disabled", true);
+            $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+            $('#tournament_sort').select2({
+                allowClear: true
+            });
         });
         $('#tournament_sort').on("change", function() {
             var val_g = $('#tournament_sort option:selected').val();
             var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
             d_id = d_id.split('_')[2];
     console.log(d_id);
-            $('#team_sort option').hide();
-            $('#team_sort option[id^="t_option'+d_id+'_"]').show();
+            $('#team_sort option').prop("disabled", true);
+            $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
+            $('#team_sort').select2({
+            allowClear: true
+            });
         });
         $('.fa-times').click(function() {
             var conf = confirm('Are you sure?');
