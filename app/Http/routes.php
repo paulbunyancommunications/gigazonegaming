@@ -31,14 +31,18 @@ Route::get('/', function () {
 Route::get('/frontend/session/csrf', ['as' => 'get_csrf', 'uses' => 'Frontend\SessionController@csrfToken']);
 
 // update signup route
-Route::post('/updates/signup', ['as' => 'updates.store', 'uses' => 'Frontend\Updates\UpdatesController@store']);
+Route::post('/updates/signup', [
+    'as' => 'updates.store',
+    'uses' => 'Frontend\Updates\UpdatesController@store',
+    'middleware' => ['CCAddRecipient']
+]);
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
 
 
 // contact us form
 Route::post(
     '/contact-us',
-    ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us', 'middleware' => ['UpdateRecipient']]
+    ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us', 'middleware' => ['UpdateRecipient', 'CCAddRecipient']]
 );
 
 // team sign up request
@@ -47,7 +51,7 @@ Route::post(
     [
         'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
         'as' => 'lol-team-sign-up',
-        'middleware' => ['LolTeamSignUp', 'UpdateRecipient']
+        'middleware' => ['LolTeamSignUp', 'UpdateRecipient', 'CCAddRecipient']
     ]
 );
 
@@ -57,7 +61,7 @@ Route::post(
     [
         'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
         'as' => 'lol-individual-sign-up',
-        'middleware' => ['LolIndividualSignUp', 'UpdateRecipient']
+        'middleware' => ['LolIndividualSignUp', 'UpdateRecipient', 'CCAddRecipient']
     ]
 );
 
