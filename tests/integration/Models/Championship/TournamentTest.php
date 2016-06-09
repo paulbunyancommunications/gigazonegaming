@@ -2,10 +2,10 @@
 namespace Tests\Integration\Models\Championship;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Championship\Tournament;
-use Illuminate\View\Factory;
 
 class TournamentTest extends \TestCase
 {
@@ -21,6 +21,8 @@ class TournamentTest extends \TestCase
     {
         parent::setUp();
         $this->faker = \Faker\Factory::create();
+        $this->resetEventListeners('App\Models\Championship\Tournament');
+
     }
 
     public function tearDown()
@@ -43,17 +45,63 @@ class TournamentTest extends \TestCase
 
     /**
      * @test
+     * @covers \App\Models\Championship\Tournament::getTeamsAttribute()
      */
-    public function it_is_attached_to_a_game()
+    public function it_is_returns_a_team_collection()
+    {
+        $tournament = factory(Tournament::class)->create();
+        factory(Team::class, 10)->create(['tournament_id' => $tournament->id]);
+
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $tournament->teams);
+        foreach ($tournament->teams as $team) {
+            $this->assertSame($team->tournament_id, $tournament->id);
+        }
+    }
+
+    /**
+     * @test
+     * @covers \App\Models\Championship\Tournament::teams()
+     */
+    public function it_has_teams()
+    {
+        $tournament = factory(Tournament::class)->create();
+        factory(Team::class, 10)->create(['tournament_id' => $tournament->id]);
+
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Relations\HasMany', $tournament->teams());
+        foreach ($tournament->teams()->get() as $team) {
+            $this->assertSame($team->tournament_id, $tournament->id);
+        }
+    }
+
+    /**
+     * @test
+     * @covers \App\Models\Championship\Tournament::getGameAttribute()
+     */
+    public function it_is_returns_a_game_collection()
     {
         $game = factory(Game::class)->create();
         $tournament = factory(Tournament::class)->create(['game_id' => $game->id]);
 
-        $getTournament = Tournament::find($tournament->id);
-        $this->assertSame($getTournament->game->name, $game->name);
-        $this->assertSame($getTournament->game->description, $game->description);
-        $this->assertSame($getTournament->game->uri, $game->uri);
+        $this->assertInstanceOf('\App\Models\Championship\Game', $tournament->game);
+        $this->assertSame($tournament->game->name, $game->name);
+        $this->assertSame($tournament->game->description, $game->description);
+        $this->assertSame($tournament->game->uri, $game->uri);
     }
+
+    /**
+     * @test
+     * @covers \App\Models\Championship\Tournament::game()
+     */
+    public function it_belongs_to_a_game()
+    {
+        $game = factory(Game::class)->create();
+        $tournament = factory(Tournament::class)->create(['game_id' => $game->id]);
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Relations\BelongsTo', $tournament->game());
+        $this->assertSame($tournament->game()->first()->name, $game->name);
+        $this->assertSame($tournament->game()->first()->description, $game->description);
+        $this->assertSame($tournament->game()->first()->uri, $game->uri);
+    }
+
     /**
      *
      * Test to see when getting a Tournament we
@@ -82,5 +130,19 @@ class TournamentTest extends \TestCase
         $time_stamp = Carbon::now("CMT");
         $tournament = factory(Tournament::class)->create(['updated_on' => $time_stamp]);
         $this->assertSame($time_stamp, $tournament->updated_on);
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_teams_when_it_is_deleted()
+    {
+        $tournament = factory(Tournament::class)->create();
+        $teams = factory(Team::class, 10)->create(['tournament_id' => $tournament->id]);
+        $tournament->delete();
+        foreach ($teams as $team) {
+            $this->assertNull(Team::find($team->id));
+        }
+
     }
 }

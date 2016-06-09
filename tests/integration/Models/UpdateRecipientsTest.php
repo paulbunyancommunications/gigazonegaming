@@ -36,6 +36,7 @@ class UpdateRecipientsTest extends \TestCase
     {
         parent::setUp();
         $this->faker = \Faker\Factory::create();
+        $this->resetEventListeners('App\Models\UpdateRecipients');
     }
 
     public function tearDown()

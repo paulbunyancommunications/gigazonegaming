@@ -39,6 +39,7 @@ class IndividualPlayerTest extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
+        $this->resetEventListeners('App\Models\Championship\IndividualPlayer');
 
     }
 

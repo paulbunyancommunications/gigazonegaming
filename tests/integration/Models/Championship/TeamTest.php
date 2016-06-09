@@ -42,6 +42,7 @@ class TeamTest extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
+        $this->resetEventListeners('App\Models\Championship\Team');
 
     }
 
@@ -116,6 +117,21 @@ class TeamTest extends \TestCase
         $getTeam = Team::find($item->id);
         $this->assertSame($getTeam->captain()->id, $player->id);
     }
+
+    /**
+     *
+     * Test to see when getting a team we
+     * get false when captain player id doesn't exist
+     *
+     * @test
+     */
+    public function it_has_a_captain_attribute_but_player_is_missing()
+    {
+        $item = factory(Team::class)->create();
+        $item->save();
+
+        $this->assertFalse($item->captain());
+    }
     /**
      *
      * Test to see when getting a team we
@@ -161,5 +177,20 @@ class TeamTest extends \TestCase
         $time_stamp = Carbon::now("CMT");
         $team = factory(Team::class)->create(['updated_on' => $time_stamp]);
         $this->assertSame($time_stamp, $team->updated_on);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_its_players_when_deleted()
+    {
+        $team = factory(Team::class)->create();
+        $players = factory(Player::class, 5)->create(['team_id' => $team->id]);
+
+        $team->delete();
+        foreach ($players as $player) {
+            $getPlayer = Player::find($player->id);
+            $this->assertNull($getPlayer);
+        }
     }
 }

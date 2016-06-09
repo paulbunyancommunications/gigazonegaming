@@ -22,4 +22,16 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    /**
+     * Reset boot event listeners in model
+     * https://github.com/laravel/framework/issues/1181#issuecomment-51627220
+     *
+     * @param $model
+     */
+    public function resetEventListeners($model)
+    {
+        $model::flushEventListeners();
+        $model::boot();
+    }
 }

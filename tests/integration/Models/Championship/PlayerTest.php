@@ -42,6 +42,7 @@ class PlayerTest extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
+        $this->resetEventListeners('App\Models\Championship\Player');
 
     }
 

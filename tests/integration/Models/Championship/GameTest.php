@@ -40,6 +40,7 @@ class GameTest extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
+        $this->resetEventListeners('App\Models\Championship\Game');
 
     }
 
@@ -65,6 +66,7 @@ class GameTest extends \TestCase
 
         $this->assertSame($name, $getName->name);
     }
+
     /**
      *
      * Test to see when getting a game we
@@ -192,5 +194,25 @@ class GameTest extends \TestCase
 
         $getGame = Game::find($game->id);
         $this->assertSame(count($getGame->individualPlayers->toArray()), 10);
+    }
+
+    /**
+     * Check that when a game is deleted the accompanying
+     * tournaments and individual players are also deleted.
+     *
+     * @test
+     */
+    public function it_deletes_tournament_and_individual_players_when_deleted()
+    {
+        $game = factory(Game::class)->create();
+        $tournament = factory(Tournament::class)->create(['game_id' => $game->id]);
+        $individuals = factory(IndividualPlayer::class, 10)->create(['game_id' => $game->id]);
+
+        $game->delete();
+        $this->assertNull(Tournament::find($tournament->id));
+        foreach ($individuals as $individual) {
+            $this->assertNull(IndividualPlayer::find($individual->id));
+
+        }
     }
 }
