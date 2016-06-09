@@ -59,7 +59,7 @@ class LolTeamSignUpRequest extends BaseRequest
             'team-name.required' => 'The team name is required.',
         ];
         
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $messages['teammate-'. Numbers::toWord($i).'-lol-summoner-name.required'] = 'The summoner name for team member '.Numbers::toWord($i).' is required.';
             $messages['teammate-'.Numbers::toWord($i).'-email-address.required'] = 'The email address for team member '.Numbers::toWord($i).' is required.';
             $messages['teammate-'.Numbers::toWord($i).'-email-address.email'] = 'The email address for team member '.Numbers::toWord($i).' must be a valid email address (someone@somewhere.com for example).';
