@@ -40,9 +40,17 @@ class Tournament extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function games()
+    public function game()
     {
         return $this->belongsTo('App\Models\Championship\Game');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getGameAttribute()
+    {
+        return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id')->getResults();
     }
 
     /**
@@ -52,9 +60,13 @@ class Tournament extends Model
     {
         return $this->hasMany('App\Models\Championship\Team');
     }
-
-    public function getGameAttribute()
+    
+     /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getTeamsAttribute()
     {
-        return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id')->getResults();
+        return $this->hasMany('App\Models\Championship\Team')->getResults();
     }
+    
 }
