@@ -91,7 +91,7 @@
     .clearfix
     .row
       .col-md-12
-        .message-container.margin-top
+        %div{:class=>"message-container margin-top", :id=>"{% if tag is defined %}{{tag|slugify}}-{% endif %}message-container"}
 
     .clearfix
 {% endif %}
