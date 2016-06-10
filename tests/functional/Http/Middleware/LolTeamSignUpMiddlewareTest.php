@@ -10,7 +10,7 @@
  * @subpackage Subpackage
  */
 
-namespace Tests\Unit\App\Http\Middleware;
+namespace Tests\Functional\Http\Middleware;
 
 use App\Http\Middleware\LolTeamSignUpMiddleware;
 use App\Http\Requests\LolTeamSignUpRequest;

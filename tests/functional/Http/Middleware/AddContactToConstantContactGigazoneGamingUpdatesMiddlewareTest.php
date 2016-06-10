@@ -9,7 +9,7 @@
  * @package Tests\Unit\App\Http\Middleware
  */
 
-namespace Tests\Unit\App\Http\Middleware;
+namespace Tests\Functional\Http\Middleware;
 
 use App\Http\Middleware\AddContactToConstantContactGigazoneGamingUpdatesMiddleware as CcMiddleware;
 use Ctct\ConstantContact;
