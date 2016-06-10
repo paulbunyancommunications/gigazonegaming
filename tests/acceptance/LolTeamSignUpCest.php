@@ -9,7 +9,7 @@ class LolTeamSignUpCest
 
     public function _before(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+
     }
 
     public function _after(AcceptanceTester $I)

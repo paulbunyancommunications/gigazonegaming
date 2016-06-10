@@ -1,16 +1,21 @@
 <?php
 namespace Tests\Acceptance;
 
-use \AcceptanceTester;
+use AcceptanceTester;
 
 class LolIndividualSignUpCest
 {
+    protected $faker;
 
-    const DEFAULT_WAIT = 15;
+    public function __construct()
+    {
+        $this->faker = \Faker\Factory::create();
+    }
 
     public function _before(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        $I->amOnPage('/sign-up/lol-individual-sign-up/');
+        $I->waitForJs('return jQuery.active == 0', 10);
     }
 
     public function _after(AcceptanceTester $I)
@@ -19,24 +24,27 @@ class LolIndividualSignUpCest
     }
 
     // tests
+
+    public function seeTitleOnIndividualSignUpPage(AcceptanceTester $I)
+    {
+        $I->see('League of Legends Individual Sign Up');
+    }
+
     public function submitAnIndividualToTheSystem(AcceptanceTester $I)
     {
-        $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL individual sign up form');
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
-        $I->see('League of Legends Individual Sign Up');
 
-        $name = $faker->name;
-        $summoner = $faker->userName;
-        $email = $faker->email;
-        $phone = $faker->phoneNumber;
+        $name = $this->faker->name;
+        $summoner = $this->faker->userName;
+        $email = $this->faker->email;
+        $phone = $this->faker->phoneNumber;
         $I->fillField(['name' => 'name'], $name);
         $I->fillField(['name' => 'your-lol-summoner-name'], $summoner);
         $I->fillField(['name' => 'email'], $email);
         $I->fillField(['name' => 'your-phone'], $phone);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
 
         $I->see('Thanks for signing up to play League of Legends!');
         $I->see($name, ['id' => 'name-response-value']);
@@ -45,59 +53,64 @@ class LolIndividualSignUpCest
         $I->see($phone, ['id' => 'your-phone-response-value']);
     }
 
-    public function submitFailsWithBadEmail (AcceptanceTester $I)
+    public function submitFailsWithBadEmail(AcceptanceTester $I)
     {
-        $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL individual sign up form with a bad email address');
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
-        $email = $faker->words(4);
+
+        $email = $this->faker->words(4);
         $I->fillField(['name' => 'email'], $email);
+
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+
         $I->see('Your email address must be a valid address');
     }
 
     public function submitFailsWithMissingEmail(AcceptanceTester $I)
     {
         $I->wantTo('Submit the LOL individual sign up form with a missing email address');
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
-        // wait for any js to finish, should not take this long
-        $I->wait(self::DEFAULT_WAIT);
+
+        $I->fillField(['name' => 'name'], $this->faker->name);
+
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+
         $I->see('Your email address is required');
     }
 
     public function submitFailsWithMissingSummonerName(AcceptanceTester $I)
     {
         $I->wantTo('Submit the LOL individual sign up form with a missing summoner name');
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
-        // wait for any js to finish, should not take this long
-        $I->wait(self::DEFAULT_WAIT);
+
+        $I->fillField(['name' => 'name'], $this->faker->name);
+
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+
         $I->see('Your League of Legends summoner name is required');
     }
 
     public function submitFailsWithMissingName(AcceptanceTester $I)
     {
         $I->wantTo('Submit the LOL individual sign up form with a missing name');
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
-        // wait for any js to finish, should not take this long
-        $I->wait(self::DEFAULT_WAIT);
+
+        $I->fillField(['name' => 'email'], $this->faker->email);
+
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+
         $I->see('Your name is required');
     }
 
     public function submitFailsWithMissingPhone(AcceptanceTester $I)
     {
         $I->wantTo('Submit the LOL individual sign up form with a missing phone');
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
-        // wait for any js to finish, should not take this long
-        $I->wait(self::DEFAULT_WAIT);
+
+        $I->fillField(['name' => 'email'], $this->faker->email);
+
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+
         $I->see('Your phone number is required');
     }
 }

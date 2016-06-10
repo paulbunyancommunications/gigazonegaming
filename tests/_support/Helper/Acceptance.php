@@ -14,4 +14,9 @@ class Acceptance extends \Codeception\Module
             $(function() {" . $callback . "});"
         );
     }
+
+    public function _beforeSuite($settings = [])
+    {
+        exec('php artisan migrate:refresh');
+    }
 }
