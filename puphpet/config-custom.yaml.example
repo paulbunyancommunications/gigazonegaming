@@ -1,45 +1,49 @@
 vagrantfile:
     vm:
-        hostname: gigazonegaming.local
-        network:
-            private_network: 192.168.56.100
-
+        provider:
+            local:
+                chosen_virtualizer: virtualbox
+                machines:
+                    machine1:
+                        id: gigazonegaming1
+                        hostname: gigazonegaming1.puphpet
+                        network:
+                            private_network: 192.168.56.101
 apache:
     vhosts:
-        vhost_one:
+        vhost1:
             servername: gigazonegaming.local
-            serveraliases:
-                    - www.gigazonegaming.local
             docroot: /var/www/public_html
             directories:
-                directories_one:
+                directory1:
                     path: /var/www/public_html
-
+xdebug:
+        install: '1'
 mysql:
+    settings:
+        root_password: 'root'
     users:
-        mysql_user_one:
-            name: 'user'
+        user1:
+            name: user
             password: 'password'
-        mysql_user_two:
-            name: 'user_2'
+        user2:
+            name: user_2
             password: 'password_2'
     databases:
-        mysql_database_one:
-            name: 'gzgaming_wp'
+        database1:
+            name: gzgaming_wp
             sql: '/var/www/sql/gzgaming_wp.sql'
-        mysql_database_two:
-            name: 'gzgaming_champ_db'
+        database2:
+            name: gzgaming_champ_db
             sql: '/var/www/sql/gzgaming_champ_db.sql'
     grants:
-        mysql_grants_one:
-            user: 'user'
+        grant1:
+            user: user
             table: 'gzgaming_wp.*'
             privileges:
-                - ALL
-        mysql_grants_two:
-            user: 'user_2'
+              - ALL
+        grant2:
+            user: user_2
             table: 'gzgaming_champ_db.*'
             privileges:
-                - ALL
-python:
-  install: '0'
+              - ALL
