@@ -9,3 +9,6 @@ modules:
     enabled:
         # add framework module here
         - \Helper\Functional
+        - WpHelper
+        - Asserts
+        - DbHelper
