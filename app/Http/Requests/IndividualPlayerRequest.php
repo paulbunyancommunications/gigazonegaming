@@ -25,7 +25,7 @@ class IndividualPlayerRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     * @todo Nelson, Where are the rules for required name and game_id? Are they handled in the model? They should be in the rules below.
      * @return array
      */
     public function rules()
