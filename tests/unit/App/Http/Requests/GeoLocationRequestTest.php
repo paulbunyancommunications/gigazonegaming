@@ -9,7 +9,7 @@
  * @package Tests\Unit\App\Http\Requests
  */
 
-namespace Tests\Unit\App\Http\Requests;
+namespace App\Http\Requests;
 
 
 class GeoLocationRequestTest extends \PHPUnit_Framework_TestCase

@@ -9,9 +9,7 @@
  * @package Tests\Unit\App\Http\Requests
  */
 
-namespace Tests\Unit\App\Http\Requests;
-
-use App\Http\Requests\UpdateRecipientRequest;
+namespace App\Http\Requests;
 
 class UpdateRecipientRequestTest extends \TestCase
 {

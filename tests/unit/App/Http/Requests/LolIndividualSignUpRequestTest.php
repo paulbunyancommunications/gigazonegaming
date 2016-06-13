@@ -8,7 +8,7 @@
  * @author Nate Nolting <naten@paulbunyan.net>
  */
 
-namespace Tests\Unit\App\Http\Requests;
+namespace App\Http\Requests;
 
 use App\Http\Requests\LolIndividualSignUpRequest;
 use Pbc\Bandolier\Type\Numbers;

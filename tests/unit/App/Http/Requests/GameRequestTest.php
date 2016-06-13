@@ -14,44 +14,11 @@ namespace App\Http\Requests;
 use Mockery;
 
 /**
- * Mock is_user_logged_in
- * @return mixed
- */
-function is_user_logged_in()
-{
-    return GameRequestTest::$functions->is_user_logged_in();
-}
-
-/**
- * Mock is_super_admin
- * @return mixed
- */
-function is_super_admin()
-{
-    return GameRequestTest::$functions->is_super_admin();
-}
-
-/**
- * Mock is_user_admin
- * @return mixed
- */
-function is_user_admin()
-{
-    return GameRequestTest::$functions->is_user_admin();
-}
-
-/**
  * Class GameRequestTest
  * @package Tests\Functional\Http\Requests
  */
-class GameRequestTest extends \TestCase
+class GameRequestTest extends WpRequestsBase
 {
-    /**
-     * @var \Mockery::mock;
-     */
-    public static $functions;
-
-
     /**
      *
      */
