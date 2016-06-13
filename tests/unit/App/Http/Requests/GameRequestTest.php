@@ -87,7 +87,7 @@ class GameRequestTest extends WpRequestsBase
     /**
      * @test
      */
-    public function it_does_not_allow_the_user_if_logged_in_but_not_a_super_admin_or_uer_admin()
+    public function it_does_not_allow_the_user_if_logged_in_but_not_a_super_admin_or_user_admin()
     {
         $request = new \App\Http\Requests\GameRequest();
         self::$functions->shouldReceive('is_user_logged_in')->once()->andReturn(true);
