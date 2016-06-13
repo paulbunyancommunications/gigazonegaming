@@ -39,4 +39,17 @@ class GeoLocationRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('geo_long', $geoLocationRequest->rules());
         $this->assertSame($geoLocationRequest->rules()['geo_long'], 'required_with:geo_lat|float');
     }
+
+    /**
+     * @test
+     */
+    public function it_has_messages()
+    {
+        $geoLocationRequest = new \App\Http\Requests\GeoLocationRequest();
+        $this->assertSame([
+            'geo_lat.regex' => "Geo location latitude should be a float value",
+            'geo_long.regex' => "Geo location longitude should be a float value",
+        ], $geoLocationRequest->messages());
+
+    }
 }

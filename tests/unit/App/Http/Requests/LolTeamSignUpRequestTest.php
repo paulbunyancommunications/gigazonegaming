@@ -73,4 +73,29 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
         
         }
     }
+
+    /**
+     * @test
+     */
+    public function it_has_messages()
+    {
+        $individualRequest = new LolTeamSignUpRequest();
+
+        $messages = [
+            'email.required' => 'The team captain email address is required.',
+            'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
+            'name.required' => 'The name of the team captain is required.',
+            'team-captain-lol-summoner-name.required' => 'The team captain LOL summoner name is required.',
+            'team-captain-phone.required' => 'The team captain phone number is required.',
+            'team-name.required' => 'The team name is required.',
+        ];
+
+        for ($i = 1; $i <= 2; $i++) {
+            $messages['teammate-'. Numbers::toWord($i).'-lol-summoner-name.required'] = 'The summoner name for team member '.Numbers::toWord($i).' is required.';
+            $messages['teammate-'.Numbers::toWord($i).'-email-address.required'] = 'The email address for team member '.Numbers::toWord($i).' is required.';
+            $messages['teammate-'.Numbers::toWord($i).'-email-address.email'] = 'The email address for team member '.Numbers::toWord($i).' must be a valid email address (someone@somewhere.com for example).';
+        }
+
+        $this->assertSame($messages, $individualRequest->messages());
+    }
 }

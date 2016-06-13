@@ -49,4 +49,22 @@ class LolIndividualSignUpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($individualRequest->rules()['your-phone'], 'required');
 
     }
+
+    /**
+     * @test
+     */
+    public function it_has_messages()
+    {
+        $individualRequest = new LolIndividualSignUpRequest();
+
+        $messages = [
+            'name.required' => 'Your name is required.',
+            'your-lol-summoner-name.required' => 'Your League of Legends summoner name is required.',
+            'email.required' => 'Your email address is required.',
+            'email.email' => 'Your email address must be a valid address (someone@somewhere.com for example).',
+            'your-phone.required' => 'Your phone number is required.',
+        ];
+
+        $this->assertSame($messages, $individualRequest->messages());
+    }
 }
