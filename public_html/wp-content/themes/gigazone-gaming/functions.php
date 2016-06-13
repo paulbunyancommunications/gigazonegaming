@@ -5,7 +5,8 @@ register_nav_menu('Main Navigation', __('Primary Menu'));
 $bootstrap = new \GigaZone\GigaZoneGamingBootstrap();
 
 /** @var Stash\Driver\FileSystem $cacheDriver */
-$cacheDriver = new Stash\Driver\FileSystem(['path' => dirname($_SERVER['DOCUMENT_ROOT']) . '/cache/']);
+$cachePath = realpath(dirname(__DIR__) . '/../../../cache/');
+$cacheDriver = new Stash\Driver\FileSystem(['path' => $cachePath]);
 
 add_shortcode('update-sign-up', [$bootstrap, 'updateSignUpFormShortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);

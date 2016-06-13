@@ -25,7 +25,7 @@ class TeamRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     * @todo Nelson, please fix switch statement, only use colons and breaks between conditions http://php.net/manual/en/control-structures.switch.php
      * @return array
      */
     public function rules()
@@ -61,8 +61,12 @@ class TeamRequest extends Request
         }
         return [
         ];
-
     }
+
+    /**
+     * @todo Nelson, Where are the rules for required name and game_id? Are they handled in the model? They should be in the rules method.
+     * @return array
+     */
     public function messages()
     {
         return [
