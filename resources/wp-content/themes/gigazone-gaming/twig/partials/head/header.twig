@@ -1,0 +1,21 @@
+<head>
+  <meta charset='utf-8'>
+  <meta content='IE=edge' http-equiv='X-UA-Compatible'>
+  <meta content='width=device-width, initial-scale=1' name='viewport'>
+  {% if request_token is defined %}
+    <meta content='{{ request_token }}' name='request_token'>
+  {% endif %}
+  {% if function('is_singular') and function('pings_open', function('get_queried_object')) %}
+    <link href="{{ function('bloginfo','pingback_url') }}" rel='pingback'>
+  {% endif %}
+  {% if post is defined %}
+    {% include "partials/head/header-open-graph.twig" with {'post':post} %}
+  {% endif %}
+  {% include "partials/head/header-title.twig" %}
+  {{ function('wp_head') }}
+  <link href="{{ '/bower_components/bootstrap/dist/css/bootstrap.min.css' | auto_version_path }}" rel='stylesheet'>
+  <link href="{{ '/bower_components/font-awesome/css/font-awesome.min.css' | auto_version_path }}" rel='stylesheet'>
+  <link href="{{ (theme_dir~'/css/style.css') | auto_version_path }}" rel='stylesheet'>
+  <script src='https://use.typekit.net/bhh0sxx.js'></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+</head>
