@@ -38,9 +38,10 @@
   &-list-label {
     text-transform: uppercase;
     display: block;
-    @include font-size(1);
+    @include font-size(.875);
     line-height: normal;
     color: $color-light-gray;
+    font-weight: 700;
   }
 
   &-list {
@@ -59,21 +60,23 @@
     }
     a, span {
 
-      @include font-size(1);
+      @include font-size(.875);
       color: $color-gz-gray;
       @include padding-equal(.375);
       @include border-radius(10px);
       display: block;
       line-height: normal;
-      background: tint($color-light-gray, 50%);
+      background: tint($color-light-gray, 60%);
       color: $color-gz-gray;
       text-decoration: none;
-          &:hover, &:active {
-            color: $color-black;
-          }
-          &:visited {
-            background-color: tint($color-complement-2, 70);
-      }
+        &:visited {
+          color: $color-secondary-2-0;
+          background: tint($color-light-gray, 60%);
+        }
+        &:hover, &:active {
+          color: $color-white;
+          background: $color-gz-orange;
+        }
     }
   }
 }
