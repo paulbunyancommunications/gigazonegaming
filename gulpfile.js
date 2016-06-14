@@ -110,8 +110,8 @@ elixir(function (mix) {
         .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views');
 
         if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
-            mix.cleanCss(themeFolder + '/css')
-                .minifyJs(themeFolder + '/js');
+            //mix.cleanCss(themeFolder + '/css')
+              //  .minifyJs(themeFolder + '/js');
         }
         mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
 });

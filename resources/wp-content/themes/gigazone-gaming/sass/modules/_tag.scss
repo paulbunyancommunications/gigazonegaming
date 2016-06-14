@@ -57,7 +57,8 @@
     &:before {
       display: none;
     }
-    a {
+    a, span {
+
       @include font-size(1);
       color: $color-gz-gray;
       @include padding-equal(.375);
@@ -67,12 +68,11 @@
       background: tint($color-light-gray, 50%);
       color: $color-gz-gray;
       text-decoration: none;
-      &:hover, &:active {
-        color: $color-black;
-      }
-      &:visited {
-        background-color: tint($color-complement-2, 70);
-
+          &:hover, &:active {
+            color: $color-black;
+          }
+          &:visited {
+            background-color: tint($color-complement-2, 70);
       }
     }
   }

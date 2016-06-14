@@ -1,0 +1,11 @@
+<div class="posted">
+    <div class="tag">
+    <div class="tag-list-label alignleft">Posted:</div>
+        <p class="tag-list-item">
+            {% if (function('get_the_time','U', post.ID) - function('get_the_time','U')) > 0 %}
+            <a href="{{ function('get_month_link', function('get_the_time', 'Y', post.ID), function('get_the_time', 'm', post.ID)) }}">{{ function('human_time_diff', function('get_the_time','U', post.ID) ,function('date', 'U')) }} ago</a></p>
+            {% else %}
+            <span>{{ function('get_the_time','U', post.ID)|date('l, F jS, Y \a\t g:i A') }}</span>
+        {% endif %}
+    </div>
+</div>

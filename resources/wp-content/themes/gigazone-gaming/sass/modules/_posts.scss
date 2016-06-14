@@ -174,3 +174,16 @@
 h1.title-page + .post-list-item > .title-page:first-of-type {
   margin-top: 0;
 }
+
+.posted-on {
+  margin-top: 0;
+  margin-bottom: 0;
+  .title-page + & {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .label, .time {
+    color: $color-gz-gray;
+    @include font-size(1);
+  }
+}
