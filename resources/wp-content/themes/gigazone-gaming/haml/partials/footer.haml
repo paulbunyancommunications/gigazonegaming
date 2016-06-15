@@ -31,5 +31,7 @@
           %p{:class=>"text-left"}
             &copy; {{ "now"|date('Y') }} {{ site.name }}, All rights reserved
         .col-sm-6
-          %ul{:class=>"text-right inline-list"}
+          .sidebar
+            .sidebar-social-media
+              {% include 'partials/social-media.twig' %}
 {% include "partials/footer-js.twig" %}
