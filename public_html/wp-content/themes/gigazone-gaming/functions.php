@@ -20,17 +20,47 @@ add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_action('init', 'showSplashPageOnly', 1);
 
 // add theme support for post thumbnails
-add_theme_support( 'post-thumbnails' );
+add_theme_support('post-thumbnails');
 
+// enqueue css and js
+function loadCss()
+{
+    $themeDir = parse_url(get_template_directory_uri(), PHP_URL_PATH);
+    $autoVersion = new \Pbc\AutoVersion();
+    wp_enqueue_style('bootstrap', '/..' . $autoVersion->file('/bower_components/bootstrap/dist/css/bootstrap.min.css'));
+    wp_enqueue_style('fontawesome',
+        '/..' . $autoVersion->file('/bower_components/font-awesome/css/font-awesome.min.css'));
+    wp_enqueue_style(
+        'gigazone',
+        '/..' . $autoVersion->file($themeDir . '/css/style.css'),
+        ['bootstrap', 'fontawesome']
+    );
+}
 
+add_action('wp_head', 'loadCss', 1);
+
+function loadJs()
+{
+    $themeDir = parse_url(get_template_directory_uri(), PHP_URL_PATH);
+    $autoVersion = new \Pbc\AutoVersion();
+    wp_enqueue_script('common-require', '/..' . $autoVersion->file($themeDir . '/js/common-require.js'));
+    wp_enqueue_script('require-js', '/..' . $autoVersion->file('/bower_components/requirejs/require.js'));
+    wp_enqueue_script(
+        'main-require',
+        '/..' . $autoVersion->file($themeDir . '/js/main-require.js'),
+        ['common-require', 'require-js']
+    );
+}
+
+add_action('wp_footer', 'loadJs');
 
 function showSplashPageOnly()
 {
-    if(filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
+    if (filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
         include(locate_template('get-context.php'));
         $homeId = get_option('page_on_front');
         $context['page'] = Timber::get_post(get_option('page_on_front'));
-        $context['body_class'] = 'splash page page-id-'.$homeId.' page-template-default';
+        $context['body_class'] = 'splash page page-id-' . $homeId . ' page-template-default';
         Timber::render('pages/splash.twig', $context);
         die();
     }
