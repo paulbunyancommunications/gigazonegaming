@@ -25,8 +25,11 @@
     @include font-size(4.75);
     @include line-height(1);
     @include margin-bottom(1.375);
-    @include margin-top(1.875);
+    @include margin-top(3);
     color: $color-light-gray;
+    border-bottom: 1px solid $color-gz-gray;
+    @include padding-bottom(2);
+    text-transform: uppercase;
 
     &::after{
       content:"";
@@ -38,10 +41,18 @@
   &-list-label {
     text-transform: uppercase;
     display: block;
-    @include font-size(.875);
+    @include font-size(1);
     line-height: normal;
     color: $color-light-gray;
     font-weight: 700;
+
+    // special case for .tag-list-label that's wrapped with .author block
+    .author & {
+      @include font-size(1.125);
+      .post-list-item-tag & {
+        @include font-size(1);
+      }
+    }
   }
 
   &-list {
@@ -78,5 +89,28 @@
           background: $color-gz-orange;
         }
     }
+
+    // special case for tag-list-item that's wrapped with .author block
+    .author & {
+      a, span {
+        @include font-size(1.125);
+      }
+
+      .post-list-item-tag & {
+        a, span {
+          @include font-size(.875);
+        }
+        img {
+          display: none;
+        }
+      }
+
+      img {
+        @include height(1.125);
+        width: auto;
+      }
+
+    }
+
   }
 }
