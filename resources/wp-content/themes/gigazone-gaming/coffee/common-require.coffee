@@ -21,6 +21,7 @@ require =
     links: ["modules/links"]
     stickyFooter: ["modules/sticky-footer"]
     searchResults: ["modules/search-results"]
+    posts: ["modules/posts"]
     form: ["modules/form"],
     Utility: ["modules/Utility"]
   shim:

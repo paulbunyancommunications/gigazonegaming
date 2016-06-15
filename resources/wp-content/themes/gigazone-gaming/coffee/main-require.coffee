@@ -5,6 +5,10 @@ require [
   # DOM ready
   $ ->
 
+    require ['posts'], (posts) ->
+      posts.init()
+      return
+      
     require ['links'], (links) ->
       links.init()
       return
