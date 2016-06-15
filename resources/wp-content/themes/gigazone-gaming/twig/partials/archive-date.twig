@@ -1,0 +1,1 @@
+{{ function('mktime', 0,0,0,function('get_query_var','monthnum'), 1, function('get_query_var','year'))|date('F') }}, {{ function('get_query_var','year') }}
