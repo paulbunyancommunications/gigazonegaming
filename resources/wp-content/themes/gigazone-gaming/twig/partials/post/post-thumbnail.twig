@@ -1,0 +1,11 @@
+{% if function('has_post_thumbnail', post) %}
+<div class="post-thumbnail{% if class is defined %} {{ class }}{% endif %}">
+    {% if link is defined and link == true %}<a href="{{ function('get_permalink', post) }}">{% endif %}
+        {% if size is defined %}
+            {{ function('get_the_post_thumbnail', post, size) }}
+        {% else %}
+            {{ function('get_the_post_thumbnail', post, 'thumbnail') }}
+        {% endif %}
+        {% if link is defined and link == true %}</a>{% endif %}
+</div>
+{% endif %}

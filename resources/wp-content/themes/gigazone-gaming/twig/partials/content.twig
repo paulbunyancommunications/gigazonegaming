@@ -10,6 +10,7 @@
     {% for p in posts %}
         {% if p.post_title is defined %}
         <div class="post-list-item {{ p.class }}">
+            {% include "partials/post/post-thumbnail.twig" with {'post': p, 'class':'next-to-title-page', 'link': true} %}
             {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
             {% include "partials/posted-on.twig" with {'post':p} %}
             {% if p.post_excerpt != '' %}
@@ -28,7 +29,11 @@
 {% elseif post is defined and single is defined %}
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
+        {% include "partials/post/posted-author.twig" with {'post':post} %}
+        <div class="clearfix"></div>
+        {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}
         {{ function("apply_filters","the_content", post.post_content) }}
+        <div class="clearfix"></div>
         {% if section is not defined or ( section is defined and section.post_name == 'blog' ) %}
             {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
             {% include "partials/post-permalink.twig" %}

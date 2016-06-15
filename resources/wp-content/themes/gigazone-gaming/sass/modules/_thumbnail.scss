@@ -1,0 +1,66 @@
+@import "compass";
+.post-thumbnail {
+    &.next-to-title-page {
+      float: left;
+      @include margin(0, .5, 0, 0);
+      @include square(5.325);
+
+      @include mq_cinema {
+        @include square(5.875);
+      }
+      @include mq_tablet {
+        @include square(5.325);
+      }
+      @include mq_phone {
+        @include square(4);
+        @include margin-top(.5125);
+      }
+      img {
+        max-height: 101%;
+        max-width: none;
+        width: auto;
+      }
+
+      a {
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        display: block;
+        @include opacity(.85);
+        &:hover, &:active, &.hover {
+          @include opacity(1);
+        }
+    }
+  }
+
+  &.post-image-callout {
+    float: left;
+    @include margin(0,1,1,0);
+    @include height(10);
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+    }
+
+    @include mq_cinema {
+      @include height(15);
+    }
+    @include mq_tablet {
+      float: none;
+      @include margin(0,0,1,0);
+      margin-left: auto;
+      margin-right: auto;
+      width: auto;
+      @include height(10);
+    }
+    @include mq_phone {
+      float: none;
+      @include margin(0,0,1,0);
+      margin-left: auto;
+      margin-right: auto;
+      @include height(10);
+    }
+  }
+
+}

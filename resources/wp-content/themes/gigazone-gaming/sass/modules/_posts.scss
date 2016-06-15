@@ -15,12 +15,17 @@
   @include margin-top(1.375);
   color: $color-gz-gray;
 
+  .next-to-title-page.post-thumbnail + & {
+    a {
+      @include padding(0,0,0,.625);
+    }
+  }
   a {
     text-decoration: none;
     border-bottom: 8px solid $color-white;
     @include line-height(4.875);
 
-    &:hover, &:active {
+    &:hover, &:active, &.hover {
       border-bottom-color: $color-gz-gray;
       color: $color-gz-gray;
     }
