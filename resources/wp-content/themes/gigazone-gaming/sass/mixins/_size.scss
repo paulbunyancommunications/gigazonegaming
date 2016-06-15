@@ -1,0 +1,15 @@
+@mixin square($multiple:1, $overflow: false) {
+  @include height($multiple);
+  @include width($multiple);
+  @if $overflow == false {
+    overflow: hidden;
+  }
+}
+
+@mixin rectangle($width:1, $height:1, $overflow: false) {
+  @include height($height);
+  @include width($width);
+  @if $overflow == false {
+    overflow: hidden;
+  }
+}
