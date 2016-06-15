@@ -1,11 +1,11 @@
 {% extends "base/base.twig" %}
 {% block article %}
-.container
-  .row
+<div class='container'>
+  <div class='row'>
     {% set layout = (page.layout is defined ? page.layout|slugify : "") %}
-    %div{:class=>"{{layout}}"}
+    <div class='layout {{layout}}'>
       {% include ["partials/layouts/layout-" ~ layout ~ ".twig", "partials/layouts/layout-sidebar.twig"] %}
+    </div>
+  </div>
+</div>
 {% endblock %}
-
-
-
