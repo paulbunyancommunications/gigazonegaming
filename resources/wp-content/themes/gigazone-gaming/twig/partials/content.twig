@@ -1,8 +1,13 @@
 {% if tag is defined %}
-    {% include "partials/tag-title.twig" %}
-{% endif %}
-{% if category is defined %}
-    {% include "partials/category-title.twig" %}
+    {% include "partials/title/tag-title.twig" %}
+{% elseif category is defined %}
+    {% include "partials/title/category-title.twig" %}
+{% elseif function('is_archive') %}
+    {% if author is defined %}
+        {% include "partials/title/author-title.twig" with {'author':author} %}
+    {% else %}
+        {% include "partials/title/archive-title.twig" %}
+    {% endif %}
 {% endif %}
 
 {% if posts is defined and posts|length >= 1 and single is not defined and post is not defined %}
@@ -12,7 +17,9 @@
         <div class="post-list-item {{ p.class }}">
             {% include "partials/post/post-thumbnail.twig" with {'post': p, 'class':'next-to-title-page', 'link': true} %}
             {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
-            {% include "partials/posted-on.twig" with {'post':p} %}
+            <div class="post-list-item-tag">{% include "partials/posted-on.twig" with {'post':p} %}</div>
+            <div class="post-list-item-tag">{% include "partials/post/posted-author.twig" with {'post':p} %}</div>
+            <div class="clearfix"></div>
             {% if p.post_excerpt != '' %}
                 {{ function("apply_filters","the_content", p.post_excerpt) }}
             {% endif %}
@@ -29,7 +36,9 @@
 {% elseif post is defined and single is defined %}
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
-        {% include "partials/post/posted-author.twig" with {'post':post} %}
+        {% if section is not defined or ( section is defined and section.post_name == 'blog' ) %}
+            {% include "partials/post/posted-author.twig" with {'post':post} %}
+        {% endif %}
         <div class="clearfix"></div>
         {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}
         {{ function("apply_filters","the_content", post.post_content) }}

@@ -58,6 +58,7 @@ class GigaZoneGamingBootstrap extends \TimberSite
          */
         $twig->addFilter('format_for_title', new Twig_SimpleFilter('format_for_title', array($this, 'titleFilter')));
         $twig->addFilter('slugify', new Twig_SimpleFilter('slugify', array($this, 'slugify')));
+        $twig->addFilter('mdfive', new Twig_SimpleFilter('mdfive', array($this, 'mdfive')));
         $twig->addFilter(
             'auto_version_path',
             new Twig_SimpleFilter('auto_version_path', array($this, 'autoVersionFilter'))
@@ -65,6 +66,11 @@ class GigaZoneGamingBootstrap extends \TimberSite
         return $twig;
     }
 
+    public function mdfive($string)
+    {
+        return md5($string);
+    }
+    
     /**
      * Slugify filter for twig templates
      *

@@ -2,4 +2,4 @@
 <meta property="og:type"               content="article" />
 <meta property="og:title"              content="{{ function('is_front_page') ? function('bloginfo','name') : post.title }}" />
 <meta property="og:description"        content="{% if post.post_excerpt|length > 0 %}{{ post.post_excerpt }}{% else %}{{ function('bloginfo','name') }}{% if function('get_option','event_date') %} - {{ function('get_option','event_date') }} {{ function('get_option','event_location') }}{% endif %}{% endif %}" />
-<meta property="og:image"              content="{% if function('has_post_thumbnail') %}{{ function('wp_get_attachment_url', function('get_post_thumbnail_id', post)) }}{% else %}{{ function('get_template_directory_uri') }}/screenshot.png{% endif %}" />
+<meta property="og:image"              content="{% if function('has_post_thumbnail', post) %}{{ function('wp_get_attachment_url', function('get_post_thumbnail_id', post)) }}{% else %}{{ function('get_template_directory_uri') }}/screenshot.png{% endif %}" />

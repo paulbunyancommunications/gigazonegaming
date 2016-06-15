@@ -1,11 +1,11 @@
 
 {% if function('is_front_page') == false %}
     <{% if (single is defined and single == true) %}h1{% else %}h2{% endif %} class="title-page{% if single is defined and single == true %} post-title{% endif %}">
-        {% if (section.id is defined and section.id == this_post.post_parent) and (single is defined and single == true) %}
+{#        {% if (section.id is defined and section.id == this_post.post_parent) and (single is defined and single == true) %}
             <a href="{{ site.url }}/{{ section.slug }}" class="title-section">
                 {{ section.post_title }}
             </a>
-        {% endif %}
+        {% endif %}#}
         {% if this_post.post_title is defined %}
             {% if (single is defined and single == true) or (link is defined and link == false) %}
                 {{ this_post.post_title }}

@@ -180,6 +180,11 @@ h1.title-page + .post-list-item > .title-page:first-of-type {
   margin-top: 0;
 }
 
+.post-list-item-tag {
+float: left;
+  @include margin(0,.5,0,0);
+}
+
 .posted-on {
   margin-top: 0;
   margin-bottom: 0;

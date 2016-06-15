@@ -1,0 +1,16 @@
+{#
+
+"Post author" partial
+This partial will display the article creator's name
+and link to their other articles
+
+#}
+<div class="author">
+    <div class="tag">
+        <div class="tag-list-label alignleft">By: </div>
+        <p class="tag-list-item">
+            <a href="{{ function('get_author_posts_url', post.post_author) }}">{{ function('get_the_author_meta', 'nicename', post.post_author) }}
+                <img src="http://www.gravatar.com/avatar/{{ function('get_the_author_meta', 'nicename', post.post_author)|mdfive }}" alt=""></a>
+        </p>
+    </div>
+</div>

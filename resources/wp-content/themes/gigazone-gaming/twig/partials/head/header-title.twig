@@ -6,7 +6,12 @@
         {% elseif function('is_category') %}
             Category: {{ category.name|format_for_title }} &raquo;
         {% elseif function('is_archive') %}
-            Archive: {{ function('mktime', 0,0,0,function('get_query_var','monthnum'), 1, function('get_query_var','year'))|date('F') }}, {{ function('get_query_var','year') }} &raquo;
+            {% if author is defined %}
+                Author: {{ author.user_nicename }} -
+            {% else %}
+                Archive: {% include 'partials/archive-date.twig' %} &raquo;
+            {% endif %}
+        {% elseif function('is_author') %}
         {% else %}
             {{ page.post_title }} &raquo;
             {% if function('is_404') == false and function('is_front_page') == false and page.post_type != 'page' %}
