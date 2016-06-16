@@ -177,6 +177,9 @@ return [
         // validation provider for custom rules
         \App\Providers\ValidationServiceProvider::class,
 
+        // laravel backup provider
+        Spatie\Backup\BackupServiceProvider::class,
+
     ],
 
     /*
