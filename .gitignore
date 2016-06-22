@@ -1,5 +1,6 @@
 originals/*
 vendor/*
+!resources/views/vendor
 !resources/lang/vendor
 .env
 .env.jenkins
