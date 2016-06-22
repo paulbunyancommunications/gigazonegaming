@@ -168,6 +168,7 @@ return [
         // formmail provider
         Pbc\FormMail\Providers\FormMailServiceProvider::class,
         Pbc\FormMailTemplate\Providers\FormMailTemplateServiceProvider::class,
+        App\Providers\PbcFormMailTemplateLayoutComposerProvider::class,
 
         //laravel collective html and form
         Collective\Html\HtmlServiceProvider::class,

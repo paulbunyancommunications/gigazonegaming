@@ -266,9 +266,8 @@
                         <td>
                             <table width="100%" cellpadding="0" cellspacing="0"><tr>
                                     <td></td>
-                                    <td class="content text-center"><img class="logo"
-                                                                         src="https://gigazonegaming.com/wp-content/uploads/2016/05/gzg-mail.png"
-                                                                         alt="Gigazone Gaming Championship"></td>
+                                    <!-- inlined https://gigazonegaming.com/wp-content/uploads/2016/05/gzg-mail.png-->
+                                    <td class="content text-center">@include('partials.form_mail.logo')</td>
                                     <td></td></tr></table>
                             <table width="100%" cellspacing="0" cellpadding="0" class="content">
                                 <tr>
@@ -290,29 +289,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table cellpadding="0" cellspacing="0" border="0" width="100%"
-                                   class="social-media-container">
-                                <tr>
-                                    <td align="center" width="20%"><a
-                                                href="https://www.facebook.com/gigazonegaming/"><img
-                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/facebook.png"
-                                                    class="social-media-icon"></a></td>
-                                    <td align="center" width="20%"><a href="https://twitter.com/GigazoneGaming"><img
-                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/twitter.png"
-                                                    class="social-media-icon"></a></td>
-                                    <td align="center" width="20%"><a
-                                                href="https://www.instagram.com/gigazonegaming/"><img
-                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/instagram.png"
-                                                    class="social-media-icon"></a></td>
-                                    <td align="center" width="20%"><a
-                                                href="https://www.youtube.com/channel/UCo7den73ECxyP-l55STBj0w"><img
-                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/youtube.png"
-                                                    class="social-media-icon"></a></td>
-                                    <td align="center" width="20%"><a href="https://www.twitch.tv/gigazonegaming"><img
-                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/twitch.png"
-                                                    class="social-media-icon"></a></td>
-                                </tr>
-                            </table>
+                                @include('partials.form_mail.social_media_icons')
                         </td>
                     </tr>
                 </table>

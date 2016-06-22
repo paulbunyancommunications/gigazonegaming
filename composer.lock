@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0947f9dd56af13b9670f15faa01568c1",
-    "content-hash": "023c3c16460214ea81ad31ee17d32f80",
+    "hash": "19802d0dfbb23741d1eb10009f4835e8",
+    "content-hash": "1b218b2e8810ad73ce380f7b6ab8fb22",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -3816,10 +3816,10 @@
         },
         {
             "name": "wordpress",
-            "version": "4.5.2",
+            "version": "4.5.3",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/WordPress/WordPress/archive/4.5.2.zip",
+                "url": "https://github.com/WordPress/WordPress/archive/4.5.3.zip",
                 "reference": null,
                 "shasum": null
             },
