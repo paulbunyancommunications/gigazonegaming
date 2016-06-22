@@ -3,7 +3,7 @@ return [
     'branding' => '&nbsp;',
     'rules' => [],
     'route_rules' => [],
-    'queue' => false,
+    'queue' => true,
     'confirmation' => true,
     'delay' => [
         'send_message' => 90,
