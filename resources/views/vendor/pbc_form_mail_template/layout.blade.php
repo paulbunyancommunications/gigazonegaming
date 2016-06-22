@@ -4,6 +4,8 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Really Simple HTML Email Template</title>
+    <title>{{ $data['subject'] }}</title>
+    @include('pbc_form_mail_template::partials.email-css')
     <style>
         /* -------------------------------------
             GLOBAL
@@ -275,9 +277,9 @@
                                              Start content here.
                                         ============================================ -->
 
-                                        @if( ! empty($data['branding']))
+                                        <!-- @if( ! empty($data['branding']))
                                             <h1>{!! $data['branding'] !!}</h1>
-                                        @endif
+                                        @endif -->
                                         <h2>{{ $data['subject'] }}</h2>
                                         @if( ! empty($data['body']))
                                             {!! $data['body'] !!}
