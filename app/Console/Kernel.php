@@ -33,10 +33,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run')->daily()->at('02:00');
         // https://gist.github.com/mauris/11375869#gistcomment-1769111
         $schedule->call(
+            /** @codeCoverageIgnoreStart */
             function () {
                 // you can pass queue name instead of default
                 \Artisan::call('queue:listen', array('--queue' => 'default'));
             }
+            /** @codeCoverageIgnoreEnd */
         )->name('ensurequeueisrunning')->withoutOverlapping()->everyMinute();
     }
 }
