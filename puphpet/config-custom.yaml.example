@@ -9,6 +9,18 @@ vagrantfile:
                         hostname: gigazonegaming1.puphpet
                         network:
                             private_network: 192.168.56.101
+cron:
+    install: '1'
+    jobs:
+        job1:
+            name: artisan-schedule-run
+            user: root
+            command: 'php /var/www/artisan schedule:run >> /dev/null 2>&1'
+            minute: '*'
+            hour: '*'
+            weekday: '*'
+            month: '*'
+            monthday: ''
 apache:
     vhosts:
         vhost1:
