@@ -2112,16 +2112,16 @@
         },
         {
             "name": "paulbunyannet/form_mail",
-            "version": "v1.1.55",
+            "version": "v1.1.60",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paulbunyannet/form_mail.git",
-                "reference": "13f2eae8cfffbd93dfbe497b5635ecc404c8c066"
+                "reference": "1362d898bf3ec10ade714e186abaacf257fb17f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paulbunyannet/form_mail/zipball/13f2eae8cfffbd93dfbe497b5635ecc404c8c066",
-                "reference": "13f2eae8cfffbd93dfbe497b5635ecc404c8c066",
+                "url": "https://api.github.com/repos/paulbunyannet/form_mail/zipball/1362d898bf3ec10ade714e186abaacf257fb17f2",
+                "reference": "1362d898bf3ec10ade714e186abaacf257fb17f2",
                 "shasum": ""
             },
             "require": {
@@ -2148,10 +2148,10 @@
             ],
             "description": "Form to email helper",
             "support": {
-                "source": "https://github.com/paulbunyannet/form_mail/tree/v1.1.55",
+                "source": "https://github.com/paulbunyannet/form_mail/tree/v1.1.6",
                 "issues": "https://github.com/paulbunyannet/form_mail/issues"
             },
-            "time": "2016-06-21 18:49:20"
+            "time": "2016-06-23 17:01:37"
         },
         {
             "name": "paulbunyannet/form_mail_template",
