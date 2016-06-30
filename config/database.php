@@ -53,6 +53,9 @@ return [
         ],
 
         'mysql' => [
+            'dump_command_path' =>  env('BACKUP_MYSQLDUMP_PATH', '/usr/bin'),
+            'dump_command_timeout' => env('BACKUP_MYSQLDUMP_TIMEOUT', 300),
+            'dump_using_single_transaction' => env('BACKUP_MYSQLDUMP_SINGLE_TRANSACTION', true),
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
@@ -66,6 +69,9 @@ return [
             'engine' => null,
         ],
         'mysql_champ' => [
+            'dump_command_path' =>  env('BACKUP_MYSQLDUMP_PATH', '/usr/bin'),
+            'dump_command_timeout' => env('BACKUP_MYSQLDUMP_TIMEOUT', 300),
+            'dump_using_single_transaction' => env('BACKUP_MYSQLDUMP_SINGLE_TRANSACTION', true),
             'driver' => 'mysql',
             'host' => env('DB_HOST_CHAMP', 'localhost'),
             'port' => env('DB_PORT_CHAMP', '3306'),

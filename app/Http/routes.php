@@ -36,39 +36,56 @@ Route::post('/updates/signup', [
     'uses' => 'Frontend\Updates\UpdatesController@store',
     'middleware' => ['CCAddRecipient']
 ]);
+
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
 
+/**
+ * Route group using UpdateRecipient
+ * and CCAddRecipient middleware
+ */
+Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function () {
 
-// contact us form
-Route::post(
-    '/contact-us',
-    ['uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler', 'as' => 'contact-us', 'middleware' => ['UpdateRecipient', 'CCAddRecipient']]
-);
+    // contact us form
+    Route::post(
+        '/contact-us',
+        [
+            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+            'as' => 'contact-us',
+            'middleware' => []
+        ]
+    );
 
-// team sign up request
-Route::post(
-    '/lol-team-sign-up',
-    [
-        'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-        'as' => 'lol-team-sign-up',
-        'middleware' => ['LolTeamSignUp', 'UpdateRecipient', 'CCAddRecipient']
-    ]
-);
+    // team sign up request
+    Route::post(
+        '/lol-team-sign-up',
+        [
+            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+            'as' => 'lol-team-sign-up',
+            'middleware' => ['LolTeamSignUp']
+        ]
+    );
 
-// individual sign up request
-Route::post(
-    '/lol-individual-sign-up',
-    [
-        'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-        'as' => 'lol-individual-sign-up',
-        'middleware' => ['LolIndividualSignUp', 'UpdateRecipient', 'CCAddRecipient']
-    ]
-);
-
+    // individual sign up request
+    Route::post(
+        '/lol-individual-sign-up',
+        [
+            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+            'as' => 'lol-individual-sign-up',
+            'middleware' => ['LolIndividualSignUp']
+        ]
+    );
+});
 //Route::group(['middleware' => ['WPAdmin']], function () {
 //    Route::get('/manage/game', ['as' => 'manage.game.index', 'uses' => 'Backend\Manage\GamesController@index']);
 //});
 
+/**
+ * Api Routes
+ */
+Route::group(['namespace' => 'Api\Championship'], function() {
+    Route::get('/api/game', ['as' => 'api.game.index', 'uses' => 'GamesController@index']);
+    Route::get('/api/game/{game}', ['as' => 'api.game.get', 'uses' => 'GamesController@show']);
+});
 
 /**
  * For Codeception Coverage
@@ -80,8 +97,6 @@ Route::get('/report/{extra}', function () {
 // @codeCoverageIgnoreEnd
 
 
-
-
-foreach(File::allFiles(__DIR__.'/Routes') as $partials){
+foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
     require_once $partials->getPathname();
 }

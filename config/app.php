@@ -168,6 +168,7 @@ return [
         // formmail provider
         Pbc\FormMail\Providers\FormMailServiceProvider::class,
         Pbc\FormMailTemplate\Providers\FormMailTemplateServiceProvider::class,
+        App\Providers\PbcFormMailTemplateLayoutComposerProvider::class,
 
         //laravel collective html and form
         Collective\Html\HtmlServiceProvider::class,
@@ -176,6 +177,9 @@ return [
         
         // validation provider for custom rules
         \App\Providers\ValidationServiceProvider::class,
+
+        // laravel backup provider
+        Spatie\Backup\BackupServiceProvider::class,
 
     ],
 

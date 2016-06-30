@@ -1,10 +1,12 @@
 <?php
 return [
-    'branding' => '<img src="https://gigazonegaming.com/wp-content/uploads/2016/05/Sanford-Concourse-Monitors-1066-x-506.png" alt="Gigazone Gaming Championship, November 12th at the Sanford Center, Bemidji">',
-    'rules' => [
-        'email' => 'required|email',
-        'name' => 'required',
-        'fields' => 'required|array'
-    ],
-    'queue' => false
+    'branding' => '&nbsp;',
+    'rules' => [],
+    'route_rules' => [],
+    'queue' => false,
+    'confirmation' => true,
+    'delay' => [
+        'send_message' => 90,
+        'send_confirmation' => 90
+    ]
 ];

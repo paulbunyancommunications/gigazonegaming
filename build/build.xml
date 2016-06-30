@@ -271,10 +271,45 @@
     <target name="build:post_deploy">
         <!-- install fresh version of composer over on server side -->
         <phingcall target="task:composer_refresh"/>
+
+        <!-- optimize the laravel install on the other side -->
+        <phingcall target="task:laravel_optimize" />
+
         <!-- run migrations on remote -->
         <phingcall target="task:artisan_migrate"/>
         <!-- run key generation on remote -->
         <phingcall target="task:artisan_keys"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Optimize Laravel build                -->
+    <!-- Artisan commands:                             -->
+    <!-- clear-compiled                                -->
+    <!-- optimize                                      -->
+    <!-- cache:clear                                   -->
+    <!-- view:clear                                    -->
+    <!-- config:cache                                  -->
+    <!-- ============================================  -->
+
+    <target name="task:laravel_optimize">
+
+        <!-- install fresh version of composer over on server side-->
+        <if>
+            <equals arg1="${env}" arg2="development"/>
+            <then>
+                <echo message="laravel optimize is not required for ${env} environment"/>
+            </then>
+            <else>
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub"
+                     command="cd /home/${ftp.username}; php artisan clear-compiled; php artisan optimize; php artisan cache:clear; php artisan view:clear; php artisan config:cache"
+                     display="true"/>
+            </else>
+        </if>
+
     </target>
 
     <!-- ============================================  -->
