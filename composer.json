@@ -120,7 +120,9 @@
     "league/csv": "^8.0",
     "laravelcollective/html": "5.2.*",
     "constantcontact/constantcontact": "2.1.*",
-    "spatie/laravel-backup": "^3.7"
+    "spatie/laravel-backup": "^3.7",
+    "rollbar/rollbar": "~0.18.0",
+    "jenssegers/rollbar": "^1.5"
 
   },
   "require-dev": {
