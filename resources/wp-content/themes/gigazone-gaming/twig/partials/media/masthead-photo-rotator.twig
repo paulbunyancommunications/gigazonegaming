@@ -1,0 +1,25 @@
+{% if masthead_photo_rotator is defined and masthead_photo_rotator|length > 0 %}
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <div class='photo-rotator'>
+        <div class='masthead-photo-rotator-outer-container'>
+          <ul class='masthead-photo-rotator-container' id='front-photo-cycle'>
+            {% for img in masthead_photo_rotator %}
+            <li class='masthead-photo-rotator-item imager'>
+              {% if "{{img}}" in img.post_content %}
+                {{ img.post_content|replace({"{{img}}":"<div class='responsive-image' data-alt='" ~ img.post_excerpt ~ "' data-src='"~ http_host ~ img.imager ~"'></div>"}) }}
+              {% else %}
+                <div class='responsive-image' data-alt='{{ img.post_excerpt }}' data-src='{{ http_host }}{{ img.imager }}'></div>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class='no-masthead-photo-rotator'></div>
+{% endif %}
