@@ -18,7 +18,10 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
 $dotenv->load();
 // installs global error and exception handlers
-Rollbar::init(array('access_token' => getenv('ROLLBAR_SERVER_SIDE_TOKEN')));
+Rollbar::init([
+    'access_token' => getenv('ROLLBAR_SERVER_SIDE_TOKEN'),
+    'environment' => getenv('APP_ENV')
+]);
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
@@ -61,9 +64,9 @@ define('NONCE_SALT', getenv('WP_NONCE_SALT'));
  * Path configuration
  */
 define('WP_CONTENT_DIR', __DIR__ . '/wp-content');
-define('WP_CONTENT_URL', getenv('WP_HTTP_SCHEME').'://' . $_SERVER['SERVER_NAME'] . '/wp-content');
-define('WP_SITEURL', getenv('WP_HTTP_SCHEME').'://' . $_SERVER['SERVER_NAME'] . '/wp');
-define('WP_HOME', getenv('WP_HTTP_SCHEME').'://' . $_SERVER['SERVER_NAME']);
+define('WP_CONTENT_URL', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME'] . '/wp-content');
+define('WP_SITEURL', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME'] . '/wp');
+define('WP_HOME', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME']);
 
 
 /**#@-*/
