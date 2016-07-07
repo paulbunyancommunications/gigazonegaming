@@ -73,7 +73,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return array
      */
-    protected function teams()
+    public function teams()
     {
         if (Cache::has('teams_c') or $this->getExpiredAt() != null) {
             return Cache::get('teams_c');
@@ -96,7 +96,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param $maxPlayers
      * @return array
      */
-    protected function shortTeams($maxPlayers)
+    public function shortTeams($maxPlayers)
     {
         if (Cache::has('short_teams_c_'.$maxPlayers) or $this->getExpiredAt() != null) {
             return Cache::get('short_teams_c_'.$maxPlayers);
@@ -127,7 +127,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param $teams
      * @return mixed
      */
-    protected function players($teams)
+    public function players($teams)
     {
         if (Cache::has('players_c') or $this->getexpiredAt() != null) {
             return Cache::get('players_c');
@@ -147,7 +147,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return mixed
      */
-    protected function individualPlayers()
+    public function individualPlayers()
     {
         if (Cache::has('individual_player_c') or $this->getexpiredAt() != null) {
             return Cache::get('individual_player_c');
@@ -160,7 +160,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return mixed
      */
-    protected function tournaments()
+    public function tournaments()
     {
 
         if (Cache::has('tournaments_c') or $this->getexpiredAt() != null) {
@@ -174,7 +174,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return mixed
      */
-    protected function games()
+    public function games()
     {
         if (Cache::has('games_c') or $this->getExpiredAt() != null) {
             return Cache::get('games_c');
@@ -185,13 +185,13 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         return $games;
     }
 
-    protected function setExpiresAt($value)
+    public function setExpiresAt($value)
     {
         $this->expiresAt = $value;
         return $this;
     }
 
-    protected function setExpiredAt($value)
+    public function setExpiredAt($value)
     {
         $this->expiredAt = $value;
         return $this;
@@ -200,7 +200,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return mixed
      */
-    protected function getExpiresAt()
+    public function getExpiresAt()
     {
         return $this->expiresAt;
     }
@@ -208,7 +208,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return mixed
      */
-    protected function getExpiredAt()
+    public function getExpiredAt()
     {
         return $this->expiredAt;
     }
@@ -217,7 +217,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param int $maxPlayers
      * @return ChampionshipGameComposerProvider
      */
-    protected function setMaxPlayers($maxPlayers)
+    public function setMaxPlayers($maxPlayers)
     {
         $this->maxPlayers = $maxPlayers;
         return $this;
@@ -226,7 +226,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return int
      */
-    protected function getMaxPlayers()
+    public function getMaxPlayers()
     {
         return $this->maxPlayers;
     }
