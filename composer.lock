@@ -2199,7 +2199,7 @@
             ],
             "description": "Form to email helper",
             "support": {
-                "source": "https://github.com/paulbunyannet/form_mail/tree/v1.1.6",
+                "source": "https://github.com/paulbunyannet/form_mail/tree/v1.1.60",
                 "issues": "https://github.com/paulbunyannet/form_mail/issues"
             },
             "time": "2016-06-23 17:01:37"

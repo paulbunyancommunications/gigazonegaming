@@ -2,13 +2,17 @@
 .splash {
   // .splash.page
   &.page {
-    background: $color-primary-4 url($theme-directory + 'images/backgrounds/gray-texture.png') repeat top center;
+    background: $color-gz-gray url($theme-directory + 'images/backgrounds/gray-texture.png') repeat top center;
   }
   &-outer {
     display: table;
     height: 100%;
     width: 100%;
     position: absolute;
+
+    &.relative {
+      position: relative;
+    }
   }
   // .home-container
   &-container {
