@@ -1,5 +1,6 @@
 <?php
 /** Entrance Point for remote code coverage */
+include dirname(dirname(__DIR__)) . '/c3.php';
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
