@@ -10,7 +10,7 @@
     width: 100%;
     position: absolute;
 
-    &.relative {
+    &.relative, .relative & {
       position: relative;
     }
   }
@@ -34,7 +34,7 @@
     height: auto;
     width: 100%;
     &-bg {
-      @include opacity(.98);
+      @include opacity(.96);
       @include background-image(linear-gradient($color-black, tint($color-black, 10%)));
       content: "";
       width: 100%;

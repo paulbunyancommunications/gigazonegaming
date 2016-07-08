@@ -70,7 +70,7 @@ class GigaZoneGamingBootstrap extends \TimberSite
     {
         return md5($string);
     }
-    
+
     /**
      * Slugify filter for twig templates
      *
@@ -117,7 +117,7 @@ class GigaZoneGamingBootstrap extends \TimberSite
             'type' => '',
         ), $attributes);
 
-        return Timber::compile('forms/update-sign-up'.($attr['type'] ? '-'.$attr['type'] : '').'.twig', $attr);
+        return Timber::compile('forms/update-sign-up' . ($attr['type'] ? '-' . $attr['type'] : '') . '.twig', $attr);
     }
 
     /**
@@ -133,6 +133,21 @@ class GigaZoneGamingBootstrap extends \TimberSite
         /** @var string $key */
         /** @var string $filter */
         return get_bloginfo($attr['key'], $attr['filter']);
+    }
+
+    public function splashShortCode($attributes, $content)
+    {
+        $attr = shortcode_atts(array(
+            'footer' => '',
+            'class' => ''
+        ), $attributes);
+
+        $params = [
+            'content' => $content,
+            'footer' => $attr['footer'],
+            'class' => $attr['class']
+        ];
+        return Timber::compile('partials/splash.twig', $params);
     }
 
     /**

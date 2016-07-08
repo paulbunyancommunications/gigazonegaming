@@ -1,0 +1,17 @@
+<div class="{% if class is defined and class|length > 0 %}{{ class }}{% endif %}">
+    <div class='splash-outer relative'>
+        <div class='splash-container'>
+            <div class='row'>
+                <div class='col-md-12'>
+                    <div class='splash-inner-container'>
+                        <div class='splash-inner-container-bg'></div>
+                        <div class='splash-content'>
+                            {{ content|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='splash-footer'>{{ footer|raw }}</div>
+        </div>
+    </div>
+</div>
