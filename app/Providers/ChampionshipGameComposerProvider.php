@@ -79,9 +79,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             return Cache::get('teams_c');
         }
         $teams = Team::orderBy('name')->get()->toArray();
-        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        $players = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
         foreach ($teams as $key => $team) {
-            foreach ($times as $k => $t) {
+            foreach ($players as $k => $t) {
                 if ($team['id'] == $t['team_id']) {
                     $teams[$key]['team_count'] = $t['team_count'];
                     break;
