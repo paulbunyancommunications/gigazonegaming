@@ -418,7 +418,7 @@
 
                 <filesync
                         rsyncPath="/usr/local/bin/rsync"
-                        sourceDir="${dir.deploy}${dir.package}"
+                        sourceDir="${dir.deploy}/${dir.package}"
                         destinationDir="${ftp.username}@${ftp.host}:/home/${ftp.username}"
                         exclude=""
                         excludeFile=""
