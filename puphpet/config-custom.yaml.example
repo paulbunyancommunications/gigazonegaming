@@ -59,3 +59,11 @@ mysql:
             table: 'gzgaming_champ_db.*'
             privileges:
               - ALL
+php:
+        modules:
+            php:
+                - cli
+                - intl
+                - xml
+                - mbstring
+                - gd

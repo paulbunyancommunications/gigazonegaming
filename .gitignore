@@ -52,3 +52,5 @@ build/staging-deployment/build/packaging
 .mertrc
 test_runner.sh
 .github-todos
+video
+storage/framework/schedule*

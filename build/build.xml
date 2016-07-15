@@ -95,6 +95,8 @@
         <exclude name="${dir.archive}**/*"/>
         <exclude name="${dir.originals}**/*"/>
         <exclude name="${dir.sql}**/*"/>
+        <exclude name="video/**/*"/>
+
 
         <!-- exclude laravel cache storage -->
         <exclude name="${dir.storage.framework.cache}**/*"/>
@@ -293,7 +295,6 @@
 
     <target name="task:laravel_optimize">
 
-        <!-- install fresh version of composer over on server side-->
         <if>
             <equals arg1="${env}" arg2="development"/>
             <then>
@@ -341,7 +342,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; php composer.phar update;"
+                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update;"
                      display="true"/>
             </else>
         </if>
@@ -540,7 +541,7 @@
     <!-- Update composer via vagrant ssh               -->
     <!-- ============================================  -->
     <target name="build:composer">
-        <exec command="vagrant ssh -c &quot;cd /var/www &amp;&amp; php composer.phar update&quot;" checkreturn="true" passthru="true" level="info" />
+        <exec command="vagrant ssh -c &quot;cd /var/www &amp;&amp; yes | php composer.phar update&quot;" checkreturn="true" passthru="true" level="info" />
     </target>
 
 

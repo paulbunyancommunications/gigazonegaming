@@ -92,7 +92,7 @@ Route::group(['namespace' => 'Api\Championship'], function() {
  */
 // @codeCoverageIgnoreStart
 Route::get('/report/{extra}', function () {
-    require base_path('c3.php');
+    
 })->where('extra', '.*');
 // @codeCoverageIgnoreEnd
 

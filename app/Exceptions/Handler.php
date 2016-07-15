@@ -33,6 +33,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        // only log errors to Rollbar if in production
+        if (env('APP_ENV') == 'production') {
+            \Log::error($e);
+        }
         parent::report($e);
     }
 

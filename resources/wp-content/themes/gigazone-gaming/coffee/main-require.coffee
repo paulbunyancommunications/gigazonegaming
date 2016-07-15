@@ -13,10 +13,7 @@ require [
       links.init()
       return
 
-    # if the wordpress nav bar exists, push the content of the page down so it doesn't overlap the masthead
-    if $('#wpadminbar').length
-      $('.masthead-container').css({'margin-top': $('#wpadminbar').outerHeight()})
-
+      
     if $('.main-navigation-container').length
       require ['jquery', 'mainNavigation'], ($, mainNavigation) ->
         mainNavigation.init()

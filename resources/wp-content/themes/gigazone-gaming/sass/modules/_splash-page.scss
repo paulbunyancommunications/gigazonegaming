@@ -2,13 +2,17 @@
 .splash {
   // .splash.page
   &.page {
-    background: $color-primary-4 url($theme-directory + 'images/backgrounds/gray-texture.png') repeat top center;
+    background: $color-gz-gray url($theme-directory + 'images/backgrounds/gray-texture.png') repeat top center;
   }
   &-outer {
     display: table;
     height: 100%;
     width: 100%;
     position: absolute;
+
+    &.relative, .relative & {
+      position: relative;
+    }
   }
   // .home-container
   &-container {
@@ -30,7 +34,7 @@
     height: auto;
     width: 100%;
     &-bg {
-      @include opacity(.98);
+      @include opacity(.96);
       @include background-image(linear-gradient($color-black, tint($color-black, 10%)));
       content: "";
       width: 100%;

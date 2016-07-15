@@ -29,6 +29,17 @@
   list-style: none;
   text-align: center;
 
+  & > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    & > img {
+      max-height: none;
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
   &:before {
     display: none;
   }

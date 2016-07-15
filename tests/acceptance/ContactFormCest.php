@@ -10,6 +10,7 @@ class ContactFormCest
 
     public function _before(AcceptanceTester $I)
     {
+        $I->runMigration($I);
         $I->amOnPage('/about/contact-us/');
         $I->waitForJs('return jQuery.active == 0', 10);
     }

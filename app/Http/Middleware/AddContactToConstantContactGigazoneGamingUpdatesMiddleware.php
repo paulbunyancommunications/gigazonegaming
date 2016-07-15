@@ -77,10 +77,8 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddleware
      * @return mixed
      * @throws \Exception
      */
-    public function handle(
-        $request,
-        Closure $next
-    ) {
+    public function handle($request, Closure $next)
+    {
         $updateRequest = new UpdateRecipientRequest();
         $validator = \Validator::make($request->all(), $updateRequest->rules(), []);
         if ($validator->fails()) {
@@ -109,11 +107,12 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddleware
                     $constantContact->contactService->updateContact($this->getApiToken(), $contact);
                 } else {
                     // @codeCoverageIgnoreStart
-                    \Log::warning('contact is not an instance of Contact');
+                    \Log::error('contact is not an instance of Contact', ['contact' => $contact]);
                     // @codeCoverageIgnoreEnd
                 }
             }
         } catch (CtctException $ex) {
+            \Log::error($ex->getMessage());
             throw new \Exception($ex->getMessage());
         }
 
