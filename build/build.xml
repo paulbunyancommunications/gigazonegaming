@@ -415,20 +415,21 @@
             <else>
                 <phingcall target="build:extract_package"/>
                 <echo message="Deploying to ${env} on ${ftp.host} -> /home/${ftp.username}"/>
-<!--                <exec command="
-                        cd ${dir.deploy}/${dir.package};
-                        scp -r -P ${ssh.port} . ${ftp.username}@${ftp.host}:/home/${ftp.username}"
-                      passthru="true"
-                      checkreturn="true" />-->
-                <scp username="${ftp.username}"
-                     host="${ftp.host}"
-                     todir="/home/${ftp.username}"
-                     port="${ssh.port}"
-                     level="info"
-                     privkeyfile="~/.ssh/id_rsa"
-                     pubkeyfile="~/.ssh/id_rsa.pub">
-                    <fileset dir="${dir.deploy}/build/packaging"/>
-                </scp>
+
+                <filesync
+                        rsyncPath="/usr/local/bin/rsync"
+                        sourceDir="${dir.deploy}${dir.package}"
+                        destinationDir="${ftp.username}@${ftp.host}:/home/${ftp.username}"
+                        exclude=""
+                        excludeFile=""
+                        backupDir="/home/${ftp.username}/bk-${dir.package}"
+                        options="-e 'ssh -p ${ssh.port}' -rpKzl"
+                        verbose="true"
+                        dryRun="false"
+                        itemizeChanges="true"
+                        checksum="false"
+                        delete="false"
+                        identityFile="~/.ssh/id_rsa"/>
 
                 <echo message="${env} deploy complete!"/>
                 <delete dir="${dir.deploy}"/>
