@@ -79,9 +79,7 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
-        $updateRequest = new UpdateRecipientRequest();
-        $validator = \Validator::make($request->all(), $updateRequest->rules(), []);
+        $validator = \Validator::make($request->all(), ['email' => 'required|email'], []);
         if ($validator->fails()) {
             // email not set or failed validation, just return to next middleware
             \Log::warning(json_encode($validator->getMessageBag()));
@@ -114,7 +112,6 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddleware
             }
         } catch (CtctException $ex) {
             \Log::error($ex->getMessage());
-            throw new \Exception($ex->getMessage());
         }
 
         return $next($request);
