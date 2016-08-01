@@ -76,6 +76,17 @@
       max-width: 100%;
       height: auto;
     }
+
+    a:not(.btn) {
+      color: $color-gz-orange;
+      &:visited {
+        color: tint($color-gz-orange, 15%);
+      }
+
+      &:active, &:hover {
+        color: shade($color-gz-orange, 15%);
+      }
+    }
   }
 
   label, legend {
