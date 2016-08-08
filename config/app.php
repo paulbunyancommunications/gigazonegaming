@@ -181,9 +181,6 @@ return [
         // laravel backup provider
         Spatie\Backup\BackupServiceProvider::class,
 
-        // Rollbar integration
-        Jenssegers\Rollbar\RollbarServiceProvider::class
-
     ],
 
     /*
