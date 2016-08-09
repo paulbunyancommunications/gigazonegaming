@@ -89,7 +89,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         try {
             $lists = $connection->listService->getLists($this->apiToken, []);
         } catch (CtctException $ex) {
-            throw new \Exception(implode(' ', $ex->getErrors()));
+            throw new \Exception($ex->getMessage());
         }
 
         foreach ($lists as $list) {
@@ -120,5 +120,53 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
             $contact->first_name = $this->name;
             $contact->last_name = '';
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApiToken()
+    {
+        return $this->apiToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApiSecret()
+    {
+        return $this->apiSecret;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getListName()
+    {
+        return $this->listName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
