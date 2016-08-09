@@ -11,15 +11,15 @@
 
     <property name="releaseName" value="master" override="true"/>
 
-    <property name="dir.build" value="build/"/>
+    <property name="build_dir" value="build/"/>
 
     <!-- base paths for project -->
     <property name="dir.tests" value="tests"/>
     <property name="dir.www" value="public_html/"/>
     <property name="dir.vendor" value="vendor/"/>
     <property name="dir.wp-content" value="${dir.www}wp-content/"/>
-    <property name="dir.reports" value="${dir.build}reports/"/>
-    <property name="dir.package" value="${dir.build}packaging/"/>
+    <property name="dir.reports" value="${build_dir}reports/"/>
+    <property name="dir.package" value="${build_dir}packaging/"/>
     <property name="dir.node" value="node_modules/"/>
     <property name="dir.sql" value="sql/"/>
     <property name="dir.vagrant" value=".vagrant/"/>
@@ -42,7 +42,7 @@
     <property name="dir.remote.coverage" value="${dir.www}c3/"/>
 
     <!-- get config file for this environment -->
-    <property name="configFile" value="${project.basedir}/${dir.build}config/${env}.config"/>
+    <property name="configFile" value="${project.basedir}/${build_dir}config/${env}.config"/>
     <available file="${configFile}" property="configFileFound" type="file"/>
     <if>
         <equals arg1="${configFileFound}" arg2="true" />
@@ -51,13 +51,13 @@
         </then>
         <else>
             <!-- default configuration variables -->
-            <property name="dir.deploy" value="${dir.build}${env}-deployment" override="true"/>
-            <property name="url.deploy" value="http://example.local" override="true"/>
+            <property name="deploy_dir" value="${build_dir}${env}-deployment" override="true"/>
+            <property name="deploy_url" value="http://example.local" override="true"/>
         </else>
     </if>
 
     <!-- get host file for this environment -->
-    <property name="hostFile" value="${project.basedir}/${dir.build}config/hosts/${env}.host"/>
+    <property name="hostFile" value="${project.basedir}/${build_dir}config/hosts/${env}.host"/>
     <available file="${hostFile}" property="hostFileFound" type="file"/>
     <if>
         <equals arg1="${hostFileFound}" arg2="true" />
@@ -86,7 +86,7 @@
         <!-- excludes -->
         <exclude name=".env"/>
         <exclude name="${dir.remote.coverage}**/*"/>
-        <exclude name="${dir.build}**/*"/>
+        <exclude name="${build_dir}**/*"/>
         <exclude name="${dir.node}**/*"/>
         <exclude name="${dir.phpstorm}**/*"/>
         <exclude name="${dir.vagrant}**/*"/>
@@ -159,7 +159,7 @@
         <include name="**/*.php"/>
         <exclude name="${dir.vendor}**/*.php"/>
         <exclude name="${dir.www}wp/**/*.php"/>
-        <exclude name="${dir.build}**/*"/>
+        <exclude name="${build_dir}**/*"/>
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="_ide_helper.php"/>
         <exclude name="c3.php"/>
@@ -185,7 +185,7 @@
         <delete dir="${dir.package}"/>
         <delete dir="${dir.package}${env}"/>
         <delete dir="${dir.package}${env}/${phing.project.name}"/>
-        <delete dir="${dir.deploy}"/>
+        <delete dir="${deploy_dir}"/>
         <mkdir dir="${dir.package}"/>
         <mkdir dir="${dir.reports}"/>
 
@@ -233,8 +233,8 @@
     <target name="build:package" depends="build:prepare, task:standards, build:storage_placeholders"
             description="Packages source file for deployment to remote host">
 
-        <delete file="${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz"/>
-        <delete file="${dir.build}${phing.project.name}-${env}-${releaseName}.zip"/>
+        <delete file="${build_dir}${phing.project.name}-${env}-${releaseName}.tar.gz"/>
+        <delete file="${build_dir}${phing.project.name}-${env}-${releaseName}.zip"/>
         <delete dir="${dir.package}"/>
         <mkdir dir="${dir.package}"/>
         <mkdir dir="${dir.package}${env}"/>
@@ -252,7 +252,7 @@
                 <include name="*.gitignore"/>
             </fileset>
         </delete>
-        <exec command="tar czf ${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz ${dir.package}" passthru="true" level="info" />
+        <exec command="tar czf ${build_dir}${phing.project.name}-${env}-${releaseName}.tar.gz ${dir.package}" passthru="true" level="info" />
     </target>
 
     <!-- ============================================  -->
@@ -262,9 +262,9 @@
 
     <target name="build:extract_package" description="extract the current build archive">
         <echo message="Resetting ${env} deploy files"/>
-        <delete dir="${dir.deploy}"/>
-        <mkdir dir="${dir.deploy}"/>
-        <exec command="tar -xf ${dir.build}${phing.project.name}-${env}-${releaseName}.tar.gz -C ${dir.deploy}" passthru="true" level="info" />
+        <delete dir="${deploy_dir}"/>
+        <mkdir dir="${deploy_dir}"/>
+        <exec command="tar -xf ${build_dir}${phing.project.name}-${env}-${releaseName}.tar.gz -C ${deploy_dir}" passthru="true" level="info" />
     </target>
 
     <!-- ============================================  -->
@@ -281,6 +281,18 @@
         <phingcall target="task:artisan_migrate"/>
         <!-- run key generation on remote -->
         <phingcall target="task:artisan_keys"/>
+        <!-- run cleanup -->
+        <phingcall target="build:cleanup" />
+
+        <phingcall target="task:rollbar_deploy"/>
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Rollbar deployment notification       -->
+    <!-- ============================================  -->
+    <target name="task:rollbar_deploy">
+        <exec passthru="true" command="bash ${build_dir}rollbar-deploy.sh ${env}"/>
     </target>
 
     <!-- ============================================  -->
@@ -320,8 +332,8 @@
         <delete dir="${dir.package}"/>
         <delete dir="${dir.package}${env}"/>
         <delete dir="${dir.package}${env}/${phing.project.name}"/>
-        <delete dir="${dir.deploy}"/>
-        <delete dir="${dir.build}${dir.build}"/>
+        <delete dir="${deploy_dir}"/>
+        <delete dir="${build_dir}${build_dir}"/>
     </target>
 
     <!-- ============================================  -->
@@ -418,7 +430,7 @@
 
                 <filesync
                         rsyncPath="/usr/local/bin/rsync"
-                        sourceDir="${dir.deploy}/${dir.package}"
+                        sourceDir="${deploy_dir}/${dir.package}"
                         destinationDir="${ftp.username}@${ftp.host}:/home/${ftp.username}"
                         exclude=""
                         excludeFile=""
@@ -432,16 +444,10 @@
                         identityFile="~/.ssh/id_rsa"/>
 
                 <echo message="${env} deploy complete!"/>
-                <delete dir="${dir.deploy}"/>
+                <delete dir="${deploy_dir}"/>
 
             </else>
         </if>
-
-        <!-- run post deploy actions -->
-        <phingcall target="build:post_deploy"/>
-
-        <!-- run final cleanup task -->
-        <phingcall target="build:cleanup"/>
 
     </target>
 
@@ -550,9 +556,9 @@
     <!-- Target: PHP Unit Cleanup                      -->
     <!-- ============================================  -->
     <target name="task:cleanup_phpunit_report">
-        <copy file="${dir.build}tests/${dir.reports}test-logs.xml" tofile="${dir.reports}test-logs.xml"
+        <copy file="${build_dir}tests/${dir.reports}test-logs.xml" tofile="${dir.reports}test-logs.xml"
               overwrite="true"/>
-        <delete dir="${dir.build}tests/${dir.build}" verbose="true" failonerror="true"/>
+        <delete dir="${build_dir}tests/${build_dir}" verbose="true" failonerror="true"/>
     </target>
 
 </project>
