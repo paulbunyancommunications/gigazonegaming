@@ -120,6 +120,10 @@
 
   }
 
+  &.format-standard {
+    @include margin-bottom(1);
+  }
+
   &-content {
     @include padding(0,0,0,1);
     @include margin-bottom(2);

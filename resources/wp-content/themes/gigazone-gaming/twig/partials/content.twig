@@ -40,10 +40,10 @@
             {% include "partials/post/posted-author.twig" with {'post':post} %}
         {% endif %}
         <div class="clearfix"></div>
-        {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}
+        {# {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}#}
         {{ function("apply_filters","the_content", post.post_content) }}
         <div class="clearfix"></div>
-        {% if section is not defined or ( section is defined and section.post_name == 'blog' ) %}
+        {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
             {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
             {% include "partials/post-permalink.twig" %}
             {% include "partials/post-tags.twig" %}
@@ -52,3 +52,4 @@
 {% else %}
     <p>No posts at this time. Check back later.</p>
 {% endif %}
+
