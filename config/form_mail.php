@@ -3,10 +3,10 @@ return [
     'branding' => '&nbsp;',
     'rules' => [],
     'route_rules' => [],
-    'queue' => false,
+    'queue' => true,
     'confirmation' => true,
     'delay' => [
-        'send_message' => 90,
-        'send_confirmation' => 90
+        'send_message' => 30,
+        'send_confirmation' => 45
     ]
 ];
