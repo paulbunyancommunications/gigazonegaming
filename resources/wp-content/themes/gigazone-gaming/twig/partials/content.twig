@@ -18,7 +18,7 @@
             {% include "partials/post/post-thumbnail.twig" with {'post': p, 'class':'next-to-title-page', 'link': true} %}
             {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
             <div class="post-list-item-tag">{% include "partials/posted-on.twig" with {'post':p} %}</div>
-            <div class="post-list-item-tag">{% include "partials/post/posted-author.twig" with {'post':p} %}</div>
+            <div class="post-list-item-tag">{% include "partials/post/post-author.twig" with {'post':p} %}</div>
             <div class="clearfix"></div>
             {% if p.post_excerpt != '' %}
                 {{ function("apply_filters","the_content", p.post_excerpt) }}
@@ -37,7 +37,7 @@
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
         {% if section is not defined or ( section is defined and section.post_name == 'blog' ) %}
-            {% include "partials/post/posted-author.twig" with {'post':post} %}
+            {% include "partials/post/post-author.twig" with {'post':post} %}
         {% endif %}
         <div class="clearfix"></div>
         {# {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}#}
@@ -45,8 +45,9 @@
         <div class="clearfix"></div>
         {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
             {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
-            {% include "partials/post-permalink.twig" %}
-            {% include "partials/post-tags.twig" %}
+            {% include "partials/post/post-permalink.twig" %}
+            {% include "partials/post/post-tags.twig" %}
+            {% include "partials/post/post-comments.twig" with {'post':post} %}
         {% endif %}
     </div>
 {% else %}

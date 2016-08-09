@@ -1,0 +1,13 @@
+{#
+
+			if ( comments_open() || get_comments_number() ) {
+				comments_template();
+			}
+
+#}
+
+{% if function('comments_open', post.id) or function('get_comments_number', post.id) %}
+
+    {{ function('comments_template', '/comments.php') }}
+
+{% endif %}
