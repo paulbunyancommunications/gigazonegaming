@@ -7,16 +7,18 @@
             </a>
         {% endif %}#}
         {% if this_post.post_title is defined %}
-            {% if (single is defined and single == true) or (link is defined and link == false) %}
-                {{ this_post.post_title }}
+            {% if single is defined and single == true %}
+                <span class="is_single">{{ this_post.post_title }}</span>
+            {% elseif (link is defined and link == false) %}
+                <span class="is_not_link">{{ this_post.post_title }}</span>
             {% else %}
                 <a href="{{ function('get_post_permalink', this_post.ID) }}">{{ this_post.post_title }}</a>
             {% endif %}
         {% else %}
             {% if single is defined and single == true %}
-                {{ title }}
+                <span class="is_single">{{ title }}</span>
             {% else %}
-                <a href="{{ function('get_post_permalink', this_post.ID) }}">{{ title }}</a>
+                <a href="{{ function('get_post_permalink', this_post.ID) }}"><span class="is_not_single">{{ title }}</span></a>
             {% endif %}
         {% endif %}
     </{% if (single is defined and single == true) %}h1{% else %}h2{% endif %}>
