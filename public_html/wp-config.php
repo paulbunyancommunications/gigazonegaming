@@ -18,10 +18,12 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
 $dotenv->load();
 // installs global error and exception handlers
-Rollbar::init([
-    'access_token' => getenv('ROLLBAR_SERVER_SIDE_TOKEN'),
-    'environment' => getenv('APP_ENV')
-]);
+if(getenv('APP_ENV') === 'production') {
+    Rollbar::init([
+        'access_token' => getenv('ROLLBAR_SERVER_SIDE_TOKEN'),
+        'environment' => getenv('APP_ENV')
+    ]);
+}
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
