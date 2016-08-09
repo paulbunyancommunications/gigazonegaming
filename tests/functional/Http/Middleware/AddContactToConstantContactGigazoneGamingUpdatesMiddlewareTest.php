@@ -11,8 +11,9 @@
 
 namespace Tests\Functional\Http\Middleware;
 
+use App\Http\Middleware\AddContactToConstantContactGigazoneGamingUpdatesMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
+use Illuminate\Http\Request;
 
 /**
  * Class AddContactToConstantContactGigazoneGamingUpdatesMiddlewareTest
@@ -37,12 +38,27 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddlewareTest extends \Te
     public function tearDown()
     {
         parent::tearDown();
+        \Mockery::close();
     }
 
-    public function testHandle()
+    public function testHandlePutsJobInDatabase()
     {
-        /** @todo add test to check that job was added to the queue from middleware */
-        $this->markTestSkipped('Skip until job written');
+        $faker = \Faker\Factory::create();
+        $middleware = new AddContactToConstantContactGigazoneGamingUpdatesMiddleware();
+        $request = new Request();
+        $params = ['email' => time() . $faker->email, 'update-recipient' => 'yes', 'name' => $faker->firstName . ' '. $faker->lastName];
+        $request->replace($params);
 
+        $middleware->handle($request, function () {
+            return 'I ran the closure';
+        });
+
+        // verify that there's an entry in the jobs
+        // table for this email to be added
+        // to constant contact
+
+        $queueEmail = \DB::table('jobs')->where('payload', 'LIKE', '%'.$params['email'].'%')->first();
+        $queueName = \DB::table('jobs')->where('payload', 'LIKE', '%'.$params['name'].'%')->first();
+        $this->assertSame($queueEmail->id, $queueName->id);
     }
 }
