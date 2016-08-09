@@ -2,6 +2,11 @@
 .tag {
   display: block;
   height: auto;
+  @include margin-bottom(.75);
+
+  &:first-child {
+    @include margin-top(.75);
+  }
 
   &-title-label {
     @include font-size(1.625);
@@ -65,7 +70,7 @@
 
     @include margin-top(1);
     @include margin-bottom(1);
-    display: table;
+    @include inline-block();
     &:before {
       display: none;
     }
@@ -80,6 +85,7 @@
       background: tint($color-light-gray, 60%);
       color: $color-gz-gray;
       text-decoration: none;
+      @include margin-top(-.875);
         &:visited {
           color: $color-secondary-2-0;
           background: tint($color-light-gray, 60%);
