@@ -26,6 +26,7 @@
     }
   }
 
+  // .tag-title
   &-title {
     @include font-size(4.75);
     @include line-height(1);
@@ -36,11 +37,79 @@
     @include padding-bottom(2);
     text-transform: uppercase;
 
+    @include mq-phone {
+      @include font-size(3.75);
+      @include line-height(.75);
+    }
+
+    &-label, &-image-container, &-text {
+      float: left;
+      margin: 0;
+      display: block;
+      @include line-height(0);
+      @include mq-tablet {
+        float: none;
+        margin-top: 0 !important;
+        display: block;
+        line-height: normal;
+      }
+      @include mq-phone {
+        float: none;
+        margin-top: 0 !important;
+        display: block;
+        line-height: normal;
+      }
+    }
+
     &::after{
       content:"";
       display: block;
       clear: both;
     }
+
+    //.tag-title-label
+    &-label {
+      @include margin-top(.75);
+
+    }
+
+    //.tag-title-image
+    &-image {
+      max-height: 100%;
+      width: auto;
+
+      //.tag-title-image-container
+      &-container {
+        $tag-title-image-container-height: 3;
+        @include height($tag-title-image-container-height);
+        @include width($tag-title-image-container-height);
+        @include border-radius(25px);
+        overflow: hidden;
+        @include margin(-($tag-title-image-container-height / 4.25), .25, 0, .25);
+        @include mq-tablet {
+          display: none;
+        }
+        @include mq-phone {
+          display: none;
+        }
+        & + .tag-title-text {
+          @include margin-top(.75);
+        }
+      }
+    }
+
+    // .tag-title-text
+    &-text {
+      @include margin(0, .25);
+      @include mq-phone {
+        @include margin(0,0);
+      }
+      @include mq-tablet {
+        @include margin(0,0);
+      }
+
+    }
+
   }
 
   &-list-label {
