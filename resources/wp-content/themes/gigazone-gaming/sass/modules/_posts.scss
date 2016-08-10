@@ -111,6 +111,7 @@
     & > .title-page {
         @include font-size(5);
         @include margin-bottom(.75);
+        @include line-height(3.75);
 
       // .post-list-title .title-page a
       a {
