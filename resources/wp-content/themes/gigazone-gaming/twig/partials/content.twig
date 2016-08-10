@@ -16,7 +16,7 @@
         {% if p.post_title is defined %}
         <div class="post-list-item {{ p.class }}">
             {% include "partials/post/post-thumbnail.twig" with {'post': p, 'class':'next-to-title-page', 'link': true} %}
-            {% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}
+            <div class="post-list-title">{% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}</div>
             <div class="post-list-item-tag">{% include "partials/posted-on.twig" with {'post':p} %}</div>
             <div class="post-list-item-tag">{% include "partials/post/post-author.twig" with {'post':p} %}</div>
             <div class="clearfix"></div>

@@ -105,6 +105,26 @@
 
 .post {
 
+  // .post-list-title, wrap around title that is in a list of other posts
+  &-list-title {
+    // .post-list-title > .title-page
+    & > .title-page {
+        @include font-size(5);
+        @include margin-bottom(.75);
+
+      // .post-list-title .title-page a
+      a {
+          border-bottom-width: 6px;
+          @include padding-bottom(0);
+          @include line-height(.25);
+          &:hover, &:active {
+            color: $color-gz-orange;
+            border-bottom-color: $color-gz-orange;
+          }
+        }
+      }
+  }
+
   &-title {
     //@include font-size(1.875);
     //@include line-height(1);
