@@ -279,8 +279,13 @@
 
         <!-- run migrations on remote -->
         <phingcall target="task:artisan_migrate"/>
+
         <!-- run key generation on remote -->
         <phingcall target="task:artisan_keys"/>
+
+        <!-- run config cache remake on remote -->
+        <phingcall target="task:artisan_clear_config"/>
+
         <!-- run cleanup -->
         <phingcall target="build:cleanup" />
 
@@ -379,6 +384,31 @@
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
                      command="cd /home/${ftp.username}; php artisan down; php artisan wp:down; php artisan migrate --force; php artisan up; php artisan wp:up"
+                     display="true"/>
+            </else>
+        </if>
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Artisan clear config cache            -->
+    <!-- Clear Laravel configuration cache on remote   -->
+    <!-- ============================================  -->
+    <target name="task:artisan_clear_config" description="run laravel artisan clear config cache on remote">
+
+        <if>
+            <equals arg1="${env}" arg2="development"/>
+            <then>
+                <echo message="migration is not required for ${env} environment"/>
+            </then>
+            <else>
+                <!-- ssh into server and turn down laravel and wordpress, then clear the config cache, remake it and bring both wordpress and laravel back up -->
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub"
+                     command="cd /home/${ftp.username}; php artisan down; php artisan wp:down; php artisan config:clear; php artisan config:cache; php artisan up; php artisan wp:up"
                      display="true"/>
             </else>
         </if>
