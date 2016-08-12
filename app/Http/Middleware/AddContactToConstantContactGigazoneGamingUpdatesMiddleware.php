@@ -27,10 +27,10 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddleware
         if (strtolower($request->input('update-recipient')) === 'yes') {
             $newConstantContactUser = (new \App\Jobs\ConstantContactAddRecipientJob(
                 [
-                    'apiKey' => env('CONSTANT_CONTACT_API_KEY', 'CONSTANT_CONTACT_API_KEY'),
-                    'apiSecret' => env('CONSTANT_CONTACT_API_SECRET', 'CONSTANT_CONTACT_API_SECRET'),
-                    'apiToken' => env('CONSTANT_CONTACT_API_TOKEN', 'CONSTANT_CONTACT_API_TOKEN'),
-                    'listName' => env('CONSTANT_CONTACT_LIST_NAME', 'Update List'),
+                    'apiKey' => config('constant_contact.api_key'),
+                    'apiToken' => config('constant_contact.api_token'),
+                    'apiSecret' => config('constant_contact.api_secret'),
+                    'listName' => config('constant_contact.list_name'),
                     'email' => $request->input('email'),
                     'name' => $request->input('name')
                 ]
