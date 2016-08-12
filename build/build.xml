@@ -85,6 +85,7 @@
         <include name="*/**"/>
         <!-- excludes -->
         <exclude name=".env"/>
+        <exclude name=".env.example"/>
         <exclude name="${dir.remote.coverage}**/*"/>
         <exclude name="${build_dir}**/*"/>
         <exclude name="${dir.node}**/*"/>
@@ -458,7 +459,7 @@
                 <phingcall target="build:extract_package"/>
                 <echo message="Deploying to ${env} on ${ftp.host} -> /home/${ftp.username}"/>
 
-                <filesync
+<!--                <filesync
                         rsyncPath="/usr/local/bin/rsync"
                         sourceDir="${deploy_dir}/${dir.package}"
                         destinationDir="${ftp.username}@${ftp.host}:/home/${ftp.username}"
@@ -471,7 +472,17 @@
                         itemizeChanges="true"
                         checksum="false"
                         delete="false"
-                        identityFile="~/.ssh/id_rsa"/>
+                        identityFile="~/.ssh/id_rsa"/>-->
+
+                <scp username="${ftp.username}"
+                     host="${ftp.host}"
+                     todir="/home/${ftp.username}"
+                     port="${ssh.port}"
+                     level="info"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub">
+                    <fileset dir="${deploy_dir}/${dir.package}"/>
+                </scp>
 
                 <echo message="${env} deploy complete!"/>
                 <delete dir="${deploy_dir}"/>
