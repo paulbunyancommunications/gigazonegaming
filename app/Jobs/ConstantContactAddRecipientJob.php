@@ -48,7 +48,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $connection = new ConstantContact($this->apiKey);
+        $connection = new ConstantContact($this->getApiKey());
         $this->validateAddress();
         $list = $this->validateList($connection);
 
@@ -58,7 +58,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         $this->contactName($contact);
 
         try {
-            $connection->contactService->addContact($this->apiToken, $contact);
+            $connection->contactService->addContact($this->getApiToken(), $contact);
         } catch (CtctException $ex) {
             $exceptionMessage = $this->email . ' return exception(s) "' . implode('", ', $ex->getErrors()) . ' "  with error code ' . $ex->getCode() . ' from the Constant Contact Api when trying to add it to the "' . $list->name . '" list';
             throw new \Exception($exceptionMessage);
@@ -93,13 +93,13 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         }
 
         foreach ($lists as $list) {
-            if (strtoupper($list->name) === strtoupper($this->listName)) {
+            if (strtoupper($list->name) === strtoupper($this->getListName())) {
                 $useList = $list;
                 break;
             }
         }
         if (!$useList) {
-            throw new \Exception('List ' . $this->listName . ' does not exist.');
+            throw new \Exception('List ' . $this->getListName() . ' does not exist.');
         }
 
         return $useList;
@@ -127,6 +127,9 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      */
     public function getApiKey()
     {
+        if ($this->apiKey === 'CONSTANT_CONTACT_API_KEY') {
+            return env($this->apiKey, 'api_key');
+        }
         return $this->apiKey;
     }
 
@@ -135,6 +138,9 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      */
     public function getApiToken()
     {
+        if ($this->apiToken === 'CONSTANT_CONTACT_API_TOKEN') {
+            return env($this->apiToken, 'api_token');
+        }
         return $this->apiToken;
     }
 
@@ -143,6 +149,9 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      */
     public function getApiSecret()
     {
+        if ($this->apiSecret === 'CONSTANT_CONTACT_API_SECRET') {
+            return env($this->apiSecret, 'secret');
+        }
         return $this->apiSecret;
     }
 
@@ -151,6 +160,9 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      */
     public function getListName()
     {
+        if ($this->listName === 'CONSTANT_CONTACT_LIST_NAME') {
+            return env($this->listName, 'Update List');
+        }
         return $this->listName;
     }
 
