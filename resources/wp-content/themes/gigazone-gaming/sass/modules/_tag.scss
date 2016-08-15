@@ -176,7 +176,11 @@
           @include font-size(.875);
         }
         img {
-          display: none;
+          @include height(.875);
+          @include border-radius(5px);
+          max-height: none;
+          width: auto;
+          max-width: none;
         }
       }
 

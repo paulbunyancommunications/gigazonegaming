@@ -36,7 +36,7 @@
 {% elseif post is defined and single is defined %}
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
-        {% if section is not defined or ( section is defined and section.post_name == 'blog' ) %}
+        {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
             {% include "partials/post/post-author.twig" with {'post':post} %}
         {% endif %}
         <div class="clearfix"></div>
