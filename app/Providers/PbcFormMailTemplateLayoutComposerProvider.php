@@ -29,7 +29,7 @@ class PbcFormMailTemplateLayoutComposerProvider extends ServiceProvider
             if ($links) {
                 foreach ($links as $key => $link) {
                     // check if we've already added this link.
-                    if (in_array($social[$key]['link_name'], $found)) {
+                    if (array_key_exists($key, $social) && in_array($social[$key]['link_name'], $found)) {
                         continue;
                     }
                     array_push($found, $social[$key]['link_name']);
