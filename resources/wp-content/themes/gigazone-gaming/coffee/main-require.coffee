@@ -15,7 +15,7 @@ require [
 
       
     if $('.main-navigation-container').length
-      require ['jquery', 'mainNavigation'], ($, mainNavigation) ->
+      require ['mainNavigation'], (mainNavigation) ->
         mainNavigation.init()
         return
 

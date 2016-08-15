@@ -13,6 +13,7 @@ require =
     Slider: [ "../../../../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min" ]
     Switch: [ "../../../../bower_components/bootstrap-switch/dist/js/bootstrap-switch.min" ]
     # modules
+    init: ["init"]
     variables: ["variables"]
     functions: ["functions"]
     mainNavigation: ["modules/main-navigation"]
@@ -24,6 +25,7 @@ require =
     posts: ["modules/posts"]
     form: ["modules/form"],
     Utility: ["modules/Utility"]
+  waitSeconds: 0
   shim:
     "bootstrap": [ "jquery" ]
     "responsiveSlides": [ "jquery" ]
