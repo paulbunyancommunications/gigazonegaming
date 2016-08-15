@@ -32,8 +32,8 @@ class PbcFormMailTemplateLayoutComposerProvider extends ServiceProvider
                     if (array_key_exists($key, $social) && in_array($social[$key]['link_name'], $found)) {
                         continue;
                     }
-                    array_push($found, $social[$key]['link_name']);
                     $social[$key] = $link->toArray();
+                    array_push($found, $social[$key]['link_name']);
                     $social[$key]['link_image'] = 'https://gigazonegaming.com/wp-content/uploads/2016/06/' . strtolower($social[$key]['link_name']) . '.png';
                     $social[$key]['link_slug'] = $slugify->slugify($social[$key]['link_name']);
 

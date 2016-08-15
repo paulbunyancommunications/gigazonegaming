@@ -60,7 +60,17 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         try {
             $connection->contactService->addContact($this->getApiToken(), $contact);
         } catch (CtctException $ex) {
-            $exceptionMessage = $this->email . ' return exception(s) "' . implode('", ', $ex->getErrors()) . ' "  with error code ' . $ex->getCode() . ' from the Constant Contact Api when trying to add it to the "' . $list->name . '" list';
+            $errors = '';
+            if (!empty($ex->getErrors())) {
+                foreach ($ex->getErrors() as $e) {
+                    $errors .= $e->error_message . ', ';
+                }
+                $errors = rtrim($errors, ', ');
+            }
+            $exceptionMessage = $this->email . ' return exception(s) "' . $errors . '"  with error code ' . $ex->getCode() . ' from the Constant Contact Api when trying to add it to the "' . $list->name . '" list';
+            if ($this->checkAlreadyExistsMessage($exceptionMessage) === true) {
+                return true;
+            }
             throw new \Exception($exceptionMessage);
         }
 
@@ -180,5 +190,33 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Flush job from queue if Constant Contact returns a message "Email address [email address] already exists."
+     *
+     * URL that generated this code:
+     * http://txt2re.com/index-php.php3?s=Email%20address%20willfalldor@gmail.com%20already%20exists.&-12&-6&-21&-22&1&23&-7&-24&-10
+     * @param $message
+     */
+    protected function checkAlreadyExistsMessage($message)
+    {
+
+
+        $re1 = '(Email)';    # Word 1
+        $re2 = '( )';    # White Space 1
+        $re3 = '(address)';    # Word 2
+        $re4 = '( )';    # White Space 2
+        $re5 = '([\\w-+]+(?:\\.[\\w-+]+)*@(?:[\\w-]+\\.)+[a-zA-Z]{2,7})';    # Email Address 1
+        $re6 = '(\\s+)';    # White Space 3
+        $re7 = '(already)';    # Word 3
+        $re8 = '( )';    # White Space 4
+        $re9 = '(exists)';    # Word 4
+
+        if ($capture = preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . $re5 . $re6 . $re7 . $re8 . $re9 . "/is", $message, $matches)) {
+            return $matches[5][0] === $this->getEmail();
+        }
+
+        return false;
     }
 }
