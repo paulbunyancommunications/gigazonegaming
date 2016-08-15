@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\EnsureQueueIsRunning;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,9 +12,7 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [
-        EnsureQueueIsRunning::class
-    ];
+    protected $commands = [];
 
     /**
      * Define the application's command schedule.
@@ -27,9 +24,5 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('02:00');
-        $schedule->command('ensure_queue_is_running')
-            ->everyFiveMinutes()
-            ->sendOutputTo('storage/logs/ensure_queue_is_running.log', true);
-
     }
 }
