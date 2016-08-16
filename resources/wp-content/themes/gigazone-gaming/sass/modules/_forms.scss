@@ -3,6 +3,9 @@
 legend {
   font-family: $font-family-display;
   text-transform: uppercase;
+}
+
+.hide-legend legend, legend.hide {
   display: none;
 }
 
