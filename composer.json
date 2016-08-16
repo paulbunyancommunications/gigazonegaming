@@ -85,6 +85,21 @@
       }
     },
     {
+      "type": "package",
+      "package": {
+        "name": "figureone/insert-pages",
+        "type": "wordpress-plugin",
+        "version": "3.1.6",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/insert-pages.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
       "type": "vcs",
       "url": "git@github.com:paulbunyannet/form_mail.git"
     },
@@ -110,6 +125,7 @@
     "archetyped/cornerstone": "*",
     "anahkiasen/underscore-php": "^2.0",
     "mungobbq/enable-media-replace":"*",
+    "figureone/insert-pages":"*",
     "tedivm/stash": "^0.14.1",
     "vlucas/phpdotenv": "^2.2",
     "rcrowe/twigbridge": "0.9.x",
