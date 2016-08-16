@@ -35,4 +35,7 @@ $sticky-footer-height-desktop: $sticky-footer-height * 1.25;
 $sticky-footer-height-tablet: $sticky-footer-height * 1.05;
 $sticky-footer-height-phone: $sticky-footer-height * 1.5;
 
+//== divider settings
+$dividerDotSize: 10px;
+$dividerColor: tint($color-light-gray, 80%);
 
