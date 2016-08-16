@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.49)
+# Host: 127.0.0.1 (MySQL 5.6.32)
 # Database: gzgaming_champ_db
-# Generation Time: 2016-05-20 14:03:27 +0000
+# Generation Time: 2016-08-16 23:11:47 +0000
 # ************************************************************
 
 
@@ -33,6 +33,8 @@ CREATE TABLE `games` (
   `uri` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `games_name_unique` (`name`),
   KEY `games_title_index` (`title`)
@@ -41,10 +43,10 @@ CREATE TABLE `games` (
 LOCK TABLES `games` WRITE;
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
 
-INSERT INTO `games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`)
+INSERT INTO `games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`, `updated_by`, `updated_on`)
 VALUES
-	(1,'unknown','','Unknown game','',NULL,NULL),
-	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-20 13:21:45','2016-05-20 13:21:45');
+	(1,'unknown','','Unknown game','',NULL,NULL,0,0),
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-08-16 23:11:27','2016-08-16 23:11:27',0,0);
 
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -64,6 +66,8 @@ CREATE TABLE `individual_players` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `game_id` int(10) unsigned NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `individual_players_game_id_foreign` (`game_id`),
   CONSTRAINT `individual_players_game_id_foreign` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`)
@@ -85,6 +89,8 @@ CREATE TABLE `players` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `team_id` int(10) unsigned NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `players_team_id_foreign` (`team_id`),
   CONSTRAINT `players_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE
@@ -105,6 +111,8 @@ CREATE TABLE `teams` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `tournament_id` int(10) unsigned NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `teams_tournament_id_foreign` (`tournament_id`),
   CONSTRAINT `teams_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`)
@@ -123,6 +131,8 @@ CREATE TABLE `tournaments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `game_id` int(10) unsigned NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tournaments_name_unique` (`name`),
   KEY `tournaments_game_id_foreign` (`game_id`),
@@ -132,9 +142,9 @@ CREATE TABLE `tournaments` (
 LOCK TABLES `tournaments` WRITE;
 /*!40000 ALTER TABLE `tournaments` DISABLE KEYS */;
 
-INSERT INTO `tournaments` (`id`, `name`, `created_at`, `updated_at`, `game_id`)
+INSERT INTO `tournaments` (`id`, `name`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`)
 VALUES
-	(1,'gigazone-gaming-2016-league-of-legends','2016-05-20 13:21:45','2016-05-20 13:21:45',2);
+	(1,'gigazone-gaming-2016-league-of-legends','2016-08-16 23:11:27','2016-08-16 23:11:27',2,0,0);
 
 /*!40000 ALTER TABLE `tournaments` ENABLE KEYS */;
 UNLOCK TABLES;
