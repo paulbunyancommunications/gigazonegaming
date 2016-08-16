@@ -59,6 +59,13 @@
     color: $color-dark-gray;
   }
 
+  .insert-page-title {
+    @include font-size(3.75 * $multiplier);
+    @include line-height(2.5 * $multiplier);
+    margin: 0;
+    padding: 0;
+  }
+
   li {
     @include font-size(1.5 * $multiplier);
     @include line-height(1.375 * $multiplier);

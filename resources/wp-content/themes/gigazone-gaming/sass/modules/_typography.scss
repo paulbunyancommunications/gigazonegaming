@@ -25,8 +25,11 @@
 
 .lighter {
   color: $color-light-gray;
-}
 
+   & .insert-page-title {
+     color: inherit;
+   }
+}
 
 
 

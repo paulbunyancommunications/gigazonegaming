@@ -25,6 +25,7 @@ require =
     posts: ["modules/posts"]
     form: ["modules/form"],
     duplicate: ["modules/duplicate"],
+    tab: ["modules/tab"],
     Utility: ["modules/Utility"]
   waitSeconds: 0
   shim:

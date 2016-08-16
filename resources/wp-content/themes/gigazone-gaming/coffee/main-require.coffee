@@ -44,5 +44,9 @@ require ['init'], () ->
       require ['duplicate'], (duplicate) ->
         duplicate.init();
 
+    if $('a[role="tab"]').length
+      require ['tab'], (tab) ->
+        tab.init();
+
     return
   return
