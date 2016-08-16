@@ -30,8 +30,8 @@
   h4 {
     font-family: $font-family-display;
     font-weight: normal;
-    @include font-size(2.5 * $multiplier);
-    @include line-height(1 * $multiplier);
+    @include font-size(2.25 * $multiplier);
+    @include line-height(1.5 * $multiplier);
     @include margin-bottom(1 * $multiplier);
   }
 
