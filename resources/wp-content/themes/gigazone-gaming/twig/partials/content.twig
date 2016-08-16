@@ -23,6 +23,8 @@
             {% if p.post_excerpt != '' %}
                 {{ function("apply_filters","the_content", p.post_excerpt) }}
             {% endif %}
+            {% if loop.last != true %}
+                <hr class="divider horizontal dots" />{% endif %}
         </div>
         {% endif %}
     {% endfor %}

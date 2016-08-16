@@ -148,7 +148,7 @@
       @include font-size(.875);
       color: $color-gz-gray;
       @include padding-equal(.375);
-      @include border-radius(10px);
+      @include border-radius(5px);
       display: block;
       line-height: normal;
       background: tint($color-light-gray, 60%);
@@ -176,7 +176,7 @@
           @include font-size(.875);
         }
         img {
-          @include height(.875);
+          @include height(.75);
           @include border-radius(5px);
           max-height: none;
           width: auto;
