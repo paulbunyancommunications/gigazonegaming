@@ -24,6 +24,7 @@ require =
     searchResults: ["modules/search-results"]
     posts: ["modules/posts"]
     form: ["modules/form"],
+    duplicate: ["modules/duplicate"],
     Utility: ["modules/Utility"]
   waitSeconds: 0
   shim:

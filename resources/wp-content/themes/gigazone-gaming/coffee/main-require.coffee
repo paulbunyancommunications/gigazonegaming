@@ -1,7 +1,4 @@
-require [
-  'jquery'
-  'bootstrap'
-], ($) ->
+require ['init'], () ->
   # DOM ready
   $ ->
 
@@ -42,6 +39,10 @@ require [
     if $('.doForm').length
       require ['form'], (form) ->
         form.init()
+
+    if $('input.duplicate').length
+      require ['duplicate'], (duplicate) ->
+        duplicate.init();
 
     return
   return
