@@ -272,4 +272,21 @@ class GigaZoneGamingBootstrap extends \TimberSite
         }
 
     }
+
+    /**
+     * Get image shortcode
+     * Get image by id, usage [get-image 12345]
+     * This will output the image with height and width attributes and class of get-image
+     * @param $attributes
+     * @param $content
+     * @param $tag
+     * @return string
+     */
+    public function getMediaImageShortCode($attributes, $content, $tag)
+    {
+        if ($attributes) {
+            $image = wp_get_attachment_image_src($attributes[0], '');
+            return '<img src="'. $image[0] .'" width="'. $image[1] .'" height="'. $image[2] .'" class="'. $tag .'" />';
+        }
+    }
 }

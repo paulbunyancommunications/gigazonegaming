@@ -16,6 +16,10 @@ add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
 add_shortcode('contact-us', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-team-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
+// get image by id, usage [get-image 12345]
+// this will output the image with height and width attributes and class of get-image
+add_shortcode('get-image', [$bootstrap, 'getMediaImageShortCode']);
+
 
 // if the WP_FRONT_PAGE_ONLY flat is true then relay all requests to the front page post
 add_action('init', 'showSplashPageOnly', 1);
