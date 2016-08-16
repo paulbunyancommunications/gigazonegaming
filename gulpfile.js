@@ -1,5 +1,5 @@
-var themeFolder = './public_html/wp-content/themes/gigazone-gaming',
-    themeResourceFolder = './resources/wp-content/themes/gigazone-gaming',
+var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
+    themeResourceFolder = 'resources/wp-content/themes/gigazone-gaming',
     elixir = require('laravel-elixir'),
     gulp = require('gulp'),
     coffee = require('gulp-coffee'),
@@ -96,9 +96,8 @@ elixir.extend('cleanCss', function(src){
  * Main gulp elixir task
  */
 elixir(function (mix) {
-    mix.compass('**/*.scss', themeFolder + '/css', {
+    mix.compass('*.scss', themeFolder + '/css/', {
         sass: themeResourceFolder + '/sass',
-        config_file: themeResourceFolder + "/config.rb",
         style: "compressed",
         font: themeFolder + "/fonts",
         image: themeFolder + "/images",
