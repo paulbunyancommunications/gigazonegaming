@@ -67,7 +67,8 @@ class ConstantContactAddRecipientJobTest extends \TestCase
     /**
      * Check that an invalid email address will throw and exception in handle
      *
-     * @expectedException     \Exception
+     * @expectedException     \App\Exceptions\ConstantContactAddRecipientJobException
+     * @expectedExceptionMessage The email must be a valid email address to add recipient.
      */
     public function testHandleThrowsExceptionIfInvalidEmailAddress()
     {
@@ -93,7 +94,8 @@ class ConstantContactAddRecipientJobTest extends \TestCase
     /**
      * Check that an invalid list will throw and exception in handle
      *
-     * @expectedException     \Exception
+     * @expectedException     \App\Exceptions\ConstantContactAddRecipientJobException
+     * @expectedExceptionMessage    List "not a valid list" does not exist.
      */
     public function testHandleThrowsExceptionIfInvalidList()
     {
@@ -107,7 +109,7 @@ class ConstantContactAddRecipientJobTest extends \TestCase
                 'apiKey' => env('CONSTANT_CONTACT_API_KEY', 'CONSTANT_CONTACT_API_KEY'),
                 'apiSecret' => env('CONSTANT_CONTACT_API_SECRET', 'CONSTANT_CONTACT_API_SECRET'),
                 'apiToken' => env('CONSTANT_CONTACT_API_TOKEN', 'CONSTANT_CONTACT_API_TOKEN'),
-                'listName' => $faker->sentence,
+                'listName' => 'not a valid list',
                 'email' => $email,
                 'name' => $name
             ]
@@ -119,7 +121,8 @@ class ConstantContactAddRecipientJobTest extends \TestCase
     /**
      * Check that an API key will throw an exception in handle
      *
-     * @expectedException     Exception
+     * @expectedException     \App\Exceptions\ConstantContactAddRecipientJobException
+     * @expectedExceptionMessage     Forbidden
      */
     public function testHandleThrowsExceptionIfInvalidApiKey()
     {
@@ -130,7 +133,7 @@ class ConstantContactAddRecipientJobTest extends \TestCase
         // initialize the Constant Contact recipient job
         $job = new ConstantContactAddRecipientJob(
             [
-                'apiKey' => $faker->sentence,
+                'apiKey' => 'abcd1234',
                 'apiSecret' => env('CONSTANT_CONTACT_API_SECRET', 'CONSTANT_CONTACT_API_SECRET'),
                 'apiToken' => env('CONSTANT_CONTACT_API_TOKEN', 'CONSTANT_CONTACT_API_TOKEN'),
                 'listName' => env('CONSTANT_CONTACT_LIST_NAME', 'Update List'),
@@ -145,7 +148,8 @@ class ConstantContactAddRecipientJobTest extends \TestCase
     /**
      * Check that an invalid Api Token will throw an exception in handle
      *
-     * @expectedException     \Exception
+     * @expectedException     \App\Exceptions\ConstantContactAddRecipientJobException
+     * @expectedExceptionMessage     Unauthorized
      */
     public function testHandleThrowsExceptionIfInvalidApiToken()
     {
@@ -158,7 +162,7 @@ class ConstantContactAddRecipientJobTest extends \TestCase
             [
                 'apiKey' => env('CONSTANT_CONTACT_API_KEY', 'CONSTANT_CONTACT_API_KEY'),
                 'apiSecret' => env('CONSTANT_CONTACT_API_SECRET', 'CONSTANT_CONTACT_API_SECRET'),
-                'apiToken' => $faker->sentence,
+                'apiToken' => '1234acbde',
                 'listName' => env('CONSTANT_CONTACT_LIST_NAME', 'Update List'),
                 'email' => $email,
                 'name' => $name

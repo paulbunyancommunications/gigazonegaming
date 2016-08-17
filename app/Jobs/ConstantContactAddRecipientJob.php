@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\ConstantContactAddRecipientJobException;
 use Ctct\Components\Contacts\Contact;
 use Ctct\ConstantContact;
 use Ctct\Exceptions\CtctException;
@@ -44,7 +45,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @throws \Exception
+     * @throws ConstantContactAddRecipientJobException
      */
     public function handle()
     {
@@ -71,17 +72,18 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
             if ($this->checkAlreadyExistsMessage($exceptionMessage) === true) {
                 return true;
             }
-            throw new \Exception($exceptionMessage);
+            throw new ConstantContactAddRecipientJobException($exceptionMessage);
         }
 
     }
 
     private function validateAddress()
     {
-        $validator = \Validator::make(['email' => $this->email], ['email' => 'required|email'], []);
+        $validator = \Validator::make(['email' => $this->email], ['email' => 'required|email'], ['email.email' => 'The :attribute must be a valid email address to add recipient.']);
         if ($validator->fails()) {
-            // email not set or failed validation, just return to next middleware
-            throw new \Exception(implode(' ', $validator->getMessageBag()));
+            // email not set or failed validation
+            $message = is_array($validator->getMessageBag()) ? implode(' ', (array)$validator->getMessageBag()) : $validator->getMessageBag();
+            throw new ConstantContactAddRecipientJobException($message);
         }
         return $this;
     }
@@ -90,7 +92,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      * Check for list in lists on constant contact account
      * @param $connection
      * @return mixed
-     * @throws \Exception
+     * @throws ConstantContactAddRecipientJobException
      */
     private function validateList($connection)
     {
@@ -99,7 +101,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         try {
             $lists = $connection->listService->getLists($this->apiToken, []);
         } catch (CtctException $ex) {
-            throw new \Exception($ex->getMessage());
+            throw new ConstantContactAddRecipientJobException($ex->getMessage());
         }
 
         foreach ($lists as $list) {
@@ -109,7 +111,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
             }
         }
         if (!$useList) {
-            throw new \Exception('List ' . $this->getListName() . ' does not exist.');
+            throw new ConstantContactAddRecipientJobException('List "' . $this->getListName() . '" does not exist.');
         }
 
         return $useList;
@@ -201,8 +203,6 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      */
     protected function checkAlreadyExistsMessage($message)
     {
-
-
         $re1 = '(Email)';    # Word 1
         $re2 = '( )';    # White Space 1
         $re3 = '(address)';    # Word 2
