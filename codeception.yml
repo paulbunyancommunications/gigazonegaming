@@ -18,7 +18,7 @@ modules:
             dsn: 'mysql:host=localhost;dbname=gzgaming_wp'
             user: 'root'
             password: 'root'
-            dump: 'sql/gzgaming_wp.sql'
+            dump: 'sql/gigazonegaming_wp.sql'
 coverage:
     enabled: true
     whitelist:
