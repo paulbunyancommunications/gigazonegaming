@@ -44,10 +44,10 @@ mysql:
     databases:
         database1:
             name: gzgaming_wp
-            sql: '/var/www/sql/gigazonegaming_wp.sql'
+            sql: '/var/www/sql/gzgaming_wp.sql'
         database2:
             name: gzgaming_champ_db
-            sql: '/var/www/sql/gigazonegaming_champ_db.sql'
+            sql: '/var/www/sql/gzgaming_champ_db.sql'
     grants:
         grant1:
             user: user
