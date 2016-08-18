@@ -37,6 +37,13 @@ Route::post('/updates/signup', [
     'middleware' => ['CCAddRecipient']
 ]);
 
+// Update route can come from /update-sign-up also
+Route::post('/update-sign-up', [
+        'uses' => 'Frontend\Updates\UpdatesController@store',
+        'as' => 'update-sign-up',
+        'middleware' => ['CCAddRecipient']
+]);
+
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
 
 /**
