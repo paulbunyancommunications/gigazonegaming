@@ -6,16 +6,16 @@ class yum::repo::rpmforge {
 $osver = split($::operatingsystemrelease, '[.]')
   case $osver[0] {
     '7': {
-      $baseurl = 'http://apt.sw.be/redhat/el7/en/$basearch/rpmforge'
-      $mirrorlist = 'http://apt.sw.be/redhat/el7/en/mirrors-rpmforge'
+      $baseurl = 'http://repoforge.cu.be/redhat/el7/en/$basearch/rpmforge'
+      $mirrorlist = 'http://mirrorlist.repoforge.org/el7/mirrors-repoforge'
     }
     '6': {
-      $baseurl = 'http://apt.sw.be/redhat/el6/en/$basearch/rpmforge'
-      $mirrorlist = 'http://apt.sw.be/redhat/el6/en/mirrors-rpmforge'
+      $baseurl = 'http://mirrorlist.repoforge.org/el7/mirrors-repoforge'
+      $mirrorlist = 'http://mirrorlist.repoforge.org/el6/mirrors-repoforge'
     }
     '5': {
-      $baseurl = 'http://apt.sw.be/redhat/el5/en/$basearch/rpmforge'
-      $mirrorlist = 'http://apt.sw.be/redhat/el5/en/mirrors-rpmforge'
+      $baseurl = 'http://repoforge.cu.be/redhat/el5/en/$basearch/rpmforge'
+      $mirrorlist = 'http://mirrorlist.repoforge.org/el5/mirrors-repoforge'
     }
     default: { fail('Unsupported version of Enterprise Linux') }
   }
