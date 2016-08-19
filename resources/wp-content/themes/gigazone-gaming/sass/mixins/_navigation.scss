@@ -1,4 +1,28 @@
 @import "../../../../../../public_html/bower_components/Gutenberg/src/style/gutenberg-mixins";
+
+@mixin social-media-icons($multiplier: 1) {
+  text-decoration: none;
+  background: $color-gz-orange;
+  color: $color-gz-gray;
+  @include height(1.75 * $multiplier);
+  @include font-size(1.625 * $multiplier);
+  @include line-height(1.75 * $multiplier);
+  @include width(1.75 * $multiplier);
+  @include border-radius(#{ (1.75 * $multiplier) * $leading-rem + 'rem'});
+  padding: 0;
+  text-align: center;
+  @include margin(0, 0);
+  &:visited {
+    background: $color-gz-orange;
+    color: $color-gz-gray;
+  }
+
+  &:hover, &:active {
+    color: $color-white;
+    @include dark-pattern-background();
+  }
+}
+
 @mixin toggled-navigation {
   @include bs-full-width-columns;
 
@@ -71,6 +95,25 @@
     &:last-child > a::after {
       display: none;
     }
+
+    &.social-media.first {
+      @include margin(0, .5, 0, .625);
+    }
+    &.social-media {
+      @include inline-block();
+      @include margin(0, .5, 0, 0);
+      height: auto;
+      &:after, &:before {
+        display: none;
+      }
+      a {
+       @include social-media-icons(.875);
+        &:after, &:before {
+          display: none;
+        }
+      }
+    }
+
   }
   .main-navigation-menu > li:hover {
     background: rgba(256, 256, 256, .90);

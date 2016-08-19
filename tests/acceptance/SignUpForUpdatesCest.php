@@ -38,9 +38,14 @@ class SignUpForUpdatesCest
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with the participate flag');
         $I->amOnPage('/');
-        $I->see('Sign up for updates');
+        // label might be hidden on this form, so just check for the string in the source
+        $I->seeInSource('Sign up for updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
+
+        // element might be hidden in the dom, detach and move it so it's visible for clicking
+        \Helper\Acceptance::loadJQuery($I, 'ele = $("#updateSignUpForm-participate").detach(); $("#app-update-sign-up-form").prepend(ele);');
+        $I->wait(2);
         $I->checkOption(['id' => 'updateSignUpForm-participate']);
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
@@ -57,9 +62,15 @@ class SignUpForUpdatesCest
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller without the participate flag');
         $I->amOnPage('/');
-        $I->see('Sign up for updates');
+
+        // label might be hidden on this form, so just check for the string in the source
+        $I->seeInSource('Sign up for updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
+
+        // element might be hidden in the dom, detach and move it so it's visible for clicking
+        \Helper\Acceptance::loadJQuery($I, 'ele = $("#updateSignUpForm-participate").detach(); $("#app-update-sign-up-form").prepend(ele);');
+        $I->wait(2);
         $I->uncheckOption(['id' => 'updateSignUpForm-participate']);
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
@@ -77,9 +88,15 @@ class SignUpForUpdatesCest
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a bad email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
-        $I->see('Sign up for updates');
+
+        // label might be hidden on this form, so just check for the string in the source
+        $I->seeInSource('Sign up for updates');
         $email = $faker->md5();
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
+
+        // element might be hidden in the dom, detach and move it so it's visible for clicking
+        \Helper\Acceptance::loadJQuery($I, 'ele = $("#updateSignUpForm-participate").detach(); $("#app-update-sign-up-form").prepend(ele);');
+        $I->wait(2);
         $I->checkOption(['id' => 'updateSignUpForm-participate']);
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
@@ -97,7 +114,9 @@ class SignUpForUpdatesCest
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a duplicate email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
-        $I->see('Sign up for updates');
+
+        // label might be hidden on this form, so just check for the string in the source
+        $I->seeInSource('Sign up for updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
@@ -121,9 +140,15 @@ class SignUpForUpdatesCest
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with geo location data');
         $I->amOnPage('/');
-        $I->see('Sign up for updates');
+
+        // label might be hidden on this form, so just check for the string in the source
+        $I->seeInSource('Sign up for updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
+
+        // element might be hidden in the dom, detach and move it so it's visible for clicking
+        \Helper\Acceptance::loadJQuery($I, 'ele = $("#updateSignUpForm-participate").detach(); $("#app-update-sign-up-form").prepend(ele);');
+        $I->wait(2);
         $I->checkOption(['id' => 'updateSignUpForm-participate']);
         \Helper\Acceptance::loadJQuery(
             $I,

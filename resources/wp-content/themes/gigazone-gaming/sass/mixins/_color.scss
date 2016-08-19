@@ -1,3 +1,9 @@
 @function hexToRgba($color:$color-gz-gray, $opacity:1) {
   @return rgba(red($color),green($color),blue($color),$opacity);
 }
+
+@mixin dark-pattern-background {
+  background-image: url("../images/backgrounds/social-banner-v-2-black.jpg");
+  background-position: center center;
+  background-repeat: repeat;
+}

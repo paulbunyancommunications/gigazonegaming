@@ -10,6 +10,11 @@ require ['init'], () ->
       links.init()
       return
 
+    if $('.clickable').length
+      require ['clickable'], (clickable) ->
+        clickable.init()
+        return
+
       
     if $('.main-navigation-container').length
       require ['mainNavigation'], (mainNavigation) ->
@@ -48,5 +53,12 @@ require ['init'], () ->
       require ['tab'], (tab) ->
         tab.init();
 
+    removeEmptyParagraphs = ->
+      $('p').each () ->
+        if $.trim($(this).text()) == '' and $.trim($(this).html()) == ''
+          #$(item).slideUp()
+          $(this).remove();
+      return
+    removeEmptyParagraphs()
     return
   return

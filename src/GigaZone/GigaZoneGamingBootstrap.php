@@ -211,6 +211,8 @@ class GigaZoneGamingBootstrap extends \TimberSite
             "delimiter" => "|",
             "inputs" => "",
             "headings" => "",
+            "ids" => "",
+            "legend" => Strings::formatForTitle(str_replace('-', ' ', $tag))
         );
         $attr = shortcode_atts($defaults, $attributes);
         extract($attr);
@@ -219,6 +221,7 @@ class GigaZoneGamingBootstrap extends \TimberSite
             switch ($default) {
                 case ('new_line'):
                 case ('delimiter'):
+                case ('legend'):
                     break;
                 default:
                     $this->parseCsv($context, $$default, $default, $delimiter, $new_line);
@@ -242,8 +245,9 @@ class GigaZoneGamingBootstrap extends \TimberSite
         $context['action'] = '/app/' . $tag;
         $context['method'] = 'POST';
         $context['content'] = $content;
+        $context['legend'] = $legend;
         $context['tag'] = $tag;
-
+        $context['submitId'] = 'doFormSubmit';
         return Timber::compile('forms/form-template.twig', $context);
     }
 

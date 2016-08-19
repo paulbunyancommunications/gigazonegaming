@@ -7,6 +7,17 @@ a {
   &:visited {
     color: $color-complement-2;
   }
+
+  .light & {
+    color: tint($color-light-gray, 45%);
+
+    &:hover, &:active {
+      color: tint($color-light-gray, 55%);
+    }
+    &:visited {
+      color: tint($color-light-gray, 55%);
+    }
+  }
 }
 
 .page {

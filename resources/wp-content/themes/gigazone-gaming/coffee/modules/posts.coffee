@@ -27,11 +27,4 @@ define ['jquery'], ($) ->
       )
       return
     return
-  return posts
-
-    
-
-
-
-
-  return posts
+  posts

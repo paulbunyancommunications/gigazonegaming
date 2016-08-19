@@ -1,3 +1,26 @@
+.margin {
+  @include margin(1, 1);
+}
+.margin-before {
+  @include margin-top(1);
+}
+.margin-after {
+  @include margin-bottom(1);
+}
+
+.padding {
+  @include padding-equal(1)
+}
+
+.padding-before {
+  @include padding-top(1);
+}
+.padding-after {
+  @include padding-bottom(1);
+}
+
+
+
 /*
  * Row with equal height columns
  http://www.bootply.com/126437

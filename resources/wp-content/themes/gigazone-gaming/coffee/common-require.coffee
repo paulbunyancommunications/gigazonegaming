@@ -26,6 +26,7 @@ require =
     form: ["modules/form"],
     duplicate: ["modules/duplicate"],
     tab: ["modules/tab"],
+    clickable: ["modules/clickable"]
     Utility: ["modules/Utility"]
   waitSeconds: 0
   shim:

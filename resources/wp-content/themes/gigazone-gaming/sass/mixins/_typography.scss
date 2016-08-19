@@ -66,8 +66,12 @@
     padding: 0;
   }
 
+  ul {
+    @include padding(0, 1 * $multiplier);
+  }
+
   li {
-    @include font-size(1.5 * $multiplier);
+    @include font-size(1.625 * $multiplier);
     @include line-height(1.375 * $multiplier);
     @include margin-bottom(0.675 * $multiplier);
     list-style: none;
@@ -96,73 +100,97 @@
     }
 
   }
+  $elements: p ul ol blockquote;
+  $headers: h1, h2, h3, h4, h5, h6;
+  @each $element in $elements {
 
-  p, ul, ol, blockquote {
+    #{$element} {
 
-    & + p {
-      @include margin-top(1.5 * $multiplier);
+      & + p {
+        @include margin-top(1.5 * $multiplier);
+      }
+
+      & + ul, & + ol {
+        @include margin-top(1.8 * $multiplier);
+      }
+
+      h1 + & {
+        @include margin-top(2.6 * $multiplier);
+      }
+
+      & + h2 {
+        @include margin-top(2.4 * $multiplier);
+      }
+
+      h2 + & {
+        @include margin-top(1.8 * $multiplier);
+      }
+
+      & + h3 {
+        @include margin-top(1.7 * $multiplier);
+      }
+
+      h3 + & {
+        @include margin-top(1.5 * $multiplier);
+      }
+
+      & + h4 {
+        @include margin-top(1.3 * $multiplier);
+      }
+
+      h4 + & {
+        @include margin-top(1.4 * $multiplier);
+      }
+
+      & + h5 {
+        @include margin-top(1.4 * $multiplier);
+      }
+
+      h5 + & {
+        @include margin-top(1.1 * $multiplier);
+
+      }
+      & + h6 {
+        @include margin-top(1.3 * $multiplier);
+      }
+
+      h6 + & {
+        @include margin-top(1.45 * $multiplier);
+      }
+    }
+    @each $header in $headers {
+      // .tight elements, snug the header up next to the block below it
+      #{$header}.tight {
+        @include margin-top(.125 * $multiplier);
+        @include margin-bottom(.125 * $multiplier);
+      }
+      #{$header}.tight-bottom {
+        @include margin-bottom(.125 * $multiplier);
+      }
+
+      @each $element in $elements {
+        #{$header}.tight + #{$element} {
+          @include margin-top(.125 * $multiplier);
+        }
+
+      }
+
+      #{$header}.light {
+        color: tint($color-light-gray, 25%);
+      }
+
     }
 
-    & + ul, & + ol {
-      @include margin-top(1.8 * $multiplier);
+
+    /** Classes added to base elements */
+
+    .disclaimer, p.disclaimer, .disclaimer p {
+      @include font-size(1.125 * $multiplier);
+      @include line-height(1.375 * $multiplier);
+      color: $color-gz-gray;
+      color: rgba($color-gz-gray, .5);
+      @include padding-equal(1);
     }
 
-    h1 + & {
-      @include margin-top(2.6 * $multiplier);
-    }
-
-    & + h2 {
-      @include margin-top(2.4 * $multiplier);
-    }
-
-    h2 + & {
-      @include margin-top(1.8 * $multiplier);
-    }
-
-    & + h3 {
-      @include margin-top(1.7 * $multiplier);
-    }
-
-    h3 + & {
-      @include margin-top(1.5 * $multiplier);
-    }
-
-    & + h4 {
-      @include margin-top(1.3 * $multiplier);
-    }
-
-    h4 + & {
-      @include margin-top(1.4 * $multiplier);
-    }
-
-    & + h5 {
-      @include margin-top(1.4 * $multiplier);
-    }
-
-    h5 + & {
-      @include margin-top(1.1 * $multiplier);
-
-    }
-    & + h6 {
-      @include margin-top(1.3 * $multiplier);
-    }
-
-    h6 + & {
-      @include margin-top(1.45 * $multiplier);
-    }
   }
-
-  /** Classes added to base elements */
-
-  .disclaimer, p.disclaimer, .disclaimer p {
-    @include font-size(1.125 * $multiplier);
-    @include line-height(1.375 * $multiplier);
-    color: $color-gz-gray;
-    color: rgba($color-gz-gray, .5);
-    @include padding-equal(1);
-  }
-
-
-
-
 }

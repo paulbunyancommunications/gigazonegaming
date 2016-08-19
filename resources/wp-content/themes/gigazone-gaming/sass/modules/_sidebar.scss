@@ -94,6 +94,13 @@
       text-align: center;
     }
 
+    .input[type="text"],  .input[type="email"]{
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+
     .alert, .alert p {
       @include font-size(1.25);
       @include line-height(1.125);
@@ -105,6 +112,10 @@
     display: table;
     margin-left: auto;
     margin-right: auto;
+
+    @include mq-tablet {
+      display: none;
+    }
   }
 
   @include social-media(1.9);
@@ -165,5 +176,7 @@
     }
 
   }
+
+
 
 }

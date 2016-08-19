@@ -1,0 +1,24 @@
+<div class='container'>
+  <div class='row'>
+    {% if page is defined and page.layout is defined and page.layout == 'full-width' %}
+      <div class='col-md-3 main-navigation-social-media full-width-container'>
+        <div class='main-navigation-social-media-full-width-layout'>
+          {% include "partials/social-media.twig" %}
+        </div>
+      </div>
+      <div class='col-md-9 full-width-container'>
+    {% else %}
+      <div class='col-md-12'>
+      {% endif %}
+      {{ function('wp_nav_menu', {'menu':'Main Navigation', 'container_class':'main-navigation', 'menu_class':'main-navigation-menu'}) }}
+    </div>
+  </div>
+</div>
+<div class='main-navigation-toggle'>
+  <div class='main-navigation-toggler'>
+    <a href='#'>
+      <i class='fa fa-bars'></i>
+    </a>
+  </div>
+  {% include "partials/social-media.twig" %}
+</div>

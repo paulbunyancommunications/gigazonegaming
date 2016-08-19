@@ -1,7 +1,7 @@
 @include base_typography(1);
 
 @include mq-tablet {
-  @include base_typography(.9);
+  @include base_typography(.85);
 }
 
 @include mq-phone {

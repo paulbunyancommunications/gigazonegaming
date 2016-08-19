@@ -6,7 +6,7 @@
   .masthead-container
     {% include "partials/masthead.twig" %}
   .main-navigation-container
-    {% include "partials/main-navigation.twig" %}
+    {% include "partials/main-navigation.twig" with {'page': page} %}
   .photo-rotator-container
     {% include "partials/media/masthead-photo-rotator.twig" %}
   / .search-container

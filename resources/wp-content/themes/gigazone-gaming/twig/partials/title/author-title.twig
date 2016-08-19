@@ -1,3 +1,4 @@
-<h1 class="tag-title">
-    <span class="tag-title-label">Author</span><span class="tag-title-image-container"><img src="http://www.gravatar.com/avatar/{{ function('get_the_author_meta', 'email', post.post_author)|mdfive }}" class="tag-title-image" alt=""></span><span class="tag-title-text">{{ author.display_name|format_for_title }}</span>
-</h1>
+{% extends 'partials/title/template-title.twig' %}
+{% block section %}Author{% endblock %}
+{% block title %}{{ author.display_name|format_for_title }}{% endblock %}
+{% block image %}{% include "partials/title/template-title-image.twig" with {"image":"http://www.gravatar.com/avatar/" ~ function('get_the_author_meta', 'email', post.post_author)|mdfive} %}{% endblock %}

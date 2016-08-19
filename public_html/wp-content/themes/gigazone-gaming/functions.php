@@ -10,9 +10,9 @@ $cachePath = realpath(dirname(__DIR__) . '/../../../cache/');
 $cacheDriver = new Stash\Driver\FileSystem(['path' => $cachePath]);
 
 add_shortcode('splash', [$bootstrap, 'splashShortCode']);
-add_shortcode('update-sign-up', [$bootstrap, 'updateSignUpFormShortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
+add_shortcode('update-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('contact-us', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-team-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
@@ -70,3 +70,16 @@ function showSplashPageOnly()
         die();
     }
 }
+
+/**
+ * Remove empty paragraphs created by wpautop()
+ * @author Ryan Hamilton
+ * @link https://gist.github.com/Fantikerz/5557617
+ */
+function remove_empty_p( $content ) {
+    $content = force_balance_tags( $content );
+    $content = preg_replace( '#<p>\s*+(<br\s*/*>)?\s*</p>#i', '', $content );
+    $content = preg_replace( '~\s?<p>(\s|&nbsp;)+</p>\s?~', '', $content );
+    return $content;
+}
+add_filter('the_content', 'remove_empty_p', 20, 1);

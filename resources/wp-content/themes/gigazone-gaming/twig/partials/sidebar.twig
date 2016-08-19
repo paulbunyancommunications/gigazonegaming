@@ -1,6 +1,6 @@
 <div class="sidebar">
     <div class="sidebar-social-media">{% include 'partials/social-media.twig' %}</div>
     {% include 'partials/sidebar-section-nav.twig' %}
-    <div class="sidebar-highlight-link">{{ function('do_shortcode', '[update-sign-up type="stacked"]') }}</div>
+    <div class="sidebar-highlight-link hide-text-label sidebar-form-container">{{ function('do_shortcode', '[update-sign-up new_line="," delimiter="|" questions="Your Email Address|email,update-recipient|hidden|yes" inputs="your-email-address|email" ids="submit|updateSignUpFormSubmit"]') }}</div>
     {% include 'partials/sidebar-highlight-links.twig' %}
 </div>

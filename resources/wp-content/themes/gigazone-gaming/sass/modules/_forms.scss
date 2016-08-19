@@ -50,3 +50,51 @@ legend {
   }
 
 }
+
+.hide-text-label {
+  $inputs: email text;
+  @each $input in $inputs {
+    .#{$input}-group label {
+      display: none;
+    }
+  }
+}
+
+.sidebar-form-container {
+  div[class^="col-"] {
+    width: 100%;
+    padding: 0 0%;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    left: auto;
+    right: auto;
+
+    &.message-outer-container {
+      width: 86%;
+      margin-left: 7%;
+      margin-right: 7%;
+    }
+  }
+  input[type="text"], input[type="email"] {
+    width: 100%;
+    margin: 0;
+  }
+
+  .btn-gz {
+    width: 100%;
+  }
+
+  .progress-container {
+    width: 100%;
+    text-align: center;
+    @include margin-top(.5);
+    @include margin-bottom(.5);
+  }
+
+
+  .form-horizontal .form-group {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

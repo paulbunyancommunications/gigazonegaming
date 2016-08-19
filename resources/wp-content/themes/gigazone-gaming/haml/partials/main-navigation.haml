@@ -1,9 +1,0 @@
-.container
-  .row
-    .col-md-12
-      {{ function('wp_nav_menu', {'menu':'Main Navigation', 'container_class':'main-navigation', 'menu_class':'main-navigation-menu'}) }}
-.main-navigation-toggle
-  .main-navigation-toggler
-    %a{:href=>"#"}
-      %i{:class=>"fa fa-bars"}
-  {% include "partials/social-media.twig" %}

@@ -1,1 +1,3 @@
-<h1 class="tag-title"><span class="tag-title-label">Category</span><span class="tag-title-text">{{ category.name|format_for_title }}</span></h1>
+{% extends 'partials/title/template-title.twig' %}
+{% block section %}Category{% endblock %}
+{% block title %}{{ category.name|format_for_title }}{% endblock %}

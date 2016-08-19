@@ -1,225 +1,254 @@
-.main-navigation-container {
+.main-navigation {
 
-  //Default style for menu on Desktop and cinema display
-  width: 100%;
-  background: $color-gz-gray;
-  text-align: center;
+  &-toggle {
+    @include mq-desktop {
+      display: none;
+    }
 
-  &::after {
-  }
-
-  @include mq-desktop {
-    .main-navigation-toggle {
+    @include mq-cinema {
       display: none;
     }
   }
 
-  @include mq-cinema {
-    .main-navigation-toggle {
-      display: none;
+  &-container {
+
+    //Default style for menu on Desktop and cinema display
+    width: 100%;
+    background: $color-gz-gray;
+    text-align: center;
+
+    &::after {
     }
-  }
 
-
-
-  ul ul {
-    display: none;
-  }
-
-  ul {
-    padding: 0;
-    margin: 0;
-    position: relative;
-    @include inline-block();
-    &:after {
-      content: "";
-      clear: both;
-      display: block;
-    }
-  }
-
-  li {
-    @include padding-equal(0);
-    @include inline-block();
-    list-style: none;
-    border: none;
-    list-style: none;
-    margin: 0 0 0 -6px;
-    line-height: 0;
-
-    &::before {
+    ul ul {
       display: none;
     }
 
-    &:first-child {
-      margin-left: 0;
+    ul {
+      padding: 0;
+      margin: 0;
+      position: relative;
+      @include inline-block();
+      &:after {
+        content: "";
+        clear: both;
+        display: block;
+      }
     }
-  }
-
-  ul > li:last-child ul {
-    right: -1px;
-
-  }
-
-  // hide border on right side of the last top level nav item
-  ul > li:last-child > a::after {
-    display: none;
-
-  }
-
-  ul > li:first-child > a::before {
-    display: none;
-  }
-
-
-  ul > li:hover ul {
-    display: block;
-  }
-
-  ul ul {
-    position: absolute;
-    top: 100%;
-    z-index: 1000;
-    min-width: round($grid-gutter-width * 5);
-    max-width: 100%;
 
     li {
-      float: none;
-      display: block;
-      position: relative;
-      border-top: none;
-      width: 100%;
-      margin: 0;
-      padding: 0;
+      @include padding-equal(0);
+      @include inline-block();
+      list-style: none;
+      border: none;
+      list-style: none;
+      margin: 0 0 0 -6px;
+      line-height: 0;
 
-
-      &:last-child a {
-        @include border-bottom-radius(5px);
-        overflow: hidden;
+      &::before {
+        display: none;
       }
 
-      a {
-        @include padding(0, 0.675);
-        background: tint($color-gz-gray, 90%);
-        color: $color-black;
-        @include line-height(3.125);
-        @include height(3.125);
-        @include font-size(1.25);
-        display: block;
-        border-bottom: 1px solid $color-light-gray;
-        border-left: 1px solid $color-light-gray;
-        border-right: 1px solid $color-light-gray;
-        white-space: nowrap;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
 
-        @include mq-cinema {
-          @include padding(0, 1);
-          @include font-size(1.375);
+    ul > li:last-child ul {
+      right: -1px;
+
+    }
+
+    // hide border on right side of the last top level nav item
+    ul > li:last-child > a::after {
+      display: none;
+
+    }
+
+    ul > li:first-child > a::before {
+      display: none;
+    }
+
+    ul > li:hover ul {
+      display: block;
+    }
+
+    ul ul {
+      position: absolute;
+      top: 100%;
+      z-index: 1000;
+      min-width: round($grid-gutter-width * 5);
+      max-width: 100%;
+
+      li {
+        float: none;
+        display: block;
+        position: relative;
+        border-top: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+
+        &:last-child a {
+          @include border-bottom-radius(5px);
+          overflow: hidden;
         }
 
+        a {
+          @include padding(0, 0.675);
+          background: tint($color-gz-gray, 90%);
+          color: $color-black;
+          @include line-height(3.125);
+          @include height(3.125);
+          @include font-size(1.25);
+          display: block;
+          border-bottom: 1px solid $color-light-gray;
+          border-left: 1px solid $color-light-gray;
+          border-right: 1px solid $color-light-gray;
+          white-space: nowrap;
+
+          @include mq-cinema {
+            @include padding(0, 1);
+            @include font-size(1.375);
+          }
+
+          &::before, &::after {
+            display: none;
+          }
+        }
+      }
+    }
+
+    a {
+      color: $color-white;
+      @include padding(0, 0.675);
+      @include line-height(3);
+      @include height(3);
+      margin: 0;
+      display: block;
+      text-decoration: none;
+      @include font-size(1.2);
+      text-transform: none;
+      position: relative;
+      text-decoration: none;
+
+      @include mq-cinema {
+        @include padding(0, 1.25);
+        @include font-size(1.25);
+      }
+
+      &::before, &:last-child::after {
+        content: "";
+        @include height(1.70);
+        width: 1px;
+        left: 1px;
+        //top: 0.85em;
+        @include top(0.75);
+        position: absolute;
+        background: rgba(256, 256, 256, 0.3)
+      }
+
+      &:last-child::after {
+        right: 0;
+        left: auto;
+      }
+
+      &:hover, &:active {
+        background: tint($color-gz-gray, 65);
+        text-decoration: none;
+        color: $color-dark-gray;
+        text-decoration: none;
+      }
+
+    }
+
+    .sub-navigation-caret {
+      display: none;
+    }
+
+    .current_page_item > a {
+      background: tint($color-gz-gray, 65);
+      color: $color-dark-gray;
+      border: 0;
+    }
+
+    @include mq-tablet {
+      @include toggled-navigation;
+
+    }
+    @include mq-phone {
+      @include toggled-navigation;
+    }
+
+    .hovering-on-child {
+
+      & + .menu-item > a::after, & + .menu-item > a::before {
+        display: none !important;
+      }
+
+      & > a {
+        background: $color-dark-gray !important;
+        color: $color-white !important;
+
         &::before, &::after {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  /**
+  * For top level of main navigation
+  */
+  & > ul > li > a, & > ul > li {
+    font-family: $font-family-display;
+    text-transform: uppercase;
+    @include font-size(1.875);
+
+    @include mq-tablet {
+      @include font-size(1.625);
+    }
+
+    @include mq-phone {
+      @include font-size(1.375);
+    }
+  }
+  & > ul > li > a {
+    @include padding(0, 1.25);
+  }
+
+  /**
+  * For the social media block in main navigation that only shows on full-width layout
+  */
+  &-social-media {
+    @include mq-tablet {
+      display: none;
+    }
+    @include mq-phone {
+      display: none;
+    }
+
+    &-full-width-layout .social-media {
+      @include inline-block();
+      @include margin(.625, .25, 0, 0);
+      a {
+        @include social-media-icons();
+        &:before, &:after {
           display: none;
         }
       }
     }
   }
-
-  a {
-    color: $color-white;
-    @include padding(0, 0.675);
-    @include line-height(3);
-    @include height(3);
-    margin: 0;
-    display: block;
-    text-decoration: none;
-    @include font-size(1.2);
-    text-transform: none;
-    position: relative;
-    text-decoration: none;
-
-    @include mq-cinema {
-      @include padding(0, 1.25);
-      @include font-size(1.25);
+  .full-width-container {
+    &.main-navigation-social-media {
     }
-
-    &::before, &:last-child::after {
-      content: "";
-      @include height(1.70);
-      width: 1px;
-      left: 1px;
-      //top: 0.85em;
-      @include top(0.75);
-      position: absolute;
-      background: rgba(256, 256, 256, 0.3)
+    @include mq-tablet {
+      width: 100%;
     }
-
-    &:last-child::after {
-      right: 0;
-      left: auto;
-    }
-
-    &:hover, &:active {
-      background: tint($color-gz-gray, 65);
-      text-decoration: none;
-      color: $color-dark-gray;
-      text-decoration: none;
-    }
-
-  }
-
-  .sub-navigation-caret {
-    display: none;
-  }
-
-  .current_page_item > a {
-    background: tint($color-gz-gray, 65);
-    color: $color-dark-gray;
-    border: 0;
-  }
-
-  @include mq-tablet {
-    @include toggled-navigation;
-
-  }
-  @include mq-phone {
-    @include toggled-navigation;
-  }
-
-  .hovering-on-child {
-
-    & + .menu-item > a::after, & + .menu-item > a::before  {
-      display: none !important;
-    }
-
-    & > a {
-      background: $color-dark-gray !important;
-      color: $color-white !important;
-
-      &::before, &::after {
-        display: none !important;
-      }
+    @include mq-phone {
+      width: 100%;
     }
   }
 
 }
-
-/**
-* For top level of main navigation
-*/
-.main-navigation > ul > li > a, .main-navigation > ul > li {
-  font-family: $font-family-display;
-  text-transform: uppercase;
-  @include font-size(1.875);
-
-  @include mq-tablet {
-    @include font-size(1.625);
-  }
-
-  @include mq-phone {
-    @include font-size(1.375);
-  }
-}
-.main-navigation > ul > li > a {
-  @include padding(0, 1.25);
-}
-
 

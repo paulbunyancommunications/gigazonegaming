@@ -1,0 +1,296 @@
+// Updates form on front page
+/**
+*
+<!-- example -->
+<div class="well front-page-form-container hide-text-label hide-legend">
+    <h3 class="tight">Please register your email address below.</h3>
+    <p>We’ll keep you up to date on the latest news and updates regarding the tournament, team sign-up process, and further details as they materialize from the rift!</p>
+    <input class="hidden" type="hidden" id="app-update-sign-up-fields"
+           value="i-would-like-to-participate-in-the-tournament-participate,your-email-address-email">
+    <p></p>
+    <div class="well well-gz">
+        <form action="http://gigazonegaming.local/app/update-sign-up"
+              class="form doAjaxForm doGeoLocate doForm form-horizontal " id="app-update-sign-up-form" method="POST"
+              name="app-update-sign-up-form" novalidate="novalidate">
+            <fieldset>
+                <legend>Update Sign Up</legend>
+                <input name="fields[]" type="hidden" value="email">
+                <div class="form-group email-group">
+                    <label class="col-md-3 control-label" for="your-email-address" id="your-email-address-label">Your
+                        Email Address</label>
+                    <input name="email-label" type="hidden" value="Your Email Address">
+                    <div class="col-md-9">
+                        <input class="email form-control full-width" id="your-email-address" name="email"
+                               placeholder="Your Email Address" type="email" value="">
+                    </div>
+                </div>
+                <div class="form-group hidden-group">
+                    <input name="update-recipient" type="hidden" value="yes">
+                </div>
+                <input name="fields[]" type="hidden" value="participate">
+                <div class="form-group boolean-group">
+                    <label class="col-md-3 control-label" for="i-would-like-to-participate-in-the-tournament"
+                           id="i-would-like-to-participate-in-the-tournament-label">I would like to participate in the
+                        tournament</label>
+                    <input name="participate-label" type="hidden" value="I would like to participate in the tournament">
+                    <div class="col-md-9">
+                        <div class="bootstrap-switch bootstrap-switch-yesNoInput bootstrap-switch-off bootstrap-switch-id-i-would-like-to-participate-in-the-tournament bootstrap-switch-animate"
+                             style="width: 98px;">
+                            <div class="bootstrap-switch-container" style="width: 144px; margin-left: -48px;"><span
+                                    class="bootstrap-switch-handle-on bootstrap-switch-primary"
+                                    style="width: 48px;">Yes</span><span class="bootstrap-switch-label"
+                                                                         style="width: 48px;">&nbsp;</span><span
+                                    class="bootstrap-switch-handle-off bootstrap-switch-default"
+                                    style="width: 48px;">No</span><input class="boolean"
+                                                                         id="i-would-like-to-participate-in-the-tournament"
+                                                                         name="participate" type="checkbox" value="no">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group submit-group">
+                    <div class="col-md-9 col-md-push-3">
+                        <button class="btn btn-default btn-gz margin-top" id="doFormSubmit" type="submit">Submit
+                        </button>
+                        <span class="fa-stack fa-lg progress-container" style="display: none;">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-refresh fa-spin fa-stack-1x fa-inverse"></i>
+          </span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12 message-outer-container">
+                        <div class="message-container margin-top" id="update-sign-up-message-container"
+                             style="display: block;">
+                            <div class="alert alert-warning"><p>The email field is required.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+*/
+.front-page {
+
+  &-form-container form[name="app-update-sign-up-form"] {
+    padding: 0;
+    fieldset {
+      display: block;
+      width: 100%;
+    }
+
+    div[class^="col-"]{
+      width: auto;
+      padding: 0;
+      margin: 0;
+      left: auto;
+      right: auto;
+
+      &.message-outer-container {
+        width: 100%;
+        margin-left: 0%;
+        margin-right: 0%;
+      }
+    }
+
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .message-container {
+      width: 100%;
+      @include margin-top(1);
+      margin-left: 0%;
+      margin-right: 0%;
+
+      @include mq-phone {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+      }
+
+    }
+
+    $list: email boolean hidden submit;
+    @each $item in $list {
+      @if $item != 'hidden' {
+        .#{$item}-group {
+          float: left;
+          width: 49%;
+          margin: 0;
+          padding: 0 1% 0 0;
+
+          @include mq-phone {
+            width: 100%;
+            padding: 0;
+            float: none;
+            @include margin-bottom(1);
+          }
+        }
+      }
+
+      @if $item != 'submit' {
+        .form-group.#{$item}-group {
+          &:before {
+            display: none;
+            clear: none;
+          }
+          &:after {
+            clear: none;
+            display: none;
+          }
+        }
+      }
+
+      @if $item == 'submit' {
+        .#{$item}-group {
+          float: none;
+          clear: both;
+          width: 100%;
+          & div[class^="col-"] {
+            float: right;
+            @include mq-phone {
+              float: none;
+            }
+          }
+          &:before {
+            @include margin-top(2.5);
+            display: block;
+            content: "";
+            @include mq-phone {
+              @include margin-top(1);
+            }
+          }
+        }
+      }
+
+      @if $item == 'boolean' {
+        .#{$item}-group {
+          &:after {
+            clear: both;
+            display: block;
+            float: none;
+          }
+          & label {
+            color: tint($color-dark-gray, 45%);
+            font-weight: normal;
+            float: right;
+            width: 76%;
+            padding: 0 1%;
+            margin: 0;
+            text-align: left;
+            @include font-size(1.375);
+            @include mq-cinema {
+              width: 80%;
+              @include font-size(1.5);
+            }
+            @include mq-tablet {
+              width: 68%;
+              @include font-size(1.25);
+              @include line-height(1.125);
+            }
+            @include mq-phone {
+              width: 100%;
+              float: none;
+              padding: 0;
+
+            }
+
+          }
+        }
+
+        .#{$item}-group div[class^="col-"] {
+          padding: 0;
+          margin: 0;
+          width: 22%;
+          @include mq-cinema {
+            width: 18%;
+          }
+          @include mq-tablet {
+            width: 30%;
+          }
+          @include mq-phone {
+            width: 100%;
+            float: none;
+            padding: 0;
+          }
+        }
+
+      }
+
+      @if $item == 'email' {
+        .#{$item}-group div[class^="col-"] {
+          width: 99%;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  /**
+  Front page banner
+  <div class="col-md-12">
+    <div class="dark-pattern-background front-page-signup-banner clickable"><a href="http://gigazonegaming.local/sign-up/"><img class="front-page-signup-banner-image" src="http://gigazonegaming.local/wp-content/themes/gigazone-gaming/images/front-page/gzgc-orange-cutout.png" alt="Gigazone Gaming Championship"></a>
+        <h4 class="tight light front-page-signup-banner-title"><a href="http://gigazonegaming.local/sign-up/">Sign up for the League of Legends Tournament</a></h4>
+    </div>
+</div>
+  */
+
+  &-signup-banner {
+    width: 100%;
+    @include height(4);
+    @include line-height(4);
+    display: block;
+    vertical-align: middle;
+
+    a, .light a {
+      text-decoration: none;
+      color: $color-gz-orange;
+
+      &:visited {
+        color: $color-gz-orange;
+      }
+    }
+
+    &:hover &-title a, &:hover .light a {
+        color: tint($color-light-gray, 55%);
+    }
+
+
+    &-title {
+      @include padding(0, 1);
+      margin: 0;
+      line-height: inherit;
+      @include font-size(2.625);
+      @include mq-cinema {
+        @include font-size(3);
+      }
+      @include mq-tablet{
+        @include font-size(2.375);
+      }
+      @include mq-phone{
+        @include font-size(1.625);
+        @include line-height(1.25);
+        text-align: center;
+        @include padding-top(1);
+      }
+    }
+
+    &-image {
+      float: right;
+      max-height: 100%;
+      max-width: none;
+      width: auto;
+      @include mq-phone {
+        display: none;
+      }
+    }
+  }
+
+}
+
