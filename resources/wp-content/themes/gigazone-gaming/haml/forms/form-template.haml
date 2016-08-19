@@ -95,7 +95,7 @@
         -# otherwise default to text field
         {% else %}
         .col-md-9
-          %input{:id=>"{{ questionInputId }}", :placholder=>"{{ input.0 }}", :class=>"form-control full-width", :name=>"{{ questionInputName }}", :type=>"text"}/
+          %input{:id=>"{{ questionInputId }}", :placeholder=>"{{ input.0 }}", :class=>"form-control full-width", :name=>"{{ questionInputName }}", :type=>"text"}/
         {% endif %}
       {% endfor %}
       %div{:class=>"form-group submit-group"}
