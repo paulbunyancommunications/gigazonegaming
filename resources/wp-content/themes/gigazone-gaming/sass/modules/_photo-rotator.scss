@@ -66,27 +66,33 @@
 
 .rslides_nav {
   position: absolute;
-  top: 0;
+  display: block;
+  top: 50%;
   z-index: 99;
-  @include opacity(0);
   //text-indent: -9999px;
-  overflow: hidden;
+  overflow: visible;
   text-decoration: none;
-  height: 100%;
-  width: 50%;
+  @include height(6);
+  @include width(6);
   font-family: FontAwesome;
   font-weight: normal;
   font-style: normal;
-  font-size: 5em;
-  background: transparent;
+  @include font-size(6);
+  background: none;
   border: none;
   text-align: center;
+  @include opacity(.125);
+  color: $color-white;
 
-  &:hover {
+  &:visited {
+    color: $color-white;
+  }
+
+  &:hover, &:active {
     display: block;
-    color: rgba($color-white, 0.85);
-    @include opacity(1);
     z-index: 9999;
+    @include opacity(0.85);
+    color: $color-white;
 
   }
 
@@ -96,16 +102,53 @@
 
   .rotator-nav-item {
     position: absolute;
-    width: 60px;
-    height: 70px;
-    line-height: 56px;
-    top: 42%;
-    left: 10%;
+    @include height(6);
+    @include width(6);
+    @include line-height(6);
+    top: #{ -3 * $leading + 'px'};
+    top: #{ -3 * $leading-rem + 'rem'};
+    left: 0;
   }
 
   &.next .rotator-nav-item {
-    right: 10%;
+    right: 0;
     left: auto;
   }
+
+  // rslides_nav on tablet
+  @include mq-tablet {
+    @include font-size(4);
+    @include height(4);
+    @include width(4);
+  }
+
+  // rslides_nav on phone
+  @include mq-phone {
+    @include font-size(3.5);
+    @include height(3.5);
+    @include width(3.5);
+  }
+
+  // rotator-nav-item on tablet
+  .rotator-nav-item {
+    @include mq-tablet {
+      @include height(4);
+      @include width(4);
+      @include line-height(4);
+      top: #{ -2 * $leading + 'px'};
+      top: #{ -2 * $leading-rem + 'rem'};
+    }
+
+    // rotator-nav-item on phone
+    @include mq-phone {
+      @include height(3.5);
+      @include width(3.5);
+      @include line-height(3.5);
+      top: #{ -(3.5/2) * $leading + 'px'};
+      top: #{ -(3.5/2) * $leading-rem + 'rem'};
+    }
+  }
 }
+
+
 
