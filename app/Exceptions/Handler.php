@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Session\TokenMismatchException;
 
 class Handler extends ExceptionHandler
 {
@@ -55,6 +56,13 @@ class Handler extends ExceptionHandler
          * an ajax request return json error message
          */
         if ($e instanceof ModelNotFoundException && (substr($request->path(), 0, 3) === 'api' || $request->ajax())) {
+            return \Response::json(['error' => [$e->getMessage()]]);
+        }
+
+        /**
+         * Handle exception if TokenMismatchException and is an ajax request
+         */
+        if ($e instanceof TokenMismatchException && $request->ajax()) {
             return \Response::json(['error' => [$e->getMessage()]]);
         }
 
