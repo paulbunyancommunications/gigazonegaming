@@ -114,21 +114,20 @@ class SignUpForUpdatesCest
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a duplicate email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
-
+        $I->wait(self::DEFAULT_WAIT);
         // label might be hidden on this form, so just check for the string in the source
         $I->seeInSource('Sign up for updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'update-sign-up-message-container'], (self::DEFAULT_WAIT * 2));
         $I->see('Thanks for signing up!');
         // do it a second time
         $I->seeInDatabase('update_recipients', array('email' => $email));
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(['id' => 'update-sign-up-message-container'], (self::DEFAULT_WAIT * 2));
         $I->see('That email address has already been submitted.');
-
 
     }
 
