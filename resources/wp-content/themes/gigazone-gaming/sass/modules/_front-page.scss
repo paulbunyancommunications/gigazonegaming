@@ -243,10 +243,25 @@
 
   &-signup-banner {
     width: 100%;
-    @include height(4);
-    @include line-height(4);
-    display: block;
+    @include height(2.5);
+    @include line-height(2.5);
+    display: table;
     vertical-align: middle;
+    overflow: hidden;
+
+    @include mq-phone {
+      height: auto;
+      line-height: normal;
+    }
+
+    // if WP manages to put a p tag in the banner, then
+    //reset it to defaults despite what came before
+
+    p {
+      margin: 0 !important;
+      padding :0 !important;
+      line-height: normal !important;
+    }
 
     a, .light a {
       text-decoration: none;
@@ -263,29 +278,40 @@
 
 
     &-title {
+      width: 70%;
+      display: table-cell;
       @include padding(0, 1);
       margin: 0;
-      line-height: inherit;
+      text-align: center;
+      vertical-align: middle;
+      @include line-height(1.625);
       @include font-size(2.625);
       @include mq-cinema {
         @include font-size(3);
       }
       @include mq-tablet{
-        @include font-size(2.375);
+        @include font-size(2);
+        @include line-height(1.75);
       }
       @include mq-phone{
         @include font-size(1.625);
-        @include line-height(1.25);
+        @include line-height(1.125);
         text-align: center;
         @include padding-top(1);
+        @include padding-bottom(1);
+        width: 100%;
       }
     }
 
     &-image {
-      float: right;
-      max-height: 100%;
-      max-width: none;
-      width: auto;
+      width: 30%;
+      display: table-cell;
+      & img {
+        height: auto;
+        max-width: none;
+        display: block;
+
+      }
       @include mq-phone {
         display: none;
       }
