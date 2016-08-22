@@ -3,17 +3,26 @@ define ['jquery', 'Utility'], ($, Utility) ->
 
   form.booleans = $('.boolean-group')
   form.ranges = $('.range-group')
+  form.metaRequestToken = $('meta[name="request_token"]')
   
   form.init = ->
-    form.getCsrf()
+    form.getCsrfToken()
     return
 
   # get the csrf token add add it to the jquery ajax setup
-  form.getCsrf = ->
+  form.getCsrfToken = ->
     $.get('/app/frontend/session/csrf', (csrf) ->
       #$('body').append('<div style="color: #000000; background: #ffffff; z-index: 99999; position: absolute; top: 0; left: 0;">' + csrf + '</div>')
-      $.ajaxSetup({ headers: { 'X-CSRF-TOKEN' : csrf } });
+      if(form.metaRequestToken.length)
+        form.metaRequestToken.attr('content', csrf)
+      else
+        $('head').append('<meta content="' + csrf + '" name="request_token">')
+        form.metaRequestToken = $('meta[name="request_token"]')
+      return
     )
+
+  form.csrfToken = ->
+    return form.metaRequestToken.attr('content');
 
   # if form.doGeoLocate is found get the location and create form inputs
   $ ->
@@ -40,6 +49,11 @@ define ['jquery', 'Utility'], ($, Utility) ->
     # initial state of form notification
     progress.show()
     message.html('').hide()
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': form.csrfToken()
+      }
+    })
 
     $.ajax({
       data: fields
@@ -52,7 +66,7 @@ define ['jquery', 'Utility'], ($, Utility) ->
           message.html('<div class="alert alert-success"><p>' + data.success.join('<br>') + '</p></div>').show()
           thisForm[0].reset()
         else if data.hasOwnProperty('error')
-          message.html('<div class="alert alert-warning"><p>' + data.error.join('<br>') + '</p></div>').show()
+          message.html('<div class="alert alert-danger"><p>' + data.error.join('<br>') + '</p></div>').show()
       error:  (jqXHR, textStatus)->
         progress.hide()
         #message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
