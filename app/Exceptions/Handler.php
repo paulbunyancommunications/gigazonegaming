@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
          * Handle exception if TokenMismatchException and is an ajax request
          */
         if ($e instanceof TokenMismatchException && $request->ajax()) {
-            return \Response::json(['error' => [$e->getMessage()]]);
+            return \Response::json(['error' => ['Token mismatch, please refresh the page and try again.']]);
         }
 
         return parent::render($request, $e);
