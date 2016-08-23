@@ -5,3 +5,10 @@
   background: $color-dark-gray;
   width: 100%;
 }
+
+.masthead-photo-rotator-outer-container {
+  @include mq-phone {
+    margin-left: -($grid-gutter-width / 2);
+    margin-right: -($grid-gutter-width / 2);
+  }
+}

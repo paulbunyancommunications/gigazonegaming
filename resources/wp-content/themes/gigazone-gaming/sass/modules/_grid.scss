@@ -1,25 +1,13 @@
-.margin {
-  @include margin(1, 1);
+@include margin-padding(1);
+@include mq-cinema {
+  @include margin-padding(1.25);
 }
-.margin-before {
-  @include margin-top(1);
+@include mq-tablet {
+  @include margin-padding(.875);
 }
-.margin-after {
-  @include margin-bottom(1);
+@include mq-phone {
+  @include margin-padding(.675);
 }
-
-.padding {
-  @include padding-equal(1)
-}
-
-.padding-before {
-  @include padding-top(1);
-}
-.padding-after {
-  @include padding-bottom(1);
-}
-
-
 
 /*
  * Row with equal height columns

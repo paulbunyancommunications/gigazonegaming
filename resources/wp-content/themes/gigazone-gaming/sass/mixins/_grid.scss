@@ -20,3 +20,26 @@
     }
   }
 }
+
+@mixin margin-padding($multiplier)
+{
+  .margin {
+    @include margin($multiplier, $multiplier);
+  }
+  .margin-before {
+    @include margin-top($multiplier);
+  }
+  .margin-after {
+    @include margin-bottom($multiplier);
+  }
+  .padding {
+    @include padding-equal($multiplier)
+  }
+  .padding-before {
+    @include padding-top($multiplier);
+  }
+  .padding-after {
+    @include padding-bottom($multiplier);
+  }
+
+}
