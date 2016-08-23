@@ -106,6 +106,10 @@
     {
       "type": "vcs",
       "url": "git@github.com:paulbunyannet/form_mail_template.git"
+    },
+    {
+      "type": "vcs",
+      "url":  "git@github.com:natenolting/timber.git"
     }
   ],
   "require": {
@@ -116,7 +120,6 @@
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
     "paulbunyannet/autoversion": "~1.0",
-    "jarednova/timber": "^0.22.5",
     "pmenard/media-tags": "3.2.0.2",
     "nacin/link-manager": "0.1-beta",
     "paulbunyannet/bandolier": "1.2.*",
@@ -138,7 +141,8 @@
     "constantcontact/constantcontact": "2.1.*",
     "spatie/laravel-backup": "^3.7",
     "rollbar/rollbar": "~0.18.0",
-    "jenssegers/rollbar": "^1.5"
+    "jenssegers/rollbar": "^1.5",
+    "jarednova/timber": "^1.1"
 
   },
   "require-dev": {

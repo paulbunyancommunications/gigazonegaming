@@ -15,7 +15,7 @@ use Twig_SimpleFilter;
  * Class RedLakeElectricTimber
  * @package Wordpress\Timber
  */
-class GigaZoneGamingBootstrap extends \TimberSite
+class GigaZoneGamingBootstrap extends \Timber\Timber
 {
 
     /**
