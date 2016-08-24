@@ -29,7 +29,7 @@
       .row
         .col-sm-6
           %p{:class=>"text-left"}
-            &copy; {{ "now"|date('Y') }} {{ site.name }}, All rights reserved
+            &copy; {{ "now"|date('Y') }} {{ function('get_option','blogname') }}, All rights reserved
         .col-sm-6
           .sidebar
             .sidebar-social-media

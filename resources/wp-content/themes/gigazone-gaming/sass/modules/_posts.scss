@@ -9,8 +9,8 @@
 }
 
 .title-page {
-  @include font-size(6.25);
-  @include line-height(4);
+  @include font-size(5.875);
+  @include line-height(3.875);
   @include margin-bottom(1.375);
   @include margin-top(1.375);
   color: $color-gz-gray;
@@ -36,14 +36,14 @@
   }
 
   @include mq-cinema {
-    @include font-size(7.125);
-    @include line-height(5.125);
+    @include font-size(6.875);
+    @include line-height(4.875);
     @include margin-bottom(1.375);
     @include margin-top(2);
   }
   @include mq-phone {
-    @include font-size(3);
-    @include line-height(1.875);
+    @include font-size(3.125);
+    @include line-height(2.125);
     @include margin(1, 0)
   }
 }
@@ -112,6 +112,16 @@
         @include font-size(5);
         @include margin-bottom(.75);
         @include line-height(3.75);
+        @include mq-tablet {
+          @include font-size(3.5);
+          @include margin-bottom(.75);
+          @include line-height(2.5);
+        }
+        @include mq-phone {
+          @include font-size(3);
+          @include margin-bottom(.75);
+          @include line-height(2.25);
+        }
 
       // .post-list-title .title-page a
       a {

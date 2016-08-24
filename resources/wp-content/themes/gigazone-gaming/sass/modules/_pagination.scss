@@ -1,0 +1,64 @@
+@import "../variables";
+.pagination {
+  @include margin-bottom(1.5);
+  @include margin-top(0.5);
+
+  & > li {
+    line-height: normal;
+    margin: 0;
+    padding: 0;
+    @include inline-block();
+    &:before {
+      display: none;
+    }
+    & > a, & > span {
+
+      background: $color-gz-orange;
+      color: $color-gz-gray;
+      @include border-radius(#{ ($paginationSize * 2) * $leading + 'px'});
+      @include border-radius(#{ ($paginationSize * 2) * $leading-rem + 'rem'});
+      @include height(($paginationSize * 2));
+      @include width(($paginationSize * 2));
+      @include line-height(($paginationSize * 2));
+      @include font-size($paginationSize * 2);
+      font-weight: 700;
+      border: none;
+      padding: 0;
+      @include margin(0,($paginationSize / 6),($paginationSize / 6),($paginationSize / 6));
+      float: none;
+      text-align: center;
+      display: block;
+
+      &:first-child, &:last-child {
+        @include border-radius(#{ ($paginationSize * 2) * $leading + 'px'});
+        @include border-radius(#{ ($paginationSize * 2) * $leading-rem + 'rem'});
+      }
+
+      &.next {
+        @include line-height(($paginationSize * 2.0875));
+        @include padding(0,0,0,.1875);
+      }
+      &.prev {
+        @include line-height(($paginationSize * 2.0875));
+        @include padding(0,.1875,0,0);
+      }
+    }
+
+    & > a:hover {
+      color: $color-white;
+      background: $color-gz-gray;
+    }
+    & > span, & > span:hover {
+      background: $color-white;
+      color: $color-light-gray;
+      border: 1px solid $color-light-gray;
+      margin-top: 1px;
+    }
+  }
+
+  &-container {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

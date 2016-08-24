@@ -8,6 +8,8 @@
     {% else %}
         {% include "partials/title/archive-title.twig" %}
     {% endif %}
+{% elseif is_author is defined and is_author == true %}
+    {% include "partials/title/author-title.twig" with {'author':author} %}
 {% endif %}
 
 {% if posts is defined and posts|length >= 1 and single is not defined and post is not defined %}
@@ -55,4 +57,5 @@
 {% else %}
     <p>No posts at this time. Check back later.</p>
 {% endif %}
+{% include "partials/pagination.twig" %}
 

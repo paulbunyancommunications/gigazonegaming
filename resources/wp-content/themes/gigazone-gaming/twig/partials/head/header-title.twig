@@ -1,17 +1,18 @@
 {% spaceless %}<title>
         {% if function('is_404') == true %}
             {{ function("wp_title","&raquo;","true","right") }} &raquo;
-        {% elseif function('is_tag') %}
+        {% elseif is_tag is defined and is_tag == true %}
             Tag: {{ tag.name|format_for_title }} &raquo;
-        {% elseif function('is_category') %}
+        {% elseif is_category is defined and is_category == true %}
             Category: {{ category.name|format_for_title }} &raquo;
-        {% elseif function('is_archive') %}
+        {% elseif is_archive is defined and is_archive == true %}
             {% if author is defined %}
                 Author: {{ author.user_nicename }} -
             {% else %}
                 Archive: {% include 'partials/archive-date.twig' %} &raquo;
             {% endif %}
-        {% elseif function('is_author') %}
+        {% elseif is_author is defined and is_author == true %}
+            Author: {{ author.display_name }} -
         {% else %}
             {{ page.post_title }} &raquo;
             {% if function('is_404') == false and function('is_front_page') == false and page.post_type != 'page' %}
