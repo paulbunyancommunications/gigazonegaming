@@ -100,16 +100,27 @@
       }
     },
     {
+      "type": "package",
+      "package": {
+        "name": "wp/rest-api",
+        "type": "wordpress-plugin",
+        "version": "2.0",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/rest-api.2.0-beta13.1.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
       "type": "vcs",
       "url": "git@github.com:paulbunyannet/form_mail.git"
     },
     {
       "type": "vcs",
       "url": "git@github.com:paulbunyannet/form_mail_template.git"
-    },
-    {
-      "type": "vcs",
-      "url":  "git@github.com:natenolting/timber.git"
     }
   ],
   "require": {
@@ -130,6 +141,7 @@
     "mungobbq/enable-media-replace":"*",
     "figureone/insert-pages":"*",
     "tedivm/stash": "^0.14.1",
+    "wp/rest-api": "*",
     "vlucas/phpdotenv": "^2.2",
     "rcrowe/twigbridge": "0.9.x",
     "paulbunyannet/premailer": "^1.0",
@@ -142,7 +154,7 @@
     "spatie/laravel-backup": "^3.7",
     "rollbar/rollbar": "~0.18.0",
     "jenssegers/rollbar": "^1.5",
-    "jarednova/timber": "^1.1"
+    "jarednova/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192"
 
   },
   "require-dev": {
