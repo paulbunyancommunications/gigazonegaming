@@ -13,7 +13,7 @@
 {% endif %}
 
 {% if posts is defined and posts|length >= 1 and single is not defined and post is not defined %}
-    {% include "partials/section-title.twig" %}
+    {% include "partials/title/section-title.twig" %}
     {% for p in posts %}
         {% if p.post_title is defined %}
         <div class="post-list-item {{ p.class }}">
