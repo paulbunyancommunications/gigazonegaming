@@ -59,7 +59,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         $this->contactName($contact);
 
         try {
-            $connection->contactService->addContact($this->getApiToken(), $contact);
+            return $connection->contactService->addContact($this->getApiToken(), $contact);
         } catch (CtctException $ex) {
             $errors = '';
             if (!empty($ex->getErrors())) {
@@ -72,7 +72,9 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
             if ($this->checkAlreadyExistsMessage($exceptionMessage) === true) {
                 return true;
             }
+            /** @codeCoverageIgnoreStart */
             throw new ConstantContactAddRecipientJobException($exceptionMessage);
+            /** @codeCoverageIgnoreEnd */
         }
 
     }
@@ -200,6 +202,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
      * URL that generated this code:
      * http://txt2re.com/index-php.php3?s=Email%20address%20willfalldor@gmail.com%20already%20exists.&-12&-6&-21&-22&1&23&-7&-24&-10
      * @param $message
+     * @return bool
      */
     protected function checkAlreadyExistsMessage($message)
     {
@@ -216,7 +219,8 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         if ($capture = preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . $re5 . $re6 . $re7 . $re8 . $re9 . "/is", $message, $matches)) {
             return $matches[5][0] === $this->getEmail();
         }
-
+        /** @codeCoverageIgnoreStart */
         return false;
+        /** @codeCoverageIgnoreEnd */
     }
 }
