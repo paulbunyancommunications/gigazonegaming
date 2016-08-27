@@ -273,8 +273,8 @@ LOCK TABLES `wp_options` WRITE;
 
 INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`)
 VALUES
-	(1,'siteurl','http://vagrant.lawp.com/wp','yes'),
-	(2,'home','http://vagrant.lawp.com/wp','yes'),
+	(1,'siteurl','http://gigazonegaming.local/wp','yes'),
+	(2,'home','http://gigazonegaming.local/wp','yes'),
 	(3,'blogname','Gigazone Gaming','yes'),
 	(4,'blogdescription','Gigazone Gaming Championship 2016','yes'),
 	(5,'users_can_register','0','yes'),
@@ -463,8 +463,6 @@ INSERT INTO `wp_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`)
 VALUES
 	(1,2,'_wp_page_template','default'),
 	(5,5,'_form','<p>Your Name (required)<br />\n    [text* your-name] </p>\n\n<p>Your Email (required)<br />\n    [email* your-email] </p>\n\n<p>Subject<br />\n    [text your-subject] </p>\n\n<p>Your Message<br />\n    [textarea your-message] </p>\n\n<p>[submit \"Send\"]</p>'),
-	(6,5,'_mail','a:8:{s:7:\"subject\";s:39:\"Red Lake Electric Coop \"[your-subject]\"\";s:6:\"sender\";s:45:\"[your-name] <wordpress@redlakeelectric.local>\";s:4:\"body\";s:188:\"From: [your-name] <[your-email]>\nSubject: [your-subject]\n\nMessage Body:\n[your-message]\n\n--\nThis e-mail was sent from a contact form on Red Lake Electric Coop (http://gigazonegaming.local)\";s:9:\"recipient\";s:20:\"naten@paulbunyan.net\";s:18:\"additional_headers\";s:22:\"Reply-To: [your-email]\";s:11:\"attachments\";s:0:\"\";s:8:\"use_html\";i:0;s:13:\"exclude_blank\";i:0;}'),
-	(7,5,'_mail_2','a:9:{s:6:\"active\";b:0;s:7:\"subject\";s:39:\"Red Lake Electric Coop \"[your-subject]\"\";s:6:\"sender\";s:56:\"Red Lake Electric Coop <wordpress@redlakeelectric.local>\";s:4:\"body\";s:130:\"Message Body:\n[your-message]\n\n--\nThis e-mail was sent from a contact form on Red Lake Electric Coop (http://gigazonegaming.local)\";s:9:\"recipient\";s:12:\"[your-email]\";s:18:\"additional_headers\";s:30:\"Reply-To: naten@paulbunyan.net\";s:11:\"attachments\";s:0:\"\";s:8:\"use_html\";i:0;s:13:\"exclude_blank\";i:0;}'),
 	(8,5,'_messages','a:8:{s:12:\"mail_sent_ok\";s:45:\"Thank you for your message. It has been sent.\";s:12:\"mail_sent_ng\";s:71:\"There was an error trying to send your message. Please try again later.\";s:16:\"validation_error\";s:61:\"One or more fields have an error. Please check and try again.\";s:4:\"spam\";s:71:\"There was an error trying to send your message. Please try again later.\";s:12:\"accept_terms\";s:69:\"You must accept the terms and conditions before sending your message.\";s:16:\"invalid_required\";s:22:\"The field is required.\";s:16:\"invalid_too_long\";s:22:\"The field is too long.\";s:17:\"invalid_too_short\";s:23:\"The field is too short.\";}'),
 	(9,5,'_additional_settings',NULL),
 	(10,5,'_locale','en_US'),
