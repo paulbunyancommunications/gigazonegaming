@@ -29,16 +29,16 @@ class LolTeamSignUpRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'email' => 'required|email',
+            'email' => 'required|email|unique:mysql_champ.individual_players,email|unique:mysql_champ.players,email',
             'name' => 'required',
-            'team-captain-lol-summoner-name' => 'required',
+            'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username|unique:mysql_champ.players,username',
             'team-captain-phone' => 'required',
             'tournament' => 'required|exists:mysql_champ.tournaments,name',
-            'team-name' => 'required'
+            'team-name' => 'required|unique:mysql_champ.teams,name'
         ];
         for ($i = 1; $i <= 2; $i++) {
-            $rules['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] = 'required';
-            $rules['teammate-'.Numbers::toWord($i).'-email-address'] = 'required|email';
+            $rules['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] = 'required|unique:mysql_champ.players,username|unique:mysql_champ.players,username';
+            $rules['teammate-'.Numbers::toWord($i).'-email-address'] = 'required|email|unique:mysql_champ.individual_players,email|unique:mysql_champ.players,email';
         }
 
         return $rules;
@@ -52,9 +52,11 @@ class LolTeamSignUpRequest extends BaseRequest
     {
         $messages = [
             'email.required' => 'The team captain email address is required.',
+            'email.unique' => 'The team captain email address is already assigned to a different user.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
             'name.required' => 'The name of the team captain is required.',
             'team-captain-lol-summoner-name.required' => 'The team captain LOL summoner name is required.',
+            'team-captain-lol-summoner-name.unique' => 'The team captain LOL summoner name is already assigned to a different user.',
             'team-captain-phone.required' => 'The team captain phone number is required.',
             'team-name.required' => 'The team name is required.',
         ];

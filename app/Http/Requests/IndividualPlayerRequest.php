@@ -40,7 +40,7 @@ class IndividualPlayerRequest extends Request
             case 'POST':
             {
                 return [
-                    'username' => 'required|unique:mysql_champ.individual_players,username',
+                    'username' => 'required|unique:mysql_champ.individual_players,username|unique:mysql_champ.players,username',
                 ];
             }
             case 'PUT':
@@ -48,7 +48,7 @@ class IndividualPlayerRequest extends Request
             {
                 $name = $this->route()->player_id->username;
                 return [
-                    'username' => 'required|unique:mysql_champ.individual_players,username,'.$name.',username',
+                    'username' => 'required|unique:mysql_champ.individual_players,username,'.$name.',username|unique:mysql_champ.players,username,'.$name.',username',
                 ];
             }
             default:break;
