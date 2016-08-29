@@ -133,6 +133,7 @@
                                 >
                                     {{$player["username"]}}
                                 </button>
+
                             </li>
                         @endforeach
                 </ul>

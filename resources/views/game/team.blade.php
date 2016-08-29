@@ -39,9 +39,26 @@
             <div class="form-group">
                 <label for="name" style="width:120px; text-align:right;">Team Name: </label> &nbsp; <input type="text" name="name" id="name" style="width:350px; text-align:left;" placeholder="The name of the team" @if(isset($theTeam->name))value="{{$theTeam->name}}"@endif/>
             </div>
-            <div class="form-group">
-                <label for="emblem" style="width:120px; text-align:right;">Team Emblem: </label> &nbsp; <input type="text" name="emblem" id="emblem" style="width:350px; text-align:left;" placeholder="The url to the emblem of the team" @if(isset($theTeam->emblem))value="{{$theTeam->emblem}}"@endif/>
-            </div>
+                <div class="form-group">
+                    <label for="emblem" style="width:120px; text-align:right;">Team Emblem: </label> &nbsp; <input type="text" name="emblem" id="emblem" style="width:350px; text-align:left;" placeholder="The url to the emblem of the team" @if(isset($theTeam->emblem))value="{{$theTeam->emblem}}"@endif/>
+                </div>
+                <div class="form-group">
+                    <label for="captain" style="width:120px; text-align:right;">Team Captain: </label>
+                    <select type="text" name="captain" id="captain"  style="width:350px; text-align:left;">
+                        @if(isset($theTeam->name))
+                            <option>---</option>
+                        @else
+                            <option>If the team is a new team please add players to choose a captain</option>
+                        @endif
+                        @foreach($players as $key => $player)
+                            @if(isset($theTeam->name))
+                                @if($theTeam->id == $player['team_id'])
+                                    <option value="{{$player['id']}}" @if(isset($theTeam->captain) and $theTeam->captain == $player['id']) selected @endif>{{ $player['username'] }}</option>
+                                @endif
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
             <div class="form-group">
                 <label for="tournament_id" style="width:120px; text-align:right;">Team Tournament ID: </label> &nbsp;
                 <select type="text" name="tournament_id" id="tournament_id"  style="width:350px; text-align:left;">
@@ -97,10 +114,10 @@
                                     array('class'=>'teamName btn btn-default list')
                                 )
                             !!}
-                            <div class="btn disabled
-                            @if(!isset($team['team_count']) or $team['team_count'] < $maxNumOfPlayers) btn-danger
-                            @else btn-success
-                            @endif ">
+                            <div class="btn disabled fa
+                            @if(!isset($team['team_count']) or $team['team_count'] < $maxNumOfPlayers) btn-warning" style="color:black!important;"
+                            @else btn-primary"
+                            @endif >&#xf0c0;
                             @if(isset($team['team_count'])){{$team['team_count']}}
                             @else 0
                             @endif / {{$maxNumOfPlayers}}
@@ -108,14 +125,23 @@
                             {{ Form::close() }}
 
                             &nbsp;&nbsp;
-                            {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                            {{ Html::linkAction('Backend\Manage\TeamsController@edit', '', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o','title'=>'Edit')) }}
                             &nbsp;&nbsp;
-                            {{ Form::open(array('id' => "teamForm".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy', $team["id"]), 'class' => "deletingForms")) }}
+                            {{ Form::open(array('id' => "teamFormS".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy_soft', $team["id"]), 'class' => "deletingForms")) }}
                             <input name="_method" type="hidden" value="DELETE">
                             {!!
                                 Form::submit(
-                                    'Delete',
-                                    array('class'=>'btn btn-danger list fa fa-times')
+                                    '&#xf014;',
+                                    array('class'=>'btn btn-danger list fa fa-times', 'title'=>'Delete Team and move players to Individual Players list')
+                                )
+                            !!}
+                            {{ Form::close() }}
+                            {{ Form::open(array('id' => "teamFormH".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy_hard', $team["id"]), 'class' => "deletingForms")) }}
+                            <input name="_method" type="hidden" value="DELETE">
+                            {!!
+                                Form::submit(
+                                    '&#xf00d; Team & Players',
+                                    array('class'=>'btn btn-danger list fa fa-times2', 'title'=>"There is no coming back if you delete the whole team from the db!")
                                 )
                             !!}
                             {{ Form::close() }}
@@ -136,24 +162,33 @@
                                 array('class'=>'teamName btn btn-default list')
                             )
                         !!}
-                        <div class="btn disabled
-                            @if(!isset($team['team_count']) or $team['team_count'] < $maxNumOfPlayers) btn-danger
-                            @else btn-success
-                            @endif ">
+                        <div class="btn disabled fa
+                            @if(!isset($team['team_count']) or $team['team_count'] < $maxNumOfPlayers) btn-warning" style="color:black!important;"
+                            @else btn-primary"
+                            @endif>&#xf0c0;
                             @if(isset($team['team_count'])){{$team['team_count']}}
                             @else 0
                             @endif / {{$maxNumOfPlayers}}
                         </div>
                         {{ Form::close() }}
                         &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                        {{ Html::linkAction('Backend\Manage\TeamsController@edit', '', array('team_id'=>$team["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o','title'=>'Edit')) }}
                         &nbsp;&nbsp;
                         {{ Form::open(array('id' => "teamForm".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy', $team["id"]), 'class' => "deletingForms")) }}
                         <input name="_method" type="hidden" value="DELETE">
                         {!!
                             Form::submit(
-                                'Delete',
-                                array('class'=>'btn btn-danger list fa fa-times')
+                                '&#xf014;',
+                                array('class'=>' fa fa-times', 'title'=>'Delete Team and move players to Individual Players list')
+                            )
+                        !!}
+                        {{ Form::close() }}
+                        {{ Form::open(array('id' => "teamFormH".$team["id"], 'action' => array('Backend\Manage\TeamsController@destroy_hard', $team["id"]), 'class' => "deletingForms")) }}
+                        <input name="_method" type="hidden" value="DELETE">
+                        {!!
+                            Form::submit(
+                                '&#xf00d; Team & Players',
+                                array('class'=>'btn btn-danger list fa fa-times2', 'title'=>"There is no coming back if you delete the whole team from the db!")
                             )
                         !!}
                         {{ Form::close() }}
@@ -181,7 +216,16 @@
             });
         });
         $('.fa-times').click(function() {
-            var conf = confirm('Are you sure?');
+            var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players list');
+            if (conf) {
+                var url = $(this).attr('href');
+                $(document).load(url);
+            }else{
+                return false;
+            }
+        });
+        $('.fa-times2').click(function() {
+            var conf = confirm('Are you sure? This will remove the team and players from the database');
             if (conf) {
                 var url = $(this).attr('href');
                 $(document).load(url);

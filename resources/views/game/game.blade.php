@@ -70,14 +70,14 @@
                     !!}
                     {{ Form::close() }}
                     &nbsp;&nbsp;
-                    {{ Html::linkAction('Backend\Manage\GamesController@edit', 'Edit', array('game_id'=>$game["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                    {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
                     &nbsp;&nbsp;
                     {{ Form::open(array('id' => "gameForm".$game["id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["id"]), 'class' => "deletingForms")) }}
                     <input name="_method" type="hidden" value="DELETE">
                     {!!
                         Form::submit(
-                            'Delete',
-                            array('class'=>'btn btn-danger list fa fa-times')
+                            '&#xf014; &#xf1c0;',
+                            array('class'=>'btn btn-danger list fa fa-times', 'title'=>"Delete From Database")
                         )
                     !!}
                     {{ Form::close() }}

@@ -40,6 +40,9 @@
                 <label for="name" style="width:180px; text-align:right;">Tournament Name: </label> &nbsp; <input type="text" name="name" id="name" style="width:350px; text-align:left;" placeholder="The name of the tournament" @if(isset($theTournament->name))value="{{$theTournament->name}}"@endif/>
             </div>
             <div class="form-group">
+                <label for="max_players" style="width:180px; text-align:right;">Players per Team: </label> &nbsp; <input type="text" name="max_players" id="max_players" style="width:350px; text-align:left;" placeholder="The maximum amount of players per team" @if(isset($theTournament->max_players))value="{{$theTournament->max_players}}"@endif/>
+            </div>
+            <div class="form-group">
                 <label for="game_id" style="width:180px; text-align:right;">Tournament Game ID: </label> &nbsp;
                 <select type="text" name="game_id" id="game_id"  style="width:350px; text-align:left;">
                     @foreach($games as $key => $game)
@@ -96,15 +99,17 @@
                                 )
                             !!}
                             {{ Form::close() }}
-                            &nbsp;&nbsp;
-                            {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+
+                            <div class='btn btn-primary list fa' title='{{$tournament["max_players"]}}' disabled>{{$tournament["max_players"]}}</div>
+
+                            {{ Html::linkAction('Backend\Manage\TournamentsController@edit', '', array('tournament_id'=>$tournament["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
                             &nbsp;&nbsp;
                             {{ Form::open(array('id' => "tournamentForm".$tournament["id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["id"]), 'class' => "deletingForms")) }}
                             <input name="_method" type="hidden" value="DELETE">
                             {!!
                                 Form::submit(
-                                    'Delete',
-                                    array('class'=>'btn btn-danger list fa fa-times')
+                                    '&#xf014; &#xf1c0;',
+                                    array('class'=>'btn btn-danger list fa fa-times', 'title'=>"Delete From Database")
                                 )
                             !!}
                             {{ Form::close() }}
@@ -130,14 +135,14 @@
                         !!}
                         {{ Form::close() }}
                         &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
+                        {{ Html::linkAction('Backend\Manage\TournamentsController@edit', '', array('tournament_id'=>$tournament["tournament_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
                         &nbsp;&nbsp;
                         {{ Form::open(array('id' => "tournamentForm".$tournament["tournament_id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["tournament_id"]), 'class' => "deletingForms")) }}
                         <input name="_method" type="hidden" value="DELETE">
                         {!!
                             Form::submit(
-                                'Delete',
-                                array('class'=>'btn btn-danger list fa fa-times')
+                                '&#xf014; &#xf1c0;',
+                                array('class'=>'btn btn-danger list fa fa-times', 'title'=>"Delete From Database")
                             )
                         !!}
                         {{ Form::close() }}
