@@ -17,7 +17,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 {
     protected $expiresAt;
     protected $expiredAt;
-    protected $maxPlayers = 5;
+    protected $maxPlayers = 0;
 
     /**
      * Bootstrap the application services.
@@ -26,14 +26,12 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setExpiresAt(Carbon::now()->addMinute(2)->toDateTimeString());
-        $this->setExpiredAt(null);
-        if (!Cache::has('expiration_c') or Cache::get('expiration_c') > $this->getExpiresAt()) {
+        $this->setExpiresAt(Carbon::now()->addMinute(5)->toDateTimeString()); //set expires in 5 min
+        if (Cache::has('expiration_c') and Cache::get('expiration_c') > Carbon::now()->toDateTimeString()) {
             $this->setExpiredAt(Cache::get('expiration_c'));
         } else {
-            Cache::put('expiration_c', $this->getExpiresAt(), $this->getExpiresAt());
+            Cache::forever('expiration_c', $this->getExpiresAt()); //name time of expiration and when it expires
         }
-
         View::composer(['game.game'], function ($view) {
             $view->with('games', $this->games());
         });
@@ -44,7 +42,8 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         View::composer(['game.team'], function ($view) {
             $view->with('games', $this->games())
                 ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->teams());
+                ->with('teams', $this->teams())
+                ->with('players', $this->players($this->teams()));
         });
         View::composer(['game.player'], function ($view) {
             $view->with('games', $this->games())
@@ -75,9 +74,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function teams()
     {
-        if (Cache::has('teams_c') or $this->getExpiredAt() != null) {
-            return Cache::get('teams_c');
-        }
+//        if (Cache::has('teams_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
+//            return Cache::get('teams_c');
+//        }
         $teams = Team::orderBy('name')->get()->toArray();
         $players = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
         foreach ($teams as $key => $team) {
@@ -98,9 +97,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function shortTeams($maxPlayers)
     {
-        if (Cache::has('short_teams_c_'.$maxPlayers) or $this->getExpiredAt() != null) {
-            return Cache::get('short_teams_c_'.$maxPlayers);
-        }
+//        if (Cache::has('short_teams_c_'.$maxPlayers) and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
+//            return Cache::get('short_teams_c_'.$maxPlayers);
+//        }
         $teams = Team::orderBy('name')->get()->toArray();
         $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
 
@@ -129,16 +128,30 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function players($teams)
     {
-        if (Cache::has('players_c') or $this->getexpiredAt() != null) {
-            return Cache::get('players_c');
+//        if (Cache::has('players_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
+//            dd("here");
+//            return Cache::get('players_c');
+//        }
+        $teamIds = [];
+        foreach ($teams as $k => $t) {
+            $teamIds[$t['id']] = 1;
         }
         $players = Player::orderBy('team_id')->get()->toArray();
         foreach ($players as $key => $player) {
-            foreach ($teams as $k => $t) {
-                if ($t['id'] == $player['team_id']) {
-                    $players[$key]['team_count'] = $t['team_count'];
+            if(!array_key_exists($player['team_id'], $teamIds)){
+                $players[$key]['team_name'] = " Doesn't Exist Anymore!!!!!";
+                $players[$key]['team_count'] = "x";
+            }else {
+                foreach ($teams as $k => $t) {
+                    if ($t['id'] == $player['team_id']) {
+                        $players[$key]['team_count'] = $t['team_count'];
+                        if (!isset($t['name']) or $t['name'] == "") {
+                        }
+                        $players[$key]['team_name'] = $t['name'];
+                    }
                 }
             }
+
         }
         Cache::put('players_c', $players, $this->getExpiresAt());
         return $players;
@@ -149,9 +162,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function individualPlayers()
     {
-        if (Cache::has('individual_player_c') or $this->getexpiredAt() != null) {
-            return Cache::get('individual_player_c');
-        }
+//        if (Cache::has('individual_player_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
+//            return Cache::get('individual_player_c');
+//        }
         $players = IndividualPlayer::all()->toArray();
         Cache::put('individual_player_c', $players, $this->getExpiresAt());
         return $players;
@@ -163,9 +176,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function tournaments()
     {
 
-        if (Cache::has('tournaments_c') or $this->getexpiredAt() != null) {
-            return Cache::get('tournaments_c');
-        }
+//        if (Cache::has('tournaments_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
+//            return Cache::get('tournaments_c');
+//        }
         $tournaments = Tournament::orderBy('name')->get()->toArray();
         Cache::put('tournament_c', $tournaments, $this->getExpiresAt());
         return $tournaments;
@@ -176,9 +189,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function games()
     {
-        if (Cache::has('games_c') or $this->getExpiredAt() != null) {
-            return Cache::get('games_c');
-        }
+//        if (Cache::has('games_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
+//            return Cache::get('games_c');
+//        }
         $games = Game::orderBy('name')->get()->toArray();
         Cache::put('games_c', $games, $this->getExpiresAt());
 
