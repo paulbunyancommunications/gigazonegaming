@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css">
     <style type="text/css" href="">
         @yield('css')
+        .fa,
+        .fa:before{
+            font-family: "FontAwesome"!important;
+        }
         .form-group, .listing, form{
             text-align: center;
         }
