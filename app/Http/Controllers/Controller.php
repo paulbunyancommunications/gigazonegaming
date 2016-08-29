@@ -101,6 +101,13 @@ class Controller extends BaseController
     /**
      * @return string
      */
+    public function flushAll()
+    {
+        Cache::flush();
+    }
+    /**
+     * @return string
+     */
     public function expiresAt()
     {
         $expiresAt = Carbon::now('CMT')->addMinute(5)->toDateTimeString();

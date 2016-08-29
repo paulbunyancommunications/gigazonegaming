@@ -46,12 +46,7 @@ class IndividualPlayersController extends Controller
         unset($individualPlayer["game_sort"]);
         unset($individualPlayer["game_id"]);
         unset($individualPlayer["tournament_id"]);
-//        "name" => "individual"
-//        "username" => "onePlayer"
-//        "email" => "ind@ivid.ual"
-//        "phone" => "444-4444"
-//        "team_id" => "22"
-//        dd($individualPlayer);
+
         $player = new Player();
         $player->name = $individualPlayer["name"];
         $player->username = $individualPlayer["username"];

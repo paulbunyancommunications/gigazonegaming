@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
 
 use App\Models\WpUser;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use \Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -51,6 +54,7 @@ class TeamsController extends Controller
 //        );
 //        return View::make('team/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
 //        $team->save();
+        Cache::forget('teams_c');
         return $this->index();
     }
 
@@ -126,6 +130,7 @@ class TeamsController extends Controller
 //        Team::where('id', $team->getRouteKey())->update(
             $toUpdate
         );
+        Cache::forget('teams_c');
         return View::make('game/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
     }
 
@@ -135,12 +140,43 @@ class TeamsController extends Controller
      * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Team $team)
+    public function destroy_soft(Team $team)
     {
+        $players = Player::where("team_id", $team->getRouteKey())->get()->toArray();
+        foreach($players as $player){
+            $te = Team::where('id',$player['team_id'])->select('tournament_id')->first();
+//            dd($te);
+            $to = Tournament::where('id', $te['tournament_id'])->select('game_id')->first();
+//            dd($to->game_id);
+            unset($player['team_id']);
+            unset($player['id']);
+            $player['game_id'] = $to->game_id;
+//            Cache::forget('team_c');
+            IndividualPlayer::create($player);
+        }
+//        return "none";
+        Player::where("team_id", $team->getRouteKey())->delete();
         $team->where('id', $team->getRouteKey())->delete();
 //        return View::make('team/team');
+        Cache::flush();
         return redirect('/manage/team');
     }
+//
+//    /**
+//     * Remove the specified resource from storage.
+//     *
+//     * @param  Team  $team
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function destroy_hard(Team $team)
+//    {
+////        dd($team);
+////        dd(Player::where("team_id", $team->getRouteKey())->get());
+//        $team->where('id', $team->getRouteKey())->delete();
+//        Cache::flush();
+////        return View::make('team/team');
+//        return redirect('/manage/team');
+//    }
     /**
      * Display the specified resource.
      *

@@ -38,6 +38,7 @@ class TournamentsController extends Controller
         $tournament = new Tournament();
 //        dd($tournament);
         $tournament->game_id = $request['game_id'];
+        $tournament->max_players = $request['max_players'];
         $tournament->name = $request['name'];
         $tournament->updated_by =  $this->getUserId();
         $tournament->updated_on = Carbon::now("CST");
@@ -158,14 +159,14 @@ class TournamentsController extends Controller
             join('games', 'games.id', '=', 'tournaments.game_id')
                 ->where('games.name', 'like', $game)
                 ->orWhere('tournaments.game_id', 'like', $game)
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
                 ->orderBy('game_name', 'asc')
                 ->orderBy('tournament_name', 'asc')
                 ->get()
                 ->toArray();
         }else{
             $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
                 ->get()
                 ->toArray();
         }

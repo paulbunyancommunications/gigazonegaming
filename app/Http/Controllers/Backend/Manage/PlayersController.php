@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
@@ -132,6 +133,26 @@ class PlayersController extends Controller
     }
 
     /**
+     * Remove the specified player from the team and move it to the single player list.
+     *
+     * @param  Player  $player
+     * @return \Illuminate\Http\Response
+     */
+    public function move(Player $player)
+    {
+        $te = Team::where('id',$player['team_id'])->select('tournament_id')->first();
+        $to = Tournament::where('id', $te['tournament_id'])->select('game_id')->first();
+        unset($player['team_id']);
+        unset($player['id']);
+        $player['game_id'] = $to->game_id;
+//            Cache::forget('team_c');
+//                dd($player);
+        IndividualPlayer::create($player);
+
+        Player::where("id", $player->getRouteKey())->delete();
+        return redirect('/manage/player');
+    }
+    /**
      * Remove the specified resource from storage.
      *
      * @param  Player  $player
@@ -140,7 +161,6 @@ class PlayersController extends Controller
     public function destroy(Player $player)
     {
         $player->where('id', $player->getRouteKey())->delete();
-//        return View::make('player/player')->with("players", $this->retrievePlayers());
         return redirect('/manage/player');
     }
     /**
