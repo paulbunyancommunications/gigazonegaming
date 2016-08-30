@@ -48,8 +48,7 @@ $factory->define(App\Models\Championship\Player::class, function (Faker\Generato
     return [
         'username' => $faker->userName,
         'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
-        'team_id' => factory(App\Models\Championship\Team::class)->create([])->id,
+        'phone' => $faker->phoneNumber
     ];
 });
 
@@ -106,5 +105,27 @@ $factory->define(App\Models\WpUser::class, function (Faker\Generator $faker) {
         'user_nicename' => $faker->name,
         'user_email' => $faker->email,
         'display_name' => $faker->name,
+    ];
+});
+
+use Cocur\Slugify\Slugify;
+
+$factory->define(App\Models\Auth\Users\User::class, function (Faker\Generator $faker) {
+    return [
+        'email' => $faker->email,
+        'password' => bcrypt(str_random(10)),
+        'permissions' => [$faker->word => true, $faker->word => true],
+        'last_login' => date("Y-m-d H:i:s")
+    ];
+});
+
+$factory->define(App\Models\Auth\Roles\Role::class, function (Faker\Generator $faker) {
+
+    $slugify = new Slugify();
+    $name = $faker->word . ' ' .(time() + rand(1,999999));
+    return [
+        'name' => $name,
+        'slug' => $slugify->slugify($name),
+        'permissions' => [$faker->word => true, $faker->word => true],
     ];
 });
