@@ -51,10 +51,12 @@ class RemoveIndividualPlayersEtc extends Migration
                 }
 
                 //all players (not individual) are set to go, now we can remove the column that is not need it anymore.
-                Schema::connection('mysql_champ')->table('players', function ($table) {
-                    $table->dropColumn('team_id');
-                });
+
             }
+            Schema::connection('mysql_champ')->table('players', function ($table) {
+                $table->dropForeign('players_team_id_foreign');
+                $table->dropColumn('team_id');
+            });
         }
 
         if (Schema::connection('mysql_champ')->hasTable('individual_players')) {
@@ -97,6 +99,9 @@ class RemoveIndividualPlayersEtc extends Migration
             $table->string('name');
             $table->string('phone');
             $table->timestamps();
+        });
+        Schema::connection('mysql_champ')->table('players', function ($table) {
+            $table->integer('team_id')->default(0);
         });
     }
 
