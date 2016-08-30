@@ -1,0 +1,13 @@
+{% extends "base/app.twig" %}
+{% block body %}
+    <div class="center-block center-layout">
+        <div class="container-fluid">
+        <h1 id="page-title" class="page-title"><img src="{{ url('content/img/'~ site_name_slug ~'.svg') }}" class="title-logo title-logo-left" alt="{{ site_name }}">{{ block('title') }}</h1>
+        <div class="clearfix"></div>
+        {# get messages #}
+        {% include "base/partials/messages.twig" %}
+        {# main content area #}
+        {{ block('content') }}
+        </div>
+    </div>
+{% endblock %}

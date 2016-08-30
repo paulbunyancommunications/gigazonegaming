@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 class UpdatedByOn extends Migration
 {
-    protected $tables = ['players', 'teams', 'games', 'tournaments', 'individual_players'];
+    protected $tables = ['players', 'teams', 'games', 'tournaments'];
     protected $columns = ['updated_by', 'updated_on'];
 
     /**
@@ -16,6 +16,9 @@ class UpdatedByOn extends Migration
     public function up()
     {
         for ($t = 0; $t < count($this->tables); $t++) {
+            if (!Schema::connection('mysql_champ')->hasTable($this->tables[$t])) {
+                continue;
+            }
             $columns = DB::connection('mysql_champ')->getSchemaBuilder()->getColumnListing($this->tables[$t]);
             Schema::connection('mysql_champ')->table($this->tables[$t], function (Blueprint $table) use ($columns) {
                 for ($c = 0; $c < count($this->columns); $c++) {

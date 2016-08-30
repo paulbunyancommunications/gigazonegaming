@@ -58,7 +58,7 @@ build/production-deploy
 queue.pid
 presentations
 nul
-database/individualPlayersTableBkup.csv
-database/PlayersTableBkup.csv
-database/dump/gigazone_champ_db.sql
-database/dump/gigazone_wp.sql
+gigazone_champ_db.sql
+gigazone_wp.sql
+individualPlayersTableBkup.csv
+PlayersTableBkup.csv

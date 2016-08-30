@@ -126,7 +126,8 @@
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
-    "doctrine/dbal": "v2.4.5",
+    "cartalyst/sentinel": "2.0.*",
+    "doctrine/dbal": "~2.5",
     "wordpress": "*",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
@@ -154,7 +155,8 @@
     "spatie/laravel-backup": "^3.7",
     "rollbar/rollbar": "~0.18.0",
     "jenssegers/rollbar": "^1.5",
-    "jarednova/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192"
+    "jarednova/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
+    "ircmaxell/password-compat": "^1.0"
 
   },
   "require-dev": {
@@ -189,12 +191,16 @@
     "psr-4": {
       "App\\": "app/",
       "Wordpress\\": "src/Wordpress/",
+      "Twig\\": "src/Twig/",
       "GigaZone\\": "src/GigaZone/"
     }
   },
   "autoload-dev": {
     "classmap": [
       "tests/TestCase.php"
+    ],
+    "files": [
+      "tests/acceptance/BaseAcceptanceCest.php"
     ],
     "psr-4": {
       "Codeception\\Module\\" : "src/Codeception/Module"

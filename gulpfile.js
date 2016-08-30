@@ -1,5 +1,7 @@
 var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
     themeResourceFolder = 'resources/wp-content/themes/gigazone-gaming',
+    appFolder = 'public_html/app/content',
+    appResourceFolder = 'resources/assets',
     elixir = require('laravel-elixir'),
     gulp = require('gulp'),
     coffee = require('gulp-coffee'),
@@ -104,13 +106,24 @@ elixir(function (mix) {
         javascript: themeFolder + "/js",
         comments: false,
     })
+        .compass('*.scss', appFolder + '/css/', {
+            sass: appResourceFolder + '/sass',
+            style: "compressed",
+            javascript: appFolder + "/js",
+            image: appFolder + "/images",
+        })
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
+        .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
         .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
+        .hamlToTwig(appResourceFolder + '/haml', appFolder + '/views')
         .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views');
 
         if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
             mix.cleanCss(themeFolder + '/css')
-               .minifyJs(themeFolder + '/js');
+               .minifyJs(themeFolder + '/js')
+                .minifyJs(appFolder + '/js')
+                .cleanCss(appFolder + '/css');
         }
-        mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
+    //mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
+    mix.livereload(['app/**/*', 'public_html/**/*', 'resources/views/**/*'], {});
 });

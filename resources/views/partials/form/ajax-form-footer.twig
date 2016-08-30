@@ -1,0 +1,10 @@
+<span class='fa-stack fa-lg progress-container margin-top' style='display: none;'>
+                    <i class='fa fa-circle fa-stack-2x'></i>
+                    <i class='fa fa-refresh fa-spin fa-stack-1x fa-inverse'></i>
+        </span>
+<div class="row">
+    <div class='col-md-12 message-outer-container'>
+        <div class='message-container margin-top'
+             id='{% if tag is defined %}{{ tag|slugify }}-{% endif %}message-container' style="display: none;"></div>
+    </div>
+</div>

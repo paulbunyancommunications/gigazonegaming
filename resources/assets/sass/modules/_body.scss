@@ -1,0 +1,22 @@
+body{
+  font-family: $font-family-display;
+  width: 100%;
+  @include padding-equal(0);
+  @include margin(0, 0, 0, 0);
+  background-color: $color-white;
+  @include font-size(1.4);
+  @include line-height(1.6);
+  background: tint($color-light-gray, 90);
+  overflow: hidden;
+}
+
+.background-logo {
+  position: absolute;
+  @include height(90);
+  @include width(90);
+  top: 0;
+  left: 0;
+  background: transparent url('/app/content/img/gigazone-gaming.svg') center #{ -10 * $leading + 'px'} no-repeat;
+  background: transparent url('/app/content/img/gigazone-gaming.svg') center #{ -10 * $leading-rem + 'rem'} no-repeat;
+  @include opacity(.025);
+}

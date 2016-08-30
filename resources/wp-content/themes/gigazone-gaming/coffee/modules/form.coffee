@@ -1,4 +1,4 @@
-define ['jquery', 'Utility'], ($, Utility) ->
+define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
   form = {}
 
   form.booleans = $('.boolean-group')
@@ -69,8 +69,20 @@ define ['jquery', 'Utility'], ($, Utility) ->
           message.html('<div class="alert alert-danger"><p>' + data.error.join('<br>') + '</p></div>').show()
       error:  (jqXHR, textStatus)->
         progress.hide()
-        #message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
-        message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
+        try
+          jqXHRResponseText=JSON.parse(jqXHR.responseText);
+          mId = Utility.makeid();
+          message.html('<div class="alert alert-danger"><p id="' + mId + '"></p></div>')
+          #get the inputs and check if there's a key on the response array with it
+          thisForm.find('input, textarea').each ->
+            if jqXHRResponseText.hasOwnProperty($(this).attr('name'))
+              $('#' + mId).append(jqXHRResponseText[$(this).attr('name')].join('<br>') + '<br>')
+          message.show()
+        catch e
+          message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
+
+
+#message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
     })
     return true
   )

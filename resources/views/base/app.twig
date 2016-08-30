@@ -3,39 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ site_title }} : {{ block('title') }}</title>
+    <title>{{ site_name }} : {{ block('title') }}</title>
     <link rel="stylesheet" href="{{ '/bower_components/bootstrap/dist/css/bootstrap.css'|auto_version_path}}">
     <link rel="stylesheet" href="{{ '/bower_components/font-awesome/css/font-awesome.css'|auto_version_path}}">
-    <link rel="stylesheet" href="{{ '/content/stylesheets/site.css'|auto_version_path}}">
+    <link rel="stylesheet" href="{{ '/app/content/css/app.css'|auto_version_path}}">
     {% if controller_css is defined %}
         <link rel="stylesheet" href="{{ controller_css|auto_version_path}}">
     {% endif %}
+    <script src='https://use.typekit.net/bhh0sxx.js'></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
     {{ block('header') }}
 </head>
 <body>
-    <div class="container" id="page-content">
-
-        <div class="row">
-            <div class="col-md-12">
-
-                {# main title #}
-                <div class="margin-lg-bottom">
-                    <h1 id="page-title">{{ block('title') }}</h1>
-                </div>
-
-                {# get messages #}
-                {% include "base/partials/messages.twig" %}
-
-                {# main content area #}
-
-                {{ block('content') }}
-                <div class="margin-md-bottom"></div>
-            </div>
-        </div>
-    </div>
-    <script src="{{ '/content/js/common_require.js'|auto_version_path }}"></script>
+<div class="background-logo"></div>
+    {{ block('body') }}
+    <script src="{{ '/app/content/js/common-require.js'|auto_version_path }}"></script>
     <script src="{{ '/bower_components/requirejs/require.js'|auto_version_path}}"></script>
-    <script src="{{ '/content/js/main_require.js'|auto_version_path }}"></script>
+    <script src="{{ '/app/content/js/main-require.js'|auto_version_path }}"></script>
     {% if controller_js is defined %}
         <script>
             require(['modules/{{ controller }}'], function({{ controller }}){
@@ -45,5 +29,6 @@
     {% endif %}
 
 {{ block('footer') }}
+
 </body>
 </html>
