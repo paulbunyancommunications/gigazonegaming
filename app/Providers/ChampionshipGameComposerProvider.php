@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
+use App\Models\Championship\Players_Teams;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
@@ -54,7 +55,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         View::composer(['game.individualPlayer'], function ($view) {
             $view->with('games', $this->games())
                 ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->shortTeams($this->getMaxPlayers()))
+                ->with('teams', $this->teams())
                 ->with('individualPlayers', $this->individualPlayers());
         });
     }
@@ -78,11 +79,13 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 //            return Cache::get('teams_c');
 //        }
         $teams = Team::orderBy('name')->get()->toArray();
-        $players = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        $players_teams = Players_Teams::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
         foreach ($teams as $key => $team) {
-            foreach ($players as $k => $t) {
-                if ($team['id'] == $t['team_id']) {
-                    $teams[$key]['team_count'] = $t['team_count'];
+            $max_p = Tournament::where('tournaments.id','=', $team['tournament_id'])->get()->toArray()[0]['max_players'];
+            foreach ($players_teams as $k => $p) {
+                if ($team['id'] == $p['team_id']) {
+                    $teams[$key]['team_count'] = $p['team_count'];
+                    $teams[$key]['max_number_of_players'] = $max_p;
                     break;
                 }
             }
@@ -91,36 +94,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         return $teams;
     }
 
-    /**
-     * @param $maxPlayers
-     * @return array
-     */
-    public function shortTeams($maxPlayers)
-    {
-//        if (Cache::has('short_teams_c_'.$maxPlayers) and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
-//            return Cache::get('short_teams_c_'.$maxPlayers);
-//        }
-        $teams = Team::orderBy('name')->get()->toArray();
-        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
 
-        foreach ($teams as $key => $team) {
-            foreach ($times as $k => $t) {
-                if ($team['id'] == $t['team_id']) {
-                    if ($maxPlayers <= $t['team_count']) {
-                        unset($teams[$key]);
-                        break;
-                    }
-                    $teams[$key]['team_count'] = $t['team_count'];
-                    break;
-                }
-            }
-            if (!isset($teams[$key]['team_count']) and isset($teams[$key])) {
-                $teams[$key]['team_count'] = 0;
-            }
-        }
-        Cache::put('short_teams_c_'.$maxPlayers, $teams, $this->getExpiresAt());
-        return $teams;
-    }
 
     /**
      * @param $teams
@@ -136,7 +110,32 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         foreach ($teams as $k => $t) {
             $teamIds[$t['id']] = 1;
         }
-        $players = Player::orderBy('team_id')->get()->toArray();
+        $players = Player::
+            join('players_teams', 'players.id', '=', 'players_teams.player_id')
+            ->join('teams','teams.id','=', 'players_teams.team_id')
+            ->join('players_tournaments','players.id','=', 'players_tournaments.player_id')
+            ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
+            ->join('games','games.id','=', 'tournaments.game_id')
+            ->select(
+                'players.id',
+                'players.email',
+                'players.username',
+                'players.name',
+                'players.phone',
+                'players_teams.verification_code as verification_code',
+                'players_teams.team_id as team_id',
+                'teams.name as team_name',
+                'teams.captain as captain',
+                'tournaments.id as tournament_id',
+                'tournaments.name as tournament_name',
+                'tournaments.max_players as max_players',
+                'tournaments.max_players as max_number_of_players',
+                'games.id as game_id',
+                'games.name as game_name'
+            )
+            ->orderBy('team_id')
+            ->get()
+            ->toArray();
         foreach ($players as $key => $player) {
             if(!array_key_exists($player['team_id'], $teamIds)){
                 $players[$key]['team_name'] = " Doesn't Exist Anymore!!!!!";
@@ -145,9 +144,6 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 foreach ($teams as $k => $t) {
                     if ($t['id'] == $player['team_id']) {
                         $players[$key]['team_count'] = $t['team_count'];
-                        if (!isset($t['name']) or $t['name'] == "") {
-                        }
-                        $players[$key]['team_name'] = $t['name'];
                     }
                 }
             }
@@ -165,7 +161,11 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 //        if (Cache::has('individual_player_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
 //            return Cache::get('individual_player_c');
 //        }
-        $players = IndividualPlayer::all()->toArray();
+        $players = Player::all()->toArray();
+        $users = DB::table('players')
+            ->join('players_teams', 'players.id', '=', 'players_teams.players_id')
+            ->where()
+            ->get();
         Cache::put('individual_player_c', $players, $this->getExpiresAt());
         return $players;
     }
