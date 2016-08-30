@@ -11,6 +11,10 @@
     @include border-radius(0);
   }
 
+  &.well-lg {
+    @include padding-equal(2.5);
+  }
+
 }
 
 .well-gz-orange {
