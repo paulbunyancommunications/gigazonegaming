@@ -1,6 +1,7 @@
 <li>{{ Form::open(array('id' => "toForm".$team["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
     <input name="_method" type="hidden" value="POST">
     <input name="team_sort" type="hidden" value="{{$team["id"]}}">
+    <?php if(!isset($team['max_number_of_players'])) {$team['max_number_of_players'] = 0;} ?>
     {!!
         Form::submit(
             $team["name"],

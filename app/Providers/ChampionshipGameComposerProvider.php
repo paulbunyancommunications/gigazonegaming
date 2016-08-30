@@ -88,6 +88,10 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                     $teams[$key]['max_number_of_players'] = $max_p;
                     break;
                 }
+                if($players_teams = []){
+                    $teams[$key]['team_count'] = 0;
+                    $teams[$key]['max_number_of_players'] = $max_p;
+                }
             }
         }
         Cache::put('teams_c', $teams, $this->getExpiresAt());
@@ -106,6 +110,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 //            dd("here");
 //            return Cache::get('players_c');
 //        }
+//        dd($teams);
         $teamIds = [];
         foreach ($teams as $k => $t) {
             $teamIds[$t['id']] = 1;
@@ -117,7 +122,8 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
             ->join('games','games.id','=', 'tournaments.game_id')
             ->select(
-                'players.id',
+                'players.id as id',
+                'players.id as player_id',
                 'players.email',
                 'players.username',
                 'players.name',
@@ -136,13 +142,15 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             ->orderBy('team_id')
             ->get()
             ->toArray();
+        $teams = Players_Teams::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+
         foreach ($players as $key => $player) {
             if(!array_key_exists($player['team_id'], $teamIds)){
                 $players[$key]['team_name'] = " Doesn't Exist Anymore!!!!!";
                 $players[$key]['team_count'] = "x";
             }else {
                 foreach ($teams as $k => $t) {
-                    if ($t['id'] == $player['team_id']) {
+                    if ($t['team_id'] == $player['team_id']) {
                         $players[$key]['team_count'] = $t['team_count'];
                     }
                 }
@@ -150,6 +158,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 
         }
         Cache::put('players_c', $players, $this->getExpiresAt());
+        dd($players);
         return $players;
     }
 
