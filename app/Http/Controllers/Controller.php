@@ -6,26 +6,29 @@ use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
-use Carbon\Carbon;
+use App\Models\WpOption;
 use Cache;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
-    protected $context;
+    protected $context = [];
 
     public function __construct()
     {
-        $this->context = [];
+        $this->intContext();
     }
-    public function getUserId(){
+
+    public function getUserId()
+    {
         return get_current_user_id();
     }
 
@@ -39,6 +42,7 @@ class Controller extends BaseController
         $this->DBProcessCacheTeamsForced();
         $this->DBProcessCachePlayersForced();
     }
+
     /**
      * @return array
      */
@@ -49,6 +53,7 @@ class Controller extends BaseController
         Cache::put('games_c', $games, $expiresAt);
 
     }
+
     /**
      * @return array
      */
@@ -60,6 +65,7 @@ class Controller extends BaseController
         Cache::put('tournament_c', $tournaments, $expiresAt);
 
     }
+
     /**
      * @return array
      */
@@ -78,6 +84,7 @@ class Controller extends BaseController
         }
         Cache::put('teams_c', $teams, $expiresAt);
     }
+
     /**
      * @return array
      */
@@ -112,5 +119,30 @@ class Controller extends BaseController
     {
         $expiresAt = Carbon::now('CMT')->addMinute(5)->toDateTimeString();
         return $expiresAt; // 5 min to give the db a break
+    }
+
+    private function intContext()
+    {
+        $cacheKey = md5(__METHOD__);
+        $get = ['siteName'];
+        try {
+            return Cache::remember($cacheKey, $this->expiresAt(), function () use ($get) {
+                foreach ($get as $method) {
+                    $this->{$method}();
+                }
+            });
+        } catch (\Illuminate\Database\QueryException $ex) {
+            foreach ($get as $method) {
+                $this->{$method}();
+            }
+            return Cache::put($cacheKey, $this->context, $this->expiresAt());
+        }
+
+    }
+
+    protected function siteName()
+    {
+        $this->context['site_name'] = WpOption::where('option_name', 'blogname')->pluck('option_value')[0];
+        $this->context['site_name_slug'] = str_slug($this->context['site_name']);
     }
 }
