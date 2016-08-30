@@ -15,5 +15,9 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'success' => 'Logged in successfully!',
+    'not_activated' => 'User Not Activated.',
+    'must_login' => 'You must login first.',
+    'username_ph' => 'Your game username, could be your steam username, LoL summoner name, etc.'
 
 ];
