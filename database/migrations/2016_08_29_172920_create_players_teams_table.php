@@ -28,6 +28,6 @@ class CreatePlayersTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->drop('players_teams');
+        Schema::connection('mysql_champ')->dropIfExists('players_teams');
     }
 }

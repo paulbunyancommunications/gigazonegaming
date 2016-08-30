@@ -27,6 +27,6 @@ class CreatePlayersTournamentsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->drop('players_tournaments');
+        Schema::connection('mysql_champ')->dropIfExists('players_tournaments');
     }
 }
