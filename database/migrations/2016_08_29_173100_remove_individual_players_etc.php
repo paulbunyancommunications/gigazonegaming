@@ -12,12 +12,6 @@ class RemoveIndividualPlayersEtc extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('teams', function ($table) {
-            $table->integer('tournament_id')->references('id')->on('tournaments')->change();
-        });
-        Schema::connection('mysql_champ')->table('tournaments', function ($table) {
-            $table->integer('game_id')->references('id')->on('games')->change();
-        });
         $indPlayer = \App\Models\Championship\IndividualPlayer::all()->toArray();
 
         $player = \App\Models\Championship\Player::all()->toArray();
