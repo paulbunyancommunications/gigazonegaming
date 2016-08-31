@@ -38,9 +38,29 @@ class Team extends Model
      */
     public function tournament()
     {
-        return $this->belongsTo('App\Models\Championship\Tournament');
+        return $this->belongsTo(\App\Models\Championship\Tournament::class )
+            ->withPivot('id', 'tournament_id')
+            ->withPivot('player_id', 'player_id')
+            ->withPivot('team_id', 'id');
+    }
+    public function tournamentAttribute()
+    {
+        return $this->tournament();
     }
 
+    /**
+     * Get players
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function player()
+    {
+        return $this->hasMany('App\Models\Championship\Player');
+    }
+
+    public function playerAttribute()
+    {
+        return $this->player();
+    }
     /**
      * Get team captain
      *
@@ -54,12 +74,4 @@ class Team extends Model
         return Player::findOrFail($this->getAttribute('captain'));
     }
 
-    /**
-     * Get players
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function players()
-    {
-        return $this->hasMany('App\Models\Championship\Player', 'team_id', 'id');
-    }
 }

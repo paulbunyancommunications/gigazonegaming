@@ -10,13 +10,37 @@ class Player extends Model
 
     protected $fillable = ['username','email','phone','updated_by','updated_on'];
 
+//    /**
+//     * Get player's team
+//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+//     */
+//    public function team()
+//    {
+//        return $this->belongsToMany('App\Models\Championship\Team');
+//    }
+
     /**
      * Get player's team
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function team()
     {
-        return $this->belongsTo('App\Models\Championship\Team');
+        return $this->belongsToMany(\App\Models\Championship\Players_Teams::class);
+}
+
+    public function teamAttribute()
+    {
+        return $this->team();
+    }
+
+    public function tournament()
+    {
+        return $this->belongsToMany(\App\Models\Championship\Players_Tournaments::class);
+    }
+
+    public function tournamentAttribute()
+    {
+        return $this->tournament();
     }
 
     /**

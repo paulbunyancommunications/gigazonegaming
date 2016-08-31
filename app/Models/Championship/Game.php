@@ -45,15 +45,15 @@ class Game extends Model
         return $this->hasMany('App\Models\Championship\Tournament');
     }
 
-    /**
-     * Get Individual Players who what to play this game
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function individualPlayers()
-    {
-        return $this->hasMany('App\Models\Championship\IndividualPlayer');
-    }
+//    /**
+//     * Get Individual Players who what to play this game
+//     *
+//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//     */
+//    public function individualPlayers()
+//    {
+//        return $this->hasMany('App\Models\Championship\IndividualPlayer');
+//    }
 
     /**
      * @param $query
