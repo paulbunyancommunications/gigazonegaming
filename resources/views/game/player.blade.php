@@ -75,7 +75,7 @@
                 <select type="text" name="team_id" id="team_id"  style="width:350px; text-align:left;">
                     <option>---</option>
                     @foreach($teams as $key => $team)
-                        <option value="{{$team['id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['id']) selected @endif>{{ $team['name'] }}</option>
+                        <option value="{{$team['id']}}" @if(isset($thePlayer->team_id) and $thePlayer->team_id == $team['id']) selected @endif>{{ $team['name'] }}</option>
                     @endforeach
                 </select>
             </div>
