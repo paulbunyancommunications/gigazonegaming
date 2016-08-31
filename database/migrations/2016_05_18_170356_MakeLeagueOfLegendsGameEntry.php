@@ -35,7 +35,7 @@ class MakeLeagueOfLegendsGameEntry extends Migration
     {
         $game = Game::where('name', $this->name)->first();
         if ($game) {
-            $game->delete();
+            Game::where('id', $game->id)->delete();
         }
     }
 }

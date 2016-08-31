@@ -13,6 +13,7 @@ class CreateGamesTable extends Migration
     public function up()
     {
         Schema::connection('mysql_champ')->create('games', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->increments('id');
             $table->string('name')->index()->unique();
             $table->string('title')->index();

@@ -39,7 +39,6 @@ class RemoveIndividualPlayersEtc extends Migration
 //            dd($p['id']);
                         //create the pivot table info for players and tournaments
 //            dd($team_info);
-
                         $p_to = new App\Models\Championship\Players_Tournaments();
                         $p_to->player_id = $p['id'];
                         $p_to->tournament_id = $team_info['tournament_id'];
@@ -82,15 +81,22 @@ class RemoveIndividualPlayersEtc extends Migration
             //all individual players are in the player table and in the pivot table for tournaments now we can drop the table
 
         }
-        if (Schema::connection('mysql_champ')->hasColumn('individual_players', 'game_id')) {
-            Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
-                $table->dropForeign(['game_id']);
-                $table->dropColumn(['game_id']);
-            });
-        }
-
-        if (Schema::connection('mysql_champ')->hasTable('individual_players')) {
+        if (Schema::connection('mysql_champ')->hasTable('individual_players')) { //if deletes it next step wont detected else if the key blocks the deletion the drop key will work
             Schema::connection('mysql_champ')->dropIfExists('individual_players');
+        }
+        if (Schema::connection('mysql_champ')->hasTable('individual_players')) {
+            if (Schema::connection('mysql_champ')->hasColumn('individual_players', 'game_id')) {
+                Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
+
+                    try {
+                        $table->dropForeign(['game_id']);
+                    } catch (Exception $e) {
+                        echo 'game_id for some reason didnt have a key : ', $e->getMessage(), "\n";
+                    }
+                    $table->dropColumn(['game_id']);
+                });
+                Schema::connection('mysql_champ')->dropIfExists('individual_players');
+            }
         }
 
 

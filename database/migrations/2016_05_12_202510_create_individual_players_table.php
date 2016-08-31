@@ -16,6 +16,14 @@ class CreateIndividualPlayersTable extends Migration
      */
     public function up()
     {
+        Schema::connection('mysql_champ')->create('individual_players', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('username')->unique();
+            $table->string('email')->unique();
+            $table->string('name');
+            $table->string('phone');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -25,5 +33,6 @@ class CreateIndividualPlayersTable extends Migration
      */
     public function down()
     {
+        Schema::connection('mysql_champ')->drop('individual_players');
     }
 }

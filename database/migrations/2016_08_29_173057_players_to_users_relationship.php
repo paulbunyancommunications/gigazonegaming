@@ -14,8 +14,9 @@ class PlayersToUsersRelationship extends Migration
     {
         if (!Schema::connection('mysql_champ')->hasTable('players_users')) {
             Schema::connection('mysql_champ')->create('players_users', function (Blueprint $table) {
-                $table->integer('player_id')->unsigned();
-                $table->integer('user_id')->unsigned();
+                $table->engine = "InnoDB";
+                $table->integer('player_id')->index()->unsigned();
+                $table->integer('user_id')->index()->unsigned();
                 $table->nullableTimestamps();
                 $table->engine = 'InnoDB';
                 $table->primary(['player_id', 'user_id']);

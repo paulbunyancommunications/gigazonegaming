@@ -12,11 +12,12 @@ class AddRowToTournamentsMaxNumberOfPlayers extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            if (!in_array('max_players', array_keys($table->getColumns()))) {
+        if (!Schema::connection('mysql_champ')->hasColumn('tournaments', 'max_players')) {
+            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+                $table->engine = 'InnoDB';
                 $table->integer('max_players')->default(0)->after('name');
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -26,8 +27,10 @@ class AddRowToTournamentsMaxNumberOfPlayers extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->dropColumn('max_players');
-        });
+        if (Schema::connection('mysql_champ')->hasColumn('tournaments', 'max_players')) {
+            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+                $table->dropColumn('max_players');
+            });
+        }
     }
 }

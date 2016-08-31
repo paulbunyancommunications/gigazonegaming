@@ -14,9 +14,10 @@ class CreatePlayersTeamsTable extends Migration
     {
         if (!Schema::connection('mysql_champ')->hasTable('players_teams')) {
             Schema::connection('mysql_champ')->create('players_teams', function (Blueprint $table) {
+                $table->engine = "InnoDB";
                 $table->increments('id');
-                $table->integer("player_id")->references('id')->on('players');
-                $table->integer("team_id")->references('id')->on('teams');
+                $table->integer("player_id")->index()->references('id')->on('players');
+                $table->integer("team_id")->index()->references('id')->on('teams');
                 $table->string("verification_code");
                 $table->timestamps();
             });
