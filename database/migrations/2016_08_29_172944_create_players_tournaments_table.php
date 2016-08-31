@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePlayersTournamentsTable extends Migration
 {
@@ -12,12 +12,14 @@ class CreatePlayersTournamentsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->create('players_tournaments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer("player_id")->references('id')->on('players');
-            $table->integer("tournament_id")->references('id')->on('tournaments');
-            $table->timestamps();
-        });
+        if (!Schema::connection('mysql_champ')->hasTable('players_tournaments')) {
+            Schema::connection('mysql_champ')->create('players_tournaments', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer("player_id")->references('id')->on('players');
+                $table->integer("tournament_id")->references('id')->on('tournaments');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

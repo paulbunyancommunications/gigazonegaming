@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePlayersTeamsTable extends Migration
 {
@@ -12,13 +12,15 @@ class CreatePlayersTeamsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->create('players_teams', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer("player_id")->references('id')->on('players');
-            $table->integer("team_id")->references('id')->on('teams');
-            $table->string("verification_code");
-            $table->timestamps();
-        });
+        if (!Schema::connection('mysql_champ')->hasTable('players_teams')) {
+            Schema::connection('mysql_champ')->create('players_teams', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer("player_id")->references('id')->on('players');
+                $table->integer("team_id")->references('id')->on('teams');
+                $table->string("verification_code");
+                $table->timestamps();
+            });
+        }
     }
 
     /**

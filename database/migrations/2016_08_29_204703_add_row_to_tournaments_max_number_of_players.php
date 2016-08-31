@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddRowToTournamentsMaxNumberOfPlayers extends Migration
 {
@@ -13,7 +13,9 @@ class AddRowToTournamentsMaxNumberOfPlayers extends Migration
     public function up()
     {
         Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->integer('max_players')->default(0)->after('name');
+            if (!in_array('max_players', array_keys($table->getColumns()))) {
+                $table->integer('max_players')->default(0)->after('name');
+            }
         });
     }
 
