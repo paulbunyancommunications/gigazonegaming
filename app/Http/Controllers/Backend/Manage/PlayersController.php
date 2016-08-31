@@ -111,12 +111,15 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
+        dd($request);
         $updatedBy = $this->getUserId();
         $updatedOn = Carbon::now("CST");
         $toUpdate = array_merge($request->all(), [
             'updated_by' => $updatedBy,
             'updated_on' => $updatedOn
         ] );
+        $theTeam = $toUpdate['team_id'];
+        unset($toUpdate['team_id']);
         unset($toUpdate['_token']);
         unset($toUpdate['_method']);
         unset($toUpdate['id']);
@@ -124,8 +127,8 @@ class PlayersController extends Controller
         unset($toUpdate['submit']);
 //        dd($toUpdate);
 //        dd("passed request");
+        Players_Teams::firstOrCreate(['team_id'=>$theTeam,'player_id'=>$player->getRouteKey()]);
         $player->where('id', $player->getRouteKey())->update(
-//        Player::where('id', $player->getRouteKey())->update(
             $toUpdate
         );
 
@@ -139,18 +142,15 @@ class PlayersController extends Controller
      * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function move(Player $player)
+    public function move(Player $player) //todo
     {
-        $te = Team::where('id',$player['team_id'])->select('tournament_id')->first();
-        $to = Tournament::where('id', $te['tournament_id'])->select('game_id')->first();
+//        $te = Team::where('id',$player['team_id'])->select('tournament_id')->first();
+//        $to = Tournament::where('id', $te['tournament_id'])->select('game_id')->first();
         unset($player['team_id']);
         unset($player['id']);
         $player['game_id'] = $to->game_id;
-//            Cache::forget('team_c');
-//                dd($player);
-        IndividualPlayer::create($player);
 
-        Player::where("id", $player->getRouteKey())->delete();
+        Players_Teams::where("id", $player->getRouteKey())->delete();
         return redirect('/manage/player');
     }
     /**
@@ -188,13 +188,14 @@ class PlayersController extends Controller
                 ->where('teams.id', 'like', $tourn)
                 ->orWhere('teams.name', 'like', $tourn)
                 ->select(
-                    'players.id',
+                    'players.id as id',
+                    'players.id as player_id',
                     'players.email',
                     'players.username',
                     'players.name',
                     'players.phone',
                     'players_teams.verification_code as verification_code',
-                    'players_teams.team_id as team_id',
+                    'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
                     'tournaments.id as tournament_id',
@@ -207,9 +208,6 @@ class PlayersController extends Controller
                 ->orderBy('team_id')
                 ->get()
                 ->toArray();
-
-
-
 
         }elseif(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
 
@@ -227,13 +225,14 @@ class PlayersController extends Controller
                 ->where('tournaments.id', 'like', $tourn)
                 ->orWhere('tournaments.name', 'like', $tourn)
                 ->select(
-                    'players.id',
+                    'players.id as id',
+                    'players.id as player_id',
                     'players.email',
                     'players.username',
                     'players.name',
                     'players.phone',
                     'players_teams.verification_code as verification_code',
-                    'players_teams.team_id as team_id',
+                    'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
                     'tournaments.id as tournament_id',
@@ -264,13 +263,14 @@ class PlayersController extends Controller
                 ->where('games.id', 'like', $tourn)
                 ->orWhere('games.name', 'like', $tourn)
                 ->select(
-                    'players.id',
+                    'players.id as id',
+                    'players.id as player_id',
                     'players.email',
                     'players.username',
                     'players.name',
                     'players.phone',
                     'players_teams.verification_code as verification_code',
-                    'players_teams.team_id as team_id',
+                    'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
                     'tournaments.id as tournament_id',
@@ -292,13 +292,14 @@ class PlayersController extends Controller
                 ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
                 ->join('games','games.id','=', 'tournaments.game_id')
                 ->select(
-                    'players.id',
+                    'players.id as id',
+                    'players.id as player_id',
                     'players.email',
                     'players.username',
                     'players.name',
                     'players.phone',
                     'players_teams.verification_code as verification_code',
-                    'players_teams.team_id as team_id',
+                    'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
                     'tournaments.id as tournament_id',
