@@ -79,16 +79,16 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 //            return Cache::get('teams_c');
 //        }
         $teams = Team::orderBy('name')->get()->toArray();
-        $players_teams = Players_Teams::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        $players_teams = Players_Teams::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
         foreach ($teams as $key => $team) {
-            $max_p = Tournament::where('tournaments.id','=', $team['tournament_id'])->get()->toArray()[0]['max_players'];
+            $max_p = Tournament::where('tournaments.id','=', $team['tournament_id'])->first()->toArray()['max_players'];
             foreach ($players_teams as $k => $p) {
                 if ($team['id'] == $p['team_id']) {
                     $teams[$key]['team_count'] = $p['team_count'];
                     $teams[$key]['max_number_of_players'] = $max_p;
-                    break;
+//                    break;
                 }
-                if($players_teams = []){
+                if($players_teams == []){
                     $teams[$key]['team_count'] = 0;
                     $teams[$key]['max_number_of_players'] = $max_p;
                 }
@@ -97,8 +97,6 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         Cache::put('teams_c', $teams, $this->getExpiresAt());
         return $teams;
     }
-
-
 
     /**
      * @param $teams
@@ -129,7 +127,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 'players.name',
                 'players.phone',
                 'players_teams.verification_code as verification_code',
-                'players_teams.team_id as team_id',
+                'teams.id as team_id',
                 'teams.name as team_name',
                 'teams.captain as captain',
                 'tournaments.id as tournament_id',
@@ -158,7 +156,6 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 
         }
         Cache::put('players_c', $players, $this->getExpiresAt());
-        dd($players);
         return $players;
     }
 
