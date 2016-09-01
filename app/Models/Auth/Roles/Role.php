@@ -17,5 +17,6 @@ class Role extends EloquentRole
 {
     protected $connection = "mysql_champ";
     protected $table = "roles";
+    protected static $usersModel = 'App\Models\Auth\Users\User';
 
 }

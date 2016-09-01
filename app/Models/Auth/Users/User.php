@@ -17,7 +17,11 @@ class User extends EloquentUser
 {
     protected $connection = "mysql_champ";
     protected $table = "users";
-
+    protected static $rolesModel        = 'App\Models\Auth\Roles\Role';
+    protected static $persistencesModel = 'App\Models\Auth\Persistences\Persistence';
+    protected static $activationsModel  = 'App\Models\Auth\Activations\Activation';
+    protected static $remindersModel    = 'App\Models\Auth\Reminders\Reminder';
+    protected static $throttlingModel   = 'App\Models\Auth\Throttling\Throttle';
 
     /**
      * A player has a user account

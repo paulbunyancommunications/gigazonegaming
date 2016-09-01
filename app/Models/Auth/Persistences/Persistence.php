@@ -17,4 +17,5 @@ class Persistence extends EloquentPersistence
 {
     protected $connection = "mysql_champ";
     protected $table = "persistences";
+    protected static $usersModel = 'App\Models\Auth\Users\User';
 }
