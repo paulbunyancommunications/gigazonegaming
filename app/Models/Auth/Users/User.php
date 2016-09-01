@@ -23,16 +23,25 @@ class User extends EloquentUser
     protected static $remindersModel    = 'App\Models\Auth\Reminders\Reminder';
     protected static $throttlingModel   = 'App\Models\Auth\Throttling\Throttle';
 
+
+    public static function boot()
+    {
+        parent::boot();
+
+        // cause a delete of a team to cascade to children so they are also deleted
+        static::deleting(function ($user) {
+            $player = $user->player();
+            if ($player) {
+                $player->delete();
+            }
+        });
+    }
+    
     /**
      * A player has a user account
      */
     public function player()
     {
-        return $this->belongsToMany(\App\Models\Championship\Player::class);
-    }
-
-    public function playerAttribute()
-    {
-        return $this->player()->first();
+        return $this->hasOne(\App\Models\Championship\Player::class);
     }
 }

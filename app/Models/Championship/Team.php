@@ -20,17 +20,6 @@ class Team extends Model
      */
     protected $fillable = ['name', 'emblem', 'captain', 'tournament_id','updated_by','updated_on'];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        // cause a delete of a team to cascade to children so they are also deleted
-        static::deleting(function ($team) {
-            $team->players()->delete();
-
-        });
-    }
-
     /**
      * Get tournament which team is playing in
      *
@@ -43,10 +32,6 @@ class Team extends Model
             ->withPivot('player_id', 'player_id')
             ->withPivot('team_id', 'id');
     }
-    public function tournamentAttribute()
-    {
-        return $this->tournament();
-    }
 
     /**
      * Get players
@@ -57,10 +42,6 @@ class Team extends Model
         return $this->hasMany('App\Models\Championship\Player');
     }
 
-    public function playerAttribute()
-    {
-        return $this->player();
-    }
     /**
      * Get team captain
      *
@@ -73,5 +54,4 @@ class Team extends Model
         }
         return Player::findOrFail($this->getAttribute('captain'));
     }
-
 }

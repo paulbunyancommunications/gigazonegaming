@@ -45,10 +45,12 @@ $factory->define(App\Models\Championship\Team::class, function (Faker\Generator 
 
 $factory->define(App\Models\Championship\Player::class, function (Faker\Generator $faker) {
 
+    $id = factory(App\Models\Auth\Users\User::class)->create([])->id;
     return [
         'username' => $faker->userName,
         'email' => $faker->email,
-        'phone' => $faker->phoneNumber
+        'phone' => $faker->phoneNumber,
+        'user_id' => $id,
     ];
 });
 

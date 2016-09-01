@@ -4,43 +4,60 @@ namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Player
+ * @package App\Models\Championship
+ */
 class Player extends Model
 {
+    /**
+     * @var string
+     */
     protected $connection = 'mysql_champ';
 
-    protected $fillable = ['username','email','phone','updated_by','updated_on'];
+    /**
+     * @var array
+     */
+    protected $fillable = ['username', 'email', 'phone', 'updated_by', 'updated_on'];
 
-//    /**
-//     * Get player's team
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function team()
-//    {
-//        return $this->belongsToMany('App\Models\Championship\Team');
-//    }
+    public static function boot()
+    {
+        parent::boot();
+
+        // when deleted
+        static::deleting(function ($player) {
+
+        });
+    }
 
     /**
-     * Get player's team
+     * Get player's teams
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function team()
     {
-        return $this->belongsToMany(\App\Models\Championship\Players_Teams::class);
-}
-
-    public function teamAttribute()
-    {
-        return $this->team();
+        return $this->belongsToMany('\App\Models\Championship\Team::class');
     }
 
+    /**
+     * Get player's games
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function game()
+    {
+        return $this->belongsToMany('\App\Models\Championship\Game');
+    }
+
+    /**
+     * Get the tournaments the user is in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tournament()
     {
-        return $this->belongsToMany(\App\Models\Championship\Players_Tournaments::class);
-    }
-
-    public function tournamentAttribute()
-    {
-        return $this->tournament();
+        return $this->belongsToMany('App\Models\Championship\Tournament');
     }
 
     /**
@@ -48,13 +65,6 @@ class Player extends Model
      */
     public function user()
     {
-        return $this->belongsToMany(\App\Models\Championship\User::class);
+        return $this->belongsTo('App\Models\Auth\Users\User');
     }
-
-    public function userAttribute()
-    {
-        return $this->user()->first();
-    }
-
-
 }
