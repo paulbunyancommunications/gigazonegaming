@@ -31,7 +31,7 @@ class BoardDraw extends Migration
 
 
         //now straighting out foreign keys and references
-        if(Schema::connection('mysql_champ')->hasColumn('tournaments', 'game_id')) {
+        if(!Schema::connection('mysql_champ')->hasColumn('tournaments', 'game_id')) {
             Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->integer('game_id')->index()->unsigned()->after('max_players')->change();
@@ -39,7 +39,7 @@ class BoardDraw extends Migration
             });
         }
 
-        if(Schema::connection('mysql_champ')->hasColumn('teams', 'tournament_id')) {
+        if(!Schema::connection('mysql_champ')->hasColumn('teams', 'tournament_id')) {
             Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->integer('tournament_id')->index()->unsigned()->after('id')->change();
@@ -78,6 +78,5 @@ class BoardDraw extends Migration
                 $table->dropForeign('tournament_id');
             });
         }
-
     }
 }
