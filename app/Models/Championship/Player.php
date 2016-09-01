@@ -26,7 +26,9 @@ class Player extends Model
 
         // when deleted
         static::deleting(function ($player) {
-
+            $player->teams()->detach();
+            $player->games()->detach();
+            $player->tournaments()->detach();
         });
     }
 
@@ -35,9 +37,9 @@ class Player extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function team()
+    public function teams()
     {
-        return $this->belongsToMany('\App\Models\Championship\Team::class');
+        return $this->belongsToMany('App\Models\Championship\Team');
     }
 
     /**
@@ -45,9 +47,9 @@ class Player extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function game()
+    public function games()
     {
-        return $this->belongsToMany('\App\Models\Championship\Game');
+        return $this->belongsToMany('App\Models\Championship\Game');
     }
 
     /**
@@ -55,7 +57,7 @@ class Player extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function tournament()
+    public function tournaments()
     {
         return $this->belongsToMany('App\Models\Championship\Tournament');
     }

@@ -29,31 +29,31 @@ class Game extends Model
 
         // cause a delete of a game to cascade to children so they are also deleted
         static::deleting(function ($game) {
-            $game->tournaments()->delete();
-            $game->individualPlayers()->delete();
+            $game->tournaments()->detach();
+            $game->players()->detach();
 
         });
     }
 
     /**
-     * Get teams playing this game
+     * Get tournaments playing this game
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tournaments()
     {
-        return $this->hasMany('App\Models\Championship\Tournament');
+        return $this->belongsToMany('App\Models\Championship\Tournament');
     }
 
-//    /**
-//     * Get Individual Players who what to play this game
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function individualPlayers()
-//    {
-//        return $this->hasMany('App\Models\Championship\IndividualPlayer');
-//    }
+    /**
+     * Get all the players for the current game
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function players()
+    {
+        return $this->belongsToMany('App\Models\Championship\Players');
+    }
 
     /**
      * @param $query

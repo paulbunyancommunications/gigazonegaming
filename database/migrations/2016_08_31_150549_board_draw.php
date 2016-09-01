@@ -25,7 +25,7 @@ class BoardDraw extends Migration
             Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->integer('user_id')->index()->unsigned()->after('id');
-                $table->foreign('user_id')->references('id')->on('users');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             });
         }
 

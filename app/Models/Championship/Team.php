@@ -27,10 +27,7 @@ class Team extends Model
      */
     public function tournament()
     {
-        return $this->belongsTo(\App\Models\Championship\Tournament::class )
-            ->withPivot('id', 'tournament_id')
-            ->withPivot('player_id', 'player_id')
-            ->withPivot('team_id', 'id');
+        return $this->belongsTo('App\Models\Championship\Tournament');
     }
 
     /**
@@ -41,6 +38,8 @@ class Team extends Model
     {
         return $this->hasMany('App\Models\Championship\Player');
     }
+
+
 
     /**
      * Get team captain
