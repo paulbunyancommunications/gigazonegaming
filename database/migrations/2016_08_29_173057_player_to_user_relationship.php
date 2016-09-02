@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PlayersToUsersRelationship extends Migration
+class PlayerToUserRelationship extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class PlayersToUsersRelationship extends Migration
      */
     public function up()
     {
-        if (!Schema::connection('mysql_champ')->hasTable('players_users')) {
-            Schema::connection('mysql_champ')->create('players_users', function (Blueprint $table) {
+        if (!Schema::connection('mysql_champ')->hasTable('player_user')) {
+            Schema::connection('mysql_champ')->create('player_user', function (Blueprint $table) {
                 $table->engine = "InnoDB";
                 $table->integer('player_id')->index()->unsigned();
                 $table->integer('user_id')->index()->unsigned();
@@ -31,6 +31,6 @@ class PlayersToUsersRelationship extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->dropIfExists('players_users');
+        Schema::connection('mysql_champ')->dropIfExists('player_user');
     }
 }

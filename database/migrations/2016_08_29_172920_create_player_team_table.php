@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePlayersTournamentsTable extends Migration
+class CreatePlayerTeamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreatePlayersTournamentsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::connection('mysql_champ')->hasTable('players_tournaments')) {
-            Schema::connection('mysql_champ')->create('players_tournaments', function (Blueprint $table) {
+        if (!Schema::connection('mysql_champ')->hasTable('player_team')) {
+            Schema::connection('mysql_champ')->create('player_team', function (Blueprint $table) {
                 $table->engine = "InnoDB";
                 $table->increments('id');
                 $table->integer("player_id")->index()->references('id')->on('players');
-                $table->integer("tournament_id")->index()->references('id')->on('tournaments');
+                $table->integer("team_id")->index()->references('id')->on('teams');
+                $table->string("verification_code");
                 $table->timestamps();
             });
         }
@@ -30,6 +31,6 @@ class CreatePlayersTournamentsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->dropIfExists('players_tournaments');
+        Schema::connection('mysql_champ')->dropIfExists('player_team');
     }
 }

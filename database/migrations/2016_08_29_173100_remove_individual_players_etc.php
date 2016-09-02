@@ -30,19 +30,21 @@ class RemoveIndividualPlayersEtc extends Migration
                         } //is it a captain ????
 
                         //create the pivot table info for players and teams
-                        $p_te = new \App\Models\Championship\Players_Teams();
-                        $p_te->player_id = $p['id'];
-                        $p_te->team_id = $team_id;
-                        $p_te->verification_code = $string;
-                        $p_te->save();
+                        try {
+                            $p_te = \App\Models\Championship\Team::find($team_id);
+                            $p_te->players()->attach($p['id'], ['verification_code' => $string]);
+                        } catch (Exception $ex) {
+                            \Log::error($ex->getMessage());
+                        }
 
-//            dd($p['id']);
-                        //create the pivot table info for players and tournaments
-//            dd($team_info);
-                        $p_to = new App\Models\Championship\Players_Tournaments();
-                        $p_to->player_id = $p['id'];
-                        $p_to->tournament_id = $team_info['tournament_id'];
-                        $p_to->save();
+                        //create the pivot table info for players and tournament
+                        try {
+                            $p_to = \App\Models\Championship\Tournament::find($team_info['tournament_id']);
+                            $p_to->players()->attach($p['id']);
+                        } catch (Exception $ex) {
+                            \Log::error($ex->getMessage());
+                        }
+
                     } else {
                         \App\Models\Championship\Player::destroy($p['id']);
                     }
@@ -69,13 +71,13 @@ class RemoveIndividualPlayersEtc extends Migration
 //                dd($p);
                 $string = 'none_yet';// this is to create a string that would allow team mates to get assign to a team if they didnt have one
                 $game_id = $p['game_id'];
-                $tournaments = \App\Models\Championship\Tournament::where('game_id', $p['game_id'])->get()->toArray();
+                $tournaments = \App\Models\Championship\Tournament::where('game_id', $p['game_id'])->get();
                 unset($p['id']);
                 unset($p['game_id']);
                 $newPlayer = \App\Models\Championship\Player::create($p);
                 //create the pivot table info for players and tournaments
-                foreach ($tournaments as $tournament) { // this is a bold fix because we just go with every torunament that is for that game, even if the user didnt sign for it, but because there is only one game hopefully will work and we wont need it again :)
-                    \App\Models\Championship\Players_Tournaments::create(['player_id' => $newPlayer->id, 'tournament_id' => $tournament['id']]);
+                foreach ($tournaments as $tournament) { // this is a bold fix because we just go with every tournament that is for that game, even if the user didn't sign for it, but because there is only one game hopefully will work and we wont need it again :)
+                    $tournament->players()->attach($newPlayer->id);
                 }
             }
             //all individual players are in the player table and in the pivot table for tournaments now we can drop the table

@@ -12,12 +12,12 @@ class BoardDraw extends Migration
      */
     public function up()
     {
-        if(!Schema::connection('mysql_champ')->hasTable('games_players')) {
-            Schema::connection('mysql_champ')->create('games_players', function (Blueprint $table) { //pivot table
+        if(!Schema::connection('mysql_champ')->hasTable('game_player')) {
+            Schema::connection('mysql_champ')->create('game_player', function (Blueprint $table) { //pivot table
                 $table->engine = "InnoDB";
                 $table->increments('id');
-                $table->string('players_id')->index()->references('id')->on('players');
-                $table->string('tournament_id')->index()->references('id')->on('tournaments');
+                $table->string('player_id')->index()->references('id')->on('players');
+                $table->string('game_id')->index()->references('id')->on('games');
                 $table->timestamps();
             });
         }
@@ -58,8 +58,8 @@ class BoardDraw extends Migration
      */
     public function down()
     {
-        if(Schema::connection('mysql_champ')->hasTable('games_players')) {
-            Schema::connection('mysql_champ')->drop('games_players');
+        if(Schema::connection('mysql_champ')->hasTable('game_player')) {
+            Schema::connection('mysql_champ')->drop('game_player');
         }
 
         if(Schema::connection('mysql_champ')->hasColumn('players','user_id')) {
