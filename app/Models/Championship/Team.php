@@ -34,9 +34,9 @@ class Team extends Model
      * Get players
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function player()
+    public function players()
     {
-        return $this->hasMany('App\Models\Championship\Player');
+        return $this->belongsToMany('App\Models\Championship\Player');
     }
 
 

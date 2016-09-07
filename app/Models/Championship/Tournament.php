@@ -47,10 +47,21 @@ class Tournament extends Model
 
 
     /**
+     * Get teams in this tournament
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function teams()
     {
         return $this->hasMany('App\Models\Championship\Team');
+    }
+
+    /**
+     * Get players in this tournament
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function players()
+    {
+        return $this->belongsToMany('App\Models\Championship\Player');
     }
 }
