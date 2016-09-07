@@ -6,7 +6,6 @@ use GigaZone\Info\GigaZoneFromPaulBunyan;
 use League\Csv\Reader;
 use Pbc\AutoVersion;
 use Pbc\Bandolier\Type\Strings;
-use Timber;
 use TimberSite;
 use Twig_Extension_StringLoader;
 use Twig_SimpleFilter;
@@ -201,30 +200,36 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
     public function formFieldsShortCode($attributes, $content, $tag)
     {
         /** @var string $questions */
+        /** @var string $special_questions */
         /** @var string $new_line */
         /** @var string $delimiter */
         /** @var string $inputs */
         /** @var string $headings */
         $defaults = array(
+            "name" => $tag,
             "questions" => "",
             "new_line" => ",",
             "delimiter" => "|",
             "inputs" => "",
             "headings" => "",
             "ids" => "",
-            "legend" => Strings::formatForTitle(str_replace('-', ' ', $tag))
+            "special_questions" => ""
         );
         $attr = shortcode_atts($defaults, $attributes);
         extract($attr);
-        $context = Timber::get_context();
+        $context = \Timber::get_context();
         foreach (array_keys($defaults) as $default) {
             switch ($default) {
                 case ('new_line'):
                 case ('delimiter'):
                 case ('legend'):
                     break;
+                case ('special_questions'):
+                    $context[$default] = strpos($special_questions, $delimiter) !== false ? explode($delimiter, $special_questions) : [$special_questions];
+                    break;
                 default:
                     $this->parseCsv($context, $$default, $default, $delimiter, $new_line);
+                    break;
             }
         }
         $autoVersion = new AutoVersion;
@@ -242,13 +247,13 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
                 '/../' . $autoVersion->file('/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')
             );
         }
-        $context['action'] = '/app/' . $tag;
+        $context['action'] = '/app/' . $name;
         $context['method'] = 'POST';
         $context['content'] = $content;
-        $context['legend'] = $legend;
+        $context['legend'] = Strings::formatForTitle(str_replace('-', ' ', $name));
         $context['tag'] = $tag;
         $context['submitId'] = 'doFormSubmit';
-        return Timber::compile('forms/form-template.twig', $context);
+        return \Timber::compile('forms/form-template.twig', $context);
     }
 
     /**
@@ -290,7 +295,23 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
     {
         if ($attributes) {
             $image = wp_get_attachment_image_src($attributes[0], '');
-            return '<img src="'. $image[0] .'" width="'. $image[1] .'" height="'. $image[2] .'" class="'. $tag .'" />';
+            return '<img src="' . $image[0] . '" width="' . $image[1] . '" height="' . $image[2] . '" class="' . $tag . '" />';
+        }
+    }
+
+    /**
+     * Get environment var by short key
+     * usage: [env APP_ENV] will get the APP_ENV environment variable and return it
+     *
+     * @param $attributes
+     * @param $content
+     * @param $tag
+     * @return mixed
+     */
+    public function getEnvShortCode($attributes, $content, $tag)
+    {
+        if ($attributes) {
+            return env($attributes[0], $attributes[0]);
         }
     }
 }
