@@ -184,6 +184,9 @@ return [
         // Sentinal Cartalyst authentication
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
 
+        // recaptcha
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+
     ],
 
     /*
@@ -241,6 +244,9 @@ return [
         'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
+
+        // recaptcha
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
     ],
 
 ];

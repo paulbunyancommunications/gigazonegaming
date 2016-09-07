@@ -155,8 +155,9 @@
     "spatie/laravel-backup": "^3.7",
     "rollbar/rollbar": "~0.18.0",
     "jenssegers/rollbar": "^1.5",
-    "jarednova/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
-    "ircmaxell/password-compat": "^1.0"
+    "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
+    "ircmaxell/password-compat": "^1.0",
+    "greggilbert/recaptcha": "^2.1"
 
   },
   "require-dev": {
@@ -200,7 +201,9 @@
       "tests/TestCase.php"
     ],
     "files": [
-      "tests/acceptance/BaseAcceptanceCest.php"
+      "tests/acceptance/BaseAcceptance.php",
+      "tests/functional/BaseFunctional.php",
+      "tests/integration/BaseIntegration.php"
     ],
     "psr-4": {
       "Codeception\\Module\\" : "src/Codeception/Module"
