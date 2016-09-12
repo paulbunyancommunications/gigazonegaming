@@ -113,14 +113,6 @@
           "composer/installers": "v1.0.7"
         }
       }
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:paulbunyannet/form_mail.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:paulbunyannet/form_mail_template.git"
     }
   ],
   "require": {
@@ -147,7 +139,6 @@
     "rcrowe/twigbridge": "0.9.x",
     "paulbunyannet/premailer": "^1.0",
     "paulbunyannet/wordpress-artisan": "^1.0",
-    "paulbunyannet/form_mail": "v1.1.*",
     "sunra/php-simple-html-dom-parser": "v1.5.0",
     "league/csv": "^8.0",
     "laravelcollective/html": "5.2.*",
@@ -157,7 +148,8 @@
     "jenssegers/rollbar": "^1.5",
     "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
     "ircmaxell/password-compat": "^1.0",
-    "greggilbert/recaptcha": "^2.1"
+    "greggilbert/recaptcha": "^2.1",
+    "paulbunyannet/form_mail": "^1.2"
 
   },
   "require-dev": {
@@ -183,8 +175,7 @@
   },
   "autoload": {
     "classmap": [
-      "database",
-      "vendor/paulbunyannet/form_mail_template"
+      "database"
     ],
     "files": [
       "src/Wordpress/functions.php"
