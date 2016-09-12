@@ -18,7 +18,7 @@ class WPAdminMiddleware
     {
         require_once dirname(__DIR__) .'/../../public_html/wp/wp-load.php';
 
-        if (is_user_logged_in() and (is_super_admin() or is_user_admin())) {
+        if (is_user_logged_in() and (is_super_admin() or current_user_can('administrator'))) {
             return $next($request);
         } else {
             return Redirect::to(
