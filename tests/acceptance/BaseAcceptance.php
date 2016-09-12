@@ -1,6 +1,6 @@
 <?php
 
-class BaseAcceptanceCest
+class BaseAcceptance
 {
     const TEXT_WAIT_TIMEOUT = 30;
 
@@ -20,13 +20,6 @@ class BaseAcceptanceCest
             'password' => getenv('DB_PASSWORD_CHAMP'),
             'database' => getenv('DB_DATABASE_CHAMP'),
             'dump' => 'database/dump/gzgaming_champ_db.sql',
-        ]);
-        $I->populateDatabase($I, [
-            'server' => getenv('DB_HOST_AUTH'),
-            'user' => getenv('DB_USERNAME_AUTH'),
-            'password' => getenv('DB_PASSWORD_AUTH'),
-            'database' => getenv('DB_DATABASE_AUTH'),
-            'dump' => 'database/dump/gzgaming_sentinel.sql',
         ]);
         // run migrations
         $I->runMigration($I);
