@@ -31,6 +31,7 @@ class AddNewPivotTableAndRemoveOtherPivotTables extends Migration
                 $table->integer("tournament_id")->index()->references('id')->on('tournaments');
                 $table->string("token")->default(null);
                 $table->timestamps();
+                $table->unique(['player_id', 'tournament_id']);
             });
         }
         DB::connection('mysql_champ')->table('game_player_team_tournament')->insert($allPlayers);
@@ -56,9 +57,6 @@ class AddNewPivotTableAndRemoveOtherPivotTables extends Migration
     {
         $contents = json_decode(json_encode(DB::connection('mysql_champ')->table('game_player_team_tournament')->get()),TRUE);
 
-        if (Schema::connection('mysql_champ')->hasTable('game_player_team_tournament')) {
-            Schema::connection('mysql_champ')->dropIfExists('game_player_team_tournament');
-        }
         if (!Schema::connection('mysql_champ')->hasTable('player_team')) {
             Schema::connection('mysql_champ')->create('player_team', function (Blueprint $table) {
                 $table->engine = "InnoDB";
@@ -88,9 +86,12 @@ class AddNewPivotTableAndRemoveOtherPivotTables extends Migration
             });
         }
         foreach ($contents as $key => $content){
-            DB::table('game_player')->insert(['player_id'=>$content['player_id'], 'game_id'=>$content['game_id']]);
-            DB::table('player_team')->insert(['player_id'=>$content['player_id'], 'team_id'=>$content['team_id'], 'verification_code'=>$content['token']]);
-            DB::table('player_tournament')->insert(['player_id'=>$content['player_id'], 'tournament_id'=>$content['tournament_id']]);
+            DB::connection('mysql_champ')->table('game_player')->insert(['player_id'=>$content['player_id'], 'game_id'=>$content['game_id']]);
+            DB::connection('mysql_champ')->table('player_team')->insert(['player_id'=>$content['player_id'], 'team_id'=>$content['team_id'], 'verification_code'=>$content['token']]);
+            DB::connection('mysql_champ')->table('player_tournament')->insert(['player_id'=>$content['player_id'], 'tournament_id'=>$content['tournament_id']]);
+        }
+        if (Schema::connection('mysql_champ')->hasTable('game_player_team_tournament')) {
+            Schema::connection('mysql_champ')->dropIfExists('game_player_team_tournament');
         }
     }
 }
