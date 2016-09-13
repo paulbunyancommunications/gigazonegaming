@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Team extends Model
 {
+    use PlayerRelationable;
     /**
      * @var string
      */
