@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
-use App\Models\Championship\Players_Teams;
+use App\Models\Championship\Player_Team;
+use App\Models\Championship\Team;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
@@ -127,7 +128,7 @@ class PlayersController extends Controller
         unset($toUpdate['submit']);
 //        dd($toUpdate);
 //        dd("passed request");
-        Players_Teams::firstOrCreate(['team_id'=>$theTeam,'player_id'=>$player->getRouteKey()]);
+        Player_Team::firstOrCreate(['team_id'=>$theTeam,'player_id'=>$player->getRouteKey()]);
         $player->where('id', $player->getRouteKey())->update(
             $toUpdate
         );
@@ -150,7 +151,7 @@ class PlayersController extends Controller
         unset($player['id']);
         $player['game_id'] = $to->game_id;
 
-        Players_Teams::where("id", $player->getRouteKey())->delete();
+        Player_Team::where("id", $player->getRouteKey())->delete();
         return redirect('/manage/player');
     }
     /**
@@ -180,10 +181,10 @@ class PlayersController extends Controller
                 $tourn = "%" . trim($ids->team_sort) . "%";
             }
             $players = Player::
-            join('players_teams', 'players.id', '=', 'players_teams.player_id')
-                ->join('teams','teams.id','=', 'players_teams.team_id')
-                ->join('players_tournaments','players.id','=', 'players_tournaments.player_id')
-                ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
+            join('player_team', 'players.id', '=', 'player_team.player_id')
+                ->join('teams','teams.id','=', 'player_team.team_id')
+                ->join('player_tournament','players.id','=', 'player_tournament.player_id')
+                ->join('tournaments','tournaments.id','=', 'player_tournament.tournament_id')
                 ->join('games','games.id','=', 'tournaments.game_id')
                 ->where('teams.id', 'like', $tourn)
                 ->orWhere('teams.name', 'like', $tourn)
@@ -194,7 +195,7 @@ class PlayersController extends Controller
                     'players.username',
                     'players.name',
                     'players.phone',
-                    'players_teams.verification_code as verification_code',
+                    'player_team.verification_code as verification_code',
                     'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
@@ -217,10 +218,10 @@ class PlayersController extends Controller
                 $tourn = "%" . trim($ids->tournament_sort) . "%";
             }
             $players = Player::
-            join('players_teams', 'players.id', '=', 'players_teams.player_id')
-                ->join('teams','teams.id','=', 'players_teams.team_id')
-                ->join('players_tournaments','players.id','=', 'players_tournaments.player_id')
-                ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
+            join('player_team', 'players.id', '=', 'player_team.player_id')
+                ->join('teams','teams.id','=', 'player_team.team_id')
+                ->join('player_tournament','players.id','=', 'player_tournament.player_id')
+                ->join('tournaments','tournaments.id','=', 'player_tournament.tournament_id')
                 ->join('games','games.id','=', 'tournaments.game_id')
                 ->where('tournaments.id', 'like', $tourn)
                 ->orWhere('tournaments.name', 'like', $tourn)
@@ -231,7 +232,7 @@ class PlayersController extends Controller
                     'players.username',
                     'players.name',
                     'players.phone',
-                    'players_teams.verification_code as verification_code',
+                    'player_team.verification_code as verification_code',
                     'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
@@ -255,10 +256,10 @@ class PlayersController extends Controller
             }
 
             $players = Player::
-            join('players_teams', 'players.id', '=', 'players_teams.player_id')
-                ->join('teams','teams.id','=', 'players_teams.team_id')
-                ->join('players_tournaments','players.id','=', 'players_tournaments.player_id')
-                ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
+            join('player_team', 'players.id', '=', 'player_team.player_id')
+                ->join('teams','teams.id','=', 'player_team.team_id')
+                ->join('player_tournament','players.id','=', 'player_tournament.player_id')
+                ->join('tournaments','tournaments.id','=', 'player_tournament.tournament_id')
                 ->join('games','games.id','=', 'tournaments.game_id')
                 ->where('games.id', 'like', $tourn)
                 ->orWhere('games.name', 'like', $tourn)
@@ -269,7 +270,7 @@ class PlayersController extends Controller
                     'players.username',
                     'players.name',
                     'players.phone',
-                    'players_teams.verification_code as verification_code',
+                    'player_team.verification_code as verification_code',
                     'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
@@ -286,10 +287,10 @@ class PlayersController extends Controller
 
         }else {
             $players = Player::
-            join('players_teams', 'players.id', '=', 'players_teams.player_id')
-                ->join('teams','teams.id','=', 'players_teams.team_id')
-                ->join('players_tournaments','players.id','=', 'players_tournaments.player_id')
-                ->join('tournaments','tournaments.id','=', 'players_tournaments.tournament_id')
+            join('player_team', 'players.id', '=', 'player_team.player_id')
+                ->join('teams','teams.id','=', 'player_team.team_id')
+                ->join('player_tournament','players.id','=', 'player_tournament.player_id')
+                ->join('tournaments','tournaments.id','=', 'player_tournament.tournament_id')
                 ->join('games','games.id','=', 'tournaments.game_id')
                 ->select(
                     'players.id as id',
@@ -298,7 +299,7 @@ class PlayersController extends Controller
                     'players.username',
                     'players.name',
                     'players.phone',
-                    'players_teams.verification_code as verification_code',
+                    'player_team.verification_code as verification_code',
                     'teams.id as team_id',
                     'teams.name as team_name',
                     'teams.captain as captain',
@@ -314,7 +315,7 @@ class PlayersController extends Controller
                 ->toArray();
         }
 
-        $times = Players_Teams::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        $times = Player_Team::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
 //        dd($times);
         foreach ($players as $key => $player) {
             foreach ($times as $k => $t) {

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Backend\Manage;
 use App\Models\Championship\Game;
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
-use App\Models\Championship\Players_Teams;
-use App\Models\Championship\Players_Tournaments;
+use App\Models\Championship\Player_Team;
+use App\Models\Championship\Player_Tournament;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
@@ -137,13 +137,13 @@ class TeamsController extends Controller
     public function destroy_soft(Team $team)
     {
         $players = Player::
-            join("players_teams",'players.id','=','players_teams.player_id')
+            join("player_team",'players.id','=','player_team.player_id')
             ->where("team_id", $team->getRouteKey())
                 ->get()
                 ->toArray();
 //        dd($players);
         foreach($players as $player){
-            Players_Teams::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
+            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
         }
         Team::where("id", $team->getRouteKey())->delete();
         Cache::flush();
@@ -159,14 +159,14 @@ class TeamsController extends Controller
     public function destroy_hard(Team $team)
     {
         $players = Player::
-        join("players_teams",'players.id','=','players_teams.player_id')
+        join("player_team",'players.id','=','player_team.player_id')
             ->where("team_id", $team->getRouteKey())
             ->get()
             ->toArray();
         foreach($players as $player){
-            Players_Teams::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
+            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
             Player::where('id', '=', $player['player_id'])->delete();
-            Players_Tournaments::where('player_id', '=', $player['player_id'])->delete();
+            Player_Tournament::where('player_id', '=', $player['player_id'])->delete();
         }
         Team::where("id", $team->getRouteKey())->delete();
         Cache::flush();
@@ -218,7 +218,7 @@ class TeamsController extends Controller
                 ->toArray();
         }
 
-        $times = Players_Teams::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+        $times = Player_Team::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
         foreach ($teams as $key => $team) {
             foreach ($times as $k => $t) {
                 if ($team['id'] == $t['team_id']) {
