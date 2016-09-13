@@ -42,7 +42,7 @@ class Tournament extends Model
      */
     public function game()
     {
-        return $this->belongsTo('App\Models\Championship\Game');
+        return $this->belongsTo('App\Models\Championship\Game', 'game_id');
     }
 
 

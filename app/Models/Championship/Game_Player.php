@@ -4,7 +4,7 @@ namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Player_Tournament extends Model
+class Game_Player extends Model
 {
     /**
      * @var string
@@ -16,21 +16,20 @@ class Player_Tournament extends Model
      *
      * @var string
      */
-    protected $table = 'player_tournament';
+    protected $table = 'game_player';
 
     /**
      * @var array
      */
-    protected $fillable = ['player_id', 'tournament_id'];
-
+    protected $fillable = ['player_id', 'game_id'];
 
     /**
      * Get player's team
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tournaments()
+    public function games()
     {
-        return $this->hasMany('App\Models\Championship\Tournaments');
+        return $this->belongsTo('App\Models\Championship\Games', 'id', 'game_id');
     }
     /**
      * Get player's team
@@ -38,6 +37,7 @@ class Player_Tournament extends Model
      */
     public function players()
     {
-        return $this->hasMany('App\Models\Championship\Players');
+        return $this->belongsTo('App\Models\Championship\Players', 'id', 'player_id');
     }
+
 }

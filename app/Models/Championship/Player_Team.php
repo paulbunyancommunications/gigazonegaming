@@ -4,7 +4,7 @@ namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Players_Teams extends Model
+class Player_Team extends Model
 {
     /**
      * @var string
@@ -16,7 +16,7 @@ class Players_Teams extends Model
      *
      * @var string
      */
-    protected $table = 'players_teams';
+    protected $table = 'player_team';
 
 
     /**

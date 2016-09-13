@@ -21,13 +21,30 @@ class Team extends Model
     protected $fillable = ['name', 'emblem', 'captain', 'tournament_id','updated_by','updated_on'];
 
     /**
+     * Get game which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function game()
+    {
+        $tournament = $this->tournament()->first();
+        return Game::
+            join('tournaments','games.id', '=', 'tournaments.game_id')
+            ->leftJoin('teams','tournaments.id', '=', 'teams.tournament_id')
+            ->where('tournaments.id', '=', $tournament->id)
+            ->where('games.id', '=', $tournament->game_id)
+            ->where('teams.id', '=', $this->id)
+            ->select('games.*')
+            ;
+    }
+    /**
      * Get tournament which team is playing in
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function tournament()
     {
-        return $this->belongsTo('App\Models\Championship\Tournament');
+        return $this->belongsTo('App\Models\Championship\Tournament','tournament_id', 'id');
     }
 
     /**
