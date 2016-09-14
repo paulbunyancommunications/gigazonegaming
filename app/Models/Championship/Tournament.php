@@ -43,7 +43,7 @@ class Tournament extends Model
      */
     public function game()
     {
-        return $this->belongsTo('App\Models\Championship\Game', 'game_id');
+        return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id');
     }
 
 
@@ -56,13 +56,13 @@ class Tournament extends Model
         return $this->hasMany('App\Models\Championship\Team');
     }
 
-    /**
-     * Get players in this tournament
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function players()
-    {
-        return $this->belongsToMany('App\Models\Championship\Player');
-    }
+//    /**
+//     * Get players in this tournament
+//     *
+//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//     */
+//    public function players()
+//    {
+//        return $this->belongsToMany('App\Models\Championship\Player');
+//    }
 }

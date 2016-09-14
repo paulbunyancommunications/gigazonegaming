@@ -45,17 +45,17 @@ class Team extends Model
      */
     public function tournament()
     {
-        return $this->belongsTo('App\Models\Championship\Tournament','tournament_id', 'id');
+        return $this->belongsTo('App\Models\Championship\Tournament','tournament_id');
     }
 
-    /**
-     * Get players
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function players()
-    {
-        return $this->belongsToMany('App\Models\Championship\Player');
-    }
+//    /**
+//     * Get players
+//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//     */
+//    public function players()
+//    {
+//        return $this->belongsToMany('App\Models\Championship\Player');
+//    }
 
 
 
@@ -71,4 +71,13 @@ class Team extends Model
         }
         return Player::findOrFail($this->getAttribute('captain'));
     }
+
+
+//    public function addPlayer(Player $player){
+//        $tournament = $this->tournament;
+//        PlayerRelationable::addPlayer();
+//        PlayerRelationable::addPlayer();
+//        return true;
+//    }
+
 }
