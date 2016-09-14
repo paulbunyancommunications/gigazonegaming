@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PolymorphicTableForUser extends Migration
+class PolymorphicTableForPlayers extends Migration
 {
     /**
      * Run the migrations.
@@ -33,13 +33,14 @@ class PolymorphicTableForUser extends Migration
                             "player_id" => $player['player_id']
                         ]);
                 }
-                DB::connection('mysql_champ')
-                    ->table('player_relations')
-                    ->insert([
-                            'relation_type' => 'App\Models\Championship\Game',
-                            'relation_id' => $player['game_id'],
-                            "player_id" => $player['player_id']
-                        ]);
+                //we wont care about game relations
+//                DB::connection('mysql_champ')
+//                    ->table('player_relations')
+//                    ->insert([
+//                            'relation_type' => 'App\Models\Championship\Game',
+//                            'relation_id' => $player['game_id'],
+//                            "player_id" => $player['player_id']
+//                        ]);
                 DB::connection('mysql_champ')
                     ->table('player_relations')
                     ->insert(
