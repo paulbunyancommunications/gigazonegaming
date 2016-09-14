@@ -11,28 +11,28 @@ namespace App\Models\Championship;
 
 trait PlayerRelationable
 {
-    public function players(){
+    public function findPlayersRelations(){
         return $this->morphMany(
             PlayerRelation::class,
             'relation'
         );
     }
-    public function scopePlayers($query, Player $player){
+    public function findPlayerRelations($query, Player $player){
         return $query->whereHas('playerRelations', function ($query) use ($player) {
             $query->where('player_id', $player->id);
         });
     }
     public function hasPlayers(Player $player){
-        return $this->players()
+        return $this->findPlayersRelations()
             ->where('player_id', $player->id)
             ->exists();
     }
 
-    public function addPlayer(Player $player){
-        return $this->players()
-            ->where('player_id', $player->id)
-            ->exists();
-    }
+//    public function addPlayer(Player $player){
+//        return $this->findPlayersRelations()
+//            ->where('player_id', $player->id)
+//            ->exists();
+//    }
 
 
 

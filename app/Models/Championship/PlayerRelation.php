@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlayerRelation extends Model
 {
-
+    use PlayerRelationable;
     /**
      * @var string
      */
@@ -21,13 +21,5 @@ class PlayerRelation extends Model
     {
         parent::boot();
 
-    }
-
-    /**
-     * A player has a user account
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\Auth\Users\User', 'user_id');
     }
 }
