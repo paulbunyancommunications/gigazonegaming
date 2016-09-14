@@ -1,11 +1,11 @@
 
-@if($tournament!=[] and isset($tournament["id"]) and $tournament["id"]!='')
-<li>{{ Form::open(array('id' => "toForm".$tournament["id"], 'action' => array('Backend\Manage\TeamsController@filter'), 'class' => "toForms")) }}
+@if($tournament!=[] and isset($tournament["tournament_id"]) and $tournament["tournament_id"]!='')
+<li>{{ Form::open(array('id' => "toForm".$tournament["tournament_id"], 'action' => array('Backend\Manage\TeamsController@filter'), 'class' => "toForms")) }}
     <input name="_method" type="hidden" value="POST">
-    <input name="team_sort" type="hidden" value="{{$tournament["id"]}}">
+    <input name="team_sort" type="hidden" value="{{$tournament["tournament_id"]}}">
     {!!
         Form::submit(
-            $tournament["name"],
+            $tournament["tournament_name"],
             array('class'=>'tournamentName btn btn-default list')
         )
     !!}
@@ -13,9 +13,9 @@
 
     <div class='btn btn-primary list fa' title='{{$tournament["max_players"]}}' disabled>{{$tournament["max_players"]}}</div>
 
-    {{ Html::linkAction('Backend\Manage\TournamentsController@edit', '', array('tournament_id'=>$tournament["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
+    {{ Html::linkAction('Backend\Manage\TournamentsController@edit', '', array('tournament_id'=>$tournament["tournament_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
     &nbsp;&nbsp;
-    {{ Form::open(array('id' => "tournamentForm".$tournament["id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["id"]), 'class' => "deletingForms")) }}
+    {{ Form::open(array('id' => "tournamentForm".$tournament["tournament_id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $tournament["tournament_id"]), 'class' => "deletingForms")) }}
     <input name="_method" type="hidden" value="DELETE">
     {!!
         Form::submit(
