@@ -15,12 +15,12 @@ class AddVerificationCodeToTeamTable extends Migration
         if (!Schema::connection('mysql_champ')->hasColumn('teams', 'verification_code')) {
             Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
-                $table->string('verification_code')->default("aaaaaa")->after('name');
+                $table->string('verification_code')->default("abcdefgh")->after('name');
             });
         }
         $teamUpdated = \App\Models\Championship\Team::all()->toArray();
         foreach ($teamUpdated as $team){
-            \App\Models\Championship\Team::where('id','=',$team['id'])->update(['verification_code'=> str_random(6)]);
+            \App\Models\Championship\Team::where('id','=',$team['id'])->update(['verification_code'=> str_random(8)]);
         }
     }
 
