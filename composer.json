@@ -14,10 +14,10 @@
       "package": {
         "name": "wordpress",
         "type": "webroot",
-        "version": "4.6",
+        "version": "4.6.1",
         "dist": {
           "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.6.zip"
+          "url": "https://github.com/WordPress/WordPress/archive/4.6.1.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -63,6 +63,21 @@
         "dist": {
           "type": "zip",
           "url": "https://downloads.wordpress.org/plugin/cornerstone.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "lopo/duplicate-post",
+        "type": "wordpress-plugin",
+        "version": "2.6",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/duplicate-post.2.6.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -126,6 +141,7 @@
     "paulbunyannet/autoversion": "~1.0",
     "pmenard/media-tags": "3.2.0.2",
     "nacin/link-manager": "0.1-beta",
+    "lopo/duplicate-post": "2.6",
     "paulbunyannet/bandolier": "1.2.*",
     "twig/twig": "^1.24",
     "cocur/slugify": "^1.4",
@@ -149,7 +165,7 @@
     "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
     "ircmaxell/password-compat": "^1.0",
     "greggilbert/recaptcha": "^2.1",
-    "paulbunyannet/form_mail": "^1.2"
+    "paulbunyannet/form_mail": "1.2.x"
 
   },
   "require-dev": {
