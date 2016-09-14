@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\Tournament;
 use App\Models\WpUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -39,15 +40,9 @@ class GamesController extends Controller
         $game->name = $request['name'];
         $game->updated_by =  $this->getUserId();
         $game->updated_on = Carbon::now("CST");
+        $game->created_at = \Carbon\Carbon::now();
+        $game->updated_at = \Carbon\Carbon::now();
         $game->save();
-//        dd($toUpdate);
-//        dd("passed request");
-//        $request->save('id', $request->getRouteKey())->update(
-////        Game::where('id', $game->getRouteKey())->update(
-//            $toUpdate
-//        );
-//        return View::make('game/game')->with("games", $this->retrieveGames())->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
-//        $game->save();
         return $this->index();
     }
 
@@ -61,18 +56,6 @@ class GamesController extends Controller
     public function store(Game $game)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
-//        $updatedBy = $this->getUserId();
-//        $updatedOn = Carbon::now("CST");
-//        $toUpdate = array_merge($request->all(), [
-//            'updated_by' => $updatedBy,
-//            'updated_on' => $updatedOn
-//        ] );
-//        unset($toUpdate['_token']);
-//        unset($toUpdate['_method']);
-//        unset($toUpdate['id']);
-//        unset($toUpdate['reset']);
-//        unset($toUpdate['submit']);
-//        Game::save($toUpdate);
     }
 
     /**
@@ -120,7 +103,6 @@ class GamesController extends Controller
 //        dd($toUpdate);
 //        dd("passed request");
         $game->where('id', $game->getRouteKey())->update(
-//        Game::where('id', $game->getRouteKey())->update(
             $toUpdate
         );
         return View::make('game/game')->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
@@ -134,8 +116,11 @@ class GamesController extends Controller
      */
     public function destroy(Game $game)
     {
-        $game->where('id', $game->getRouteKey())->delete();
-//        return View::make('game/game')->with("games", $this->retrieveGames());
+//        $tournaments = Tournament::where('tournament_id', '=', $game->getRouteKey())->select("id")->get()->toArray();
+//        foreach ($tournaments as $tournament)
+//        Tournament::where('tournament_id', '=', $game->getRouteKey())->delete();
+//        $game->where('id', $game->getRouteKey())->delete();
+
         return redirect('/manage/game');
     }
 }

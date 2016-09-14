@@ -65,4 +65,13 @@ class Game extends Model
     {
         return $query->where('name', $name)->first();
     }
+    /**
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
+    public function scopeById($query, $name)
+    {
+        return $query->where('name', $name)->first();
+    }
 }
