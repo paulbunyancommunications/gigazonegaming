@@ -46,6 +46,7 @@ class TeamsController extends Controller
         $team->emblem = $request['emblem'];
         $team->updated_by =  $this->getUserId();
         $team->updated_on = Carbon::now("CST");
+        $team->verification_code= str_random(8);
         $team->save();
         Cache::forget('teams_c');
         return $this->index();
