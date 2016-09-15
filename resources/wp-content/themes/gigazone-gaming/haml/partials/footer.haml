@@ -33,5 +33,9 @@
         .col-sm-6
           .sidebar
             .sidebar-social-media
-              {% include 'partials/social-media.twig' %}
+              %ul{:class=>"inline-list"}
+                %li
+                  {% include 'partials/social-media.twig' %}
+                %li
+                  {% include "partials/wigets/constant_contact_signup_button.twig" %}
 {% include "partials/footer-js.twig" %}

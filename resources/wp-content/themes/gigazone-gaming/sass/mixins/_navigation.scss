@@ -19,7 +19,7 @@
 
   &:hover, &:active {
     color: $color-white;
-    @include dark-pattern-background();
+    background: $color-dark-gray;
   }
 }
 

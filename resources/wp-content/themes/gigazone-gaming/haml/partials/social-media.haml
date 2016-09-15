@@ -2,7 +2,7 @@
 {% for social in social_links %}
 {% if social.link_url != "#" %}
 %div{:class=>"social-media{% if loop.first == true%} first{% elseif loop.last == true %} last{%endif%}"}
-  %a{:href=>"{{ social.link_url }}", :target=>"{{ social.link_target }}"}
+  %a{:href=>"{{ social.link_url }}", :target=>"{{ social.link_target }}", :class=>"btn btn-social"}
     %i{:class=>"fa fa-{{ social.link_name|slugify }}"}
 {% endif %}
 {% endfor %}

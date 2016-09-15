@@ -21,8 +21,8 @@
 
   // special case for when the sidebar class is called in the footer
   [class^="footer-"] & {
-    @include margin(1,0,.5,0);
-    paddding: 0;
+    @include margin(0,0); // HOOT
+    @include padding-top(0.5);
     background: none;
   }
 

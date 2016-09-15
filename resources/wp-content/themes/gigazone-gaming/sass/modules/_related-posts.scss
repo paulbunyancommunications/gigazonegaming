@@ -1,0 +1,56 @@
+.related-posts {
+  @include margin-bottom(1.5);
+
+  &-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background: $color-gz-gray;
+    @include max-h(12);
+    overflow: hidden;
+    @include border-radius(5px);
+  }
+
+  &-image {
+    position: relative;
+    @include background-image(linear-gradient($color-gz-gray 20%, $color-gz-orange 75%, $color-white));
+
+    a {
+      display: block;
+      position: relative;
+      @include height(12);
+      width: 100%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      @include background-size(cover);
+      @include opacity(.3);
+    }
+    img {
+      @include opacity(.1);
+      max-height:  100%;
+      width: auto;
+    }
+  }
+
+  &-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include padding-equal(1);
+
+    &-text {
+      color: $color-white;
+      @include font-size(2);
+      @include line-height(1.625);
+      a {
+        color: $color-white;
+        &:visited, &active, &:hover {
+          color: $color-white;
+        }
+      }
+    }
+
+
+  }
+}
