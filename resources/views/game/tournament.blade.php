@@ -47,9 +47,9 @@
                 <select type="text" name="game_id" id="game_id"  style="width:350px; text-align:left;">
                     <option>---</option>
                     @foreach($games as $key => $game)
-                        <option value="{{$game['id']}}"
-                                @if(isset($theTournament['game_id']) and $theTournament['game_id'] == $game['id']) selected @endif
-                        >{{ $game['name'] }}</option>
+                        <option value="{{$game['game_id']}}"
+                                @if(isset($theTournament['game_id']) and $theTournament['game_id'] == $game['game_id']) selected @endif
+                        >{{ $game['game_name'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -68,9 +68,9 @@
         <select name="game_sort" id="game_sort" style="width:280px; text-align:left;">
             <option> --- </option>
             @foreach($games as $g)
-                <option id="g_option{{$g['id']}}" value="{{$g['id']}}"
-                @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
-                >{{$g['name']}}</option>
+                <option id="g_option{{$g['game_id']}}" value="{{$g['game_id']}}"
+                @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
+                >{{$g['game_name']}}</option>
             @endforeach
         </select>
         {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search', 'style'=>'width:70px; text-align:center;')) !!}
