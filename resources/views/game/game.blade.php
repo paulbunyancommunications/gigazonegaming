@@ -59,20 +59,20 @@
         @else
             @foreach($games as $id => $game)
                 <li>
-                    {{ Form::open(array('id' => "toForm".$game["id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms")) }}
+                    {{ Form::open(array('id' => "toForm".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms")) }}
                     <input name="_method" type="hidden" value="POST">
-                    <input name="game_sort" type="hidden" value="{{$game["id"]}}">
+                    <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
                     {!!
                         Form::submit(
-                            $game["name"],
+                            $game["game_name"],
                             array('class'=>'gameName btn btn-default list')
                         )
                     !!}
                     {{ Form::close() }}
                     &nbsp;&nbsp;
-                    {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
+                    {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>"Edit")) }}
                     &nbsp;&nbsp;
-                    {{ Form::open(array('id' => "gameForm".$game["id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["id"]), 'class' => "deletingForms")) }}
+                    {{ Form::open(array('id' => "gameForm".$game["game_id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["game_id"]), 'class' => "deletingForms")) }}
                     <input name="_method" type="hidden" value="DELETE">
                     {!!
                         Form::submit(
