@@ -114,8 +114,8 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function tournaments()
     {
-        $tournamentss = Tournament::orderBy('name')->get()->toArray();
-        return $tournamentss;
+        $tournaments = Tournament::select('tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id')->orderBy('name')->get()->toArray();
+        return $tournaments;
     }
 
     /**

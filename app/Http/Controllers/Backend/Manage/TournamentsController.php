@@ -126,6 +126,7 @@ class TournamentsController extends Controller
      */
     public function filter(Request $ids)
     {
+        dd("here");
         if(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
             if(is_numeric($ids->game_sort)){
                 $game = trim($ids->game_sort);
