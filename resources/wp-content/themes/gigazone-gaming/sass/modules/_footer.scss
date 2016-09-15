@@ -76,7 +76,7 @@
 }
 
 .footer-bottom {
-  background: $color-dark-gray;
+  @include dark-pattern-background();
   color: $color-light-gray;
   @include padding-bottom(1);
 
