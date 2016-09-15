@@ -26,6 +26,15 @@ class PlayersController extends Controller
      */
     public function index()
     {
+
+        $allPlayers = Player::
+        join('player_team', 'players.id', '=', 'player_team.player_id')
+            ->join('player_tournament', 'players.id', '=', 'player_tournament.player_id')
+            ->join('tournaments', 'tournaments.id', '=', 'player_tournament.tournament_id')
+            ->join('games', 'games.id', '=', 'tournaments.game_id')
+//            ->select('players.id as player_id', 'games.id as game_id','player_team.verification_code as token', 'player_team.team_id', 'player_tournament.tournament_id as tournament_id')
+            ->get()->toArray();
+        dd($allPlayers);
         return View::make('game/player');
     }
 

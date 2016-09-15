@@ -34,6 +34,7 @@ class Tournament extends Model
 
             /** @var Tournament $tournament */
             $tournament->teams()->delete();
+            $tournament->findPlayersRelations()->delete(); //this should delete the relations not the players
 
         });
     }
@@ -55,14 +56,4 @@ class Tournament extends Model
     {
         return $this->hasMany('App\Models\Championship\Team');
     }
-
-//    /**
-//     * Get players in this tournament
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function players()
-//    {
-//        return $this->belongsToMany('App\Models\Championship\Player');
-//    }
 }

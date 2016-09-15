@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Championship\Game;
+use PhpParser\Node\Expr\Array_;
 use \View;
 use \Cache;
 
@@ -29,30 +30,39 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['game.game'], function ($view) {
-            $view->with('games', $this->games());
+        $games = $this->games();
+        View::composer(['game.game'], function ($view) use ($games) {
+            $view->with('games', $games);
         });
-        View::composer(['game.tournament'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments());
+        $tournaments = $this->tournaments();
+        View::composer(['game.tournament'], function ($view) use ($games, $tournaments) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments);
         });
-        View::composer(['game.team'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->teams())
-                ->with('players', $this->players($this->teams()));
+
+        $player_team_count = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
+
+        $teams = $this->teams($player_team_count);
+
+        $players = $this->players($teams, $player_team_count);
+
+        View::composer(['game.team'], function ($view) use ($games, $tournaments, $teams, $players) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', $players);
         });
-        View::composer(['game.player'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->teams())
-                ->with('players', $this->players($this->teams()));
+        View::composer(['game.player'], function ($view) use ($games, $tournaments, $teams, $players) {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', $players);
         });
-        View::composer(['game.individualPlayer'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->teams())
-                ->with('individualPlayers', $this->individualPlayers());
+        View::composer(['game.individualPlayer'], function ($view) use ($games, $tournaments, $teams, $players)  {
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('individualPlayers', $this->individualPlayers($players));
         });
     }
 
@@ -69,11 +79,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return array
      */
-    public function teams()
+    public function teams($player_team)
     {
         $teams = Team::orderBy('name')->get()->toArray();
-
-        $player_team = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
 
         foreach ($teams as $key => $team) {
             $max_p = Tournament::where('tournaments.id','=', $team['tournament_id'])->first()->toArray()['max_players'];
@@ -96,24 +104,27 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param $teams
      * @return mixed
      */
-    public function players($teams)
+    public function players($player_team_count)
     {
         $teamIds = [];
-        foreach ($teams as $k => $t) {
-            $teamIds[$t['id']] = 1;
+        foreach ($player_team_count as $k => $t) {
+            $teamIds[$t['id']] = $t['team_count'];
         }
+
+
+        //todo Check team player variable below,
+        // make a model function from it and make it work with so it can be call and be more specific as well
+        // I mean, specify a game, tournament, game or even player
+
+
         $players = Player::
             join('player_relations', 'players.id', '=', 'player_relations.player_id')
-            ->join('teams', function($join)
+            ->join('teams', function($join2)
             {
-                $join->on('teams.id', '=', 'player_relations.relation_id');
-                $join->where('player_relations.relation_type','like', "%Team");
+                $join2->on('teams.id', '=', 'player_relations.relation_id');
+                $join2->where('player_relations.relation_type','like', "%Team");
             })
-            ->join('tournaments', function($join)
-            {
-                $join->on('tournaments.id', '=', 'player_relations.relation_id');
-                $join->where('player_relations.relation_type','like', "%Tournament");
-            })
+            ->join('tournaments','tournaments.id','=', 'teams.tournament_id')
             ->join('games','games.id','=', 'tournaments.game_id')
             ->select(
                 'players.id as id',
@@ -122,7 +133,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 'players.username',
                 'players.name',
                 'players.phone',
-                'player_team.verification_code as verification_code',
+                'teams.verification_code as verification_code',
                 'teams.id as team_id',
                 'teams.name as team_name',
                 'teams.captain as captain',
@@ -136,16 +147,16 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             ->orderBy('team_id')
             ->get()
             ->toArray();
-        $teams = Player_Team::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
 
         foreach ($players as $key => $player) {
             if(!array_key_exists($player['team_id'], $teamIds)){
                 $players[$key]['team_name'] = " Doesn't Exist Anymore!!!!!";
                 $players[$key]['team_count'] = "x";
             }else {
-                foreach ($teams as $k => $t) {
-                    if ($t['team_id'] == $player['team_id']) {
-                        $players[$key]['team_count'] = $t['team_count'];
+                foreach ($teamIds as $k => $t) {
+                    if ($t['team_id'] == $k) {
+                        dd("here");
+                        $players[$key]['team_count'] = $t;
                     }
                 }
             }
@@ -157,17 +168,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return mixed
      */
-    public function individualPlayers()
+    public function individualPlayers($players)
     {
-//        if (Cache::has('individual_player_c') and $this->getExpiredAt() != null and $this->getExpiredAt() > Carbon::now()->toDateTimeString()) {
-//            return Cache::get('individual_player_c');
-//        }
-        $players = Player::all()->toArray();
-        $users = DB::table('players')
-            ->join('player_team', 'players.id', '=', 'player_team.players_id')
-            ->where()
-            ->get();
-        Cache::put('individual_player_c', $players, $this->getExpiresAt());
+        dd($players);
         return $players;
     }
 
@@ -176,8 +179,8 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function tournaments()
     {
-        $tournaments = Tournament::orderBy('name')->get()->toArray();
-        return $tournaments;
+        $tournamentss = Tournament::orderBy('name')->get()->toArray();
+        return $tournamentss;
     }
 
     /**

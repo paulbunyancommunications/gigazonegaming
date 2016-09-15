@@ -48,16 +48,6 @@ class Team extends Model
         return $this->belongsTo('App\Models\Championship\Tournament','tournament_id');
     }
 
-//    /**
-//     * Get players
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function players()
-//    {
-//        return $this->belongsToMany('App\Models\Championship\Player');
-//    }
-
-
 
     /**
      * Get team captain
