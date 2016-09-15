@@ -137,17 +137,17 @@ class TeamsController extends Controller
      */
     public function destroy_soft(Team $team)
     {
-        $players = Player::
-            join("player_team",'players.id','=','player_team.player_id')
-            ->where("team_id", $team->getRouteKey())
-                ->get()
-                ->toArray();
-//        dd($players);
-        foreach($players as $player){
-            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
-        }
-        Team::where("id", $team->getRouteKey())->delete();
-        Cache::flush();
+//        $players = Player::
+//            join("player_team",'players.id','=','player_team.player_id')
+//            ->where("team_id", $team->getRouteKey())
+//                ->get()
+//                ->toArray();
+////        dd($players);
+//        foreach($players as $player){
+//            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
+//        }
+//        Team::where("id", $team->getRouteKey())->delete();
+//        Cache::flush();
         return redirect('/manage/team');
     }
 //
@@ -159,18 +159,18 @@ class TeamsController extends Controller
      */
     public function destroy_hard(Team $team)
     {
-        $players = Player::
-        join("player_team",'players.id','=','player_team.player_id')
-            ->where("team_id", $team->getRouteKey())
-            ->get()
-            ->toArray();
-        foreach($players as $player){
-            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
-            Player::where('id', '=', $player['player_id'])->delete();
-            Player_Tournament::where('player_id', '=', $player['player_id'])->delete();
-        }
-        Team::where("id", $team->getRouteKey())->delete();
-        Cache::flush();
+//        $players = Player::
+//        join("player_team",'players.id','=','player_team.player_id')
+//            ->where("team_id", $team->getRouteKey())
+//            ->get()
+//            ->toArray();
+//        foreach($players as $player){
+//            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
+//            Player::where('id', '=', $player['player_id'])->delete();
+//            Player_Tournament::where('player_id', '=', $player['player_id'])->delete();
+//        }
+//        Team::where("id", $team->getRouteKey())->delete();
+//        Cache::flush();
         return redirect('/manage/team');
     }
     /**
@@ -181,54 +181,54 @@ class TeamsController extends Controller
      */
     public function filter(Request $ids)
     {
-        if(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
-            if(is_numeric($ids->tournament_sort)){
-                $tourn = trim($ids->tournament_sort);
-            }else {
-                $tourn = "%" . trim($ids->tournament_sort) . "%";
-            }
-
-            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('tournaments.id', 'like', $tourn)
-                ->orWhere('tournaments.name', 'like', $tourn)
-                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
-                ->groupBy('id')
-                ->get()
-                ->toArray();
-        }elseif(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
-            if(is_numeric($ids->game_sort)){
-                $tourn = trim($ids->game_sort);
-            }else {
-                $tourn = "%" . trim($ids->game_sort) . "%";
-            }
-            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('games.id', 'like', $tourn)
-                ->orWhere('games.name', 'like', $tourn)
-                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
-                ->groupBy('id')
-                ->get()
-                ->toArray();
-        }else {
-            $teams = Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['teams.id as id', 'teams.name as name', 'teams.emblem as emblem', 'teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id', 'games.name as game_name'])
-                ->groupBy('id')
-                ->get()
-                ->toArray();
-        }
-
-        $times = Player_Team::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
-        foreach ($teams as $key => $team) {
-            foreach ($times as $k => $t) {
-                if ($team['id'] == $t['team_id']) {
-                    $teams[$key]['team_count'] = $t['team_count'];
-                    break;
-                }
-            }
-        }
-//        dd($teams);
+//        if(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
+//            if(is_numeric($ids->tournament_sort)){
+//                $tourn = trim($ids->tournament_sort);
+//            }else {
+//                $tourn = "%" . trim($ids->tournament_sort) . "%";
+//            }
+//
+//            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+//                ->join('games', 'games.id', '=', 'tournaments.game_id')
+//                ->where('tournaments.id', 'like', $tourn)
+//                ->orWhere('tournaments.name', 'like', $tourn)
+//                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+//                ->groupBy('id')
+//                ->get()
+//                ->toArray();
+//        }elseif(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+//            if(is_numeric($ids->game_sort)){
+//                $tourn = trim($ids->game_sort);
+//            }else {
+//                $tourn = "%" . trim($ids->game_sort) . "%";
+//            }
+//            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+//                ->join('games', 'games.id', '=', 'tournaments.game_id')
+//                ->where('games.id', 'like', $tourn)
+//                ->orWhere('games.name', 'like', $tourn)
+//                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+//                ->groupBy('id')
+//                ->get()
+//                ->toArray();
+//        }else {
+//            $teams = Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+//                ->join('games', 'games.id', '=', 'tournaments.game_id')
+//                ->select(['teams.id as id', 'teams.name as name', 'teams.emblem as emblem', 'teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id', 'games.name as game_name'])
+//                ->groupBy('id')
+//                ->get()
+//                ->toArray();
+//        }
+//
+//        $times = Player_Team::select(DB::raw("COUNT(team_id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
+//        foreach ($teams as $key => $team) {
+//            foreach ($times as $k => $t) {
+//                if ($team['id'] == $t['team_id']) {
+//                    $teams[$key]['team_count'] = $t['team_count'];
+//                    break;
+//                }
+//            }
+//        }
+////        dd($teams);
         return View::make('game/team')->with("teams_filter", $teams)->with('sorts',$ids);
     }
 
