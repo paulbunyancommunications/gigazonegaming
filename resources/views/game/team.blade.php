@@ -53,7 +53,7 @@
                         @foreach($players as $key => $player)
                             @if(isset($theTeam->name))
                                 @if($theTeam->id == $player['team_id'])
-                                    <option value="{{$player['player_id']}}" @if( isset($theTeam->captain) and $theTeam->captain==$player['player_id']) selected @endif>{{ $player['username'] }}</div>
+                                    <option value="{{$player['player_id']}}" @if( isset($theTeam->captain) and $theTeam->captain==$player['player_id']) selected @endif>{{ $player['player_username'] }}</div>
                                 @endif
                             @endif
                         @endforeach
@@ -64,7 +64,7 @@
                 <select type="text" name="tournament_id" id="tournament_id"  style="width:350px; text-align:left;">
                     <option>---</option>
                     @foreach($tournaments as $key => $tournament)
-                        <option value="{{$tournament['id']}}" @if(isset($theTeam['tournament_id']) and $theTeam['tournament_id'] == $tournament['id']) selected @endif>{{ $tournament['name'] }}</option>
+                        <option value="{{$tournament['tournament_id']}}" @if(isset($theTeam['tournament_id']) and $theTeam['tournament_id'] == $tournament['tournament_id']) selected @endif>{{ $tournament['tournament_name'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -84,18 +84,18 @@
 
             <option> --- </option>
             @foreach($games as $g)
-                <option id="t_option{{$g['id']}}" value="{{$g['id']}}" class="gameSelector"
-                        @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
-                >{{$g['name']}}</option>
+                <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
+                        @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
+                >{{$g['game_name']}}</option>
             @endforeach
         </select>
         <br />
         <label for="tournament_sort" style="width:180px; text-align:right;">Filter by Tournament: </label> <select name="tournament_sort" id="tournament_sort" style="width:280px; text-align:left;">
             <option> --- </option>
             @foreach($tournaments as $g)
-                <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
-                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
-                >{{$g['name']}}</option>
+                <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
+                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
+                >{{$g['tournament_name']}}</option>
             @endforeach
         </select>
         {!! Form::submit( 'Filter', array('class'=>'btn btn-default list fa fa-search', 'style'=>'width:70px; text-align:center;')) !!}

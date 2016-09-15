@@ -177,22 +177,37 @@ class TeamsController extends Controller
      * Display the specified resource.
      *
      * @param  Request $ids
+     * max is a game and a tournament id
      * @return \Illuminate\Http\Response
      */
     public function filter(Request $ids)
     {
-//        if(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
-//            if(is_numeric($ids->tournament_sort)){
-//                $tourn = trim($ids->tournament_sort);
-//            }else {
-//                $tourn = "%" . trim($ids->tournament_sort) . "%";
-//            }
+        $tournament = '';
+        $game = '';
+        if(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
+            $tournament = trim($ids->tournament_sort);
+        }
+        if(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+            $game = trim($ids->game_sort);
+        }
 //
-//            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-//                ->join('games', 'games.id', '=', 'tournaments.game_id')
-//                ->where('tournaments.id', 'like', $tourn)
-//                ->orWhere('tournaments.name', 'like', $tourn)
-//                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
+
+        $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+            ->join('games', 'games.id', '=', 'tournaments.game_id');
+        if($tournament!=''){
+            $teams->where('tournaments.id', '=', $tournament);
+        }
+        if($game!=''){
+            $teams->where('games.id', '=', $game);
+        }
+        $teams->select(['teams.id as team_id',
+            'teams.name as team_name',
+            'teams.emblem as emblem',
+            'tournaments.name as tournament_name',
+            'tournaments.game_id',
+            'tournaments.id as tournament_id',
+            'games.name as game_name'
+        ]);
 //                ->groupBy('id')
 //                ->get()
 //                ->toArray();
