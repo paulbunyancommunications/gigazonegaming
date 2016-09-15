@@ -202,7 +202,6 @@ class PlayersController extends Controller
                     'tournaments.id as tournament_id',
                     'tournaments.name as tournament_name',
                     'tournaments.max_players as max_players',
-                    'tournaments.max_players as max_number_of_players',
                     'games.id as game_id',
                     'games.name as game_name'
                 )
