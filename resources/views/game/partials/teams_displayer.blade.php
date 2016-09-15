@@ -1,7 +1,7 @@
 <li>{{ Form::open(array('id' => "toForm".$team["id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
     <input name="_method" type="hidden" value="POST">
     <input name="team_sort" type="hidden" value="{{$team["id"]}}">
-    <?php if(!isset($team['max_number_of_players'])) {$team['max_number_of_players'] = 0;} ?>
+    <?php if(!isset($team['max_players'])) {$team['max_players'] = 0;} ?>
     {!!
         Form::submit(
             $team["name"],
@@ -9,12 +9,12 @@
         )
     !!}
     <div class="btn disabled fa
-                            @if(!isset($team['team_count']) or $team['team_count'] < $team['max_number_of_players']) btn-warning" style="color:black!important;"
+                            @if(!isset($team['team_count']) or $team['team_count'] < $team['max_players']) btn-warning" style="color:black!important;"
          @else btn-primary"
     @endif >&#xf0c0;
     @if(isset($team['team_count'])){{$team['team_count']}}
     @else 0
-    @endif / {{$team['max_number_of_players']}}
+    @endif / {{$team['max_players']}}
     </div>
     {{ Form::close() }}
 
