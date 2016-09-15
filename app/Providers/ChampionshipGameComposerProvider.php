@@ -19,6 +19,7 @@ use \Cache;
 
 class ChampionshipGameComposerProvider extends ServiceProvider
 {
+    use PlayerRelationable;
     protected $expiresAt;
     protected $expiredAt;
     protected $maxPlayers = 0;
@@ -40,11 +41,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 ->with('tournaments', $tournaments);
         });
 
-        $player_team_count = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
+        $teams = $this->teams();
 
-        $teams = $this->teams($player_team_count);
-
-        $players = $this->players($teams, $player_team_count);
+        $players = $this->getPlayersInfoBy();
 
         View::composer(['game.team'], function ($view) use ($games, $tournaments, $teams, $players) {
             $view->with('games', $games)
@@ -79,8 +78,10 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     /**
      * @return array
      */
-    public function teams($player_team)
+    public function teams()
     {
+        $player_team = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
+
         $teams = Team::orderBy('name')->get()->toArray();
 
         foreach ($teams as $key => $team) {
@@ -88,83 +89,17 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             foreach ($player_team as $k => $p) {
                 if ($team['id'] == $p['team_id']) {
                     $teams[$key]['team_count'] = $p['team_count'];
-                    $teams[$key]['max_number_of_players'] = $max_p;
+                    $teams[$key]['max_players'] = $max_p;
 //                    break;
                 }
                 if($player_team == []){
                     $teams[$key]['team_count'] = 0;
-                    $teams[$key]['max_number_of_players'] = $max_p;
+                    $teams[$key]['max_players'] = $max_p;
                 }
             }
         }
         return $teams;
     }
-
-    /**
-     * @param $teams
-     * @return mixed
-     */
-    public function players($player_team_count)
-    {
-        $teamIds = [];
-        foreach ($player_team_count as $k => $t) {
-            $teamIds[$t['id']] = $t['team_count'];
-        }
-
-
-        //todo Check team player variable below,
-        // make a model function from it and make it work with so it can be call and be more specific as well
-        // I mean, specify a game, tournament, game or even player
-
-
-        $players = Player::
-            join('player_relations', 'players.id', '=', 'player_relations.player_id')
-            ->join('teams', function($join2)
-            {
-                $join2->on('teams.id', '=', 'player_relations.relation_id');
-                $join2->where('player_relations.relation_type','like', "%Team");
-            })
-            ->join('tournaments','tournaments.id','=', 'teams.tournament_id')
-            ->join('games','games.id','=', 'tournaments.game_id')
-            ->select(
-                'players.id as id',
-                'players.id as player_id',
-                'players.email',
-                'players.username',
-                'players.name',
-                'players.phone',
-                'teams.verification_code as verification_code',
-                'teams.id as team_id',
-                'teams.name as team_name',
-                'teams.captain as captain',
-                'tournaments.id as tournament_id',
-                'tournaments.name as tournament_name',
-                'tournaments.max_players as max_players',
-                'tournaments.max_players as max_number_of_players',
-                'games.id as game_id',
-                'games.name as game_name'
-            )
-            ->orderBy('team_id')
-            ->get()
-            ->toArray();
-
-        foreach ($players as $key => $player) {
-            if(!array_key_exists($player['team_id'], $teamIds)){
-                $players[$key]['team_name'] = " Doesn't Exist Anymore!!!!!";
-                $players[$key]['team_count'] = "x";
-            }else {
-                foreach ($teamIds as $k => $t) {
-                    if ($t['team_id'] == $k) {
-                        dd("here");
-                        $players[$key]['team_count'] = $t;
-                    }
-                }
-            }
-
-        }
-        return $players;
-    }
-
     /**
      * @return mixed
      */
