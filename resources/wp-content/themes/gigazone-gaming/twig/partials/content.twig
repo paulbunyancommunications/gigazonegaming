@@ -1,16 +1,5 @@
-{% if tag is defined %}
-    {% include "partials/title/tag-title.twig" %}
-{% elseif category is defined %}
-    {% include "partials/title/category-title.twig" %}
-{% elseif function('is_archive') %}
-    {% if author is defined %}
-        {% include "partials/title/author-title.twig" with {'author':author} %}
-    {% else %}
-        {% include "partials/title/archive-title.twig" %}
-    {% endif %}
-{% elseif is_author is defined and is_author == true %}
-    {% include "partials/title/author-title.twig" with {'author':author} %}
-{% endif %}
+{# titles for content #}
+{% include "partials/title/switch-title.twig" %}
 
 {% if posts is defined and posts|length >= 1 and single is not defined and post is not defined %}
     {% include "partials/title/section-title.twig" %}
@@ -52,6 +41,9 @@
             {% include "partials/post/post-permalink.twig" %}
             {% include "partials/post/post-tags.twig" %}
             {% include "partials/post/post-comments.twig" with {'post':post} %}
+            {% if related is defined %}
+                {% include "partials/post/post-related.twig" with {'related':related} %}
+            {% endif %}
         {% endif %}
     </div>
 {% else %}

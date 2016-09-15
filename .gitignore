@@ -66,3 +66,4 @@ gzgaming_sentinel.sql
 database/dump/gzgaming_champ_db.sql
 database/dump/gzgaming_wp.sql
 form-template.haml.old
+public_html/app/content
