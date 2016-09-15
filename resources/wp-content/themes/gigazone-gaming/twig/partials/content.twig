@@ -41,13 +41,11 @@
             {% include "partials/post/post-permalink.twig" %}
             {% include "partials/post/post-tags.twig" %}
             {% include "partials/post/post-comments.twig" with {'post':post} %}
-            {% if related is defined %}
-                {% include "partials/post/post-related.twig" with {'related':related} %}
-            {% endif %}
         {% endif %}
     </div>
 {% else %}
     <p>No posts at this time. Check back later.</p>
 {% endif %}
 {% include "partials/pagination.twig" %}
+{% include "partials/post/post-related.twig" %}
 

@@ -14,9 +14,29 @@
   height: #{ $number * $leading-rem + 'rem'};
 }
 
+@mixin max-h($number) {
+  max-height: #{ $number * $leading + 'px'};
+  max-height: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin min-h($number) {
+  min-height: #{ $number * $leading + 'px'};
+  min-height: #{ $number * $leading-rem + 'rem'};
+}
+
 @mixin width($number) {
   width: #{ $number * $leading + 'px'};
   width: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin max-w($number) {
+  max-width: #{ $number * $leading + 'px'};
+  max-width: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin min-w($number) {
+  min-width: #{ $number * $leading + 'px'};
+  min-width: #{ $number * $leading-rem + 'rem'};
 }
 
 @mixin top($number) {

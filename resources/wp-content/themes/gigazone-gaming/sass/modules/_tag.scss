@@ -53,12 +53,14 @@
         margin-top: 0 !important;
         display: block;
         line-height: normal;
+        text-align: left;
       }
       @include mq-phone {
         float: none;
         margin-top: 0 !important;
         display: block;
         line-height: normal;
+        text-align: left;
       }
     }
 

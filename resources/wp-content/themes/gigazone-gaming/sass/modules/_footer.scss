@@ -78,6 +78,7 @@
 .footer-bottom {
   background: $color-dark-gray;
   color: $color-light-gray;
+  @include padding-bottom(1);
 
   .text-left, .text-right {
     @include mq_phone {
@@ -126,14 +127,24 @@
       display: none;
     }
 
-    a {
+    a:not(.btn) {
       color: $color-light-gray;
       &:hover {
         color: $color-white
       }
     }
   }
+}
 
+.footer-container {
+  .social-media {
+    @include margin-top(.5);
+  }
 
-
+  .sidebar-social-media > .inline-list {
+    @include margin-top(0);
+    @include margin-bottom(0);
+    @include padding-bottom(0);
+    @include padding-top(0);
+  }
 }
