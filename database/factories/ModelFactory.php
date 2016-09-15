@@ -54,15 +54,15 @@ $factory->define(App\Models\Championship\Player::class, function (Faker\Generato
     ];
 });
 
-$factory->define(App\Models\Championship\IndividualPlayer::class, function (Faker\Generator $faker) {
-
-    return [
-        'username' => $faker->userName,
-        'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
-        'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
-    ];
-});
+//$factory->define(App\Models\Championship\IndividualPlayer::class, function (Faker\Generator $faker) {
+//
+//    return [
+//        'username' => $faker->userName,
+//        'email' => $faker->email,
+//        'phone' => $faker->phoneNumber,
+//        'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
+//    ];
+//});
 
 $factory->define(App\Models\Championship\Tournament::class, function (Faker\Generator $faker) {
 
