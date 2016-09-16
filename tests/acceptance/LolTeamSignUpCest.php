@@ -3,18 +3,18 @@ namespace Tests\Acceptance;
 
 use \AcceptanceTester;
 use Pbc\Bandolier\Type\Numbers;
-class LolTeamSignUpCest
+class LolTeamSignUpCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;
 
     public function _before(AcceptanceTester $I)
     {
-
+        parent::_before($I);
     }
 
     public function _after(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_after($I);
     }
 
     // tests

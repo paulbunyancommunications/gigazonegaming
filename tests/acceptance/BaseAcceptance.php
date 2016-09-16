@@ -6,6 +6,22 @@ class BaseAcceptance
 
     public function _before(AcceptanceTester $I)
     {
+        // run migrations
+        $I->runMigration($I);
+    }
+
+    public function _after(AcceptanceTester $I)
+    {
+        // reset all the databases
+        $this->resetDB($I);
+        $I->runMigration($I);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function resetDB(AcceptanceTester $I)
+    {
         // reset all the databases
         $I->populateDatabase($I, [
             'server' => getenv('DB_HOST'),
@@ -21,13 +37,6 @@ class BaseAcceptance
             'database' => getenv('DB_DATABASE_CHAMP'),
             'dump' => 'database/dump/gzgaming_champ_db.sql',
         ]);
-        // run migrations
-        $I->runMigration($I);
-    }
 
-    public function _after(AcceptanceTester $I)
-    {
-        // run migrations after test completes
-        $I->runMigration($I);
     }
 }

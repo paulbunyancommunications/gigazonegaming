@@ -3,21 +3,21 @@ namespace Tests\Acceptance;
 
 use AcceptanceTester;
 
-class ContactFormCest
+class ContactFormCest extends \BaseAcceptance
 {
 
     protected $faker;
 
     public function _before(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_before($I);
         $I->amOnPage('/about/contact-us/');
         $I->waitForJs('return jQuery.active == 0', 10);
     }
 
     public function _after(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_after($I);
     }
 
     public function __construct()

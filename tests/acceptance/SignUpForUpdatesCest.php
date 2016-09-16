@@ -6,7 +6,7 @@ use \AcceptanceTester;
  * Class SignUpForUpdatesCest
  * @package Tests\Acceptance
  */
-class SignUpForUpdatesCest
+class SignUpForUpdatesCest extends \BaseAcceptance
 {
     /**
      *
@@ -18,7 +18,7 @@ class SignUpForUpdatesCest
      */
     public function _before(AcceptanceTester $I)
     {
-
+        parent::_before($I);
     }
 
     /**
@@ -26,7 +26,7 @@ class SignUpForUpdatesCest
      */
     public function _after(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_after($I);
     }
 
     /**

@@ -3,7 +3,7 @@ namespace Tests\Acceptance;
 
 use AcceptanceTester;
 
-class LolIndividualSignUpCest
+class LolIndividualSignUpCest extends \BaseAcceptance
 {
     protected $faker;
 
@@ -14,13 +14,14 @@ class LolIndividualSignUpCest
 
     public function _before(AcceptanceTester $I)
     {
+        parent::_before($I);
         $I->amOnPage('/sign-up/lol-individual-sign-up/');
         $I->waitForJs('return jQuery.active == 0', 10);
     }
 
     public function _after(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_after($I);
     }
 
     // tests

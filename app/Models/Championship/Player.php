@@ -27,9 +27,7 @@ class Player extends Model
 
         // when deleted
         static::deleting(function ($player) {
-//            $player->teams()->detach();
-//            $player->games()->detach();
-//            $player->tournaments()->detach();
+
         });
     }
 

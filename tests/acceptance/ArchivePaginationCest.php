@@ -4,21 +4,14 @@
 /**
  * Class paginationCest
  */
-class ArchivePaginationCest
+class ArchivePaginationCest extends BaseAcceptance
 {
     /**
      * @param AcceptanceTester $I
      */
     public function _before(AcceptanceTester $I)
     {
-        $I->populateDatabase($I, [
-            'server' => getenv('DB_HOST'),
-            'user' => getenv('DB_USERNAME'),
-            'password' => getenv('DB_PASSWORD'),
-            'database' => getenv('DB_DATABASE'),
-            'dump' => 'database/dump/gzgaming_wp.sql',
-        ]);
-        $I->runMigration($I);
+        parent::_before($I);
         exec('wp post generate --count=20 --path=public_html/wp >> /dev/null 2>&1');
 
     }
@@ -29,7 +22,7 @@ class ArchivePaginationCest
     public function _after(AcceptanceTester $I)
     {
 
-        $I->runMigration($I);
+        parent::_after($I);
 
     }
 
