@@ -82,19 +82,26 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     {
         $player_team = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
 
-        $teams = Team::orderBy('name')->get()->toArray();
+        $teams = Team::select(
+            'teams.id as team_id',
+            'teams.name as team_name',
+            'teams.emblem as team_emblem',
+            'teams.verification_code as team_verification_code',
+            'teams.captain as team_captain',
+            'teams.tournament_id'
+        )->orderBy('name')->get()->toArray();
 
         foreach ($teams as $key => $team) {
             $max_p = Tournament::where('tournaments.id','=', $team['tournament_id'])->first()->toArray()['max_players'];
             foreach ($player_team as $k => $p) {
-                if ($team['id'] == $p['team_id']) {
+                if ($team['team_id'] == $p['team_id']) {
                     $teams[$key]['team_count'] = $p['team_count'];
-                    $teams[$key]['max_players'] = $max_p;
+                    $teams[$key]['team_max_players'] = $max_p;
 //                    break;
                 }
                 if($player_team == []){
                     $teams[$key]['team_count'] = 0;
-                    $teams[$key]['max_players'] = $max_p;
+                    $teams[$key]['team_max_players'] = $max_p;
                 }
             }
         }
@@ -123,7 +130,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function games()
     {
-        $games = Game::orderBy('name')->get()->toArray();
+        $games = Game::select('games.name as game_name', 'games.id as game_id', 'games.title as game_title', 'games.description as game_description', 'games.uri as game_uri' )->orderBy('name')->get()->toArray();
         return $games;
     }
 
