@@ -18,8 +18,27 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     protected $expiredAt;
     protected $maxPlayers = 0;
     protected $connection = 'mysql_champ';
+    protected $viewComposerElements = [];
 
 
+    /**
+     * Get a list of method returns
+     * @param array $methodList
+     * @return array
+     */
+    private function getViewComposerElements($methodList = [])
+    {
+        $return = [];
+        foreach ($methodList as $method) {
+            if (array_key_exists($method, $this->viewComposerElements)) {
+                $return[$method] = $this->viewComposerElements[$method];
+                continue;
+            }
+            $return[$method] = $this->{$method}();
+        }
+
+        return $return;
+    }
     /**
      * Bootstrap the application services.
      *
@@ -27,37 +46,39 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        $games = $this->games();
-        View::composer(['game.game'], function ($view) use ($games) {
+        View::composer(['game.game'], function ($view) {
+            extract($this->getViewComposerElements(['games']));
             $view->with('games', $games);
         });
-        $tournaments = $this->tournaments();
-        View::composer(['game.tournament'], function ($view) use ($games, $tournaments) {
+
+        View::composer(['game.tournament'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments']));
             $view->with('games', $games)
                 ->with('tournaments', $tournaments);
         });
 
-        $teams = $this->teams();
-
-        $players = $this->getPlayersInfoBy();
-
-        View::composer(['game.team'], function ($view) use ($games, $tournaments, $teams, $players) {
+        View::composer(['game.team'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
-                ->with('players', $players);
+                ->with('players', $getPlayersInfoBy);
         });
-        View::composer(['game.player'], function ($view) use ($games, $tournaments, $teams, $players) {
+
+        View::composer(['game.player'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
-                ->with('players', $players);
+                ->with('players', $getPlayersInfoBy);
         });
-        View::composer(['game.individualPlayer'], function ($view) use ($games, $tournaments, $teams, $players) {
+
+        View::composer(['game.individualPlayer'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
-                ->with('individualPlayers', $this->individualPlayers($players));
+                ->with('individualPlayers', $this->individualPlayers($getPlayersInfoBy));
         });
     }
 
