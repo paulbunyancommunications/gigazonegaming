@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 trait PlayerRelationable
 {
+
     public function findPlayersRelations(){
         return $this->morphMany(
             PlayerRelation::class,
@@ -104,7 +105,9 @@ trait PlayerRelationable
             $ga_value = trim($game);
         }
 //
-        $player_query = Player::leftJoin('player_relations AS team_relations', function ($join) {
+
+        $player_query = call_user_func_array(array(Player::class, 'select'), $this->playerInfoSelect())
+            ->leftJoin('player_relations AS team_relations', function ($join) {
             $join->on('players.id', '=', 'team_relations.player_id') //here we join player_relations but just the rows for Team
                 ->where('team_relations.relation_type', 'like', '%Team');
             })
@@ -114,28 +117,7 @@ trait PlayerRelationable
             })
             ->leftJoin('teams', 'team_relations.relation_id', '=' , 'teams.id')
             ->leftJoin('tournaments', 'tournament_relations.relation_id', '=' , 'tournaments.id')
-            ->leftJoin('games', 'games.id', '=' , 'tournaments.game_id')
-            ->select(
-                'players.id as id',
-                'players.id as player_id',
-                'players.name as player_name',
-                'players.username as player_username',
-                'players.email as player_email',
-                'players.phone as player_phone',
-                'teams.id as team_id',
-                'teams.name as team_name',
-                'teams.captain as team_captain',
-                'teams.verification_code as verification_code',
-                'teams.emblem as team_emblem',
-                'tournaments.id as tournament_id',
-                'tournaments.name as tournament_name',
-                'tournaments.max_players as max_players',
-                'games.id as game_id',
-                'games.name as game_name',
-                'games.title as game_title',
-                'games.description as game_description',
-                'games.uri as game_uri'
-            );
+            ->leftJoin('games', 'games.id', '=' , 'tournaments.game_id');
 
         //first, player
         if ($pl_array) {
@@ -214,21 +196,21 @@ trait PlayerRelationable
 
 
 
-        $player_team_count = PlayerRelation::select(DB::raw("COUNT(player_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
+        $playerTeamCount = PlayerRelation::select(DB::raw("COUNT(player_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
 
 
 
         $teamIds = [];
-        foreach ($player_team_count as $k => $t) {
+        foreach ($playerTeamCount as $k => $t) {
             $teamIds[$t['team_id']] = $t['team_count'];
         }
 
 
         foreach ($players as $key => $player) {
-            if(!array_key_exists($player['team_id'], $teamIds)){
+            if (!array_key_exists($player['team_id'], $teamIds)) {
                 $players[$key]['team_name'] = "S/HE Doesn't have a team or The Team Doesn't Exist Anymore!!!!!";
                 $players[$key]['team_count'] = "x";
-            }else {
+            } else {
                 foreach ($teamIds as $k => $t) {
                     if ($player['team_id'] == $k) {
                         $players[$key]['team_count'] = $t;
@@ -241,6 +223,107 @@ trait PlayerRelationable
     }
 
 
+    /**
+     * Setup columns that the getPlayersInfoBy method should be selecting
+     * @return array
+     */
+    public function playerInfoSelect()
+    {
+        $select = [];
+        /** @var array $models model name list */
+        $models = ['Tournament', 'Player', 'Team', 'Game'];
+        $modelNameSpace = 'App\\Models\\Championship\\';
+        for ($m=0; $m < count($models); $m++) {
+            $thisModel = $modelNameSpace.$models[$m];
+            $tableName = with(new $thisModel)->getTable();
+            $columns = \Schema::connection($this->connection)->getColumnListing($tableName);
+            switch ($models[$m]) {
+                case ('Tournament'):
+                    for ($c=0; $c < count($columns); $c++) {
+                        switch ($columns[$c]) {
+                            case ('id'):
+                            case ('name'):
+                                array_push($select, $this->tableColumnAsTableColumn($tableName, $columns[$c]));
+                                break;
+                            case ('max_players'):
+                                array_push($select, $this->tableColumnAsColumn($tableName, $columns[$c]));
+                                break;
+                        }
+                    }
+                    unset($c);
+                    break;
+                case ('Player'):
+                    for ($c=0; $c < count($columns); $c++) {
+                        switch ($columns[$c]) {
+                            case ('name'):
+                            case ('username'):
+                            case ('phone'):
+                            case ('email'):
+                                array_push($select, $this->tableColumnAsTableColumn($tableName, $columns[$c]));
+                                break;
+                            case ('id'):
+                                array_push($select, $this->tableColumnAsColumn($tableName, $columns[$c]));
+                                array_push($select, $this->tableColumnAsTableColumn($tableName, $columns[$c]));
+                                break;
+                        }
+                    }
+                    unset($c);
+                    break;
+                case ('Team'):
+                    for ($c=0; $c < count($columns); $c++) {
+                        switch ($columns[$c]) {
+                            case ('id'):
+                            case ('name'):
+                            case ('captain'):
+                            case ('emblem'):
+                                array_push($select, $this->tableColumnAsTableColumn($tableName, $columns[$c]));
+                                break;
+                            case ('verification_code'):
+                                array_push($select, $this->tableColumnAsColumn($tableName, $columns[$c]));
+                                break;
+                        }
+                    }
+                    unset($c);
+                    break;
+                case ('Game'):
+                    for ($c=0; $c < count($columns); $c++) {
+                        switch ($columns[$c]) {
+                            case ('id'):
+                            case ('name'):
+                            case ('title'):
+                            case ('description'):
+                            case ('uri'):
+                                array_push($select, $this->tableColumnAsTableColumn($tableName, $columns[$c]));
+                                break;
+                        }
+                    }
+                    unset($c);
+                    break;
+            }
+        }
 
+        return $select;
+    }
 
+    /**
+     * return select column string as "tables.column as table_column"
+     * @param null $table
+     * @param null $column
+     * @return string
+     */
+    public function tableColumnAsTableColumn($table = null, $column = null)
+    {
+        return $table . '.' . $column . ' as ' . str_singular($table) . '_' . $column;
+    }
+
+    /**
+     * return select column string as "tables.column as column"
+     * @param null $table
+     * @param null $column
+     * @return string
+     */
+    public function tableColumnAsColumn($table = null, $column = null)
+    {
+        return $table . '.' . $column . ' as ' . $column;
+    }
 }
