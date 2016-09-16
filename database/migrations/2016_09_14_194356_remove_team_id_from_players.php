@@ -13,9 +13,8 @@ class RemoveTeamIdFromPlayers extends Migration
     public function up()
     {
         //team_id
-        if (Schema::connection('mysql_champ')->hasColumn('players','team_id')) {
+        if (Schema::connection('mysql_champ')->hasColumn('players', 'team_id')) {
             Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
-                $table->dropForeign(['team_id']);
                 $table->dropColumn('team_id');
             });
         }
@@ -32,10 +31,6 @@ class RemoveTeamIdFromPlayers extends Migration
             Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->integer('team_id')->default(0)->after('username');
-                $table->foreign('team_id')
-                    ->references('id')
-                    ->on('teams')
-                    ->onDelete('cascade');
             });
         }
     }
