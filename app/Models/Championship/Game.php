@@ -30,8 +30,7 @@ class Game extends Model
 
         // cause a delete of a game to cascade to children so they are also deleted
         static::deleting(function ($game) {
-            $game->tournaments()->detach();
-//            $game->players()->detach();
+            $game->tournaments()->delete();
 
         });
     }
