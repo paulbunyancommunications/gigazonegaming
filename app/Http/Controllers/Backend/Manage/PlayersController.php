@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Manage;
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Player_Team;
+use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
@@ -19,6 +20,7 @@ use App\Http\Requests\PlayerRequest;
 
 class PlayersController extends Controller
 {
+    use PlayerRelationable;
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +44,6 @@ class PlayersController extends Controller
         $player->email = $request['email'];
         $player->name = $request['name'];
         $player->phone = $request['phone'];
-        $player->team_id = $request['team_id'];
         $player->updated_by =  $this->getUserId();
         $player->updated_on = Carbon::now("CST");
         $player->save();
@@ -100,7 +101,8 @@ class PlayersController extends Controller
      */
     public function edit(Player $player)
     {
-        return View::make('game/player')->with("thePlayer", $player);
+        $pla = $this->getPlayersInfoBy(['player'=>$player->id])[0];
+        return View::make('game/player')->with("thePlayer", $pla);
     }
 
     /**
@@ -112,28 +114,47 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
-        dd($request);
+//        dd($player->toArray());
+//        array:9 [▼
+//          "id" => 22
+//          "username" => "Determination69"
+//          "email" => "angrycommie32@gmail.com"
+//          "name" => ""
+//          "phone" => ""
+//          "created_at" => "2016-05-26 01:17:52"
+//          "updated_at" => "2016-05-26 01:17:52"
+//          "updated_by" => 0
+//          "updated_on" => "0000-00-00 00:00:00"
+//        ]
+//        dd($request->toArray());
+//        array:8 [▼
+//          "_token" => "E0iP4x5OmX0fA97NEVdsE60vWdMPySDSftf4PFuZ"
+//          "_method" => "PUT"
+//          "name" => "q"
+//          "username" => "Determination69"
+//          "email" => "angrycommie32@gmail.com"
+//          "phone" => ""
+//          "team_id" => "5"
+//          "submit" => "Save"
+//        ]
+        $theTeam = $request->team_id;
+        $request =$request->toArray();
+        unset($request['_token']);
+        unset($request['submit']);
+        unset($request['team_id']);
+        unset($request['_method']);
         $updatedBy = $this->getUserId();
         $updatedOn = Carbon::now("CST");
-        $toUpdate = array_merge($request->all(), [
-            'updated_by' => $updatedBy,
-            'updated_on' => $updatedOn
-        ] );
-        $theTeam = $toUpdate['team_id'];
-        unset($toUpdate['team_id']);
-        unset($toUpdate['_token']);
-        unset($toUpdate['_method']);
-        unset($toUpdate['id']);
-        unset($toUpdate['reset']);
-        unset($toUpdate['submit']);
-//        dd($toUpdate);
-//        dd("passed request");
-        Player_Team::firstOrCreate(['team_id'=>$theTeam,'player_id'=>$player->getRouteKey()]);
-        $player->where('id', $player->getRouteKey())->update(
-            $toUpdate
-        );
+        $request['updated_by'] = $updatedBy;
+        $request['updated_on'] = $updatedOn;
+        Player::where('id','=',$player->id)->update($request);
 
-        $this->DBProcessCachePlayersForced();
+//        dd("passed request");
+//        Player_Team::firstOrCreate(['team_id'=>$theTeam,'player_id'=>$player->getRouteKey()]);
+//        $player->where('id', $player->getRouteKey())->update(
+//            $toUpdate
+//        );
+
         return View::make('game/player')->with("thePlayer", $player->where('id', $player->getRouteKey())->first())->with("cont_updated", true);
     }
 
