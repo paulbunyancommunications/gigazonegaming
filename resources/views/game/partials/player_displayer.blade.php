@@ -13,11 +13,11 @@ $teamNum = $player["team_id"];
     <li><h3>Team {{$player["team_name"]}}</h3></li>
 @endif
 @endif
-<li> <div class="playerName btn btn-default list disabled" >{{$player["username"]}}</div>
+<li> <div class="playerName btn btn-default list disabled" >{{$player["player_username"]}}</div>
 &nbsp;&nbsp;
-{{ Html::linkAction('Backend\Manage\PlayersController@edit', '', array('player_id'=>$player["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>'Edit')) }}
+{{ Html::linkAction('Backend\Manage\PlayersController@edit', '', array('player_id'=>$player["player_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>'Edit')) }}
 &nbsp;&nbsp;
-{{ Form::open(array('id' => "playerForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["id"]), 'class' => "deletingForms")) }}
+{{ Form::open(array('id' => "playerForm".$player["player_id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["player_id"]), 'class' => "deletingForms")) }}
 <input name="_method" type="hidden" value="DELETE">
 {!!
     Form::submit(
@@ -27,7 +27,7 @@ $teamNum = $player["team_id"];
 !!}
 {{ Form::close() }}
 &nbsp;
-{{ Form::open(array('id' => "playerForm".$player["id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["id"]), 'class' => "deletingForms")) }}
+{{ Form::open(array('id' => "playerForm".$player["player_id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["player_id"]), 'class' => "deletingForms")) }}
 <input name="_method" type="hidden" value="DELETE">
 {!!
     Form::submit(

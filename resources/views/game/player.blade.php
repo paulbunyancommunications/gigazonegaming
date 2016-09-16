@@ -46,36 +46,36 @@
         @if(isset($cont_updated) and  $cont_updated)
             <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
         @endif
-        @if(isset($thePlayer->name))
-            {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@update', $thePlayer->id))) }}
+        @if(isset($thePlayer['player_name']))
+            {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@update', $thePlayer['player_id']))) }}
         @else
             {{  Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@create'))) }}
         @endif
 
         <div class="form-group">
-            @if(isset($thePlayer->name))
+            @if(isset($thePlayer['player_name']))
                 <input name="_method" type="hidden" value="PUT">
             @else
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px; text-align:left;" placeholder="The name of the player" @if(isset($thePlayer->name))value="{{$thePlayer->name}}"@endif/>
+                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px; text-align:left;" placeholder="The name of the player" @if(isset($thePlayer['player_name']))value="{{$thePlayer['player_name']}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px; text-align:left;" placeholder="The username of the player" @if(isset($thePlayer->username))value="{{$thePlayer->username}}"@endif/>
+                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px; text-align:left;" placeholder="The username of the player" @if(isset($thePlayer['player_username']))value="{{$thePlayer['player_username']}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px; text-align:left;" placeholder="The email of the player" @if(isset($thePlayer->email))value="{{$thePlayer->email}}"@endif/>
+                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px; text-align:left;" placeholder="The email of the player" @if(isset($thePlayer['player_email']))value="{{$thePlayer['player_email']}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px; text-align:left;" placeholder="The phone of the player" @if(isset($thePlayer->phone))value="{{$thePlayer->phone}}"@endif/>
+                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px; text-align:left;" placeholder="The phone of the player" @if(isset($thePlayer['player_phone']))value="{{$thePlayer['player_phone']}}"@endif/>
             </div>
             <div class="form-group">
                 <label for="team_id" style="width:120px; text-align:right;">Player Team: </label> &nbsp;
                 <select type="text" name="team_id" id="team_id"  style="width:350px; text-align:left;">
                     <option>---</option>
                     @foreach($teams as $key => $team)
-                        <option value="{{$team['id']}}" @if(isset($thePlayer->team_id) and $thePlayer->team_id == $team['id']) selected @endif>{{ $team['name'] }}</option>
+                        <option value="{{$team['team_id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['team_id']) selected @endif>{{ $team['team_name'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -95,9 +95,9 @@
 
             <option> --- </option>
             @foreach($games as $g)
-                <option id="t_option{{$g['id']}}" value="{{$g['id']}}" class="gameSelector"
-                        @if(isset($sorts) and isset($sorts->game_sort) and ($g['id'] == $sorts->game_sort or $g['name'] == $sorts->game_sort)) selected="selected" @endif
-                >{{$g['name']}}</option>
+                <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
+                        @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
+                >{{$g['game_name']}}</option>
             @endforeach
         </select>
         <br />
@@ -105,9 +105,9 @@
         <select name="tournament_sort" id="tournament_sort" style="width:350px; text-align:left;">
             <option> --- </option>
             @foreach($tournaments as $g)
-                <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}"
-                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
-                >{{$g['name']}}</option>
+                <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
+                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
+                >{{$g['tournament_name']}}</option>
             @endforeach
         </select>
         <br />
@@ -115,9 +115,9 @@
         <select name="team_sort" id="team_sort" style="width:350px; text-align:left;">
             <option> --- </option>
             @foreach($teams as $g)
-                <option id="t_option{{$g['tournament_id']}}_{{$g['id']}}" value="{{$g['id']}}"
-                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['id'] == $sorts->tournament_sort or $g['name'] == $sorts->tournament_sort)) selected="selected" @endif
-                >{{$g['name']}}</option>
+                <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}"
+                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['team_id'] == $sorts->tournament_sort or $g['team_name'] == $sorts->tournament_sort)) selected="selected" @endif
+                >{{$g['team_name']}}</option>
             @endforeach
         </select>
         <br />
