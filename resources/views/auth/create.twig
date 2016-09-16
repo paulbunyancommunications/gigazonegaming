@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default btn-gz">Sign Up</button> {{ html_link_action('Auth\\AuthController@login', 'Cancel', {}, {'class' : "btn btn-default"}) }}
+                        <button type="submit" class="btn btn-default btn-gz" id="doSubmit">Sign Up</button> {{ html_link_action('Auth\\AuthController@login', 'Cancel', {}, {'class' : "btn btn-default"}) }}
                         {% include "partials/form/ajax-form-footer.twig" %}
                     </div>
                 </div>

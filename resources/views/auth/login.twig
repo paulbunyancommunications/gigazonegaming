@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default btn-gz">Sign in</button> {{ html_link_action('Auth\\AuthController@create', 'Or Create an Account', {}, {'class' : "btn btn-default btn-gz"}) }}
+                        <button type="submit" class="btn btn-default btn-gz" id="doSubmit">Sign in</button> {{ html_link_action('Auth\\AuthController@create', 'Or Create an Account', {}, {'class' : "btn btn-default btn-gz"}) }}
                         <br>{{ html_link_action('Auth\\PasswordController@recover', 'Forgot your password?', {}, {'class' : "btn btn-sm btn-default margin-top"}) }}
                         <div class="clearfix"></div>
                         {% include "partials/form/ajax-form-footer.twig" %}
