@@ -18,6 +18,7 @@ use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
 use Faker\Factory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
@@ -28,7 +29,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class TeamTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      * @var
@@ -49,7 +50,6 @@ class TeamTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 
     /**
