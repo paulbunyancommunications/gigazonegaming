@@ -1,0 +1,37 @@
+.tab-content {
+  background-color: tint($color-light-gray, 85%);
+  @include padding(1, 1);
+  @include margin-bottom(1);
+  @include border-radius(0 0 10px 10px);
+  border: 1px solid tint($color-light-gray, 65%);
+  border-top: none;
+  .well-gz {
+    background: none;
+    border: none;
+  }
+}
+.nav-tabs {
+  margin-bottom: 0;
+  .insert-page h1 {
+    font-size: inherit;
+    line-height: inherit;
+  }
+  & > li > a {
+    text-decoration: none;
+    border-color: tint($color-light-gray, 65%);
+  }
+
+  & > li {
+    &::before {
+      background: none;
+      display: none;
+    }
+    &.active > a[role="tab"] {
+      background: tint($color-light-gray, 85%);
+      &:hover {
+        background: tint($color-light-gray, 85%);
+      }
+    }
+
+  }
+}
