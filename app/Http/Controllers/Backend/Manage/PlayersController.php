@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
-use App\Models\Championship\Player_Team;
+use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use App\Models\WpUser;
-use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -20,7 +20,7 @@ use App\Http\Requests\PlayerRequest;
 
 class PlayersController extends Controller
 {
-    use PlayerRelationable;
+//    protected $gamesDBConnection = "";
     /**
      * Display a listing of the resource.
      *
@@ -101,7 +101,7 @@ class PlayersController extends Controller
      */
     public function edit(Player $player)
     {
-        $pla = $this->getPlayersInfoBy(['player'=>$player->id])[0];
+        $pla = $player->getThisPlayerInfoBy();
         return View::make('game/player')->with("thePlayer", $pla);
     }
 
@@ -115,39 +115,48 @@ class PlayersController extends Controller
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
 //        dd($player->toArray());
-//        array:9 [▼
-//          "id" => 22
-//          "username" => "Determination69"
-//          "email" => "angrycommie32@gmail.com"
-//          "name" => ""
+//        array:10 [▼
+//          "id" => 1
+//          "username" => "Nelson"
+//          "email" => "mmm@mmm.com"
+//          "name" => "Nels"
 //          "phone" => ""
-//          "created_at" => "2016-05-26 01:17:52"
-//          "updated_at" => "2016-05-26 01:17:52"
-//          "updated_by" => 0
-//          "updated_on" => "0000-00-00 00:00:00"
+//          "created_at" => null
+//          "updated_at" => "2016-09-19 20:55:29"
+//          "updated_by" => 5
+//          "updated_on" => "2016-09-19 14:55:29"
+//          "user_id" => 0
 //        ]
 //        dd($request->toArray());
 //        array:8 [▼
-//          "_token" => "E0iP4x5OmX0fA97NEVdsE60vWdMPySDSftf4PFuZ"
+//          "_token" => "0QoUn39tFICoJBmO4nFSXr0uRyeflub2tsanWxVz"
 //          "_method" => "PUT"
-//          "name" => "q"
-//          "username" => "Determination69"
-//          "email" => "angrycommie32@gmail.com"
+//          "name" => "Nels"
+//          "username" => "Nelson"
+//          "email" => "mmm@mmm.com"
 //          "phone" => ""
-//          "team_id" => "5"
+//          "team_id" => "22"
 //          "submit" => "Save"
 //        ]
         $theTeam = $request->team_id;
         $request =$request->toArray();
         unset($request['_token']);
+        unset($request['_method']);
         unset($request['submit']);
         unset($request['team_id']);
-        unset($request['_method']);
-        $updatedBy = $this->getUserId();
-        $updatedOn = Carbon::now("CST");
-        $request['updated_by'] = $updatedBy;
-        $request['updated_on'] = $updatedOn;
-        Player::where('id','=',$player->id)->update($request);
+        $request['updated_by'] = $this->getUserId();
+        $request['updated_on'] = Carbon::now("CST");
+        $player->name = $request['name'];
+        $player->username = $request['username'];
+        $player->email = $request['email'];
+        $player->phone = $request['phone'];
+        $player->save();
+        $playerArray = $player->getThisPlayerInfoBy();
+
+        if($theTeam != $playerArray['team_id']) {
+            $this->assignPlayerToTeam($playerArray, $theTeam);
+            $playerArray = $player->getThisPlayerInfoBy();
+        }
 
 //        dd("passed request");
 //        Player_Team::firstOrCreate(['team_id'=>$theTeam,'player_id'=>$player->getRouteKey()]);
@@ -155,7 +164,7 @@ class PlayersController extends Controller
 //            $toUpdate
 //        );
 
-        return View::make('game/player')->with("thePlayer", $player->where('id', $player->getRouteKey())->first())->with("cont_updated", true);
+        return View::make('game/player')->with("thePlayer", $playerArray)->with("cont_updated", true);
     }
 
     /**
@@ -164,16 +173,21 @@ class PlayersController extends Controller
      * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function move(Player $player) //todo
+    public function assignPlayerToTeam($player, $team_id) //todo
     {
-//        $te = Team::where('id',$player['team_id'])->select('tournament_id')->first();
-//        $to = Tournament::where('id', $te['tournament_id'])->select('game_id')->first();
-        unset($player['team_id']);
-        unset($player['id']);
-        $player['game_id'] = $to->game_id;
+        $maxPlayers = Team::find($team_id)->tournament()->select('max_players')->first()->toArray();
+        $teamCount = PlayerRelation::where('relation_id', '=', $team_id)->where('relation_type', '=', PlayerRelationable::getTeamRoute())->count();
+        $team = false;
+        if($teamCount < $maxPlayers){
+            $playerToChange = PlayerRelation::having('player_relations.player_id', '=', $player['player_id'])
+                ->having('player_relations.relation_id', '=', $player['team_id'])
+                ->having('player_relations.relation_type', '=', PlayerRelationable::getTeamRoute())->first();
+            $playerToChange->relation_id = $team_id;
+            $playerToChange->save();
+        }else{
+            return Redirect::back()->withErrors(array('msg'=>'The team has the maximum amount of players. Please pick a different team.'));
+        }
 
-        Player_Team::where("id", $player->getRouteKey())->delete();
-        return redirect('/manage/player');
     }
     /**
      * Remove the specified resource from storage.
