@@ -13,7 +13,14 @@ use Illuminate\Support\Facades\DB;
 
 trait PlayerRelationable
 {
-
+    public static function getTournamentRoute()
+    {
+        return "App\\Models\\Championship\\Tournament";
+    }
+    public static function getTeamRoute()
+    {
+        return "App\\Models\\Championship\\Team";
+    }
     public function findPlayersRelations(){
         return $this->morphMany(
             PlayerRelation::class,
@@ -29,6 +36,45 @@ trait PlayerRelationable
         return $this->findPlayersRelations()
             ->where('player_id', $player->id)
             ->exists();
+    }
+
+
+
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    private function playerRelationsToAnArrayOfObjectsOfTeamsAndTournaments()
+    {
+//        dd($this);
+        $relations = PlayerRelation::where('player_id', '=', $this->id)->get();
+//        dd($relations);
+        $returnableArray = [];
+        if ($relations != null and $relations != [] and $relations != '') {
+//            dd($relations->toArray());
+            $information = $relations->toArray();
+            foreach ($information as $key => $someT) {
+                $info = '';
+//                dd("here");
+//                dd($information);
+                if ($someT['relation_type'] == self::getTournamentRoute()) {
+                    if(!isset($returnableArray['tournaments'])){$returnableArray['tournaments']=[];}
+                    $returnableArray['tournaments'][] = Tournament::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
+                } elseif ($someT['relation_type'] == self::getTeamRoute()) {
+                    if(!isset($returnableArray['teams'])){$returnableArray['teams']=[];}
+                    $returnableArray['teams'][] = Team::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
+                }else{
+                    if(!isset($returnableArray['error'])){$returnableArray['error']=[];}
+                    $returnableArray['error'][] = $someT;
+                }
+            }
+        }
+        return $returnableArray;
+    }
+    public function relationToTeamArray($id)
+    {
+        return Team::find($id)->get()->toArray();
     }
 
 //    public function addPlayer(Player $player){
@@ -50,7 +96,6 @@ trait PlayerRelationable
      */
     public function getPlayersInfoBy($parameter = [])
     {
-
         $ga_array = false;
         $to_array = false;
         $te_array = false;
@@ -109,11 +154,11 @@ trait PlayerRelationable
         $player_query = call_user_func_array(array(Player::class, 'select'), $this->playerInfoSelect())
             ->leftJoin('player_relations AS team_relations', function ($join) {
             $join->on('players.id', '=', 'team_relations.player_id') //here we join player_relations but just the rows for Team
-                ->where('team_relations.relation_type', 'like', '%Team');
+                ->where('team_relations.relation_type', '=', self::getTeamRoute());
             })
             ->leftJoin('player_relations AS tournament_relations', function ($join) {
             $join->on('players.id', '=', 'tournament_relations.player_id') //here we join player_relations but just the rows for Team
-                ->where('tournament_relations.relation_type', 'like', '%Tournament');
+                ->where('tournament_relations.relation_type', '=', self::getTournamentRoute());
             })
             ->leftJoin('teams', 'team_relations.relation_id', '=' , 'teams.id')
             ->leftJoin('tournaments', 'tournament_relations.relation_id', '=' , 'tournaments.id')
@@ -196,7 +241,7 @@ trait PlayerRelationable
 
 
 
-        $playerTeamCount = PlayerRelation::select(DB::raw("COUNT(player_id) as team_count"), "relation_id as team_id")->where('relation_type','like','%Team')->groupBy('team_id')->get()->toArray();
+        $playerTeamCount = PlayerRelation::select(DB::raw("COUNT(player_id) as team_count"), "relation_id as team_id")->where('relation_type', '=', self::getTeamRoute())->groupBy('team_id')->get()->toArray();
 
 
 
