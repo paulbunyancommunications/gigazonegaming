@@ -48,6 +48,15 @@ class Team extends Model
         return $this->belongsTo('App\Models\Championship\Tournament','tournament_id');
     }
 
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function playerRelation()
+    {
+        return $this->morphMany('App\Models\Championship\PlayerRelationable', 'relation');
+    }
 
     /**
      * Get team captain
