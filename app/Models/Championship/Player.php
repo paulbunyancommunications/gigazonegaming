@@ -68,4 +68,23 @@ class Player extends Model
     {
         return $this->belongsTo('App\Models\Auth\Users\User');
     }
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     */
+    public function playerRelations()
+    {
+        return $this->playerRelationsToAnArrayOfObjectsOfTeamsAndTournaments();
+    }
+    public function getThisPlayerInfoBy($parameter = []){
+        if(isset($this->id)) {
+            $parameter['player'] = $this->id;
+        }
+        $playerInfo = $this->getPlayersInfoBy($parameter);
+        if($playerInfo!= null and $playerInfo!= '' and $playerInfo!= []){
+            return $playerInfo[0];
+        }
+        return $playerInfo;
+    }
 }
