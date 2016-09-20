@@ -48,7 +48,6 @@ class TeamsController extends Controller
         $team->updated_on = Carbon::now("CST");
         $team->verification_code= str_random(8);
         $team->save();
-        Cache::forget('teams_c');
         return $this->index();
     }
 
@@ -95,7 +94,6 @@ class TeamsController extends Controller
      */
     public function edit(Team $team)
     {
-//        dd($team);
         return View::make('game/team')->with("theTeam", $team);
     }
 
@@ -119,13 +117,9 @@ class TeamsController extends Controller
         unset($toUpdate['id']);
         unset($toUpdate['reset']);
         unset($toUpdate['submit']);
-//        dd($toUpdate);
-//        dd("passed request");
         $team->where('id', $team->getRouteKey())->update(
-//        Team::where('id', $team->getRouteKey())->update(
             $toUpdate
         );
-        Cache::forget('teams_c');
         return View::make('game/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
     }
 
