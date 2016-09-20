@@ -21,6 +21,14 @@ class Tournament extends Model
      */
     protected $fillable = ['name', 'game_id', 'max_players','updated_by','updated_on'];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'sign_up_open',
+        'sign_up_close',
+        'occurring'
+    ];
+
     /**
      *
      */
