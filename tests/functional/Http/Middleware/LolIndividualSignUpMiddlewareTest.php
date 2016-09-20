@@ -1,9 +1,9 @@
 <?php
 /**
- * ${CLASS_NAME}
+ * LolIndividualSignUpMiddlewareTest
  *
  * Created 6/8/16 11:41 AM
- * Description of this file here....
+ * Tests for the League of Legends sign up middleware
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  * @package Tests\Unit\App\Http\Middleware
