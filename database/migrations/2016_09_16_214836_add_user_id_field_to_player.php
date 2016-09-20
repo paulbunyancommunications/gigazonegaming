@@ -12,6 +12,7 @@ class AddUserIdFieldToPlayer extends Migration
      */
     public function up()
     {
+
         Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
            $table->addColumn('integer', 'user_id');
         });
