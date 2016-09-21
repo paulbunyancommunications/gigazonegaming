@@ -69,7 +69,7 @@
                 <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px" placeholder="The phone of the player" disabled/>
             </div>
             <div class="form-group">
-                <label for="team_id" style="width:120px; text-align:right;">Player Team Name: </label> &nbsp;
+                <label for="team_id" style="width:120px; text-align:right;">Selected Team Name: </label> &nbsp;
                 <input type="text" name="team_name" id="team_name" placeholder="The team of the player" style="width:350px" disabled>
                 <input type="text" name="team_id" id="team_id" class="hidden" style="">
                 <input type="text" name="tournament_id" id="tournament_id" class="hidden" style="">
@@ -98,7 +98,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="team_sort" style="width:120px; text-align:right;">Filter by Team: </label>
+                <label for="team_sort" style="width:120px; text-align:right;">Select a Team: </label>
                 <select name="team_sort" id="team_sort" style="width:350px;" disabled>
                     <option class="default"> --- </option>
                     @foreach($teams as $g)
