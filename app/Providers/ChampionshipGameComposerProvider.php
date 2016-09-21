@@ -156,11 +156,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param $players
      * @return mixed
      */
-    public function individualPlayers($players)
+    public function individualPlayers()
     {
-
-        dd($players);
-        return $players;
+        return $this->getSinglePlayersInfoBy();
     }
 
     /**
