@@ -6,7 +6,7 @@ vagrantfile:
                 machines:
                     machine1:
                         id: gigazonegaming1
-                        hostname: gigazonegaming1.puphpet
+                        hostname: gigazonegaming.local
                         network:
                             private_network: 192.168.56.101
 cron:
