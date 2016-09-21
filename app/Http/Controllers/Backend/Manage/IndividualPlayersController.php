@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
+use App\Models\Championship\PlayerRelationable;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
@@ -30,37 +31,24 @@ class IndividualPlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Player  $indPlayer
+     * @param  all sort  $indPlayer
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function change(Request $IndividualPlayer)
     {
         $individualPlayer = $IndividualPlayer->all();
-        $id = $individualPlayer["id"];
-        unset($individualPlayer["id"]);
-        unset($individualPlayer["_token"]);
-        unset($individualPlayer["_method"]);
-        unset($individualPlayer["team_sort"]);
-        unset($individualPlayer["tournament_sort"]);
-        unset($individualPlayer["game_sort"]);
-        unset($individualPlayer["game_id"]);
-        unset($individualPlayer["tournament_id"]);
+        $params = [];
+        $params['player'] = $individualPlayer["id"];
+        $params['team'] = $individualPlayer["team_id"];
+        $params['tournament'] = $individualPlayer["tournament_sort"];
+        $params['game'] = $individualPlayer["game_id"];
+        $hasCreateAnyRelation = PlayerRelationable::createRelation($params);
+        if(!$hasCreateAnyRelation){
+            return Redirect::back()->withErrors(array('msg'=>'Sorry no relation was created. The player must already have a relation of such type/s'));
 
-        $player = new Player();
-        if(isset($individualPlayer["tournament_id"])) {
-        $player->relation_id = $individualPlayer["tournament_id"];
         }
-        if(isset($individualPlayer["game_id"])) {
-//        $player->relation_type = ;
-        }
-        if(isset($individualPlayer["team_id"])) {
-        $player->team_id = $individualPlayer["team_id"];
-        }
-        $player->updated_on = Carbon::now("CST");
-        $player->updated_by = $this->getUserId();
-        $player->save();
-        IndividualPlayer::destroy($id);
+
         return View::make('game/individualPlayer');
 
     }

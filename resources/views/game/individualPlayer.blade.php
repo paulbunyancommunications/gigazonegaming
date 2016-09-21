@@ -122,20 +122,25 @@
             <div class="form-group">
                 <ul id="listOfPlayers" class="listing">
                         @foreach($individualPlayers as $id => $player)
-                            <li>
-                                <button class="btn btn-default aPlayer playerName disabled list"
-                                     game_id_j="t_option{{$player["game_id"]}}"
-                                     game_id="{{$player["game_id"]}}"
-                                     player_id="{{$player["player_id"]}}"
-                                     player_name="{{$player["player_name"]}}"
-                                     player_user="{{$player["player_username"]}}"
-                                     player_phone="{{$player["player_phone"]}}"
-                                     player_email="{{$player["player_email"]}}"
-                                >
-                                    {{$player["player_username"]}}
-                                </button>
+                        {{--@if($player['player_id'] == 46)--}}
+                            {{--{{dd($player)}}--}}
+                        {{--@endif--}}
+                            @if(!is_numeric($player['team_id']))
+                                <li>
+                                    <button class="btn btn-default aPlayer playerName disabled list"
+                                         game_id_j="t_option{{$player["game_id"]}}"
+                                         game_id="{{$player["game_id"]}}"
+                                         player_id="{{$player["player_id"]}}"
+                                         player_name="{{$player["player_name"]}}"
+                                         player_user="{{$player["player_username"]}}"
+                                         player_phone="{{$player["player_phone"]}}"
+                                         player_email="{{$player["player_email"]}}"
+                                    >
+                                        {{$player["player_username"]}}
+                                    </button>
 
-                            </li>
+                                </li>
+                            @endif
                         @endforeach
                 </ul>
             </div>
@@ -220,6 +225,7 @@
                 event.preventDefault();
                 return ret;
             }
+
         });
     });
 @endsection

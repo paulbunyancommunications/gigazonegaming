@@ -47,14 +47,6 @@ class PlayersController extends Controller
         $player->updated_by =  $this->getUserId();
         $player->updated_on = Carbon::now("CST");
         $player->save();
-//        dd($toUpdate);
-//        dd("passed request");
-//        $request->save('id', $request->getRouteKey())->update(
-////        Player::where('id', $player->getRouteKey())->update(
-//            $toUpdate
-//        );
-//        return View::make('player/player')->with("players", $this->retrievePlayers())->with("thePlayer", $player->where('id', $player->getRouteKey())->first())->with("cont_updated", true);
-//        $player->save();
         return $this->index();
     }
 

@@ -70,7 +70,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
-                ->with('players', $getPlayersInfoBy);
+                ->with('players', $this->getTeamPlayersInfoBy());
         });
 
         View::composer(['game.individualPlayer'], function ($view) {
@@ -78,7 +78,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
-                ->with('individualPlayers', $this->individualPlayers($getPlayersInfoBy));
+                ->with('individualPlayers', $this->individualPlayers());
         });
     }
 
@@ -152,13 +152,22 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     }
 
     /**
-     * @todo What's going on is this method? How/where is it being used?
+     * @This method is calling the trait for only single players
      * @param $players
      * @return mixed
      */
     public function individualPlayers()
     {
         return $this->getSinglePlayersInfoBy();
+    }
+    /**
+     * @This method is calling the trait for team players only
+     * @param $players
+     * @return mixed
+     */
+    public function teamPlayers()
+    {
+        return $this->getTeamPlayersInfoBy();
     }
 
     /**
