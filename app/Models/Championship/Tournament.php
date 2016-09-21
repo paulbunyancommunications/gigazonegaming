@@ -21,6 +21,9 @@ class Tournament extends Model
      */
     protected $fillable = ['name', 'game_id', 'max_players','updated_by','updated_on'];
 
+    /**
+     * @var array
+     */
     protected $dates = [
         'created_at',
         'updated_at',
@@ -51,7 +54,16 @@ class Tournament extends Model
      */
     public function game()
     {
-        return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id');
+        return $this->belongsTo('App\Models\Championship\Game');
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getGameAttribute()
+    {
+        return $this->game()->first();
     }
 
     /**
@@ -71,5 +83,13 @@ class Tournament extends Model
     public function teams()
     {
         return $this->hasMany('App\Models\Championship\Team');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeamsAttribute()
+    {
+        return $this->teams()->get();
     }
 }

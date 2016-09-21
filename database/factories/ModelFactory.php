@@ -69,6 +69,9 @@ $factory->define(App\Models\Championship\Tournament::class, function (Faker\Gene
     return [
         'name' => implode('-', $faker->words(4)),
         'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
+        'sign_up_open' => $faker->dateTimeBetween('+30 minutes', '+1 day'),
+        'sign_up_close' => $faker->dateTimeBetween('+2 days', '+1 week'),
+        'occurring' => $faker->dateTimeBetween('+1 month', '+2 months'),
     ];
 });
 $factory->define(App\Models\WpPost::class, function (Faker\Generator $faker) {

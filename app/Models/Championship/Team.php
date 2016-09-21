@@ -28,16 +28,9 @@ class Team extends Model
      */
     public function game()
     {
-        $tournament = $this->tournament()->first();
-        return Game::
-            join('tournaments','games.id', '=', 'tournaments.game_id')
-            ->leftJoin('teams','tournaments.id', '=', 'teams.tournament_id')
-            ->where('tournaments.id', '=', $tournament->id)
-            ->where('games.id', '=', $tournament->game_id)
-            ->where('teams.id', '=', $this->id)
-            ->select('games.*')
-            ;
+        return $this->tournament()->first()->game;
     }
+
     /**
      * Get tournament which team is playing in
      *
@@ -46,6 +39,14 @@ class Team extends Model
     public function tournament()
     {
         return $this->belongsTo('App\Models\Championship\Tournament','tournament_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getTournamentAttribute()
+    {
+        return $this->tournament()->first();
     }
 
     /**
@@ -78,7 +79,6 @@ class Team extends Model
      */
     public function isTeamFull(){
 
-        $teamId = $this->id;
         $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
         $teamCount = PlayerRelation::where('relation_id', '=', $this->id)->where('relation_type', '=', PlayerRelationable::getTeamRoute())->count();
 
@@ -91,17 +91,9 @@ class Team extends Model
      */
     public function isTeamNotFull(){
 
-        $teamId = $this->id;
         $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
         $teamCount = PlayerRelation::where('relation_id', '=', $this->id)->where('relation_type', '=', PlayerRelationable::getTeamRoute())->count();
-//        dd($teamCount);
         return $maxPlayers["max_players"] > $teamCount; //if team is full this will eval to true, otherwise will eval to false
     }
-//    public function addPlayer(Player $player){
-//        $tournament = $this->tournament;
-//        PlayerRelationable::addPlayer();
-//        PlayerRelationable::addPlayer();
-//        return true;
-//    }
 
 }

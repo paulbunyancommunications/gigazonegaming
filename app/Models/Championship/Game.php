@@ -46,6 +46,14 @@ class Game extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getTournamentsAttribute()
+    {
+        return $this->tournaments()->get();
+    }
+
+    /**
      * Get tournaments playing this game
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
