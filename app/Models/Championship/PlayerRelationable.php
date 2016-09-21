@@ -96,6 +96,7 @@ trait PlayerRelationable
      */
     public function getPlayersInfoBy($parameter = [])
     {
+        $singlePlayers = false;
         $ga_array = false;
         $to_array = false;
         $te_array = false;
@@ -109,18 +110,21 @@ trait PlayerRelationable
         $team = '';
         $player = '';
         $orderBy = '';
+        if(isset($parameter["single_players"]) and $parameter["single_players"]){
+            $singlePlayers = true;
+        }
         if(is_array($parameter) and $parameter != [] or $parameter != null) {
             if(isset($parameter['game'])){
-                    $game = $parameter['game'];
+                $game = $parameter['game'];
             }
             if(isset($parameter['tournament'])){
-                    $tournament = $parameter['tournament'];
+                $tournament = $parameter['tournament'];
             }
             if(isset($parameter['team'])){
-                    $team = $parameter['team'];
+                $team = $parameter['team'];
             }
             if(isset($parameter['player'])){
-                    $player = $parameter['player'];
+                $player = $parameter['player'];
             }
             if(isset($parameter['order_by'])){
                 $orderBy = $parameter['order_by'];
@@ -153,11 +157,11 @@ trait PlayerRelationable
 
         $player_query = call_user_func_array(array(Player::class, 'select'), $this->playerInfoSelect())
             ->leftJoin('player_relations AS team_relations', function ($join) {
-            $join->on('players.id', '=', 'team_relations.player_id') //here we join player_relations but just the rows for Team
+                $join->on('players.id', '=', 'team_relations.player_id') //here we join player_relations but just the rows for Team
                 ->where('team_relations.relation_type', '=', self::getTeamRoute());
             })
             ->leftJoin('player_relations AS tournament_relations', function ($join) {
-            $join->on('players.id', '=', 'tournament_relations.player_id') //here we join player_relations but just the rows for Team
+                $join->on('players.id', '=', 'tournament_relations.player_id') //here we join player_relations but just the rows for Team
                 ->where('tournament_relations.relation_type', '=', self::getTournamentRoute());
             })
             ->leftJoin('teams', 'team_relations.relation_id', '=' , 'teams.id')
@@ -234,6 +238,10 @@ trait PlayerRelationable
         } elseif ($ga_value != '') {
             $player_query->where('games.id', '=', $ga_value);
         }
+
+        if ($singlePlayers) {
+            $player_query->where('teams.id', null);
+        }
         if ($orderBy != '') {
             $player_query->orderBy($orderBy);
         }
@@ -265,6 +273,25 @@ trait PlayerRelationable
 
         }
         return $players;
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  can be a multidemsional array
+     * key game for all games or one game
+     * key tournament for all tournaments or one tournament
+     * key team for all teams or one team
+     * key player for all players or one player
+     * key order_by for only one orderBy string value
+     * @return array
+     */
+    public function getSinglePlayersInfoBy($parameter = [])
+    {
+        if(isset($parameter['team'])){
+            unset($parameter['team']);
+        }
+        $parameter['single_players'] = true;
+        return $this->getPlayersInfoBy($parameter);
     }
 
 
