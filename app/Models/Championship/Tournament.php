@@ -39,7 +39,6 @@ class Tournament extends Model
         // cause a delete of a tournament to cascade to children so they are also deleted
 
         static::deleting(function ($tournament) {
-
             /** @var Tournament $tournament */
             $tournament->teams()->delete();
             $tournament->findPlayersRelations()->delete(); //this should delete the relations not the players
@@ -55,6 +54,15 @@ class Tournament extends Model
         return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id');
     }
 
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function playerRelation()
+    {
+        return $this->morphMany('App\Models\Championship\PlayerRelationable', 'relation');
+    }
 
     /**
      * Get teams in this tournament

@@ -69,7 +69,7 @@
                 <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px" placeholder="The phone of the player" disabled/>
             </div>
             <div class="form-group">
-                <label for="team_id" style="width:120px; text-align:right;">Player Team Name: </label> &nbsp;
+                <label for="team_id" style="width:120px; text-align:right;">Selected Team Name: </label> &nbsp;
                 <input type="text" name="team_name" id="team_name" placeholder="The team of the player" style="width:350px" disabled>
                 <input type="text" name="team_id" id="team_id" class="hidden" style="">
                 <input type="text" name="tournament_id" id="tournament_id" class="hidden" style="">
@@ -82,10 +82,9 @@
             <div class="form-group">
                 <label for="game_sort" style="width:120px; text-align:right;">Show options only for this Game: </label>
                 <select name="game_sort" id="game_sort" style="width:350px;">
-
                     <option class="default"> --- </option>
                     @foreach($games as $g)
-                        <option id="t_option{{$g['id']}}" value="{{$g['id']}}" class="gameSelector">{{$g['name']}}</option>
+                        <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector">{{$g['game_name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -94,16 +93,18 @@
                 <select name="tournament_sort" id="tournament_sort" style="width:350px;" disabled>
                     <option class="default"> --- </option>
                     @foreach($tournaments as $g)
-                        <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}" >{{$g['name']}}</option>
+                        <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}" >{{$g['tournament_name']}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label for="team_sort" style="width:120px; text-align:right;">Filter by Team: </label>
+                <label for="team_sort" style="width:120px; text-align:right;">Select a Team: </label>
                 <select name="team_sort" id="team_sort" style="width:350px;" disabled>
                     <option class="default"> --- </option>
                     @foreach($teams as $g)
-                        <option id="t_option{{$g['tournament_id']}}_{{$g['id']}}" value="{{$g['id']}}" >{{$g['name']}} p#:{{$g['team_count']}}/{{$maxNumOfPlayers}}</option>
+                        @if($g['team_count'] < $g['team_max_players'])
+                        <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}" >{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -125,13 +126,13 @@
                                 <button class="btn btn-default aPlayer playerName disabled list"
                                      game_id_j="t_option{{$player["game_id"]}}"
                                      game_id="{{$player["game_id"]}}"
-                                     player_id="{{$player["id"]}}"
-                                     player_name="{{$player["name"]}}"
-                                     player_user="{{$player["username"]}}"
-                                     player_phone="{{$player["phone"]}}"
-                                     player_email="{{$player["email"]}}"
+                                     player_id="{{$player["player_id"]}}"
+                                     player_name="{{$player["player_name"]}}"
+                                     player_user="{{$player["player_username"]}}"
+                                     player_phone="{{$player["player_phone"]}}"
+                                     player_email="{{$player["player_email"]}}"
                                 >
-                                    {{$player["username"]}}
+                                    {{$player["player_username"]}}
                                 </button>
 
                             </li>

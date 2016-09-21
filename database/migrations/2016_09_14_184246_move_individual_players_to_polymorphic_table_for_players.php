@@ -20,8 +20,7 @@ class MoveIndividualPlayersToPolymorphicTableForPlayers extends Migration
             unset($player['game_id']);
             $player['team_id'] = null;
             $newPlayer = \App\Models\Championship\Player::create($player);
-            $relation = \App\Models\Championship\PlayerRelation::create(
-                    [
+            $relation = \App\Models\Championship\PlayerRelation::create([
                         'relation_type' => 'App\Models\Championship\Tournament',
                         'relation_id' => 1,
                         "player_id" => $newPlayer->id

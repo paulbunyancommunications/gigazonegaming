@@ -98,7 +98,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function teams()
     {
         $playerTeam = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")
-            ->where('relation_type', 'like', '%Team')
+            ->where('relation_type', '=', self::getTeamRoute())
             ->groupBy('team_id')
             ->get()
             ->toArray();
@@ -127,22 +127,25 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             ->toArray();
 
         /**
-         * @todo What does this code do below? Needs comments.
+         * Here we get the amount of players possible per team
+         * and we pass back a variable with a count of the team members.
          */
         foreach ($teams as $key => $team) {
-            $maxPlayers = Tournament::where('tournaments.id', '=', $team['tournament_id'])
-                ->first()
-                ->toArray()['max_players'];
-            foreach ($playerTeam as $k => $p) {
-                if ($team['team_id'] == $p['team_id']) {
-                    $teams[$key]['team_count'] = $p['team_count'];
-                    $teams[$key]['team_max_players'] = $maxPlayers;
-//                    break;
+            $maxPlayers = Tournament::where('tournaments.id', '=', $team['tournament_id'])->first();
+            if(isset($maxPlayers->max_players) and $maxPlayers!='' and $maxPlayers!=null) {
+                foreach ($playerTeam as $k => $p) {
+                    if ($team['team_id'] == $p['team_id']) {
+                        $teams[$key]['team_count'] = $p['team_count'];
+                        $teams[$key]['team_max_players'] = $maxPlayers->max_players;
+                    }
+                    if ($playerTeam == []) {
+                        $teams[$key]['team_count'] = 0;
+                        $teams[$key]['team_max_players'] = $maxPlayers->max_players;
+                    }
                 }
-                if ($playerTeam == []) {
-                    $teams[$key]['team_count'] = 0;
-                    $teams[$key]['team_max_players'] = $maxPlayers;
-                }
+            }else{
+                $teams[$key]['team_count'] = 0;
+                $teams[$key]['team_max_players'] = "0";
             }
         }
         return $teams;
@@ -153,10 +156,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param $players
      * @return mixed
      */
-    public function individualPlayers($players)
+    public function individualPlayers()
     {
-        dd($players);
-        return $players;
+        return $this->getSinglePlayersInfoBy();
     }
 
     /**
