@@ -27,6 +27,51 @@ trait PlayerRelationable
             'relation'
         );
     }
+
+    /*
+     * the function will check if there is a relation from the passed parameters
+     * this function will accept 2 parameters and 2 of them are necessary
+     * id => player_id => players.id
+     * team_id or tournament_id => relation_id => teams or tournaments.id
+     * from which we will select the third one team or tournament as type.
+     */
+    public static function doesThePlayerRelationExist($parameters){
+
+        $relation = PlayerRelation::where("player_id", $parameters['id']);
+        if(isset($parameters['team_id'])){
+            return $relation->where("relation_id", $parameters['team_id'])
+                ->where("relation_type", self::getTeamRoute())
+                ->exists();
+        }
+        elseif(isset($parameters['tournament_id'])){
+            return $relation->where("relation_id", $parameters['tournament_id'])
+                ->where("relation_type", self::getTournamentRoute())
+                ->exists();
+        }
+        return null;
+    }
+    /*
+     * the intention of the function is to create a row on table for the passed relation
+     * this function will accept 2 parameters and 2 of them are necessary
+     * id => player_id => players.id
+     * team_id or tournament_id => relation_id => teams or tournaments.id
+     * from which we will select the third one team or tournament as type.
+     */
+    public static function createRelation($parameters){
+        if(! PlayerRelationable::doesThePlayerRelationExist($parameters)) {
+            $relation = new PlayerRelation();
+            $relation->player_id = $parameters['id'];
+            if (isset($parameters['team_id'])) {
+                $relation->relation_id = $parameters['team_id'];
+                $relation->relation_type = self::getTeamRoute();
+                $relation->save();
+            } elseif (isset($parameters['tournament_id'])) {
+                $relation->relation_id = $parameters['tournament_id'];
+                $relation->relation_type = self::getTournamentRoute();
+                $relation->save();
+            }
+        }
+    }
     public function findPlayerRelations($query, Player $player){
         return $query->whereHas('playerRelations', function ($query) use ($player) {
             $query->where('player_id', $player->id);
