@@ -102,7 +102,9 @@
                 <select name="team_sort" id="team_sort" style="width:350px;" disabled>
                     <option class="default"> --- </option>
                     @foreach($teams as $g)
+                        @if($g['team_count'] < $g['team_max_players'])
                         <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}" >{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
