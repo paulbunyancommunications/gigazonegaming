@@ -48,13 +48,17 @@ class IndividualPlayersController extends Controller
         unset($individualPlayer["tournament_id"]);
 
         $player = new Player();
-        $player->name = $individualPlayer["name"];
-        $player->username = $individualPlayer["username"];
-        $player->email = $individualPlayer["email"];
-        $player->phone = $individualPlayer["phone"];
+        if(isset($individualPlayer["tournament_id"])) {
+        $player->relation_id = $individualPlayer["tournament_id"];
+        }
+        if(isset($individualPlayer["game_id"])) {
+//        $player->relation_type = ;
+        }
+        if(isset($individualPlayer["team_id"])) {
         $player->team_id = $individualPlayer["team_id"];
+        }
         $player->updated_on = Carbon::now("CST");
-        $player->updated_by = $individualPlayer["team_id"];
+        $player->updated_by = $this->getUserId();
         $player->save();
         IndividualPlayer::destroy($id);
         return View::make('game/individualPlayer');
