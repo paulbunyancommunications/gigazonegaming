@@ -40,6 +40,7 @@ class GamesController extends Controller
         $game->uri = $request['uri'];
         $game->description = $request['description'];
         $game->name = $request['name'];
+        $game->title = $request['title'];
         $game->updated_by =  $this->getUserId();
         $game->updated_on = Carbon::now("CST");
         $game->created_at = Carbon::now("CST");
