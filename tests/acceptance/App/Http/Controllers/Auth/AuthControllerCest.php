@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Acceptance\App\Http\Controllers;
+namespace Tests\Acceptance\App\Http\Controllers\Auth;
 
 use \AcceptanceTester;
 use \BaseAcceptance;
