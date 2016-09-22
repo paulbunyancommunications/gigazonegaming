@@ -102,7 +102,7 @@
 @section('js')
     $(document).ready(function() {
         $('.fa-times').click(function() {
-            var conf = confirm('Are you sure?');
+            var conf = confirm('Are you sure? Deleting the tournament will erase all teams and players relations to such tournament and teams (but not to the game)');
             if (conf) {
                 var url = $(this).attr('href');
                 $(document).load(url);

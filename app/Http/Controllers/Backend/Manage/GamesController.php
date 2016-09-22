@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\WpUser;
 use Carbon\Carbon;
@@ -116,11 +118,16 @@ class GamesController extends Controller
      */
     public function destroy(Game $game)
     {
-//        $tournaments = Tournament::where('tournament_id', '=', $game->getRouteKey())->select("id")->get()->toArray();
-//        foreach ($tournaments as $tournament)
-//        Tournament::where('tournament_id', '=', $game->getRouteKey())->delete();
-//        $game->where('id', $game->getRouteKey())->delete();
-
-        return redirect('/manage/game');
+        foreach (Tournament::where('game_id', '=', $game->getRouteKey())->get() as $key => $tounament) {
+            foreach (Team::where('tournament_id', '=', $tounament->id)->get() as $k => $team){
+                PlayerRelation::where('relation_id', '=', $team->id)->where('relation_type', '=', Team::class)->delete();
+                $team->delete();
+            }
+            PlayerRelation::where('relation_id', '=', $tounament->id)->where('relation_type', '=', Tournament::class)->delete();
+            $tounament->delete();
+        }
+        PlayerRelation::where('relation_id', '=', $game->getRouteKey())->where('relation_type', '=', Game::class)->delete();
+        $game->where('id', $game->getRouteKey())->delete();
+        return Redirect::back();
     }
 }
