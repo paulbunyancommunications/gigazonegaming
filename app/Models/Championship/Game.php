@@ -2,6 +2,7 @@
 
 namespace App\Models\Championship;
 
+use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -33,6 +34,17 @@ class Game extends Model
             $game->tournaments()->delete();
 
         });
+    }
+
+    /**
+     * Set name value to slug
+     *
+     * @param $value
+     */
+    public function setNameAttribute($value)
+    {
+        $slugify = Slugify::create();
+        $this->attributes['name'] = $slugify->slugify($value);
     }
 
     /**
