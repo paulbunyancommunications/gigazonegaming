@@ -117,7 +117,10 @@ class TournamentsController extends Controller
     public function destroy(Tournament $tournament)
     {
         PlayerRelation::where('relation_id', '=', $tournament->getRouteKey())->where('relation_type', '=', Tournament::class)->delete();
-        Team::where('tournament_id', '=', $tournament->getRouteKey())->delete();
+        foreach (Team::where('tournament_id', '=', $tournament->getRouteKey())->get() as $k => $t){
+            PlayerRelation::where('relation_id', '=', $t->id)->where('relation_type', '=', Team::class)->delete();
+            $t->delete();
+        }
         $tournament->where('id', $tournament->getRouteKey())->delete();
         return Redirect::back();
     }
