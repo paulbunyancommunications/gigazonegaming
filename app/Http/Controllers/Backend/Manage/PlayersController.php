@@ -175,6 +175,20 @@ class PlayersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  Player  $player, Team $team
+     * @return \Illuminate\Http\Response
+     */
+    public function remove(Player $player, Team $team)
+    {
+        PlayerRelation::where('player_id', '=', $player->getRouteKey())
+            ->where('relation_id', '=', $team->getRouteKey())
+            ->where('relation_type', '=', Team::class)
+            ->delete();
+        return Redirect::back();
+    }
+    /**
+     * Destroy the specified resource from storage.
+     *
      * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
