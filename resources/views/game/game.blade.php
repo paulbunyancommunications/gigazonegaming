@@ -43,25 +43,25 @@
         <div class="form-group">
             <label for="name" class="control-label col-xs-3">Game Name:</label>
             <div class="col-xs-9">
-                <input type="text" name="name" id="name" class="form-control" placeholder="The name of the game" @if(isset($theGame->name))value="{{$theGame->name}}"@endif/>
+                <input type="text" name="name" id="name" class="form-control" placeholder="The name of the game" value="@if(isset($theGame->name)){{ $theGame->name }}@else{{ old('name') }}@endif"/>
             </div>
         </div>
         <div class="form-group">
             <label for="name" class="control-label col-xs-3">Game Title:</label>
             <div class="col-xs-9">
-                <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game" @if(isset($theGame->title))value="{{$theGame->title}}"@endif/>
+                <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game" value="@if(isset($theGame->title)){{ $theGame->title }}@else{{ old('title') }}@endif"/>
             </div>
         </div>
         <div class="form-group">
             <label for="uri" class="control-label col-xs-3">Game URI:</label>
             <div class="col-xs-9">
-                <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game" @if(isset($theGame->uri))value="{{$theGame->uri}}"@endif />
+                <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game" value="@if(isset($theGame->uri)){{ $theGame->uri }}@else{{ old('uri') }}@endif" />
             </div>
         </div>
         <div class="form-group">
             <label for="description" class="control-label col-xs-3">Game Description:</label>
             <div class="col-xs-9">
-                <textarea name="description" id="description" class="form-control" placeholder="The description of the game"  >@if(isset($theGame->description)){{$theGame->description}}@endif</textarea>
+                <textarea name="description" id="description" class="form-control" placeholder="The description of the game"  >@if(isset($theGame->description)){{ $theGame->description }}@else{{ old('description') }}@endif</textarea>
             </div>
         </div>
 
