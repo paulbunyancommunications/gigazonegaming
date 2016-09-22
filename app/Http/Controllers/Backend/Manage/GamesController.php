@@ -46,7 +46,8 @@ class GamesController extends Controller
         $game->created_at = Carbon::now("CST");
         $game->updated_at = Carbon::now("CST");
         $game->save();
-        return $this->index();
+        return View::make('game/game')->with("theGame", $game)
+            ->with("cont_added", "The game ".$request['name']." was added");
     }
 
     /**
@@ -80,7 +81,8 @@ class GamesController extends Controller
      */
     public function create(Game $game)
     {
-        return View::make('game/game')->with("theGame", $game);
+        return Redirect::back()->with("theGame", $game)
+            ->with("cont_updated", true);
     }
 
     /**
@@ -108,7 +110,9 @@ class GamesController extends Controller
         $game->where('id', $game->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/game')->with("theGame", $game->where('id', $game->getRouteKey())->first())->with("cont_updated", true);
+        return Redirect::back()->
+        with("theGame", $game->where('id', $game->getRouteKey())->first())
+            ->with("cont_updated", true);
     }
 
     /**
@@ -119,6 +123,7 @@ class GamesController extends Controller
      */
     public function destroy(Game $game)
     {
+        $name = $game->name;
         foreach (Tournament::where('game_id', '=', $game->getRouteKey())->get() as $key => $tounament) {
             foreach (Team::where('tournament_id', '=', $tounament->id)->get() as $k => $team){
                 PlayerRelation::where('relation_id', '=', $team->id)->where('relation_type', '=', Team::class)->delete();
@@ -129,6 +134,8 @@ class GamesController extends Controller
         }
         PlayerRelation::where('relation_id', '=', $game->getRouteKey())->where('relation_type', '=', Game::class)->delete();
         $game->where('id', $game->getRouteKey())->delete();
-        return Redirect::back();
+
+        return View::make('game/game')
+            ->with("cont_added", "The game ".$name." was successfully deleted (and all tournaments, teams and relations attached to it)");
     }
 }

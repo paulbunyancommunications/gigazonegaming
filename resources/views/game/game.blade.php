@@ -23,6 +23,9 @@
     @if(isset($cont_updated) and  $cont_updated)
         <div class="alert alert-success"><strong>Success!</strong> You have updated this Game.</div>
     @endif
+    @if(isset($cont_added) and  $cont_added!='')
+        <div class="alert alert-success"><strong>Success!</strong> {{$cont_added}}</div>
+    @endif
     @if(isset($theGame->name))
         <h1>Update game &#8220;{{$theGame->name}}&#8221;</h1>
         {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
