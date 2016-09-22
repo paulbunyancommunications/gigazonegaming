@@ -145,7 +145,7 @@ class TeamsController extends Controller
     public function destroy_hard(Team $team)
     {
         PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->delete();
-        $team->where('id', $player->getRouteKey())->delete();
+        $team->where('id', $team->getRouteKey())->delete();
         return Redirect::back();
     }
     /**
