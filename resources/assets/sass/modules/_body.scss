@@ -6,7 +6,7 @@ body{
   background-color: $color-white;
   @include font-size(1.4);
   @include line-height(1.6);
-  background: tint($color-light-gray, 90);
+  //background: tint($color-light-gray, 90);
   overflow: hidden;
 }
 
