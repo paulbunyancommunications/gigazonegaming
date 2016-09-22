@@ -28,7 +28,7 @@
         {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
     @else
         <h1>Create a new game</h1>
-        {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@create'), 'class' => 'form-horizontal')) }}
+        {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
     @endif
 
     <div class="form-group">
@@ -86,7 +86,7 @@
                     !!}
                     {{ Form::close() }}
                     &nbsp;&nbsp;
-                    {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
+                    {{ Html::linkAction('Backend\Manage\GamesController@create', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
                     &nbsp;&nbsp;
                     {{ Form::open(array('id' => "gameForm".$game["game_id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["game_id"]), 'class' => "deletingForms")) }}
                     <input name="_method" type="hidden" value="DELETE">

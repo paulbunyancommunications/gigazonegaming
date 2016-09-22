@@ -34,7 +34,7 @@ class GamesController extends Controller
      * @param  Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function create(GameRequest $request)
+    public function store(GameRequest $request)
     {
         $game = new Game();
         $game->uri = $request['uri'];
@@ -56,7 +56,7 @@ class GamesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Game $game)
+    public function edit(Game $game)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
     }
@@ -78,7 +78,7 @@ class GamesController extends Controller
      * @param  Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function edit(Game $game)
+    public function create(Game $game)
     {
         return View::make('game/game')->with("theGame", $game);
     }
