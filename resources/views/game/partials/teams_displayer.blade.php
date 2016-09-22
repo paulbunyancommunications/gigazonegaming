@@ -35,7 +35,7 @@
     {!!
         Form::submit(
             '&#xf00d; Team & Players',
-            array('class'=>'btn btn-danger list fa fa-times2', 'title'=>"There is no coming back if you delete the whole team from the db!")
+            array('class'=>'btn btn-danger list fa fa-times2', 'title'=>"There is no coming back if you delete the team from the db and all the players from this team from all other teams, tournaments and games!!!!!!")
         )
     !!}
     {{ Form::close() }}

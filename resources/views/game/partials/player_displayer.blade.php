@@ -20,7 +20,7 @@
         &nbsp;&nbsp;
                 {{ Html::linkAction('Backend\Manage\PlayersController@edit', '', array('player_id'=>$player["player_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'title'=>'Edit')) }}
                 &nbsp;&nbsp;
-                {{ Form::open(array('id' => "playerForm".$player["player_id"], 'action' => array('Backend\Manage\PlayersController@destroy', $player["player_id"]), 'class' => "deletingForms")) }}
+                {{ Form::open(array('id' => "playerForm".$player["player_id"], 'action' => array('Backend\Manage\PlayersController@remove', $player["player_id"], $player['team_id']), 'class' => "deletingForms")) }}
                     <input name="_method" type="hidden" value="DELETE">
                 {!!
                     Form::submit(

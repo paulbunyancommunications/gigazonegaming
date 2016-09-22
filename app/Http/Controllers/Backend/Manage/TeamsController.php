@@ -7,6 +7,7 @@ use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Player_Team;
 use App\Models\Championship\Player_Tournament;
+use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
@@ -124,48 +125,33 @@ class TeamsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove players from team and delete team
      *
      * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
     public function destroy_soft(Team $team)
     {
-//        $players = Player::
-//            join("player_team",'players.id','=','player_team.player_id')
-//            ->where("team_id", $team->getRouteKey())
-//                ->get()
-//                ->toArray();
-////        dd($players);
-//        foreach($players as $player){
-//            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
-//        }
-//        Team::where("id", $team->getRouteKey())->delete();
-//        Cache::flush();
-        return redirect('/manage/team');
+        PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->delete();
+        $team->where('id', $team->getRouteKey())->delete();
+        return Redirect::back();
     }
 //
     /**
-     * Remove the specified resource from storage.
+     * Remove players from team and delete team
      *
      * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
     public function destroy_hard(Team $team)
     {
-//        $players = Player::
-//        join("player_team",'players.id','=','player_team.player_id')
-//            ->where("team_id", $team->getRouteKey())
-//            ->get()
-//            ->toArray();
-//        foreach($players as $player){
-//            Player_Team::where("team_id", $team->getRouteKey())->where('player_id', '=', $player['player_id'])->delete();
-//            Player::where('id', '=', $player['player_id'])->delete();
-//            Player_Tournament::where('player_id', '=', $player['player_id'])->delete();
-//        }
-//        Team::where("id", $team->getRouteKey())->delete();
-//        Cache::flush();
-        return redirect('/manage/team');
+        foreach (PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->get()
+            as $k => $relation){
+            Player::where('id','=', $relation->player_id)->delete();
+            PlayerRelation::where('player_id', '=', $relation->player_id)->delete();
+        }
+        $team->where('id', $team->getRouteKey())->delete();
+        return Redirect::back();
     }
     /**
      * Display the specified resource.
