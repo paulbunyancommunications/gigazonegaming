@@ -180,8 +180,9 @@ class PlayersController extends Controller
      */
     public function destroy(Player $player)
     {
+        PlayerRelation::where('player_id', '=', $player->getRouteKey())->delete();
         $player->where('id', $player->getRouteKey())->delete();
-        return redirect('/manage/player');
+        return Redirect::back();
     }
     /**
      * Display the specified resource.
