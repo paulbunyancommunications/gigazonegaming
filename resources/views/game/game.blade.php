@@ -46,7 +46,7 @@
         <div class="form-group">
             <label for="name" class="control-label col-xs-3">Game Title:</label>
             <div class="col-xs-9">
-                <input type="text" name="name" id="title" class="form-control" placeholder="The title of the game" @if(isset($theGame->title))value="{{$theGame->title}}"@endif/>
+                <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game" @if(isset($theGame->title))value="{{$theGame->title}}"@endif/>
             </div>
         </div>
         <div class="form-group">
@@ -80,7 +80,7 @@
                     <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
                     {!!
                         Form::submit(
-                            $game["game_name"],
+                            ($game["game_title"] ? $game["game_title"] : $game["game_name"]),
                             array('class'=>'gameName btn btn-default btn-block list')
                         )
                     !!}
