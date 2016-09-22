@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
+use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Tournament;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
@@ -53,5 +55,16 @@ class IndividualPlayersController extends Controller
 
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Player $player)
+    {
+        PlayerRelation::where('player_id', '=', $player->id)->delete();
+        $player->delete();
+        return Redirect::back();
+    }
 
 }
