@@ -80,6 +80,13 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 ->with('teams', $teams)
                 ->with('individualPlayers', $this->individualPlayers());
         });
+        View::composer(['game.teamMaker'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('individualPlayers', $this->individualPlayers(['order_by'=>"tournaments.id"]));
+        });
     }
 
     /**
@@ -143,6 +150,10 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                         $teams[$key]['team_max_players'] = $maxPlayers->max_players;
                     }
                 }
+                if (!isset($teams[$key]['team_count'])) {
+                    $teams[$key]['team_count'] = 0;
+                    $teams[$key]['team_max_players'] = $maxPlayers->max_players;
+                }
             }else{
                 $teams[$key]['team_count'] = 0;
                 $teams[$key]['team_max_players'] = "0";
@@ -156,9 +167,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      * @param $players
      * @return mixed
      */
-    public function individualPlayers()
+    public function individualPlayers($params = [])
     {
-        return $this->getSinglePlayersInfoBy();
+        return $this->getSinglePlayersInfoBy($params);
     }
     /**
      * @This method is calling the trait for team players only

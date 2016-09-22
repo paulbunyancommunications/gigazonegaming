@@ -44,33 +44,27 @@
                     <ul class="nav navbar-nav">
 
                         <li>{{ Html::linkAction('Backend\Manage\GamesController@index',
-                        'Games',
-                        array('team_id'=>"games"),
-                        array('class' => '')) }}
+                        'Games') }}
                         </li>
 
                         <li>{{ Html::linkAction('Backend\Manage\TournamentsController@index',
-                        'Tournaments',
-                        array('team_id'=>"tournaments"),
-                        array('class' => '')) }}
+                        'Tournaments') }}
                         </li>
 
                         <li>{{ Html::linkAction('Backend\Manage\TeamsController@index',
-                        'Team',
-                        array('team_id'=>"team"),
-                        array('class' => '')) }}
+                        'Team') }}
                         </li>
 
                         <li>{{ Html::linkAction('Backend\Manage\PlayersController@index',
-                        'Players',
-                        array('team_id'=>"players"),
-                        array('class' => '')) }}
+                        'Players') }}
                         </li>
 
                         <li>{{ Html::linkAction('Backend\Manage\IndividualPlayersController@index',
-                        'Individual Players',
-                        array('team_id'=>"individualPlayers"),
-                        array('class' => '')) }}
+                        'Individual Players') }}
+                        </li>
+
+                        <li>{{ Html::linkAction('Backend\Manage\IndividualPlayersController@teamMake',
+                        'Team Maker') }}
                         </li>
 
                     </ul>
