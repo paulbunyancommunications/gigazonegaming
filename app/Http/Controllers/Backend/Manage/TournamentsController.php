@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
 
@@ -114,9 +116,10 @@ class TournamentsController extends Controller
      */
     public function destroy(Tournament $tournament)
     {
-//        $tournament->where('id', $tournament->getRouteKey())->delete();
-////        return View::make('tournament/tournament')->with("tournaments", $this->retrieveTournaments());
-//        return redirect('/manage/tournament');
+        PlayerRelation::where('relation_id', '=', $tournament->getRouteKey())->where('relation_type', '=', Tournament::class)->delete();
+        Team::where('tournament_id', '=', $tournament->getRouteKey())->delete();
+        $tournament->where('id', $tournament->getRouteKey())->delete();
+        return Redirect::back();
     }
     /**
      * Display the specified resource.
