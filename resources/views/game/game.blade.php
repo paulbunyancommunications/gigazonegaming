@@ -44,6 +44,12 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="name" class="control-label col-xs-3">Game Title:</label>
+            <div class="col-xs-9">
+                <input type="text" name="name" id="title" class="form-control" placeholder="The title of the game" @if(isset($theGame->title))value="{{$theGame->title}}"@endif/>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="uri" class="control-label col-xs-3">Game URI:</label>
             <div class="col-xs-9">
                 <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game" @if(isset($theGame->uri))value="{{$theGame->uri}}"@endif />
