@@ -125,7 +125,7 @@ class TeamsController extends Controller
     }
 
     /**
-     * Remove players from team
+     * Remove players from team and delete team
      *
      * @param  Team  $team
      * @return \Illuminate\Http\Response
@@ -133,6 +133,7 @@ class TeamsController extends Controller
     public function destroy_soft(Team $team)
     {
         PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->delete();
+        $team->where('id', $team->getRouteKey())->delete();
         return Redirect::back();
     }
 //
@@ -144,7 +145,11 @@ class TeamsController extends Controller
      */
     public function destroy_hard(Team $team)
     {
-        PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->delete();
+        foreach (PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->get()
+            as $k => $relation){
+            Player::where('id','=', $relation->player_id)->delete();
+            PlayerRelation::where('player_id', '=', $relation->player_id)->delete();
+        }
         $team->where('id', $team->getRouteKey())->delete();
         return Redirect::back();
     }
