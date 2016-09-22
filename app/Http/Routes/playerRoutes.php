@@ -13,4 +13,5 @@ Route::group(['middleware' => ['WPAdmin']], function () {
     Route::put('/manage/player/edit/{player_id}', ['as' => 'manage.player.edited', 'uses' => 'Backend\Manage\PlayersController@update']);
     Route::post('/manage/player/new/', ['as' => 'manage.player.new', 'uses' => 'Backend\Manage\PlayersController@create']);
     Route::delete('/manage/player/delete/{player_id}', ['as' => 'manage.player.delete', 'uses' => 'Backend\Manage\PlayersController@destroy']);
+    Route::delete('/manage/player/remove/{player_id}/{team_id}', ['as' => 'manage.player.remove', 'uses' => 'Backend\Manage\PlayersController@remove']);
 });
