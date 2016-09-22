@@ -47,7 +47,7 @@ class GamesController extends Controller
         $game->updated_at = Carbon::now("CST");
         $game->save();
         return View::make('game/game')->with("theGame", $game)
-            ->with("cont_added", "The game ".$request['name']." was added");
+            ->with("cont_added", "The game ".$request['title']." was added");
     }
 
     /**
