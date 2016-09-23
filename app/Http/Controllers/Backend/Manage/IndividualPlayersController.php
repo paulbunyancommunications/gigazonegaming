@@ -66,5 +66,34 @@ class IndividualPlayersController extends Controller
         $player->delete();
         return Redirect::back();
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function teamMake()
+    {
+        return View::make('game/teamMaker');
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function teamFill(Request $request)
+    {
+        dd("team creater");
+        return Redirect::back();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function teamCreate(Request $request)
+    {
+        dd("team creater");
+        return Redirect::back();
+    }
 
 }

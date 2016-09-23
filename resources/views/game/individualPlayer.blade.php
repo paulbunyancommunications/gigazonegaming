@@ -139,6 +139,16 @@
                                         {{$player["player_username"]}}
                                     </button>
 
+                                    {{--{{ Form::open(array('id' => "tournamentForm".$player["player_id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $player["player_id"]), 'class' => "deletingForms")) }}--}}
+                                    {{--<input name="_method" type="hidden" value="DELETE">--}}
+                                    {{--{!!--}}
+                                        {{--Form::submit(--}}
+                                            {{--'&#xf014; &#xf1c0;',--}}
+                                            {{--array('class'=>'btn btn-danger list fa fa-times', 'title'=>"Delete From Database")--}}
+                                        {{--)--}}
+                                    {{--!!}--}}
+                                    {{--{{ Form::close() }}--}}
+
                                 </li>
                             @endif
                         @endforeach
