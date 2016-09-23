@@ -15,7 +15,7 @@ class WpTestAdminUserSeed extends Seeder
         $user = \App\Models\WpUser::firstOrCreate([
             'user_login' => 'tester'
         ]);
-        $user->user_pass = "password";
+        $user->user_pass = "123abc234def";
         $user->user_email = "tester@example.com";
         $user->save();
 
