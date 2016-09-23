@@ -72,6 +72,9 @@
             </div><!-- /.container-fluid -->
         </nav>
     </div>
+    <div class="messages-container">
+        {!! $messageHtml !!}
+    </div>
     <div class="row">
         <div class="col-md-12">
             @yield('content')
