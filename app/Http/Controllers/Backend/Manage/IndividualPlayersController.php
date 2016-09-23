@@ -82,8 +82,13 @@ class IndividualPlayersController extends Controller
      */
     public function teamFill(Request $request)
     {
-        dd("team creater");
-        return Redirect::back();
+        $team = $request->team;
+        foreach ($request->toArray() as $k => $value){
+            if(substr($k, 0, 6) == 'player') {
+                PlayerRelation::createRelation(["team" => $team, 'player' => $value]);
+            }
+        }
+        return View::make('game/teamMaker');
     }
     /**
      * Display a listing of the resource.
