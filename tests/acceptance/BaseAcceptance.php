@@ -1,21 +1,41 @@
 <?php
 
+/**
+ * Class BaseAcceptance
+ */
 class BaseAcceptance
 {
+    /**
+     *
+     */
     const TEXT_WAIT_TIMEOUT = 30;
 
+
+    /**
+     * @var Faker\Generator
+     */
     public $faker;
 
-    protected $wpAdminUser = ['name' => 'tester', 'password' => 'password', 'email' => 'tester@example.com'];
+    /**
+     * @var array
+     */
+    protected $wpAdminUser = ['name' => 'tester', 'password' => '123abc234def', 'email' => 'tester@example.com'];
 
 
+    /**
+     * @param AcceptanceTester $I
+     */
     public function _before(AcceptanceTester $I)
     {
         // run migrations
+        $this->resetDB($I);
         $I->runMigration($I);
         $this->faker = \Faker\Factory::create();
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
     public function _after(AcceptanceTester $I)
     {
         // reset all the databases
@@ -53,29 +73,38 @@ class BaseAcceptance
         $I->runShellCommand('php artisan db:seed --class=WpTestAdminUserSeed');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
     protected function loginWithAdminUser(AcceptanceTester $I)
     {
         $this->createWpAdminUser($I);
-        $I->amOnPage('/wp/wp-login.php?loggedout=true');
-        $I->fillField(['id' => 'user_login'], $this->wpAdminUser['name']);
-        $I->fillField(['id' => 'user_pass'], $this->wpAdminUser['password']);
+        $I->amOnPage('/wp/wp-login.php');
+
+        $I->fillField(['name' => 'log'], $this->wpAdminUser['name']);
+        $I->seeInField(['name' => 'log'], $this->wpAdminUser['name']);
+
+        $I->fillField(['name' => 'pwd'], $this->wpAdminUser['password']);
+        $I->seeInField(['name' => 'pwd'], $this->wpAdminUser['password']);
+
         $I->click(['id' => 'wp-submit']);
         $I->see('Dashboard');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
     protected function logoutOfWp(AcceptanceTester $I)
     {
         $I->amOnPage('/wp/wp-login.php?action=logout');
         $I->see('You are attempting to log out of');
-        $logoutLink = "t".time();
         $I->executeJS('var button = document.getElementsByTagName("a");
-for (var i = 0; i < button.length; i++) {
-    if (button[i].innerHTML === "log out") {
-        button[i].click();
-    }
-}');
-        $I->wait(5);
-        $I->see('You are now logged out.');
+                        for (var i = 0; i < button.length; i++) {
+                            if (button[i].innerHTML === "log out") {
+                                button[i].click();
+                            }
+        }');
+        $I->waitForText('You are now logged out.', self::TEXT_WAIT_TIMEOUT);
 
 
     }

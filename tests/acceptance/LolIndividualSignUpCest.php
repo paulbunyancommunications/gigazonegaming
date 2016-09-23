@@ -5,7 +5,6 @@ use AcceptanceTester;
 
 class LolIndividualSignUpCest extends \BaseAcceptance
 {
-    protected $faker;
 
     public function __construct()
     {

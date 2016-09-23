@@ -6,7 +6,6 @@ use AcceptanceTester;
 class ContactFormCest extends \BaseAcceptance
 {
 
-    protected $faker;
 
     public function _before(AcceptanceTester $I)
     {

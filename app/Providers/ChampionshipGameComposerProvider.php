@@ -110,7 +110,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function teams()
     {
         $playerTeam = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")
-            ->where('relation_type', '=', self::getTeamRoute())
+            ->where('relation_type', '=', Team::class)
             ->groupBy('team_id')
             ->get()
             ->toArray();

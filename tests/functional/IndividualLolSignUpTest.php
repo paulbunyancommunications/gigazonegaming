@@ -6,7 +6,9 @@ use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Pbc\Bandolier\Type\Numbers;
 
 /**
@@ -20,7 +22,7 @@ use Pbc\Bandolier\Type\Numbers;
  */
 class IndividualLolSignUpTest extends \TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions, WithoutMiddleware, DatabaseMigrations;
 
     /**
      *

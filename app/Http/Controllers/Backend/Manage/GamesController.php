@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\GameRequest;
 use App\Models\Championship\Game;
 use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
-use App\Models\WpUser;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use App\Http\Requests\GameRequest;
 
 class GamesController extends Controller
 {
@@ -36,18 +32,24 @@ class GamesController extends Controller
      */
     public function store(GameRequest $request)
     {
-        $game = new Game();
-        $game->uri = $request['uri'];
-        $game->description = $request['description'];
-        $game->name = $request['name'];
-        $game->title = $request['title'];
-        $game->updated_by =  $this->getUserId();
-        $game->updated_on = Carbon::now("CST");
-        $game->created_at = Carbon::now("CST");
-        $game->updated_at = Carbon::now("CST");
-        $game->save();
-        return View::make('game/game')->with("theGame", $game)
-            ->with("cont_added", "The game ".$request['title']." was added");
+        \DB::beginTransaction();
+        try {
+            $game = new Game();
+            $game->uri = $request['uri'];
+            $game->description = $request['description'];
+            $game->name = $request['name'];
+            $game->title = $request['title'];
+            $game->updated_by = $this->getUserId();
+            $game->updated_on = Carbon::now("CST");
+            $game->created_at = Carbon::now("CST");
+            $game->updated_at = Carbon::now("CST");
+            $game->save();
+            \DB::commit();
+            return redirect('/manage/game/edit/' . $game->id)->with('success', "The game ".$request['title']." was added!");
+        } catch (\Exception $ex) {
+            \DB::rollback();
+            return redirect()->back()->withInput()->with('error', $ex->getMessage());
+        }
     }
 
     /**
@@ -59,30 +61,7 @@ class GamesController extends Controller
      */
     public function edit(Game $game)
     {
-        dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Game $game)
-    {
         return View::make('game/game')->with("theGame", $game);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Game $game)
-    {
-        return Redirect::back()->with("theGame", $game)
-            ->with("cont_updated", true);
     }
 
     /**
@@ -94,25 +73,31 @@ class GamesController extends Controller
      */
     public function update(GameRequest $request, Game $game) //have to update it to my request
     {
-        $updatedBy = $this->getUserId();
-        $updatedOn = Carbon::now("CST");
-        $toUpdate = array_merge($request->all(), [
-            'updated_by' => $updatedBy,
-            'updated_on' => $updatedOn
-        ] );
-        unset($toUpdate['_token']);
-        unset($toUpdate['_method']);
-        unset($toUpdate['id']);
-        unset($toUpdate['reset']);
-        unset($toUpdate['submit']);
-//        dd($toUpdate);
-//        dd("passed request");
-        $game->where('id', $game->getRouteKey())->update(
-            $toUpdate
-        );
-        return Redirect::back()->
-        with("theGame", $game->where('id', $game->getRouteKey())->first())
-            ->with("cont_updated", true);
+        // setup updated on and by
+        $toUpdate = [
+            'updated_by' => $this->getUserId(),
+            'updated_on' => Carbon::now("CST"),
+        ];
+
+        // filter out all request items by the columns in the games table
+        $columns = $game->columns();
+        $inputs = array_filter($request->all(), function ($k) use ($columns) {
+            return in_array($k, $columns);
+        }, ARRAY_FILTER_USE_KEY);
+
+        // merge in the found filtered items
+        $toUpdate = array_merge($toUpdate, $inputs);
+        try {
+            $game->where('id', $game->getRouteKey())->update(
+                $toUpdate
+            );
+            return Redirect::back()
+                ->with("theGame", $game->where('id', $game->getRouteKey())->first())
+                ->with("success", "Game ".$toUpdate['title']." was updated!");
+        } catch (\Exception $ex) {
+            return redirect()->back()->withInput()->with('error', $ex->getMessage());
+        }
+
     }
 
     /**
@@ -136,6 +121,6 @@ class GamesController extends Controller
         $game->where('id', $game->getRouteKey())->delete();
 
         return View::make('game/game')
-            ->with("cont_added", "The game ".$name." was successfully deleted (and all tournaments, teams and relations attached to it)");
+            ->with("success", "The game ".$name." was successfully deleted (and all tournaments, teams and relations attached to it).");
     }
 }

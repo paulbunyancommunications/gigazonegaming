@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="/app/content/css/app.css">
+    {{--<link rel="stylesheet" href="/app/content/css/app.css">--}}
     <style type="text/css" href="">
         @yield('css')
         .fa,
@@ -96,8 +96,9 @@
 //            $('#wpfooter', window.parent.document).addClass('hidden');
             var toAdd = '</div><div id="pageLinker2" class="btn-group btn-group-justified" role="group" aria-label="Justified button group">';
         });
+        @yield('js')
     });
-    @yield('js')
 </script>
+@yield('js-sheet')
 </body>
 </html>

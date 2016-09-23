@@ -34,7 +34,7 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
         
         // check email field exists and the rules are correct
         $this->assertArrayHasKey('email', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['email'], 'required|email');
+        $this->assertSame($individualRequest->rules()['email'], 'required|email|unique:mysql_champ.players,email');
         
         // check for name input and check that the rules are correct
         $this->assertArrayHasKey('name', $individualRequest->rules());
@@ -42,7 +42,7 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
 
         // check for team-captain-lol-summoner-name input and check that the rules are correct
         $this->assertArrayHasKey('team-captain-lol-summoner-name', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['team-captain-lol-summoner-name'], 'required');
+        $this->assertSame($individualRequest->rules()['team-captain-lol-summoner-name'], 'required|unique:mysql_champ.players,username');
 
         // check for team-captain-phone input and check that the rules are correct
         $this->assertArrayHasKey('team-captain-phone', $individualRequest->rules());
@@ -54,7 +54,7 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
 
         // check for team-name input and check that the rules are correct
         $this->assertArrayHasKey('team-name', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['team-name'], 'required');
+        $this->assertSame($individualRequest->rules()['team-name'], 'required|unique:mysql_champ.teams,name');
 
         for ($i = 1; $i <= 2; $i++) {
             // check for teammate-x-lol-summoner-name input and check that the rules are correct
@@ -62,14 +62,14 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
                 'teammate-' . Numbers::toWord($i) . '-lol-summoner-name',
                 $individualRequest->rules()
             );
-            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'], 'required');
+            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'], 'required|unique:mysql_champ.players,username');
 
             // check for teammate-x-email-address input and check that the rules are correct
             $this->assertArrayHasKey(
                 'teammate-' . Numbers::toWord($i) . '-email-address',
                 $individualRequest->rules()
             );
-            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-email-address'], 'required|email');
+            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-email-address'], 'required|email|unique:mysql_champ.players,email');
         
         }
     }
@@ -83,16 +83,20 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
 
         $messages = [
             'email.required' => 'The team captain email address is required.',
+            'email.unique' => 'The team captain email address is already assigned to a different user.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
             'name.required' => 'The name of the team captain is required.',
             'team-captain-lol-summoner-name.required' => 'The team captain LOL summoner name is required.',
+            'team-captain-lol-summoner-name.unique' => 'The team captain LOL summoner name is already assigned to a different user.',
             'team-captain-phone.required' => 'The team captain phone number is required.',
             'team-name.required' => 'The team name is required.',
         ];
 
         for ($i = 1; $i <= 2; $i++) {
+            $messages['teammate-'. Numbers::toWord($i).'-lol-summoner-id.exists'] = 'The summoner selected for teammate '.Numbers::toWord($i). ' was not found.';
             $messages['teammate-'. Numbers::toWord($i).'-lol-summoner-name.required'] = 'The summoner name for team member '.Numbers::toWord($i).' is required.';
             $messages['teammate-'.Numbers::toWord($i).'-email-address.required'] = 'The email address for team member '.Numbers::toWord($i).' is required.';
+            $messages['teammate-'.Numbers::toWord($i).'-email-address.unique'] = 'The email address for team member '.Numbers::toWord($i).' is already in use by another player.';
             $messages['teammate-'.Numbers::toWord($i).'-email-address.email'] = 'The email address for team member '.Numbers::toWord($i).' must be a valid email address (someone@somewhere.com for example).';
         }
 
