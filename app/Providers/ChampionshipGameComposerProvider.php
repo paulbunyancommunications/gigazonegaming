@@ -46,6 +46,11 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
+        View::composer(['game.base'], function ($view) {
+            $messages = \View::make('base.partials.messages');
+            $view->with('messageHtml', $messages);
+        });
+
         View::composer(['game.game'], function ($view) {
             extract($this->getViewComposerElements(['games']));
             $view->with('games', $games);
