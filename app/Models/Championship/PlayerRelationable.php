@@ -52,10 +52,9 @@ trait PlayerRelationable
      */
     public static function doesThePlayerRelationExist($parameters){
 
-//        $relation = PlayerRelation::where("player_id", $parameters['player']);
         if(isset($parameters['team'])){
-            $tournament = Team::find($parameters['team'])->tournament()->first()->teams()->get();
-            foreach ($tournament as $key => $team) {
+            $tournamentTeams = Team::find($parameters['team'])->tournament()->first()->teams()->get();
+            foreach ($tournamentTeams as $key => $team) {
                 if($team->hasPlayerID($parameters['player'])){
                     return true;
                 }
@@ -114,7 +113,7 @@ trait PlayerRelationable
                 $relation = new PlayerRelation();
                 $relation->player_id = $parameters['player'];
                 $relation->relation_id = $parameters['game'];
-                $relation->relation_type = self::getGameRoute();
+                $relation->relation_type = Game::class;
                 $relation->save();
                 $ret = true;
             }
@@ -124,7 +123,7 @@ trait PlayerRelationable
                 $relation = new PlayerRelation();
                 $relation->player_id = $parameters['player'];
                 $relation->relation_id = $parameters['tournament'];
-                $relation->relation_type = self::getTournamentRoute();
+                $relation->relation_type = Tournament::class;
                 $relation->save();
                 $ret = true;
             }
@@ -134,7 +133,7 @@ trait PlayerRelationable
                 $relation = new PlayerRelation();
                 $relation->player_id = $parameters['player'];
                 $relation->relation_id = $parameters['team'];
-                $relation->relation_type = self::getTeamRoute();
+                $relation->relation_type = Team::class;
                 $relation->save();
                 $ret = true;
             }
@@ -177,13 +176,13 @@ trait PlayerRelationable
                 $info = '';
 //                dd("here");
 //                dd($information);
-                if ($someT['relation_type'] == self::getTournamentRoute()) {
+                if ($someT['relation_type'] == Tournament::class) {
                     if(!isset($returnableArray['tournaments'])){$returnableArray['tournaments']=[];}
                     $returnableArray['tournaments'][] = Tournament::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                } elseif ($someT['relation_type'] == self::getTeamRoute()) {
+                } elseif ($someT['relation_type'] == Team::class) {
                     if(!isset($returnableArray['teams'])){$returnableArray['teams']=[];}
                     $returnableArray['teams'][] = Team::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                }elseif ($someT['relation_type'] == self::getGameRoute()) {
+                }elseif ($someT['relation_type'] == Game::class) {
                     if(!isset($returnableArray['games'])){$returnableArray['games']=[];}
                     $returnableArray['games'][] = Game::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
                 }else{
