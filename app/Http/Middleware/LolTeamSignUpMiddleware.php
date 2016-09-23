@@ -27,50 +27,79 @@ class LolTeamSignUpMiddleware
         if ($validator->fails()) {
             return \Response::json(['error' => $validator->errors()->all()]);
         }
-        
-        // if tournament is not already set then get it from the request
-        if (!$this->getTournament()) {
-            $this->setTournament($request->input('tournament'));
-        }
+
+        // set tournament from request
+        $this->setTournament($request->input('tournament'));
+
         // get tournament by name
-        $tournament = Tournament::where('name', $this->getTournament())->get();
-        if ($tournament->isEmpty()) {
-            return \Response::json(['error' => ['Could not find tournament "' . $this->getTournament() . '"']]);
+        $tournament = Tournament::where('name', $this->getTournament())->first();
+        if (!$tournament) {
+            return \Response::json([
+                'error' => [
+                    trans('tournament.not_found', ['tournament' => $this->getTournament()])
+                ]
+            ]);
         }
-        // make new team
-        $team = new Team();
-        $team->setAttribute('tournament_id', $tournament->first()->id);
-        $team->setAttribute('name', $request->input('team-name'));
-        $team->save();
+        try {
+            \DB::transaction(function () use ($tournament, $request) {
 
-        // add captain
-        $captain = new Player();
-        $captain->setAttribute('username', $request->input('team-captain-lol-summoner-name'));
-        $captain->setAttribute('email', $request->input('email'));
-        $captain->setAttribute('name', $request->input('name'));
-        $captain->setAttribute('phone', $request->input('team-captain-phone'));
-        $captain->setAttribute('team_id', $team->id);
-        $captain->save();
+                // make new team
+                $team = new Team();
+                $team->setAttribute('tournament_id', $tournament->first()->id);
+                $team->setAttribute('name', $request->input('team-name'));
 
-        // add captain to team
-        $team->captain = $captain->id;
-        $team->save();
+                // check if captain already exists, if they do then return message about logging in to update their settings
+                $findCaptain = Player::where('email', '=', $request->input('email'))->first();
+                if ($findCaptain) {
+                    return \Response::json([
+                        'warning' => [
+                            trans('team.player_already_exists', ['email' => $request->input('email')])
+                        ]
+                    ]);
+                }
 
-        // add other players
-        for ($i = 1; $i <= config('championship.players.league-of-legends', 5); $i++) {
-            if ($request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name')) {
-                $player = new Player();
-                $player->setAttribute(
-                    'username',
-                    $request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name')
-                );
-                $player->setAttribute(
-                    'email',
-                    $request->input('teammate-' . Numbers::toWord($i) . '-email-address')
-                );
-                $player->setAttribute('team_id', $team->id);
-                $player->save();
-            }
+                // add captain
+                $captain = new Player();
+                $captain->setAttribute('username', $request->input('team-captain-lol-summoner-name'));
+                $captain->setAttribute('email', $request->input('email'));
+                $captain->setAttribute('name', $request->input('name'));
+                $captain->setAttribute('phone', $request->input('team-captain-phone'));
+                $captain->save();
+
+                // add captain to team/tournament/game
+                $captain::createRelation([
+                    'player' => $captain,
+                    'tournament' => $tournament,
+                    'game' => $tournament->game,
+                    'team' => $team,
+                ]);
+
+                // add captain and save the team
+                $team->captain = $captain->id;
+                $team->save();
+
+                // add other players
+                for ($i = 1; $i <= $tournament->max_players; $i++) {
+                    if ($request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name')) {
+                        $player = new Player();
+                        $player->username = $request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name');
+                        $player->email = $request->input('teammate-' . Numbers::toWord($i) . '-email-address');
+                        $player->save();
+                        // attach player to team/tournament/game
+                        $player::createRelation([
+                            'player' => $player,
+                            'tournament' => $tournament,
+                            'game' => $tournament->game,
+                            'team' => $team,
+                        ]);
+                    }
+                }
+
+                return true;
+            });
+
+        } catch (\Exception $ex) {
+            return \Response::json(['error' => [$ex->getMessage(), $ex->getTraceAsString()]]);
         }
 
         return $next($request);

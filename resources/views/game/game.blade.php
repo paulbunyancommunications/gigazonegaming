@@ -11,23 +11,9 @@
     }
 @endsection
 @section('content')
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(isset($cont_updated) and  $cont_updated)
-        <div class="alert alert-success"><strong>Success!</strong> You have updated this Game.</div>
-    @endif
-    @if(isset($cont_added) and  $cont_added!='')
-        <div class="alert alert-success"><strong>Success!</strong> {{$cont_added}}</div>
-    @endif
-    @if(isset($theGame->name))
-        <h1>Update game &#8220;{{$theGame->name}}&#8221;</h1>
+
+    @if(isset($theGame->title))
+        <h1>Update game &#8220;{{ $theGame->title }}&#8221;</h1>
         {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
     @else
         <h1>Create a new game</h1>
@@ -66,8 +52,8 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" name="submit" id="submit" class='btn btn-default' value="Save">
-            {{ Html::link('/manage/game/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
+            <input type="submit" name="submit" id="submit" class='btn btn-default btn-primary' value="{{ isset($theGame) ? 'Update '. $theGame->title : 'Create' }}">
+            {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default'))}}
         </div>
     </div>
     </form>
@@ -89,14 +75,14 @@
                     !!}
                     {{ Form::close() }}
                     &nbsp;&nbsp;
-                    {{ Html::linkAction('Backend\Manage\GamesController@create', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
+                    {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
                     &nbsp;&nbsp;
                     {{ Form::open(array('id' => "gameForm".$game["game_id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["game_id"]), 'class' => "deletingForms")) }}
                     <input name="_method" type="hidden" value="DELETE">
                     {!!
                         Form::submit(
                             '&#xf014; &#xf1c0;',
-                            array('class'=>'btn btn-danger list fa fa-times', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
+                            array('class'=>'btn btn-danger list fa fa-times confirm-choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
                         )
                     !!}
                     {{ Form::close() }}
@@ -108,7 +94,7 @@
 @endsection
 @section('js')
     $(document).ready(function() {
-        $('.fa-times').click(function() {
+        $('.confirm-choice').click(function() {
             var conf = confirm('Are you sure?');
             if (conf) {
                 var url = $(this).attr('href');

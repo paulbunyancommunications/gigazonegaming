@@ -18,6 +18,12 @@ class Game extends Model
     protected $connection = 'mysql_champ';
 
     /**
+     * Guard the ID
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
      * @var array
      */
     protected $fillable = ['name','description','uri','updated_by','updated_on'];
@@ -34,6 +40,16 @@ class Game extends Model
             $game->tournaments()->delete();
 
         });
+    }
+
+    /**
+     * return column list
+     *
+     * @return array
+     */
+    public function columns()
+    {
+        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
 
     /**

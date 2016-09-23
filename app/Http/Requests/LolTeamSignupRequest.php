@@ -7,6 +7,9 @@ use Pbc\Bandolier\Type\Numbers;
 
 /**
  * Class LolTeamSignUpRequest
+ *
+ * Used for creating a new LoL team from the front end site
+ *
  * @package App\Http\Requests
  */
 class LolTeamSignUpRequest extends BaseRequest
@@ -29,16 +32,20 @@ class LolTeamSignUpRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'email' => 'required|email|unique:mysql_champ.individual_players,email|unique:mysql_champ.players,email',
+            'email' => 'required|email|unique:mysql_champ.players,email',
             'name' => 'required',
-            'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username|unique:mysql_champ.players,username',
+            'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
             'team-captain-phone' => 'required',
             'tournament' => 'required|exists:mysql_champ.tournaments,name',
             'team-name' => 'required|unique:mysql_champ.teams,name'
         ];
         for ($i = 1; $i <= 2; $i++) {
-            $rules['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] = 'required|unique:mysql_champ.players,username|unique:mysql_champ.players,username';
-            $rules['teammate-'.Numbers::toWord($i).'-email-address'] = 'required|email|unique:mysql_champ.individual_players,email|unique:mysql_champ.players,email';
+            if ($this->request->get('teammate-'.Numbers::toWord($i).'-lol-summoner-id')) {
+                $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-id'] = 'exists:mysql_champ.player,id';
+            } else {
+                $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = 'required|unique:mysql_champ.players,username';
+                $rules['teammate-' . Numbers::toWord($i) . '-email-address'] = 'required|email|unique:mysql_champ.players,email';
+            }
         }
 
         return $rules;
@@ -62,8 +69,10 @@ class LolTeamSignUpRequest extends BaseRequest
         ];
         
         for ($i = 1; $i <= 2; $i++) {
+            $messages['teammate-'. Numbers::toWord($i).'-lol-summoner-id.exists'] = 'The summoner selected for teammate '.Numbers::toWord($i). ' was not found.';
             $messages['teammate-'. Numbers::toWord($i).'-lol-summoner-name.required'] = 'The summoner name for team member '.Numbers::toWord($i).' is required.';
             $messages['teammate-'.Numbers::toWord($i).'-email-address.required'] = 'The email address for team member '.Numbers::toWord($i).' is required.';
+            $messages['teammate-'.Numbers::toWord($i).'-email-address.unique'] = 'The email address for team member '.Numbers::toWord($i).' is already in use by another player.';
             $messages['teammate-'.Numbers::toWord($i).'-email-address.email'] = 'The email address for team member '.Numbers::toWord($i).' must be a valid email address (someone@somewhere.com for example).';
         }
 

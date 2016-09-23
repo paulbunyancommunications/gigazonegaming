@@ -33,7 +33,6 @@ class BaseFunctional
     {
         parent::setUp();
         $this->faker = Factory::create();
-        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -42,6 +41,5 @@ class BaseFunctional
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 }

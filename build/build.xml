@@ -117,6 +117,9 @@
         <!-- exclude wordpress uploads folder -->
         <exclude name="${dir.wp-content}uploads/**/*"/>
 
+        <!-- exclude testing assets folder -->
+        <exclude name="${dir.www}testing_assets/**/*"/>
+
         <!-- folders created by puppet -->
         <exclude name="${dir.www}icons/**/*"/>
         <exclude name="${dir.www}html/**/*"/>

@@ -25,8 +25,8 @@ class LolIndividualSignUpRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'your-lol-summoner-name' => 'required|unique:mysql_champ.individual_players,username|unique:mysql_champ.players,username',
-            'email' => 'required|email',
+            'your-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
+            'email' => 'required|email|unique:mysql_champ.players,email',
             'your-phone' => 'required',
         ];
     }
@@ -38,6 +38,7 @@ class LolIndividualSignUpRequest extends BaseRequest
             'your-lol-summoner-name.required' => 'Your League of Legends summoner name is required.',
             'your-lol-summoner-name.unique' => 'Your League of Legends summoner name is already being used by someone else.',
             'email.required' => 'Your email address is required.',
+            'email.unique' => 'Your email in use by another player',
             'email.email' => 'Your email address must be a valid address (someone@somewhere.com for example).',
             'your-phone.required' => 'Your phone number is required.',
         ];

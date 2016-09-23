@@ -14,6 +14,28 @@ use Illuminate\Support\Facades\DB;
 
 trait PlayerRelationable
 {
+    public static function routables()
+    {
+        return ['Game','Team','Tournament','Player'];
+    }
+
+    public static function getGameRoute()
+    {
+        return 'App\\Models\\Championship\\Game';
+    }
+
+    public static function getPlayerRoute()
+    {
+        return 'App\\Models\\Championship\\Player';
+    }
+    public static function getTournamentRoute()
+    {
+        return "App\\Models\\Championship\\Tournament";
+    }
+    public static function getTeamRoute()
+    {
+        return "App\\Models\\Championship\\Team";
+    }
     public function findPlayersRelations(){
         return $this->morphMany(
             PlayerRelation::class,
@@ -55,6 +77,35 @@ trait PlayerRelationable
             return Game::find($parameters['game'])->hasPlayerID($parameters['player']);
         }
     }
+
+    protected static function prepParameters(&$parameters)
+    {
+        foreach (self::routables() as $routable) {
+            switch ($routable) {
+                case ('Game'):
+                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Game) {
+                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
+                    }
+                    break;
+                case ('Team'):
+                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Team) {
+                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
+                    }
+                    break;
+                case ('Tournament'):
+                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Tournament) {
+                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
+                    }
+                    break;
+                case ('Player'):
+                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Player) {
+                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
+                    }
+                    break;
+            }
+        }
+    }
+
     /*
      * the intention of the function is to create a row on table for the passed relation
      * this function will accept 2 parameters and 2 of them are necessary
@@ -65,6 +116,7 @@ trait PlayerRelationable
     public static function createRelation($parameters)
     {
         $ret = false;
+        self::prepParameters($parameters);
         if (isset($parameters['game'])) {
             if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $parameters['game']])) {
                 $relation = new PlayerRelation();
