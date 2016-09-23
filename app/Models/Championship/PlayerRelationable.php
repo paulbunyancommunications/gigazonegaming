@@ -20,6 +20,15 @@ trait PlayerRelationable
             'relation'
         );
     }
+    /**
+     * Get an 8 chars random string
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public static function generateRandomCode()
+    {
+        return str_random(8);
+    }
 
     /*
      * the function will check if there is a relation from the passed parameters
