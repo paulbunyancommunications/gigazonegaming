@@ -1,4 +1,4 @@
 <?php
 return [
-    'not_found' => "Could not find tournament :tournament",
+    'not_found' => 'Could not find tournament ":tournament"',
 ];

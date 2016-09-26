@@ -29,14 +29,16 @@ class LolTeamSignUpMiddleware
         }
 
         // set tournament from request
-        $this->setTournament($request->input('tournament'));
-
+        if (!$this->getTournament()) {
+            $this->setTournament($request->input('tournament'));
+        }
         // get tournament by name
         $tournament = Tournament::where('name', $this->getTournament())->first();
-        if (!$tournament) {
+        if ($tournament === null) {
             return \Response::json([
                 'error' => [
-                    trans('tournament.not_found', ['tournament' => $this->getTournament()])
+                    trans('tournament.not_found', ['tournament' => $this->getTournament()
+                    ])
                 ]
             ]);
         }
@@ -45,8 +47,9 @@ class LolTeamSignUpMiddleware
 
                 // make new team
                 $team = new Team();
-                $team->setAttribute('tournament_id', $tournament->first()->id);
-                $team->setAttribute('name', $request->input('team-name'));
+                $team->tournament_id = $tournament->id;
+                $team->name =  $request->input('team-name');
+                $team->save();
 
                 // check if captain already exists, if they do then return message about logging in to update their settings
                 $findCaptain = Player::where('email', '=', $request->input('email'))->first();
@@ -94,12 +97,10 @@ class LolTeamSignUpMiddleware
                         ]);
                     }
                 }
-
-                return true;
             });
 
         } catch (\Exception $ex) {
-            return \Response::json(['error' => [$ex->getMessage(), $ex->getTraceAsString()]]);
+            return \Response::json(['error' => [$ex->getMessage()]]);
         }
 
         return $next($request);

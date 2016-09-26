@@ -38,7 +38,15 @@ class Player extends Model
      */
     public function teams()
     {
-        return $this->belongsToMany('App\Models\Championship\Team', 'team_id');
+        return $this->morphedByMany('App\Models\Championship\Team', 'relation', 'player_relations', 'player_id', 'relation_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeamsAttribute()
+    {
+        return $this->teams()->get();
     }
 
     /**

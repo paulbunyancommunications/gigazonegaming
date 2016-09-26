@@ -14,13 +14,14 @@ namespace Tests\Functional\Http\Middleware;
 
 use App\Http\Middleware\LolTeamSignUpMiddleware;
 use App\Http\Requests\LolTeamSignUpRequest;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Pbc\Bandolier\Type\Numbers;
 
 class LolTeamSignUpMiddlewareTest extends \TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     protected $teamInputs;
 
@@ -35,7 +36,7 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
 
         // create a dummy tournament for this team to sign up for
         $tournamentName = implode('-', $faker->words());
-        factory(\App\Models\Championship\Tournament::class)->create(['name' => $tournamentName]);
+        $tournament = factory(\App\Models\Championship\Tournament::class)->create(['name' => $tournamentName]);
 
         // dummy team inputs
         $this->teamInputs = [
@@ -44,7 +45,7 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
             'team-captain-lol-summoner-name' => $faker->userName,
             'team-captain-phone' => $faker->phoneNumber,
             'team-captain-lol-summoner-name' => $faker->userName,
-            'tournament' => $tournamentName,
+            'tournament' => $tournament->name,
             'team-name' => implode(' ', $faker->words()),
         ];
 
@@ -61,7 +62,6 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
     {
         parent::tearDown();
         $this->teamInputs = [];
-        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -101,12 +101,14 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $handle = $middleware->handle($request, function () {
             return 'I ran the closure';
         });
+
         // check return
         $this->assertJson($handle->getContent());
         $response = json_decode($handle->getContent());
         $this->assertObjectHasAttribute('error', $response);
         $this->assertTrue(is_array($response->error));
-        $this->assertTrue(in_array('Could not find tournament "' . $middleware->getTournament() . '"', $response->error));
+        $this->assertTrue(in_array('Could not find tournament "' . $middleware->getTournament() . '"',
+            $response->error));
     }
 
     /**
@@ -136,21 +138,19 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $request->replace($this->teamInputs);
         $middleware = new LolTeamSignUpMiddleware();
         $request->replace($this->teamInputs);
+
         $middleware->handle($request, function () {
             return 'I ran the closure';
         });
-
         // get the captain
-        $getTeam = \App\Models\Championship\Team::where(
-            'name',
-            $this->teamInputs['team-name']
-        )->first();
+        $getTeam = \App\Models\Championship\Team::where('name', '=', $this->teamInputs['team-name'])->first();
 
         $getTournament = \App\Models\Championship\Tournament::where(
             'name',
+            '=',
             $this->teamInputs['tournament']
         )->first();
-        
+
         $getCaptain = \App\Models\Championship\Player::where('email', $this->teamInputs['email'])->first();
 
         $this->assertSame($getTeam->tournament_id, $getTournament->id);
@@ -162,7 +162,7 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $this->assertSame($this->teamInputs['team-captain-lol-summoner-name'], $getCaptain->username);
         $this->assertSame($this->teamInputs['name'], $getCaptain->name);
         $this->assertSame($this->teamInputs['team-captain-phone'], $getCaptain->phone);
-        $this->assertSame($getTeam->id, $getCaptain->team_id);
+        $this->assertSame($getTeam->id, $getCaptain->teams[0]->id);
 
         // check other players
         for ($i = 1; $i <= 2; $i++) {
@@ -171,9 +171,15 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
                 $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address']
             )->first();
 
-            $this->assertSame($this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address'], $getPlayer->email);
-            $this->assertSame($this->teamInputs['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'], $getPlayer->username);
-            $this->assertSame($getTeam->id, $getPlayer->team_id);
+            $this->assertSame(
+                $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address'],
+                $getPlayer->email
+            );
+            $this->assertSame(
+                $this->teamInputs['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'],
+                $getPlayer->username
+            );
+            $this->assertSame($getTeam->id, $getPlayer->teams[0]->id);
         }
     }
 
@@ -213,7 +219,7 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $params = $this->teamInputs;
         $params['email'] = 123456;
         for ($i = 1; $i <= 2; $i++) {
-            $params['teammate-'.Numbers::toWord($i).'-email-address'] = 123456;
+            $params['teammate-' . Numbers::toWord($i) . '-email-address'] = 123456;
         }
         $request->replace($params);
         $middleware = new LolTeamSignUpMiddleware();
@@ -227,7 +233,8 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         // check messages
         $this->assertTrue(in_array($rules->messages()['email.email'], $response->error));
         for ($i = 1; $i <= 2; $i++) {
-            $this->assertTrue(in_array($rules->messages()['teammate-'.Numbers::toWord($i).'-email-address.email'], $response->error));
+            $this->assertTrue(in_array($rules->messages()['teammate-' . Numbers::toWord($i) . '-email-address.email'],
+                $response->error));
 
         }
     }
