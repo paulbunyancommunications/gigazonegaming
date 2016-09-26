@@ -6,6 +6,7 @@ use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
@@ -71,7 +72,7 @@ class IndividualPlayersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamMake()
+    public function teamMake(Request $request)
     {
         return View::make('game/teamMaker');
     }
@@ -97,8 +98,19 @@ class IndividualPlayersController extends Controller
      */
     public function teamCreate(Request $request)
     {
-        dd("team creater");
-        return Redirect::back();
+        $name = "Random-team-".(Team::orderBy('id', 'desc')->first()->id + 1)."- :)";
+
+        $team = new Team();
+        $team->name = $name;
+        $team->verification_code = PlayerRelationable::generateRandomCode();
+        $team->tournament_id = $request['tournament'];
+        $team->save();
+        foreach ($request->toArray() as $k => $value){
+            if(substr($k, 0, 6) == 'player') {
+                PlayerRelation::createRelation(["team" => $team->id, 'player' => $value]);
+            }
+        }
+        return View::make('game/teamMaker');
     }
 
 }
