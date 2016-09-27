@@ -99,7 +99,7 @@ class IndividualPlayersController extends Controller
     public function teamCreate(Request $request)
     {
         $name = "Random-team-".(Team::orderBy('id', 'desc')->first()->id + 1)."- :)";
-
+        $captain = -1;
         $team = new Team();
         $team->name = $name;
         $team->verification_code = PlayerRelationable::generateRandomCode();
@@ -108,6 +108,14 @@ class IndividualPlayersController extends Controller
         foreach ($request->toArray() as $k => $value){
             if(substr($k, 0, 6) == 'player') {
                 PlayerRelation::createRelation(["team" => $team->id, 'player' => $value]);
+                if($captain < 0){
+                    $player = Player::find($value)->first()->toArray();
+                    if(isset($player['email']) and $player['email']!='' and $player['email']!=null){
+                        $team->captain = $value;
+                        $team->save();
+                        $captain = $value;
+                    }
+                }
             }
         }
         return View::make('game/teamMaker');
