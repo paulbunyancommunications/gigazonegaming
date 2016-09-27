@@ -110,7 +110,8 @@ class TeamTest extends \TestCase
     public function it_has_a_captain_attribute()
     {
         $item = factory(Team::class)->create();
-        $player = factory(Player::class)->create(['team_id' => $item->id]);
+        $player = factory(Player::class)->create([]);
+        $player::createRelation(['player' => $player, 'team' => $item]);
         $item->captain = $player->id;
         $item->save();
         
@@ -142,11 +143,14 @@ class TeamTest extends \TestCase
     public function it_has_a_players_attribute()
     {
         $team = factory(Team::class)->create();
-        factory(Player::class, 10)->create(['team_id' => $team->id]);
+        $player = factory(Player::class, 10)->create();
+        foreach ($player as $p) {
+            $p::createRelation(['team' => $team, 'player' => $p]);
+        }
 
         $getTeam = Team::find($team->id);
 
-        $this->assertSame(count($getTeam->players->toArray()), 10);
+        $this->assertSame(count($getTeam->players), 10);
         $this->assertInstanceOf(Player::class, $getTeam->players[0]);
     }
     /**
@@ -182,15 +186,17 @@ class TeamTest extends \TestCase
     /**
      * @test
      */
-    public function it_removes_its_players_when_deleted()
+    public function it_unattached_its_players_when_deleted()
     {
         $team = factory(Team::class)->create();
-        $players = factory(Player::class, 5)->create(['team_id' => $team->id]);
+        $players = factory(\App\Models\Championship\Player::class, 5)->create([]);
+        for($i=0; $i < count($players); $i++) {
+            \App\Models\Championship\Player::createRelation(['player' => $players[$i], 'team' => $team]);
+        }
 
         $team->delete();
         foreach ($players as $player) {
-            $getPlayer = Player::find($player->id);
-            $this->assertNull($getPlayer);
+            $this->assertEmpty($player->teams);
         }
     }
 }

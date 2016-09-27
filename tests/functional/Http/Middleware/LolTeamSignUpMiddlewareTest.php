@@ -18,6 +18,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Pbc\Bandolier\Type\Numbers;
+use Closure;
 
 class LolTeamSignUpMiddlewareTest extends \TestCase
 {
@@ -36,12 +37,12 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
 
         // create a dummy tournament for this team to sign up for
         $tournamentName = implode('-', $faker->words());
-        $tournament = factory(\App\Models\Championship\Tournament::class)->create(['name' => $tournamentName]);
+        $tournament = factory(\App\Models\Championship\Tournament::class)->create(['name' => $tournamentName, 'max_players' => 5]);
 
         // dummy team inputs
         $this->teamInputs = [
-            'email' => $faker->email,
-            'name' => $faker->name,
+            'email' => time().$faker->email,
+            'name' => time().'-'.$faker->name,
             'team-captain-lol-summoner-name' => $faker->userName,
             'team-captain-phone' => $faker->phoneNumber,
             'team-captain-lol-summoner-name' => $faker->userName,
@@ -49,9 +50,9 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
             'team-name' => implode(' ', $faker->words()),
         ];
 
-        for ($i = 1; $i <= 2; $i++) {
-            $this->teamInputs['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = $faker->userName;
-            $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address'] = $faker->email;
+        for ($i = 1; $i < $tournament->max_players; $i++) {
+            $this->teamInputs['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = time() .'-'.$faker->userName;
+            $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address'] = time() . '_' . $faker->email;
         }
     }
 
@@ -132,18 +133,23 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
      * If successful check for call back return
      * @test
      */
-    public function it_sets_new_row_to_db_when_successful()
+    public function it_sets_new_row_with_captain_to_db_when_successful()
     {
         $request = new Request();
         $request->replace($this->teamInputs);
         $middleware = new LolTeamSignUpMiddleware();
         $request->replace($this->teamInputs);
+        \Codeception\Util\Debug::debug(json_encode($request->all()));
 
         $middleware->handle($request, function () {
             return 'I ran the closure';
         });
+
         // get the captain
         $getTeam = \App\Models\Championship\Team::where('name', '=', $this->teamInputs['team-name'])->first();
+
+        \Codeception\Util\Debug::debug($getTeam->toArray());
+        \Codeception\Util\Debug::debug('Count: ' . $getTeam->players()->count());
 
         $getTournament = \App\Models\Championship\Tournament::where(
             'name',
@@ -163,23 +169,50 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $this->assertSame($this->teamInputs['name'], $getCaptain->name);
         $this->assertSame($this->teamInputs['team-captain-phone'], $getCaptain->phone);
         $this->assertSame($getTeam->id, $getCaptain->teams[0]->id);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_new_row_with_other_players_to_db_when_successful()
+    {
+        $request = new Request();
+        $request->replace($this->teamInputs);
+        $middleware = new LolTeamSignUpMiddleware();
+        $request->replace($this->teamInputs);
+
+        \Codeception\Util\Debug::debug(json_encode($request->all()));
+
+        $middleware->handle($request, function () {
+            return 'I ran the closure';
+        });
+
+        // get the captain
+        $getTeam = \App\Models\Championship\Team::where('name', '=', $this->teamInputs['team-name'])->first();
+
+        \Codeception\Util\Debug::debug($getTeam->toArray());
+        \Codeception\Util\Debug::debug('Count: ' . $getTeam->players()->count());
 
         // check other players
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i < $getTeam->tournament->max_players; $i++) {
+
             $getPlayer = \App\Models\Championship\Player::where(
                 'email',
+                '=',
                 $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address']
-            )->first();
+            );
+            \Codeception\Util\Debug::debug($getPlayer->first() ? '' : 'Missing player with email '. $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address']);
+            $this->assertNotNull($getPlayer);
 
             $this->assertSame(
                 $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address'],
-                $getPlayer->email
+                $getPlayer->first()->email
             );
             $this->assertSame(
                 $this->teamInputs['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'],
-                $getPlayer->username
+                $getPlayer->first()->username
             );
-            $this->assertSame($getTeam->id, $getPlayer->teams[0]->id);
+            $this->assertSame($getTeam->id, $getPlayer->first()->teams[0]->id);
         }
     }
 

@@ -56,7 +56,15 @@ class Player extends Model
      */
     public function games()
     {
-        return $this->belongsToMany('App\Models\Championship\Game');
+        return $this->morphedByMany('App\Models\Championship\Game', 'relation', 'player_relations', 'player_id', 'relation_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGamesAttribute()
+    {
+        return $this->games()->get();
     }
 
     /**
@@ -66,7 +74,15 @@ class Player extends Model
      */
     public function tournaments()
     {
-        return $this->belongsToMany('App\Models\Championship\Tournament');
+        return $this->morphedByMany('App\Models\Championship\Tournament', 'relation', 'player_relations', 'player_id', 'relation_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTournamentsAttribute()
+    {
+        return $this->tournaments()->get();
     }
 
     /**
@@ -76,6 +92,15 @@ class Player extends Model
     {
         return $this->belongsTo('App\Models\Auth\Users\User');
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUserAttribute()
+    {
+        return $this->user()->first();
+    }
+
     /**
      * Get tournament which team is playing in
      *

@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Cocur\Slugify\Slugify;
 
 /**
  * Class RoleTest
@@ -59,12 +60,11 @@ class GameTest extends \TestCase
      */
     public function it_has_a_name_attribute()
     {
-
         $name = $this->faker->name;
         $item = factory(Game::class)->create(['name' => $name]);
         $getName = Game::find($item->id);
-
-        $this->assertSame($name, $getName->name);
+        $slugify = Slugify::create();
+        $this->assertSame($slugify->slugify($name), $getName->name);
     }
 
     /**
@@ -155,7 +155,9 @@ class GameTest extends \TestCase
      */
     public function it_can_get_a_game_by_name()
     {
-        $name = $this->faker->sentence;
+        $slugify = Slugify::create();
+
+        $name = $slugify->slugify($this->faker->sentence);
         factory(Game::class)->create(['name' => $name]);
 
         $getByName = Game::byName($name);

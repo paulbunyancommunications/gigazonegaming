@@ -109,10 +109,14 @@ class PlayerTest extends \TestCase
     public function it_is_attached_to_a_team()
     {
         $player = factory(Player::class)->create([]);
+        $team = factory(Team::class)->create([]);
+        // this will attach the team to the player
+        $player::createRelation(['player' => $player, 'team' => $team]);
 
         $getPlayer = Player::find($player->id);
 
-        $this->assertInstanceOf(Team::class, $getPlayer->team);
+        // now the first team should be the attached team to this player
+        $this->assertInstanceOf(Team::class, $getPlayer->teams[0]);
     }
     /**
      *

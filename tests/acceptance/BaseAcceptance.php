@@ -81,11 +81,8 @@ class BaseAcceptance
         $this->createWpAdminUser($I);
         $I->amOnPage('/wp/wp-login.php');
 
-        $I->fillField(['name' => 'log'], $this->wpAdminUser['name']);
-        $I->seeInField(['name' => 'log'], $this->wpAdminUser['name']);
-
-        $I->fillField(['name' => 'pwd'], $this->wpAdminUser['password']);
-        $I->seeInField(['name' => 'pwd'], $this->wpAdminUser['password']);
+        $I->fillField('//*[@id="user_login"]', $this->wpAdminUser['name']);
+        $I->fillField('//*[@id="user_pass"]', $this->wpAdminUser['password']);
 
         $I->click(['id' => 'wp-submit']);
         $I->see('Dashboard');

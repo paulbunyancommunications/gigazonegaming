@@ -123,7 +123,7 @@ class LolIndividualSignUpMiddlewareTest extends \TestCase
         $params = [
             'name' => $faker->firstName . ' ' . $faker->lastName,
             'your-lol-summoner-name' => $faker->userName.'-'.time(),
-            'email' => $faker->email,
+            'email' => time() . $faker->email,
             'your-phone' => $faker->phoneNumber
         ];
         $request->replace($params);
@@ -134,7 +134,7 @@ class LolIndividualSignUpMiddlewareTest extends \TestCase
         });
             
         // get the player
-        $getPlayer = \App\Models\Championship\IndividualPlayer::where('username', $params['your-lol-summoner-name'])->first();
+        $getPlayer = \App\Models\Championship\Player::where('username', $params['your-lol-summoner-name'])->first();
 
         $this->assertSame($params['email'], $getPlayer->email);
         $this->assertSame($params['your-lol-summoner-name'], $getPlayer->username);

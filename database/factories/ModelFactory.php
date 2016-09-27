@@ -72,6 +72,7 @@ $factory->define(App\Models\Championship\Tournament::class, function (Faker\Gene
         'sign_up_open' => $faker->dateTimeBetween('+30 minutes', '+1 day'),
         'sign_up_close' => $faker->dateTimeBetween('+2 days', '+1 week'),
         'occurring' => $faker->dateTimeBetween('+1 month', '+2 months'),
+        'max_players' => $faker->randomDigitNotNull,
     ];
 });
 $factory->define(App\Models\WpPost::class, function (Faker\Generator $faker) {

@@ -22,6 +22,21 @@ class Team extends Model
     protected $fillable = ['name', 'emblem', 'captain', 'tournament_id','updated_by','updated_on'];
 
     /**
+     * set uo boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // when deleted
+        static::deleting(function ($team) {
+            PlayerRelation::where('relation_type', '=', self::class)
+                ->where('relation_id', '=', $team->id)
+                ->delete();
+        });
+    }
+
+    /**
      * Get game which team is playing in
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -38,7 +53,7 @@ class Team extends Model
      */
     public function tournament()
     {
-        return $this->belongsTo('App\Models\Championship\Tournament','tournament_id');
+        return $this->belongsTo(Tournament::class,'tournament_id');
     }
 
     /**
@@ -56,7 +71,20 @@ class Team extends Model
      */
     public function playerRelation()
     {
-        return $this->morphMany('App\Models\Championship\PlayerRelationable', 'relation');
+        return $this->players();
+    }
+
+    public function players()
+    {
+        $relationship = PlayerRelation::where('relation_id', '=', $this->id)
+            ->where('relation_type', '=', Team::class)->pluck('player_id');
+        return Player::whereIn('id', $relationship);
+
+    }
+
+    public function getPlayersAttribute()
+    {
+        return $this->players()->get();
     }
 
     /**
@@ -80,7 +108,7 @@ class Team extends Model
     public function isTeamFull(){
 
         $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
-        $teamCount = PlayerRelation::where('relation_id', '=', $this->id)->where('relation_type', '=', PlayerRelationable::getTeamRoute())->count();
+        $teamCount = $this->players()->count();
 
         return $maxPlayers["max_players"] <= $teamCount; //if team is full this will eval to true, otherwise will eval to false
     }
@@ -92,8 +120,7 @@ class Team extends Model
     public function isTeamNotFull(){
 
         $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
-        $teamCount = PlayerRelation::where('relation_id', '=', $this->id)->where('relation_type', '=', PlayerRelationable::getTeamRoute())->count();
+        $teamCount = $this->players()->count();
         return $maxPlayers["max_players"] > $teamCount; //if team is full this will eval to true, otherwise will eval to false
     }
-
 }

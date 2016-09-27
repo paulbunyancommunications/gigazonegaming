@@ -72,7 +72,6 @@ class LolTeamSignUpMiddleware
                 // add captain to team/tournament/game
                 $captain::createRelation([
                     'player' => $captain,
-                    'tournament' => $tournament,
                     'game' => $tournament->game,
                     'team' => $team,
                 ]);
@@ -82,8 +81,11 @@ class LolTeamSignUpMiddleware
                 $team->save();
 
                 // add other players
-                for ($i = 1; $i <= $tournament->max_players; $i++) {
-                    if ($request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name')) {
+                for ($i = 1; $i < $tournament->max_players; $i++) {
+                    if ($request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name')
+                        && filter_var($request->input('teammate-' . Numbers::toWord($i) . '-email-address'), FILTER_VALIDATE_EMAIL)
+                    ) {
+
                         $player = new Player();
                         $player->username = $request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name');
                         $player->email = $request->input('teammate-' . Numbers::toWord($i) . '-email-address');

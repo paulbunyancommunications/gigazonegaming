@@ -53,7 +53,6 @@ class LolIndividualSignUpMiddleware
                         'player' => $individual->id,
                         'game' => $game->id,
                     ]);
-            return true;
             });
         } catch (\Exception $ex) {
             return \Response::json(['error' => [$ex->getMessage()]]);

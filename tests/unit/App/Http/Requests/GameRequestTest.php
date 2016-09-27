@@ -132,7 +132,11 @@ class GameRequestTest extends WpRequestsBase
     {
         $mock = Mockery::mock('App\\Http\\Requests\\GameRequest[method]');
         $mock->shouldReceive('method')->once()->andReturn('POST');
-        $this->assertSame(['name' => 'required', 'uri' => 'required',], $mock->rules());
+        $this->assertSame([
+            'name' => 'required|unique:mysql_champ.games,name',
+            'title' => 'required|unique:mysql_champ.games,title',
+            'uri' => 'required|url',
+        ], $mock->rules());
 
     }
 
@@ -145,11 +149,13 @@ class GameRequestTest extends WpRequestsBase
         $mock = Mockery::mock('App\\Http\\Requests\\GameRequest[method,route]');
         $mock->shouldReceive('method')->once()->andReturn('PUT');
         $name = $faker->username;
-        $mock->shouldReceive('route')->once()->andReturn((object)['game_id' => (object)['name' => $name]]);
+        $title = $faker->sentence;
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['game_id' => (object)['name' => $name, 'title' => $title]]);
         $this->assertSame(
             [
                 'name' => 'required|unique:mysql_champ.games,name,' . $name . ',name',
-                'uri' => 'required',
+                'title' => 'required|unique:mysql_champ.games,title,' . $title . ',title',
+                'uri' => 'required|url',
             ],
             $mock->rules()
         );
@@ -165,11 +171,13 @@ class GameRequestTest extends WpRequestsBase
         $mock = Mockery::mock('App\\Http\\Requests\\GameRequest[method,route]');
         $mock->shouldReceive('method')->once()->andReturn('PATCH');
         $name = $faker->username;
-        $mock->shouldReceive('route')->once()->andReturn((object)['game_id' => (object)['name' => $name]]);
+        $title = $faker->sentence;
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['game_id' => (object)['name' => $name, 'title' => $title]]);
         $this->assertSame(
             [
                 'name' => 'required|unique:mysql_champ.games,name,' . $name . ',name',
-                'uri' => 'required',
+                'title' => 'required|unique:mysql_champ.games,title,'. $title .',title',
+                'uri' => 'required|url',
             ],
             $mock->rules()
         );
@@ -184,8 +192,12 @@ class GameRequestTest extends WpRequestsBase
         $request = new \App\Http\Requests\GameRequest();
         $this->assertSame(
             [
-                'name.required' => 'Your name is required.',
-                'uri.required' => 'The URI is required.',
+                'name.required' => 'The game :attribute is required.',
+                'name.unique' => 'The game :attribute is is already being used.',
+                'title.required' => 'The game :attribute is required.',
+                'title.unique' => 'The game :attribute is already being used.',
+                'uri.required' => 'The game :attribute is required.',
+                'uri.url' => 'The game :attribute must be a valid URL.',
             ],
             $request->messages()
         );
