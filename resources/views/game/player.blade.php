@@ -83,7 +83,13 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
             <div class="form-group">
-                <input type="submit" name="submit" id="submit" class='btn btn-default' value="Save">
+                <input type="submit" name="submit" id="submit" class='btn btn-primary' value=
+                @if(isset($thePlayer['player_name']))
+                        "Update"
+                @else
+                    "Save"
+                @endif
+                >
                 {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
             </div>
         </div>

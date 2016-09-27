@@ -25,8 +25,10 @@
             <div class="alert alert-success"><strong>Success!</strong> You have updated this Tournament.</div>
         @endif
         @if(isset($theTournament->name))
+            <h1>Update Tournament: &#8220;{{ $theTournament->name }}&#8221;</h1>
             {{ Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@update', $theTournament->id))) }}
         @else
+            <h1>Create a new Tournament</h1>
             {{  Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@create'))) }}
         @endif
 
@@ -57,11 +59,19 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
             <div class="form-group">
-                <input type="submit" name="submit" id="submit" class='btn btn-default' value="Save">
+                <input type="submit" name="submit" id="submit" class='btn btn-primary' value=
+                @if(isset($theTournament->name))
+                    "Update"
+                @else
+                   "Save"
+                @endif
+                >
                 {{ Html::link('/manage/tournament/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
             </div>
         </div>
         {{ Form::close() }}
+
+        <h2>Tournament List</h2>
         {{ Form::open(array('id' => "tournamentFilter", 'action' => array('Backend\Manage\TournamentsController@filter'))) }}
         <input name="_method" type="hidden" value="POST">
         <label for="game_sort" style="width:180px; text-align:right;">Filter by Game: </label>
