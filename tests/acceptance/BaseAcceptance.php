@@ -105,4 +105,10 @@ class BaseAcceptance
 
 
     }
+
+    protected function destroySelect2(AcceptanceTester $I)
+    {
+        $I->executeJS('$("select").each(function(ele){ $(this).select2("destroy"); });');
+        $I->wait(1);
+    }
 }
