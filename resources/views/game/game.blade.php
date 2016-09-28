@@ -84,7 +84,7 @@
                         {!!
                             Form::submit(
                                 '&#xf014; &#xf1c0;',
-                                array('class'=>'btn btn-danger list fa fa-times confirm-choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
+                                array('class'=>'btn btn-danger list fa delete-message confirm-choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
                             )
                         !!}
                         {{ Form::close() }}

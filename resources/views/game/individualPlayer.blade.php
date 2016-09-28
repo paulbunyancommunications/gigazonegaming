@@ -160,7 +160,7 @@
                                     {{--{!!--}}
                                         {{--Form::submit(--}}
                                             {{--'&#xf014; &#xf1c0;',--}}
-                                            {{--array('class'=>'btn btn-danger list fa fa-times', 'title'=>"Delete From Database")--}}
+                                            {{--array('class'=>'btn btn-danger list fa delete-message', 'title'=>"Delete From Database")--}}
                                         {{--)--}}
                                     {{--!!}--}}
                                     {{--{{ Form::close() }}--}}

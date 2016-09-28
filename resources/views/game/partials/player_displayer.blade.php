@@ -25,7 +25,7 @@
                 {!!
                     Form::submit(
                         '&#xf235;',
-                        array('class'=>'btn btn-danger list fa fa-times', 'title'=>'Delete player from team and move to list of Individual Players')
+                        array('class'=>'btn btn-danger list fa delete-message', 'title'=>'Delete player from team and move to list of Individual Players')
                     )
                 !!}
                 {{ Form::close() }}

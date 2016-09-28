@@ -161,7 +161,7 @@
             {{--allowClear: true--}}
             {{--});--}}
         });
-        $('.fa-times').click(function() {
+        $('.delete-message').click(function() {
             var conf = confirm('Are you sure?');
             if (conf) {
                 var url = $(this).attr('href');
