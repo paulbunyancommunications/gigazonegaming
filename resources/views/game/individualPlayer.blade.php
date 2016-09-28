@@ -173,7 +173,7 @@
         </div>
 
     @else
-        <h1>Sorry, no individual players where found on the database!, please create a player before proceding with a player</h1>
+        <h1>Sorry, no individual players where found on the database!, please create a player before preceding with a player</h1>
         {{ Html::link('/manage/player/', 'Create a Player', array('id' => 'new_player', 'class' => 'btn btn-default'))}}
     @endif
 
