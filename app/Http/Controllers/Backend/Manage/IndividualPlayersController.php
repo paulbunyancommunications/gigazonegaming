@@ -3,26 +3,27 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Http\Requests\IndividualPlayerRequest;
-use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\Championship\Game;
-use App\Models\WpUser;
-use App\Providers\ChampionshipGameComposerProvider;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use App\Http\Requests\PlayerRequest;
+use App\Traits\Championship\NotifyPlayerTrait;
 
 class IndividualPlayersController extends Controller
 {
+    use NotifyPlayerTrait;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,8 +42,15 @@ class IndividualPlayersController extends Controller
      */
     public function change(IndividualPlayerRequest $request)
     {
-        $newIndividualPlayer = new Player($request->all());
-        $newIndividualPlayer->save();
+        try {
+            $newIndividualPlayer = \DB::transaction(function () use ($request) {
+                $newIndividualPlayer = new Player($request->all());
+                $newIndividualPlayer->save();
+                return $newIndividualPlayer;
+            });
+        } catch (\Exception $ex) {
+            return Redirect::back()->with('error', $ex->getMessage());
+        }
         $params = [];
         $params['player'] = $newIndividualPlayer;
         $params['team'] = Team::find($request->input('team_id'));
