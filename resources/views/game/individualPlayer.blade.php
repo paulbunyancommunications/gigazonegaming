@@ -44,68 +44,85 @@
             <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
         @endif
         <h2>Create a new individual player</h2>
-        {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'))) }}
+        {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'), 'class' => 'form form-horizontal')) }}
+        <input name="_method" type="hidden" value="POST">
         <div class="form-group">
             <input name="_method" type="hidden" value="POST">
             <input name="id" id="id" type="hidden" value="">
             <div class="form-group">
-                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px" placeholder="The name of the player" value="{{ old('name') }}" disabled/>
+                <label for="name" class="control-label col-xs-3 text-right">Player Name:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="The name of the player" value="{{ old('name') }}" disabled/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px" placeholder="The username of the player" value="{{ old('username') }}" disabled/>
+                <label for="username" class="control-label col-xs-3 text-right">Player Username:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="The username of the player" value="{{ old('username') }}" disabled/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px" placeholder="The email of the player" value="{{ old('email') }}" disabled/>
+                <label for="email" class="control-label col-xs-3 text-right">Player Email:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="email" class="form-control" id="email" placeholder="The email of the player" value="{{ old('email') }}" disabled/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px" placeholder="The phone of the player" value="{{ old('phone') }}" disabled/>
+                <label for="phone" class="control-label text-right col-xs-3">Player Phone: </label>
+                <div class="col-xs-9">
+                    <input type="text" name="phone" id="phone" class="form-control" placeholder="The phone of the player" value="{{ old('phone') }}" disabled/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="team_id" style="width:120px; text-align:right;">Selected Team Name: </label> &nbsp;
-                <input type="text" name="team_name" id="team_name" placeholder="The team of the player" style="width:350px" disabled>
-                <input type="text" name="team_id" id="team_id" class="hidden" style="">
-                <input type="text" name="tournament_id" id="tournament_id" class="hidden" style="">
-                <input type="text" name="game_id" id="game_id" class="hidden" style="">
+                <label for="team_id" class="col-xs-3 text-right control-label">Selected Team Name: </label>
+                <div class="col-xs-9">
+                    <input type="text" name="team_name" id="team_name" placeholder="The team of the player" class="form-control" disabled>
+                    <input type="text" name="team_id" id="team_id" class="hidden" style="">
+                    <input type="text" name="tournament_id" id="tournament_id" class="hidden" style="">
+                    <input type="text" name="game_id" id="game_id" class="hidden" style="">
+                </div>
             </div>
             <div class="form-group">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            </div>
-            <input name="_method" type="hidden" value="POST">
-            <div class="form-group">
-                <label for="game_sort" style="width:120px; text-align:right;">Show options only for this Game: </label>
-                <select name="game_sort" id="game_sort" style="width:350px;">
-                    <option class="default"> --- </option>
-                    @foreach($games as $g)
-                        <option id="t_option{{$g['game_id']}}"
-                                value="{{$g['game_id']}}"
-                                class="gameSelector"
-                                {{ $g['game_id'] == old('game_sort') ? ' selected="selected"' : null  }}>{{$g['game_name']}}</option>
-                    @endforeach
-                </select>
+                <label for="game_sort" class="control-label text-right col-xs-3">Show options only for this Game:</label>
+                <div class="col-xs-9">
+                    <select name="game_sort" id="game_sort" clas="form-control" style="width: 100%">
+                        <option class="default"> --- </option>
+                        @foreach($games as $g)
+                            <option id="t_option{{$g['game_id']}}"
+                                    value="{{$g['game_id']}}"
+                                    class="gameSelector"
+                                    {{ $g['game_id'] == old('game_sort') ? ' selected="selected"' : null  }}>{{$g['game_name']}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label for="tournament_sort" style="width:120px; text-align:right;">Filter by Tournament: </label>
-                <select name="tournament_sort" id="tournament_sort" style="width:350px;" disabled>
-                    <option class="default"> --- </option>
-                    @foreach($tournaments as $g)
-                        <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}"
-                                value="{{$g['tournament_id']}}"
-                                {{ $g['tournament_id'] == old('tournament_sort') ? ' selected="selected"' : null }}>{{$g['tournament_name']}}</option>
-                    @endforeach
-                </select>
+                <label for="tournament_sort" class="col-xs-3 control-label text-right">Filter by Tournament: </label>
+                <div class="col-xs-9">
+                    <select name="tournament_sort" class="form-control" style="width: 100%" id="tournament_sort" disabled>
+                        <option class="default"> --- </option>
+                        @foreach($tournaments as $g)
+                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}"
+                                    value="{{$g['tournament_id']}}"
+                                    {{ $g['tournament_id'] == old('tournament_sort') ? ' selected="selected"' : null }}>{{$g['tournament_name']}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label for="team_sort" style="width:120px; text-align:right;">Select a Team: </label>
-                <select name="team_sort" id="team_sort" style="width:350px;" disabled>
-                    <option class="default"> --- </option>
-                    @foreach($teams as $g)
-                        @if($g['team_count'] < $g['team_max_players'])
-                        <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}"
-                                value="{{$g['team_id']}}"
-                                {{ $g['team_id'] == old('team_sort') ? ' selected="selected"' : null }}>{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
-                        @endif
-                    @endforeach
-                </select>
+                <label for="team_sort" class="col-xs-3 control-label">Select a Team: </label>
+                <div class="col-xs-9">
+                    <select name="team_sort" id="team_sort" class="form" style="width:100%" disabled>
+                        <option class="default"> --- </option>
+                        @foreach($teams as $g)
+                            @if($g['team_count'] < $g['team_max_players'])
+                            <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}"
+                                    value="{{$g['team_id']}}"
+                                    {{ $g['team_id'] == old('team_sort') ? ' selected="selected"' : null }}>{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <div class="form-group">
