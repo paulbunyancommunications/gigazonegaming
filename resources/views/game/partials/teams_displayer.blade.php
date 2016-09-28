@@ -26,7 +26,7 @@
     {!!
         Form::submit(
             '&#xf014;',
-            array('class'=>'btn btn-danger list fa fa-times', 'title'=>'Delete Team and move players to Individual Players list')
+            array('class'=>'btn btn-danger list fa delete-message', 'title'=>'Delete Team and move players to Individual Players list')
         )
     !!}
     {{ Form::close() }}
@@ -35,7 +35,7 @@
     {!!
         Form::submit(
             '&#xf00d; Team & Players',
-            array('class'=>'btn btn-danger list fa fa-times2', 'title'=>"There is no coming back if you delete the team from the db and all the players from this team from all other teams, tournaments and games!!!!!!")
+            array('class'=>'btn btn-danger list fa delete-message2', 'title'=>"There is no coming back if you delete the team from the db and all the players from this team from all other teams, tournaments and games!!!!!!")
         )
     !!}
     {{ Form::close() }}

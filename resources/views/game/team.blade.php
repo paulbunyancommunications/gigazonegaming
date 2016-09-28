@@ -14,9 +14,11 @@
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($tournaments) || $tournaments != [])
         @if(isset($theTeam->name))
+            <h1>Update Team: &#8220;{{ $theTeam->name }}&#8221;</h1>
             {{ Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@update', $theTeam->id))) }}
         @else
-            {{  Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@create'))) }}
+            <h1>Create a new Team</h1>
+            {{  Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@store'))) }}
         @endif
         <div class="form-group">
             @if(isset($theTeam->name))
@@ -131,7 +133,7 @@
                 {{--allowClear: true--}}
             {{--});--}}
         });
-        $('.fa-times').click(function() {
+        $('.delete-message').click(function() {
             var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players list');
             if (conf) {
                 var url = $(this).attr('href');
@@ -140,7 +142,7 @@
                 return false;
             }
         });
-        $('.fa-times2').click(function() {
+        $('.delete-message2').click(function() {
             var conf = confirm('Are you sure? This will remove the team and players from the database for all tournaments and games');
             if (conf) {
                 var url = $(this).attr('href');
