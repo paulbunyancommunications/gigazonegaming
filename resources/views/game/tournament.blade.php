@@ -12,24 +12,12 @@
 @endsection
 @section('content')
     @if(isset($games) || $games != [])
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(isset($cont_updated) and  $cont_updated)
-            <div class="alert alert-success"><strong>Success!</strong> You have updated this Tournament.</div>
-        @endif
         @if(isset($theTournament->name))
             <h1>Update Tournament: &#8220;{{ $theTournament->name }}&#8221;</h1>
             {{ Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@update', $theTournament->id))) }}
         @else
             <h1>Create a new Tournament</h1>
-            {{  Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@create'))) }}
+            {{  Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@store'))) }}
         @endif
 
         <div class="form-group">

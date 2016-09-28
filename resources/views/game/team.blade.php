@@ -13,18 +13,6 @@
 @section('content')
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($tournaments) || $tournaments != [])
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(isset($cont_updated) and  $cont_updated)
-            <div class="alert alert-success"><strong>Success!</strong> You have updated this Team.</div>
-        @endif
         @if(isset($theTeam->name))
             {{ Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@update', $theTeam->id))) }}
         @else
@@ -139,9 +127,9 @@
             $('#tournament_sort option').prop("disabled", true);
             $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-            $('#tournament_sort').select2({
-                allowClear: true
-            });
+            {{--$('#tournament_sort').select2({--}}
+                {{--allowClear: true--}}
+            {{--});--}}
         });
         $('.fa-times').click(function() {
             var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players list');

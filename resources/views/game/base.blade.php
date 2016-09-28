@@ -77,19 +77,31 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if(isset($success) and  $success!='')
+                <div class="alert alert-success"><strong>Success!</strong> {{$success}}</div>
+            @endif
             @yield('content')
         </div>
     </div>
 </div>
 <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/bower_components/select2/dist/js/select2.full.min.js"></script>
+{{--<script type="text/javascript" src="/bower_components/select2/dist/js/select2.full.min.js"></script>--}}
 <script type="text/javascript">
 
     $(document).ready(function() {
-        $('select').select2({
-            allowClear: true
-        });
+//        $('select').select2({
+//            allowClear: true
+//        });
 
         $(document).ready(function () {
             $('#theIframe', window.parent.document).height($('#page-content').height()).css('min-height', 700);

@@ -40,18 +40,6 @@
 @section('content')
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($individualPlayers) || $individualPlayers != [])
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(isset($cont_updated) and  $cont_updated)
-            <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
-        @endif
         {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'))) }}
         <div class="form-group">
             <input name="_method" type="hidden" value="POST">
@@ -173,10 +161,9 @@
             $('#tournament_sort option').prop("disabled", true);
             $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option.default').attr("selected","selected");
-            $('#tournament_sort').select2({
-                allowClear: true
-            });
-        console.log(d_id);
+            {{--$('#tournament_sort').select2({--}}
+                {{--allowClear: true--}}
+            {{--});--}}
             $('.aPlayer').addClass("disabled");
             $('.aPlayer[game_id_j="'+d_id+'"]').removeClass("disabled");
             $("#name").val("");
@@ -194,9 +181,9 @@
             $('#team_sort option').prop("disabled", true);
             $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
-            $('#team_sort').select2({
-                allowClear: true
-            });
+            {{--$('#team_sort').select2({--}}
+                {{--allowClear: true--}}
+            {{--});--}}
         });
         $('#team_sort').on("change", function() {
             var val_g = $('#team_sort option:selected').val();

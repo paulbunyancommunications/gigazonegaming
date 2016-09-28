@@ -34,18 +34,6 @@
 @section('content')
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($teams) || $teams != [])
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(isset($cont_updated) and  $cont_updated)
-            <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
-        @endif
         @if(isset($thePlayer['player_name']))
             {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@update', $thePlayer['player_id']))) }}
         @else
@@ -158,21 +146,20 @@
             $('#tournament_sort option').prop("disabled", true);
             $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-            $('#tournament_sort').select2({
-                allowClear: true
-            });
+            {{--$('#tournament_sort').select2({--}}
+                {{--allowClear: true--}}
+            {{--});--}}
         });
         $('#tournament_sort').on("change", function() {
             var val_g = $('#tournament_sort option:selected').val();
             var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
             d_id = d_id.split('_')[2];
-    console.log(d_id);
             $('#team_sort option').prop("disabled", true);
             $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
-            $('#team_sort').select2({
-            allowClear: true
-            });
+            {{--$('#team_sort').select2({--}}
+            {{--allowClear: true--}}
+            {{--});--}}
         });
         $('.fa-times').click(function() {
             var conf = confirm('Are you sure?');
