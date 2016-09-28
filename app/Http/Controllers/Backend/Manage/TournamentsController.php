@@ -35,7 +35,7 @@ class TournamentsController extends Controller
      * @param  Tournament  $tournament
      * @return \Illuminate\Http\Response
      */
-    public function create(TournamentRequest $request)
+    public function store(TournamentRequest $request)
     {
         $tournament = new Tournament();
         $tournament->game_id = $request['game_id'];
@@ -46,7 +46,7 @@ class TournamentsController extends Controller
         $tournament->created_at = Carbon::now("CST");
         $tournament->updated_at = Carbon::now("CST");
         $tournament->save();
-        return $this->index();
+        return redirect('manage/tournament')->withSuccess("The tournament ".$tournament->name." was created!");
     }
 
     /**
@@ -56,7 +56,7 @@ class TournamentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Tournament $tournament)
+    public function create(Tournament $tournament)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
     }
@@ -105,7 +105,9 @@ class TournamentsController extends Controller
         $tournament->where('id', $tournament->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/tournament')->with("theTournament", $tournament->where('id', $tournament->getRouteKey())->first())->with("cont_updated", true);
+        return View::make('game/tournament')
+            ->with("theTournament", $tournament->where('id', $tournament->getRouteKey())->first())
+            ->with("cont_updated", true)->withSuccess("The tournament ".$tournament->name." was updated!");
     }
 
     /**
