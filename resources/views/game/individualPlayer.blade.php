@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="team_id" class="col-xs-3 text-right control-label">Selected Team Name: </label>
+                <label for="team_name" class="col-xs-3 text-right control-label">Selected Team Name: </label>
                 <div class="col-xs-9">
                     <input type="text" name="team_name" id="team_name" placeholder="The team of the player" class="form-control" disabled>
                     <input type="text" name="team_id" id="team_id" class="hidden" style="">
