@@ -46,7 +46,7 @@ class TournamentsController extends Controller
         $tournament->created_at = Carbon::now("CST");
         $tournament->updated_at = Carbon::now("CST");
         $tournament->save();
-        return redirect('manage/tournament')->withSuccess("The tournament ".$tournament->name." was created!");
+        return redirect('manage/tournament')->with('success',"The tournament ".$request['name']." was added");
     }
 
     /**
@@ -105,9 +105,8 @@ class TournamentsController extends Controller
         $tournament->where('id', $tournament->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/tournament')
-            ->with("theTournament", $tournament->where('id', $tournament->getRouteKey())->first())
-            ->with("cont_updated", true)->withSuccess("The tournament ".$tournament->name." was updated!");
+        return Redirect::back()->with('success',"The tournament ".$tournament->fresh()->name." was updated")
+            ->with("theTournament", $tournament);
     }
 
     /**
