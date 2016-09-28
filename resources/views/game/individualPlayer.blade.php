@@ -43,7 +43,6 @@
         @if(isset($cont_updated) and  $cont_updated)
             <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
         @endif
-        <h2>Create a new individual player</h2>
         {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'), 'class' => 'form form-horizontal')) }}
         <input name="_method" type="hidden" value="POST">
         <div class="form-group">
