@@ -37,7 +37,7 @@ class PlayersController extends Controller
      * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function create(PlayerRequest $request)
+    public function store(PlayerRequest $request)
     {
         $player = new Player();
         $player->username = $request['username'];
@@ -47,7 +47,8 @@ class PlayersController extends Controller
         $player->updated_by =  $this->getUserId();
         $player->updated_on = Carbon::now("CST");
         $player->save();
-        return $this->index();
+        return redirect('manage/player')->with('success',"The Player ".$player->fresh()->name." was added");
+
     }
 
     /**
@@ -57,7 +58,7 @@ class PlayersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Player $player)
+    public function create(Player $player)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
 //        $updatedBy = $this->getUserId();
@@ -106,30 +107,6 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
-//        dd($player->toArray());
-//        array:10 [▼
-//          "id" => 1
-//          "username" => "Nelson"
-//          "email" => "mmm@mmm.com"
-//          "name" => "Nels"
-//          "phone" => ""
-//          "created_at" => null
-//          "updated_at" => "2016-09-19 20:55:29"
-//          "updated_by" => 5
-//          "updated_on" => "2016-09-19 14:55:29"
-//          "user_id" => 0
-//        ]
-//        dd($request->toArray());
-//        array:8 [▼
-//          "_token" => "0QoUn39tFICoJBmO4nFSXr0uRyeflub2tsanWxVz"
-//          "_method" => "PUT"
-//          "name" => "Nels"
-//          "username" => "Nelson"
-//          "email" => "mmm@mmm.com"
-//          "phone" => ""
-//          "team_id" => "22"
-//          "submit" => "Save"
-//        ]
         $theTeam = $request->team_id;
         $request =$request->toArray();
         unset($request['_token']);
@@ -150,7 +127,9 @@ class PlayersController extends Controller
             $playerArray = $player->getThisPlayerInfoBy();
         }
 
-        return View::make('game/player')->with("thePlayer", $playerArray)->with("cont_updated", true);
+        return Redirect::back()
+            ->with('success',"The tournament ".$playerArray['player_name']." was updated")
+            ->with("thePlayer", $playerArray);
     }
 
     /**

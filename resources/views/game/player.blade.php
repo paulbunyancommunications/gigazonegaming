@@ -37,7 +37,7 @@
         @if(isset($thePlayer['player_name']))
             {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@update', $thePlayer['player_id']))) }}
         @else
-            {{  Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@create'))) }}
+            {{  Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@store'))) }}
         @endif
 
         <div class="form-group">
