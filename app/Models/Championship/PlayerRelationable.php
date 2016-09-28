@@ -80,28 +80,15 @@ trait PlayerRelationable
 
     protected static function prepParameters(&$parameters)
     {
+        // Go over each of the player connected
+        // models and check if the parameter
+        // key passed is a instance of
+        // that the given controller name.
         foreach (self::routables() as $routable) {
-            switch ($routable) {
-                case ('Game'):
-                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Game) {
-                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
-                    }
-                    break;
-                case ('Team'):
-                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Team) {
-                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
-                    }
-                    break;
-                case ('Tournament'):
-                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Tournament) {
-                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
-                    }
-                    break;
-                case ('Player'):
-                    if (array_key_exists(strtolower($routable), $parameters) && $parameters[strtolower($routable)] instanceof Player) {
-                        $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
-                    }
-                    break;
+            if (array_key_exists(strtolower($routable), $parameters)
+                && is_a($parameters[strtolower($routable)], "App\\Models\\Championship\\{$routable}", true)
+            ) {
+                $parameters[strtolower($routable)] = $parameters[strtolower($routable)]->id;
             }
         }
     }

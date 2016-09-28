@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Http\Requests\IndividualPlayerRequest;
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use App\Models\Championship\Game;
 use App\Models\WpUser;
 use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
@@ -34,26 +36,23 @@ class IndividualPlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  all sort  $indPlayer
-     * @param  \Illuminate\Http\Request  $request
+     * @param IndividualPlayerRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function change(Request $IndividualPlayer)
+    public function change(IndividualPlayerRequest $request)
     {
-        $individualPlayer = $IndividualPlayer->all();
+        $newIndividualPlayer = new Player($request->all());
+        $newIndividualPlayer->save();
         $params = [];
-        $params['player'] = $individualPlayer["id"];
-        $params['team'] = $individualPlayer["team_id"];
-        $params['tournament'] = $individualPlayer["tournament_sort"];
-        $params['game'] = $individualPlayer["game_id"];
+        $params['player'] = $newIndividualPlayer;
+        $params['team'] = Team::find($request->input('team_id'));
+        $params['tournament'] = Tournament::find($request->input("tournament_sort"));
+        $params['game'] = Game::find($request->input("game_id"));
         $hasCreateAnyRelation = PlayerRelationable::createRelation($params);
         if(!$hasCreateAnyRelation){
-            return Redirect::back()->withErrors(array('msg'=>'Sorry no relation was created. The player must already have a relation of such type/s'));
-
+            return Redirect::back()->withErrors(array('msg'=>trans('individual_player.relation_error')));
         }
-
-        return View::make('game/individualPlayer');
-
+        return Redirect('manage/player/edit/'.$newIndividualPlayer->id)->with('success', trans('individual_player.create'));
     }
 
     /**

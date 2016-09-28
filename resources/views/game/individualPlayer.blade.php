@@ -40,33 +40,25 @@
 @section('content')
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($individualPlayers) || $individualPlayers != [])
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         @if(isset($cont_updated) and  $cont_updated)
             <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
         @endif
+        <h2>Create a new individual player</h2>
         {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'))) }}
         <div class="form-group">
             <input name="_method" type="hidden" value="POST">
             <input name="id" id="id" type="hidden" value="">
             <div class="form-group">
-                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px" placeholder="The name of the player" disabled/>
+                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px" placeholder="The name of the player" value="{{ old('name') }}" disabled/>
             </div>
             <div class="form-group">
-                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px" placeholder="The username of the player" disabled/>
+                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px" placeholder="The username of the player" value="{{ old('username') }}" disabled/>
             </div>
             <div class="form-group">
-                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px" placeholder="The email of the player" disabled/>
+                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px" placeholder="The email of the player" value="{{ old('email') }}" disabled/>
             </div>
             <div class="form-group">
-                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px" placeholder="The phone of the player" disabled/>
+                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px" placeholder="The phone of the player" value="{{ old('phone') }}" disabled/>
             </div>
             <div class="form-group">
                 <label for="team_id" style="width:120px; text-align:right;">Selected Team Name: </label> &nbsp;
@@ -84,7 +76,10 @@
                 <select name="game_sort" id="game_sort" style="width:350px;">
                     <option class="default"> --- </option>
                     @foreach($games as $g)
-                        <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector">{{$g['game_name']}}</option>
+                        <option id="t_option{{$g['game_id']}}"
+                                value="{{$g['game_id']}}"
+                                class="gameSelector"
+                                {{ $g['game_id'] == old('game_sort') ? ' selected="selected"' : null  }}>{{$g['game_name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -93,7 +88,9 @@
                 <select name="tournament_sort" id="tournament_sort" style="width:350px;" disabled>
                     <option class="default"> --- </option>
                     @foreach($tournaments as $g)
-                        <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}" >{{$g['tournament_name']}}</option>
+                        <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}"
+                                value="{{$g['tournament_id']}}"
+                                {{ $g['tournament_id'] == old('tournament_sort') ? ' selected="selected"' : null }}>{{$g['tournament_name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -103,7 +100,9 @@
                     <option class="default"> --- </option>
                     @foreach($teams as $g)
                         @if($g['team_count'] < $g['team_max_players'])
-                        <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}" >{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
+                        <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}"
+                                value="{{$g['team_id']}}"
+                                {{ $g['team_id'] == old('team_sort') ? ' selected="selected"' : null }}>{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
                         @endif
                     @endforeach
                 </select>
