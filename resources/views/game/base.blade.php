@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css">
-    {{--<link rel="stylesheet" href="/app/content/css/app.css">--}}
+    <link rel="stylesheet" href="/app/content/css/app.css">
     <style type="text/css" href="">
         @yield('css')
         .fa,
