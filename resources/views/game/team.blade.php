@@ -74,6 +74,7 @@
 
         </div>
         </form>
+        <h2>Team List</h2>
         {{ Form::open(array('id' => "teamFilter", 'action' => array('Backend\Manage\TeamsController@filter'))) }}
         <input name="_method" type="hidden" value="POST">
         <label for="game_sort" style="width:120px; text-align:right;">Show options only for this Game: </label> <select name="game_sort" id="game_sort" style="width:350px; text-align:right;">

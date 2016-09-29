@@ -42,14 +42,18 @@ class TeamsController extends Controller
     public function store(TeamRequest $request)
     {
         $team = new Team();
-        $team->tournament_id = $request['tournament_id'];
+        if(isset($request['tournament_id']) and $request['tournament_id']!='---') {
+            $team->tournament_id = $request['tournament_id'];
+        }else{
+            return Redirect::back()->with("errors", "A tournament must be selected");
+        }
         $team->name = $request['name'];
         $team->emblem = $request['emblem'];
         $team->updated_by =  $this->getUserId();
         $team->updated_on = Carbon::now("CST");
         $team->verification_code= str_random(8);
         $team->save();
-        return $this->index();
+        return redirect('manage/team')->with('success',"The team ".$request['name']." was added");
     }
 
     /**
@@ -121,7 +125,8 @@ class TeamsController extends Controller
         $team->where('id', $team->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
+        return Redirect::back()->with('success',"The team ".$team->fresh()->name." was updated")
+            ->with("theTeam", $team);
     }
 
     /**

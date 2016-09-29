@@ -41,20 +41,17 @@ class TeamRequest extends Request
             {
                 return [
                     'name' => 'required|unique:mysql_champ.teams,name',
-                    'tournament_id' => 'required:mysql_champ.teams,tournament_id',
+                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
-//                dd($this->route());
-//                $id = $this->route()->tournament_id->team_id;
-                $t_id = $this->route()->team_id->tournament_id;
                 $name = $this->route()->team_id->name;
-//                dd("passed put patch");
+                $tournament_id = $this->route()->team_id->tournament_id;
                 return [
                     'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
-                    'tournament_id' => 'required:mysql_champ.teams,tournament_id,'.$t_id.',tournament_id',
+                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id',
                 ];
             }
             default:break;
@@ -70,8 +67,10 @@ class TeamRequest extends Request
     public function messages()
     {
         return [
-            'name.required' => 'Your Name is required.',
-            'game_id.required' => 'The Game ID is required.',
+            'name.required' => 'The Team Name Field is required.',
+            'name.unique' => 'The Team Name is in use, pick a new one.',
+            'tournament_id.required' => 'The Tournament field is empty.',
+            'tournament_id.numeric' => 'The Tournament field is empty.',
         ];
     }
 }
