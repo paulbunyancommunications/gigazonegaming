@@ -1,16 +1,25 @@
 <?php
 namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
 
+use App\Providers\ChampionshipGameComposerProvider;
 use \AcceptanceTester;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
+use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use \BaseAcceptance;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use TwigBridge\Twig\Template;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Mockery;
 
 class IndividualPlayersControllerCest extends BaseAcceptance
 {
+    use DatabaseMigrations;
+    use DatabaseTransactions;
+
     private $pl_name;
     private $pl_username;
     private $player;
@@ -30,23 +39,23 @@ class IndividualPlayersControllerCest extends BaseAcceptance
 
         $this->pl_name = $this->faker->name;
         $this->pl_username = $this->faker->name;
-        $this->player = factory("App\\Models\\Championship\\Player")->create(['name'=>$this->pl_name, 'username'=>$this->pl_username]);
+        $this->player = factory(Player::class,1)->create(['name'=>$this->pl_name, 'username'=>$this->pl_username]);
 
         $this->ga_name = $this->faker->name;
-        $this->game = factory("App\\Models\\Championship\\Game")->create(['name' => $this->ga_name]);
+        $this->game = factory(Game::class,1)->create(['name' => $this->ga_name]);
 
         $this->to_name = $this->faker->name;
-        $this->tournament = factory("App\\Models\\Championship\\Tournament")->create(['name' => $this->to_name]);
+        $this->tournament = factory(Tournament::class,1)->create(['name' => $this->to_name]);
 
         $this->te_name = $this->faker->name;
-        $this->team = factory("App\\Models\\Championship\\Team")->create(['name' => $this->te_name]);
+        $this->team = factory(Team::class,1)->create(['name' => $this->te_name]);
 
-        $this->relation = factory("App\\Models\\Championship\\PlayerRelation")->create([
+        $this->relation = factory(PlayerRelation::class,1)->create([
             'player_id' => $this->player->id,
             'relation_id' => $this->game->id,
             'relation_type' => Game::class
         ]);
-        $this->relation = factory("App\\Models\\Championship\\PlayerRelation")->create([
+        $this->relation = factory(PlayerRelation::class)->create([
             'player_id' => $this->player->id,
             'relation_id' => $this->tournament->id,
             'relation_type' => Tournament::class
