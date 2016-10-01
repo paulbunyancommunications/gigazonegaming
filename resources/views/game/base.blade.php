@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="/app/content/css/app.css">
     <style type="text/css" href="">
         @yield('css')
+        body{
+            overflow: scroll;
+        }
         .fa,
         .fa:before{
             font-family: "FontAwesome"!important;

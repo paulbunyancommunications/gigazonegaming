@@ -60,8 +60,8 @@ trait PlayerRelationable
      * from which we will select the third one team or tournament as type.
      */
     public static function doesThePlayerRelationExist($parameters){
-
-        if(isset($parameters['team'])){
+        var_dump($parameters);
+        if(isset($parameters['team']) and $parameters['team']!=='---'){
             $tournamentTeams = Team::find($parameters['team'])->tournament()->first()->teams()->get();
             foreach ($tournamentTeams as $key => $team) {
                 if($team->hasPlayerID($parameters['player'])){
@@ -70,12 +70,14 @@ trait PlayerRelationable
             }
             return false;
         }
-        elseif(isset($parameters['tournament'])){
+        elseif(isset($parameters['tournament']) and $parameters['tournament']!=='---'){
             return Tournament::find($parameters['tournament'])->hasPlayerID($parameters['player']);
         }
-        elseif(isset($parameters['game'])){
+        elseif(isset($parameters['game']) and $parameters['game']!=='---'){
             return Game::find($parameters['game'])->hasPlayerID($parameters['player']);
         }
+
+        return true; //if there was something sent that it shouldnt be sent, return true so stops them from a false comparison.
     }
 
     protected static function prepParameters(&$parameters)
@@ -102,28 +104,34 @@ trait PlayerRelationable
      */
     public static function createRelation($parameters)
     {
-        $ret = false;
+        $ret = [];
         self::prepParameters($parameters);
-        if (isset($parameters['game'])) {
-            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $parameters['game']])) {
-                $relation = new PlayerRelation();
-                $relation->player_id = $parameters['player'];
-                $relation->relation_id = $parameters['game'];
-                $relation->relation_type = Game::class;
-                $relation->save();
-                $ret = true;
-            }
-        }
-        if (isset($parameters['tournament'])) {
-            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $parameters['tournament']])) {
-                $relation = new PlayerRelation();
-                $relation->player_id = $parameters['player'];
-                $relation->relation_id = $parameters['tournament'];
-                $relation->relation_type = Tournament::class;
-                $relation->save();
-                $ret = true;
-            }
-        }
+//        if (isset($parameters['game'])) {
+//            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $parameters['game']])) {
+//                $relation = new PlayerRelation();
+//                $relation->player_id = $parameters['player'];
+//                $relation->relation_id = $parameters['game'];
+//                $relation->relation_type = Game::class;
+//                $relation->save();
+//                $ret['game'] = true;
+////                $ret['game'] = "The game relation was successfully created.";
+//            }else{
+//                $ret['game'] = false;
+////                $ret['game'] = "Error: The game relation already existed.";
+//            }
+//        }
+//        if (isset($parameters['tournament'])) {
+//            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $parameters['tournament']])) {
+//                $relation = new PlayerRelation();
+//                $relation->player_id = $parameters['player'];
+//                $relation->relation_id = $parameters['tournament'];
+//                $relation->relation_type = Tournament::class;
+//                $relation->save();
+//                $ret['tournament'] = true;
+//            }else{
+//                $ret['tournament'] = false;
+//            }
+//        }
         if (isset($parameters['team'])) {
             if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'team' => $parameters['team']])) {
                 $relation = new PlayerRelation();
@@ -131,12 +139,14 @@ trait PlayerRelationable
                 $relation->relation_id = $parameters['team'];
                 $relation->relation_type = Team::class;
                 $relation->save();
-                $ret = true;
+                $ret['team'] = true;
+            }else{
+                $ret['team'] = false;
             }
         }
         return $ret;
     }
-    public function findPlayerRelations($query, Player $player){
+    public function findPlayerRelations($query, $player){
         return $query->whereHas('playerRelations', function ($query) use ($player) {
             $query->where('player_id', $player->id);
         });
@@ -146,9 +156,9 @@ trait PlayerRelationable
             ->where('player_id', $player->id)
             ->exists();
     }
-    public function hasPlayerId($player_id){
+    public function hasPlayerId($playerID){
         return $this->findPlayersRelations()
-            ->where('player_id', $player_id)
+            ->where('player_id', $playerID)
             ->exists();
     }
 

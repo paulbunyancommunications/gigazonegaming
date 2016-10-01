@@ -107,12 +107,23 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
-        $theTeam = $request->team_id;
+        $theTeam = $theTournament = $theGame = '';
         $request =$request->toArray();
+        if(isset($request['tournament_id'])) {
+            $theTournament = $request['tournament_id'];
+            unset($request['tournament_id']);
+        }
+        if(isset($request['team_id'])) {
+            $theTeam = $request['team_id'];
+            unset($request['team_id']);
+        }
+        if(isset($request['game_id'])) {
+            $theGame = $request['game_id'];
+            unset($request['game_id']);
+        }
         unset($request['_token']);
         unset($request['_method']);
         unset($request['submit']);
-        unset($request['team_id']);
         $request['updated_by'] = $this->getUserId();
         $request['updated_on'] = Carbon::now("CST");
         $player->name = $request['name'];
@@ -121,36 +132,79 @@ class PlayersController extends Controller
         $player->phone = $request['phone'];
         $player->save();
         $playerArray = $player->getThisPlayerInfoBy();
-
-        if($theTeam != $playerArray['team_id']) {
-            $this->assignPlayerToTeam($playerArray, $theTeam);
-            $playerArray = $player->getThisPlayerInfoBy();
+        $parameters = [];
+        $result =[];
+        $parameters['player'] = $playerArray['player_id'];
+//        var_dump($playerArray);
+//        var_dump($theTeam);
+//        var_dump($theTournament);
+//        var_dump($theGame);
+        if($theTeam != '' and $theTeam != $playerArray['team_id']) {
+            $parameters['team'] = $theTeam;
         }
+        if($theTournament != '' and $theTournament != $playerArray['tournament_id']) {
+            $parameters['tournament'] = $theTournament;
+        }
+        if($theGame != '' and $theGame != $playerArray['game_id']) {
+            $parameters['game'] = $theGame;
+        }
+//        var_dump($parameters);
+//        var_dump(count($parameters));
+        if(count($parameters) > 1){
+            $result = Player::createRelation($parameters);
+        }
+//        var_dump($result);
+//        die();
 
-        return Redirect::back()
-            ->with('success',"The tournament ".$playerArray['player_name']." was updated")
-            ->with("thePlayer", $playerArray);
+        $playerArray = $player->getThisPlayerInfoBy();
+        $success = '';
+        $errors = '';
+            if(isset($result) and $result!=[]) {
+                foreach ($result as $key => $val) {
+//                    dd($result);
+                    if ($val) {
+                        $success .= "The player " . $playerArray['player_name'] . " was successfully attached to the " . $key . "\r\n";
+                    }else{
+                        $errors .= "The player " . $playerArray['player_name'] . " couldn't be attached to the " . $key ." s/he could be already assigned to this ".$key. "\r\n";
+                    }
+                }
+            }
+            if($success!='' and $errors!=''){
+                return Redirect::back()
+                    ->with('success', $success)
+                    ->with('error', $errors)
+                    ->with("thePlayer", $playerArray);
+            }elseif ($success!=''){
+                return Redirect::back()
+                    ->with('success', $success)
+                    ->with("thePlayer", $playerArray);
+            }else{
+                return Redirect::back()
+                    ->with('error', $errors)
+                    ->with("thePlayer", $playerArray);
+            }
     }
 
-    /**
-     * Remove the specified player from the team and move it to the single player list.
-     *
-     * @param  Player  $player
-     * @return \Illuminate\Http\Response
-     */
-    public function assignPlayerToTeam($player, $team_id) //todo
-    {
-        if(Team::find($team_id)->isTeamNotFull()){
-            $playerToChange = PlayerRelation::having('player_relations.player_id', '=', $player['player_id'])
-                ->having('player_relations.relation_id', '=', $player['team_id'])
-                ->having('player_relations.relation_type', '=', PlayerRelationable::getTeamRoute())->first();
-            $playerToChange->relation_id = $team_id;
-            $playerToChange->save();
-        }else{
-            return Redirect::back()->withErrors(array('msg'=>'The team has the maximum amount of players. Please pick a different team.'));
-        }
-
-    }
+//    /**
+//     * Remove the specified player from the team and move it to the single player list.
+//     *
+//     * @param  Player  $player
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function assignPlayerToTeam($player, $relation) //todo
+//    {
+//
+//        if(Team::find($team_id)->isTeamNotFull()){
+//            $playerToChange = PlayerRelation::having('player_relations.player_id', '=', $player['player_id'])
+//                ->having('player_relations.relation_id', '=', $player['team_id'])
+//                ->having('player_relations.relation_type', '=', ;
+//            $playerToChange->relation_id = $team_id;
+//            $playerToChange->save();
+//        }else{
+//            return Redirect::back()->withErrors(array('msg'=>'The team has the maximum amount of players. Please pick a different team.'));
+//        }
+//
+//    }
     /**
      * Remove the specified resource from storage.
      *

@@ -43,14 +43,22 @@ $factory->define(App\Models\Championship\Team::class, function (Faker\Generator 
     ];
 });
 
-$factory->define(App\Models\Championship\Player::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Championship\PlayerRelation::class, function (Faker\Generator $faker) {
 
-    $id = factory(App\Models\Auth\Users\User::class)->create([])->id;
     return [
+        'player_id' => factory(App\Models\Championship\Player::class)->create([])->id,
+        'relation_id' => $faker->userName,
+        'relation_type' => $faker->email,
+    ];
+});
+$factory->define(App\Models\Championship\Player::class, function (Faker\Generator $faker) {
+//    $id = factory(App\Models\Auth\Users\User::class)->create()->id;
+    return [
+        'name' => $faker->name,
         'username' => $faker->userName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
-        'user_id' => $id,
+        'user_id' => null,
     ];
 });
 
