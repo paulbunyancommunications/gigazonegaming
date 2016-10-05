@@ -4,10 +4,10 @@ namespace Tests\Unit\App\Providers;
  * ChampionshipGameComposerProviderTest
  *
  * Created 7/7/16 5:35 PM
- * Tests for class ChampionshipGameComposerProviderTest
+ * Tests for class ChampionshipGameComposerProvider
  *
  * @author Nate Nolting <naten@paulbunyan.net>
- * @package Tests\Integration\Providers
+ * @package Tests\Unit\App\Providers
  */
 
 use App\Models\Championship\Player;
