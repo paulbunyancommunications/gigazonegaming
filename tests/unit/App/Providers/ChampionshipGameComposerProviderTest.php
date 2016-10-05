@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Integration\Providers;
+namespace Tests\Unit\App\Providers;
 /**
  * ChampionshipGameComposerProviderTest
  *
