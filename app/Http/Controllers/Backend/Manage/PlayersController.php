@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PlayerRequest;
+use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
+use App\Models\WpUser;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
+use App\Http\Requests\PlayerRequest;
 
 class PlayersController extends Controller
 {
@@ -28,33 +35,32 @@ class PlayersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Player $player
+     * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
     public function store(PlayerRequest $request)
     {
         $player = new Player();
         list($request, $theAssociation) = $this->UserCleanUp($request);
-        list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player,
-            $theAssociation); //save method for player is in this function call
+        list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation); //save method for player is in this function call
 
-        if ($success != '' and $errors != '') {
-            return redirect("manage/player/" . $playerArray['id'])
+        if($success!='' and $errors!=''){
+            return redirect("manage/player/".$playerArray['id'])
 //                ->withInput()
                 ->with('success', $success)
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        } elseif ($success != '') {
-            return redirect("manage/player/" . $playerArray['id'])
+        }elseif ($success!=''){
+            return redirect("manage/player/".$playerArray['id'])
 //                ->withInput()
                 ->with('success', $success)
                 ->with("thePlayer", $playerArray);
-        } elseif ($errors != '') {
+        }elseif ($errors!=''){
             return redirect('manage/player')
 //                ->withInput()
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        } else {
+        }else{
             return redirect("manage/player/")
                 ->with("thePlayer", $playerArray);
         }
@@ -63,13 +69,13 @@ class PlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Player $player
-     * @param  \Illuminate\Http\Request $request
+     * @param  Player  $player
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create(Player $player)
     {
-        dd("Are you trying to hack us? ip_address:" . $_SERVER['REMOTE_ADDR']);
+        dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
 //        $updatedBy = $this->getUserId();
 //        $updatedOn = Carbon::now("CST");
 //        $toUpdate = array_merge($request->all(), [
@@ -87,7 +93,7 @@ class PlayersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Player $player
+     * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
     public function show(Player $player)
@@ -98,7 +104,7 @@ class PlayersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Player $player
+     * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
     public function edit(Player $player)
@@ -110,8 +116,8 @@ class PlayersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param   Player $player
+     * @param  \Illuminate\Http\Request  $request
+     * @param   Player  $player
      * @return \Illuminate\Http\Response
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
@@ -119,23 +125,23 @@ class PlayersController extends Controller
         list($request, $theAssociation) = $this->UserCleanUp($request);
 
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation);
-        if ($success != '' and $errors != '') {
+        if($success!='' and $errors!=''){
             return Redirect::back()
                 ->withInput()
                 ->with('success', $success)
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        } elseif ($success != '') {
+        }elseif ($success!=''){
             return Redirect::back()
                 ->withInput()
                 ->with('success', $success)
                 ->with("thePlayer", $playerArray);
-        } elseif ($errors != '') {
+        }elseif ($errors!=''){
             return Redirect::back()
                 ->withInput()
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        } else {
+        }else{
             return Redirect::back()
                 ->withInput()
                 ->with("thePlayer", $playerArray);
@@ -179,21 +185,19 @@ class PlayersController extends Controller
     /**
      * Destroy the specified resource from storage.
      *
-     * @param  Player $player
+     * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
     public function destroy(Player $player)
     {
         $name = $player->username;
-        if ($player->name != '') {
-            $name .= " ( " . $player->name . ' )';
+        if($player->name!=''){
+            $name.=" ( " . $player->name . ' )';
         }
         PlayerRelation::where('player_id', '=', $player->getRouteKey())->delete();
         $player->where('id', $player->getRouteKey())->delete();
-        return Redirect::back()->with('success',
-            "The player " . $name . " has been remove from all games, tournaments and teams.");
+        return Redirect::back()->with('success', "The player ". $name ." has been remove from all games, tournaments and teams.");
     }
-
     /**
      * Display the specified resource.
      *
@@ -203,19 +207,19 @@ class PlayersController extends Controller
     public function filter(Request $ids)
     {
         $filterArray = [];
-        if (isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort != []) {
+        if(isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
             $filterArray['team'] = trim($ids->team_sort);
         }
-        if (isset($ids->tournament_sort) and trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort != []) {
+        if(isset($ids->tournament_sort) and trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
             $filterArray['tournament'] = trim($ids->tournament_sort);
         }
-        if (isset($ids->game_sort) and trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort != []) {
+        if(isset($ids->game_sort) and trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
             $filterArray['game'] = trim($ids->game_sort);
         }
         $players = new Player();
         $playerList = $players->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filterArray);
 
-        return View::make('game/player')->with("players_filter", $playerList)->with('sorts', $ids);
+        return View::make('game/player')->with("players_filter", $playerList)->with('sorts',$ids);
 
     }
 
@@ -226,32 +230,32 @@ class PlayersController extends Controller
     private function UserCleanUp(PlayerRequest $request)
     {
         $request = $request->all();
-        $theAssociationRequest = [];
-        if (isset($request['game_id']) and $request['game_id'] != [] and is_array($request['game_id'])) {
-            foreach ($request['game_id'] as $k => $v) {
-                if ($v != '---' and $v != '') {
+        $theAssociationRequest =[];
+        if (isset($request['game_id']) and $request['game_id']!=[] and is_array($request['game_id'])) {
+            foreach ($request['game_id'] as $k => $v){
+                if($v != '---' and $v != ''){
                     $theAssociationRequest['game'][] = $v;
                 }
             }
-        } elseif (isset($request['game_id']) and $request['game_id'] != '') {
+        }elseif(isset($request['game_id']) and $request['game_id']!=''){
             $theAssociationRequest['game'][] = $request['game_id'];
         }
-        if (isset($request['tournament_id']) and $request['tournament_id'] != [] and is_array($request['tournament_id'])) {
-            foreach ($request['tournament_id'] as $k => $v) {
-                if ($v != '---' and $v != '') {
+        if (isset($request['tournament_id']) and $request['tournament_id']!=[] and is_array($request['tournament_id'])) {
+            foreach ($request['tournament_id'] as $k => $v){
+                if($v != '---' and $v != ''){
                     $theAssociationRequest['tournament'][] = $v;
                 }
             }
-        } elseif (isset($request['tournament_id']) and $request['tournament_id'] != '') {
+        }elseif(isset($request['tournament_id']) and $request['tournament_id']!=''){
             $theAssociationRequest['tournament'][] = $request['tournament_id'];
         }
-        if (isset($request['team_id']) and $request['team_id'] != [] and is_array($request['team_id'])) {
-            foreach ($request['team_id'] as $k => $v) {
-                if ($v != '---' and $v != '') {
+        if (isset($request['team_id']) and $request['team_id']!=[] and is_array($request['team_id'])) {
+            foreach ($request['team_id'] as $k => $v){
+                if($v != '---' and $v != ''){
                     $theAssociationRequest['team'][] = $v;
                 }
             }
-        } elseif (isset($request['team_id']) and $request['team_id'] != '') {
+        }elseif(isset($request['team_id']) and $request['team_id']!=''){
             $theAssociationRequest['team'][] = $request['team_id'];
         }
         unset($request['game_id']);
@@ -271,19 +275,19 @@ class PlayersController extends Controller
      * @param $theAssociation
      * @return array
      */
-    private function getPlayerInfoAndErrors($request, Player $player, $theAssociation)
+    private function getPlayerInfoAndErrors( $request, Player $player, $theAssociation)
     {
         $player->name = $request['name'];
         $player->username = $request['username'];
         $player->email = $request['email'];
         $player->phone = $request['phone'];
-        $player->updated_by = $this->getUserId();
+        $player->updated_by =  $this->getUserId();
         $player->updated_on = Carbon::now("CST");
         $player->save();
         $player->fresh();
 
         $theAssociation['player'] = $player->id;
-        $result = DB::transaction(function () use ($theAssociation) {
+        $result = DB::transaction( function () use ($theAssociation) {
             PlayerRelation::where('player_id', '=', $theAssociation['player'])->delete();
             $result = '';
             if (count($theAssociation) > 1) {
@@ -297,11 +301,11 @@ class PlayersController extends Controller
         $errors = '';
         if (isset($result) and $result != []) {
             if (isset($result['success'])) {
-                $success .= "The player " . $playerArray['name'] . " was successfully attached to " . $result['success'];
+                $success .= "The player " . $playerArray['name'] . " was successfully attached to ".$result['success'];
             }
 
             if (isset($result['fail'])) {
-                $errors .= "The player " . $playerArray['name'] . " couldn't be attached to " . $result['fail'];
+                $errors .= "The player " . $playerArray['name'] . " couldn't be attached to ".$result['fail'];
             }
         }
         return array($playerArray, $success, $errors);
