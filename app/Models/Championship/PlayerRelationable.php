@@ -301,24 +301,25 @@ trait PlayerRelationable
     }
 
     /**
-     * Get the tournament in which the team is playing in
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     * Get the player relationship to an array
+     * @todo shorten this method name, it doesn't need to be so verbose
      */
     public function playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
         if(isset($this) and isset($this->id)) {
             $relations = PlayerRelation::where('player_id', '=', $this->id);
             if ($filter != [] and is_array($filter)) {
-                if (isset($filter['team'])) {
-                    $relations->where('relation_id', '=', $filter['team'])
-                        ->where('relation_type', '=', Team::class);
-                } elseif (isset($filter['tournament'])) {
-                    $relations->where('relation_id', '=', $filter['tournament'])
-                        ->where('relation_type', '=', Tournament::class);
-                } elseif (isset($filter['game'])) {
-                    $relations->where('relation_id', '=', $filter['game'])
-                        ->where('relation_type', '=', Game::class);
+                /**
+                 * Iterate over self::routables() and see if there's
+                 * filter key passed to this method.
+                 * If there is then set up the
+                 * relation where clause.
+                 */
+                for ($i = 0; $i < count(self::routables()); $i++) {
+                    if (array_key_exists(strtolower(self::routables()[$i]), $filter)) {
+                        $relations->where('relation_id', '=', $filter[strtolower(self::routables()[$i])])
+                            ->where('relation_type', '=', '\\' . __NAMESPACE__ . '\\' . self::routables()[$i]);
+                    }
                 }
             }
             $relations = $relations->get();
@@ -327,26 +328,23 @@ trait PlayerRelationable
             if ($relations != null and $relations != [] and $relations != '') {
                 $information = $relations->toArray();
                 foreach ($information as $key => $someT) {
-                    if ($someT['relation_type'] == Tournament::class) {
-                        if (!isset($returnableArray['tournaments'])) {
-                            $returnableArray['tournaments'] = [];
+                    /**
+                     * Iterate over self::routables() and see if there a relation
+                     * type passed from the relations query. Tf there is then
+                     * get that model and add it to the key of the same name
+                     * in the return array.
+                     */
+                    for($i=0; $i < count(self::routables()); $i++) {
+                        if ($someT['relation_type'] == '\\' . __NAMESPACE__ . '\\' .self::routables()[$i]) {
+                            if (!isset($returnableArray[strtolower(self::routables()[$i])])) {
+                                $returnableArray[strtolower(self::routables()[$i])] = [];
+                            }
+                            array_push(
+                                $returnableArray[strtolower(self::routables()[$i])],
+                                forward_static_call(['\\' . __NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=',
+                                    $someT['relation_id'])->get()->toArray()[0]);
+
                         }
-                        $returnableArray['tournaments'][] = Tournament::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                    } elseif ($someT['relation_type'] == Team::class) {
-                        if (!isset($returnableArray['teams'])) {
-                            $returnableArray['teams'] = [];
-                        }
-                        $returnableArray['teams'][] = Team::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                    } elseif ($someT['relation_type'] == Game::class) {
-                        if (!isset($returnableArray['games'])) {
-                            $returnableArray['games'] = [];
-                        }
-                        $returnableArray['games'][] = Game::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                    } else {
-                        if (!isset($returnableArray['error'])) {
-                            $returnableArray['error'] = [];
-                        }
-                        $returnableArray['error'][] = $someT;
                     }
                 }
             }
