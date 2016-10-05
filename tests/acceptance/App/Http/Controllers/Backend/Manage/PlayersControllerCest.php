@@ -13,36 +13,36 @@ class PlayersControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
-//    public function _before(AcceptanceTester $I)
-//    {
-//        parent::_before($I);
-//        $this->loginWithAdminUser($I);
-//        $I->amOnPage('/app/manage/player');
-//
-//    }
-//
-//    /**
-//     * @param AcceptanceTester $I
-//     */
-//    public function _after(AcceptanceTester $I)
-//    {
-//        $this->logoutOfWp($I);
-//        parent::_after($I);
-//    }
-//
-//
-//    /**
-//     * @param AcceptanceTester $I
-//     * Get to the player management page and check for the max_playerss
-//     */
-//    public function tryToGetToThePlayerApp(AcceptanceTester $I)
-//    {
-//        $I->wantTo('get to the player management page');
-//        $I->amOnPage('/app/manage/player');
-//        $I->see('Create a new player');
-//        $I->see('Player List');
-//    }
-//
+    public function _before(AcceptanceTester $I)
+    {
+        parent::_before($I);
+        $this->loginWithAdminUser($I);
+        $I->amOnPage('/app/manage/player');
+
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function _after(AcceptanceTester $I)
+    {
+        $this->logoutOfWp($I);
+        parent::_after($I);
+    }
+
+
+    /**
+     * @param AcceptanceTester $I
+     * Get to the player management page and check for the max_playerss
+     */
+    public function tryToGetToThePlayerApp(AcceptanceTester $I)
+    {
+        $I->wantTo('get to the player management page');
+        $I->amOnPage('/app/manage/player');
+        $I->see('Create a new player');
+        $I->see('Player List');
+    }
+
 //    /**
 //     * @param AcceptanceTester $I
 //     */

@@ -60,21 +60,43 @@ trait PlayerRelationable
      * from which we will select the third one team or tournament as type.
      */
     public static function doesThePlayerRelationExist($parameters){
-        var_dump($parameters);
-        if(isset($parameters['team']) and $parameters['team']!=='---'){
-            $tournamentTeams = Team::find($parameters['team'])->tournament()->first()->teams()->get();
-            foreach ($tournamentTeams as $key => $team) {
+        if(isset($parameters['team']) and $parameters['team']!=='---'){ //check if tge team parameter exists
+            $tour_id = Team::where('id', '=' ,$parameters['team'])->pluck('tournament_id')->first();
+            $tournamentTeams=[];
+            if($tournament=Tournament::where('id', '=' ,$tour_id)->first()!=null
+                and
+                PlayerRelation::where('player_id','=',$parameters['player'])
+                    ->where('relation_id','=',$tour_id)
+                    ->where('relation_type','=',Tournament::class)->exists()
+            ) { //if the player have been added to this tournament get all the teams for next check, else
+                $tournamentTeams = Tournament::where('id', '=' ,$tour_id)->first()->teams()->get();
+            }else{ //create a tournament relation and after that create the team relation that wasnt created in the previous if
+                self::createRelation(['tournament'=> Team::where('id', '=', $parameters['team'])->pluck('tournament_id')->first(), 'player' => $parameters['player']]);
+                $tournamentTeams = Tournament::where('id', '=' ,$tour_id)->first()->teams()->get();
+            }
+            foreach ($tournamentTeams as $key => $team) { //go through the relations of this player and check if any of the teams we pull has him or her in it. if so return true to not create a new relation
                 if($team->hasPlayerID($parameters['player'])){
                     return true;
                 }
             }
             return false;
         }
-        elseif(isset($parameters['tournament']) and $parameters['tournament']!=='---'){
-            return Tournament::find($parameters['tournament'])->hasPlayerID($parameters['player']);
+
+        if(isset($parameters['tournament']) and $parameters['tournament']!=='---'){
+            $game_id = Tournament::where('id','=',$parameters['tournament'])->pluck('game_id')->first();
+            if(Game::where('id','=',$game_id)
+                        ->first() != null
+                and
+                !PlayerRelation::where('player_id','=',$parameters['player'])
+                    ->where('relation_id','=',$game_id)
+                    ->where('relation_type','=',Game::class)->exists()
+            ){
+                self::createRelation(['game'=> $game_id, 'player' => $parameters['player']]);
+            }
+            return Tournament::where('id','=',$parameters['tournament'])->first()->hasPlayerID($parameters['player']);
         }
         elseif(isset($parameters['game']) and $parameters['game']!=='---'){
-            return Game::find($parameters['game'])->hasPlayerID($parameters['player']);
+            return Game::where('id','=',$parameters['game'])->first()->hasPlayerID($parameters['player']);
         }
 
         return true; //if there was something sent that it shouldnt be sent, return true so stops them from a false comparison.
@@ -104,46 +126,153 @@ trait PlayerRelationable
      */
     public static function createRelation($parameters)
     {
-        $ret = [];
+        $ret = array(
+            'game'=>array(
+                'success'=>"",
+                'fail'=>""
+            ),
+            'tournament'=>array(
+                'success'=>"",
+                'fail'=>""
+            ),
+            'team'=>array(
+                'success'=>"",
+                'fail'=>""
+            ),
+            'success'=>'',
+            'fail'=>''
+        );
         self::prepParameters($parameters);
-//        if (isset($parameters['game'])) {
-//            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $parameters['game']])) {
-//                $relation = new PlayerRelation();
-//                $relation->player_id = $parameters['player'];
-//                $relation->relation_id = $parameters['game'];
-//                $relation->relation_type = Game::class;
-//                $relation->save();
-//                $ret['game'] = true;
-////                $ret['game'] = "The game relation was successfully created.";
-//            }else{
-//                $ret['game'] = false;
-////                $ret['game'] = "Error: The game relation already existed.";
-//            }
-//        }
-//        if (isset($parameters['tournament'])) {
-//            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $parameters['tournament']])) {
-//                $relation = new PlayerRelation();
-//                $relation->player_id = $parameters['player'];
-//                $relation->relation_id = $parameters['tournament'];
-//                $relation->relation_type = Tournament::class;
-//                $relation->save();
-//                $ret['tournament'] = true;
-//            }else{
-//                $ret['tournament'] = false;
-//            }
-//        }
-        if (isset($parameters['team'])) {
-            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'team' => $parameters['team']])) {
+        if (isset($parameters['game']) and !is_array($parameters['game'])) {
+            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $parameters['game']])) {
+                $relation = new PlayerRelation();
+                $relation->player_id = $parameters['player'];
+                $relation->relation_id = $parameters['game'];
+                $relation->relation_type = Game::class;
+                $relation->save();
+                $ret['game']['success'] .= Game::where('id', '=', $parameters['game'])->pluck("name")->first();
+//                $ret['game'] = "The game relation was successfully created.";
+            }else{
+                $ret['game']['fail'] .= Game::where('id', '=', $parameters['game'])->pluck("name")->first();
+//                $ret['game'] = "Error: The game relation already existed.";
+            }
+        }elseif (isset($parameters['game']) and is_array($parameters['game'])){
+            foreach ($parameters['game'] as $k => $v){
+                if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $v])) {
+                    $relation = new PlayerRelation();
+                    $relation->player_id = $parameters['player'];
+                    $relation->relation_id = $v;
+                    $relation->relation_type = Game::class;
+                    $relation->save();
+                    $ret['game']['success'] .= Game::where('id', '=', $v)->pluck("name")->first().", ";
+                }else{
+                    $ret['game']['fail'] .= Game::where('id', '=', $parameters['game'])->pluck("name")->first().", ";
+//                $ret['game'] = "Error: The game relation already existed.";
+                }
+                $ret['game']['success'] = trim($ret['game']['success'], ', ');
+                $ret['game']['fail'] = trim($ret['game']['fail'], ', ');
+            }
+        }
+        if (isset($parameters['tournament']) and !is_array($parameters['tournament'])) {
+            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $parameters['tournament']])) {
+                $relation = new PlayerRelation();
+                $relation->player_id = $parameters['player'];
+                $relation->relation_id = $parameters['tournament'];
+                $relation->relation_type = Tournament::class;
+                $relation->save();
+                $ret['tournament']['success'] = Tournament::where('id', '=', $parameters['tournament'])->pluck("name")->first();
+            }else{
+                $ret['tournament']['fail'] =  Tournament::where('id', '=', $parameters['tournament'])->pluck("name")->first();
+            }
+        }elseif (isset($parameters['tournament']) and is_array($parameters['tournament'])){
+            foreach ($parameters['tournament'] as $k => $v){
+                if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $v])) {
+                    $relation = new PlayerRelation();
+                    $relation->player_id = $parameters['player'];
+                    $relation->relation_id = $v;
+                    $relation->relation_type = Tournament::class;
+                    $relation->save();
+                    $ret['tournament']['success'] .= Tournament::where('id', '=', $v)->pluck("name")->first().", ";
+                }else{
+                    $ret['tournament']['fail'] .= Tournament::where('id', '=', $v)->pluck("name")->first().", ";
+                }
+            }
+            $ret['tournament']['success'] = trim($ret['tournament']['success'], ', ');
+            $ret['tournament']['fail'] = trim($ret['tournament']['fail'], ', ');
+        }
+        if (isset($parameters['team']) and !is_array($parameters['team'])) {
+            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'team' => $parameters['team']]) and Team::where('id','=',$parameters['team'])->first()->isTeamNotFull()) {
                 $relation = new PlayerRelation();
                 $relation->player_id = $parameters['player'];
                 $relation->relation_id = $parameters['team'];
                 $relation->relation_type = Team::class;
                 $relation->save();
-                $ret['team'] = true;
+                $ret['team']['success'] = Team::where('id', '=', $parameters['team'])->pluck("name")->first();
             }else{
-                $ret['team'] = false;
+                $it_is_full = '';
+                if(Team::where('id','=',$parameters['team'])->first()->isTeamFull()){$it_is_full = ' (the team '.Team::where('id','=',$parameters['team'])->first()->name.' is full)';}
+                $ret['team']['fail'] = Team::where('id', '=', $parameters['team'])->pluck("name")->first().$it_is_full;
+            }
+        }elseif (isset($parameters['team']) and is_array($parameters['team'])){
+            foreach ($parameters['team'] as $k => $v){
+                if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'team' => $v]) and Team::where('id','=',$v)->first()->isTeamNotFull()) {
+                    $relation = new PlayerRelation();
+                    $relation->player_id = $parameters['player'];
+                    $relation->relation_id = $v;
+                    $relation->relation_type = Team::class;
+                    $relation->save();
+                    $ret['team']['success'] .= Team::where('id', '=', $v)->pluck("name")->first().", ";
+                }else{
+                    $it_is_full = '';
+                    if(Team::where('id','=',$v)->first()->isTeamFull()){$it_is_full = ' (the team '.Team::where('id','=',$v)->first()->name.' is full)';}
+                    $ret['team']['fail'] .= Team::where('id', '=', $v)->pluck("name")->first()."$it_is_full, ";
+                }
+                $ret['team']['success'] = trim($ret['team']['success'], ', ');
+                $ret['team']['fail'] = trim($ret['team']['fail'], ', ');
             }
         }
+        if($ret['team']['success']=='') {
+            unset($ret['team']['success']);
+        }else{
+            $ret['success'] .= "Teams: ".$ret['team']['success'].". ";
+        }
+        if($ret['team']['fail']=='') {
+            unset($ret['team']['fail']);
+        }else{
+            $ret['fail'] .= "Teams: ".$ret['team']['fail'].". ";
+        }
+        if($ret['tournament']['success']=='') {
+            unset($ret['tournament']['success']);
+        }else{
+            $ret['success'] .= "Tournaments: ".$ret['tournament']['success'].". ";
+        }
+        if($ret['tournament']['fail']=='') {
+            unset($ret['tournament']['fail']);
+        }else{
+            $ret['fail'] .= "Tournaments: ".$ret['tournament']['fail'].". ";
+        }
+        if($ret['game']['success']=='') {
+            unset($ret['game']['success']);
+        }else{
+            $ret['success'] .= "Games: ".$ret['game']['success'].". ";
+        }
+        if($ret['game']['fail']=='') {
+            unset($ret['game']['fail']);
+        }else{
+            $ret['fail'] .= "Games: ".$ret['game']['fail'].". ";
+        }
+
+        if($ret['fail'] ==''){
+            unset($ret['fail']);
+        }
+        if($ret['success'] ==''){
+            unset($ret['success']);
+        }
+
+            unset($ret['game']);
+            unset($ret['tournament']);
+            unset($ret['team']);
+
         return $ret;
     }
     public function findPlayerRelations($query, $player){
@@ -162,42 +291,68 @@ trait PlayerRelationable
             ->exists();
     }
 
-
+    public static function playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
+    {
+        $players = Player::all();
+        foreach ($players as $k => $player){
+            $players[$k]=$player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
+        }
+        return $players;
+    }
 
     /**
      * Get the tournament in which the team is playing in
      *
      * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
-    private function playerRelationsToAnArrayOfObjectsOfTeamsAndTournaments()
+    public function playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
-//        dd($this);
-        $relations = PlayerRelation::where('player_id', '=', $this->id)->get();
-//        dd($relations);
-        $returnableArray = [];
-        if ($relations != null and $relations != [] and $relations != '') {
-//            dd($relations->toArray());
-            $information = $relations->toArray();
-            foreach ($information as $key => $someT) {
-                $info = '';
-//                dd("here");
-//                dd($information);
-                if ($someT['relation_type'] == Tournament::class) {
-                    if(!isset($returnableArray['tournaments'])){$returnableArray['tournaments']=[];}
-                    $returnableArray['tournaments'][] = Tournament::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                } elseif ($someT['relation_type'] == Team::class) {
-                    if(!isset($returnableArray['teams'])){$returnableArray['teams']=[];}
-                    $returnableArray['teams'][] = Team::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                }elseif ($someT['relation_type'] == Game::class) {
-                    if(!isset($returnableArray['games'])){$returnableArray['games']=[];}
-                    $returnableArray['games'][] = Game::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
-                }else{
-                    if(!isset($returnableArray['error'])){$returnableArray['error']=[];}
-                    $returnableArray['error'][] = $someT;
+        if(isset($this) and isset($this->id)) {
+            $relations = PlayerRelation::where('player_id', '=', $this->id);
+            if ($filter != [] and is_array($filter)) {
+                if (isset($filter['team'])) {
+                    $relations->where('relation_id', '=', $filter['team'])
+                        ->where('relation_type', '=', Team::class);
+                } elseif (isset($filter['tournament'])) {
+                    $relations->where('relation_id', '=', $filter['tournament'])
+                        ->where('relation_type', '=', Tournament::class);
+                } elseif (isset($filter['game'])) {
+                    $relations->where('relation_id', '=', $filter['game'])
+                        ->where('relation_type', '=', Game::class);
                 }
             }
+            $relations = $relations->get();
+            $returnableArray = $this->attributesToArray();
+
+            if ($relations != null and $relations != [] and $relations != '') {
+                $information = $relations->toArray();
+                foreach ($information as $key => $someT) {
+                    if ($someT['relation_type'] == Tournament::class) {
+                        if (!isset($returnableArray['tournaments'])) {
+                            $returnableArray['tournaments'] = [];
+                        }
+                        $returnableArray['tournaments'][] = Tournament::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
+                    } elseif ($someT['relation_type'] == Team::class) {
+                        if (!isset($returnableArray['teams'])) {
+                            $returnableArray['teams'] = [];
+                        }
+                        $returnableArray['teams'][] = Team::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
+                    } elseif ($someT['relation_type'] == Game::class) {
+                        if (!isset($returnableArray['games'])) {
+                            $returnableArray['games'] = [];
+                        }
+                        $returnableArray['games'][] = Game::where('id', '=', $someT['relation_id'])->get()->toArray()[0];
+                    } else {
+                        if (!isset($returnableArray['error'])) {
+                            $returnableArray['error'] = [];
+                        }
+                        $returnableArray['error'][] = $someT;
+                    }
+                }
+            }
+            return $returnableArray;
         }
-        return $returnableArray;
+        return false;
     }
     public function relationToTeamArray($id)
     {
@@ -407,7 +562,7 @@ trait PlayerRelationable
         if ($orderBy != '') {
             $player_query->orderBy($orderBy);
         }
-        $player_query->groupBy('tore.player_id', 'tournaments.id');
+        $player_query->groupBy('tore.player_id');
 
         $players =  $player_query->get()->toArray();
 

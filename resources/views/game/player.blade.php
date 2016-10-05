@@ -34,66 +34,86 @@
 @section('content')
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($teams) || $teams != [])
-        @if(isset($thePlayer['player_name']) || isset($thePlayer['player_username']) )
-            @if(isset($thePlayer['player_name']) and trim($thePlayer['player_name']) != '')
-                <h1>Update Player: &#8220;{{ $thePlayer['player_name'] }}&#8221;</h1>
-            @elseif(isset($thePlayer['player_username']) and trim($thePlayer['player_username']) != '')
-                <h1>Update Player: &#8220;{{ $thePlayer['player_username'] }}&#8221;</h1>
+        @if(isset($thePlayer['name']) || isset($thePlayer['username']) )
+            @if(isset($thePlayer['name']) and trim($thePlayer['name']) != '')
+                <h1>Update Player: &#8220;{{ $thePlayer['name'] }}&#8221;</h1>
+            @elseif(isset($thePlayer['username']) and trim($thePlayer['username']) != '')
+                <h1>Update Player: &#8220;{{ $thePlayer['username'] }}&#8221;</h1>
             @else
                 <h1>Update Player</h1>
             @endif
-            {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@update', $thePlayer['player_id']))) }}
+            {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@update', $thePlayer['id']))) }}
         @else
             <h1>Create a new Player</h1>
             {{  Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@store'))) }}
         @endif
 
         <div class="form-group">
-            @if(isset($thePlayer['player_name']))
+            @if(isset($thePlayer['name']))
                 <input name="_method" type="hidden" value="PUT">
             @else
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name">Player Name: </label> &nbsp; <input type="text" name="name" id="name"   placeholder="The name of the player" @if(isset($thePlayer['player_name']))value="{{$thePlayer['player_name']}}"@endif/>
+                <label for="name">Player Name: </label> &nbsp; <input type="text" name="name" id="name"   placeholder="The name of the player" @if(isset($thePlayer['name']))value="{{$thePlayer['name']}}" @else value="{{ old('name') }}" @endif/>
             </div>
             <div class="form-group">
-                <label for="username">Player Username: </label> &nbsp; <input type="text" name="username" id="username"  placeholder="The username of the player" @if(isset($thePlayer['player_username']))value="{{$thePlayer['player_username']}}"@endif/>
+                <label for="username">Player Username: </label> &nbsp; <input type="text" name="username" id="username"  placeholder="The username of the player" @if(isset($thePlayer['username']))value="{{$thePlayer['username']}}" @else value="{{ old('username') }}" @endif/>
             </div>
             <div class="form-group">
-                <label for="email">Player Email: </label> &nbsp; <input type="text" name="email" id="email"  placeholder="The email of the player" @if(isset($thePlayer['player_email']))value="{{$thePlayer['player_email']}}"@endif/>
+                <label for="email">Player Email: </label> &nbsp; <input type="text" name="email" id="email"  placeholder="The email of the player" @if(isset($thePlayer['email']))value="{{$thePlayer['email']}}" @else value="{{ old('email') }}" @endif/>
             </div>
             <div class="form-group">
-                <label for="phone">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone"  placeholder="The phone of the player" @if(isset($thePlayer['player_phone']))value="{{$thePlayer['player_phone']}}"@endif/>
+                <label for="phone">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone"  placeholder="The phone of the player" @if(isset($thePlayer['phone']))value="{{$thePlayer['phone']}}" @else value="{{ old('phone') }}" @endif/>
             </div>
             <div class="form-group">
-                <label for="game_id">Attach to Game: </label> &nbsp;
-                <select type="text" name="game_id" id="game_id" multiple="multiple" >
+                <label for="game_id[]">Attach to Game: </label> &nbsp;
+                <select type="text" name="game_id[]" id="game_id" multiple="multiple" >
                     <option> --- </option>
                     @foreach($games as $g)
                         <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
-                                @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
+                                @if(isset($thePlayer['games']) and $thePlayer['games']!='' and $thePlayer['games']!=[])
+                                    @foreach($thePlayer['games'] as $k => $v)
+                                        @if ($v['id']==$g['game_id'])
+                                            selected="selected"
+                                        @endif
+                                    @endforeach
+                                @endif
                         >{{$g['game_name']}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label for="tournament_id">Attach to Tournament: </label>
-                <select name="tournament_id" id="tournament_id" multiple="multiple" >
+                <label for="tournament_id[]">Attach to Tournament: </label>
+                <select name="tournament_id[]" id="tournament_id" multiple="multiple" >
                     <option> --- </option>
                     @foreach($tournaments as $g)
                         <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
-                                @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
+                                @if(isset($thePlayer['tournaments']) and $thePlayer['tournaments']!='' and $thePlayer['tournaments']!=[])
+                                @foreach($thePlayer['tournaments'] as $k => $v)
+                                @if ($v['id']==$g['tournament_id'])
+                                selected="selected"
+                                @endif
+                                @endforeach
+                                @endif
                         >{{$g['tournament_name']}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 <label for="team_id">Attach to Team: </label> &nbsp;
-                <select type="text" name="team_id" id="team_id" multiple="multiple" >
+                <select type="text" name="team_id[]" id="team_id" multiple="multiple" >
                     <option>---</option>
-                    @foreach($teams as $key => $team)
-                        <option value="{{$team['team_id']}}" @if(isset($thePlayer['team_id']) and $thePlayer['team_id'] == $team['team_id']) selected @endif>{{ $team['team_name'] }}</option>
+                    @foreach($teams as $g)
+                        <option value="{{$g['team_id']}}"
+                                @if(isset($thePlayer['teams']) and $thePlayer['teams']!='' and $thePlayer['teams']!=[])
+                                @foreach($thePlayer['teams'] as $k => $v)
+                                @if ($v['id']==$g['team_id'])
+                                selected="selected"
+                                @endif
+                                @endforeach
+                                @endif
+                        >{{ $g['team_name'] }} #{{$g['team_count']}}/{{$g['team_max_players']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -102,7 +122,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" name="submit" id="submit" class='btn btn-primary' value=
-                @if(isset($thePlayer['player_name']))
+                @if(isset($thePlayer['name']))
                         "Update"
                 @else
                     "Save"
@@ -141,7 +161,7 @@
             @foreach($teams as $g)
                 <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}"
                         @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['team_id'] == $sorts->tournament_sort or $g['team_name'] == $sorts->tournament_sort)) selected="selected" @endif
-                >{{$g['team_name']}}</option>
+                >{{$g['team_name']}} <i class="fa fa-users" aria-hidden="true"></i>: {{$g['team_name']}}/{{$g['team_max_players']}}</option>
             @endforeach
         </select>
         <br />
@@ -170,15 +190,18 @@
 @endsection
 @section('js')
     $(document).ready(function() {
+        $('select').select2({
+            allowClear: true
+        });
         $('#game_sort').on("change", function() {
             var val_g = $('#game_sort option:selected').val();
             var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
             $('#tournament_sort option').prop("disabled", true);
             $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-            {{--$('#tournament_sort').select2({--}}
-                {{--allowClear: true--}}
-            {{--});--}}
+            $('#tournament_sort').select2({
+                allowClear: true
+            });
         });
         $('#tournament_sort').on("change", function() {
             var val_g = $('#tournament_sort option:selected').val();
@@ -187,9 +210,9 @@
             $('#team_sort option').prop("disabled", true);
             $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
-            {{--$('#team_sort').select2({--}}
-            {{--allowClear: true--}}
-            {{--});--}}
+            $('#team_sort').select2({
+            allowClear: true
+            });
         });
         $('.delete-message').click(function() {
             var conf = confirm('Are you sure?');

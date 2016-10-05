@@ -108,8 +108,22 @@ class Player extends Model
      */
     public function playerRelations()
     {
-        return $this->playerRelationsToAnArrayOfObjectsOfTeamsAndTournaments();
+        return $this->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
     }
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     */
+    public static function playersRelations()
+    {
+        return PlayerRelationable::playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
+    }
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     */
     public function getThisPlayerInfoBy($parameter = []){
         if(isset($this->id)) {
             $parameter['player'] = $this->id;

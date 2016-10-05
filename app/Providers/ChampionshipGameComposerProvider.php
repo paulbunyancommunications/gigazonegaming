@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
@@ -75,7 +76,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
-                ->with('players', $this->getTeamPlayersInfoBy());
+                ->with('players', Player::playersRelations());
         });
 
         View::composer(['game.individualPlayer'], function ($view) {

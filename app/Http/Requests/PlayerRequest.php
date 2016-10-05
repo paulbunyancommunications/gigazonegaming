@@ -25,7 +25,6 @@ class PlayerRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     * @todo Nelson, please fix switch statement, only use colons and breaks between conditions http://php.net/manual/en/control-structures.switch.php
      * @return array
      */
     public function rules()
@@ -41,20 +40,19 @@ class PlayerRequest extends Request
             {
                 return [
                     'username' => 'required|unique:mysql_champ.players,username',
-                    'team_id' => 'required:mysql_champ.players,team_id',
+                    'email' => 'required|email|unique:mysql_champ.players,email',
+                    'phone' => 'phone:US',
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
-//                dd($this->route());
-//                $id = $this->route()->team_id->player_id;
-                $t_id = $this->route()->player_id->team_id;
+                $email = $this->route()->player_id->email;
                 $name = $this->route()->player_id->username;
-//                dd("passed put patch");
                 return [
+                    'email' => 'required|email|unique:mysql_champ.players,email,'.$email.',email',
                     'username' => 'required|unique:mysql_champ.players,username,'.$name.',username',
-                    'team_id' => 'required:mysql_champ.players,team_id,'.$t_id.',team_id',
+                    'phone' => 'phone:US',
                 ];
             }
             default:break;
@@ -65,14 +63,17 @@ class PlayerRequest extends Request
     }
 
     /**
-     * @todo Nelson, Where are the rules for required name and game_id? Are they handled in the model? They should be in the rules method.
      * @return array
      */
     public function messages()
     {
         return [
-            'name.required' => 'Your Name is required.',
-            'game_id.required' => 'The Game ID is required.',
+            'username.required' => 'A Username is required.',
+            'username.unique' => 'The Username is already in use, please select a new one.',
+            'email.required' => 'A email address is required.',
+            'email.unique' => 'A email address is already been used, use your previously created account or create a new one. ',
+            'email.email' => "That doesn't look like an email, try again.",
+            'phone.phone' => "The phone number isn't a valid one, or you forgot the area code.",
         ];
     }
 }
