@@ -45,23 +45,23 @@ class PlayersController extends Controller
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation); //save method for player is in this function call
 
         if($success!='' and $errors!=''){
-            return redirect("manage/player/".$playerArray['id'])
+            return redirect("manage/player/edit/".$playerArray['id'])
 //                ->withInput()
                 ->with('success', $success)
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
         }elseif ($success!=''){
-            return redirect("manage/player/".$playerArray['id'])
+            return redirect("manage/player/edit/".$playerArray['id'])
 //                ->withInput()
                 ->with('success', $success)
                 ->with("thePlayer", $playerArray);
         }elseif ($errors!=''){
-            return redirect('manage/player')
-//                ->withInput()
+            return redirect('manage/player/')
+                ->withInput()
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
         }else{
-            return redirect("manage/player/")
+            return redirect("manage/player/edit/".$playerArray['id'])
                 ->with("thePlayer", $playerArray);
         }
     }

@@ -40,7 +40,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('get to the player management page');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new player');
-        $I->see('Player List');
     }
 
 //    /**

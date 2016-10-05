@@ -293,7 +293,7 @@ trait PlayerRelationable
 
     public static function playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
-        $players = Player::all();
+        $players = Player::orderBy('username')->get();
         foreach ($players as $k => $player){
             $players[$k]=$player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
         }
@@ -404,6 +404,8 @@ trait PlayerRelationable
                 }
                 if(isset($parameter['order_by'])){
                     $orderBy = $parameter['order_by'];
+                }else{
+                    $orderBy = 'username';
                 }
             }
             if ($orderBy != "" and $orderBy != "---" and $orderBy != null) {
