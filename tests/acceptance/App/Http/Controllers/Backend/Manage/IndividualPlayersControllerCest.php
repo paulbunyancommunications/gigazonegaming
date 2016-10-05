@@ -2,6 +2,7 @@
 namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
 
 use App\Providers\ChampionshipGameComposerProvider;
+use Illuminate\Support\Facades\DB;
 use \AcceptanceTester;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
@@ -9,11 +10,10 @@ use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use \BaseAcceptance;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use TwigBridge\Twig\Template;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
+
 
 class IndividualPlayersControllerCest extends BaseAcceptance
 {
@@ -21,15 +21,13 @@ class IndividualPlayersControllerCest extends BaseAcceptance
     use DatabaseTransactions;
 
     private $pl_name;
+    private $pl_email;
+    private $pl_phone;
     private $pl_username;
-    private $player;
     private $ga_name;
-    private $game;
+    private $ga_title;
     private $to_name;
-    private $tournament;
     private $te_name;
-    private $team;
-    private $relation;
     /**
      * @param AcceptanceTester $I
      */
@@ -37,30 +35,14 @@ class IndividualPlayersControllerCest extends BaseAcceptance
     {
         parent::_before($I);
 
-        $this->pl_name = $this->faker->name;
-        $this->pl_username = $this->faker->name;
-        $this->player = factory(Player::class,1)->create(['name'=>$this->pl_name, 'username'=>$this->pl_username]);
+        $this->makePlayerFakeInfo();
 
-        $this->ga_name = $this->faker->name;
-        $this->game = factory(Game::class,1)->create(['name' => $this->ga_name]);
+        $this->createTeamTournamentGame($I);
 
-        $this->to_name = $this->faker->name;
-        $this->tournament = factory(Tournament::class,1)->create(['name' => $this->to_name]);
 
-        $this->te_name = $this->faker->name;
-        $this->team = factory(Team::class,1)->create(['name' => $this->te_name]);
 
-        $this->relation = factory(PlayerRelation::class,1)->create([
-            'player_id' => $this->player->id,
-            'relation_id' => $this->game->id,
-            'relation_type' => Game::class
-        ]);
-        $this->relation = factory(PlayerRelation::class)->create([
-            'player_id' => $this->player->id,
-            'relation_id' => $this->tournament->id,
-            'relation_type' => Tournament::class
-        ]);
         $this->loginWithAdminUser($I);
+//        DB::connection('mysql_champ')->beginTransaction();
         $I->amOnPage('/app/manage/individualPlayer');
 
     }
@@ -71,6 +53,7 @@ class IndividualPlayersControllerCest extends BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         $this->logoutOfWp($I);
+//        DB::connection('mysql_champ')->rollBack();
         parent::_after($I);
     }
 
@@ -276,23 +259,144 @@ class IndividualPlayersControllerCest extends BaseAcceptance
      */
     public function checkIfPlayerIsSelectedIfFieldsAreFull(AcceptanceTester $I)
     {
+        $this->createTeamTournamentGame($I);
         $I->wantTo('check enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
-        $I->selectOption(['id' => 'game_sort'], $this->ga_name);
+        $I->selectOption(['id' => 'game_sort'], $this->ga_name);//this will enable users under this game and the tournament select
         sleep(3); // wait for js
-        $I->selectOption(['id' => 'tournament_sort'], $this->to_name);
+        $I->selectOption(['id' => 'tournament_sort'], $this->to_name);//this will enable the team select
         sleep(3); // wait for js
-        $I->selectOption(['id' => 'game_sort'], $this->te_name);
+        $I->selectOption(['id' => 'team_sort'], $this->te_name);//this will pre-select the team
         sleep(3); // wait for js
         $I->click($this->pl_username);
 
         $I->seeInField(['id' => 'name'], $this->pl_name);
         $I->seeInField(['id' => 'username'], $this->pl_username);
-        $I->seeInField(['id' => 'email'], $this->player->email);
-        $I->seeInField(['id' => 'phone'], $this->player->phone);
+        $I->seeInField(['id' => 'email'], $this->pl_email);
+        $I->seeInField(['id' => 'phone'], $this->pl_phone);
+
 
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateAGame(AcceptanceTester $I)
+    {
+        $this->ga_name = $this->faker->name;
+        $this->ga_title = $this->faker->name;
+        $I->amOnPage('/app/manage/game');
+        $I->fillField('name', $this->ga_name);
+        $I->fillField('title', $this->ga_title);
+        $I->fillField('uri', $this->faker->url);
+        $I->fillField('description', $this->faker->words(5));
+        $I->click('submit');
+        $I->see("The game " . $this->ga_title . " was added!");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateATournament(AcceptanceTester $I)
+    {
+        $this->to_name = $this->faker->name;
+        $I->amOnPage('/app/manage/tournament');
+        $I->fillField('name', $this->to_name);
+        $I->fillField('max_players', $this->faker->numberBetween(1, 10));
+        $I->selectOption(['id' => 'game_id'], $this->ga_name);
+        $I->click('submit');
+        $I->see("The tournament " . $this->to_name . " was added");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateATeam(AcceptanceTester $I)
+    {
+        $this->te_name = $this->faker->name;
+        $I->amOnPage('/app/manage/team');
+        $I->fillField('name', $this->te_name);
+        $I->selectOption(['id' => 'tournament_id'], $this->to_name);
+        $I->click('submit');
+        $I->see("The team " . $this->te_name . " was added");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateAPlayerWithGameAndTournamentAndTeamAssociations(AcceptanceTester $I)
+    {
+        $this->makePlayerFakeInfo();
+        $I->amOnPage('/app/manage/player');
+        $I->fillField('name', $this->pl_name);
+        $I->fillField('username', $this->pl_name);
+        $I->fillField('email', $this->pl_email);
+        $I->fillField('phone', $this->pl_phone);
+        $I->selectOption(['id' => 'team_id'], $this->te_name);
+        $I->selectOption(['id' => 'tournament_id'], $this->to_name);
+        $I->selectOption(['id' => 'game_id'], $this->ga_name);
+        $I->click('submit');
+    }
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateAPlayerWithGameAndTournamentAssociations(AcceptanceTester $I)
+    {
+        $this->makePlayerFakeInfo();
+        $I->amOnPage('/app/manage/player');
+        $I->fillField('name', $this->pl_name);
+        $I->fillField('username', $this->pl_name);
+        $I->fillField('email', $this->pl_email);
+        $I->fillField('phone', $this->pl_phone);
+        $I->selectOption(['id' => 'tournament_id'], $this->to_name);
+        $I->selectOption(['id' => 'game_id'], $this->ga_name);
+        $I->click('submit');
+    }
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateAPlayerWithGameAssociations(AcceptanceTester $I)
+    {
+        $this->makePlayerFakeInfo();
+        $I->amOnPage('/app/manage/player');
+        $I->fillField('name', $this->pl_name);
+        $I->fillField('username', $this->pl_name);
+        $I->fillField('email', $this->pl_email);
+        $I->fillField('phone', $this->pl_phone);
+        $I->selectOption(['id' => 'game_id'], $this->ga_name);
+        $I->click('submit');
+    }
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function goToViewAndCreateAPlayerWithoutAssociations(AcceptanceTester $I)
+    {
+        $this->makePlayerFakeInfo();
+        $I->amOnPage('/app/manage/player');
+        $I->fillField('name', $this->pl_name);
+        $I->fillField('username', $this->pl_name);
+        $I->fillField('email', $this->pl_email);
+        $I->fillField('phone', $this->pl_phone);
+        $I->click('submit');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function createTeamTournamentGame(AcceptanceTester $I)
+    {
+        $this->goToViewAndCreateAGame($I);
+        $this->goToViewAndCreateATournament($I);
+        $this->goToViewAndCreateATeam($I);
+    }
+
+    private function makePlayerFakeInfo()
+    {
+        $this->pl_name = $this->faker->name;
+        $this->pl_username = $this->faker->userName;
+        $this->pl_email = $this->faker->email;
+        $this->pl_phone = $this->faker->phoneNumber;
+    }
 
 
 }
