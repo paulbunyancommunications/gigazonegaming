@@ -1,5 +1,5 @@
-@if( ! empty($data['head']))
-    <p>{{ $data['head']  }}</p>
+@if( isset($data['head']))
+    <p>{!! $data['head'] !!}</p>
 @endif
 <table class="table table-striped table-bordered">
     <thead>
