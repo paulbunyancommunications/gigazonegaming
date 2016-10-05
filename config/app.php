@@ -187,6 +187,9 @@ return [
         // recaptcha
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
+        //phone validator
+        Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+
     ],
 
     /*
