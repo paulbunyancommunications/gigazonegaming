@@ -22,6 +22,8 @@ class PbcFormMailTemplateLayoutComposerProvider extends ServiceProvider
                 'link_name',
                 ['Facebook', 'Twitter', 'Instagram', 'Youtube', 'Twitch']
             )
+                ->whereNotIn('link_url', ['#'])
+                ->distinct()
                 ->get();
             $social = [];
             // holder for checking if this link has already been added
