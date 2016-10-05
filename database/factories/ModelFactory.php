@@ -58,7 +58,7 @@ $factory->define(App\Models\Championship\Player::class, function (Faker\Generato
         'username' => $faker->userName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
-        'user_id' => null,
+        'user_id' => $faker->numberBetween(22220,22260),
     ];
 });
 
