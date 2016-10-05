@@ -133,26 +133,7 @@ class TeamTest extends \TestCase
 
         $this->assertFalse($item->captain());
     }
-    /**
-     *
-     * Test to see when getting a team we
-     * get back the game the captain of the team
-     *
-     * @test
-     */
-    public function it_has_a_players_attribute()
-    {
-        $team = factory(Team::class)->create();
-        $player = factory(Player::class, 10)->create();
-        foreach ($player as $p) {
-            $p::createRelation(['team' => $team, 'player' => $p]);
-        }
 
-        $getTeam = Team::find($team->id);
-
-        $this->assertSame(count($getTeam->players), 10);
-        $this->assertInstanceOf(Player::class, $getTeam->players[0]);
-    }
     /**
      *
      * Test to see when getting a Team we
