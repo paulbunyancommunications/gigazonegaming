@@ -30,7 +30,7 @@
                 <label for="name" style="width:180px; text-align:right;">Tournament Name: </label> &nbsp; <input type="text" name="name" id="name" style="width:350px; text-align:left;" placeholder="The name of the tournament" @if(isset($theTournament->name))value="{{$theTournament->name}}"@endif/>
             </div>
             <div class="form-group">
-                <label for="max_players" style="width:180px; text-align:right;">Players per Team: </label> &nbsp; <input type="text" name="max_players" id="max_players" style="width:350px; text-align:left;" placeholder="The maximum amount of players per team" @if(isset($theTournament->max_players))value="{{$theTournament->max_players}}"@endif/>
+                <label for="max_players" style="width:180px; text-align:right;">Players per Team: </label> &nbsp; <input type="number"  min="1" max="20" name="max_players" id="max_players" style="width:350px; text-align:left;" placeholder="The maximum amount of players per team" @if(isset($theTournament->max_players))value="{{$theTournament->max_players}}"@endif/>
             </div>
             <div class="form-group">
                 <label for="game_id" style="width:180px; text-align:right;">Tournament Game ID: </label> &nbsp;

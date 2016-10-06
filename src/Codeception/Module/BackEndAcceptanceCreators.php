@@ -41,6 +41,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
      * @param \AcceptanceTester|\FunctionalTester $I
      */
     public function getAGame(\AcceptanceTester $I){
+        $I->amOnPage('/app/manage/game');
         $this->goToViewAndCreateAGame($I);
         return $this->ga_name;
     }
@@ -50,42 +51,57 @@ class BackEndAcceptanceCreators extends \Codeception\Module
     private function goToViewAndCreateAGame(\AcceptanceTester $I)
     {
         $this->ga_name = $this->faker->name;
-        $this->ga_title = $this->faker->name;
+        $this->ga_title = $this->ga_name;
         $I->amOnPage('/app/manage/game');
+        $I->see('Create a new game');
         $I->fillField('name', $this->ga_name);
-        $I->fillField('title', $this->ga_title);
+        $I->fillField('title', $this->ga_name);
         $I->fillField('uri', $this->faker->url);
-        $I->fillField('description', $this->faker->words(5));
-        $I->click('submit');
+        $I->fillField('description', $this->faker->title);
+        $I->click('Create');
         $I->see("The game " . $this->ga_title . " was added!");
 
     }
 
     /**
      * @param \AcceptanceTester|\FunctionalTester $I
+     * @param string $name
      */
-    public function getATournament(\AcceptanceTester $I){
-        $this->goToViewAndCreateATournament($I);
+    public function getATournament(\AcceptanceTester $I, $name = ''){
+
+        $I->amOnPage('/app/manage/tournament');
+        $I->see("Create a new Tournament");
+        if($name !=''){
+            $name = array('game_name'=> $name);
+            $this->goToViewAndCreateATournament($I, $name);
+        }else{
+            $this->goToViewAndCreateATournament($I);
+        }
         return $this->to_name;
     }
     /**
      * @param \AcceptanceTester|\FunctionalTester $I
+     * @param array $attributes
      */
-    private function goToViewAndCreateATournament(\AcceptanceTester $I)
+    private function goToViewAndCreateATournament(\AcceptanceTester $I, $attributes = [])
     {
-        $this->to_name = $this->faker->name;
+        $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->name);
+        $max_players = array_key_exists('max_players', $attributes) ? $attributes['max_players'] : $this->faker->numberBetween(1, 10);
+        $game_id = array_key_exists('game_name', $attributes) ? $attributes['game_name'] : (isset($this->ga_name) and $this->ga_name!=null and $this->ga_name!='') ? $this->ga_name : "league-of-legends";
+
         $I->amOnPage('/app/manage/tournament');
-        $I->fillField('name', $this->to_name);
-        $I->fillField('max_players', $this->faker->numberBetween(1, 10));
-        $I->selectOption(['id' => 'game_id'], $this->ga_name);
-        $I->click('submit');
-        $I->see("The tournament " . $this->to_name . " was added");
+        $I->see("Create a new Tournament");
+        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'max_players'], $max_players);
+        $I->selectOption(['id' => 'game_id'], ['text'=>$game_id]);
+        $I->click(['id' => 'submit']);
     }
 
     /**
      * @param \AcceptanceTester|\FunctionalTester $I
      */
     public function getATeam(\AcceptanceTester $I){
+        $I->amOnPage('/app/manage/team');
         $this->goToViewAndCreateATeam($I);
         return $this->te_name;
     }
