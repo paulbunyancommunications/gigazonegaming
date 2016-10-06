@@ -21,6 +21,7 @@ modules:
                locationContextEnabled: true
         - \Helper\Acceptance
         - DbHelper
+        - BackEndAcceptanceCreators
         - Asserts
         - Cli
         - Filesystem
