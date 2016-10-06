@@ -12,7 +12,7 @@ namespace App\Models\Championship;
 use Doctrine\DBAL\Schema\Schema;
 use Illuminate\Support\Facades\DB;
 
-trait PlayerRelationable
+trait  PlayerRelationable
 {
     public static function routables()
     {
@@ -36,6 +36,27 @@ trait PlayerRelationable
     {
         return "App\\Models\\Championship\\Team";
     }
+
+    /**
+     * Generate the setup return for relation messages
+     *
+     * @return array
+     */
+    private static function relationReturnInt()
+    {
+        $ret = array_combine(
+            array_map('strtolower', Player::routables()),
+            array_fill(
+                0,
+                count(Player::routables()),
+                ['success' => '', 'fail' => '']
+            )
+        );
+        $ret['success'] = '';
+        $ret['fail'] = '';
+        return $ret;
+    }
+
     public function findPlayersRelations(){
         return $this->morphMany(
             PlayerRelation::class,
@@ -117,89 +138,69 @@ trait PlayerRelationable
         }
     }
 
-    /*
+    /**
+     * Create Relation
      * the intention of the function is to create a row on table for the passed relation
      * this function will accept 2 parameters and 2 of them are necessary
      * id => player => players.id
      * team_id or tournament => relation_id => teams or tournaments.id
      * from which we will select the third one team or tournament as type.
+     *
+     * @param $parameters
+     * @return array
      */
     public static function createRelation($parameters)
     {
-        $ret = array(
-            'game'=>array(
-                'success'=>"",
-                'fail'=>""
-            ),
-            'tournament'=>array(
-                'success'=>"",
-                'fail'=>""
-            ),
-            'team'=>array(
-                'success'=>"",
-                'fail'=>""
-            ),
-            'success'=>'',
-            'fail'=>''
-        );
+        /** @var array $ret setup return array */
+        $ret = self::relationReturnInt();
+
         self::prepParameters($parameters);
-        if (isset($parameters['game']) and !is_array($parameters['game'])) {
-            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $parameters['game']])) {
-                $relation = new PlayerRelation();
-                $relation->player_id = $parameters['player'];
-                $relation->relation_id = $parameters['game'];
-                $relation->relation_type = Game::class;
-                $relation->save();
-                $ret['game']['success'] .= Game::where('id', '=', $parameters['game'])->pluck("name")->first();
-//                $ret['game'] = "The game relation was successfully created.";
-            }else{
-                $ret['game']['fail'] .= Game::where('id', '=', $parameters['game'])->pluck("name")->first();
-//                $ret['game'] = "Error: The game relation already existed.";
+
+        /**
+         * Loop over the player routables and set up
+         * relations for Game and Tournament, they
+         * are similar enough to use a loop.
+         */
+        for ($i = 0; $i < count(Player::routables()); $i++) {
+            if (!in_array(Player::routables()[$i], ['Game','Tournament'])) {
+                continue;
             }
-        }elseif (isset($parameters['game']) and is_array($parameters['game'])){
-            foreach ($parameters['game'] as $k => $v){
-                if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'game' => $v])) {
+            $routable = strtolower(Player::routables()[$i]);
+            if (isset($parameters[$routable]) and is_numeric($parameters[$routable])) {
+                if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], $routable => $parameters[$routable]])) {
                     $relation = new PlayerRelation();
                     $relation->player_id = $parameters['player'];
-                    $relation->relation_id = $v;
-                    $relation->relation_type = Game::class;
+                    $relation->relation_id = $parameters[$routable];
+                    $relation->relation_type = __NAMESPACE__ . '\\' . Player::routables()[$i];
                     $relation->save();
-                    $ret['game']['success'] .= Game::where('id', '=', $v)->pluck("name")->first().", ";
-                }else{
-                    $ret['game']['fail'] .= Game::where('id', '=', $parameters['game'])->pluck("name")->first().", ";
-//                $ret['game'] = "Error: The game relation already existed.";
+                    // forward call to routable where and get it's name for success message
+                    $ret[$routable]['success'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters[$routable])->pluck("name")->first();
+                } else {
+                    // forward call to routable where and get it's name for fail message
+                    $ret[$routable]['fail'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters[$routable])->pluck("name")->first();
                 }
-                $ret['game']['success'] = trim($ret['game']['success'], ', ');
-                $ret['game']['fail'] = trim($ret['game']['fail'], ', ');
-            }
-        }
-        if (isset($parameters['tournament']) and !is_array($parameters['tournament'])) {
-            if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $parameters['tournament']])) {
-                $relation = new PlayerRelation();
-                $relation->player_id = $parameters['player'];
-                $relation->relation_id = $parameters['tournament'];
-                $relation->relation_type = Tournament::class;
-                $relation->save();
-                $ret['tournament']['success'] = Tournament::where('id', '=', $parameters['tournament'])->pluck("name")->first();
-            }else{
-                $ret['tournament']['fail'] =  Tournament::where('id', '=', $parameters['tournament'])->pluck("name")->first();
-            }
-        }elseif (isset($parameters['tournament']) and is_array($parameters['tournament'])){
-            foreach ($parameters['tournament'] as $k => $v){
-                if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'tournament' => $v])) {
-                    $relation = new PlayerRelation();
-                    $relation->player_id = $parameters['player'];
-                    $relation->relation_id = $v;
-                    $relation->relation_type = Tournament::class;
-                    $relation->save();
-                    $ret['tournament']['success'] .= Tournament::where('id', '=', $v)->pluck("name")->first().", ";
-                }else{
-                    $ret['tournament']['fail'] .= Tournament::where('id', '=', $v)->pluck("name")->first().", ";
+            } elseif (isset($parameters[$routable]) and is_array($parameters[$routable])) {
+                foreach ($parameters[$routable] as $k => $v) {
+                    if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], $routable => $v])) {
+                        $relation = new PlayerRelation();
+                        $relation->player_id = $parameters['player'];
+                        $relation->relation_id = $v;
+                        $relation->relation_type = __NAMESPACE__ . '\\' . Player::routables()[$i];
+                        $relation->save();
+                        // forward call to routable where and get it's name for success message
+                        $ret[$routable]['success'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $v)->pluck("name")->first() . ', ';
+                    } else {
+                        // forward call to routable where and get it's name for fail message
+                        $ret[$routable]['fail'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters['game'])->pluck("name")->first() . ', ';
+                    }
+                    $ret[$routable]['success'] = trim($ret[$routable]['success'], ', ');
+                    $ret[$routable]['fail'] = trim($ret[$routable]['fail'], ', ');
                 }
             }
-            $ret['tournament']['success'] = trim($ret['tournament']['success'], ', ');
-            $ret['tournament']['fail'] = trim($ret['tournament']['fail'], ', ');
+            unset($routable);
         }
+
+        /** @todo could this be refactored in some way? */
         if (isset($parameters['team']) and !is_array($parameters['team'])) {
             if (!self::doesThePlayerRelationExist(['player' => $parameters['player'], 'team' => $parameters['team']]) and Team::where('id','=',$parameters['team'])->first()->isTeamNotFull()) {
                 $relation = new PlayerRelation();
@@ -231,35 +232,21 @@ trait PlayerRelationable
                 $ret['team']['fail'] = trim($ret['team']['fail'], ', ');
             }
         }
-        if($ret['team']['success']=='') {
-            unset($ret['team']['success']);
-        }else{
-            $ret['success'] .= "Teams: ".$ret['team']['success'].". ";
-        }
-        if($ret['team']['fail']=='') {
-            unset($ret['team']['fail']);
-        }else{
-            $ret['fail'] .= "Teams: ".$ret['team']['fail'].". ";
-        }
-        if($ret['tournament']['success']=='') {
-            unset($ret['tournament']['success']);
-        }else{
-            $ret['success'] .= "Tournaments: ".$ret['tournament']['success'].". ";
-        }
-        if($ret['tournament']['fail']=='') {
-            unset($ret['tournament']['fail']);
-        }else{
-            $ret['fail'] .= "Tournaments: ".$ret['tournament']['fail'].". ";
-        }
-        if($ret['game']['success']=='') {
-            unset($ret['game']['success']);
-        }else{
-            $ret['success'] .= "Games: ".$ret['game']['success'].". ";
-        }
-        if($ret['game']['fail']=='') {
-            unset($ret['game']['fail']);
-        }else{
-            $ret['fail'] .= "Games: ".$ret['game']['fail'].". ";
+
+        /**
+         * loop over the routables and setup return messages.
+         * @todo There should a better way, this function should return true or false
+         */
+        for ($i = 0; $i < count(Player::routables()); $i++) {
+            $routable = strtolower(Player::routables()[$i]);
+            if (strlen($ret[$routable]['success']) > 0) {
+                $ret['success'] .= Player::routables()[$i].": ".$ret[$routable]['success'].". ";
+            }
+            if (strlen($ret[$routable]['fail']) > 0) {
+                $ret[$routable] .= Player::routables()[$i] . ": ".$ret[$routable]['fail'].". ";
+            }
+            unset($ret[$routable]);
+            unset($routable);
         }
 
         if($ret['fail'] ==''){
@@ -268,10 +255,6 @@ trait PlayerRelationable
         if($ret['success'] ==''){
             unset($ret['success']);
         }
-
-            unset($ret['game']);
-            unset($ret['tournament']);
-            unset($ret['team']);
 
         return $ret;
     }
@@ -318,7 +301,7 @@ trait PlayerRelationable
                 for ($i = 0; $i < count(self::routables()); $i++) {
                     if (array_key_exists(strtolower(self::routables()[$i]), $filter)) {
                         $relations->where('relation_id', '=', $filter[strtolower(self::routables()[$i])])
-                            ->where('relation_type', '=', '\\' . __NAMESPACE__ . '\\' . self::routables()[$i]);
+                            ->where('relation_type', '=', __NAMESPACE__ . '\\' . self::routables()[$i]);
                     }
                 }
             }
@@ -335,13 +318,13 @@ trait PlayerRelationable
                      * in the return array.
                      */
                     for($i=0; $i < count(self::routables()); $i++) {
-                        if ($someT['relation_type'] == '\\' . __NAMESPACE__ . '\\' .self::routables()[$i]) {
+                        if ($someT['relation_type'] == __NAMESPACE__ . '\\' .self::routables()[$i]) {
                             if (!isset($returnableArray[strtolower(self::routables()[$i])])) {
                                 $returnableArray[strtolower(self::routables()[$i])] = [];
                             }
                             array_push(
                                 $returnableArray[strtolower(self::routables()[$i])],
-                                forward_static_call(['\\' . __NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=',
+                                forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=',
                                     $someT['relation_id'])->get()->toArray()[0]);
 
                         }
@@ -370,7 +353,7 @@ trait PlayerRelationable
      */
     public function getPlayersInfoBy($parameter = []){
 
-            $singlePlayers = false;
+            $single_players = false;
             $ga_array = false;
             $to_array = false;
             $te_array = false;
@@ -383,32 +366,15 @@ trait PlayerRelationable
             $tournament = '';
             $team = '';
             $player = '';
-            $orderBy = '';
-            if(isset($parameter["single_players"]) and $parameter["single_players"]){
-                $singlePlayers = true;
-            }
+            $order_by = '';
             if(is_array($parameter) and $parameter != [] or $parameter != null) {
-                if(isset($parameter['game'])){
-                    $game = $parameter['game'];
-                }
-                if(isset($parameter['tournament'])){
-                    $tournament = $parameter['tournament'];
-                }
-                if(isset($parameter['team'])){
-                    $team = $parameter['team'];
-                }
-                if(isset($parameter['player'])){
-                    $player = $parameter['player'];
-                }
-                if(isset($parameter['order_by'])){
-                    $orderBy = $parameter['order_by'];
-                }else{
-                    $orderBy = 'username';
-                }
+                extract($parameter, EXTR_OVERWRITE);
             }
-            if ($orderBy != "" and $orderBy != "---" and $orderBy != null) {
-                $orderBy = trim($orderBy);
+
+            if ($order_by != "" and $order_by != "---" and $order_by != null) {
+                $order_by = trim($order_by);
             }
+
             if ($player != [] and is_array($player)) {
                 $pl_array = true;
             } elseif ($player != "" and $player != "---" and $player != null and (is_string($player) or is_numeric($player))) {
@@ -559,8 +525,8 @@ trait PlayerRelationable
         $player_query->whereNotNull('players.id');
         $player_query->whereNotNull('tournaments.id');
         $player_query->whereNotNull('games.id');
-        if ($orderBy != '') {
-            $player_query->orderBy($orderBy);
+        if ($order_by != '') {
+            $player_query->orderBy($order_by);
         }
         $player_query->groupBy('tore.player_id');
 

@@ -70,3 +70,4 @@ public_html/app/content/js
 public_html/app/content/css
 !public_html/app/content/css/app.css
 PlayerRelationable.php.orig
+phpunit.phar

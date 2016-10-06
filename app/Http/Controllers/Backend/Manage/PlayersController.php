@@ -109,7 +109,7 @@ class PlayersController extends Controller
      */
     public function edit(Player $player)
     {
-        $pla = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
+        $pla = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames(['Team','Tournament','Game']);
         return View::make('game/player')->with("thePlayer", $pla);
     }
 
@@ -224,48 +224,45 @@ class PlayersController extends Controller
     }
 
     /**
-     * @param PlayerRequest $request
+     * @param PlayerRequest $cleanedRequest
      * @return array
      */
     private function UserCleanUp(PlayerRequest $request)
     {
-        $request = $request->all();
+        $cleanedRequest = $request->all();
         $theAssociationRequest =[];
-        if (isset($request['game_id']) and $request['game_id']!=[] and is_array($request['game_id'])) {
-            foreach ($request['game_id'] as $k => $v){
-                if($v != '---' and $v != ''){
-                    $theAssociationRequest['game'][] = $v;
+
+        for ($i=0; $i < count(Player::routables()); $i++) {
+            // routable should be lowercase to match the incoming input
+            $routable = strtolower(Player::routables()[$i]);
+
+            // if this routable exist and is an array
+            // then loop through and catch values
+            // that are not defaults.
+            if (isset($cleanedRequest[$routable . '_id']) && is_array($cleanedRequest[$routable . '_id'])) {
+
+                foreach ($cleanedRequest[$routable . '_id'] as $k => $v) {
+                    if (is_numeric($v)) {
+                        $theAssociationRequest[$routable][] = $v;
+                    }
                 }
+
+            } elseif (isset($cleanedRequest[$routable . '_id']) && is_string($cleanedRequest[$routable . '_id'])) {
+                $theAssociationRequest[$routable][] = $cleanedRequest[$routable . '_id'];
             }
-        }elseif(isset($request['game_id']) and $request['game_id']!=''){
-            $theAssociationRequest['game'][] = $request['game_id'];
         }
-        if (isset($request['tournament_id']) and $request['tournament_id']!=[] and is_array($request['tournament_id'])) {
-            foreach ($request['tournament_id'] as $k => $v){
-                if($v != '---' and $v != ''){
-                    $theAssociationRequest['tournament'][] = $v;
-                }
-            }
-        }elseif(isset($request['tournament_id']) and $request['tournament_id']!=''){
-            $theAssociationRequest['tournament'][] = $request['tournament_id'];
-        }
-        if (isset($request['team_id']) and $request['team_id']!=[] and is_array($request['team_id'])) {
-            foreach ($request['team_id'] as $k => $v){
-                if($v != '---' and $v != ''){
-                    $theAssociationRequest['team'][] = $v;
-                }
-            }
-        }elseif(isset($request['team_id']) and $request['team_id']!=''){
-            $theAssociationRequest['team'][] = $request['team_id'];
-        }
-        unset($request['game_id']);
-        unset($request['tournament_id']);
-        unset($request['team_id']);
-        unset($request['_token']);
-        unset($request['_method']);
-        unset($request['submit']);
-        $request['updated_by'] = $this->getUserId();
-        $request['updated_on'] = Carbon::now("CST");
+
+        // unset values that should not be passes as mass assignable
+        unset($cleanedRequest['_token']);
+        unset($cleanedRequest['_method']);
+        unset($cleanedRequest['submit']);
+
+        // setup updated_by mass assignable values
+        $cleanedRequest['updated_by'] = $this->getUserId();
+
+        // replace request with new request list
+        $request->replace($cleanedRequest);
+
         return array($request, $theAssociationRequest);
     }
 
@@ -275,12 +272,12 @@ class PlayersController extends Controller
      * @param $theAssociation
      * @return array
      */
-    private function getPlayerInfoAndErrors( $request, Player $player, $theAssociation)
+    private function getPlayerInfoAndErrors( PlayerRequest $request, Player $player, $theAssociation)
     {
-        $player->name = $request['name'];
-        $player->username = $request['username'];
-        $player->email = $request['email'];
-        $player->phone = $request['phone'];
+        $player->name = $request->get('name');
+        $player->username = $request->get('username');
+        $player->email = $request->get('email');
+        $player->phone = $request->get('phone');
         $player->updated_by =  $this->getUserId();
         $player->updated_on = Carbon::now("CST");
         $player->save();
