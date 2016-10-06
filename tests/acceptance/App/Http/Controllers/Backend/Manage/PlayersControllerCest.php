@@ -46,14 +46,12 @@ class PlayersControllerCest extends BaseAcceptance{
      */
     public function tryToCreateAPlayer(AcceptanceTester $I)
     {
-//        $I->wantTo('create a player on the management page');
-        $I->amOnPage('/app/manage/game');
-        $game = $I->getAGame($I);
-        $I->amOnPage('/app/manage/tournament');
-        $tournament = $I->getATournament($I, $game);
+        $params = [];
+        $I->wantTo('create a player on the management page');
+        $params['ga_name'] = $I->getAGame($I);
+        $params['to_name'] = $I->getATournament($I, $params);
+        $params['te_name'] = $I->getATeam($I);
 
-        $I->amOnPage('/app/manage/team');
-        $I->getATeam($I);
 //        list($name, $username, $email, $phone, $team, $tournament, $game) = $I->getAPlayerWithNoAssociations($I);
 
         // check return, we should have a message and all the fields filled

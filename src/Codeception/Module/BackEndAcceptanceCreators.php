@@ -38,15 +38,14 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         $this->faker = \Faker\Factory::create();
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     public function getAGame(\AcceptanceTester $I){
-        $I->amOnPage('/app/manage/game');
         $this->goToViewAndCreateAGame($I);
         return $this->ga_name;
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     private function goToViewAndCreateAGame(\AcceptanceTester $I)
     {
@@ -57,69 +56,68 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         $I->fillField('name', $this->ga_name);
         $I->fillField('title', $this->ga_name);
         $I->fillField('uri', $this->faker->url);
-        $I->fillField('description', $this->faker->title);
+        $I->fillField('description', $this->faker->paragraph);
         $I->click('Create');
-        $I->see("The game " . $this->ga_title . " was added!");
-
+        $I->see("The game " . $this->ga_title . " was added");
     }
 
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
-     * @param string $name
+     * @param \AcceptanceTester $I
+     * @param $params
      */
-    public function getATournament(\AcceptanceTester $I, $name = ''){
-
-        $I->amOnPage('/app/manage/tournament');
-        $I->see("Create a new Tournament");
-        if($name !=''){
-            $name = array('game_name'=> $name);
-            $this->goToViewAndCreateATournament($I, $name);
-        }else{
-            $this->goToViewAndCreateATournament($I);
-        }
+    public function getATournament(\AcceptanceTester $I, $params = []){
+        $this->goToViewAndCreateATournament($I, $params);
         return $this->to_name;
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
+     * @param $params
      * @param array $attributes
      */
-    private function goToViewAndCreateATournament(\AcceptanceTester $I, $attributes = [])
+    private function goToViewAndCreateATournament(\AcceptanceTester $I, $params = [])
     {
-        $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->name);
-        $max_players = array_key_exists('max_players', $attributes) ? $attributes['max_players'] : $this->faker->numberBetween(1, 10);
-        $game_id = array_key_exists('game_name', $attributes) ? $attributes['game_name'] : (isset($this->ga_name) and $this->ga_name!=null and $this->ga_name!='') ? $this->ga_name : "league-of-legends";
+        $this->to_name = $this->faker->name;
+        $max_players = $this->faker->numberBetween(1, 10);
+        $game = isset($params['ga_name']) ? $params['ga_name'] : "league-of-legends";
+//        $option = $I->grabTextFrom('select[id="game_id" option:nth-child(2)');
 
+        $I->amOnPage('/app/manage/game');
         $I->amOnPage('/app/manage/tournament');
         $I->see("Create a new Tournament");
-        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'name'], $this->to_name);
         $I->fillField(['id' => 'max_players'], $max_players);
-        $I->selectOption(['id' => 'game_id'], ['text'=>$game_id]);
+        $I->selectOption(['id' => 'game_id'], 2 );
         $I->click(['id' => 'submit']);
+        $I->see("The tournament " . $this->to_name . " was added");
     }
 
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
+     * @param $params
      */
-    public function getATeam(\AcceptanceTester $I){
-        $I->amOnPage('/app/manage/team');
-        $this->goToViewAndCreateATeam($I);
+    public function getATeam(\AcceptanceTester $I, $params = []){
+        $this->goToViewAndCreateATeam($I, $params);
         return $this->te_name;
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
+     * @param $params
      */
-    private function goToViewAndCreateATeam(\AcceptanceTester $I)
+    private function goToViewAndCreateATeam(\AcceptanceTester $I, $params = [])
     {
         $this->te_name = $this->faker->name;
+        $tournament = isset($params['to_name']) ? $params['to_name'] : "gigazone-gaming-2016-league-of-legends";
+
+        $I->amOnPage('/app/manage/tournament');
         $I->amOnPage('/app/manage/team');
         $I->fillField('name', $this->te_name);
-        $I->selectOption(['id' => 'tournament_id'], $this->to_name);
+        $I->selectOption(['id' => 'tournament_id'], $tournament);
         $I->click('submit');
         $I->see("The team " . $this->te_name . " was added");
     }
 
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     public function getAPlayerWithGaToTeAssociations(\AcceptanceTester $I){
         $this->createTeamTournamentGame($I);
@@ -135,7 +133,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
             );
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     private function goToViewAndCreateAPlayerWithGameAndTournamentAndTeamAssociations(\AcceptanceTester $I)
     {
@@ -151,7 +149,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         $I->click('submit');
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     public function getAPlayerWithGaToAssociations(\AcceptanceTester $I){
         $this->createTeamTournamentGame($I);
@@ -167,7 +165,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         );
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     private function goToViewAndCreateAPlayerWithGameAndTournamentAssociations(\AcceptanceTester $I)
     {
@@ -182,7 +180,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         $I->click('submit');
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     public function getAPlayerWithGaAssociations(\AcceptanceTester $I){
         $this->createTeamTournamentGame($I);
@@ -198,7 +196,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         );
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     private function goToViewAndCreateAPlayerWithGameAssociations(\AcceptanceTester $I)
     {
@@ -209,10 +207,11 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         $I->fillField('email', $this->pl_email);
         $I->fillField('phone', $this->pl_phone);
         $I->selectOption(['id' => 'game_id'], $this->ga_name);
+
         $I->click('submit');
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     public function getAPlayerWithNoAssociations(\AcceptanceTester $I){
         $this->createTeamTournamentGame($I);
@@ -228,7 +227,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
         );
     }
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     private function goToViewAndCreateAPlayerWithoutAssociations(\AcceptanceTester $I)
     {
@@ -243,7 +242,7 @@ class BackEndAcceptanceCreators extends \Codeception\Module
     }
 
     /**
-     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param \AcceptanceTester $I
      */
     private function createTeamTournamentGame(\AcceptanceTester $I)
     {
