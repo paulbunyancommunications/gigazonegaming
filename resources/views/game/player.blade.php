@@ -72,12 +72,18 @@
                     <option> --- </option>
                     @foreach($games as $g)
                         <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
-                                @if(isset($thePlayer['games']) and $thePlayer['games']!='' and $thePlayer['games']!=[])
-                                    @foreach($thePlayer['games'] as $k => $v)
+                                @if(isset($thePlayer['game']) and $thePlayer['game']!='' and $thePlayer['game']!=[])
+                                    @foreach($thePlayer['game'] as $k => $v)
                                         @if ($v['id']==$g['game_id'])
                                             selected="selected"
+                                        @elseif(old('game_id'))
+                                            @if(old("game_id")!=null and is_array(old("game_id")) and in_array($g['game_id'], old("game_id")))
+                                                selected="selected"
+                                            @endif
                                         @endif
                                     @endforeach
+                                @elseif(old("game_id")!=null and is_array(old("game_id")) and in_array($g['game_id'], old("game_id")))
+                                selected="selected"
                                 @endif
                         >{{$g['game_name']}}</option>
                     @endforeach
@@ -89,12 +95,18 @@
                     <option> --- </option>
                     @foreach($tournaments as $g)
                         <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
-                                @if(isset($thePlayer['tournaments']) and $thePlayer['tournaments']!='' and $thePlayer['tournaments']!=[])
-                                @foreach($thePlayer['tournaments'] as $k => $v)
-                                @if ($v['id']==$g['tournament_id'])
+                                @if(isset($thePlayer['tournament']) and $thePlayer['tournament']!='' and $thePlayer['tournament']!=[])
+                                    @foreach($thePlayer['tournament'] as $k => $v)
+                                        @if ($v['id']==$g['tournament_id'])
+                                            selected="selected"
+                                        @elseif(old('game_id'))
+                                            @if(old("tournament_id")!=null and is_array(old("tournament_id")) and in_array($g['tournament_id'], old("tournament_id")))
+                                                selected="selected"
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @elseif(old("tournament_id")!=null and is_array(old("tournament_id")) and in_array($g['tournament_id'], old("tournament_id")))
                                 selected="selected"
-                                @endif
-                                @endforeach
                                 @endif
                         >{{$g['tournament_name']}}</option>
                     @endforeach
@@ -106,8 +118,8 @@
                     <option>---</option>
                     @foreach($teams as $g)
                         <option value="{{$g['team_id']}}"
-                                @if(isset($thePlayer['teams']) and $thePlayer['teams']!='' and $thePlayer['teams']!=[])
-                                @foreach($thePlayer['teams'] as $k => $v)
+                                @if(isset($thePlayer['team']) and $thePlayer['team']!='' and $thePlayer['team']!=[])
+                                @foreach($thePlayer['team'] as $k => $v)
                                 @if ($v['id']==$g['team_id'])
                                 selected="selected"
                                 @endif
