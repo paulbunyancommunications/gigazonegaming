@@ -9,6 +9,8 @@ vagrantfile:
                         hostname: gigazonegaming.local
                         network:
                             private_network: 192.168.56.101
+                            name: vboxnet0
+                            adapter 2
 cron:
     install: '1'
     jobs:
