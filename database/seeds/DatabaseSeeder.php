@@ -12,6 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(WpTestAdminUserSeed::class);
-        $this->call(BackendTestSeed::class);
+        $this->call(BackEndTesterSeeder::class);
     }
 }
