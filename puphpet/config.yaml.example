@@ -98,7 +98,7 @@ locale:
             - en_US.UTF-8
         timezone: UTC
 firewall:
-    install: '1'
+    install: '0'
     rules: {  }
 cron:
     install: '1'
