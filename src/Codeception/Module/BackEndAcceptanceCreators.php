@@ -44,7 +44,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
     /**
      * @param \AcceptanceTester $I
      */
-    private function goToViewAndCreateAGame(\AcceptanceTester $I)
+    public function goToViewAndCreateAGame(\AcceptanceTester $I)
     {
         $this->ga_name = $this->faker->name;
         $this->ga_title = $this->ga_name;
@@ -71,7 +71,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
      * @param $params
      * @param array $attributes
      */
-    private function goToViewAndCreateATournament(\AcceptanceTester $I, $params = [])
+    public function goToViewAndCreateATournament(\AcceptanceTester $I, $params = [])
     {
         $this->to_name = $this->faker->name;
         $max_players = $this->faker->numberBetween(1, 10);
@@ -100,7 +100,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
      * @param \AcceptanceTester $I
      * @param $params
      */
-    private function goToViewAndCreateATeam(\AcceptanceTester $I, $params = [])
+    public function goToViewAndCreateATeam(\AcceptanceTester $I, $params = [])
     {
         $this->te_name = $this->faker->name;
         $tournament = isset($params['to_name']) ? $params['to_name'] : "gigazone-gaming-2016-league-of-legends";
@@ -132,7 +132,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
     /**
      * @param \AcceptanceTester $I
      */
-    private function goToViewAndCreateAPlayerWithGameAndTournamentAndTeamAssociations(\AcceptanceTester $I)
+    public function goToViewAndCreateAPlayerWithGameAndTournamentAndTeamAssociations(\AcceptanceTester $I)
     {
         $this->makePlayerFakeInfo();
         $I->amOnPage('/app/manage/player');
@@ -164,7 +164,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
     /**
      * @param \AcceptanceTester $I
      */
-    private function goToViewAndCreateAPlayerWithGameAndTournamentAssociations(\AcceptanceTester $I)
+    public function goToViewAndCreateAPlayerWithGameAndTournamentAssociations(\AcceptanceTester $I)
     {
         $this->makePlayerFakeInfo();
         $I->amOnPage('/app/manage/player');
@@ -195,7 +195,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
     /**
      * @param \AcceptanceTester $I
      */
-    private function goToViewAndCreateAPlayerWithGameAssociations(\AcceptanceTester $I)
+    public function goToViewAndCreateAPlayerWithGameAssociations(\AcceptanceTester $I)
     {
         $this->makePlayerFakeInfo();
         $I->amOnPage('/app/manage/player');
@@ -226,7 +226,7 @@ class BackEndAcceptanceCreators extends CodeceptionModule
     /**
      * @param \AcceptanceTester $I
      */
-    private function goToViewAndCreateAPlayerWithoutAssociations(\AcceptanceTester $I)
+    public function goToViewAndCreateAPlayerWithoutAssociations(\AcceptanceTester $I)
     {
         $this->makePlayerFakeInfo();
         $I->amOnPage('/app/manage/player');
@@ -241,14 +241,14 @@ class BackEndAcceptanceCreators extends CodeceptionModule
     /**
      * @param \AcceptanceTester $I
      */
-    private function createTeamTournamentGame(\AcceptanceTester $I)
+    public function createTeamTournamentGame(\AcceptanceTester $I)
     {
         $this->goToViewAndCreateAGame($I);
         $this->goToViewAndCreateATournament($I);
         $this->goToViewAndCreateATeam($I);
     }
 
-    private function makePlayerFakeInfo()
+    public function makePlayerFakeInfo()
     {
         $this->pl_name = $this->faker->name;
         $this->pl_username = $this->faker->userName;
