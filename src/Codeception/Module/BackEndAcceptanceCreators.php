@@ -15,12 +15,13 @@
 
 namespace Codeception\Module;
 
+use Codeception\Module as CodeceptionModule;
 
 /**
  * Class BackEndAcceptanceCreators
  * @package Codeception\Module
  */
-class BackEndAcceptanceCreators extends \Codeception\Module
+class BackEndAcceptanceCreators extends CodeceptionModule
 {
 
     private $pl_name;
@@ -33,10 +34,6 @@ class BackEndAcceptanceCreators extends \Codeception\Module
     private $te_name;
     private $faker;
 
-    public function _initialize()
-    {
-        $this->faker = \Faker\Factory::create();
-    }
     /**
      * @param \AcceptanceTester $I
      */

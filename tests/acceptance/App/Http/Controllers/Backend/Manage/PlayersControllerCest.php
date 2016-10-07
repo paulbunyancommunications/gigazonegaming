@@ -12,12 +12,24 @@ class PlayersControllerCest extends BaseAcceptance{
     /**
      * @param AcceptanceTester $I
      */
+    public $faker;
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $this->faker = \Faker\Factory::create();
         $this->loginWithAdminUser($I);
+        $this->populateDB($I);
         $I->amOnPage('/app/manage/player');
 
+    }
+
+    /**
+     * Create the test admin user
+     */
+    protected function populateDB(AcceptanceTester $I)
+    {
+        $I->runShellCommand('cd /var/www');
+        $I->runShellCommand('php artisan db:seed --class=DatabaseSeeder');
     }
 
     /**
@@ -48,14 +60,12 @@ class PlayersControllerCest extends BaseAcceptance{
     {
         $params = [];
         $I->wantTo('create a player on the management page');
-        $params['ga_name'] = $I->getAGame($I);
-        $params['to_name'] = $I->getATournament($I, $params);
-        $params['te_name'] = $I->getATeam($I);
+        $I->amOnPage('/app/manage/game');
+        $I->amOnPage('/app/manage/tournament');
+        $I->amOnPage('/app/manage/team');
+        $I->amOnPage('/app/manage/player');
 
-//        list($name, $username, $email, $phone, $team, $tournament, $game) = $I->getAPlayerWithNoAssociations($I);
-
-        // check return, we should have a message and all the fields filled
-//        $I->see('The player '.$name.' was added');
+        $I->see('A phrase I know it doesn\'t exists');
 
     }
 
