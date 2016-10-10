@@ -81,6 +81,7 @@ class teamMakersControllerTeamViewCest extends BaseAcceptance
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->selectOption(['id' => 'team_sort'], "Tester Team");
+        $I->click("Fill selected Team");
         $I->click("#submit_fill_team");
         $I->see("The Players had being added to the team Tester Team");
 
