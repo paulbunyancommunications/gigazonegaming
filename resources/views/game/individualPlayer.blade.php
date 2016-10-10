@@ -144,6 +144,7 @@
                             @if(!is_numeric($player['team_id']))
                                 <li>
                                     <button class="btn btn-default aPlayer playerName hidden list"
+                                            id = "player_count_{{$id}}"
                                          game_id_j="t_option{{$player["game_id"]}}"
                                          game_id="{{$player["game_id"]}}"
                                          player_id="{{$player["player_id"]}}"
