@@ -17,34 +17,27 @@ use Mockery;
 
 class IndividualPlayersControllerCest extends BaseAcceptance
 {
-    use DatabaseMigrations;
-    use DatabaseTransactions;
-
-    private $pl_name;
-    private $pl_email;
-    private $pl_phone;
-    private $pl_username;
-    private $ga_name;
-    private $ga_title;
-    private $to_name;
-    private $te_name;
     /**
      * @param AcceptanceTester $I
      */
+    public $faker;
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
-
-        $this->makePlayerFakeInfo();
-
-        $this->createTeamTournamentGame($I);
-
-
-
+        $this->populateDB($I);
         $this->loginWithAdminUser($I);
-//        DB::connection('mysql_champ')->beginTransaction();
-        $I->amOnPage('/app/manage/individualPlayer');
+        $I->amOnPage('/app/manage/player');
 
+    }
+
+    /**
+     * Create the test admin user
+     */
+    protected function populateDB(AcceptanceTester $I)
+    {
+//        $I->runShellCommand('cd /var/www');
+        exec('php artisan db:seed --class=DatabaseSeeder');
+        $this->faker = \Faker\Factory::create();
     }
 
     /**
@@ -53,14 +46,7 @@ class IndividualPlayersControllerCest extends BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         $this->logoutOfWp($I);
-//        DB::connection('mysql_champ')->rollBack();
         parent::_after($I);
-    }
-
-    public function tryToAttachIndividualPlayerToSomething(AcceptanceTester $I, $scenario)
-    {
-        /** @todo remove this once the individual controller is complete */
-        $scenario->skip();
     }
 
     /**

@@ -243,12 +243,12 @@ class PlayersController extends Controller
 
                 foreach ($cleanedRequest[$routable . '_id'] as $k => $v) {
                     if (is_numeric($v)) {
-                        $theAssociationRequest[$routable][] = $v;
+                        $theAssociationRequest[$routable] = $v;
                     }
                 }
 
             } elseif (isset($cleanedRequest[$routable . '_id']) && is_string($cleanedRequest[$routable . '_id'])) {
-                $theAssociationRequest[$routable][] = $cleanedRequest[$routable . '_id'];
+                $theAssociationRequest[$routable] = $cleanedRequest[$routable . '_id'];
             }
         }
 
@@ -288,6 +288,7 @@ class PlayersController extends Controller
             PlayerRelation::where('player_id', '=', $theAssociation['player'])->delete();
             $result = '';
             if (count($theAssociation) > 1) {
+
                 $result = Player::createRelation($theAssociation);
             }
             return $result;

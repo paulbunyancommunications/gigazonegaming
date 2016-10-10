@@ -85,7 +85,24 @@ class BackEndTesterSeeder extends Seeder
                     'email' => $faker->email,
                     'phone' => $faker->phoneNumber,
                     'user_id' => $faker->numberBetween(20, 2226000)
-                ])->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames(["Team"=>$sp_team['id']]);
+                ])->toArray();
+        }
+        foreach ($playerWithRelations as $k => $player){
+            \App\Models\Championship\PlayerRelation::create([
+                'player_id' => $player['id'],
+                'relation_type' => \App\Models\Championship\Game::class,
+                'relation_id' => $sp_game['id'],
+            ]);
+            \App\Models\Championship\PlayerRelation::create([
+                    'player_id' => $player['id'],
+                    'relation_type' => \App\Models\Championship\Tournament::class,
+                    'relation_id' => $sp_tournament['id'],
+                ]);
+            \App\Models\Championship\PlayerRelation::create([
+                    'player_id' => $player['id'],
+                    'relation_type' => \App\Models\Championship\Team::class,
+                    'relation_id' => $sp_team['id'],
+                ]);
         }
         for($i=0; $i<123; $i++) {
             $playerWithRelations[] = \App\Models\Championship\Player::create(
@@ -98,12 +115,25 @@ class BackEndTesterSeeder extends Seeder
                 ])->toArray();
         }// create the tester user if not already created
         foreach ($playerWithRelations as $k => $player){
-            $relation[] = \App\Models\Championship\PlayerRelation::create(
-                [
+            if($k < 30){
+                \App\Models\Championship\PlayerRelation::create([
                     'player_id' => $player['id'],
-                    'relation_type' => \App\Models\Championship\Team::class,
-                    'relation_id' => $teams[array_rand($teams)]['id'],
-                ])->toArray();
+                    'relation_type' => \App\Models\Championship\Tournament::class,
+                    'relation_id' => $sp_tournament['id'],
+                ]);
+                \App\Models\Championship\PlayerRelation::create([
+                    'player_id' => $player['id'],
+                    'relation_type' => \App\Models\Championship\Game::class,
+                    'relation_id' => $sp_game['id'],
+                ]);
+            }else {
+                $relation[] = \App\Models\Championship\PlayerRelation::create(
+                    [
+                        'player_id' => $player['id'],
+                        'relation_type' => \App\Models\Championship\Team::class,
+                        'relation_id' => $teams[array_rand($teams)]['id'],
+                    ])->toArray();
+            }
         }
         for($i=0; $i<121; $i++) {
             $playerWithoutRelations[] = \App\Models\Championship\Player::create(
