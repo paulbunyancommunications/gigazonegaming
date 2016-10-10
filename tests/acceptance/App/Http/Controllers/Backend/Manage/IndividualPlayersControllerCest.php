@@ -17,6 +17,17 @@ use Mockery;
 
 class IndividualPlayersControllerCest extends BaseAcceptance
 {
+    use DatabaseMigrations;
+    use DatabaseTransactions;
+
+    private $pl_name;
+    private $pl_email;
+    private $pl_phone;
+    private $pl_username;
+    private $ga_name;
+    private $ga_title;
+    private $to_name;
+    private $te_name;
     /**
      * @param AcceptanceTester $I
      */
@@ -46,7 +57,14 @@ class IndividualPlayersControllerCest extends BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         $this->logoutOfWp($I);
+//        DB::connection('mysql_champ')->rollBack();
         parent::_after($I);
+    }
+
+    public function tryToAttachIndividualPlayerToSomething(AcceptanceTester $I, $scenario)
+    {
+        /** @todo remove this once the individual controller is complete */
+        $scenario->skip();
     }
 
     /**

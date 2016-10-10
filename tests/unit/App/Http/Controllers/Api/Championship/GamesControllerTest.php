@@ -12,13 +12,14 @@ namespace App\Http\Controllers\Api\Championship;
  */
 
 use App\Models\Championship\Game;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class GamesControllerTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     public function setUp()
     {
