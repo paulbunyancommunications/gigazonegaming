@@ -119,10 +119,10 @@ class TeamLolSignUpTest extends \TestCase
         $name = implode('-', $faker->words());
         $tournament = factory(Tournament::class)->create(['name' => $name, 'max_players' => 5]);
         $parameters = [
-            'email' => time() . $faker->email,
+            'email' => md5(time().rand(1,10000)).'@example.com',
             'name' => $faker->name,
-            'team-name' => $faker->company,
-            'team-captain-lol-summoner-name' => $faker->userName,
+            'team-name' => $faker->company. ' ' . md5(time().rand(1,10000)),
+            'team-captain-lol-summoner-name' => $faker->userName . ' ' . md5(time().rand(1,10000)),
             'team-captain-phone' => $faker->phoneNumber,
             'tournament' => $tournament->name,
             'fields' => ['email', 'name', 'team-name', 'team-captain-lol-summoner-name', 'team-captain-phone']

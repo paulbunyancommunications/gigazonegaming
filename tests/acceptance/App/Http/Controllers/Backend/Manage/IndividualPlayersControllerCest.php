@@ -35,11 +35,9 @@ class IndividualPlayersControllerCest extends BaseAcceptance
     {
         parent::_before($I);
 
-        $this->makePlayerFakeInfo();
+        $I->makePlayerFakeInfo($I);
 
-        $this->createTeamTournamentGame($I);
-
-
+        $I->createTeamTournamentGame($I);
 
         $this->loginWithAdminUser($I);
 //        DB::connection('mysql_champ')->beginTransaction();
