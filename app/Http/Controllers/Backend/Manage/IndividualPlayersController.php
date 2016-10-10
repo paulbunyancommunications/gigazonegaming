@@ -83,13 +83,20 @@ class IndividualPlayersController extends Controller
      */
     public function teamFill(Request $request)
     {
-        $team = $request->team;
-        foreach ($request->toArray() as $k => $value){
-            if(substr($k, 0, 6) == 'player') {
+
+        DB::transaction( function () use ($request) {
+            $team = $request->team;
+            $teamName = Team::where('id', $team)->first()->name;
+        foreach ($request->toArray() as $k => $value) {
+            if (substr($k, 0, 6) == 'player') {
                 PlayerRelation::createRelation(["team" => $team, 'player' => $value]);
             }
         }
-        return View::make('game/teamMaker');
+            return Redirect::back()->with('success', "The Players had being added to the team $teamName");
+            });
+
+        return Redirect::back();
+
     }
     /**
      * Display a listing of the resource.
@@ -98,27 +105,32 @@ class IndividualPlayersController extends Controller
      */
     public function teamCreate(Request $request)
     {
-        $name = "Random-team-".(Team::orderBy('id', 'desc')->first()->id + 1)."- :)";
-        $captain = -1;
-        $team = new Team();
-        $team->name = $name;
-        $team->verification_code = PlayerRelationable::generateRandomCode();
-        $team->tournament_id = $request['tournament'];
-        $team->save();
-        foreach ($request->toArray() as $k => $value){
-            if(substr($k, 0, 6) == 'player') {
-                PlayerRelation::createRelation(["team" => $team->id, 'player' => $value]);
-                if($captain < 0){
-                    $player = Player::find($value)->first()->toArray();
-                    if(isset($player['email']) and $player['email']!='' and $player['email']!=null){
-                        $team->captain = $value;
-                        $team->save();
-                        $captain = $value;
+        DB::transaction(function () use ($request) {
+            $name = "Random-team-" . (Team::orderBy('id', 'desc')->first()->id + 1) . "- :)";
+            $captain = -1;
+            $team = new Team();
+            $team->name = $name;
+            $team->verification_code = PlayerRelationable::generateRandomCode();
+            $team->tournament_id = $request['tournament'];
+            $team->save();
+            foreach ($request->toArray() as $k => $value) {
+                if (substr($k, 0, 6) == 'player') {
+                    PlayerRelation::createRelation(["team" => $team->id, 'player' => $value]);
+                    if ($captain < 0) {
+                        $player = Player::find($value)->first()->toArray();
+                        if (isset($player['email']) and $player['email'] != '' and $player['email'] != null) {
+                            $team->captain = $value;
+                            $team->save();
+                            $captain = $value;
+                        }
                     }
                 }
             }
-        }
-        return View::make('game/teamMaker');
+            return Redirect::back()->with('success', "The Players had being added to the new team $name");
+        });
+
+        return Redirect::back();
+
     }
 
 }

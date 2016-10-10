@@ -13,7 +13,7 @@
     }
 @endsection
 @section('content')
-
+    <h1>Team Filler/Maker</h1>
     <label for="game_sort" style="text-align:right;" class="col-sm-12">Pick a Game :</label>
     <select name="game_sort" id="game_sort" style="text-align:left;" class="col-sm-12">
 
