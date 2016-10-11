@@ -120,7 +120,8 @@ class PlayerRequestTest extends WpRequestsBase
         $mock->shouldReceive('method')->once()->andReturn('POST');
         $this->assertSame([
             'username' => 'required|unique:mysql_champ.players,username',
-            'team_id' => 'required:mysql_champ.players,team_id',
+            'email' => 'required|email|unique:mysql_champ.players,email',
+            'phone' => 'phone:US',
         ], $mock->rules());
 
     }
@@ -133,20 +134,20 @@ class PlayerRequestTest extends WpRequestsBase
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\PlayerRequest[method,route]');
         $mock->shouldReceive('method')->once()->andReturn('PUT');
-        $name = $faker->username;
-        $teamId = $faker->numberBetween(1, 99);
+        $username = $faker->username;
+        $phone = "(218)-444-1234";
         $email = $faker->email;
         $mock->shouldReceive('route')->twice()->andReturn((object)[
             'player_id' => (object)[
-                'username' => $name,
-                'team_id' => $teamId,
-                'email' => $email
+                'email' => $email,
+                'username' => $username,
+                'phone' => $phone
             ]
         ]);
 
-        $this->assertSame('required|unique:mysql_champ.players,username,'.$name.',username', $mock->rules()['username']);
+        $this->assertSame('required|unique:mysql_champ.players,username,'.$username.',username', $mock->rules()['username']);
         $this->assertSame('required|email|unique:mysql_champ.players,email,'.$email.',email', $mock->rules()['email']);
-
+        $this->assertSame('phone:US,', $mock->rules()['phone']);
     }
 
     /**
@@ -157,19 +158,20 @@ class PlayerRequestTest extends WpRequestsBase
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\PlayerRequest[method,route]');
         $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
-        $name = $faker->username;
-        $teamId = $faker->numberBetween(1, 99);
+        $username = $faker->username;
+        $phone = "(218)-444-1234";
         $email = $faker->email;
         $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'player_id' => (object)[
-                'username' => $name,
-                'team_id' => $teamId,
                 'email' => $email,
+                'username' => $username,
+                'phone' => $phone
             ]
         ]);
 
-        $this->assertSame('required|unique:mysql_champ.players,username,'.$name.',username', $mock->rules()['username']);
+        $this->assertSame('required|unique:mysql_champ.players,username,'.$username.',username', $mock->rules()['username']);
         $this->assertSame('required|email|unique:mysql_champ.players,email,'.$email.',email', $mock->rules()['email']);
+        $this->assertSame('phone:US,', $mock->rules()['phone']);
 
     }
 
@@ -179,10 +181,11 @@ class PlayerRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\PlayerRequest();
-        $this->assertArrayHasKey('name.required', $request->messages());
-        $this->assertArrayHasKey('name.unique', $request->messages());
+        $this->assertArrayHasKey('username.required', $request->messages());
+        $this->assertArrayHasKey('username.unique', $request->messages());
         $this->assertArrayHasKey('email.required', $request->messages());
         $this->assertArrayHasKey('email.unique', $request->messages());
+        $this->assertArrayHasKey('phone.phone', $request->messages());
 
     }
 }

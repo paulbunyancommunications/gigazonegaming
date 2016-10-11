@@ -163,7 +163,7 @@ class TeamsControllerCest extends BaseAcceptance
     public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
-        $I->see('The Tournament field is empty.');
+        $I->see('The Tournament field is required');
     }
 
     /**
@@ -182,7 +182,7 @@ class TeamsControllerCest extends BaseAcceptance
                 ");
         $I->selectOption(['id' => 'tournament_id'], "myFakeHackyOption");
         $I->click(['id' => 'submit']);
-        $I->see('The Tournament field is empty.');
+        $I->see("The Tournament field is required");
     }
 
     /**

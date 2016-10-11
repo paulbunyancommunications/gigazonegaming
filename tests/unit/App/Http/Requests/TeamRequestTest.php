@@ -120,7 +120,7 @@ class TeamRequestTest extends WpRequestsBase
         $mock->shouldReceive('method')->once()->andReturn('POST');
         $this->assertSame([
             'name' => 'required|unique:mysql_champ.teams,name',
-            'tournament_id' => 'required:mysql_champ.teams,tournament_id',
+            'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
         ], $mock->rules());
 
     }
