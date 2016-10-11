@@ -137,7 +137,7 @@ class PlayerRequestTest extends WpRequestsBase
         $username = $faker->username;
         $phone = "(218)-444-1234";
         $email = $faker->email;
-        $mock->shouldReceive('route')->twice()->andReturn((object)[
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'player_id' => (object)[
                 'email' => $email,
                 'username' => $username,
@@ -181,11 +181,10 @@ class PlayerRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\PlayerRequest();
-        $this->assertArrayHasKey('username.required', $request->messages());
-        $this->assertArrayHasKey('username.unique', $request->messages());
+        $this->assertArrayHasKey('name.required', $request->messages());
+        $this->assertArrayHasKey('name.unique', $request->messages());
         $this->assertArrayHasKey('email.required', $request->messages());
         $this->assertArrayHasKey('email.unique', $request->messages());
-        $this->assertArrayHasKey('phone.phone', $request->messages());
 
     }
 }
