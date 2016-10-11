@@ -13,6 +13,7 @@ class GamesControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
+    public $faker;
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);

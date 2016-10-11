@@ -13,12 +13,23 @@ class TournamentsControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
+    public $faker;
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/tournament');
 
+    }
+
+    /**
+     * Create the test admin user
+     */
+    protected function populateDB(AcceptanceTester $I)
+    {
+        exec('php artisan db:seed --class=DatabaseSeeder');
+        $this->faker = \Faker\Factory::create();
     }
 
     /**
@@ -169,8 +180,8 @@ class TournamentsControllerCest extends BaseAcceptance
     public function seeErrorWhenNameIsAlreadyUsed(AcceptanceTester $I)
     {
         list($name, $max_players, $game_id) = $this->createATournament($I);
-        $I->amOnPage('/app/manage/tournament');
 
+        $I->amOnPage('/app/manage/tournament');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
@@ -185,9 +196,10 @@ class TournamentsControllerCest extends BaseAcceptance
      */
     private function createATournament(AcceptanceTester $I, $attributes = [])
     {
+        $I->amOnPage('/app/manage/tournament');
         $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->words(3));
         $max_players = array_key_exists('max_players', $attributes) ? $attributes['max_players'] : $this->faker->numberBetween(1, 10);
-        $game_id = "league-of-legends";
+        $game_id = "tester-game";
 
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);

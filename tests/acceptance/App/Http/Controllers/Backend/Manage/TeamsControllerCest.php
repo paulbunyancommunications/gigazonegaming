@@ -16,12 +16,24 @@ class TeamsControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
+    public $faker;
+
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/team');
 
+    }
+
+    /**
+     * Create the test admin user
+     */
+    protected function populateDB(AcceptanceTester $I)
+    {
+        exec('php artisan db:seed --class=DatabaseSeeder');
+        $this->faker = \Faker\Factory::create();
     }
 
     /**
@@ -55,8 +67,8 @@ class TeamsControllerCest extends BaseAcceptance
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
 
         // check return, we should have a message and all the fields filled
-        $I->see('The team '.$name.' was added');
-        
+        $I->see('The team ' . $name . ' was added');
+
     }
 
     /**
@@ -68,156 +80,127 @@ class TeamsControllerCest extends BaseAcceptance
         //create a team
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
         //wait to see that it is there
-        $I->see('The team '.$name.' was added');
+        $I->see('The team ' . $name . ' was added');
 
-        $I->click(['id' => 'edit-'.$name]);
+        $I->click(['id' => 'edit-' . $name]);
         $I->see("Update Team");
-        $I->fillField(['id' => 'name'], $name."-edited");
+        $I->fillField(['id' => 'name'], $name . "-edited");
         $I->click(['id' => 'submit']);
-        $I->see("The team ".$name."-edited was updated");
+        $I->see("The team " . $name . "-edited was updated");
 
-}
+    }
 
-/**
- * @param AcceptanceTester $I
- */
-public function tryAndUpdateATeamKeepingEverythingTheSame(AcceptanceTester $I)
-{
-    $I->wantTo('update a team, keeping the everything the same.');
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryAndUpdateATeamKeepingEverythingTheSame(AcceptanceTester $I)
+    {
+        $I->wantTo('update a team, keeping the everything the same.');
 
-    // make a team, then update
-    list($name, $emblem, $tournament_id) = $this->createATeam($I);
-    $I->see('The team '.$name.' was added');
-    $I->click(['id'=>'edit-'.$name]);
-    $I->see("Update Team:");
-    $I->seeInField(['id' => 'name'], $name);
-    $I->seeInField(['id' => 'emblem'], $emblem);
-    $I->seeOptionIsSelected(['id' => 'tournament_id'], $tournament_id);
-    // fill fields with new values
-    $name.="-edited";
-    $I->fillField(['id' => 'name'], $name);
-    $I->fillField(['id' => 'emblem'], $emblem);
-    $I->selectOption(['id' => 'tournament_id'], $tournament_id);
+        // make a team, then update
+        list($name, $emblem, $tournament_id) = $this->createATeam($I);
+        $I->see('The team ' . $name . ' was added');
+        $I->click(['id' => 'edit-' . $name]);
+        $I->see("Update Team:");
+        $I->seeInField(['id' => 'name'], $name);
+        $I->seeInField(['id' => 'emblem'], $emblem);
+        $I->seeOptionIsSelected(['id' => 'tournament_id'], $tournament_id);
+        // fill fields with new values
+        $name .= "-edited";
+        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'emblem'], $emblem);
+        $I->selectOption(['id' => 'tournament_id'], $tournament_id);
 
-    $I->click(['id' => 'submit']);
+        $I->click(['id' => 'submit']);
 
-    // check that the fields are now all updated
-    $I->see('The team '. $name.' was updated');
-    $I->seeInField(['id' => 'name'], $name);
-    $I->seeInField(['id' => 'emblem'], $emblem);
-    $I->seeOptionIsSelected(['id' => 'tournament_id'], $tournament_id);
+        // check that the fields are now all updated
+        $I->see('The team ' . $name . ' was updated');
+        $I->seeInField(['id' => 'name'], $name);
+        $I->seeInField(['id' => 'emblem'], $emblem);
+        $I->seeOptionIsSelected(['id' => 'tournament_id'], $tournament_id);
 
-}
-/**
- * Ensure when creating a team that the name is present
- *
- * @param AcceptanceTester $I
- */
-public function seeErrorWhenNameIsMissing(AcceptanceTester $I)
-{
-    $I->click(['id' => 'submit']);
-    $I->see('The Team Name Field is required.');
-}
-/**
- * @param AcceptanceTester $I
- */
-public function seeErrorWhenNameIsAlreadyUsed(AcceptanceTester $I)
-{
-    $I->wantTo('update a team, keeping the everything the same.');
+    }
 
-    // make a team, then update
-    list($name, $emblem, $tournament_id) = $this->createATeam($I);
-    $I->see('The team '.$name.' was added');
+    /**
+     * Ensure when creating a team that the name is present
+     *
+     * @param AcceptanceTester $I
+     */
+    public function seeErrorWhenNameIsMissing(AcceptanceTester $I)
+    {
+        $I->click(['id' => 'submit']);
+        $I->see('The Team Name Field is required.');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function seeErrorWhenNameIsAlreadyUsed(AcceptanceTester $I)
+    {
+        $I->wantTo('update a team, keeping the everything the same.');
+
+        // make a team, then update
+        list($name, $emblem, $tournament_id) = $this->createATeam($I);
+        $I->see('The team ' . $name . ' was added');
 
 
-    $I->fillField(['id' => 'name'], $name);
-    $I->fillField(['id' => 'emblem'], $emblem);
-    $I->selectOption(['id' => 'tournament_id'], $tournament_id);
+        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'emblem'], $emblem);
+        $I->selectOption(['id' => 'tournament_id'], $tournament_id);
 
-    $I->click(['id' => 'submit']);
+        $I->click(['id' => 'submit']);
 
-    // check that the fields are now all updated
-    $I->see('The Team Name is in use, pick a new one.');
+        // check that the fields are now all updated
+        $I->see('The Team Name is in use, pick a new one.');
 
-}
-/**
- * Ensure when creating a team that the name is present
- *
- * @param AcceptanceTester $I
- */
-public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
-{
-    $I->click(['id' => 'submit']);
-    $I->see('The Tournament field is empty.');
-}
-/**
- * Ensure when creating a team that the name is present
- *
- * @param AcceptanceTester $I
- */
-public function seeErrorWhenTheTournamentIsntAnInteger(AcceptanceTester $I)
-{
-    $I->executeJS("
+    }
+
+    /**
+     * Ensure when creating a team that the name is present
+     *
+     * @param AcceptanceTester $I
+     */
+    public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
+    {
+        $I->click(['id' => 'submit']);
+        $I->see('The Tournament field is empty.');
+    }
+
+    /**
+     * Ensure when creating a team that the name is present
+     *
+     * @param AcceptanceTester $I
+     */
+    public function seeErrorWhenTheTournamentIsntAnInteger(AcceptanceTester $I)
+    {
+        $I->executeJS("
             select = document.getElementById('tournament_id');
             var option = document.createElement('option');
             option.text = 'myFakeHackyOption';
             option.value = 'myHackyValue';
             select.appendChild(option);
                 ");
-    $I->selectOption(['id' => 'tournament_id'], "myFakeHackyOption");
-    $I->click(['id' => 'submit']);
-    $I->see('The Tournament field is empty.');
-}
-/**
- * @param AcceptanceTester $I
- * @return array
- */
-private function createATeam(AcceptanceTester $I, $attributes = [])
-{
+        $I->selectOption(['id' => 'tournament_id'], "myFakeHackyOption");
+        $I->click(['id' => 'submit']);
+        $I->see('The Tournament field is empty.');
+    }
 
-    $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->words(3));
-    $emblem = array_key_exists('emblem', $attributes) ? $attributes['emblem'] : $this->faker->url;
-    $tournament = "gigazone-gaming-2016-league-of-legends";
-    //created a team
-    $I->fillField(['id' => 'name'], $name);
-    $I->fillField(['id' => 'emblem'], $emblem);
-    $I->selectOption(['id' => 'tournament_id'], $tournament);
-    $I->click(['id' => 'submit']);
+    /**
+     * @param AcceptanceTester $I
+     * @return array
+     */
+    private function createATeam(AcceptanceTester $I, $attributes = [])
+    {
 
-    return array($name, $emblem, $tournament);
-}
-//
-//    /**
-//     * @return $this|Player|null
-//     */
-//    private function createFakePlayer()
-//    {
-//        //setting the player
-//        $player = new Player();
-//        $add = $this->faker->randomDigitNotNull;
-//        $player->name = "team Captain " . $add;
-//        $player->username = "teamCapt" . $add;
-//        $player->email = "teamCapt" . $add . "@team.com";
-//        $player->phone = "2184441111";
-//        $player->save();
-//        return $player->fresh();
-//    }
+        $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->words(3));
+        $emblem = array_key_exists('emblem', $attributes) ? $attributes['emblem'] : $this->faker->url;
+        $tournament = "Tester Tournament";
+        //created a team
+        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'emblem'], $emblem);
+        $I->selectOption(['id' => 'tournament_id'], $tournament);
+        $I->click(['id' => 'submit']);
 
-//    /**
-//     * @param $name
-//     * @param $emblem
-//     * @param $tournament_id
-//     * @param $player
-//     */
-//    private function createAFakeTeamAndAFakeRelation($name, $emblem, $tournament_id, $player)
-//    {
-//        $team = Team::where("name", '=', $name)
-//            ->where("emblem", '=', $emblem)
-//            ->where("tournament_id", '=', $tournament_id)->first();
-//        $relation = new PlayerRelation();
-//        $relation->player_id = $player->id;
-//        $relation->relation_type = Team::class;
-//        $relation->relation_type = $team->id;
-//    }
-
+        return array($name, $emblem, $tournament);
+    }
 }
