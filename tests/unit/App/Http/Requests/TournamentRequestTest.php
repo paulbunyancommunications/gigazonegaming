@@ -117,10 +117,11 @@ class TournamentRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_rules_on_post_method()
     {
         $mock = Mockery::mock('App\\Http\\Requests\\TournamentRequest[method]');
-        $mock->shouldReceive('method')->once()->andReturn('POST');
-        $this->assertSame([
-            'name' => 'required|unique:mysql_champ.tournaments',
-        ], $mock->rules());
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('POST');
+        
+        $this->assertSame($mock->rules()['game_id'], 'required|numeric|exists:mysql_champ.games,id');
+        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.tournaments');
+        $this->assertSame($mock->rules()['max_players'], 'required|numeric');
 
     }
 
