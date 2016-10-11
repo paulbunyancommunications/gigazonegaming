@@ -156,21 +156,18 @@ class TournamentRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\TournamentRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PATCH');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
         $name = $faker->username;
         $tournamentId = $faker->numberBetween(1, 99);
-        $mock->shouldReceive('route')->twice()->andReturn((object)[
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'tournament_id' => (object)[
                 'name' => $name,
                 'id' => $tournamentId
             ]
         ]);
-        $this->assertSame(
-            [
-                'name' => 'required|unique:mysql_champ.tournaments,name,'.$name.',name',
-            ],
-            $mock->rules()
-        );
+        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.tournaments,name,'.$name.',name');
+        $this->assertSame($mock->rules()['game_id'], 'required|numeric|exists:mysql_champ.games,id');
+        $this->assertSame($mock->rules()['max_players'], 'required|numeric');
 
     }
 
