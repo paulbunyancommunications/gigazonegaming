@@ -101,9 +101,15 @@ Route::group(['namespace' => 'Api\Championship'], function() {
 Route::get('/report/{extra}', function () {
     
 })->where('extra', '.*');
+
+Route::get('/c3/{extra}', function () {
+    require base_path('c3.php');
+})->where('extra', '.*');
+
 // @codeCoverageIgnoreEnd
 
 
 foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
     require_once $partials->getPathname();
 }
+

@@ -8,9 +8,15 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false">
+    <logging>
+        <log type="coverage-html" target="tmp/report" lowUpperBound="65" highLowerBound="95"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
     <testsuites>
         <testsuite name="Application Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">./tests/functional</directory>
+            <directory suffix="Test.php">./tests/integration</directory>
+            <directory suffix="Test.php">./tests/unit</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -23,8 +29,9 @@
     </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_URL" value="http://gigazonegaming.local"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
-        <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="QUEUE_DRIVER" value="database"/>
     </php>
 </phpunit>

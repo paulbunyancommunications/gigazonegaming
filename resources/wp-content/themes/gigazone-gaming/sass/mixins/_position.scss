@@ -14,9 +14,29 @@
   height: #{ $number * $leading-rem + 'rem'};
 }
 
+@mixin max-h($number) {
+  max-height: #{ $number * $leading + 'px'};
+  max-height: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin min-h($number) {
+  min-height: #{ $number * $leading + 'px'};
+  min-height: #{ $number * $leading-rem + 'rem'};
+}
+
 @mixin width($number) {
   width: #{ $number * $leading + 'px'};
   width: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin max-w($number) {
+  max-width: #{ $number * $leading + 'px'};
+  max-width: #{ $number * $leading-rem + 'rem'};
+}
+
+@mixin min-w($number) {
+  min-width: #{ $number * $leading + 'px'};
+  min-width: #{ $number * $leading-rem + 'rem'};
 }
 
 @mixin top($number) {
@@ -25,8 +45,8 @@
 }
 
 @mixin right($number) {
-  top: #{ $number * $leading + 'px'};
-  top: #{ $number * $leading-rem + 'rem'};
+  right: #{ $number * $leading + 'px'};
+  right: #{ $number * $leading-rem + 'rem'};
 }
 
 // Margin-top
@@ -39,4 +59,16 @@
 @mixin padding-bottom($number) {
   padding-bottom: #{ $number * $leading + 'px'};
   padding-bottom: #{ $number * $leading-rem + 'rem'};
+}
+
+// Margin-left
+@mixin margin-left($number) {
+  margin-left: #{ $number * $leading + 'px'};
+  margin-left: #{ $number * $leading-rem + 'rem'};
+}
+
+// Margin-right
+@mixin margin-right($number) {
+  margin-right: #{ $number * $leading + 'px'};
+  margin-right: #{ $number * $leading-rem + 'rem'};
 }

@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
+use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use App\Models\WpUser;
-use App\Providers\ChampionshipGameComposerProvider;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -16,6 +21,7 @@ use App\Http\Requests\PlayerRequest;
 
 class PlayersController extends Controller
 {
+//    protected $gamesDBConnection = "";
     /**
      * Display a listing of the resource.
      *
@@ -32,26 +38,32 @@ class PlayersController extends Controller
      * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function create(PlayerRequest $request)
+    public function store(PlayerRequest $request)
     {
         $player = new Player();
-        $player->username = $request['username'];
-        $player->email = $request['email'];
-        $player->name = $request['name'];
-        $player->phone = $request['phone'];
-        $player->team_id = $request['team_id'];
-        $player->updated_by =  $this->getUserId();
-        $player->updated_on = Carbon::now("CST");
-        $player->save();
-//        dd($toUpdate);
-//        dd("passed request");
-//        $request->save('id', $request->getRouteKey())->update(
-////        Player::where('id', $player->getRouteKey())->update(
-//            $toUpdate
-//        );
-//        return View::make('player/player')->with("players", $this->retrievePlayers())->with("thePlayer", $player->where('id', $player->getRouteKey())->first())->with("cont_updated", true);
-//        $player->save();
-        return $this->index();
+        list($request, $theAssociation) = $this->UserCleanUp($request);
+        list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation); //save method for player is in this function call
+
+        if($success!='' and $errors!=''){
+            return redirect("manage/player/edit/".$playerArray['id'])
+//                ->withInput()
+                ->with('success', $success)
+                ->with('error', $errors)
+                ->with("thePlayer", $playerArray);
+        }elseif ($success!=''){
+            return redirect("manage/player/edit/".$playerArray['id'])
+//                ->withInput()
+                ->with('success', $success)
+                ->with("thePlayer", $playerArray);
+        }elseif ($errors!=''){
+            return redirect('manage/player/')
+                ->withInput()
+                ->with('error', $errors)
+                ->with("thePlayer", $playerArray);
+        }else{
+            return redirect("manage/player/edit/".$playerArray['id'])
+                ->with("thePlayer", $playerArray);
+        }
     }
 
     /**
@@ -61,7 +73,7 @@ class PlayersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Player $player)
+    public function create(Player $player)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
 //        $updatedBy = $this->getUserId();
@@ -97,7 +109,8 @@ class PlayersController extends Controller
      */
     public function edit(Player $player)
     {
-        return View::make('game/player')->with("thePlayer", $player);
+        $pla = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames(['Team','Tournament','Game']);
+        return View::make('game/player')->with("thePlayer", $pla);
     }
 
     /**
@@ -109,39 +122,81 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
-        $updatedBy = $this->getUserId();
-        $updatedOn = Carbon::now("CST");
-        $toUpdate = array_merge($request->all(), [
-            'updated_by' => $updatedBy,
-            'updated_on' => $updatedOn
-        ] );
-        unset($toUpdate['_token']);
-        unset($toUpdate['_method']);
-        unset($toUpdate['id']);
-        unset($toUpdate['reset']);
-        unset($toUpdate['submit']);
-//        dd($toUpdate);
-//        dd("passed request");
-        $player->where('id', $player->getRouteKey())->update(
-//        Player::where('id', $player->getRouteKey())->update(
-            $toUpdate
-        );
+        list($request, $theAssociation) = $this->UserCleanUp($request);
 
-        $this->DBProcessCachePlayersForced();
-        return View::make('game/player')->with("thePlayer", $player->where('id', $player->getRouteKey())->first())->with("cont_updated", true);
+        list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation);
+        if($success!='' and $errors!=''){
+            return Redirect::back()
+                ->withInput()
+                ->with('success', $success)
+                ->with('error', $errors)
+                ->with("thePlayer", $playerArray);
+        }elseif ($success!=''){
+            return Redirect::back()
+                ->withInput()
+                ->with('success', $success)
+                ->with("thePlayer", $playerArray);
+        }elseif ($errors!=''){
+            return Redirect::back()
+                ->withInput()
+                ->with('error', $errors)
+                ->with("thePlayer", $playerArray);
+        }else{
+            return Redirect::back()
+                ->withInput()
+                ->with("thePlayer", $playerArray);
+        }
     }
 
+//    /**
+//     * Remove the specified player from the team and move it to the single player list.
+//     *
+//     * @param  Player  $player
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function assignPlayerToTeam($player, $relation) //todo
+//    {
+//
+//        if(Team::find($team_id)->isTeamNotFull()){
+//            $playerToChange = PlayerRelation::having('player_relations.player_id', '=', $player['player_id'])
+//                ->having('player_relations.relation_id', '=', $player['team_id'])
+//                ->having('player_relations.relation_type', '=', ;
+//            $playerToChange->relation_id = $team_id;
+//            $playerToChange->save();
+//        }else{
+//            return Redirect::back()->withErrors(array('msg'=>'The team has the maximum amount of players. Please pick a different team.'));
+//        }
+//
+//    }
+//    /**
+//     * Remove the specified resource from storage.
+//     *
+//     * @param  Player  $player, Team $team
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function remove(Player $player, Team $team)
+//    {
+//        PlayerRelation::where('player_id', '=', $player->getRouteKey())
+//            ->where('relation_id', '=', $team->getRouteKey())
+//            ->where('relation_type', '=', Team::class)
+//            ->delete();
+//        return Redirect::back();
+//    }
     /**
-     * Remove the specified resource from storage.
+     * Destroy the specified resource from storage.
      *
      * @param  Player  $player
      * @return \Illuminate\Http\Response
      */
     public function destroy(Player $player)
     {
+        $name = $player->username;
+        if($player->name!=''){
+            $name.=" ( " . $player->name . ' )';
+        }
+        PlayerRelation::where('player_id', '=', $player->getRouteKey())->delete();
         $player->where('id', $player->getRouteKey())->delete();
-//        return View::make('player/player')->with("players", $this->retrievePlayers());
-        return redirect('/manage/player');
+        return Redirect::back()->with('success', "The player ". $name ." has been remove from all games, tournaments and teams.");
     }
     /**
      * Display the specified resource.
@@ -151,85 +206,106 @@ class PlayersController extends Controller
      */
     public function filter(Request $ids)
     {
-
-        if(trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
-            if(is_numeric($ids->team_sort)){
-                $tourn = trim($ids->team_sort);
-            }else {
-                $tourn = "%" . trim($ids->team_sort) . "%";
-            }
-
-            $players =  Player::join('teams', 'teams.id', '=', 'players.team_id')
-                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('teams.id', 'like', $tourn)
-                ->orWhere('teams.name', 'like', $tourn)
-                ->select(['players.id','players.username','players.email','players.phone','players.name',
-                    'teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id',
-                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
-                    'games.name as game_name'])
-                ->get()
-                ->toArray();
-        }elseif(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
-
-            if(is_numeric($ids->tournament_sort)){
-                $tourn = trim($ids->tournament_sort);
-            }else {
-                $tourn = "%" . trim($ids->tournament_sort) . "%";
-            }
-
-            $players =  Player::join('teams', 'teams.id', '=', 'players.team_id')
-                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('tournaments.id', 'like', $tourn)
-                ->orWhere('tournaments.name', 'like', $tourn)
-                ->select(['players.id','players.username','players.email','players.phone','players.name',
-                    'teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id',
-                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
-                    'games.name as game_name'])
-                ->get()
-                ->toArray();
-        }elseif(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
-
-            if(is_numeric($ids->game_sort)){
-                $tourn = trim($ids->game_sort);
-            }else {
-                $tourn = "%" . trim($ids->game_sort) . "%";
-            }
-
-            $players =  Player::join('teams', 'teams.id', '=', 'players.team_id')
-                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('games.id', 'like', $tourn)
-                ->orWhere('games.name', 'like', $tourn)
-                ->select(['players.id','players.username','players.email','players.phone','players.name',
-                    'teams.id as team_id','teams.name as team_name','teams.emblem as team_emblem','teams.tournament_id as tournament_id',
-                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
-                    'games.name as game_name'])
-                ->get()
-                ->toArray();
-        }else {
-            $players = Player::join('teams', 'teams.id', '=', 'players.team_id')
-                ->join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['players.id', 'players.username', 'players.email', 'players.phone', 'players.name',
-                    'teams.id as team_id', 'teams.name as team_name', 'teams.emblem as team_emblem', 'teams.tournament_id as tournament_id',
-                    'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id',
-                    'games.name as game_name'])
-                ->get()
-                ->toArray();
+        $filterArray = [];
+        if(isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
+            $filterArray['team'] = trim($ids->team_sort);
         }
+        if(isset($ids->tournament_sort) and trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
+            $filterArray['tournament'] = trim($ids->tournament_sort);
+        }
+        if(isset($ids->game_sort) and trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+            $filterArray['game'] = trim($ids->game_sort);
+        }
+        $players = new Player();
+        $playerList = $players->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filterArray);
 
-        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
-        foreach ($players as $key => $player) {
-            foreach ($times as $k => $t) {
-                if ($player['team_id'] == $t['team_id']) {
-                    $players[$key]['team_count'] = $t['team_count'];
-                    break;
+        return View::make('game/player')->with("players_filter", $playerList)->with('sorts',$ids);
+
+    }
+
+    /**
+     * @param PlayerRequest $cleanedRequest
+     * @return array
+     */
+    private function UserCleanUp(PlayerRequest $request)
+    {
+        $cleanedRequest = $request->all();
+        $theAssociationRequest =[];
+
+        for ($i=0; $i < count(Player::routables()); $i++) {
+            // routable should be lowercase to match the incoming input
+            $routable = strtolower(Player::routables()[$i]);
+
+            // if this routable exist and is an array
+            // then loop through and catch values
+            // that are not defaults.
+            if (isset($cleanedRequest[$routable . '_id']) && is_array($cleanedRequest[$routable . '_id'])) {
+
+                foreach ($cleanedRequest[$routable . '_id'] as $k => $v) {
+                    if (is_numeric($v)) {
+                        $theAssociationRequest[$routable] = $v;
+                    }
                 }
+
+            } elseif (isset($cleanedRequest[$routable . '_id']) && is_string($cleanedRequest[$routable . '_id'])) {
+                $theAssociationRequest[$routable] = $cleanedRequest[$routable . '_id'];
             }
         }
-        return View::make('game/player')->with("players_filter", $players)->with('sorts',$ids);
 
+        // unset values that should not be passes as mass assignable
+        unset($cleanedRequest['_token']);
+        unset($cleanedRequest['_method']);
+        unset($cleanedRequest['submit']);
+
+        // setup updated_by mass assignable values
+        $cleanedRequest['updated_by'] = $this->getUserId();
+
+        // replace request with new request list
+        $request->replace($cleanedRequest);
+
+        return array($request, $theAssociationRequest);
+    }
+
+    /**
+     * @param PlayerRequest $request
+     * @param Player $player
+     * @param $theAssociation
+     * @return array
+     */
+    private function getPlayerInfoAndErrors( PlayerRequest $request, Player $player, $theAssociation)
+    {
+        $player->name = $request->get('name');
+        $player->username = $request->get('username');
+        $player->email = $request->get('email');
+        $player->phone = $request->get('phone');
+        $player->updated_by =  $this->getUserId();
+        $player->updated_on = Carbon::now("CST");
+        $player->save();
+        $player->fresh();
+
+        $theAssociation['player'] = $player->id;
+        $result = DB::transaction( function () use ($theAssociation) {
+            PlayerRelation::where('player_id', '=', $theAssociation['player'])->delete();
+            $result = '';
+            if (count($theAssociation) > 1) {
+
+                $result = Player::createRelation($theAssociation);
+            }
+            return $result;
+        });
+        $playerArray = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
+//        dd($playerArray);
+        $success = '';
+        $errors = '';
+        if (isset($result) and $result != []) {
+            if (isset($result['success'])) {
+                $success .= "The player " . $playerArray['name'] . " was successfully attached to ".$result['success'];
+            }
+
+            if (isset($result['fail'])) {
+                $errors .= "The player " . $playerArray['name'] . " couldn't be attached to ".$result['fail'];
+            }
+        }
+        return array($playerArray, $success, $errors);
     }
 }

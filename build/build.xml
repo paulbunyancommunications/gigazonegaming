@@ -117,6 +117,9 @@
         <!-- exclude wordpress uploads folder -->
         <exclude name="${dir.wp-content}uploads/**/*"/>
 
+        <!-- exclude testing assets folder -->
+        <exclude name="${dir.www}testing_assets/**/*"/>
+
         <!-- folders created by puppet -->
         <exclude name="${dir.www}icons/**/*"/>
         <exclude name="${dir.www}html/**/*"/>
@@ -360,7 +363,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update;"
+                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update --no-dev;"
                      display="true"/>
             </else>
         </if>

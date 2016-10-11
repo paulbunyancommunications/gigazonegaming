@@ -2,10 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
-use App\Models\Championship\IndividualPlayer;
-
 class IndividualPlayerRequest extends Request
 {
 
@@ -18,55 +14,38 @@ class IndividualPlayerRequest extends Request
     {
         if (is_user_logged_in() and (is_super_admin() or is_user_admin())) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     /**
      * Get the validation rules that apply to the request.
-     * @todo Nelson, please fix switch statement, only use colons and breaks between conditions http://php.net/manual/en/control-structures.switch.php
      * @return array
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'GET':
             case 'DELETE':
-            {
                 return [];
-            }
             case 'POST':
-            {
                 return [
-                    'username' => 'required|unique:mysql_champ.individual_players,username',
+                    'username' => 'required|unique:mysql_champ.players,username',
+                    'email' => 'required|email|unique:mysql_champ.players,email',
                 ];
-            }
             case 'PUT':
             case 'PATCH':
-            {
                 $name = $this->route()->player_id->username;
+                $email = $this->route()->player_id->email;
                 return [
-                    'username' => 'required|unique:mysql_champ.individual_players,username,'.$name.',username',
+                    'username' => 'required|unique:mysql_champ.players,username,' . $name . ',username',
+                    'email' => 'required|unique:mysql_champ.players,email,' . $email . ',email',
                 ];
-            }
-            default:break;
+            default:
+                break;
         }
-        return [
-        ];
+        return [];
 
-    }
-
-    /**
-     * @todo Nelson, Where are the rules for required name and game_id? Are they handled in the model? They should be in the rules method.
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.required' => 'Your Name is required.',
-            'game_id.required' => 'The Game ID is required.',
-        ];
     }
 }

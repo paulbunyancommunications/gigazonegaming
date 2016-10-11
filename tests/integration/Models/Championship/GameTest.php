@@ -17,7 +17,9 @@ use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
 use Faker\Factory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Cocur\Slugify\Slugify;
 
 /**
  * Class RoleTest
@@ -26,7 +28,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class GameTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      * @var
@@ -47,7 +49,6 @@ class GameTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -59,12 +60,11 @@ class GameTest extends \TestCase
      */
     public function it_has_a_name_attribute()
     {
-
         $name = $this->faker->name;
         $item = factory(Game::class)->create(['name' => $name]);
         $getName = Game::find($item->id);
-
-        $this->assertSame($name, $getName->name);
+        $slugify = Slugify::create();
+        $this->assertSame($slugify->slugify($name), $getName->name);
     }
 
     /**
@@ -155,7 +155,9 @@ class GameTest extends \TestCase
      */
     public function it_can_get_a_game_by_name()
     {
-        $name = $this->faker->sentence;
+        $slugify = Slugify::create();
+
+        $name = $slugify->slugify($this->faker->sentence);
         factory(Game::class)->create(['name' => $name]);
 
         $getByName = Game::byName($name);
@@ -180,39 +182,17 @@ class GameTest extends \TestCase
     }
 
     /**
-     * check that teams are attached to game
-     *
-     * @test
-     */
-    public function it_has_individual_players()
-    {
-        $name = $this->faker->sentence;
-        $game = factory(Game::class)->create(['name' => $name]);
-        for ($i = 0; $i < 10; $i++) {
-            Factory(IndividualPlayer::class)->create(['game_id' => $game->id]);
-        }
-
-        $getGame = Game::find($game->id);
-        $this->assertSame(count($getGame->individualPlayers->toArray()), 10);
-    }
-
-    /**
      * Check that when a game is deleted the accompanying
      * tournaments and individual players are also deleted.
      *
      * @test
      */
-    public function it_deletes_tournament_and_individual_players_when_deleted()
+    public function it_deletes_tournament_when_deleted()
     {
         $game = factory(Game::class)->create();
         $tournament = factory(Tournament::class)->create(['game_id' => $game->id]);
-        $individuals = factory(IndividualPlayer::class, 10)->create(['game_id' => $game->id]);
 
         $game->delete();
         $this->assertNull(Tournament::find($tournament->id));
-        foreach ($individuals as $individual) {
-            $this->assertNull(IndividualPlayer::find($individual->id));
-
-        }
     }
 }

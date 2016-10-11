@@ -13,6 +13,7 @@
 namespace Tests\Integration\Models;
 
 use App\Models\UpdateRecipients;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
@@ -22,7 +23,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class UpdateRecipientsTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      * @var
@@ -42,7 +43,6 @@ class UpdateRecipientsTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 
     /**

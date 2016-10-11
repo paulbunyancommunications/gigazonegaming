@@ -3,9 +3,8 @@ namespace Tests\Acceptance;
 
 use AcceptanceTester;
 
-class LolIndividualSignUpCest
+class LolIndividualSignUpCest extends \BaseAcceptance
 {
-    protected $faker;
 
     public function __construct()
     {
@@ -14,20 +13,21 @@ class LolIndividualSignUpCest
 
     public function _before(AcceptanceTester $I)
     {
-        $I->amOnPage('/sign-up/lol-individual-sign-up/');
+        parent::_before($I);
+        $I->amOnPage('/sign-up/lol-individual-signup/');
         $I->waitForJs('return jQuery.active == 0', 10);
     }
 
     public function _after(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_after($I);
     }
 
     // tests
 
     public function seeTitleOnIndividualSignUpPage(AcceptanceTester $I)
     {
-        $I->see('League of Legends Individual Sign Up');
+        $I->see('League of Legends Individual SignUp');
     }
 
     public function submitAnIndividualToTheSystem(AcceptanceTester $I)

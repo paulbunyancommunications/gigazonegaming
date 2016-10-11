@@ -3,6 +3,10 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Class CreateIndividualPlayersTable
+ * No longer used
+ */
 class CreateIndividualPlayersTable extends Migration
 {
     /**
@@ -14,9 +18,9 @@ class CreateIndividualPlayersTable extends Migration
     {
         Schema::connection('mysql_champ')->create('individual_players', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
+            $table->string('username')->unique();
+            $table->string('email')->unique();
             $table->string('name');
-            $table->string('email');
             $table->string('phone');
             $table->timestamps();
         });

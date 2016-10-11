@@ -10,7 +10,7 @@ $osver = split($::operatingsystemrelease, '[.]')
       $mirrorlist = 'http://mirrorlist.repoforge.org/el7/mirrors-repoforge'
     }
     '6': {
-      $baseurl = 'http://mirrorlist.repoforge.org/el7/mirrors-repoforge'
+      $baseurl = 'http://repoforge.cu.be/redhat/el6/en/$basearch/rpmforge'
       $mirrorlist = 'http://mirrorlist.repoforge.org/el6/mirrors-repoforge'
     }
     '5': {

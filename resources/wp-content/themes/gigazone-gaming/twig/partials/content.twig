@@ -1,19 +1,8 @@
-{% if tag is defined %}
-    {% include "partials/title/tag-title.twig" %}
-{% elseif category is defined %}
-    {% include "partials/title/category-title.twig" %}
-{% elseif function('is_archive') %}
-    {% if author is defined %}
-        {% include "partials/title/author-title.twig" with {'author':author} %}
-    {% else %}
-        {% include "partials/title/archive-title.twig" %}
-    {% endif %}
-{% elseif is_author is defined and is_author == true %}
-    {% include "partials/title/author-title.twig" with {'author':author} %}
-{% endif %}
+{# titles for content #}
+{% include "partials/title/switch-title.twig" %}
 
 {% if posts is defined and posts|length >= 1 and single is not defined and post is not defined %}
-    {% include "partials/section-title.twig" %}
+    {% include "partials/title/section-title.twig" %}
     {% for p in posts %}
         {% if p.post_title is defined %}
         <div class="post-list-item {{ p.class }}">
@@ -58,4 +47,5 @@
     <p>No posts at this time. Check back later.</p>
 {% endif %}
 {% include "partials/pagination.twig" %}
+{% include "partials/post/post-related.twig" %}
 

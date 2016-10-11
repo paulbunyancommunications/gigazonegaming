@@ -1,0 +1,25 @@
+.center-block {
+  @include centerContainer();
+}
+
+.center-layout {
+  width: 90%;
+}
+
+.margin {
+  &-top {
+    @include margin-top(1);
+  }
+
+  &-sm-top {
+    @include margin-top(.5);
+  }
+
+  &-bottom {
+    @include margin-bottom(1);
+  }
+
+  &-sm-bottom {
+    @include margin-bottom(.5);
+  }
+}

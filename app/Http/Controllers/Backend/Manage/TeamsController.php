@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
+use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
+use App\Models\Championship\Player_Team;
+use App\Models\Championship\Player_Tournament;
+use App\Models\Championship\PlayerRelation;
 use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
 
 use App\Models\WpUser;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use \Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -33,25 +39,21 @@ class TeamsController extends Controller
      * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function create(TeamRequest $request)
+    public function store(TeamRequest $request)
     {
         $team = new Team();
-//        dd($request->all());
-        $team->tournament_id = $request['tournament_id'];
+        if(isset($request['tournament_id']) and $request['tournament_id']!='---') {
+            $team->tournament_id = $request['tournament_id'];
+        }else{
+            return Redirect::back()->with("errors", "A tournament must be selected");
+        }
         $team->name = $request['name'];
         $team->emblem = $request['emblem'];
         $team->updated_by =  $this->getUserId();
         $team->updated_on = Carbon::now("CST");
+        $team->verification_code= str_random(8);
         $team->save();
-//        dd($toUpdate);
-//        dd("passed request");
-//        $request->save('id', $request->getRouteKey())->update(
-////        Team::where('id', $team->getRouteKey())->update(
-//            $toUpdate
-//        );
-//        return View::make('team/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
-//        $team->save();
-        return $this->index();
+        return redirect('manage/team')->with('success',"The team ".$request['name']." was added");
     }
 
     /**
@@ -61,7 +63,7 @@ class TeamsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Team $team)
+    public function create(Team $team)
     {
         dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
 //        $updatedBy = $this->getUserId();
@@ -120,84 +122,85 @@ class TeamsController extends Controller
         unset($toUpdate['id']);
         unset($toUpdate['reset']);
         unset($toUpdate['submit']);
-//        dd($toUpdate);
-//        dd("passed request");
         $team->where('id', $team->getRouteKey())->update(
-//        Team::where('id', $team->getRouteKey())->update(
             $toUpdate
         );
-        return View::make('game/team')->with("theTeam", $team->where('id', $team->getRouteKey())->first())->with("cont_updated", true);
+        return Redirect::back()->with('success',"The team ".$team->fresh()->name." was updated")
+            ->with("theTeam", $team);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove players from team and delete team
      *
      * @param  Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Team $team)
+    public function destroy_soft(Team $team)
     {
+        PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->delete();
         $team->where('id', $team->getRouteKey())->delete();
-//        return View::make('team/team');
-        return redirect('/manage/team');
+        return Redirect::back();
+    }
+//
+    /**
+     * Remove players from team and delete team
+     *
+     * @param  Team  $team
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy_hard(Team $team)
+    {
+        foreach (PlayerRelation::where('relation_id', '=', $team->getRouteKey())->where('relation_type', '=', Team::class)->get()
+            as $k => $relation){
+            Player::where('id','=', $relation->player_id)->delete();
+            PlayerRelation::where('player_id', '=', $relation->player_id)->delete();
+        }
+        $team->where('id', $team->getRouteKey())->delete();
+        return Redirect::back();
     }
     /**
      * Display the specified resource.
      *
      * @param  Request $ids
+     * max is a game and a tournament id
      * @return \Illuminate\Http\Response
      */
     public function filter(Request $ids)
     {
+//        dd($ids);
+        $tournament = '';
+        $game = '';
         if(trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
-            if(is_numeric($ids->tournament_sort)){
-                $tourn = trim($ids->tournament_sort);
-            }else {
-                $tourn = "%" . trim($ids->tournament_sort) . "%";
-            }
-
-            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('tournaments.id', 'like', $tourn)
-                ->orWhere('tournaments.name', 'like', $tourn)
-                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
-                ->groupBy('id')
-                ->get()
-                ->toArray();
-        }elseif(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
-            if(is_numeric($ids->game_sort)){
-                $tourn = trim($ids->game_sort);
-            }else {
-                $tourn = "%" . trim($ids->game_sort) . "%";
-            }
-            $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->where('games.id', 'like', $tourn)
-                ->orWhere('games.name', 'like', $tourn)
-                ->select(['teams.id as id','teams.name as name','teams.emblem as emblem','teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id','games.name as game_name'])
-                ->groupBy('id')
-                ->get()
-                ->toArray();
-        }else {
-            $teams = Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
-                ->join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['teams.id as id', 'teams.name as name', 'teams.emblem as emblem', 'teams.tournament_id as tournament_id', 'tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.id as tournament_id', 'games.name as game_name'])
-                ->groupBy('id')
-                ->get()
-                ->toArray();
+            $tournament = trim($ids->tournament_sort);
         }
-
-        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
-        foreach ($teams as $key => $team) {
-            foreach ($times as $k => $t) {
-                if ($team['id'] == $t['team_id']) {
-                    $teams[$key]['team_count'] = $t['team_count'];
-                    break;
-                }
-            }
+        if(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+            $game = trim($ids->game_sort);
         }
-//        dd($teams);
-        return View::make('game/team')->with("teams_filter", $teams)->with('sorts',$ids);
+        $teams =  Team::join('tournaments', 'tournaments.id', '=', 'teams.tournament_id')
+            ->join('games', 'games.id', '=', 'tournaments.game_id')
+            ->join('player_relations', function($join){
+                $join->on('player_relations.relation_id', '=', 'teams.id')
+                ->where('player_relations.relation_type', '=', Team::class);
+        } );
+        if($tournament!=''){
+            $teams->where('tournaments.id', '=', $tournament);
+        }
+        if($game!=''){
+            $teams->where('games.id', '=', $game);
+        }
+        $teams_cooked = $teams->select(['teams.id as team_id',
+            'teams.name as team_name',
+            'teams.emblem as team_emblem',
+            'teams.captain as team_captain',
+            'teams.verification_code as team_verification_code',
+            'tournaments.name as tournament_name',
+            'tournaments.game_id',
+            'tournaments.max_players as team_max_players',
+            'tournaments.id as tournament_id',
+            'games.name as game_name',
+            DB::raw("COUNT(relation_id) as team_count")
+        ])->groupBy('team_id')->get()->toArray();
+        return View::make('game/team')->with("teams_filter", $teams_cooked)->with('sorts',$ids);
     }
 
 }

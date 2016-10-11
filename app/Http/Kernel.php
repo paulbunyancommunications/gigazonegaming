@@ -45,14 +45,21 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'WPAdmin' => \App\Http\Middleware\WPAdminMiddleware::class,
         'UpdateRecipient' => \App\Http\Middleware\UpdateRecipientMiddleware::class,
         'CCAddRecipient' => \App\Http\Middleware\AddContactToConstantContactGigazoneGamingUpdatesMiddleware::class,
         'LolTeamSignUp' => \App\Http\Middleware\LolTeamSignUpMiddleware::class,
         'LolIndividualSignUp' => \App\Http\Middleware\LolIndividualSignUpMiddleware::class,
+        'auth' => \App\Http\Middleware\Auth\SentinelAuthenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest' => \App\Http\Middleware\Auth\SentinelRedirectIfAuthenticated::class,
+        'standardUser' => \App\Http\Middleware\Auth\SentinelStandardUser::class,
+        'admin' => \App\Http\Middleware\Auth\SentinelAdminUser::class,
+        'hasAccess' => \App\Http\Middleware\Auth\SentinelHasAccess::class,
+        'notCurrentUser' => \App\Http\Middleware\Auth\SentinelNotCurrentUser::class,
+        'redirectAdmin' => \App\Http\Middleware\Auth\SentinelRedirectAdmin::class,
+        'validateRole' => \App\Http\Middleware\Auth\ValidateRole::class,
     ];
 }

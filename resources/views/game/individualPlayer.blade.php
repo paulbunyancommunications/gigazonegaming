@@ -40,72 +40,87 @@
 @section('content')
     @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
     @if(isset($individualPlayers) || $individualPlayers != [])
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(isset($cont_updated) and  $cont_updated)
-            <div class="alert alert-success"><strong>Success!</strong> You have updated this Player.</div>
-        @endif
-        {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'))) }}
+
+        <h1>Update Individual Player:</h1>
+        {{ Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\IndividualPlayersController@change'), 'class' => 'form form-horizontal')) }}
+        <input name="_method" type="hidden" value="POST">
         <div class="form-group">
             <input name="_method" type="hidden" value="POST">
             <input name="id" id="id" type="hidden" value="">
             <div class="form-group">
-                <label for="name" style="width:120px; text-align:right;">Player Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px" placeholder="The name of the player" disabled/>
+                <label for="name" class="control-label col-xs-3 text-right">Player Name:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="The name of the player" value="{{ old('name') }}" disabled='disabled'/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="username" style="width:120px; text-align:right;">Player Username: </label> &nbsp; <input type="text" name="username" id="username" style="width:350px" placeholder="The username of the player" disabled/>
+                <label for="username" class="control-label col-xs-3 text-right">Player Username:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="The username of the player" value="{{ old('username') }}" disabled='disabled'/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="email" style="width:120px; text-align:right;">Player Email: </label> &nbsp; <input type="text" name="email" id="email" style="width:350px" placeholder="The email of the player" disabled/>
+                <label for="email" class="control-label col-xs-3 text-right">Player Email:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="email" class="form-control" id="email" placeholder="The email of the player" value="{{ old('email') }}" disabled='disabled'/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="phone" style="width:120px; text-align:right;">Player Phone: </label> &nbsp; <input type="text" name="phone" id="phone" style="width:350px" placeholder="The phone of the player" disabled/>
+                <label for="phone" class="control-label text-right col-xs-3">Player Phone: </label>
+                <div class="col-xs-9">
+                    <input type="text" name="phone" id="phone" class="form-control" placeholder="The phone of the player" value="{{ old('phone') }}" disabled='disabled'/>
+                </div>
             </div>
             <div class="form-group">
-                <label for="team_id" style="width:120px; text-align:right;">Player Team Name: </label> &nbsp;
-                <input type="text" name="team_name" id="team_name" placeholder="The team of the player" style="width:350px" disabled>
-                <input type="text" name="team_id" id="team_id" class="hidden" style="">
-                <input type="text" name="tournament_id" id="tournament_id" class="hidden" style="">
-                <input type="text" name="game_id" id="game_id" class="hidden" style="">
+                <label for="team_name" class="col-xs-3 text-right control-label">Selected Team Name: </label>
+                <div class="col-xs-9">
+                    <input type="text" name="team_name" id="team_name" placeholder="The team of the player" class="form-control" disabled='disabled' />
+                    <input type="text" name="team_id" id="team_id" class="hidden" style="">
+                    <input type="text" name="tournament_id" id="tournament_id" class="hidden" style="">
+                    <input type="text" name="game_id" id="game_id" class="hidden" style="">
+                </div>
             </div>
             <div class="form-group">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            </div>
-            <input name="_method" type="hidden" value="POST">
-            <div class="form-group">
-                <label for="game_sort" style="width:120px; text-align:right;">Show options only for this Game: </label>
-                <select name="game_sort" id="game_sort" style="width:350px;">
-
-                    <option class="default"> --- </option>
-                    @foreach($games as $g)
-                        <option id="t_option{{$g['id']}}" value="{{$g['id']}}" class="gameSelector">{{$g['name']}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="tournament_sort" style="width:120px; text-align:right;">Filter by Tournament: </label>
-                <select name="tournament_sort" id="tournament_sort" style="width:350px;" disabled>
-                    <option class="default"> --- </option>
-                    @foreach($tournaments as $g)
-                        <option id="t_option{{$g['game_id']}}_{{$g['id']}}" value="{{$g['id']}}" >{{$g['name']}}</option>
-                    @endforeach
-                </select>
+                <label for="game_sort" class="control-label text-right col-xs-3">Show options only for this Game:</label>
+                <div class="col-xs-9">
+                    <select name="game_sort" id="game_sort" class="form-control" style="width: 100%">
+                        <option class="default"> --- </option>
+                        @foreach($games as $g)
+                            <option id="t_option{{$g['game_id']}}"
+                                    value="{{$g['game_id']}}"
+                                    class="gameSelector"
+                                    {{ $g['game_id'] == old('game_sort') ? ' selected="selected"' : null  }}>{{$g['game_name']}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label for="team_sort" style="width:120px; text-align:right;">Filter by Team: </label>
-                <select name="team_sort" id="team_sort" style="width:350px;" disabled>
-                    <option class="default"> --- </option>
-                    @foreach($teams as $g)
-                        <option id="t_option{{$g['tournament_id']}}_{{$g['id']}}" value="{{$g['id']}}" >{{$g['name']}} p#:{{$g['team_count']}}/{{$maxNumOfPlayers}}</option>
-                    @endforeach
-                </select>
+                <label for="tournament_sort" class="col-xs-3 control-label text-right">Filter by Tournament: </label>
+                <div class="col-xs-9">
+                    <select name="tournament_sort" class="form-control" style="width: 100%" id="tournament_sort" disabled='disabled'>
+                        <option class="default"> --- </option>
+                        @foreach($tournaments as $g)
+                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}"
+                                    value="{{$g['tournament_id']}}"
+                                    {{ $g['tournament_id'] == old('tournament_sort') ? ' selected="selected"' : null }}>{{$g['tournament_name']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="team_sort" class="col-xs-3 control-label">Select a Team: </label>
+                <div class="col-xs-9">
+                    <select name="team_sort" id="team_sort" class="form-control" style="width:100%" disabled='disabled' >
+                        <option class="default"> --- </option>
+                        @foreach($teams as $g)
+                            @if($g['team_count'] < $g['team_max_players'])
+                            <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}"
+                                    value="{{$g['team_id']}}"
+                                    {{ $g['team_id'] == old('team_sort') ? ' selected="selected"' : null }}>{{$g['team_name']}} p#:{{$g['team_count']}}/{{$g['team_max_players']}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <div class="form-group">
@@ -118,29 +133,48 @@
                 $teamNum = -1;
             /*--}}
             <br />
+            <h1>Individual Player List:</h1>
             <div class="form-group">
                 <ul id="listOfPlayers" class="listing">
+
                         @foreach($individualPlayers as $id => $player)
-                            <li>
-                                <button class="btn btn-default aPlayer playerName disabled list"
-                                     game_id_j="t_option{{$player["game_id"]}}"
-                                     game_id="{{$player["game_id"]}}"
-                                     player_id="{{$player["id"]}}"
-                                     player_name="{{$player["name"]}}"
-                                     player_user="{{$player["username"]}}"
-                                     player_phone="{{$player["phone"]}}"
-                                     player_email="{{$player["email"]}}"
-                                >
-                                    {{$player["username"]}}
-                                </button>
-                            </li>
+                        {{--@if($player['player_id'] == 46)--}}
+                            {{--{{dd($player)}}--}}
+                        {{--@endif--}}
+                            @if(!is_numeric($player['team_id']))
+                                <li>
+                                    <button class="btn btn-default aPlayer playerName hidden list"
+                                            id = "player_count_{{$id}}"
+                                         game_id_j="t_option{{$player["game_id"]}}"
+                                         game_id="{{$player["game_id"]}}"
+                                         player_id="{{$player["player_id"]}}"
+                                         player_name="{{$player["player_name"]}}"
+                                         player_user="{{$player["player_username"]}}"
+                                         player_phone="{{$player["player_phone"]}}"
+                                         player_email="{{$player["player_email"]}}"
+                                    >
+                                        {{$player["player_username"]}}
+                                    </button>
+
+                                    {{--{{ Form::open(array('id' => "tournamentForm".$player["player_id"], 'action' => array('Backend\Manage\TournamentsController@destroy', $player["player_id"]), 'class' => "deletingForms")) }}--}}
+                                    {{--<input name="_method" type="hidden" value="DELETE">--}}
+                                    {{--{!!--}}
+                                        {{--Form::submit(--}}
+                                            {{--'&#xf014; &#xf1c0;',--}}
+                                            {{--array('class'=>'btn btn-danger list fa delete-message', 'title'=>"Delete From Database")--}}
+                                        {{--)--}}
+                                    {{--!!}--}}
+                                    {{--{{ Form::close() }}--}}
+
+                                </li>
+                            @endif
                         @endforeach
                 </ul>
             </div>
         </div>
 
     @else
-        <h1>Sorry, no individual players where found on the database!, please create a player before proceding with a player</h1>
+        <h1>Sorry, no individual players where found on the database!, please create a player before preceding with a player</h1>
         {{ Html::link('/manage/player/', 'Create a Player', array('id' => 'new_player', 'class' => 'btn btn-default'))}}
     @endif
 
@@ -156,12 +190,11 @@
             $('#tournament_sort option').prop("disabled", true);
             $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#tournament_sort option.default').attr("selected","selected");
-            $('#tournament_sort').select2({
-                allowClear: true
-            });
-        console.log(d_id);
-            $('.aPlayer').addClass("disabled");
-            $('.aPlayer[game_id_j="'+d_id+'"]').removeClass("disabled");
+            {{--$('#tournament_sort').select2({--}}
+                {{--allowClear: true--}}
+            {{--});--}}
+            $('.aPlayer').addClass('hidden');
+            $('.aPlayer[game_id_j="'+d_id+'"]').removeClass('hidden');
             $("#name").val("");
             $("#username").val("");
             $("#email").val("");
@@ -177,9 +210,9 @@
             $('#team_sort option').prop("disabled", true);
             $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
             $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
-            $('#team_sort').select2({
-                allowClear: true
-            });
+            {{--$('#team_sort').select2({--}}
+                {{--allowClear: true--}}
+            {{--});--}}
         });
         $('#team_sort').on("change", function() {
             var val_g = $('#team_sort option:selected').val();
@@ -189,7 +222,7 @@
             $("#submit_button").prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
         });
         $('.aPlayer').click(function(){
-            if(!$(this).hasClass("disabled")){
+            if(!$(this).hasClass("hidden")){
                 if($(this).attr( "game_id" ) == $("#game_id").val()){
                     $("#name").prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled").val($(this).attr( "player_name" ));
                     $("#id").val($(this).attr( "player_id" ));
@@ -218,6 +251,7 @@
                 event.preventDefault();
                 return ret;
             }
+
         });
     });
 @endsection

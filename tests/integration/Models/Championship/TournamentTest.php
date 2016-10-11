@@ -5,12 +5,13 @@ use App\Models\Championship\Game;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TournamentTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      * @var \Faker\Factory::create
@@ -28,7 +29,6 @@ class TournamentTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -133,6 +133,51 @@ class TournamentTest extends \TestCase
     }
 
     /**
+     *
+     * Test to see when getting a Tournament we
+     * get back the correct sign_up_open attribute
+     *
+     * @test
+     */
+    public function it_has_a_sign_up_open_attribute()
+    {
+        $time_stamp = Carbon::now("CMT")->toDateTimeString();
+        $tournament = factory(Tournament::class)->create(['sign_up_open' => $time_stamp]);
+        $this->assertInstanceOf(Carbon::class, $tournament->sign_up_open);
+        $this->assertSame($time_stamp, $tournament->sign_up_open->toDateTimeString());
+    }
+
+    /**
+     *
+     * Test to see when getting a Tournament we
+     * get back the correct sign_up_close attribute
+     *
+     * @test
+     */
+    public function it_has_a_sign_up_close_attribute()
+    {
+        $time_stamp = Carbon::now("CMT")->toDateTimeString();
+        $tournament = factory(Tournament::class)->create(['sign_up_close' => $time_stamp]);
+        $this->assertInstanceOf(Carbon::class, $tournament->sign_up_close);
+        $this->assertSame($time_stamp, $tournament->sign_up_close->toDateTimeString());
+    }
+
+    /**
+     *
+     * Test to see when getting a Tournament we
+     * get back the correct occurring attribute
+     *
+     * @test
+     */
+    public function it_has_a_occurring_attribute()
+    {
+        $time_stamp = Carbon::now("CMT")->toDateTimeString();
+        $tournament = factory(Tournament::class)->create(['occurring' => $time_stamp]);
+        $this->assertInstanceOf(Carbon::class, $tournament->occurring);
+        $this->assertSame($time_stamp, $tournament->occurring->toDateTimeString());
+    }
+
+    /**
      * @test
      */
     public function it_deletes_teams_when_it_is_deleted()
@@ -143,6 +188,5 @@ class TournamentTest extends \TestCase
         foreach ($teams as $team) {
             $this->assertNull(Team::find($team->id));
         }
-
     }
 }

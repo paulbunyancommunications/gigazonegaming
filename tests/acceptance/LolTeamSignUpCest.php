@@ -3,18 +3,18 @@ namespace Tests\Acceptance;
 
 use \AcceptanceTester;
 use Pbc\Bandolier\Type\Numbers;
-class LolTeamSignUpCest
+class LolTeamSignUpCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;
 
     public function _before(AcceptanceTester $I)
     {
-
+        parent::_before($I);
     }
 
     public function _after(AcceptanceTester $I)
     {
-        $I->runMigration($I);
+        parent::_after($I);
     }
 
     // tests
@@ -22,8 +22,8 @@ class LolTeamSignUpCest
     {
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL team sign up form');
-        $I->amOnPage('/sign-up/lol-team-sign-up/');
-        $I->see('League of Legends Team Sign Up');
+        $I->amOnPage('/sign-up/lol-team-signup/');
+        $I->see('Team SignUp');
         $teamName = $faker->company;
         $I->fillField(['name' => 'team-name'], $teamName);
         $teamCaptain = $faker->name;

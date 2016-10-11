@@ -1,0 +1,22 @@
+@import "../mixins/all";
+.title-logo {
+  @include height(3.875);
+  width: auto;
+  @include margin-bottom(.5);
+  @include margin-top(-.75);
+}
+.page-title {
+  @include font-size(3.875);
+  @include  line-height(2);
+  position: relative;
+}
+
+.title-logo-right {
+  @include margin-left(.5);
+  float: right;
+}
+
+.title-logo-left {
+  @include margin-right(.5);
+  float: left;
+}

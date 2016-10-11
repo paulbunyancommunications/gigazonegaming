@@ -1,9 +1,10 @@
-define ['jquery', 'Utility'], ($, Utility) ->
+define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
   form = {}
 
   form.booleans = $('.boolean-group')
   form.ranges = $('.range-group')
   form.metaRequestToken = $('meta[name="request_token"]')
+  form.messageKeys = ['success','warning','error','info']
   
   form.init = ->
     form.getCsrfToken()
@@ -62,15 +63,30 @@ define ['jquery', 'Utility'], ($, Utility) ->
       dataType: "JSON"
       success: (data)->
         progress.hide()
-        if data.hasOwnProperty('success')
-          message.html('<div class="alert alert-success"><p>' + data.success.join('<br>') + '</p></div>').show()
-          thisForm[0].reset()
-        else if data.hasOwnProperty('error')
-          message.html('<div class="alert alert-danger"><p>' + data.error.join('<br>') + '</p></div>').show()
+        for messageKey in form.messageKeys
+          if data.hasOwnProperty(messageKey)
+            switch messageKey
+              when "success"
+                message.html('<div class="alert alert-success"><p>' + data.success.join('<br>') + '</p></div>').show()
+                thisForm[0].reset()
+              when "warning", "error", "info"
+                message.html('<div class="alert alert-' + messageKey + '"><p>' + data[messageKey].join('<br>') + '</p></div>').show()
       error:  (jqXHR, textStatus)->
         progress.hide()
-        #message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
-        message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
+        try
+          jqXHRResponseText=JSON.parse(jqXHR.responseText);
+          mId = Utility.makeid();
+          message.html('<div class="alert alert-danger"><p id="' + mId + '"></p></div>')
+          #get the inputs and check if there's a key on the response array with it
+          thisForm.find('input, textarea').each ->
+            if jqXHRResponseText.hasOwnProperty($(this).attr('name'))
+              $('#' + mId).append(jqXHRResponseText[$(this).attr('name')].join('<br>') + '<br>')
+          message.show()
+        catch e
+          message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
+
+
+#message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
     })
     return true
   )

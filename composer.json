@@ -14,10 +14,10 @@
       "package": {
         "name": "wordpress",
         "type": "webroot",
-        "version": "4.6",
+        "version": "4.6.1",
         "dist": {
           "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.6.zip"
+          "url": "https://github.com/WordPress/WordPress/archive/4.6.1.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -72,6 +72,21 @@
     {
       "type": "package",
       "package": {
+        "name": "lopo/duplicate-post",
+        "type": "wordpress-plugin",
+        "version": "2.6",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/duplicate-post.2.6.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
         "name": "mungobbq/enable-media-replace",
         "type": "wordpress-plugin",
         "version": "3.0.4",
@@ -100,28 +115,33 @@
       }
     },
     {
-      "type": "vcs",
-      "url": "git@github.com:paulbunyannet/form_mail.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:paulbunyannet/form_mail_template.git"
-    },
-    {
-      "type": "vcs",
-      "url":  "git@github.com:natenolting/timber.git"
+      "type": "package",
+      "package": {
+        "name": "wp/rest-api",
+        "type": "wordpress-plugin",
+        "version": "2.0",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/rest-api.2.0-beta13.1.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
     }
   ],
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
-    "doctrine/dbal": "v2.4.5",
+    "cartalyst/sentinel": "2.0.*",
+    "doctrine/dbal": "~2.5",
     "wordpress": "*",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
     "paulbunyannet/autoversion": "~1.0",
     "pmenard/media-tags": "3.2.0.2",
     "nacin/link-manager": "0.1-beta",
+    "lopo/duplicate-post": "2.6",
     "paulbunyannet/bandolier": "1.2.*",
     "twig/twig": "^1.24",
     "cocur/slugify": "^1.4",
@@ -130,11 +150,11 @@
     "mungobbq/enable-media-replace":"*",
     "figureone/insert-pages":"*",
     "tedivm/stash": "^0.14.1",
+    "wp/rest-api": "*",
     "vlucas/phpdotenv": "^2.2",
-    "rcrowe/twigbridge": "0.9.x",
+    "rcrowe/twigbridge": "0.9.3",
     "paulbunyannet/premailer": "^1.0",
     "paulbunyannet/wordpress-artisan": "^1.0",
-    "paulbunyannet/form_mail": "v1.1.*",
     "sunra/php-simple-html-dom-parser": "v1.5.0",
     "league/csv": "^8.0",
     "laravelcollective/html": "5.2.*",
@@ -142,7 +162,12 @@
     "spatie/laravel-backup": "^3.7",
     "rollbar/rollbar": "~0.18.0",
     "jenssegers/rollbar": "^1.5",
-    "jarednova/timber": "^1.1"
+    "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
+    "ircmaxell/password-compat": "^1.0",
+    "greggilbert/recaptcha": "^2.1",
+    "paulbunyannet/form_mail": "1.3.x",
+    "propaganistas/laravel-phone": "^2.8"
+
 
   },
   "require-dev": {
@@ -168,8 +193,7 @@
   },
   "autoload": {
     "classmap": [
-      "database",
-      "vendor/paulbunyannet/form_mail_template"
+      "database"
     ],
     "files": [
       "src/Wordpress/functions.php"
@@ -177,12 +201,19 @@
     "psr-4": {
       "App\\": "app/",
       "Wordpress\\": "src/Wordpress/",
+      "Twig\\": "src/Twig/",
       "GigaZone\\": "src/GigaZone/"
     }
   },
   "autoload-dev": {
     "classmap": [
       "tests/TestCase.php"
+    ],
+    "files": [
+      "tests/acceptance/BaseAcceptance.php",
+      "tests/functional/BaseFunctional.php",
+      "tests/integration/BaseIntegration.php"
+
     ],
     "psr-4": {
       "Codeception\\Module\\" : "src/Codeception/Module"

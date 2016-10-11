@@ -120,7 +120,7 @@ class TeamRequestTest extends WpRequestsBase
         $mock->shouldReceive('method')->once()->andReturn('POST');
         $this->assertSame([
             'name' => 'required|unique:mysql_champ.teams,name',
-            'tournament_id' => 'required:mysql_champ.teams,tournament_id',
+            'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
         ], $mock->rules());
 
     }
@@ -132,22 +132,18 @@ class TeamRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PUT');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PUT');
         $name = $faker->username;
         $tournamentId = $faker->numberBetween(1, 99);
-        $mock->shouldReceive('route')->twice()->andReturn((object)[
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'team_id' => (object)[
                 'name' => $name,
                 'tournament_id' => $tournamentId
             ]
         ]);
-        $this->assertSame(
-            [
-                'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
-                'tournament_id' => 'required:mysql_champ.teams,tournament_id,'.$tournamentId.',tournament_id',
-            ],
-            $mock->rules()
-        );
+        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.teams,name,'.$name.',name');
+        $this->assertSame($mock->rules()['tournament_id'], 'required|numeric:mysql_champ.tournament,tournament_id'.$tournamentId.',tournament_id');
+
 
     }
 
@@ -158,23 +154,17 @@ class TeamRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PATCH');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
         $name = $faker->username;
         $tournamentId = $faker->numberBetween(1, 99);
-        $mock->shouldReceive('route')->twice()->andReturn((object)[
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'team_id' => (object)[
                 'name' => $name,
                 'tournament_id' => $tournamentId
             ]
         ]);
-        $this->assertSame(
-            [
-                'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
-                'tournament_id' => 'required:mysql_champ.teams,tournament_id,'.$tournamentId.',tournament_id',
-            ],
-            $mock->rules()
-        );
-
+        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.teams,name,'.$name.',name');
+        $this->assertSame($mock->rules()['tournament_id'], 'required|numeric:mysql_champ.tournament,tournament_id'.$tournamentId.',tournament_id');
     }
 
 
@@ -184,12 +174,13 @@ class TeamRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\TeamRequest();
-        $this->assertSame(
-            [
-                'name.required' => 'Your Name is required.',
-                'game_id.required' => 'The Game ID is required.',
-            ],
-            $request->messages()
-        );
+        $this->assertSame($request->messages()['name.required'], 'The Team Name Field is required.');
+        $this->assertSame($request->messages()['name.unique'], 'The Team Name is in use, pick a new one.');
+        $this->assertSame($request->messages()['tournament_id.required'], 'The Tournament field is required.');
+        $this->assertSame($request->messages()['tournament_id.numeric'], "The Tournament field is required.");
+        /**
+         *  'tournament_id.required' => 'The Tournament field is empty.',
+        'tournament_id.numeric' => 'The Tournament field is empty.',
+         */
     }
 }

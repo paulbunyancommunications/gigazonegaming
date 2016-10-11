@@ -17,6 +17,7 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use Carbon\Carbon;
 use Faker\Factory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
@@ -27,7 +28,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class PlayerTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
 
     /**
@@ -49,7 +50,6 @@ class PlayerTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -109,10 +109,14 @@ class PlayerTest extends \TestCase
     public function it_is_attached_to_a_team()
     {
         $player = factory(Player::class)->create([]);
+        $team = factory(Team::class)->create([]);
+        // this will attach the team to the player
+        $player::createRelation(['player' => $player, 'team' => $team]);
 
         $getPlayer = Player::find($player->id);
 
-        $this->assertInstanceOf(Team::class, $getPlayer->team);
+        // now the first team should be the attached team to this player
+        $this->assertInstanceOf(Team::class, $getPlayer->teams[0]);
     }
     /**
      *

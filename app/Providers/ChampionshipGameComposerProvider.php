@@ -2,23 +2,44 @@
 
 namespace App\Providers;
 
-use App\Models\Championship\IndividualPlayer;
+use App\Models\Championship\Game;
 use App\Models\Championship\Player;
+use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Championship\Game;
-use \View;
-use \Cache;
+use View;
 
 class ChampionshipGameComposerProvider extends ServiceProvider
 {
+    use PlayerRelationable;
     protected $expiresAt;
     protected $expiredAt;
-    protected $maxPlayers = 5;
+    protected $maxPlayers = 0;
+    protected $connection = 'mysql_champ';
+    protected $viewComposerElements = [];
 
+
+    /**
+     * Get a list of method returns
+     * @param array $methodList
+     * @return array
+     */
+    private function getViewComposerElements($methodList = [])
+    {
+        $return = [];
+        foreach ($methodList as $method) {
+            if (array_key_exists($method, $this->viewComposerElements)) {
+                $return[$method] = $this->viewComposerElements[$method];
+                continue;
+            }
+            $return[$method] = $this->{$method}();
+        }
+
+        return $return;
+    }
     /**
      * Bootstrap the application services.
      *
@@ -26,37 +47,51 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setExpiresAt(Carbon::now()->addMinute(2)->toDateTimeString());
-        $this->setExpiredAt(null);
-        if (!Cache::has('expiration_c') or Cache::get('expiration_c') > $this->getExpiresAt()) {
-            $this->setExpiredAt(Cache::get('expiration_c'));
-        } else {
-            Cache::put('expiration_c', $this->getExpiresAt(), $this->getExpiresAt());
-        }
+        View::composer(['game.base'], function ($view) {
+            $messages = \View::make('base.partials.messages');
+            $view->with('messageHtml', $messages);
+        });
 
         View::composer(['game.game'], function ($view) {
-            $view->with('games', $this->games());
+            extract($this->getViewComposerElements(['games']));
+            $view->with('games', $games);
         });
+
         View::composer(['game.tournament'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments());
+            extract($this->getViewComposerElements(['games','tournaments']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments);
         });
+
         View::composer(['game.team'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->teams());
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', $getPlayersInfoBy);
         });
+
         View::composer(['game.player'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->teams())
-                ->with('players', $this->players($this->teams()));
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', Player::playersRelations());
         });
+
         View::composer(['game.individualPlayer'], function ($view) {
-            $view->with('games', $this->games())
-                ->with('tournaments', $this->tournaments())
-                ->with('teams', $this->shortTeams($this->getMaxPlayers()))
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
                 ->with('individualPlayers', $this->individualPlayers());
+        });
+        View::composer(['game.teamMaker'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('individualPlayers', $this->individualPlayers(['order_by'=>"tournaments.id"]));
         });
     }
 
@@ -75,99 +110,110 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function teams()
     {
-        if (Cache::has('teams_c') or $this->getExpiredAt() != null) {
-            return Cache::get('teams_c');
-        }
-        $teams = Team::orderBy('name')->get()->toArray();
-        $players = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
-        foreach ($teams as $key => $team) {
-            foreach ($players as $k => $t) {
-                if ($team['id'] == $t['team_id']) {
-                    $teams[$key]['team_count'] = $t['team_count'];
+        $playerTeam = PlayerRelation::select(DB::raw("COUNT(relation_id) as team_count"), "relation_id as team_id")
+            ->where('relation_type', '=', Team::class)
+            ->groupBy('team_id')
+            ->get()
+            ->toArray();
+
+        $table = with(new Team)->getTable();
+        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $select = [];
+        for ($c = 0; $c < count($columns); $c++) {
+            switch ($columns[$c]) {
+                case ('id'):
+                case ('name'):
+                case ('emblem'):
+                case ('verification_code'):
+                case ('captain'):
+                    array_push($select, $this->tableColumnAsTableColumn($table, $columns[$c]));
                     break;
-                }
+                case ('tournament_id'):
+                    array_push($select, $this->tableColumnAsColumn($table, $columns[$c]));
+                    break;
             }
         }
-        Cache::put('teams_c', $teams, $this->getExpiresAt());
-        return $teams;
-    }
+        /** @var array $teams get teams list with selects above */
+        $teams = call_user_func_array(array(Team::class, 'select'), $select)
+            ->orderBy('name')
+            ->get()
+            ->toArray();
 
-    /**
-     * @param $maxPlayers
-     * @return array
-     */
-    public function shortTeams($maxPlayers)
-    {
-        if (Cache::has('short_teams_c_'.$maxPlayers) or $this->getExpiredAt() != null) {
-            return Cache::get('short_teams_c_'.$maxPlayers);
-        }
-        $teams = Team::orderBy('name')->get()->toArray();
-        $times = Player::select(DB::raw("COUNT(id) as team_count"), "team_id")->groupBy('team_id')->get()->toArray();
-
+        /**
+         * Here we get the amount of players possible per team
+         * and we pass back a variable with a count of the team members.
+         */
         foreach ($teams as $key => $team) {
-            foreach ($times as $k => $t) {
-                if ($team['id'] == $t['team_id']) {
-                    if ($maxPlayers <= $t['team_count']) {
-                        unset($teams[$key]);
-                        break;
+            $maxPlayers = Tournament::where('tournaments.id', '=', $team['tournament_id'])->first();
+            if(isset($maxPlayers->max_players) and $maxPlayers!='' and $maxPlayers!=null) {
+                foreach ($playerTeam as $k => $p) {
+                    if ($team['team_id'] == $p['team_id']) {
+                        $teams[$key]['team_count'] = $p['team_count'];
+                        $teams[$key]['team_max_players'] = $maxPlayers->max_players;
                     }
-                    $teams[$key]['team_count'] = $t['team_count'];
-                    break;
+                    if ($playerTeam == []) {
+                        $teams[$key]['team_count'] = 0;
+                        $teams[$key]['team_max_players'] = $maxPlayers->max_players;
+                    }
                 }
-            }
-            if (!isset($teams[$key]['team_count']) and isset($teams[$key])) {
+                if (!isset($teams[$key]['team_count'])) {
+                    $teams[$key]['team_count'] = 0;
+                    $teams[$key]['team_max_players'] = $maxPlayers->max_players;
+                }
+            }else{
                 $teams[$key]['team_count'] = 0;
+                $teams[$key]['team_max_players'] = "0";
             }
         }
-        Cache::put('short_teams_c_'.$maxPlayers, $teams, $this->getExpiresAt());
         return $teams;
     }
 
     /**
-     * @param $teams
+     * @This method is calling the trait for only single players
+     * @param $players
      * @return mixed
      */
-    public function players($teams)
+    public function individualPlayers($params = [])
     {
-        if (Cache::has('players_c') or $this->getexpiredAt() != null) {
-            return Cache::get('players_c');
-        }
-        $players = Player::orderBy('team_id')->get()->toArray();
-        foreach ($players as $key => $player) {
-            foreach ($teams as $k => $t) {
-                if ($t['id'] == $player['team_id']) {
-                    $players[$key]['team_count'] = $t['team_count'];
-                }
-            }
-        }
-        Cache::put('players_c', $players, $this->getExpiresAt());
-        return $players;
+        return $this->getSinglePlayersInfoBy($params);
+    }
+    /**
+     * @This method is calling the trait for team players only
+     * @param $players
+     * @return mixed
+     */
+    public function teamPlayers()
+    {
+        return $this->getTeamPlayersInfoBy();
     }
 
     /**
-     * @return mixed
-     */
-    public function individualPlayers()
-    {
-        if (Cache::has('individual_player_c') or $this->getexpiredAt() != null) {
-            return Cache::get('individual_player_c');
-        }
-        $players = IndividualPlayer::all()->toArray();
-        Cache::put('individual_player_c', $players, $this->getExpiresAt());
-        return $players;
-    }
-
-    /**
-     * @return mixed
+     * Get tournaments columns for view composer
+     * Do not blindly get select columns from the database that a migration has not been run for
+     *
+     * @return array
      */
     public function tournaments()
     {
-
-        if (Cache::has('tournaments_c') or $this->getexpiredAt() != null) {
-            return Cache::get('tournaments_c');
+        $table = with(new Tournament)->getTable();
+        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $select = [];
+        for ($c = 0; $c < count($columns); $c++) {
+            switch ($columns[$c]) {
+                case ('name'):
+                case ('id'):
+                    array_push($select, $this->tableColumnAsTableColumn($table, $columns[$c]));
+                    break;
+                case ('game_id'):
+                case ('max_players'):
+                    array_push($select, $this->tableColumnAsColumn($table, $columns[$c]));
+                    break;
+            }
         }
-        $tournaments = Tournament::orderBy('name')->get()->toArray();
-        Cache::put('tournament_c', $tournaments, $this->getExpiresAt());
+        $tournaments = call_user_func_array(array(Tournament::class, 'select'), $select)
+            ->orderBy('name')
+            ->get()
+            ->toArray();
         return $tournaments;
     }
 
@@ -176,12 +222,25 @@ class ChampionshipGameComposerProvider extends ServiceProvider
      */
     public function games()
     {
-        if (Cache::has('games_c') or $this->getExpiredAt() != null) {
-            return Cache::get('games_c');
+        $table = with(new Game)->getTable();
+        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $select = [];
+        for ($c = 0; $c < count($columns); $c++) {
+            switch ($columns[$c]) {
+                case ('name'):
+                case ('id'):
+                case ('title'):
+                case ('description'):
+                case ('uri'):
+                    array_push($select, $this->tableColumnAsTableColumn($table, $columns[$c]));
+                    break;
+            }
         }
-        $games = Game::orderBy('name')->get()->toArray();
-        Cache::put('games_c', $games, $this->getExpiresAt());
 
+        $games = call_user_func_array(array(Game::class, 'select'), $select)
+            ->orderBy('name')
+            ->get()
+            ->toArray();
         return $games;
     }
 

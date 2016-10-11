@@ -2,11 +2,11 @@
 {% set error_types = ['success','warning','error'] %}
 {% set error_class = ['success','warning','danger'] %}
 {% for key, type in error_types %}
-    {% if session_has(type) %}
+    {% if Session.has(type) %}
         <div class="alert alert-{{ error_class[key] }} alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i
                             class="fa fa-times"></i></span></button>
-            {{ session_get(type) }}
+            {{ Session.get(type) }}
         </div>
     {% endif %}
 {% endfor %}

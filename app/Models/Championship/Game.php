@@ -2,6 +2,7 @@
 
 namespace App\Models\Championship;
 
+use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,10 +11,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Game extends Model
 {
+    use PlayerRelationable;
     /**
      * @var string
      */
     protected $connection = 'mysql_champ';
+
+    /**
+     * Guard the ID
+     * @var array
+     */
+    protected $guarded = ['id'];
 
     /**
      * @var array
@@ -30,29 +38,57 @@ class Game extends Model
         // cause a delete of a game to cascade to children so they are also deleted
         static::deleting(function ($game) {
             $game->tournaments()->delete();
-            $game->individualPlayers()->delete();
 
         });
     }
 
     /**
-     * Get teams playing this game
+     * return column list
+     *
+     * @return array
+     */
+    public function columns()
+    {
+        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+    }
+
+    /**
+     * Set name value to slug
+     *
+     * @param $value
+     */
+    public function setNameAttribute($value)
+    {
+        $slugify = Slugify::create();
+        $this->attributes['name'] = $slugify->slugify($value);
+    }
+
+    /**
+     * Get tournaments playing this game
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tournaments()
     {
-        return $this->hasMany('App\Models\Championship\Tournament');
+        return $this->hasMany('App\Models\Championship\Tournament', 'game_id', 'id');
     }
 
     /**
-     * Get Individual Players who what to play this game
+     * @return mixed
+     */
+    public function getTournamentsAttribute()
+    {
+        return $this->tournaments()->get();
+    }
+
+    /**
+     * Get tournaments playing this game
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function individualPlayers()
+    public function teams()
     {
-        return $this->hasMany('App\Models\Championship\IndividualPlayer');
+        return $this->hasManyThrough('App\Models\Championship\Team', 'App\Models\Championship\Tournament');
     }
 
     /**
@@ -61,6 +97,15 @@ class Game extends Model
      * @return mixed
      */
     public function scopeByName($query, $name)
+    {
+        return $query->where('name', $name)->first();
+    }
+    /**
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
+    public function scopeById($query, $name)
     {
         return $query->where('name', $name)->first();
     }

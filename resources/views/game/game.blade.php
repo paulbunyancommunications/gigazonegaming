@@ -11,22 +11,13 @@
     }
 @endsection
 @section('content')
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(isset($cont_updated) and  $cont_updated)
-        <div class="alert alert-success"><strong>Success!</strong> You have updated this Game.</div>
-    @endif
-    @if(isset($theGame->name))
-        {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id))) }}
+    <div class="col-md-6">
+    @if(isset($theGame->title))
+        <h1>Update game &#8220;{{ $theGame->title }}&#8221;</h1>
+        {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
     @else
-        {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@create'))) }}
+        <h1>Create a new game</h1>
+        {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
     @endif
 
     <div class="form-group">
@@ -36,60 +27,77 @@
             <input name="_method" type="hidden" value="POST">
         @endif
         <div class="form-group">
-            <label for="name" style="width:180px; text-align:right;">Game Name: </label> &nbsp; <input type="text" name="name" id="name"  style="width:350px; text-align:left;" placeholder="The name of the game" @if(isset($theGame->name))value="{{$theGame->name}}"@endif/>
+            <label for="name" class="control-label col-xs-3">Game Name:</label>
+            <div class="col-xs-9">
+                <input type="text" name="name" id="name" class="form-control" placeholder="The name of the game" value="@if(isset($theGame->name)){{ $theGame->name }}@else{{ old('name') }}@endif"/>
+            </div>
         </div>
         <div class="form-group">
-            <label for="uri" style="width:180px; text-align:right;">Game URI: </label> &nbsp; <input type="text" name="uri" id="uri" style="width:350px; text-align:left;" placeholder="The uri of the game" @if(isset($theGame->uri))value="{{$theGame->uri}}"@endif />
+            <label for="title" class="control-label col-xs-3">Game Title:</label>
+            <div class="col-xs-9">
+                <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game" value="@if(isset($theGame->title)){{ $theGame->title }}@else{{ old('title') }}@endif"/>
+            </div>
         </div>
         <div class="form-group">
-            <label for="description" style="width:180px; text-align:right;">Game Description: </label> &nbsp; <textarea name="description" id="description" style="width:350px; text-align:left;" placeholder="The descrition of the game"  >@if(isset($theGame->description)){{$theGame->description}}@endif</textarea>
+            <label for="uri" class="control-label col-xs-3">Game URI:</label>
+            <div class="col-xs-9">
+                <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game" value="@if(isset($theGame->uri)){{ $theGame->uri }}@else{{ old('uri') }}@endif" />
+            </div>
         </div>
         <div class="form-group">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <label for="description" class="control-label col-xs-3">Game Description:</label>
+            <div class="col-xs-9">
+                <textarea name="description" id="description" class="form-control" placeholder="The description of the game"  >@if(isset($theGame->description)){{ $theGame->description }}@else{{ old('description') }}@endif</textarea>
+            </div>
         </div>
+
         <div class="form-group">
-            <input type="submit" name="submit" id="submit" class='btn btn-default' value="Save">
-            {{ Html::link('/manage/game/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default'))}}
+            <input type="submit" name="submit" id="submit" class='btn btn-default btn-primary' value="{{ isset($theGame) ? 'Update '. $theGame->title : 'Create' }}">
+            {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default'))}}
         </div>
     </div>
-    </form>
-    <ul id="listOfGames" class="listing">
-        @if(!isset($games) || $games == [])
-            <li>There are no games yet</li>
-        @else
-            @foreach($games as $id => $game)
-                <li>
-                    {{ Form::open(array('id' => "toForm".$game["id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms")) }}
-                    <input name="_method" type="hidden" value="POST">
-                    <input name="game_sort" type="hidden" value="{{$game["id"]}}">
-                    {!!
-                        Form::submit(
-                            $game["name"],
-                            array('class'=>'gameName btn btn-default list')
-                        )
-                    !!}
-                    {{ Form::close() }}
-                    &nbsp;&nbsp;
-                    {{ Html::linkAction('Backend\Manage\GamesController@edit', 'Edit', array('game_id'=>$game["id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o')) }}
-                    &nbsp;&nbsp;
-                    {{ Form::open(array('id' => "gameForm".$game["id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["id"]), 'class' => "deletingForms")) }}
-                    <input name="_method" type="hidden" value="DELETE">
-                    {!!
-                        Form::submit(
-                            'Delete',
-                            array('class'=>'btn btn-danger list fa fa-times')
-                        )
-                    !!}
-                    {{ Form::close() }}
-                </li>
-            @endforeach
-        @endif
-    </ul>
+    {{ Form::close() }}
+    </div>
+    <div class="col-md-6">
+        <h2>Game List</h2>
+        <div id="listOfGames" class="listing">
+            @if(!isset($games) || $games == [])
+                <p>There are no games yet</p>
+            @else
+                @foreach($games as $id => $game)
+                    <div class="margin-sm-bottom">
+                        {{ Form::open(array('id' => "toForm".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms form")) }}
+                        <input name="_method" type="hidden" value="POST">
+                        <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
+                        {!!
+                            Form::submit(
+                                ($game["game_title"] ? $game["game_title"] : $game["game_name"]),
+                                array('class'=>'gameName btn btn-default btn-block list')
+                            )
+                        !!}
+                        {{ Form::close() }}
+                        &nbsp;&nbsp;
+                        {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
+                        &nbsp;&nbsp;
+                        {{ Form::open(array('id' => "gameForm".$game["game_id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["game_id"]), 'class' => "deletingForms")) }}
+                        <input name="_method" type="hidden" value="DELETE">
+                        {!!
+                            Form::submit(
+                                '&#xf014; &#xf1c0;',
+                                array('class'=>'btn btn-danger list fa delete-message confirm-choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
+                            )
+                        !!}
+                        {{ Form::close() }}
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
 
 @endsection
 @section('js')
     $(document).ready(function() {
-        $('.fa-times').click(function() {
+        $('.confirm-choice').click(function() {
             var conf = confirm('Are you sure?');
             if (conf) {
                 var url = $(this).attr('href');

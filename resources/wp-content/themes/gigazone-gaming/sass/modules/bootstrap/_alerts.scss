@@ -1,0 +1,36 @@
+/**
+* Alerts to match up with returned message keys
+*/
+@import "../../../../../../../public_html/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/mixins/alerts";
+$alertMessages: success warning error info;
+%msg-success {
+  color: $alert-success-text;
+}
+%msg-warning {
+  color: $alert-warning-text;
+}
+%msg-error {
+  color: $alert-danger-text;
+}
+%msg-info {
+  color: $alert-info-text;
+}
+
+@mixin message-set-color($arg) {
+  @extend %msg-#{$arg};
+}
+
+@mixin message-types {
+  @each $messageType in $alertMessages {
+    .alert-#{$messageType} {
+      @if $messageType == 'error' {
+        @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text);
+      }
+      p, li {
+        @include message-set-color($messageType);
+      }
+    }
+  }
+}
+
+@include message-types;

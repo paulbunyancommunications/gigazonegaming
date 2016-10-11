@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Team extends Model
 {
+    use PlayerRelationable;
     /**
      * @var string
      */
@@ -20,15 +21,29 @@ class Team extends Model
      */
     protected $fillable = ['name', 'emblem', 'captain', 'tournament_id','updated_by','updated_on'];
 
+    /**
+     * set uo boot
+     */
     public static function boot()
     {
         parent::boot();
 
-        // cause a delete of a team to cascade to children so they are also deleted
+        // when deleted
         static::deleting(function ($team) {
-            $team->players()->delete();
-
+            PlayerRelation::where('relation_type', '=', self::class)
+                ->where('relation_id', '=', $team->id)
+                ->delete();
         });
+    }
+
+    /**
+     * Get game which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function game()
+    {
+        return $this->tournament()->first()->game;
     }
 
     /**
@@ -38,7 +53,38 @@ class Team extends Model
      */
     public function tournament()
     {
-        return $this->belongsTo('App\Models\Championship\Tournament');
+        return $this->belongsTo(Tournament::class,'tournament_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getTournamentAttribute()
+    {
+        return $this->tournament()->first();
+    }
+
+    /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function playerRelation()
+    {
+        return $this->players();
+    }
+
+    public function players()
+    {
+        $relationship = PlayerRelation::where('relation_id', '=', $this->id)
+            ->where('relation_type', '=', Team::class)->pluck('player_id');
+        return Player::whereIn('id', $relationship);
+
+    }
+
+    public function getPlayersAttribute()
+    {
+        return $this->players()->get();
     }
 
     /**
@@ -55,11 +101,26 @@ class Team extends Model
     }
 
     /**
-     * Get players
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Get true if team is full or false if you can still add players
+     *
+     * @return boolean
      */
-    public function players()
-    {
-        return $this->hasMany('App\Models\Championship\Player', 'team_id', 'id');
+    public function isTeamFull(){
+
+        $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
+        $teamCount = $this->players()->count();
+
+        return $maxPlayers["max_players"] <= $teamCount; //if team is full this will eval to true, otherwise will eval to false
+    }
+    /**
+     * Get true if team is not full or false if you can't add players
+     *
+     * @return boolean
+     */
+    public function isTeamNotFull(){
+
+        $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
+        $teamCount = $this->players()->count();
+        return $maxPlayers["max_players"] > $teamCount; //if team is full this will eval to true, otherwise will eval to false
     }
 }

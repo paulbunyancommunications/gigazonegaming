@@ -181,6 +181,15 @@ return [
         // laravel backup provider
         Spatie\Backup\BackupServiceProvider::class,
 
+        // Sentinal Cartalyst authentication
+        Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
+
+        // recaptcha
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+
+        //phone validator
+        Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+
     ],
 
     /*
@@ -234,6 +243,13 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 
+        // Sentinal Cartalyst authentication facades
+        'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
+        'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
+        'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
+
+        // recaptcha
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
     ],
 
 ];

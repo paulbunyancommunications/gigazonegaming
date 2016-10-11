@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Tournament extends Model
 {
+    use PlayerRelationable;
     /**
      * @var string
      */
@@ -18,7 +19,18 @@ class Tournament extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'game_id','updated_by','updated_on'];
+    protected $fillable = ['name', 'game_id', 'max_players','updated_by','updated_on'];
+
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'sign_up_open',
+        'sign_up_close',
+        'occurring'
+    ];
 
     /**
      *
@@ -30,9 +42,9 @@ class Tournament extends Model
         // cause a delete of a tournament to cascade to children so they are also deleted
 
         static::deleting(function ($tournament) {
-
             /** @var Tournament $tournament */
             $tournament->teams()->delete();
+            $tournament->findPlayersRelations()->delete(); //this should delete the relations not the players
 
         });
     }
@@ -45,28 +57,39 @@ class Tournament extends Model
         return $this->belongsTo('App\Models\Championship\Game');
     }
 
+
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function getGameAttribute()
     {
-        return $this->belongsTo('App\Models\Championship\Game', 'game_id', 'id')->getResults();
+        return $this->game()->first();
     }
 
     /**
+     * Get tournament which team is playing in
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function playerRelation()
+    {
+        return $this->morphMany('App\Models\Championship\PlayerRelationable', 'relation');
+    }
+
+    /**
+     * Get teams in this tournament
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function teams()
     {
         return $this->hasMany('App\Models\Championship\Team');
     }
-    
-     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+
+    /**
+     * @return mixed
      */
     public function getTeamsAttribute()
     {
-        return $this->hasMany('App\Models\Championship\Team')->getResults();
+        return $this->teams()->get();
     }
-    
 }

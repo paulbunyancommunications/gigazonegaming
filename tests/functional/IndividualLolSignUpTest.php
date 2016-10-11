@@ -6,7 +6,9 @@ use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Pbc\Bandolier\Type\Numbers;
 
 /**
@@ -20,7 +22,7 @@ use Pbc\Bandolier\Type\Numbers;
  */
 class IndividualLolSignUpTest extends \TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      *
@@ -38,7 +40,7 @@ class IndividualLolSignUpTest extends \TestCase
     {
         $faker = \Faker\Factory::create();
         $parameters = [
-            'email' => $faker->email,
+            'email' => time() . $faker->email,
             'name' => $faker->name,
             'your-lol-summoner-name' => $faker->userName,
             'your-phone' => $faker->phoneNumber,
@@ -57,15 +59,16 @@ class IndividualLolSignUpTest extends \TestCase
         );
 
         // now check the db for this player
-        $getIndividual = IndividualPlayer::where('email', $parameters['email'])->first();
-        $this->assertInstanceOf(IndividualPlayer::class, $getIndividual);
+        $getIndividual = Player::where('email', '=', $parameters['email'])->first();
+        \Codeception\Util\Debug::debug($getIndividual);
+        $this->assertInstanceOf(Player::class, $getIndividual);
 
         $this->assertSame($getIndividual->email, $parameters['email']);
         $this->assertSame($getIndividual->name, $parameters['name']);
         $this->assertSame($getIndividual->username, $parameters['your-lol-summoner-name']);
         $this->assertSame($getIndividual->phone, $parameters['your-phone']);
 
-        $this->assertInstanceOf(Game::class, $getIndividual->game()->first());
+        $this->assertInstanceOf(Game::class, $getIndividual->games[0]);
 
     }
 }

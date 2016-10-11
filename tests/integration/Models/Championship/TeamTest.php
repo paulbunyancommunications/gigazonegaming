@@ -18,6 +18,7 @@ use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
 use Faker\Factory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
@@ -28,7 +29,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class TeamTest extends \TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      * @var
@@ -49,7 +50,6 @@ class TeamTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
     }
 
     /**
@@ -110,7 +110,8 @@ class TeamTest extends \TestCase
     public function it_has_a_captain_attribute()
     {
         $item = factory(Team::class)->create();
-        $player = factory(Player::class)->create(['team_id' => $item->id]);
+        $player = factory(Player::class)->create([]);
+        $player::createRelation(['player' => $player, 'team' => $item]);
         $item->captain = $player->id;
         $item->save();
         
@@ -132,23 +133,7 @@ class TeamTest extends \TestCase
 
         $this->assertFalse($item->captain());
     }
-    /**
-     *
-     * Test to see when getting a team we
-     * get back the game the captain of the team
-     *
-     * @test
-     */
-    public function it_has_a_players_attribute()
-    {
-        $team = factory(Team::class)->create();
-        factory(Player::class, 10)->create(['team_id' => $team->id]);
 
-        $getTeam = Team::find($team->id);
-
-        $this->assertSame(count($getTeam->players->toArray()), 10);
-        $this->assertInstanceOf(Player::class, $getTeam->players[0]);
-    }
     /**
      *
      * Test to see when getting a Team we
@@ -182,15 +167,17 @@ class TeamTest extends \TestCase
     /**
      * @test
      */
-    public function it_removes_its_players_when_deleted()
+    public function it_unattached_its_players_when_deleted()
     {
         $team = factory(Team::class)->create();
-        $players = factory(Player::class, 5)->create(['team_id' => $team->id]);
+        $players = factory(\App\Models\Championship\Player::class, 5)->create([]);
+        for($i=0; $i < count($players); $i++) {
+            \App\Models\Championship\Player::createRelation(['player' => $players[$i], 'team' => $team]);
+        }
 
         $team->delete();
         foreach ($players as $player) {
-            $getPlayer = Player::find($player->id);
-            $this->assertNull($getPlayer);
+            $this->assertEmpty($player->teams);
         }
     }
 }

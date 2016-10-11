@@ -1,0 +1,24 @@
+{# if tag type page, then display the tag title partial #}
+{% if tag is defined %}
+    {% include "partials/title/tag-title.twig" %}
+
+{# if category type page, then display the category title partial #}
+{% elseif category is defined %}
+    {% include "partials/title/category-title.twig" %}
+
+{# if archive type page, then display the category title partial #}
+{% elseif function('is_archive') %}
+
+    {# if this is an archive of authors posts, then display the author title partial #}
+    {% if author is defined %}
+        {% include "partials/title/author-title.twig" with {'author':author} %}
+
+    {# Otherwise display the archive title #}
+    {% else %}
+        {% include "partials/title/archive-title.twig" %}
+    {% endif %}
+
+{# if author type page, then display the author title partial #}
+{% elseif is_author is defined and is_author == true %}
+    {% include "partials/title/author-title.twig" with {'author':author} %}
+{% endif %}

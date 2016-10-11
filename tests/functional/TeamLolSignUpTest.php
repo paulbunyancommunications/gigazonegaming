@@ -7,7 +7,9 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\UpdateRecipients;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Pbc\Bandolier\Type\Numbers;
 
 /**
@@ -16,7 +18,7 @@ use Pbc\Bandolier\Type\Numbers;
  */
 class TeamLolSignUpTest extends \TestCase
 {
-    #use DatabaseTransactions;
+    use DatabaseTransactions, DatabaseMigrations;
 
     /**
      *
@@ -61,7 +63,7 @@ class TeamLolSignUpTest extends \TestCase
         $this->assertSame($getTeam->captain, $getPlayers[0]->id);
 
         // assert all the other players were set for this team
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i < $getTeam->tournament->max_players; $i++) {
             $this->assertInstanceOf(Player::class, $getPlayers[$i]);
             $this->assertSame(
                 $getPlayers[$i]->email,
@@ -98,14 +100,13 @@ class TeamLolSignUpTest extends \TestCase
         $parameters['geo_long'] = $faker->longitude;
         $this->call('POST', '/lol-team-sign-up', $parameters);
 
-        $get = UpdateRecipients::where(
-            [
+        $get = UpdateRecipients::where([
                 'email' => $parameters['email'],
-                'geo_lat' => $parameters['geo_lat'],
-                'geo_long' => $parameters['geo_long'],
-            ]
-        )->get();
+            ])->get();
         $this->assertCount(1, $get);
+        $this->assertSame($get[0]->geo_lat, $parameters['geo_lat']);
+        $this->assertSame($get[0]->geo_long, $parameters['geo_long']);
+
     }
 
     /**
@@ -116,18 +117,18 @@ class TeamLolSignUpTest extends \TestCase
     {
         $faker = \Faker\Factory::create();
         $name = implode('-', $faker->words());
-        $tournament = factory(Tournament::class)->create(['name' => $name]);
+        $tournament = factory(Tournament::class)->create(['name' => $name, 'max_players' => 5]);
         $parameters = [
-            'email' => $faker->email,
+            'email' => md5(time().rand(1,10000)).'@example.com',
             'name' => $faker->name,
-            'team-name' => $faker->company,
-            'team-captain-lol-summoner-name' => $faker->userName,
+            'team-name' => $faker->company. ' ' . md5(time().rand(1,10000)),
+            'team-captain-lol-summoner-name' => $faker->userName . ' ' . md5(time().rand(1,10000)),
             'team-captain-phone' => $faker->phoneNumber,
             'tournament' => $tournament->name,
             'fields' => ['email', 'name', 'team-name', 'team-captain-lol-summoner-name', 'team-captain-phone']
         ];
         $parameters['_token'] =  \Session::token();
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i < $tournament->max_players; $i++) {
             $parameters['teammate-' . Numbers::toWord($i) . '-email-address'] = $faker->email;
             $parameters['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = $faker->userName;
         }

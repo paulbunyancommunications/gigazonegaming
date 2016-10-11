@@ -23,49 +23,41 @@ class GameRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     * @todo Nelson, please fix switch statement, only use colons and breaks between conditions http://php.net/manual/en/control-structures.switch.php
      * @return array
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'GET':
             case 'DELETE':
-            {
                 return [];
-            }
             case 'POST':
-            {
                 return [
-                    'name' => 'required',
-                    'uri' => 'required',
+                    'name' => 'required|unique:mysql_champ.games,name',
+                    'title' => 'required|unique:mysql_champ.games,title',
+                    'uri' => 'required|url',
                 ];
-            }
             case 'PUT':
             case 'PATCH':
-            {
-
-//                $id = $this->route()->game_id->id;
-                $name = $this->route()->game_id->name;
-//                dd("passed put patch");
                 return [
-//                    'id' => 'required|unique:mysql_champ.games,id,'.$id.',id',
-                    'name' => 'required|unique:mysql_champ.games,name,'.$name.',name',
-                    'uri' => 'required',
+                    'name' => 'required|unique:mysql_champ.games,name,'.$this->route()->game_id->name.',name',
+                    'title' => 'required|unique:mysql_champ.games,title,'.$this->route()->game_id->title.',title',
+                    'uri' => 'required|url',
                 ];
-            }
-            default:break;
+            default:
+                break;
         }
-        return [
-        ];
-
+        return [];
     }
     public function messages()
     {
         return [
-            'name.required' => 'Your name is required.',
-            'uri.required' => 'The URI is required.',
+            'name.required' => 'The game :attribute is required.',
+            'name.unique' => 'The game :attribute is is already being used.',
+            'title.required' => 'The game :attribute is required.',
+            'title.unique' => 'The game :attribute is already being used.',
+            'uri.required' => 'The game :attribute is required.',
+            'uri.url' => 'The game :attribute must be a valid URL.',
         ];
     }
 }

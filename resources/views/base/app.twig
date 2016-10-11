@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ site_name }} : {{ block('title') }}</title>
+    <link rel="stylesheet" href="{{ '/bower_components/bootstrap/dist/css/bootstrap.css'|auto_version_path}}">
+    <link rel="stylesheet" href="{{ '/bower_components/font-awesome/css/font-awesome.css'|auto_version_path}}">
+    <link rel="stylesheet" href="{{ '/app/content/css/app.css'|auto_version_path}}">
+    {% if controller_css is defined %}
+        <link rel="stylesheet" href="{{ controller_css|auto_version_path}}">
+    {% endif %}
+    <script src='https://use.typekit.net/bhh0sxx.js'></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    {{ block('header') }}
+</head>
+<body>
+<div class="background-logo"></div>
+    {{ block('body') }}
+    <script src="{{ '/app/content/js/common-require.js'|auto_version_path }}"></script>
+    <script src="{{ '/bower_components/requirejs/require.js'|auto_version_path}}"></script>
+    <script src="{{ '/app/content/js/main-require.js'|auto_version_path }}"></script>
+    {% if controller_js is defined %}
+        <script>
+            require(['modules/{{ controller }}'], function({{ controller }}){
+                return {{ controller }}.init()
+            });
+        </script>
+    {% endif %}
+
+{{ block('footer') }}
+
+</body>
+</html>

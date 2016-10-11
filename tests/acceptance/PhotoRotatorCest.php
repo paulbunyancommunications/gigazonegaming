@@ -1,16 +1,19 @@
 <?php
 
 
-class PhotoRotatorCest
+class PhotoRotatorCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;
 
     public function _before(AcceptanceTester $I)
     {
+        parent::_before($I);
+        $I->runShellCommand('php artisan db:seed --class=PhotoRotatorCestImageSeed');
     }
 
     public function _after(AcceptanceTester $I)
     {
+        parent::_after($I);
     }
 
     // tests

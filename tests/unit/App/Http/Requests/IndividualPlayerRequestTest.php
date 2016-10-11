@@ -1,13 +1,12 @@
 <?php
 /**
- * ${CLASS_NAME}
+ * IndividualPlayerRequestTest
  *
  * Created 6/13/16 12:22 PM
- * Description of this file here....
+ * Tests for IndividualPlayerRequest
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  * @package App\Http\Requests
- * @subpackage Subpackage
  */
 
 namespace App\Http\Requests;
@@ -117,7 +116,13 @@ class IndividualPlayerRequestTest extends WpRequestsBase
     {
         $mock = Mockery::mock('App\\Http\\Requests\\IndividualPlayerRequest[method]');
         $mock->shouldReceive('method')->once()->andReturn('POST');
-        $this->assertSame(['username' => 'required|unique:mysql_champ.individual_players,username'], $mock->rules());
+        $this->assertSame(
+            [
+                'username' => 'required|unique:mysql_champ.players,username',
+                'email' => 'required|email|unique:mysql_champ.players,email',
+            ],
+            $mock->rules()
+        );
 
     }
 
@@ -130,10 +135,12 @@ class IndividualPlayerRequestTest extends WpRequestsBase
         $mock = Mockery::mock('App\\Http\\Requests\\IndividualPlayerRequest[method,route]');
         $mock->shouldReceive('method')->once()->andReturn('PUT');
         $name = $faker->username;
-        $mock->shouldReceive('route')->once()->andReturn((object)['player_id' => (object)['username' => $name]]);
+        $email = $faker->email;
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['player_id' => (object)['username' => $name, 'email' => $email]]);
         $this->assertSame(
             [
-                'username' => 'required|unique:mysql_champ.individual_players,username,'.$name.',username'
+                'username' => 'required|unique:mysql_champ.players,username,'.$name.',username',
+                'email' => 'required|unique:mysql_champ.players,email,' . $email . ',email',
             ],
             $mock->rules()
         );
@@ -147,33 +154,13 @@ class IndividualPlayerRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\IndividualPlayerRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PATCH');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
         $name = $faker->username;
-        $mock->shouldReceive('route')->once()->andReturn((object)['player_id' => (object)['username' => $name]]);
-        $this->assertSame(
-            [
-                'username' => 'required|unique:mysql_champ.individual_players,username,'.$name.',username'
-            ],
-            $mock->rules()
-        );
+        $email = $faker->email;
+
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['player_id' => (object)['username' => $name, 'email' => $email]]);
+        $this->assertSame($mock->rules()['username'], 'required|unique:mysql_champ.players,username,'.$name.',username');
+        $this->assertSame($mock->rules()['email'], 'required|unique:mysql_champ.players,email,'.$email.',email');
 
     }
-
-    /**
-     * @test
-     */
-    public function it_returns_an_array_of_messages()
-    {
-        $request = new \App\Http\Requests\IndividualPlayerRequest();
-        $this->assertSame(
-            [
-                'name.required' => 'Your Name is required.',
-                'game_id.required' => 'The Game ID is required.',
-            ],
-            $request->messages()
-        );
-
-    }
-
-
 }

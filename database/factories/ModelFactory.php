@@ -43,31 +43,44 @@ $factory->define(App\Models\Championship\Team::class, function (Faker\Generator 
     ];
 });
 
+$factory->define(App\Models\Championship\PlayerRelation::class, function (Faker\Generator $faker) {
+
+    return [
+        'player_id' => factory(App\Models\Championship\Player::class)->create([])->id,
+        'relation_id' => $faker->userName,
+        'relation_type' => $faker->email,
+    ];
+});
 $factory->define(App\Models\Championship\Player::class, function (Faker\Generator $faker) {
-
+//    $id = factory(App\Models\Auth\Users\User::class)->create()->id;
     return [
+        'name' => $faker->name,
         'username' => $faker->userName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
-        'team_id' => factory(App\Models\Championship\Team::class)->create([])->id,
+        'user_id' => $faker->numberBetween(22220,22260),
     ];
 });
 
-$factory->define(App\Models\Championship\IndividualPlayer::class, function (Faker\Generator $faker) {
-
-    return [
-        'username' => $faker->userName,
-        'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
-        'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
-    ];
-});
+//$factory->define(App\Models\Championship\IndividualPlayer::class, function (Faker\Generator $faker) {
+//
+//    return [
+//        'username' => $faker->userName,
+//        'email' => $faker->email,
+//        'phone' => $faker->phoneNumber,
+//        'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
+//    ];
+//});
 
 $factory->define(App\Models\Championship\Tournament::class, function (Faker\Generator $faker) {
 
     return [
         'name' => implode('-', $faker->words(4)),
         'game_id' => factory(App\Models\Championship\Game::class)->create([])->id,
+        'sign_up_open' => $faker->dateTimeBetween('+30 minutes', '+1 day'),
+        'sign_up_close' => $faker->dateTimeBetween('+2 days', '+1 week'),
+        'occurring' => $faker->dateTimeBetween('+1 month', '+2 months'),
+        'max_players' => $faker->randomDigitNotNull,
     ];
 });
 $factory->define(App\Models\WpPost::class, function (Faker\Generator $faker) {
@@ -106,5 +119,27 @@ $factory->define(App\Models\WpUser::class, function (Faker\Generator $faker) {
         'user_nicename' => $faker->name,
         'user_email' => $faker->email,
         'display_name' => $faker->name,
+    ];
+});
+
+use Cocur\Slugify\Slugify;
+
+$factory->define(App\Models\Auth\Users\User::class, function (Faker\Generator $faker) {
+    return [
+        'email' => $faker->email,
+        'password' => bcrypt(str_random(10)),
+        'permissions' => [$faker->word => true, $faker->word => true],
+        'last_login' => date("Y-m-d H:i:s")
+    ];
+});
+
+$factory->define(App\Models\Auth\Roles\Role::class, function (Faker\Generator $faker) {
+
+    $slugify = new Slugify();
+    $name = $faker->word . ' ' .(time() + rand(1,999999));
+    return [
+        'name' => $name,
+        'slug' => $slugify->slugify($name),
+        'permissions' => [$faker->word => true, $faker->word => true],
     ];
 });

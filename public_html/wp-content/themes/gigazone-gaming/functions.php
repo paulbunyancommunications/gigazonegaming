@@ -16,6 +16,8 @@ add_shortcode('update-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('contact-us', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-team-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
+add_shortcode('build-form', [$bootstrap, 'formFieldsShortCode']);
+add_shortcode('env', [$bootstrap, 'getEnvShortCode']);
 // get image by id, usage [get-image 12345]
 // this will output the image with height and width attributes and class of get-image
 add_shortcode('get-image', [$bootstrap, 'getMediaImageShortCode']);
@@ -27,8 +29,10 @@ add_action('init', 'showSplashPageOnly', 1);
 // add theme support for post thumbnails
 add_theme_support('post-thumbnails');
 
-// enqueue css and js
-function loadCss()
+/**
+ * Enqueue css for site
+ */
+function enqueueCss()
 {
     $themeDir = parse_url(get_template_directory_uri(), PHP_URL_PATH);
     $autoVersion = new \Pbc\AutoVersion();
@@ -42,8 +46,29 @@ function loadCss()
     );
 }
 
-add_action('wp_head', 'loadCss', 1);
+/**
+ * Enqueue js for loading typekit fonts
+ */
+function enqueueTypekit()
+{
+    wp_enqueue_script('typekit', 'https://use.typekit.net/bhh0sxx.js');
+}
 
+/**
+ * enqueue Google reCaptcha Js
+ */
+function enqueueReCaptcha()
+{
+    wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js');
+}
+
+add_action('wp_head', 'enqueueCss', 1);
+add_action('wp_head', 'enqueueReCaptcha', 1);
+add_action('wp_head', 'enqueueTypekit', 1);
+
+/**
+ * Enqueue all js for site
+ */
 function loadJs()
 {
     $themeDir = parse_url(get_template_directory_uri(), PHP_URL_PATH);
@@ -59,6 +84,9 @@ function loadJs()
 
 add_action('wp_footer', 'loadJs');
 
+/**
+ * Show splash page if "WP_FRONT_PAGE_ONLY" is set to true
+ */
 function showSplashPageOnly()
 {
     if (filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
@@ -76,10 +104,12 @@ function showSplashPageOnly()
  * @author Ryan Hamilton
  * @link https://gist.github.com/Fantikerz/5557617
  */
-function remove_empty_p( $content ) {
-    $content = force_balance_tags( $content );
-    $content = preg_replace( '#<p>\s*+(<br\s*/*>)?\s*</p>#i', '', $content );
-    $content = preg_replace( '~\s?<p>(\s|&nbsp;)+</p>\s?~', '', $content );
+function remove_empty_p($content)
+{
+    $content = force_balance_tags($content);
+    $content = preg_replace('#<p>\s*+(<br\s*/*>)?\s*</p>#i', '', $content);
+    $content = preg_replace('~\s?<p>(\s|&nbsp;)+</p>\s?~', '', $content);
     return $content;
 }
+
 add_filter('the_content', 'remove_empty_p', 20, 1);

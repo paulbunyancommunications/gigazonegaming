@@ -13,6 +13,7 @@ class CreateTeamsTable extends Migration
     public function up()
     {
         Schema::connection('mysql_champ')->create('teams', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->increments('id');
             $table->string('name');
             $table->string('emblem');

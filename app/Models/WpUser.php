@@ -15,4 +15,13 @@ class WpUser extends Model
 
     public $timestamps = false;
 
+    /**
+     * Set the password value to md5, WP itself will hash if md5 is found
+     * @param $value
+     */
+    public function setUserPassAttribute($value)
+    {
+        $this->attributes['user_pass'] = md5($value);
+    }
+
 }

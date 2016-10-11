@@ -8,7 +8,7 @@
     @include margin-top(.75);
   }
 
-  &-title-label {
+  &-title-label, &-title-text > .paged {
     @include font-size(1.625);
     @include line-height(0);
     margin: 0;
@@ -17,9 +17,10 @@
     @include padding-bottom(.325);
     color: tint($color-gz-orange, 50%);
     text-decoration: none;
-    text-aligh: right;
+    text-align: right;
     text-transform: uppercase;
     @include inline-block();
+    font-style: normal;
 
     @include mq_cinema {
       @include margin-top(1.25);
@@ -42,7 +43,7 @@
       @include line-height(.75);
     }
 
-    &-label, &-image-container, &-text {
+    &-label, &-image-container, &-text, .paged {
       float: left;
       margin: 0;
       display: block;
@@ -52,13 +53,20 @@
         margin-top: 0 !important;
         display: block;
         line-height: normal;
+        text-align: left;
       }
       @include mq-phone {
         float: none;
         margin-top: 0 !important;
         display: block;
         line-height: normal;
+        text-align: left;
       }
+    }
+
+    .paged {
+      float: none;
+      @include inline-block();
     }
 
     &::after{
@@ -68,7 +76,7 @@
     }
 
     //.tag-title-label
-    &-label {
+    &-label, & .paged {
       @include margin-top(.75);
 
     }

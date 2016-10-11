@@ -35,7 +35,7 @@ class MakeGigazoneGamingChampionshopLolTournament extends Migration
     {
         $tournament = Tournament::where('name', $this->name)->first();
         if ($tournament) {
-            $tournament->delete();
+            Tournament::where('id', $tournament->id)->delete();
         }
     }
 }
