@@ -180,17 +180,17 @@ apache:
         vhost1:
             servername: awesome.dev
             docroot: /var/www/awesome
-            port: '80'
+            port: '443'
             setenv:
                 - 'APP_ENV dev'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             custom_fragment: ''
-            ssl: '0'
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_chain: ''
-            ssl_certs_dir: ''
+            ssl: '1'
+            ssl_cert: LETSENCRYPT
+            ssl_key: LETSENCRYPT
+            ssl_chain: LETSENCRYPT
+            ssl_certs_dir: LETSENCRYPT
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
@@ -216,7 +216,7 @@ letsencrypt:
     install: '1'
     settings:
         email: ''
-    domains: {  }
+    domains: {www.awesome.dev}
 php:
     install: '1'
     settings:
