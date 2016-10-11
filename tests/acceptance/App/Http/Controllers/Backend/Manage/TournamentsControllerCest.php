@@ -143,7 +143,7 @@ class TournamentsControllerCest extends BaseAcceptance
     public function seeErrorWhenMaxPlayersIsntInput(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
-        $I->see('The Number of players is a required field');
+        $I->see('The number of players is a required field');
     }
     /**
      * Ensure when creating a tournament that the name is present
@@ -152,9 +152,13 @@ class TournamentsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenMaxPlayersIsntANumber(AcceptanceTester $I)
     {
+        $I->executeJS(
+            'document.getElementsByName("max_players")[0].type="text";'
+        );
         $I->fillField(['id' => 'max_players'], "Not A Number");
         $I->click(['id' => 'submit']);
-        $I->see('The Number of players needs to be a number, LOL.');
+        $I->see('The NUMBER of players needs to be ... a number, LOL.');
+
     }
 
     /**
