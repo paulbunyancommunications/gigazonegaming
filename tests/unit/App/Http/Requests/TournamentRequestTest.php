@@ -176,12 +176,10 @@ class TournamentRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\TournamentRequest();
-        $this->assertSame(
-            [
-                'name.required' => 'Your Name is required.',
-                'game_id.required' => 'The Game ID is required.',
-            ],
-            $request->messages()
-        );
+        $this->assertSame($request->messages()['name.required'], 'The Tournament Name is required.');
+        $this->assertSame($request->messages()['game_id.required'], 'A Game must be selected.');
+        $this->assertSame($request->messages()['max_players.required'], 'The number of players is a required field.');
+        $this->assertSame($request->messages()['max_players.numeric'], 'The max players should be a number.');
+
     }
 }

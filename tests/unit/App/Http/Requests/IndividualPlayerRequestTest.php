@@ -157,14 +157,10 @@ class IndividualPlayerRequestTest extends WpRequestsBase
         $mock->shouldReceive('method')->once()->andReturn('PATCH');
         $name = $faker->username;
         $email = $faker->email;
+
         $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['player_id' => (object)['username' => $name, 'email' => $email]]);
-        $this->assertSame(
-            [
-                'username' => 'required|unique:mysql_champ.players,username,'.$name.',username',
-                'email' => 'required|unique:mysql_champ.players,email,'.$email.',email'
-            ],
-            $mock->rules()
-        );
+        $this->assertSame($mock->rules()['username'], 'required|unique:mysql_champ.players,username,'.$name.',username');
+        $this->assertSame($mock->rules()['email'], 'required|unique:mysql_champ.players,email,'.$email.',email');
 
     }
 }

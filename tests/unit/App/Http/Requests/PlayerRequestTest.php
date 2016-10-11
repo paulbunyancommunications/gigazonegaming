@@ -117,12 +117,10 @@ class PlayerRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_rules_on_post_method()
     {
         $mock = Mockery::mock('App\\Http\\Requests\\PlayerRequest[method]');
-        $mock->shouldReceive('method')->once()->andReturn('POST');
-        $this->assertSame([
-            'username' => 'required|unique:mysql_champ.players,username',
-            'team_id' => 'required:mysql_champ.players,team_id',
-        ], $mock->rules());
-
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('POST');
+        $this->assertSame($mock->rules()['username'], 'required|unique:mysql_champ.players,username');
+        $this->assertSame($mock->rules()['email'], 'required|email|unique:mysql_champ.players,email');
+        $this->assertSame($mock->rules()['phone'], 'phone:US');
     }
 
     /**
@@ -132,11 +130,11 @@ class PlayerRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\PlayerRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PUT');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PUT');
         $name = $faker->username;
         $teamId = $faker->numberBetween(1, 99);
         $email = $faker->email;
-        $mock->shouldReceive('route')->twice()->andReturn((object)[
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'player_id' => (object)[
                 'username' => $name,
                 'team_id' => $teamId,
@@ -179,10 +177,11 @@ class PlayerRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\PlayerRequest();
-        $this->assertArrayHasKey('name.required', $request->messages());
-        $this->assertArrayHasKey('name.unique', $request->messages());
+        $this->assertArrayHasKey('username.required', $request->messages());
+        $this->assertArrayHasKey('username.unique', $request->messages());
         $this->assertArrayHasKey('email.required', $request->messages());
         $this->assertArrayHasKey('email.unique', $request->messages());
+        $this->assertArrayHasKey('phone.phone', $request->messages());
 
     }
 }

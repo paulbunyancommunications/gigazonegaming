@@ -150,16 +150,11 @@ class GameRequestTest extends WpRequestsBase
         $mock->shouldReceive('method')->once()->andReturn('PUT');
         $name = $faker->username;
         $title = $faker->sentence;
-        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['game_id' => (object)['name' => $name, 'title' => $title]]);
-        $this->assertSame(
-            [
-                'name' => 'required|unique:mysql_champ.games,name,' . $name . ',name',
-                'title' => 'required|unique:mysql_champ.games,title,' . $title . ',title',
-                'uri' => 'required|url',
-            ],
-            $mock->rules()
-        );
 
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['game_id' => (object)['name' => $name, 'title' => $title]]);
+        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.games,name,'.$name.',name');
+        $this->assertSame($mock->rules()['title'], 'required|unique:mysql_champ.games,title,'.$title.',title');
+        $this->assertSame($mock->rules()['uri'], 'required|url');
     }
 
     /**
