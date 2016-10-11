@@ -162,8 +162,15 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
     {
+        $I->executeJS("
+            select = document.getElementById('tournament_id');
+            var option = document.createElement('option');
+            option.text = 'test';
+            option.value = '';
+            select.appendChild(option);
+                ");
         $I->click(['id' => 'submit']);
-        $I->see('The Tournament field is required');
+        $I->see('The Tournament field can not be empty.');
     }
 
     /**
@@ -182,7 +189,7 @@ class TeamsControllerCest extends BaseAcceptance
                 ");
         $I->selectOption(['id' => 'tournament_id'], "myFakeHackyOption");
         $I->click(['id' => 'submit']);
-        $I->see("The Tournament field is required");
+        $I->see('The Tournament field must be an tournament ID.');
     }
 
     /**

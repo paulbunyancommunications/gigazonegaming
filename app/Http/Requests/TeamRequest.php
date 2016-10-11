@@ -69,8 +69,8 @@ class TeamRequest extends Request
         return [
             'name.required' => 'The Team Name Field is required.',
             'name.unique' => 'The Team Name is in use, pick a new one.',
-            'tournament_id.required' => 'The Tournament field is required.',
-            'tournament_id.numeric' => "The Tournament field is required.",
+            'tournament_id.required' => 'The Tournament field can not be empty.',
+            'tournament_id.numeric' => 'The Tournament field must be an tournament ID.',
         ];
     }
 }
