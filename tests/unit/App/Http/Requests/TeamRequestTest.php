@@ -184,12 +184,13 @@ class TeamRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\TeamRequest();
-        $this->assertSame(
-            [
-                'name.required' => 'Your Name is required.',
-                'game_id.required' => 'The Game ID is required.',
-            ],
-            $request->messages()
-        );
+        $this->assertSame($request->messages()['name.required'], 'The Team Name Field is required.');
+        $this->assertSame($request->messages()['name.unique'], 'The Team Name is in use, pick a new one.');
+        $this->assertSame($request->messages()['tournament_id.required'], 'The Tournament field is empty.');
+        $this->assertSame($request->messages()['tournament_id.numeric'], 'The Tournament field must be an ID number.');
+        /**
+         *  'tournament_id.required' => 'The Tournament field is empty.',
+        'tournament_id.numeric' => 'The Tournament field is empty.',
+         */
     }
 }
