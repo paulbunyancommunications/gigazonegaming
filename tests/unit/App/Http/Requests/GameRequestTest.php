@@ -147,11 +147,14 @@ class GameRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\GameRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PUT');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PUT');
         $name = $faker->username;
         $title = $faker->sentence;
+        $url = $faker->url;
 
-        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['game_id' => (object)['name' => $name, 'title' => $title]]);
+        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
+            'game_id' => (object)['name' => $name, 'title' => $title, 'uri' => $url]]
+        );
         $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.games,name,'.$name.',name');
         $this->assertSame($mock->rules()['title'], 'required|unique:mysql_champ.games,title,'.$title.',title');
         $this->assertSame($mock->rules()['uri'], 'required|url');
@@ -164,7 +167,7 @@ class GameRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\GameRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PATCH');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
         $name = $faker->username;
         $title = $faker->sentence;
         $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['game_id' => (object)['name' => $name, 'title' => $title]]);

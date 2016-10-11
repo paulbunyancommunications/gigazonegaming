@@ -76,7 +76,7 @@ class TournamentRequest extends Request
             'name.required' => 'The Tournament Name is required.',
             'game_id.required' => 'A Game must be selected.',
             'game_id.numeric' => 'A Game must be selected from the list.',
-            'max_players.numeric' => 'The max players should be a number.',
+            'max_players.numeric' => 'The NUMBER of players needs to be ... a number, LOL.',
             'max_players.required' => 'The number of players is a required field.',
         ];
     }

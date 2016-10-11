@@ -154,7 +154,7 @@ class IndividualPlayerRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\IndividualPlayerRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PATCH');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
         $name = $faker->username;
         $email = $faker->email;
 

@@ -133,7 +133,7 @@ class PlayerRequestTest extends WpRequestsBase
     {
         $faker = \Faker\Factory::create();
         $mock = Mockery::mock('App\\Http\\Requests\\PlayerRequest[method,route]');
-        $mock->shouldReceive('method')->once()->andReturn('PUT');
+        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PUT');
         $username = $faker->username;
         $phone = "(218)-444-1234";
         $email = $faker->email;
@@ -147,7 +147,7 @@ class PlayerRequestTest extends WpRequestsBase
 
         $this->assertSame('required|unique:mysql_champ.players,username,'.$username.',username', $mock->rules()['username']);
         $this->assertSame('required|email|unique:mysql_champ.players,email,'.$email.',email', $mock->rules()['email']);
-        $this->assertSame('phone:US,', $mock->rules()['phone']);
+        $this->assertSame('phone:US', $mock->rules()['phone']);
     }
 
     /**
@@ -171,7 +171,7 @@ class PlayerRequestTest extends WpRequestsBase
 
         $this->assertSame('required|unique:mysql_champ.players,username,'.$username.',username', $mock->rules()['username']);
         $this->assertSame('required|email|unique:mysql_champ.players,email,'.$email.',email', $mock->rules()['email']);
-        $this->assertSame('phone:US,', $mock->rules()['phone']);
+        $this->assertSame('phone:US', $mock->rules()['phone']);
 
     }
 
@@ -181,10 +181,11 @@ class PlayerRequestTest extends WpRequestsBase
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\PlayerRequest();
-        $this->assertArrayHasKey('name.required', $request->messages());
-        $this->assertArrayHasKey('name.unique', $request->messages());
+        $this->assertArrayHasKey('username.required', $request->messages());
+        $this->assertArrayHasKey('username.unique', $request->messages());
         $this->assertArrayHasKey('email.required', $request->messages());
         $this->assertArrayHasKey('email.unique', $request->messages());
+        $this->assertArrayHasKey('phone.phone', $request->messages());
 
     }
 }

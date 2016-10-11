@@ -41,7 +41,7 @@ class PlayerRequest extends Request
                 return [
                     'username' => 'required|unique:mysql_champ.players,username',
                     'email' => 'required|email|unique:mysql_champ.players,email',
-                    'phone' => 'phone:US',
+                    'phone' => 'phone:US'
                 ];
             }
             case 'PUT':
@@ -52,7 +52,7 @@ class PlayerRequest extends Request
                 return [
                     'email' => 'required|email|unique:mysql_champ.players,email,'.$email.',email',
                     'username' => 'required|unique:mysql_champ.players,username,'.$name.',username',
-                    'phone' => 'phone:US',
+                    'phone' => 'phone:US'
                 ];
             }
             default:break;
