@@ -9,6 +9,7 @@ Vagrant.configure("2") do |config|
   #config.vm.synced_folder "manifests", "/tmp/manifests", "tests"
   config.vm.synced_folder "./", "/etc/puppet/modules/staging"
 
+  config.vm.box_download_insecure
   config.vm.define :staging do |m|
     m.vm.box = "centos63"
     m.vm.box_url = "https://dl.dropbox.com/s/eqdrqnla4na8qax/centos63.box"
