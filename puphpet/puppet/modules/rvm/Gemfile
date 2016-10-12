@@ -1,7 +1,7 @@
 # This file is managed centrally by modulesync
 #   https://github.com/maestrodev/puppet-modulesync
 
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'puppet', ENV['PUPPET_VERSION'] || '>= 3.0', :require => false
 
