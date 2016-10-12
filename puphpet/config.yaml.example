@@ -281,7 +281,7 @@ ruby:
         rv_qe6uxbc4gug7:
             default: '1'
             bundler: '1'
-            version: 2.2.3
+            version: 1.9.3
             gems:
                 - deep_merge@1.0.1
                 - activesupport@4.2.6
