@@ -170,9 +170,10 @@ class TeamTest extends \TestCase
     public function it_unattached_its_players_when_deleted()
     {
         $team = factory(Team::class)->create();
-        $players = factory(\App\Models\Championship\Player::class, 5)->create([]);
+        $team_id = $team->id;
+        $players = factory(\App\Models\Championship\Player::class, 5)->create();
         for($i=0; $i < count($players); $i++) {
-            \App\Models\Championship\Player::createRelation(['player' => $players[$i], 'team' => $team]);
+            \App\Models\Championship\Player::createRelation(['player' => $players[$i]->id, 'team' => $team_id]);
         }
 
         $team->delete();
