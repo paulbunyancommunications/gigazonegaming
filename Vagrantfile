@@ -27,7 +27,3 @@ Vagrant.require_version '>= 1.8.1'
 Vagrant.configure('2') do |config|
   eval File.read("#{dir}/puphpet/vagrant/Vagrantfile-#{data['target']}")
 end
-
-config.vm.provider :virtualbox do |vb|
-  vb.gui = true
-end
