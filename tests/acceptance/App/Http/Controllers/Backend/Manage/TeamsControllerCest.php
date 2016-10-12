@@ -162,6 +162,7 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
     {
+        $I->executeJS('$("#tournament_id").remove();');
         $I->click(['id' => 'submit']);
         $I->see('The Tournament field can not be empty.');
     }
