@@ -6,7 +6,7 @@ GIT
       rspec
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     CFPropertyList (2.2.8)
     activesupport (4.2.5)
