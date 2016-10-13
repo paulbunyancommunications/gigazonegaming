@@ -116,7 +116,8 @@ elixir(function (mix) {
         .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
         .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
         .hamlToTwig(appResourceFolder + '/haml', appFolder + '/views')
-        .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views');
+        .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views')
+        .copyFiles(appResourceFolder + '/js/**/*.js', appFolder + '/js');
 
         if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
             mix.cleanCss(themeFolder + '/css')
