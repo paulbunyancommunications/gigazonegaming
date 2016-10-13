@@ -16,15 +16,17 @@
         <div id="brackets">
             <div id="addPlayersDiv">
                 <div>
-                    <input type="text" id="playerName" v-model="playerNameForm" />
+                    <input type="text" id="playerNameForm" v-model="playerNameForm" />
                     <button  v-on:click="addPlayer" class="btn btn-primary" >Add Player</button>
                     <button  v-on:click="createBracket" class="btn btn-primary" >Create bracket</button>
                 </div>
             </div>
             <div>Players Registered: @{{ playerTotal }}</div>
+            <div v-if="removed!=''">Last Player Removed: @{{ removed }}</div>
+            <div v-if="added!=''">Last Player Added: @{{ added }}</div>
             <hr />
             <ul class="list-group" v-if="playerArray!=[]" >
-                <li v-for="playerX in playerArray" class='list-group-item'>@{{ playerX.playerName }}<button  v-on:click="removePlayer">&#10007</button></li>
+                <li v-for="playerX in playerArray" class='list-group-item'>@{{ playerX.playerName }}<button  v-on:click="removePlayer(playerX)">&#10007</button></li>
             </ul>
         </div>
     </div>

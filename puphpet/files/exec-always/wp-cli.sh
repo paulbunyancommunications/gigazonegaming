@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 cd ~/
 seleniumScript="wp-cli.sh"
 seleniumScriptPath="${PWD}/${seleniumScript}"

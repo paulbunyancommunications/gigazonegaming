@@ -243,7 +243,7 @@ trait  PlayerRelationable
                 $ret['success'] .= Player::routables()[$i].": ".$ret[$routable]['success'].". ";
             }
             if (strlen($ret[$routable]['fail']) > 0) {
-                $ret[$routable] .= Player::routables()[$i] . ": ".$ret[$routable]['fail'].". ";
+                $ret['fail'] .= Player::routables()[$i] . ": ".$ret[$routable]['fail'].". ";
             }
             unset($ret[$routable]);
             unset($routable);

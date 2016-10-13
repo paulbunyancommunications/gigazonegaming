@@ -73,3 +73,7 @@ PlayerRelationable.php.orig
 phpunit.phar
 database/dump/w3.paulbunyan.netgigazone_champ_db
 database/dump/w3.paulbunyan.netgigazone_wp
+database/dump/w3.paulbunyan.net.gigazone_champ_db.10-13-16.sql
+database/dump/w3.paulbunyan.net.gigazone_wp.10-13-16.sql
+
+!puphpet/files/**/*

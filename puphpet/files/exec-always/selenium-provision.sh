@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 cd ~/
 seleniumScript="provision_selenium.sh"
 seleniumScriptPath="${PWD}/${seleniumScript}"
