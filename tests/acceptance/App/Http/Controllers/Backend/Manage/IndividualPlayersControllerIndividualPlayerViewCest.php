@@ -16,9 +16,11 @@ use Mockery;
 
 
 class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
-{    /**
- * @param AcceptanceTester $I
- */
+{
+
+    /**
+     * @param AcceptanceTester $I
+     */
     public $faker;
     public function _before(AcceptanceTester $I)
     {

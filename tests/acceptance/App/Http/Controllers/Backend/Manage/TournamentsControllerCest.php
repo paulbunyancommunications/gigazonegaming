@@ -10,6 +10,7 @@ use \BaseAcceptance;
  */
 class TournamentsControllerCest extends BaseAcceptance
 {
+
     /**
      * @param AcceptanceTester $I
      */

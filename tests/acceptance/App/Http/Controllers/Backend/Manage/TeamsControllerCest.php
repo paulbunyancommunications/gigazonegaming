@@ -13,6 +13,7 @@ use \BaseAcceptance;
  */
 class TeamsControllerCest extends BaseAcceptance
 {
+
     /**
      * @param AcceptanceTester $I
      */
