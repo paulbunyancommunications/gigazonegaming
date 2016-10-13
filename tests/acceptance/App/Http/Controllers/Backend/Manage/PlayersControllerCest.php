@@ -8,7 +8,9 @@ use \BaseAcceptance;
  * Class PlayersControllerCest
  * @package Tests\Acceptance\App\Http\Controllers\Backend\Manage
  */
-class PlayersControllerCest extends BaseAcceptance{
+class PlayersControllerCest extends BaseAcceptance
+{
+
     /**
      * @param AcceptanceTester $I
      */

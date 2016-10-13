@@ -15,8 +15,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
 
 
-class teamMakersControllerTeamViewCest extends BaseAcceptance
+class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
 {
+
     /**
      * @param AcceptanceTester $I
      */
@@ -76,14 +77,16 @@ class teamMakersControllerTeamViewCest extends BaseAcceptance
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->click("Create Team for Selected Tournament");
-        $I->click("#submit_create_team");
+        $I->waitForElementVisible(['id' => 'submit_create_team'], 30);
+        $I->click(['id' => 'submit_create_team']);
         $I->see("The Players had being added to the new team");
 
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->selectOption(['id' => 'team_sort'], "Tester Team");
         $I->click("Fill selected Team");
-        $I->click("#submit_fill_team");
+        $I->waitForElementVisible(['id' => 'submit_fill_team'], 30);
+        $I->click(['id' => 'submit_fill_team']);
         $I->see("The Players had being added to the team Tester Team");
 
     }

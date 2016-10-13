@@ -10,6 +10,7 @@ use \BaseAcceptance;
  */
 class GamesControllerCest extends BaseAcceptance
 {
+
     /**
      * @param AcceptanceTester $I
      */
