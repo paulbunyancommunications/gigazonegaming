@@ -173,9 +173,11 @@ class TeamTest extends \TestCase
         $team_id = $team->id;
         $players = factory(\App\Models\Championship\Player::class, 5)->create();
         for($i=0; $i < count($players); $i++) {
-            \App\Models\Championship\Player::createRelation(['player' => $players[$i]->id, 'team' => $team_id]);
+            $p = $players[$i]->toArray();
+            if(is_array($p['id'])){dd($p['id']);}
+            if(is_array($team_id)){dd($team_id);}
+            \App\Models\Championship\Player::createRelation(['player' => $p['id'], 'team' => $team_id]);
         }
-
         $team->delete();
         foreach ($players as $player) {
             $this->assertEmpty($player->teams);
