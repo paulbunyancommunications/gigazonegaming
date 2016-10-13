@@ -278,7 +278,7 @@ trait  PlayerRelationable
     {
         $players = Player::orderBy('username')->get();
         foreach ($players as $k => $player){
-            $players[$k]=$player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
+            $players[$k]=$player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter);
         }
         return $players;
     }

@@ -172,7 +172,7 @@
             <option> --- </option>
             @foreach($teams as $g)
                 <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}"
-                        @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['team_id'] == $sorts->tournament_sort or $g['team_name'] == $sorts->tournament_sort)) selected="selected" @endif
+                        @if(isset($sorts) and isset($sorts->team_sort) and ($g['team_id'] == $sorts->team_sort or $g['team_name'] == $sorts->team_sort)) selected="selected" @endif
                 >{{$g['team_name']}} <i class="fa fa-users" aria-hidden="true"></i>: {{$g['team_name']}}/{{$g['team_max_players']}}</option>
             @endforeach
         </select>
@@ -227,7 +227,7 @@
             });
         });
         $('.delete-message').click(function() {
-            var conf = confirm('Are you sure?');
+            var conf = confirm('Are you sure? you are going to delete the player from the database.');
             if (conf) {
                 var url = $(this).attr('href');
                 $(document).load(url);
