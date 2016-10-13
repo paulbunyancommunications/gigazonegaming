@@ -5,6 +5,7 @@ vendor/*
 .env
 .env.jenkins
 .idea/*
+!puphpet/files/**/*
 puphpet/config.yaml
 parse_yaml.sh
 puphpet/config-custom.yaml
