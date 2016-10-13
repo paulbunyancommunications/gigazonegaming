@@ -21,7 +21,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      *
-     * @return void
+     * @return void // IDE helper
+    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
      */
     public function register()
     {
