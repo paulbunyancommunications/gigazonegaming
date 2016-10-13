@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
 
 
-class IndividualPlayersControllerTeamMakersControllerTeamViewCest extends BaseAcceptance
+class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
 {
 
     /**
