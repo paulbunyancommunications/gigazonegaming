@@ -77,3 +77,7 @@ database/dump/w3.paulbunyan.net.gigazone_champ_db.10-13-16.sql
 database/dump/w3.paulbunyan.net.gigazone_wp.10-13-16.sql
 
 !puphpet/files/**/*
+gigazonegaming.sublime-project
+gigazonegaming.sublime-workspace
+.DS_Store
+html/adminer
