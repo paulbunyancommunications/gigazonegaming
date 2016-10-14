@@ -286,15 +286,20 @@ ruby:
                 - deep_merge@1.0.1
                 - activesupport@4.2.6
                 - vine@0.2
+                - sass@3.4.22
+                - compass@1.0.3
 python:
     install: '1'
     packages: {  }
     versions: {  }
 nodejs:
-    install: '0'
+    install: '1'
     settings:
-        version: '5'
-    npm_packages: {  }
+        version: '0.12'
+    npm_packages:
+        - npm
+        - gulp
+        - coffee-script
 hhvm:
     install: '0'
     nightly: 0

@@ -23,6 +23,6 @@ for i in "${gems[@]}"; do
       gem install ${i}
     else
       echo "Gem "${i}" is installed! checking for updates :)"
-      gem update sass
+      gem update ${i}
     fi
 done
