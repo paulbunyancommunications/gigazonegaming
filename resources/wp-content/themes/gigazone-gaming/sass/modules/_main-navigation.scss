@@ -204,6 +204,7 @@
     font-family: $font-family-display;
     text-transform: uppercase;
     @include font-size(1.875);
+    font-weight: 700;
 
     @include mq-tablet {
       @include font-size(1.625);

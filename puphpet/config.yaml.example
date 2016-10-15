@@ -98,7 +98,7 @@ locale:
             - en_US.UTF-8
         timezone: UTC
 firewall:
-    install: '0'
+    install: '1'
     rules: {  }
 cron:
     install: '1'
@@ -288,6 +288,7 @@ ruby:
                 - vine@0.2
                 - sass@3.4.22
                 - compass@1.0.3
+                - haml@4.0.7
 python:
     install: '1'
     packages: {  }
@@ -297,9 +298,10 @@ nodejs:
     settings:
         version: '0.12'
     npm_packages:
-        - npm
-        - gulp
-        - coffee-script
+                - npm
+                - gulp
+                - grunt
+                - coffee-script
 hhvm:
     install: '0'
     nightly: 0
@@ -342,7 +344,7 @@ mysql:
         version: '5.6'
         root_password: '123'
         override_options: {  }
-    adminer: 0
+    adminer: 1
     users:
         user1:
             name: dbuser
