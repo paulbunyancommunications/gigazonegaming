@@ -226,7 +226,7 @@
             allowClear: true
             });
         });
-        $('.delete-message').click(function() {
+        $('.delete_message').click(function() {
             var conf = confirm('Are you sure? you are going to delete the player from the database.');
             if (conf) {
                 var url = $(this).attr('href');

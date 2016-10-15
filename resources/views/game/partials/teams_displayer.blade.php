@@ -19,14 +19,14 @@
     {{ Form::close() }}
 
     &nbsp;&nbsp;
-    {{ Html::linkAction('Backend\Manage\TeamsController@edit', '', array('team_id'=>$team["team_id"]), array('id' => "edit-".$team["team_name"], 'class' => 'btn btn-success list fa fa-pencil-square-o','title'=>'Edit')) }}
+    {{ Html::linkAction('Backend\Manage\TeamsController@edit', '', array('team_id'=>$team["team_id"]), array('id' => "edit-".str_replace(' ', '', $team["team_name"]), 'class' => 'btn btn-success list fa fa-pencil-square-o','title'=>'Edit')) }}
     &nbsp;&nbsp;
     {{ Form::open(array('id' => "teamFormS".$team["team_id"], 'action' => array('Backend\Manage\TeamsController@destroy_soft', $team["team_id"]), 'class' => "deletingForms")) }}
     <input name="_method" type="hidden" value="DELETE">
     {!!
         Form::submit(
             '&#xf014;',
-            array('id' => "delete-soft-".$team["team_name"], 'class'=>'btn btn-danger list fa delete-message', 'title'=>'Delete Team and move players to Individual Players list')
+            array('id' => "delete-soft-".str_replace(' ', '', $team["team_name"]), 'class'=>'btn btn-danger list fa delete_message', 'title'=>'Delete Team and move players to Individual Players list')
         )
     !!}
     {{ Form::close() }}
@@ -35,7 +35,7 @@
     {!!
         Form::submit(
             '&#xf00d; Team & Players',
-            array('id' => "delete-hard-".$team["team_name"], 'class'=>'btn btn-danger list fa delete-message2', 'title'=>"There is no coming back if you delete the team from the db and all the players from this team from all other teams, tournaments and games!!!!!!")
+            array('id' => "delete-hard-".str_replace(' ', '', $team["team_name"]), 'class'=>'btn btn-danger list fa delete_message2', 'title'=>"There is no coming back if you delete the team from the db and all the players from this team from all other teams, tournaments and games!!!!!!")
         )
     !!}
     {{ Form::close() }}

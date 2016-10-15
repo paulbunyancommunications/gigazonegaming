@@ -219,12 +219,12 @@ class PlayersController extends Controller
         $players = new Player();
         $playerList = $players->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filterArray);
 
-        dd($playerList);
         return View::make('game/player')->with("players_filter", $playerList)->with('sorts',$ids);
 
     }
     public function filterTeam(Request $ids)
     {
+//        dd($ids);
         $playerList = [];
         if(isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
             $playerList = Team::where('id','=',$ids->team_sort)->first()->players()->get();

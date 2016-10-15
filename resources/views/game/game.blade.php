@@ -71,7 +71,7 @@
                         <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
                         {!!
                             Form::submit(
-                                ($game["game_title"] ? $game["game_title"] : $game["game_name"]),
+                                ($game["game_name"] ? $game["game_name"] : $game["game_title"]),
                                 array('class'=>'gameName btn btn-default btn-block list')
                             )
                         !!}
@@ -84,7 +84,7 @@
                         {!!
                             Form::submit(
                                 '&#xf014; &#xf1c0;',
-                                array('class'=>'btn btn-danger list fa delete-message confirm-choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
+                                array('class'=>'btn btn-danger list fa delete_message confirm_choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
                             )
                         !!}
                         {{ Form::close() }}
@@ -97,7 +97,7 @@
 @endsection
 @section('js')
     $(document).ready(function() {
-        $('.confirm-choice').click(function() {
+        $('.confirm_choice').click(function() {
             var conf = confirm('Are you sure?');
             if (conf) {
                 var url = $(this).attr('href');

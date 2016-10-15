@@ -111,7 +111,9 @@
             @else
                 <li>Filtered results: </li>
                 @foreach($teams_filter as $id => $team)
-                    @include('game.partials.teams_displayer')
+                    @if(isset($team['team_id']) and $team['team_id']!=null and $team['team_id']>0)
+                        @include('game.partials.teams_displayer')
+                    @endif
                 @endforeach
             @endif
         </ul>
@@ -134,8 +136,8 @@
                 {{--allowClear: true--}}
             {{--});--}}
         });
-        $('.delete-message').click(function() {
-            var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players list');
+        $('.delete_message').click(function() {
+            var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players list for this tournament');
             if (conf) {
                 var url = $(this).attr('href');
                 $(document).load(url);
@@ -143,7 +145,7 @@
                 return false;
             }
         });
-        $('.delete-message2').click(function() {
+        $('.delete_message2').click(function() {
             var conf = confirm('Are you sure? This will remove the team and players from the database for all tournaments and games');
             if (conf) {
                 var url = $(this).attr('href');
