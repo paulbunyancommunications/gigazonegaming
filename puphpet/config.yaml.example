@@ -15,7 +15,7 @@ vagrantfile:
                     vmware:
                         numvcpus: 1
                     parallels:
-                        use_linked_clone: 0
+                        linked_clone: 0
                         check_guest_tools: 0
                         update_guest_tools: 0
                 machines:
@@ -25,7 +25,7 @@ vagrantfile:
                         network:
                             private_network: 192.168.57.101
                             forwarded_port:
-                                vflmnfp_yjcl1q1d0614:
+                                vflmnfp_39672nzu1589:
                                     host: '5982'
                                     guest: '22'
                         memory: '512'
@@ -33,7 +33,9 @@ vagrantfile:
         provision:
             puppet:
                 manifests_path: puphpet/puppet/manifests
-                module_path: puphpet/puppet/modules
+                module_path:
+                    - puphpet/puppet/modules
+                    - puphpet/puppet/manifests
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
@@ -106,16 +108,17 @@ cron:
 nginx:
     install: '0'
     settings:
+        version: present
         default_vhost: 1
-        proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
+        proxy_buffer_size: 128k
         proxy_connect_timeout: 600s
         proxy_send_timeout: 600s
         proxy_read_timeout: 600s
         names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_nvmmxjoaqv5v:
+        nxv_x7aoaht9dwuy:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -135,7 +138,7 @@ nginx:
             rewrite_to_https: '1'
             spdy: '1'
             locations:
-                nxvl_g9wz8nqfwkv0:
+                nxvl_ylb6scxlfznl:
                     location: /
                     try_files:
                         - $uri
@@ -146,7 +149,7 @@ nginx:
                     fastcgi_split_path: ''
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_m5eurrpcw5qb:
+                nxvl_2g7crza07kj5:
                     location: '~ \.php$'
                     try_files:
                         - $uri
@@ -182,7 +185,7 @@ apache:
             docroot: /var/www/awesome
             port: '80'
             setenv:
-                - 'APP_ENV dev'
+                - 'APP_ENV local'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             custom_fragment: ''
@@ -206,7 +209,7 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_r8raa5s90z9s:
+                        avdfm_otor0jw7qxmm:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
@@ -220,7 +223,7 @@ letsencrypt:
 php:
     install: '1'
     settings:
-        version: '56'
+        version: '5.6'
     modules:
         php:
             - cli
@@ -235,7 +238,7 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_fv0mrzybi1z6:
+        phpfp_gg7oqkeiim6n:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -278,7 +281,7 @@ drush:
 ruby:
     install: '1'
     versions:
-        rv_qe6uxbc4gug7:
+        rv_vn5ibay3lihr:
             default: '1'
             bundler: '1'
             version: 2.3.1
@@ -304,7 +307,6 @@ nodejs:
         - coffee-script@1.11.1
 hhvm:
     install: '0'
-    nightly: 0
     composer: '1'
     composer_home: ''
     settings: {  }
@@ -325,15 +327,15 @@ mariadb:
         override_options: {  }
     adminer: 0
     users:
-        mariadbnu_x2n3grbnbf33:
+        mariadbnu_7aa8x5fmwogf:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_rzwn7x9he2yc:
+        mariadbnd_swys8iw8260x:
             name: dbname
             sql: ''
     grants:
-        mariadbng_xmjn0qv79u27:
+        mariadbng_q4eow70o89io:
             user: dbuser
             table: '*.*'
             privileges:
@@ -342,23 +344,34 @@ mysql:
     install: '1'
     settings:
         version: '5.6'
-        root_password: '123'
+        root_password: 'root'
         override_options: {  }
-    adminer: 0
+    adminer: '1'
     users:
         user1:
-            name: dbuser
-            password: '123'
+            name: 'user'
+            password: 'password'
+        user2:
+            name: 'user_2'
+            password: 'password_2'
     databases:
         database1:
-            name: dbname
-            sql: ''
+            name: 'gzgaming_wp'
+            sql: '/var/www/database/dump/gzgaming_wp.sql'
+        database2:
+            name: 'gzgaming_champ_db'
+            sql: '/var/www/database/dump/gzgaming_champ_db.sql'
     grants:
         grant1:
-            user: dbuser
-            table: '*.*'
+            user: 'user'
+            table: 'gzgaming_wp.*'
             privileges:
-                - ALL
+              - ALL
+        grant2:
+            user: 'user_2'
+            table: 'gzgaming_champ_db.*'
+            privileges:
+              - ALL
 postgresql:
     install: '0'
     settings:
@@ -384,8 +397,8 @@ redis:
     settings:
         port: '6379'
 sqlite:
-    install: '0'
-    adminer: 0
+    install: '1'
+    adminer: '1'
     databases: {  }
 mailhog:
     install: '0'
@@ -419,7 +432,7 @@ elastic_search:
         version: 2.3.1
         java_install: true
     instances:
-        esi_aflfzrl1df5g:
+        esi_nmjnad6n8m10:
             name: es-01
 solr:
     install: '0'
