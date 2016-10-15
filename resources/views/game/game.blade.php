@@ -16,7 +16,7 @@
         <h1>Update game &#8220;{{ $theGame->title }}&#8221;</h1>
         {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
     @else
-        <h1>Create a new game</h1>
+        <h1>Create a new Game</h1>
         {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
     @endif
 
