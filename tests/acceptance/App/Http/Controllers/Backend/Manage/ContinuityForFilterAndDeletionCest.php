@@ -79,7 +79,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new Player');
-        $I->see('The Tester Player0');
+        $I->see('The Tester Player000');
+        $I->see('The Tester Player001');
+        $I->see('The Tester Player002');
+        $I->see('The Tester Player003');
+        $I->see('The Tester Player004');
+        $I->see('The Tester Player005');
 
     }
     /**
@@ -97,7 +102,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new Player');
-        $I->dontSee('The Tester Player0');
+        $I->dontSee('The Tester Player000');
+        $I->dontSee('The Tester Player001');
+        $I->dontSee('The Tester Player002');
+        $I->dontSee('The Tester Player003');
+        $I->dontSee('The Tester Player004');
+        $I->see('The Tester Player005');
     }
 
 }

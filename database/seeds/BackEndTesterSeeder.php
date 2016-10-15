@@ -58,7 +58,14 @@ class BackEndTesterSeeder extends Seeder
                 'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
                 'max_players' => 6,
             ] );
-        for($i=0; $i<74; $i++) {
+        $sp_team = \App\Models\Championship\Team::create(
+            [
+                'name' => "Tester Team",
+                'emblem' => $faker->imageUrl(),
+                'tournament_id' => $sp_tournament['id'],
+                'captain' => 0
+            ])->toArray();
+        for($i=0; $i<34; $i++) {
             $teams[] = \App\Models\Championship\Team::create(
                 [
                     'name' => implode('-', $faker->words()),
@@ -67,16 +74,9 @@ class BackEndTesterSeeder extends Seeder
                     'captain' => 0
                 ])->toArray();
         }
-        $sp_team = \App\Models\Championship\Team::create(
-            [
-                'name' => "Tester Team",
-                'emblem' => $faker->imageUrl(),
-                'tournament_id' => $sp_tournament['id'],
-                'captain' => 0
-            ])->toArray();
 
         // create the tester user if not already created
-        for($i=0; $i<6; $i++) {
+        for($i=0; $i<5; $i++) {
             $player = \App\Models\Championship\Player::create(
                 [
                     'name' => "Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
@@ -105,8 +105,8 @@ class BackEndTesterSeeder extends Seeder
         for($i=0; $i<123; $i++) {
             $playerWithRelations[] = \App\Models\Championship\Player::create(
                 [
-                    'name' => "Tester Player".str_pad($i+6, 3, '0', STR_PAD_LEFT),
-                    'username' => "The Tester Player".str_pad($i+6, 3, '0', STR_PAD_LEFT),
+                    'name' => "Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
+                    'username' => "The Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'email' => $faker->email,
                     'phone' => $faker->phoneNumber,
                     'user_id' => $faker->numberBetween(20, 2226000)
