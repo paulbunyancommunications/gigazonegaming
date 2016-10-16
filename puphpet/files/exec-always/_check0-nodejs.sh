@@ -35,3 +35,4 @@ if type $1 >/dev/null 2>&1; then
 else
     echo "node is installed"
 fi
+sudo yum install -y nodejs
