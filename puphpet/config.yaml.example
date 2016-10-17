@@ -216,7 +216,7 @@ letsencrypt:
     install: '1'
     settings:
         email: ''
-    domains: {}
+    domains: {  }
 php:
     install: '1'
     settings:
@@ -283,6 +283,7 @@ ruby:
             bundler: '1'
             version: 2.3.1
             gems:
+                - nokogiri@1.6.8.1
                 - deep_merge@1.0.1
                 - activesupport@4.2.6
                 - vine@0.2
@@ -298,10 +299,9 @@ nodejs:
     settings:
         version: '0.12'
     npm_packages:
-                - npm
-                - gulp
-                - grunt
-                - coffee-script
+        - npm@3.10.8
+        - gulp@3.9.1
+        - coffee-script@1.11.1
 hhvm:
     install: '0'
     nightly: 0
@@ -344,7 +344,7 @@ mysql:
         version: '5.6'
         root_password: '123'
         override_options: {  }
-    adminer: 1
+    adminer: 0
     users:
         user1:
             name: dbuser
