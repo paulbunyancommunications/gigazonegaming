@@ -48,7 +48,7 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
      */
     public function checkIfReceiveArrayWhenSendingAId(AcceptanceTester $I)
     {
-        $I->wantTo('click on a game and land on tournament page with an applied filter');
+        $I->wantTo('go to url and see that I received the right information while providing a tournament Id');
         $I->amOnPage('/app/api/tournament_name/Tester%20Tournament');
         $I->see('{ "game": { "name": "tester-game", "title": "The Tester Game" }, "tournament": { "name": "Tester Tournament", "max_players": 6 }, "teams": { "Tester Team": { "captain": "The Tester Player000", "player_1": "The Tester Player001", "player_2": "The Tester Player002", "player_3": "The Tester Player003", "player_4": "The Tester Player004" } } }');
     }
@@ -58,7 +58,7 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
      */
     public function checkIfReceiveArrayWhenSendingAName(AcceptanceTester $I)
     {
-        $I->wantTo('click on a game and land on tournament page with an applied filter');
+        $I->wantTo('go to url and see that I received the right information while providing a tournament Name');
         $I->amOnPage('/app/api/tournament_name/Tester%20Tournament');
         $I->see('{ "game": { "name": "tester-game", "title": "The Tester Game" }, "tournament": { "name": "Tester Tournament", "max_players": 6 }, "teams": { "Tester Team": { "captain": "The Tester Player000", "player_1": "The Tester Player001", "player_2": "The Tester Player002", "player_3": "The Tester Player003", "player_4": "The Tester Player004" } } }');
     }
