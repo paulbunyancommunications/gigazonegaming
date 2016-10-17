@@ -118,22 +118,27 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team but not the tournament or the game');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
+        $I->seeElement('input', ['value' => 'Tester Team']);
         $I->executeJS("$('#delete-soft-TesterTeam').closest('form').submit()");
-        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
         $I->wait(3);
-        $I->dontSee('Tester Team');
+        $I->see('Create a new Team');
+        $I->dontSeeElement('input', ['value' => 'Tester Team']);
 
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->see('Tester Tournament');
+        $I->seeElement('input', ['value' => 'Tester Tournament']);
         $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
-        $I->dontSee('Tester Tournament');
+        $I->wait(3);
+        $I->see('Create a new Tournament');
+        $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->see('Tester Game');
+        $I->seeElement('input', ['value' => 'tester-game']);
         $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->dontSee('Tester Game');
+        $I->wait(3);
+        $I->see('Create a new Game');
+        $I->dontSeeElement('input', ['value' => 'tester-game']);
 
     }
 
@@ -146,19 +151,23 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a Tournament cascading to the team but not the game');
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->see('Tester Tournament');
+        $I->seeElement('input', ['value' => 'Tester Tournament']);
         $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
-        $I->dontSee('Tester Tournament');
+        $I->wait(3);
+        $I->see('Create a new Tournament');
+        $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
 
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->dontSee('Tester Team');
+        $I->dontSeeElement('input', ['value' => 'Tester Team']);
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->see('Tester Game');
+        $I->seeElement('input', ['value' => 'tester-game']);
         $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->dontSee('Tester Game');
+        $I->wait(3);
+        $I->see('Create a new Game');
+        $I->dontSeeElement('input', ['value' => 'tester-game']);
 
     }
     /**
@@ -170,17 +179,19 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a game cascading to the team and tournament');
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->see('Tester Game');
+        $I->seeElement('input', ['value' => 'tester-game']);
         $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->dontSee('Tester Game');
+        $I->wait(3);
+        $I->see('Create a new Game');
+        $I->dontSeeElement('input', ['value' => 'tester-game']);
 
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->dontSee('Tester Tournament');
+        $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
 
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->dontSee('Tester Team');
+        $I->dontSeeElement('input', ['value' => 'Tester Team']);
 
 
     }
