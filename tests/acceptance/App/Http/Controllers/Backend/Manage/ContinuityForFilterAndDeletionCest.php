@@ -109,5 +109,80 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->dontSee('The Tester Player004');
         $I->see('The Tester Player005');
     }
+    /**
+     * @param AcceptanceTester $I
+     * Get to the game management page and check for the titles
+     */
+    public function deleteATeamCheckTournamentAndGameStillThere(AcceptanceTester $I)
+    {
+        $I->wantTo('delete a team but not the tournament or the game');
+        $I->amOnPage('/app/manage/team');
+        $I->see('Create a new Team');
+        $I->executeJS("$('#delete-soft-TesterTeam').closest('form').submit()");
+        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
+        $I->wait(3);
+        $I->dontSee('Tester Team');
+
+        $I->amOnPage('/app/manage/tournament');
+        $I->see('Create a new Tournament');
+        $I->see('Tester Tournament');
+        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
+        $I->dontSee('Tester Tournament');
+
+        $I->amOnPage('/app/manage/game');
+        $I->see('Create a new Game');
+        $I->see('Tester Game');
+        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
+        $I->dontSee('Tester Game');
+
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * Get to the game management page and check for the titles
+     */
+    public function deleteATournamentCheckTeamIsGoneAndGameStillThere(AcceptanceTester $I)
+    {
+        $I->wantTo('delete a Tournament cascading to the team but not the game');
+        $I->amOnPage('/app/manage/tournament');
+        $I->see('Create a new Tournament');
+        $I->see('Tester Tournament');
+        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
+        $I->dontSee('Tester Tournament');
+
+        $I->amOnPage('/app/manage/team');
+        $I->see('Create a new Team');
+        $I->dontSee('Tester Team');
+
+        $I->amOnPage('/app/manage/game');
+        $I->see('Create a new Game');
+        $I->see('Tester Game');
+        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
+        $I->dontSee('Tester Game');
+
+    }
+    /**
+     * @param AcceptanceTester $I
+     * Get to the game management page and check for the titles
+     */
+    public function deleteAGameCheckTeamAndTournamentAreGone(AcceptanceTester $I)
+    {
+        $I->wantTo('delete a game cascading to the team and tournament');
+        $I->amOnPage('/app/manage/game');
+        $I->see('Create a new Game');
+        $I->see('Tester Game');
+        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
+        $I->dontSee('Tester Game');
+
+        $I->amOnPage('/app/manage/tournament');
+        $I->see('Create a new Tournament');
+        $I->dontSee('Tester Tournament');
+
+        $I->amOnPage('/app/manage/team');
+        $I->see('Create a new Team');
+        $I->dontSee('Tester Team');
+
+
+    }
 
 }
