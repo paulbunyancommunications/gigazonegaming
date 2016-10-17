@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-tools=(vagrant)
+tools=(vagrant VBoxManage)
 
 # for each tool, make sure it's available to the current user
 for i in "${tools[@]}"; do
