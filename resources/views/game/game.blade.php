@@ -1,64 +1,68 @@
-
 @extends('game.base')
 
 @section('css')
     .deletingForms, .toForms{
-        display:inline-block;
+    display:inline-block;
     }
     .gameName{
-        display:inline-block;
+    display:inline-block;
     min-width:300px;
     }
 @endsection
 @section('content')
-    <div class="col-md-6">
-    @if(isset($theGame->title))
-        <h1>Update game &#8220;{{ $theGame->title }}&#8221;</h1>
-        {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
-    @else
-        <h1>Create a new Game</h1>
-        {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
-    @endif
-
-    <div class="form-group">
-        @if(isset($theGame->name))
-            <input name="_method" type="hidden" value="PUT">
+    <div class="col-xs-6">
+        @if(isset($theGame->title))
+            <h1>Update game &#8220;{{ $theGame->title }}&#8221;</h1>
+            {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
         @else
-            <input name="_method" type="hidden" value="POST">
+            <h1>Create a new Game</h1>
+            {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
         @endif
-        <div class="form-group">
-            <label for="name" class="control-label col-xs-3">Game Name:</label>
-            <div class="col-xs-9">
-                <input type="text" name="name" id="name" class="form-control" placeholder="The name of the game" value="@if(isset($theGame->name)){{ $theGame->name }}@else{{ old('name') }}@endif"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="title" class="control-label col-xs-3">Game Title:</label>
-            <div class="col-xs-9">
-                <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game" value="@if(isset($theGame->title)){{ $theGame->title }}@else{{ old('title') }}@endif"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="uri" class="control-label col-xs-3">Game URI:</label>
-            <div class="col-xs-9">
-                <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game" value="@if(isset($theGame->uri)){{ $theGame->uri }}@else{{ old('uri') }}@endif" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="description" class="control-label col-xs-3">Game Description:</label>
-            <div class="col-xs-9">
-                <textarea name="description" id="description" class="form-control" placeholder="The description of the game"  >@if(isset($theGame->description)){{ $theGame->description }}@else{{ old('description') }}@endif</textarea>
-            </div>
-        </div>
 
         <div class="form-group">
-            <input type="submit" name="submit" id="submit" class='btn btn-default btn-primary' value="{{ isset($theGame) ? 'Update '. $theGame->title : 'Create' }}">
-            {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default'))}}
+            @if(isset($theGame->name))
+                <input name="_method" type="hidden" value="PUT">
+            @else
+                <input name="_method" type="hidden" value="POST">
+            @endif
+            <div class="form-group">
+                <label for="name" class="control-label col-xs-3">Game Name:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="The name of the game"
+                           value="@if(isset($theGame->name)){{ $theGame->name }}@else{{ old('name') }}@endif"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="control-label col-xs-3">Game Title:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game"
+                           value="@if(isset($theGame->title)){{ $theGame->title }}@else{{ old('title') }}@endif"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="uri" class="control-label col-xs-3">Game URI:</label>
+                <div class="col-xs-9">
+                    <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game"
+                           value="@if(isset($theGame->uri)){{ $theGame->uri }}@else{{ old('uri') }}@endif"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label col-xs-3">Game Description:</label>
+                <div class="col-xs-9">
+                    <textarea name="description" id="description" class="form-control"
+                              placeholder="The description of the game">@if(isset($theGame->description)){{ $theGame->description }}@else{{ old('description') }}@endif</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default col-sm-6'))}}
+                <input type="submit" name="submit" id="submit" class='btn btn-default btn-primary col-sm-6'
+                       value="{{ isset($theGame) ? 'Update '. $theGame->title : 'Create' }}">
+            </div>
         </div>
+        {{ Form::close() }}
     </div>
-    {{ Form::close() }}
-    </div>
-    <div class="col-md-6">
+    <div class="col-xs-6">
         <h2>Game List</h2>
         <div id="listOfGames" class="listing">
             @if(!isset($games) || $games == [])
@@ -97,15 +101,15 @@
 @endsection
 @section('js')
     $(document).ready(function() {
-        $('.confirm_choice').click(function() {
-            var conf = confirm('Are you sure?');
-            if (conf) {
-                var url = $(this).attr('href');
-                $(document).load(url);
-            }else{
-                return false;
-            }
-        });
+    $('.confirm_choice').click(function() {
+    var conf = confirm('Are you sure?');
+    if (conf) {
+    var url = $(this).attr('href');
+    $(document).load(url);
+    }else{
+    return false;
+    }
+    });
     });
 
 @endsection
