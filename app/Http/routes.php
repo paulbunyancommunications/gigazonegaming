@@ -92,6 +92,8 @@ Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function (
 Route::group(['namespace' => 'Api\Championship'], function() {
     Route::get('/api/game', ['as' => 'api.game.index', 'uses' => 'GamesController@index']);
     Route::get('/api/game/{game}', ['as' => 'api.game.get', 'uses' => 'GamesController@show']);
+    Route::get('/api/tournament_name/{name}', ['as' => 'api.from_tournament_name.get', 'uses' => 'TournamentToGameTeamPlayerController@index']);
+    Route::get('/api/tournament_id/{tournament}', ['as' => 'api.from_tournament_id.get', 'uses' => 'TournamentToGameTeamPlayerController@show']);
 });
 
 /**

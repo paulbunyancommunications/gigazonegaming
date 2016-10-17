@@ -74,7 +74,7 @@ class BackEndTesterSeeder extends Seeder
                     'captain' => 0
                 ])->toArray();
         }
-
+        $first = true;
         // create the tester user if not already created
         for($i=0; $i<5; $i++) {
             $player = \App\Models\Championship\Player::create(
@@ -100,6 +100,11 @@ class BackEndTesterSeeder extends Seeder
                 'relation_type' => \App\Models\Championship\Team::class,
                 'relation_id' => $sp_team['id'],
             ]);
+            if($first){
+                $first=false;
+                \App\Models\Championship\Team::where('id', '=', $sp_team['id'])
+                    ->update(['captain'=>$player['id']]);
+            }
 
         }
         for($i=0; $i<123; $i++) {
