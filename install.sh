@@ -1,23 +1,11 @@
 #!/usr/bin/env bash
 
-tools=(vagrant VBoxManage npm sass compass gulp ruby gem bower)
+tools=(vagrant)
 
 # for each tool, make sure it's available to the current user
 for i in "${tools[@]}"; do
 	command -v ${i} >/dev/null 2>&1 || { echo "${i} not installed, aborting!" >&2; exit 1;}
 done
-
-# install npm libraries
-echo "Installing Node dependencies!"
-npm install &>/dev/null
-
-# install bower dependencies
-echo "Installing Bower dependencies!"
-bower install &>/dev/null
-
-# install bower dependencies
-echo "Running gulp for the first time!"
-gulp &>/dev/null
 
 #download composer.phar for running composer commands
  if [ ! -f "composer.phar" ]
@@ -67,6 +55,24 @@ if [ ! -f "puphpet/config-custom.yaml" ]
     echo "puphpet/config-custom.yaml was created from example file"
     fi
 
+# do vagrant stuff
+vagrant up --provision
+
+# run gulp for the first time
+vagrant ssh -c "cd /var/www; gulp;"
+
+# run composer to get all dependencies
+vagrant ssh -c "cd /var/www; php composer.phar install;"
+
+# generate new Laravel app key
+vagrant ssh -c "cd /var/www; php artisan key:generate;"
+
+# generate new wordpress auth keys
+vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
+
+# run artisan migration
+vagrant ssh -c "cd /var/www; php artisan migrate"
+
 # cleanup Wordpress install
 if [ -d "public_html/wp/wp-content" ]
 then
@@ -82,17 +88,5 @@ if [ -f "public_html/wp/.htaccess" ]
 then
     rm -f public_html/wp/.htaccess
 fi
-
-# do vagrant stuff
-vagrant up --provision
-vagrant ssh -c "cd /var/www; php composer.phar install;"
-# generate new Laravel app key
-vagrant ssh -c "cd /var/www; php artisan key:generate;"
-
-# generate new wordpress auth keys
-vagrant ssh -c "cd /var/www; php artisan wp:keys --file=.env;"
-
-# run artisan migration
-vagrant ssh -c "cd /var/www; php artisan migrate"
 
 #fin
