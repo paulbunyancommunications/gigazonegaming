@@ -3,6 +3,7 @@ vendor/*
 !resources/views/vendor
 !resources/lang/vendor
 .env
+.env.bk
 .env.jenkins
 .idea/*
 puphpet/config.yaml
@@ -83,3 +84,5 @@ gigazonegaming.sublime-workspace
 html/adminer
 html/adminer.php
 html/index.html
+install_runner.sh
+.env.bak
