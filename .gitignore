@@ -88,3 +88,6 @@ install_runner.sh
 .env.bak
 doc.html
 test.sh
+build/config/hosts/jenkins.host
+build/config/jenkins.config
+GIGAZONEGAMING-jenkins-master.tar.gz
