@@ -1,3 +1,16 @@
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: 127.0.0.1 (MySQL 5.6.34)
+# Database: gzgaming_champ_db
+# Generation Time: 2016-10-19 13:42:45 +0000
+# ************************************************************
+
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -45,6 +58,16 @@ CREATE TABLE `games` (
   KEY `games_title_index` (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+LOCK TABLES `games` WRITE;
+/*!40000 ALTER TABLE `games` DISABLE KEYS */;
+
+INSERT INTO `games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`, `updated_by`, `updated_on`)
+VALUES
+	(1,'unknown','','Unknown game','',NULL,NULL,0,'0000-00-00 00:00:00'),
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-23 22:58:54','2016-05-23 22:58:54',0,'0000-00-00 00:00:00');
+
+/*!40000 ALTER TABLE `games` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table persistences
@@ -217,6 +240,15 @@ CREATE TABLE `tournaments` (
   KEY `tournaments_game_id_foreign` (`game_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+LOCK TABLES `tournaments` WRITE;
+/*!40000 ALTER TABLE `tournaments` DISABLE KEYS */;
+
+INSERT INTO `tournaments` (`id`, `name`, `max_players`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`, `sign_up_open`, `sign_up_close`, `occurring`)
+VALUES
+	(1,'gigazone-gaming-2016-league-of-legends',5,'2016-05-23 22:58:54','2016-10-13 18:17:49',2,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00');
+
+/*!40000 ALTER TABLE `tournaments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table users
