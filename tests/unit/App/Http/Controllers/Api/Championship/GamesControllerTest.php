@@ -33,7 +33,7 @@ class GamesControllerTest extends \TestCase
 
     /**
      * Test going to the index route will return a list of teams
-     *
+     * @todo failed
      * @test
      */
     public function the_index_route_will_return_a_json_array_of_teams()
@@ -46,9 +46,9 @@ class GamesControllerTest extends \TestCase
             'uri' => $faker->url
         ];
         $game = factory(Game::class)->create($params);
-
         $newCaught = false;
-        $response = $this->call('GET', 'api/game', []);
+        $response = $this->call('GET','api/game');
+
         $this->assertSame($response->getStatusCode(), 200);
 
         $this->assertJson($response->getContent());
@@ -71,6 +71,7 @@ class GamesControllerTest extends \TestCase
     /**
      * Test that going to the game api route with
      * an id will return back that game
+     * @todo failed
      *
      * @test
      */
@@ -99,6 +100,7 @@ class GamesControllerTest extends \TestCase
 
     /**
      * Test when trying to get a game by unknown id will return an exception
+     * @todo failed
      * @test
      */
     public function getting_a_game_by_unknown_id_return_an_error()
