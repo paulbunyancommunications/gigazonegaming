@@ -33,8 +33,6 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
     {
         exec('php artisan db:seed --class=DatabaseSeeder');
         $this->faker = \Faker\Factory::create();
-        $this->withoutMiddleware();
-        $this->disableMiddlewareForAllTests();
     }
 
     /**
@@ -52,6 +50,7 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
      */
     public function checkIfReceiveArrayWhenSendingATournamentId(AcceptanceTester $I)
     {
+//        dd($_SERVER);
         $I->wantTo('go to url and see that I received the right information while providing a tournament Id');
         $I->amOnPage('/app/api/tournament_id/16');
         $I->see("games");

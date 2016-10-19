@@ -16,12 +16,22 @@ class Api
     public function handle($request, Closure $next)
     {
         $okSites = [
+          '127.0.0.1', //localhost
           '209.191.200.242', //pbnet.pbndev.net
           '209.191.199.89', //paulbunyan.net
           '209.191.200.106', //gigazonegaming
           '192.168.56.1' //testing if you need another for testing, add a comma and add an extra string
         ];
-        if (!in_array($_SERVER['REMOTE_ADDR'],$okSites)) {
+        $isLocal = false or (
+            (isset($_SERVER['HOSTNAME']) and $_SERVER['HOSTNAME']=="gigazonegaming.local")
+            and
+            (isset($_SERVER['APP_ENV']) and $_SERVER['APP_ENV']=='local')
+        );
+        if (
+            !in_array($_SERVER['REMOTE_ADDR'],$okSites)
+            and
+            !$isLocal
+        ) {
             return redirect('/');
         }
         return $next($request);
