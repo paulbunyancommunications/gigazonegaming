@@ -7,6 +7,8 @@ vendor/*
 .env.jenkins
 .idea/*
 puphpet/config.yaml
+!puphpet/config.enc
+!puphpet/config-custom.enc
 parse_yaml.sh
 puphpet/config-custom.yaml
 puphpet/config-local.yaml
@@ -59,14 +61,13 @@ build/production-deploy
 queue.pid
 presentations
 nul
-database/dump/gzgaming_champ_db.sql
-database/dump/gzgaming_wp.sql
+gigazone_champ_db.sql
+gigazone_wp.sql
 individualPlayersTableBkup.csv
 PlayersTableBkup.csv
 gzgaming_sentinel.sql
-database/dump/**/*.sql
-!database/dump/gzgaming_champ_db.sql
-!database/dump/gzgaming_wp.sql
+database/dump/gzgaming_champ_db.sql
+database/dump/gzgaming_wp.sql
 form-template.haml.old
 public_html/app/content/js
 public_html/app/content/css

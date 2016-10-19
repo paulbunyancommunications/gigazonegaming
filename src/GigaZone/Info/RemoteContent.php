@@ -1,13 +1,12 @@
 <?php
 /**
- * ${CLASS_NAME}
+ * RemoteContent
  *
  * Created 10/17/16 4:57 PM
- * Description of this file here....
+ * Get remote content and parse dom
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  * @package GigaZone\Info
- * @subpackage Subpackage
  */
 
 namespace GigaZone\Info;
@@ -18,7 +17,7 @@ use Sunra\PhpSimple\HtmlDomParser;
  * Class remoteContent
  * @package GigaZone\Info
  */
-class remoteContent
+class RemoteContent implements RemoteContentInterface
 {
 
     /**
@@ -26,18 +25,25 @@ class remoteContent
      */
     const POOL_EXPIRE = 300;
 
+    protected $config = [];
     /**
      * @var \Stash\Pool
      */
     protected $pool;
 
+    protected $uri;
+
     /**
      * remoteContent constructor.
      * @param array $config
      */
-    public function __construct($config = [])
+    public function __construct(array $config = [])
     {
         $this->prepProperties($config);
+    }
+
+    public function getInfo() {
+        return $this->getSource($this->uri);
     }
 
     /**
@@ -45,6 +51,7 @@ class remoteContent
      */
     private function prepProperties($config)
     {
+        $this->config = $config;
         if ($config) {
             foreach ($config as $key => $value) {
                 if (property_exists($this, $key)) {
@@ -61,7 +68,7 @@ class remoteContent
      * @param $path
      * @return string
      */
-    protected function getSource($path)
+    public function getSource($path)
     {
         $key = md5(__CLASS__ . __METHOD__ . $path);
         $item = $this->pool->getItem($key);
@@ -85,7 +92,7 @@ class remoteContent
      * @param $string
      * @return mixed
      */
-    protected function getDom($string)
+    public function getDom($string)
     {
         return HtmlDomParser::str_get_html($string, true, true, DEFAULT_TARGET_CHARSET, false);
     }
@@ -96,7 +103,7 @@ class remoteContent
      * @param $dom
      * @return mixed
      */
-    protected function getScripts($dom)
+    public function getScripts($dom)
     {
         return $dom->find('script');
     }
@@ -107,7 +114,7 @@ class remoteContent
      * @param $dom
      * @return mixed
      */
-    protected function getLinkedStyles($dom)
+    public function getLinkedStyles($dom)
     {
         return $dom->find('link');
     }
@@ -118,10 +125,8 @@ class remoteContent
      * @param $dom
      * @return mixed
      */
-    protected function getStyles($dom)
+    public function getStyles($dom)
     {
         return $dom->find('style');
     }
-
-
 }
