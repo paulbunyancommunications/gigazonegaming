@@ -79,11 +79,11 @@ fi
 #
 # make database/dump/gigazone_wp.sql
 #
-if [ -f "${WORKSPACE}/database/dump/gigazone_wp.enc" ]
+if [ -f "${WORKSPACE}/database/dump/gzgaming_wp.enc" ]
     then
-        openssl enc -aes-256-cbc -d -in ${WORKSPACE}/database/dump/gigazone_wp.enc -out ${WORKSPACE}/database/dump/gigazone_wp.sql -pass pass:${decrypt_password}
+        openssl enc -aes-256-cbc -d -in ${WORKSPACE}/database/dump/gzgaming_wp.enc -out ${WORKSPACE}/database/dump/gzgaming_wp.sql -pass pass:${decrypt_password}
     else
-		touch ${WORKSPACE}/database/dump/gigazone_wp.sql
+		touch ${WORKSPACE}/database/dump/gzgaming_wp.sql
 fi
 
 
