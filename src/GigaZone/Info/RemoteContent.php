@@ -18,7 +18,7 @@ use Sunra\PhpSimple\HtmlDomParser;
  * Class remoteContent
  * @package GigaZone\Info
  */
-class remoteContent
+class RemoteContent implements RemoteContentInterface
 {
 
     /**
@@ -26,18 +26,25 @@ class remoteContent
      */
     const POOL_EXPIRE = 300;
 
+    protected $config = [];
     /**
      * @var \Stash\Pool
      */
     protected $pool;
 
+    protected $uri;
+
     /**
      * remoteContent constructor.
      * @param array $config
      */
-    public function __construct($config = [])
+    public function __construct(array $config = [])
     {
         $this->prepProperties($config);
+    }
+
+    public function getInfo() {
+        return $this->getSource($this->uri);
     }
 
     /**
@@ -45,6 +52,7 @@ class remoteContent
      */
     private function prepProperties($config)
     {
+        $this->config = $config;
         if ($config) {
             foreach ($config as $key => $value) {
                 if (property_exists($this, $key)) {
@@ -61,7 +69,7 @@ class remoteContent
      * @param $path
      * @return string
      */
-    protected function getSource($path)
+    public function getSource($path)
     {
         $key = md5(__CLASS__ . __METHOD__ . $path);
         $item = $this->pool->getItem($key);
