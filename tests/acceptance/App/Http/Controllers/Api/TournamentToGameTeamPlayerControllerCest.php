@@ -13,7 +13,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
  */
 class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
 {
-    use WithoutMiddleware;
     /**
      * @param AcceptanceTester $I
      */
@@ -50,7 +49,6 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
      */
     public function checkIfReceiveArrayWhenSendingATournamentId(AcceptanceTester $I)
     {
-//        dd($_SERVER);
         $I->wantTo('go to url and see that I received the right information while providing a tournament Id');
         $I->amOnPage('/app/api/tournament_id/16');
         $I->see("games");
@@ -60,6 +58,15 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
         $I->see("Tester Tournament");
         $I->see("Tester Team");
         $I->see("The Tester Player000");
+    }
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function checkIfReceiveFalseWhenSendingAWrongTournamentId(AcceptanceTester $I)
+    {
+        $I->wantTo('go to url and see that I received false while providing a wrong tournament id');
+        $I->amOnPage('/app/api/tournament_id/99999');
+        $I->see('false');
     }
     /**
      * @param AcceptanceTester $I
@@ -79,6 +86,15 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
+    public function checkIfReceiveFalseWhenSendingAWrongTournamentName(AcceptanceTester $I)
+    {
+        $I->wantTo('go to url and see that I received false while providing a wrong tournament Name');
+        $I->amOnPage('/app/api/tournament_name/TesterTournamentNotExistant');
+        $I->see('false');
+    }
+    /**
+     * @param AcceptanceTester $I
+     */
     public function checkIfReceiveArrayWhenSendingATeamId(AcceptanceTester $I)
     {
         $I->wantTo('go to url and see that I received the right information while providing a team Id');
@@ -90,6 +106,15 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
         $I->see("Tester Tournament");
         $I->see("Tester Team");
         $I->see("The Tester Player000");
+    }
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function checkIfReceiveFalseWhenSendingAWrongTeamId(AcceptanceTester $I)
+    {
+        $I->wantTo('go to url and see that I received false while providing a wrong team Id');
+        $I->amOnPage('/app/api/team_id/9999');
+        $I->see('false');
     }
     /**
      * @param AcceptanceTester $I
@@ -112,34 +137,7 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
     public function checkIfReceiveFalseWhenSendingAWrongTeamName(AcceptanceTester $I)
     {
         $I->wantTo('go to url and see that I received false while providing a wrong team Name');
-        $I->amOnPage('/app/api/team_name/Tester%20Team%20Not%20Existant');
-        $I->see('false');
-    }
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function checkIfReceiveFalseWhenSendingAWrongTeamId(AcceptanceTester $I)
-    {
-        $I->wantTo('go to url and see that I received false while providing a wrong team Name');
-        $I->amOnPage('/app/api/team_id/99999');
-        $I->see('false');
-    }
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function checkIfReceiveFalseWhenSendingAWrongTournamentName(AcceptanceTester $I)
-    {
-        $I->wantTo('go to url and see that I received false while providing a wrong team Name');
-        $I->amOnPage('/app/api/tournament_name/Tester%Tournament%20Not%20Existant');
-        $I->see('false');
-    }
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function checkIfReceiveFalseWhenSendingAWrongTournamentId(AcceptanceTester $I)
-    {
-        $I->wantTo('go to url and see that I received false while providing a wrong team Name');
-        $I->amOnPage('/app/api/tournament_id/99999');
+        $I->amOnPage('/app/api/team_name/TesterTeamNotExistant');
         $I->see('false');
     }
 }
