@@ -1,13 +1,12 @@
 <?php
 /**
- * ${CLASS_NAME}
+ * RemoteContent
  *
  * Created 10/17/16 4:57 PM
- * Description of this file here....
+ * Get remote content and parse dom
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  * @package GigaZone\Info
- * @subpackage Subpackage
  */
 
 namespace GigaZone\Info;
