@@ -81,8 +81,8 @@ class BackEndTesterSeeder extends Seeder
                 [
                     'name' => "Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'username' => "The Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
-                    'email' => $faker->email,
-                    'phone' => $faker->phoneNumber,
+                    'email' => "player".str_pad($i, 3, '0', STR_PAD_LEFT)."@test.com",
+                    'phone' => "(218)-444-".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
             \App\Models\Championship\PlayerRelation::create([
@@ -112,8 +112,8 @@ class BackEndTesterSeeder extends Seeder
                 [
                     'name' => "Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'username' => "The Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
-                    'email' => $faker->email,
-                    'phone' => $faker->phoneNumber,
+                    'email' => "player".str_pad($i+5, 3, '0', STR_PAD_LEFT)."@test.com",
+                    'phone' => "(218)-444-".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
         }// create the tester user if not already created
@@ -144,7 +144,6 @@ class BackEndTesterSeeder extends Seeder
                     'name' => $faker->name,
                     'username' => $faker->userName,
                     'email' => $faker->email,
-                    'phone' => $faker->phoneNumber,
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
         }

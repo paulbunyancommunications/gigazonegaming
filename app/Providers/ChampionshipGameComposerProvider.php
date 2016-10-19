@@ -93,6 +93,13 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 ->with('teams', $teams)
                 ->with('individualPlayers', $this->individualPlayers(['order_by'=>"tournaments.id"]));
         });
+        View::composer(['game.email'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', Player::playersRelations());
+        });
     }
 
     /**

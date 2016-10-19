@@ -182,21 +182,19 @@ class TeamsController extends Controller
             if($tournament!=''){
                 $join->on('tournaments.id', '=', 'teams.tournament_id')
                 ->where('tournaments.id', '=', $tournament);
-//                ->where('tournaments.id', '=', '');
             }else{
                 $join->on('tournaments.id', '=', 'teams.tournament_id');
             }
         })
-
-            ->join('games', function($join)use($game){
-                if($game!='') {
+            ->join('games', function($join)use($tournament,$game){
+                if($game!='' and $tournament=='') {
                     $join->on('tournaments.game_id', '=', 'games.id')
                     ->where('games.id', '=', $game);
                 }else{
                     $join->on('tournaments.game_id', '=', 'games.id');
                 }
             })
-            ->leftJoin('player_relations', function($join)use($tournament, $game){
+            ->join('player_relations', function($join)use($tournament, $game){
                 $join->on('player_relations.relation_id', '=', 'teams.id')
                 ->where('player_relations.relation_type', '=', Team::class);
         } );
@@ -213,7 +211,7 @@ class TeamsController extends Controller
             'tournaments.id as tournament_id',
             'games.name as game_name',
             DB::raw("COUNT(relation_id) as team_count")
-        ])->orderBy('team_id')->get()->toArray();
+        ])->orderBy('team_id')->groupBy('team_id')->get()->toArray();
         return View::make('game/team')->with("teams_filter", $teams_cooked)->with('sorts',$ids);
     }
 

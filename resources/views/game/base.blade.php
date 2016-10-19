@@ -70,6 +70,10 @@
                         'Team Maker') }}
                         </li>
 
+                        <li>{{ Html::linkAction('Backend\Manage\GamesController@email',
+                        'Email Lists') }}
+                        </li>
+
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

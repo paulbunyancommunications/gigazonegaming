@@ -19,11 +19,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     {
         $t = Tournament::where('name', '=', $tournament->name)->first();
         if( $t == null ){
-            return 'false';
+            return  json_encode('false');
         }
         $tournamentRet = $this->returnFromTournament($t);
         if( isset( $tournamentRet['error'] ) ){
-            return 'false';
+            return  json_encode('false');
         }
         return $tournamentRet;
     }
@@ -36,11 +36,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     {
         $t = Tournament::where('id', '=', $tournament->id)->first();
         if( $t == null ){
-            return 'false';
+            return  json_encode('false');
         }
         $tournamentRet = $this->returnFromTournament($t);
         if( isset( $tournamentRet['error'] ) ){
-            return 'false';
+            return  json_encode('false');
         }
         return $tournamentRet;
     }
@@ -52,11 +52,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     {
         $t = Team::where('name', '=', $team->name)->first();
         if( $t == null ){
-            return 'false';
+            return  json_encode('false');
         }
         $teamRet = $this->returnFromTeam($t);
         if( isset( $tournamentRet['error'] ) ){
-            return 'false';
+            return  json_encode('false');
         }
         return $teamRet;
     }
@@ -69,11 +69,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     {
         $t = Team::where('id', '=', $team->id)->first();
         if( $t == null ){
-            return 'false';
+            return  json_encode('false');
         }
         $teamRet = $this->returnFromTeam($t);
         if( isset( $tournamentRet['error'] ) ){
-            return 'false';
+            return  json_encode('false');
         }
         return $teamRet;
     }

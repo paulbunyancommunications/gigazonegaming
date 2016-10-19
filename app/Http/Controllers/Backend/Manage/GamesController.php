@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GameRequest;
+use App\Http\Requests\Request;
 use App\Models\Championship\Game;
+use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
@@ -122,5 +125,97 @@ class GamesController extends Controller
 
         return View::make('game/game')
             ->with("success", "The game ".$name." was successfully deleted (and all tournaments, teams and relations attached to it).");
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function email()
+    {
+        return View::make('game.email');
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function email_get()
+    {
+        $separator = $this->checkSeparator($_POST["separator"], $_POST["space"]);
+        $game = $_POST["game_sort"];
+        $tournament = $_POST["tournament_sort"];
+        $team = $_POST["team_sort"];
+        $player = $_POST["player_sort"];
+        $emails = '';
+//        dd($_POST);
+        if(isset($_POST["get_game"]) and $game != '---'){
+            $theGame = Game::where('id','=',$game)->first();
+            if($theGame == null){
+                return Redirect::back()
+                    ->with('error', 'Game Id doesn\'t exists')
+                    ->with('sorts', $_POST);
+            }
+            $relations = $theGame->findPlayersRelations()->get()->toArray();
+            $emails = $this->getEmail($relations, $separator);
+        }
+        elseif(isset($_POST["get_tournament"]) and $tournament != '---'){
+            $theTournament = Tournament::where('id','=',$tournament)->first();
+            if($theTournament == null){
+                return Redirect::back()
+                    ->with('error', 'Tournament Id doesn\'t exists')
+                    ->with('sorts', $_POST);
+            }
+            $relations = $theTournament->findPlayersRelations()->get()->toArray();
+            $emails = $this->getEmail($relations, $separator);
+        }
+        elseif(isset($_POST["get_team"]) and $team != '---'){
+            $theTeam = Team::where('id','=',$team)->first();
+            if($theTeam == null){
+                return Redirect::back()
+                    ->with('error', 'Team Id doesn\'t exists')
+                    ->with('sorts', $_POST);
+            }
+            $relations = $theTeam->findPlayersRelations()->get()->toArray();
+            $emails = $this->getEmail($relations, $separator);
+        }
+        elseif(isset($_POST["get_player"]) and $player != '---'){
+
+            $player = Player::where('id','=',$player)->first();
+            if($player == null){
+                return Redirect::back()
+                    ->with('error', 'Player Id doesn\'t exists')
+                    ->with('sorts', $_POST);
+            }
+            $emails = $player->email;
+
+        }
+
+        return View::make('game.email')->with('sorts', $_POST)->with('email_get', $emails);
+    }
+
+    private function checkSeparator($separator, $space){
+            $sep ='';
+            if($separator == 'comma') {$sep = ',';}
+            elseif($separator == 'semicolon') {$sep = ';';}
+            elseif($separator == 'colon') {$sep = ':';}
+            elseif($separator == 'period') {$sep = '.';}
+            elseif($separator == 'plus') {$sep = '+';}
+            elseif($separator == 'minus') {$sep = '-';}
+            elseif($separator == 'vbar') {$sep = '|';}
+            elseif($separator == 'under') {$sep = '_';}
+            if($space == 'yes') {$sep .= ' ';}
+            return $sep;
+    }
+    private function getEmail($players, $separator){
+        $emails = '';
+        foreach ($players as $k=>$player){
+            $e = Player::where('id','=',$player['player_id'])->first();
+            if($e!=null) {
+                $emails .= $e->email . $separator;
+            }
+        }
+        return trim(trim(trim($emails, $separator),']'),'[');
     }
 }

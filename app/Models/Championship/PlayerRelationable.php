@@ -322,10 +322,13 @@ trait  PlayerRelationable
                             if (!isset($returnableArray[strtolower(self::routables()[$i])])) {
                                 $returnableArray[strtolower(self::routables()[$i])] = [];
                             }
+                            $x = forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $someT['relation_id'])->first();
+                            if($x!=null){
+                                    $x = $x->toArray();
+                            }
                             array_push(
                                 $returnableArray[strtolower(self::routables()[$i])],
-                                forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=',
-                                    $someT['relation_id'])->get()->toArray()[0]);
+                                $x);
 
                         }
                     }
