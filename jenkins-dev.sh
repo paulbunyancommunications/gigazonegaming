@@ -135,3 +135,11 @@ vagrant ssh -c "cd /var/www; php composer.phar require phing/phing:2.* --dev"
 #
 
 bash testing.sh
+
+# -------------------------------------------------------------
+#
+# Run Cleanup
+#
+
+cd ${WORKSPACE}/build
+php ././vendor/bin/phing build:cleanup -Denv=jenkins -Ddo_metrics=0
