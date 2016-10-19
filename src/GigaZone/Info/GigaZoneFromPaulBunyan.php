@@ -13,17 +13,19 @@ namespace GigaZone\Info;
 
 use Sunra\PhpSimple\HtmlDomParser;
 
-
-class GigaZoneFromPaulBunyan
+class GigaZoneFromPaulBunyan extends RemoteContent implements RemoteContentInterface
 {
     const PBC_PATH = "https://www.paulbunyan.net";
-    protected $pool;
 
-    public function __construct()
+    public function __construct($config = [])
     {
-        $options = ['path' => dirname(dirname(dirname(__DIR__))) . '/storage/framework/cache'];
-        $driver = new \Stash\Driver\FileSystem($options);
-        $this->pool = new \Stash\Pool($driver);
+        parent::__construct($config);
+
+    }
+
+    public function getInfo()
+    {
+        return $this->getGigazoneInfo();
     }
 
     public function getGigazoneInfo()
@@ -34,20 +36,20 @@ class GigaZoneFromPaulBunyan
 
             $item->lock();
 
-            $gigazoneInfo = $this->getContent();
+            $gigazoneInfo = $this->getSource($this->uri);
             $this->fixUrls($gigazoneInfo);
 
-            $dom = HtmlDomParser::str_get_html($gigazoneInfo, true, true, DEFAULT_TARGET_CHARSET, false);
+            $dom = $this->getDom($gigazoneInfo);
 
             $gigazoneContent = $dom->find('#gigazone-content-container', 0);
             $content = $gigazoneContent->innertext;
 
-            $scripts = $dom->find('script');
+            $scripts = $this->getScripts($dom);
             foreach ($scripts as $script) {
                 $this->addScripts($content, $script);
             }
 
-            $styles = $scripts = $dom->find('link');
+            $styles = $this->getLinkedStyles($dom);
             foreach ($styles as $style) {
                 if (strpos($style->outertext, 'gigazone') !== false) {
                     $content .= $style->outertext;
@@ -56,35 +58,13 @@ class GigaZoneFromPaulBunyan
                 $this->addStyles($content, $style);
             }
             // Cache expires 5 minutes.
-            $item->expiresAfter(300);
+            $item->expiresAfter(RemoteContent::POOL_EXPIRE);
 
             $this->pool->save($item->set($content));
 
         } else {
             $content = $item->get();
         }
-        return $content;
-    }
-
-    protected function getContent($path = null)
-    {
-        if (!$path) {
-            $path = GigaZoneFromPaulBunyan::PBC_PATH . '/gigazone/index.html';
-        }
-
-        $key = md5(__CLASS__ . __METHOD__ . $path);
-        $item = $this->pool->getItem($key);
-        if ($item->isMiss()) {
-            $item->lock();
-
-            // Cache expires 5 minutes.
-            $item->expiresAfter(300);
-            $content = file_get_contents($path);
-            $this->pool->save($item->set($content));
-        } else {
-            $content = $item->get();
-        }
-
         return $content;
     }
 
@@ -98,7 +78,8 @@ class GigaZoneFromPaulBunyan
             'href="/css/',
             'src="/menu.js"',
             'src="/conditions/',
-            'href="/gigazone/'
+            'href="/gigazone/',
+            'src="/gigazone/'
         ];
         $pathsReplace = [
             '\'' . GigaZoneFromPaulBunyan::PBC_PATH . '/images/',
@@ -108,7 +89,8 @@ class GigaZoneFromPaulBunyan
             'href="' . GigaZoneFromPaulBunyan::PBC_PATH . '/css/',
             'src="' . GigaZoneFromPaulBunyan::PBC_PATH . '/menu.js"',
             'src="' . GigaZoneFromPaulBunyan::PBC_PATH . '/conditions/',
-            'href="' . GigaZoneFromPaulBunyan::PBC_PATH . '/gigazone/'
+            'href="' . GigaZoneFromPaulBunyan::PBC_PATH . '/gigazone/',
+            'src="' . GigaZoneFromPaulBunyan::PBC_PATH . '/gigazone/'
         ];
         $html = str_replace($pathsFind, $pathsReplace, $html);
 
@@ -134,7 +116,7 @@ class GigaZoneFromPaulBunyan
     private function addStyles(&$content, $style)
     {
         $script = $style->href;
-        $styles = $this->getContent($script);
+        $styles = $this->getSource($script);
         // match things like p.gz {}
         if ($c = preg_match_all("/((?:[a-z][a-z0-9_]*))(\\.)(gz)(\\s+)(\\{.*?\\})/is", $styles, $matches)) {
             $content .= '<style type="text/css">';

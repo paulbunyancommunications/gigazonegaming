@@ -93,7 +93,7 @@ class RemoteContent implements RemoteContentInterface
      * @param $string
      * @return mixed
      */
-    protected function getDom($string)
+    public function getDom($string)
     {
         return HtmlDomParser::str_get_html($string, true, true, DEFAULT_TARGET_CHARSET, false);
     }
@@ -104,7 +104,7 @@ class RemoteContent implements RemoteContentInterface
      * @param $dom
      * @return mixed
      */
-    protected function getScripts($dom)
+    public function getScripts($dom)
     {
         return $dom->find('script');
     }
@@ -115,7 +115,7 @@ class RemoteContent implements RemoteContentInterface
      * @param $dom
      * @return mixed
      */
-    protected function getLinkedStyles($dom)
+    public function getLinkedStyles($dom)
     {
         return $dom->find('link');
     }
@@ -126,10 +126,8 @@ class RemoteContent implements RemoteContentInterface
      * @param $dom
      * @return mixed
      */
-    protected function getStyles($dom)
+    public function getStyles($dom)
     {
         return $dom->find('style');
     }
-
-
 }
