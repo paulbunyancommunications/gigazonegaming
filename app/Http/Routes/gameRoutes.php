@@ -12,6 +12,4 @@ Route::group(['middleware' => ['WPAdmin']], function () {
     Route::put('/manage/game/edit/{game_id}/', ['as' => 'manage.game.edited', 'uses' => 'Backend\Manage\GamesController@update']);
     Route::post('/manage/game/', ['as' => 'manage.game.new', 'uses' => 'Backend\Manage\GamesController@store']);
     Route::delete('/manage/game/delete/{game_id}/', ['as' => 'manage.game.delete', 'uses' => 'Backend\Manage\GamesController@destroy']);
-    Route::get('/manage/email/', ['as' => 'manage.email', 'uses' => 'Backend\Manage\GamesController@email']);
-    Route::post('/manage/email/', ['as' => 'manage.email', 'uses' => 'Backend\Manage\GamesController@email_get']);
 });

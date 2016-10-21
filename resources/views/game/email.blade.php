@@ -8,30 +8,60 @@
     }
 @endsection
 @section('content')
-    <div class="col-xs-6">
+    {{ Form::open(array('id' => "email_getter", 'action' => array('Backend\Manage\EmailController@email_get'), 'class' => 'form-horizontal')) }}
+    <div class="col-xs-10 col-xs-push-1" >
         <h2>Email Filter</h2>
-        {{ Form::open(array('id' => "email_getter", 'action' => array('Backend\Manage\GamesController@email_get'), 'class' => 'form-horizontal')) }}
-        <div class="form-group">
+         <div class="form-group">
             <input name="_method" type="hidden" value="POST">
             <div class="form-group bg-primary">
                 <label for="team_sort" class="control-label col-xs-3">Desired Separator: </label>
                 <div class="col-xs-3">
                     <select name="separator" id="separator" class="form-control">
-                        <option value = 'comma' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator']== 'comma') selected="selected" @endif>,</option>
-                        <option value = 'semicolon' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'semicolon') selected="selected" @endif>;</option>
-                        <option value = 'colon' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'colon') selected="selected" @endif>:</option>
-                        <option value = 'period' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'period') selected="selected" @endif>.</option>
-                        <option value = 'plus' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'plus') selected="plus" @endif>+</option>
-                        <option value = 'minus' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'minus') selected="minus" @endif>-</option>
-                        <option value = 'vbar' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'vbar') selected="vbar" @endif>|</option>
-                        <option value = 'under' @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'under') selected="under" @endif>_</option>
+                        <option value='comma'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator']== 'comma') selected="selected" @endif>
+                            ,
+                        </option>
+                        <option value='semicolon'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'semicolon') selected="selected" @endif>
+                            ;
+                        </option>
+                        <option value='colon'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'colon') selected="selected" @endif>
+                            :
+                        </option>
+                        <option value='period'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'period') selected="selected" @endif>
+                            .
+                        </option>
+                        <option value='plus'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'plus') selected="plus" @endif>
+                            +
+                        </option>
+                        <option value='minus'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'minus') selected="minus" @endif>
+                            -
+                        </option>
+                        <option value='vbar'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'vbar') selected="vbar" @endif>
+                            |
+                        </option>
+                        <option value='under'
+                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'under') selected="under" @endif>
+                            _
+                        </option>
                     </select>
                 </div>
                 <label for="team_sort" class="control-label col-xs-3">Space after Separator: </label>
                 <div class="col-xs-3">
                     <select name="space" id="space" class="form-control">
-                        <option value = 'yes' @if((isset($sorts) and isset($sorts['space']) and $sorts['space']== 'yes')) selected="selected" @endif>Yes</option>
-                        <option value = 'no' @if(isset($sorts) and isset($sorts['space']) and $sorts['space'] == 'no') selected="selected" @endif>No</option>
+                        <option value='yes'
+                                @if((isset($sorts) and isset($sorts['space']) and $sorts['space']== 'yes')) selected="selected" @endif>
+                            Yes
+                        </option>
+                        <option value='no'
+                                @if(isset($sorts) and isset($sorts['space']) and $sorts['space'] == 'no') selected="selected" @endif>
+                            No
+                        </option>
                     </select>
                 </div>
             </div>
@@ -103,13 +133,8 @@
             </div>
 
         </div>
-        {{ Form::close() }}
     </div>
-    @if(isset($email_get))
-    <div class="col-xs-6">
-        <textarea  rows="20" class="form-control">{{$email_get}}</textarea>
-    </div>
-    @endif
+    {{ Form::close() }}
 @endsection
 @section('js')
     $(document).ready(function() {
