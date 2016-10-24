@@ -1,0 +1,35 @@
+# -------------------------------------------------------------
+#
+# http://www.shellhacks.com/en/Encrypt-And-Decrypt-Files-With-A-Password-Using-OpenSSL
+# decrypt the config files
+# the encrypted file is a copy of encrypted_file.encrypted_extension,
+# re encrypt encrypted_file.encrypted_extension to encrypted_file.enc if
+# changes are needed.
+#
+desc=(
+"Phing config file for Jenkins"
+"Phing host file for Jenkins"
+"Environment file"
+"Puphpet main config file"
+"Puphpet custom config file"
+"Wordpress database sql file"
+"Championship database sql file"
+)
+prefix=(
+"build/config/jenkins"
+"build/config/hosts/jenkins"
+".env"
+"puphpet/config"
+"puphpet/config-custom"
+"database/dump/gzgaming_wp"
+"database/dump/gzgaming_champ_db"
+)
+suffix=(
+".config"
+".host"
+""
+".yaml"
+".yaml"
+".sql"
+".sql"
+)
