@@ -41,6 +41,13 @@ vagrant box update
 bash install.sh
 
 # -------------------------------------------------------------
+#
+# Create cache directory in VM and set it to writable
+#
+
+vagrant ssh -c "cd /var/www; mkdir -m 0770 cache || echo ''"
+
+# -------------------------------------------------------------
 # get Phing
 #
 
