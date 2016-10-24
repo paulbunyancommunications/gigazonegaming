@@ -3,10 +3,12 @@
   "description": "Gigazone Gaming website",
   "authors": [
     {
-      "name": "Nate Nolting",
-      "email": "naten@paulbunyan.net",
       "name": "Nelson Castillo",
       "email": "castillo@paulbunyan.net"
+    },
+    {
+      "name": "Nate Nolting",
+      "email": "naten@paulbunyan.net"
     }
   ],
   "minimum-stability": "stable",
