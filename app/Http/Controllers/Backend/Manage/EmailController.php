@@ -143,12 +143,12 @@ class EmailController extends Controller
      */
     private function sendEmail($to, $subject, $message, $headers)
     {
-        $splited = explode(', ', $to);
-        foreach ($splited as $k => $value) {
-            mail($to,$subject,$message,$headers);
+        if(!is_array($to)){
+            $to = explode(', ', $to);
         }
-//        wp_mail($to, $subject, $message, $headers);
-//        mail(, , );
+        foreach ($to as $k => $value) {
+            //mailingFunction::send($value,$subject,$message,$headers);
+        }
     }
 
     /**
