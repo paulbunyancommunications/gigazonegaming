@@ -1,5 +1,5 @@
 @if( isset($data['head']))
-    <p>{!! $data['head'] !!}</p>
+    {!! $data['head'] !!}
 @endif
 @if( ! empty($data['fields']))
 <table class="table table-striped table-bordered">
