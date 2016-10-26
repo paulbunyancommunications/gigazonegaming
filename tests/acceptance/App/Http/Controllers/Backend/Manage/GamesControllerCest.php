@@ -52,7 +52,6 @@ class GamesControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a game on the management page');
         list($name, $title, $uri, $desc) = $this->createAGame($I);
-
         // check return, we should have a message and all the fields filled
         $I->see('The game '.$title.' was added');
         $I->seeInField(['id' => 'name'], $name);
