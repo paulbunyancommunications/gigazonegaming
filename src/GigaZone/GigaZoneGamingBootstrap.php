@@ -58,11 +58,18 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
         $twig->addFilter('format_for_title', new Twig_SimpleFilter('format_for_title', array($this, 'titleFilter')));
         $twig->addFilter('slugify', new Twig_SimpleFilter('slugify', array($this, 'slugify')));
         $twig->addFilter('mdfive', new Twig_SimpleFilter('mdfive', array($this, 'mdfive')));
+        $twig->addFilter('str_to_bool', new Twig_SimpleFilter('str_to_bool', array($this, 'strToBool')));
         $twig->addFilter(
             'auto_version_path',
             new Twig_SimpleFilter('auto_version_path', array($this, 'autoVersionFilter'))
         );
         return $twig;
+    }
+
+
+    public function strToBool($string)
+    {
+        return \utilphp\util::str_to_bool($string);
     }
 
     public function mdfive($string)
