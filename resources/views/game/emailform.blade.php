@@ -43,7 +43,7 @@
                     {!! Form::submit( 'Send Email', array('class'=>'btn btn-danger list fa fa-search form-control', 'name'=>'send', 'id'=>'send')) !!}
                 </div>
             </div>
-            <input name="emailList" id="emailList" rows="10" class="hidden" value="@if(isset($email_send)){{$email_send}}@endif">
+            <input name="emailList" id="emailList" rows="10" class="hidden" value="@if(isset($email_get)){{$email_get}}@endif">
 
         {{ Form::close() }}
     </div>

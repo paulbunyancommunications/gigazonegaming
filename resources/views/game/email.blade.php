@@ -13,58 +13,6 @@
         <h2>Email Filter</h2>
          <div class="form-group">
             <input name="_method" type="hidden" value="POST">
-            <div class="form-group bg-primary">
-                <label for="team_sort" class="control-label col-xs-3">Desired Separator: </label>
-                <div class="col-xs-3">
-                    <select name="separator" id="separator" class="form-control">
-                        <option value='comma'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator']== 'comma') selected="selected" @endif>
-                            ,
-                        </option>
-                        <option value='semicolon'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'semicolon') selected="selected" @endif>
-                            ;
-                        </option>
-                        <option value='colon'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'colon') selected="selected" @endif>
-                            :
-                        </option>
-                        <option value='period'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'period') selected="selected" @endif>
-                            .
-                        </option>
-                        <option value='plus'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'plus') selected="plus" @endif>
-                            +
-                        </option>
-                        <option value='minus'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'minus') selected="minus" @endif>
-                            -
-                        </option>
-                        <option value='vbar'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'vbar') selected="vbar" @endif>
-                            |
-                        </option>
-                        <option value='under'
-                                @if(isset($sorts) and isset($sorts['separator']) and $sorts['separator'] == 'under') selected="under" @endif>
-                            _
-                        </option>
-                    </select>
-                </div>
-                <label for="team_sort" class="control-label col-xs-3">Space after Separator: </label>
-                <div class="col-xs-3">
-                    <select name="space" id="space" class="form-control">
-                        <option value='yes'
-                                @if((isset($sorts) and isset($sorts['space']) and $sorts['space']== 'yes')) selected="selected" @endif>
-                            Yes
-                        </option>
-                        <option value='no'
-                                @if(isset($sorts) and isset($sorts['space']) and $sorts['space'] == 'no') selected="selected" @endif>
-                            No
-                        </option>
-                    </select>
-                </div>
-            </div>
             <div class="form-group bg-success">
                 <label for="game_sort" class="control-label col-xs-3">Get Game: </label>
                 <div class="col-xs-7">

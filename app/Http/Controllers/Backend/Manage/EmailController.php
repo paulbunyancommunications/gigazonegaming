@@ -43,22 +43,22 @@ class EmailController extends Controller
         if (isset($_POST["get_game"]) and $game) {
             $theGame = Game::where('id', '=', $game)->first();
             $relations = $this->returnErrorsIfNull($theGame, $_POST);
-            list($emailsUserRequest, $emails) = $this->getEmail($relations, $separator);
+            $emails = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_tournament"]) and $tournament) {
             $theTournament = Tournament::where('id', '=', $tournament)->first();
             $relations = $this->returnErrorsIfNull($theTournament, $_POST);
-            list($emailsUserRequest, $emails) = $this->getEmail($relations, $separator);
+            $emails = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_team"]) and $team) {
             $theTeam = Team::where('id', '=', $team)->first();
             $relations = $this->returnErrorsIfNull($theTeam, $_POST);
-            list($emailsUserRequest, $emails) = $this->getEmail($relations, $separator);
+            $emails = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_player"]) and $player) {
             $player = Player::where('id', '=', $player)->first();
             $this->returnErrorsIfNull($player, $_POST);
             $emailsUserRequest = $emails = $player->email;
         }
         if($game or $tournament or $team or $player) {
-            return View::make('game.emailForm')->with('sorts', $_POST)->with('email_get', $emails)->with('email_send', $emailsUserRequest);
+            return View::make('game.emailForm')->with('sorts', $_POST)->with('email_get', $emails);
         }else{
             return Redirect::back()
                 ->with('error', 'Select a game, tournament, team or player.')
@@ -81,7 +81,7 @@ class EmailController extends Controller
         if (isset($_POST["send"]) and $_POST["send"] == "Send Email") {
             if ($errors == '') {
                 $this->sendEmail($to, $subject, $message, $headers);
-                return redirect('manage/email')->with('success', "The email has being sent");
+                return redirect('/manage/email/')->with('success', "The email has being sent");
             } else {
                 return View::make('game.emailform')
                     ->with('error', $errors)
@@ -114,8 +114,10 @@ class EmailController extends Controller
             $sep = '|';
         } elseif ($separator == 'under') {
             $sep = '_';
+        } else {
+            $sep = ',';
         }
-        if ($space == 'yes') {
+        if ($space != 'no') {
             $sep .= ' ';
         }
         return $sep;
@@ -129,10 +131,9 @@ class EmailController extends Controller
             $e = Player::where('id', '=', $player['player_id'])->first();
             if ($e != null) {
                 $emails .= $e->email . $separator;
-                $emailsSend .= $e->email . ", ";
             }
         }
-        return array(trim(trim(trim($emailsSend, ", "), ']'), '['), trim(trim(trim($emails, $separator), ']'), '['));
+        return trim(trim(trim($emails, $separator), ']'), '[');
     }
 
     /**
@@ -199,24 +200,24 @@ class EmailController extends Controller
      */
     private function cleanPostToGetEmails($thePost)
     {
-        $separator = ',';
-        $space = 'yes';
+        $separator = ', ';
+//        $space = 'yes';
         $game = '';
         $tournament = '';
         $team = '';
         $player = '';
 
-        if (isset($thePost['separator'])) {
-            $separator = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost['separator']);
-        }
-        if (isset($thePost['space'])) {
-            $space = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost["space"]);
-        }
-        if ($separator and $space) {
-            $separator = $this->checkSeparator($separator, $space);
-        } else {
-            $separator = ", ";
-        }
+//        if (isset($thePost['separator'])) {
+//            $separator = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost['separator']);
+//        }
+//        if (isset($thePost['space'])) {
+//            $space = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost["space"]);
+//        }
+//        if ($separator and $space) {
+//            $separator = $this->checkSeparator($separator, $space);
+//        } else {
+//            $separator = ", ";
+//        }
         if (isset($thePost['game_sort'])) {
             $game = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost["game_sort"]);
         }
