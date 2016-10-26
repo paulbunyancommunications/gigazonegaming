@@ -65,6 +65,7 @@ class EmailFilterCest extends BaseAcceptance
         $I->amOnPage('/app/manage/email');
         $I->see('Email Filter');
         $I->wantTo('click on a tournament and see all the email addresses attached');
+        $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
         $I->executeJS('$("#get_tournament").click()');
         $I->wait(3);
         $I->see('Super awesome email sender.');
