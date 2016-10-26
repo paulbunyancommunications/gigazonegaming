@@ -3,10 +3,12 @@
   "description": "Gigazone Gaming website",
   "authors": [
     {
-      "name": "Nate Nolting",
-      "email": "naten@paulbunyan.net",
       "name": "Nelson Castillo",
       "email": "castillo@paulbunyan.net"
+    },
+    {
+      "name": "Nate Nolting",
+      "email": "naten@paulbunyan.net"
     }
   ],
   "minimum-stability": "stable",
@@ -180,7 +182,8 @@
     "symfony/css-selector": "2.8.*|3.0.*",
     "symfony/dom-crawler": "2.8.*|3.0.*",
     "barryvdh/laravel-ide-helper": "2.1.*",
-    "codeception/c3": "^2.0"
+    "codeception/c3": "^2.0",
+    "phing/phing": "2.*"
   },
   "extra": {
     "webroot-dir": "public_html/wp",

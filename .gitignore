@@ -3,6 +3,7 @@ vendor/*
 !resources/views/vendor
 !resources/lang/vendor
 .env
+.enc-pass
 .env.bk
 .env.jenkins
 .idea/*
@@ -93,3 +94,6 @@ test.sh
 build/config/hosts/jenkins.host
 build/config/jenkins.config
 GIGAZONEGAMING-jenkins-master.tar.gz
+database/dump/bak
+puphpet/bak/config-custom.yaml
+puphpet/bak/config.yaml

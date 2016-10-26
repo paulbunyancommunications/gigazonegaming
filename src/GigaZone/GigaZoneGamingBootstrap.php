@@ -138,7 +138,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
     {
         $attr = shortcode_atts(array(
             'footer' => '',
-            'class' => ''
+            'class' => 'splash'
         ), $attributes);
 
         $params = [
@@ -146,7 +146,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
             'footer' => $attr['footer'],
             'class' => $attr['class']
         ];
-        return Timber::compile('partials/splash.twig', $params);
+        return \Timber::compile('partials/splash.twig', $params);
     }
 
     /**

@@ -1,6 +1,7 @@
 @if( isset($data['head']))
-    <p>{!! $data['head'] !!}</p>
+    {!! $data['head'] !!}
 @endif
+@if( ! empty($data['fields']))
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -9,7 +10,6 @@
     </tr>
     </thead>
     <tbody>
-        @if( ! empty($data['fields']))
             @foreach ($data['fields'] as $field)
                 <tr>
                     <td class="question text-left" id="{{ ($field['field']) ? (str_slug($field['field'])) : (str_slug($field['label'])) }}-response-label">{{ $field['label'] }}</td>
@@ -26,6 +26,6 @@
                     </td>
                 </tr>
             @endforeach
-        @endif
     </tbody>
 </table>
+@endif
