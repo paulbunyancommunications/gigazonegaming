@@ -17,9 +17,9 @@
 
             <div class="form-group">
                 <label for="emailList" class="control-label col-xs-3">Email to: </label>
-                <div class="col-xs-9 @if(isset($email_get) and $email_get=='') bg-danger @endif">
-                    <input class="form-control" value="@if(isset($email_get)){{$email_get}}@endif" disabled="disabled">
-                    <input name="emails" id="emails" class="form-control hidden" value="@if(isset($email_get)){{$email_get}}@endif">
+                <div class="col-xs-9 @if(isset($names_get) and $names_get=='') bg-danger @endif">
+                    <input class="form-control" value="@if(isset($names_get)){{$names_get}}@endif" disabled="disabled">
+                    <input name="emails" id="emails" class="form-control hidden" value="@if(isset($names_get)){{$names_get}}@endif">
                 </div>
             </div>
             <div class="form-group">
@@ -43,7 +43,7 @@
                     {!! Form::submit( 'Send Email', array('class'=>'btn btn-danger list fa fa-search form-control', 'name'=>'send', 'id'=>'send')) !!}
                 </div>
             </div>
-            <input name="emailList" id="emailList" rows="10" class="hidden" value="@if(isset($email_get)){{$email_get}}@endif">
+            <input name="emailList" id="emailList" rows="10" class="hidden" value="@if(isset($ids_get)){{$ids_get}}@endif">
 
         {{ Form::close() }}
     </div>

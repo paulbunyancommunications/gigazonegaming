@@ -50,13 +50,11 @@ class EmailFilterCest extends BaseAcceptance
         $I->amOnPage('/app/manage/email');
         $I->see('Email Filter');
         $I->wantTo('click on a game and see all the email addresses attached');
-        $I->seeOptionIsSelected('#separator', ',');
-        $I->seeOptionIsSelected('#space', 'Yes');
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
         $I->executeJS('$("#get_game").click()');
         $I->wait(3);
         $I->see('Super awesome email sender.');
-        $I->seeElement('input', ['value' => 'player000@test.com, player001@test.com, player002@test.com, player003@test.com, player004@test.com, player005@test.com, player006@test.com, player007@test.com, player008@test.com, player009@test.com, player010@test.com, player011@test.com, player012@test.com, player013@test.com, player014@test.com, player015@test.com, player016@test.com, player017@test.com, player018@test.com, player019@test.com, player020@test.com, player021@test.com, player022@test.com, player023@test.com, player024@test.com, player025@test.com, player026@test.com, player027@test.com, player028@test.com, player029@test.com, player030@test.com, player031@test.com, player032@test.com, player033@test.com, player034@test.com']);
+        $I->seeElement('input', ['value' => 'The Tester Player000, The Tester Player001, The Tester Player002, The Tester Player003, The Tester Player004, The Tester Player005, The Tester Player006, The Tester Player007, The Tester Player008, The Tester Player009, The Tester Player010, The Tester Player011, The Tester Player012, The Tester Player013, The Tester Player014, The Tester Player015, The Tester Player016, The Tester Player017, The Tester Player018, The Tester Player019, The Tester Player020, The Tester Player021, The Tester Player022, The Tester Player023, The Tester Player024, The Tester Player025, The Tester Player026, The Tester Player027, The Tester Player028, The Tester Player029, The Tester Player030, The Tester Player031, The Tester Player032, The Tester Player033, The Tester Player034']);
     }
     /**
      * @param AcceptanceTester $I
@@ -67,12 +65,10 @@ class EmailFilterCest extends BaseAcceptance
         $I->amOnPage('/app/manage/email');
         $I->see('Email Filter');
         $I->wantTo('click on a tournament and see all the email addresses attached');
-        $I->selectOption(['id' => 'separator'], ';');
-        $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
         $I->executeJS('$("#get_tournament").click()');
         $I->wait(3);
         $I->see('Super awesome email sender.');
-        $I->seeElement('input', ['value' => 'player000@test.com; player001@test.com; player002@test.com; player003@test.com; player004@test.com; player005@test.com; player006@test.com; player007@test.com; player008@test.com; player009@test.com; player010@test.com; player011@test.com; player012@test.com; player013@test.com; player014@test.com; player015@test.com; player016@test.com; player017@test.com; player018@test.com; player019@test.com; player020@test.com; player021@test.com; player022@test.com; player023@test.com; player024@test.com; player025@test.com; player026@test.com; player027@test.com; player028@test.com; player029@test.com; player030@test.com; player031@test.com; player032@test.com; player033@test.com; player034@test.com']);
+        $I->seeElement('input', ['value' => 'The Tester Player000, The Tester Player001, The Tester Player002, The Tester Player003, The Tester Player004, The Tester Player005, The Tester Player006, The Tester Player007, The Tester Player008, The Tester Player009, The Tester Player010, The Tester Player011, The Tester Player012, The Tester Player013, The Tester Player014, The Tester Player015, The Tester Player016, The Tester Player017, The Tester Player018, The Tester Player019, The Tester Player020, The Tester Player021, The Tester Player022, The Tester Player023, The Tester Player024, The Tester Player025, The Tester Player026, The Tester Player027, The Tester Player028, The Tester Player029, The Tester Player030, The Tester Player031, The Tester Player032, The Tester Player033, The Tester Player034']);
     }
     /**
      * @param AcceptanceTester $I
@@ -83,13 +79,11 @@ class EmailFilterCest extends BaseAcceptance
         $I->amOnPage('/app/manage/email');
         $I->see('Email Filter');
         $I->wantTo('click on a team and see all the email addresses attached');
-        $I->selectOption(['id' => 'space'], 'No');
-        $I->selectOption(['id' => 'separator'], ',');
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
         $I->executeJS('$("#get_team").click()');
         $I->wait(3);
         $I->see('Super awesome email sender.');
-        $I->seeElement('input', ['value' => 'player000@test.com,player001@test.com,player002@test.com,player003@test.com,player004@test.com']);
+        $I->seeElement('input', ['value' => 'The Tester Player000, The Tester Player001, The Tester Player002, The Tester Player003, The Tester Player004']);
     }
     /**
      * @param AcceptanceTester $I
@@ -100,11 +94,11 @@ class EmailFilterCest extends BaseAcceptance
         $I->amOnPage('/app/manage/email');
         $I->see('Email Filter');
         $I->wantTo('click on a player and see the email addresses attached');
-        $I->selectOption(['id' => 'player_sort'], 'Tester Player000');
+        $I->selectOption(['id' => 'player_sort'],  'Tester Player000');
         $I->executeJS('$("#get_player").click()');
         $I->wait(3);
         $I->see('Super awesome email sender.');
-        $I->seeElement('input', ['value' => 'player000@test.com']);
+        $I->seeElement('input', ['value' => 'Tester Player000']);
     }
 
 }

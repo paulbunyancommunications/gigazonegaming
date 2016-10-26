@@ -36,29 +36,31 @@ class EmailController extends Controller
      */
     public function email_get()
     {
-        $emails = '';
+        $name = '';
+        $ids = '';
         $emailsUserRequest = '';
         $relations = '';
         list($separator, $game, $tournament, $team, $player) = $this->cleanPostToGetEmails($_POST);
         if (isset($_POST["get_game"]) and $game) {
             $theGame = Game::where('id', '=', $game)->first();
             $relations = $this->returnErrorsIfNull($theGame, $_POST);
-            $emails = $this->getEmail($relations, $separator);
+            list($ids,$name) = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_tournament"]) and $tournament) {
             $theTournament = Tournament::where('id', '=', $tournament)->first();
             $relations = $this->returnErrorsIfNull($theTournament, $_POST);
-            $emails = $this->getEmail($relations, $separator);
+            list($ids,$name)  = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_team"]) and $team) {
             $theTeam = Team::where('id', '=', $team)->first();
             $relations = $this->returnErrorsIfNull($theTeam, $_POST);
-            $emails = $this->getEmail($relations, $separator);
+            list($ids,$name)  = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_player"]) and $player) {
             $player = Player::where('id', '=', $player)->first();
             $this->returnErrorsIfNull($player, $_POST);
-            $emailsUserRequest = $emails = $player->email;
+            $name = $player->name;
+            $ids = $player->id;
         }
         if($game or $tournament or $team or $player) {
-            return View::make('game.emailForm')->with('sorts', $_POST)->with('email_get', $emails);
+            return View::make('game.emailForm')->with('sorts', $_POST)->with('names_get', $name)->with('ids_get', $ids);
         }else{
             return Redirect::back()
                 ->with('error', 'Select a game, tournament, team or player.')
@@ -77,63 +79,36 @@ class EmailController extends Controller
 //        $user_subject
 //        $user_message
 //        $email_send
-        list($subject, $message, $to, $toUser, $headers, $errors) = $this->cleanEmailPost($_POST);
+        list($subject, $message, $to, $toUser, $errors) = $this->cleanEmailPost($_POST);
         if (isset($_POST["send"]) and $_POST["send"] == "Send Email") {
             if ($errors == '') {
-                $this->sendEmail($to, $subject, $message, $headers);
+                $this->sendEmail($to, $subject, $message);
                 return redirect('/manage/email/')->with('success', "The email has being sent");
             } else {
                 return View::make('game.emailform')
                     ->with('error', $errors)
-                    ->with('email_get', $toUser)
+                    ->with('names_get', $toUser)
                     ->with('user_subject', $subject)
                     ->with('user_message', $message)
-                    ->with('email_send', $to);
+                    ->with('ids_get', $to);
             }
         }else {
             return redirect('/manage/email/')->with('error', "No Player email address found");
         }
     }
 
-    private function checkSeparator($separator, $space)
-    {
-        $sep = '';
-        if ($separator == 'comma') {
-            $sep = ',';
-        } elseif ($separator == 'semicolon') {
-            $sep = ';';
-        } elseif ($separator == 'colon') {
-            $sep = ':';
-        } elseif ($separator == 'period') {
-            $sep = '.';
-        } elseif ($separator == 'plus') {
-            $sep = '+';
-        } elseif ($separator == 'minus') {
-            $sep = '-';
-        } elseif ($separator == 'vbar') {
-            $sep = '|';
-        } elseif ($separator == 'under') {
-            $sep = '_';
-        } else {
-            $sep = ',';
-        }
-        if ($space != 'no') {
-            $sep .= ' ';
-        }
-        return $sep;
-    }
-
     private function getEmail($players, $separator)
     {
-        $emailsSend = '';
-        $emails = '';
+        $ids = '';
+        $username = '';
         foreach ($players as $k => $player) {
             $e = Player::where('id', '=', $player['player_id'])->first();
             if ($e != null) {
-                $emails .= $e->email . $separator;
+                $ids .= $e->id . $separator;
+                $username .= $e->username . $separator;
             }
         }
-        return trim(trim(trim($emails, $separator), ']'), '[');
+        return array(trim(trim(trim($ids, $separator), ']'), '['),trim(trim(trim($username, $separator), ']'), '['));
     }
 
     /**
@@ -142,12 +117,18 @@ class EmailController extends Controller
      * @param $message
      * @param $headers
      */
-    private function sendEmail($to, $subject, $message, $headers)
+    private function sendEmail($to, $subject, $message)
     {
         if(!is_array($to)){
             $to = explode(', ', $to);
         }
         foreach ($to as $k => $value) {
+            $player = Player::where('id', '=', $value)->first();
+            $email = $player->email;
+            $name = $player->name;
+            if($name =='' or $name==null){
+                $name = $player->username;
+            }
             //mailingFunction::send($value,$subject,$message,$headers);
         }
     }
@@ -183,16 +164,7 @@ class EmailController extends Controller
         if ($to == '') {
             $errors .= "Please add at least a Recipient. ";
         }
-//        // To send HTML mail, the Content-type header must be set
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-//
-//        // Additional headers
-        $headers .= 'To: ' . $to . "\r\n";
-        $headers .= 'From: Gigazone Gaming <gigazonegaming@gmail.com>' . "\r\n";
-//        $headers .= 'Cc: birthdayarchive@example.com' . "\r\n";
-        $headers .= 'Bcc: gigazonegaming@gmail.com' . "\r\n";
-        return array($subject, $message, $to, $toUser, $headers, $errors);
+        return array($subject, $message, $to, $toUser, $errors);
     }
 
     /**
