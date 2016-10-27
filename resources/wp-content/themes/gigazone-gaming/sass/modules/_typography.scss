@@ -37,6 +37,10 @@ p {
   font-weight: 700;
 }
 
+.text-normal, .txt-normal {
+  font-weight: 400;
+}
+
 .lighter {
   @extend .txt-color--highlight;
 
