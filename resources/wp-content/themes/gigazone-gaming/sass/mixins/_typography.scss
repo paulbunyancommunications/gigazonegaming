@@ -1,11 +1,14 @@
+@mixin text-stroke($width:1, $stroke-color:$color-black) {
+  @include text-shadow(
+                  -#{$width}px -#{$width}px 0 $stroke-color,
+                  #{$width}px -#{$width}px 0 $stroke-color,
+                  -#{$width}px #{$width}px 0 $stroke-color,
+                  #{$width}px #{$width}px 0 $stroke-color);
+}
+
 
 @mixin base_typography($multiplier:1) {
 
-
-  h1, h2, h3, h4, h5, h6 {
-    color: $color-black;
-    font-weight: 700;
-  }
   h1 {
     font-family: $font-family-display;
     @include font-size(7.375 * $multiplier);
