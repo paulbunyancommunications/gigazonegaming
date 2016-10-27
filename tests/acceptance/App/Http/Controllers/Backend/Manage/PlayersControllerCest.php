@@ -61,16 +61,31 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAPlayer(AcceptanceTester $I)
     {
         $I->wantTo('create a player with no team, no tournament and no game');
-        $this->playerCreation($I);
+        $name = "Tester PlayerX";
+        $username = "DummyUserA-Tester";
+        $email = "DummyUserA@Tester.com";
+        $phone = "(218) - 444 - 4444";
+        $I->wantTo('create a player on the management page');
+        $I->amOnPage('/app/manage/player');
+        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'username'], $username);
+        $I->fillField(['id' => 'email'], $email);
+        $I->fillField(['id' => 'phone'], $phone);
+        $I->click("Save");
+
+        $I->see('Update Player: “' . $name . '”');
+        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
+        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
+        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+
     }
     /**
      * @param AcceptanceTester $I
      */
     public function tryToCreateAndEditAPlayerByAddingAGame(AcceptanceTester $I)
     {
-
         $I->wantTo('create a player with no team, no tournament but a game attached');
-        $name = $this->playerCreation($I);
+        $name = "Tester PlayerX";
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({
                 allowClear: true
@@ -89,7 +104,7 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
 
-        $name = $this->playerCreation($I);
+        $name = "Tester PlayerX";
         $I->selectOption(array("id" => "tournament_id"), 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
                 allowClear: true
@@ -108,7 +123,7 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a player with a team attached which will automatically attach a tournament and a game');
 
-        $name = $this->playerCreation($I);
+        $name = "Tester PlayerX";
         $I->selectOption(array("id" => "team_id"), 'Tester Team');
         $I->executeJS("$('#team_id').select2({
                 allowClear: true
@@ -127,10 +142,10 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAPlayerWithAnEmailProblem(AcceptanceTester $I)
     {
         $this->playerCreation($I);
-        $name = "DummyUserA Tester";
-        $username = "DummyUserA-Tester";
-        $username2 = "DummyUserA-Tester2"; //username should be unique
-        $email = "DummyUserA@Tester.com";
+        $name = "Tester PlayerX";
+        $username = "The Tester PlayerX";
+        $username2 = "The Tester PlayerX2"; //username should be unique
+        $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page without an email');
@@ -165,10 +180,10 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAPlayerWithAnUsernameProblem(AcceptanceTester $I)
     {
         $this->playerCreation($I);
-        $name = "DummyUserA Tester";
+        $name = "Tester PlayerX";
         $username = "DummyUserA-Tester";
         $username2 = "DummyUserA-Tester2"; //username should be unique
-        $email = "DummyUserA@Tester.com";
+        $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page without a username');
@@ -197,7 +212,7 @@ class PlayersControllerCest extends BaseAcceptance
      */
     public function tryToCreateAPlayerWithManyPhoneNumberVariations(AcceptanceTester $I)
     {
-        $name = $this->playerCreation($I);
+        $name = "Tester PlayerX";
         $phone1 = "(218) - 444 - 4654";
         $phone2 = "+1 - (218) - 444 - 4784";
         $phone3 = "+1 (218) - 444 - 4094";
@@ -266,23 +281,6 @@ class PlayersControllerCest extends BaseAcceptance
      */
     private function playerCreation(AcceptanceTester $I)
     {
-        $name = "DummyUserA Tester";
-        $username = "DummyUserA-Tester";
-        $email = "DummyUserA@Tester.com";
-        $phone = "(218) - 444 - 4444";
-        $I->wantTo('create a player on the management page');
-        $I->amOnPage('/app/manage/player');
-        $I->fillField(['id' => 'name'], $name);
-        $I->fillField(['id' => 'username'], $username);
-        $I->fillField(['id' => 'email'], $email);
-        $I->fillField(['id' => 'phone'], $phone);
-        $I->click("Save");
-
-        $I->see('Update Player: “' . $name . '”');
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
-        return $name;
+        $I->click("#player-edit-TheTesterPlayer000");
     }
-
 }
