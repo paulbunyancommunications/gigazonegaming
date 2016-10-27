@@ -74,7 +74,7 @@ $(document).ready(function() {
                 }
                 this.removed = '';
                 this.added = '';
-                this.addOrUpdate = 'update'
+                this.addOrUpdate = 'update';
                 this.playerUsernameForm = '';
                 this.playerFirstNameForm = '';
                 this.playerLastNameForm = '';
