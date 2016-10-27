@@ -33,8 +33,9 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToSubmitAnEmailToTheUpdatesListWithParticipate(AcceptanceTester $I)
+    public function tryToSubmitAnEmailToTheUpdatesListWithParticipate(AcceptanceTester $I, $scenario)
     {
+        $scenario->skip();
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with the participate flag');
         $I->amOnPage('/');
@@ -57,8 +58,9 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      * Submit a form without a participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToSubmitAnEmailToTheUpdatesListWithoutParticipate(AcceptanceTester $I)
+    public function tryToSubmitAnEmailToTheUpdatesListWithoutParticipate(AcceptanceTester $I, $scenario)
     {
+        $scenario->skip();
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller without the participate flag');
         $I->amOnPage('/');
@@ -83,8 +85,9 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      *
      * @param AcceptanceTester $I
      */
-    public function tryToSubmitAnBadEMailToTheUpdatesListFails(AcceptanceTester $I)
+    public function tryToSubmitAnBadEMailToTheUpdatesListFails(AcceptanceTester $I, $scenario)
     {
+        $scenario->skip();
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a bad email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -109,8 +112,9 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      *
      * @param AcceptanceTester $I
      */
-    public function tryToSubmitDuplicateEmailFails(AcceptanceTester $I)
+    public function tryToSubmitDuplicateEmailFails(AcceptanceTester $I, $scenario)
     {
+        $scenario->skip();
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a duplicate email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -134,8 +138,9 @@ class SignUpForUpdatesCest extends \BaseAcceptance
     /**
      * Submit email address to the update controller with geo location data
      */
-    public function checkToSeeThatThereAreGeoLocationFieldsInForm(AcceptanceTester $I)
+    public function checkToSeeThatThereAreGeoLocationFieldsInForm(AcceptanceTester $I, $scenario)
     {
+        $scenario->skip();
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with geo location data');
         $I->amOnPage('/');
