@@ -99,4 +99,12 @@
       }
     }
   }
+
+  // dashed alternative divider, <hr class="divider horizontal dashed" /> gives a horizontal divider with slash mark graphic background
+  &.dashed {
+    background: transparent url($theme-directory + 'images/backgrounds/divider-dashed.png') center repeat-x;
+    border-top: none;
+    height: 12px;
+    @include opacity(.3);
+  }
 }
