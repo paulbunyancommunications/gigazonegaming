@@ -15,8 +15,8 @@
             Author: {{ author.display_name }} -
         {% else %}
             {{ page.post_title }} &raquo;
-            {% if function('is_404') == false and function('is_front_page') == false and page.post_type != 'page' %}
-                {{ section.post_title }} -
+            {% if function('is_404') == false and function('is_front_page') == false and page.post_type != 'page' and section %}
+                 {{ section.post_title }} -
             {% endif %}
         {% endif %}
         {{ function("bloginfo","name") }}

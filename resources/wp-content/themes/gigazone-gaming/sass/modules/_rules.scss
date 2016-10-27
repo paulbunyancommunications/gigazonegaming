@@ -1,0 +1,27 @@
+/**
+* Style helpers for google docs import
+*/
+.rules {
+  .c1, .c12 {
+    @extend p;
+    display: block;
+  }
+  .c2 {
+    @extend h3;
+    font-weight: 700;
+    & > h5 {
+      @include margin-bottom(0);
+      @include margin-top(0);
+    }
+
+  }
+
+  .c8 {
+    @extend h2;
+    & > .c1 {
+      @include margin-bottom(0);
+    }
+  }
+
+
+}

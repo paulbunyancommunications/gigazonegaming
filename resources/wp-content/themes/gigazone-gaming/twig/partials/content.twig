@@ -1,3 +1,6 @@
+{# set from the post/page, this tells the content below what to show and hide as a post, like author, posted and tags #}
+{% set display_as_a_page = (page.display_as_a_page is defined ? page.display_as_a_page|str_to_bool : false) %}
+
 {# titles for content #}
 {% include "partials/title/switch-title.twig" %}
 
@@ -8,14 +11,18 @@
         <div class="post-list-item {{ p.class }}">
             {% include "partials/post/post-thumbnail.twig" with {'post': p, 'class':'next-to-title-page', 'link': true} %}
             <div class="post-list-title">{% include "partials/post-title.twig" with {'title':p.post_title, 'this_post':p, 'single':false} %}</div>
-            <div class="post-list-item-tag">{% include "partials/posted-on.twig" with {'post':p} %}</div>
-            <div class="post-list-item-tag">{% include "partials/post/post-author.twig" with {'post':p} %}</div>
+            {% if display_as_a_page is same as(false) %}
+                <div class="post-list-item-tag">{% include "partials/posted-on.twig" with {'post':p} %}</div>
+                <div class="post-list-item-tag">{% include "partials/post/post-author.twig" with {'post':p} %}</div>
+            {% endif %}
             <div class="clearfix"></div>
             {% if p.post_excerpt != '' %}
-                {{ function("apply_filters","the_content", p.post_excerpt) }}
+                <div class="post-content the-content">
+                    {{ function("apply_filters","the_content", p.post_excerpt) }}
+                </div>
             {% endif %}
             {% if loop.last != true %}
-                <hr class="divider horizontal dots" />{% endif %}
+                <hr class="divider horizontal dashed" />{% endif %}
         </div>
         {% endif %}
     {% endfor %}
@@ -23,24 +30,32 @@
 {% elseif post is defined and single is not defined %}
     <div class="post-list-item {% if post.class is defined %}{{ post.class }}{% endif %}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':false, 'link':false} %}
+        <div class="post-content the-content">
             {{ function("apply_filters","the_content", post.post_content) }}
+        </div>
     </div>
 
 {% elseif post is defined and single is defined %}
     <div class="{{ post.class }}">
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
-        {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
-            {% include "partials/post/post-author.twig" with {'post':post} %}
+        {% if display_as_a_page is same as(false) %}
+            {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
+                {% include "partials/post/post-author.twig" with {'post':post} %}
+            {% endif %}
         {% endif %}
         <div class="clearfix"></div>
         {# {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}#}
-        {{ function("apply_filters","the_content", post.post_content) }}
+        <div class="post-content the-content">
+            {{ function("apply_filters","the_content", post.post_content) }}
+        </div>
         <div class="clearfix"></div>
-        {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
-            {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
-            {% include "partials/post/post-permalink.twig" %}
-            {% include "partials/post/post-tags.twig" %}
-            {% include "partials/post/post-comments.twig" with {'post':post} %}
+        {% if display_as_a_page is same as(false) %}
+            {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
+                {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
+                {% include "partials/post/post-permalink.twig" %}
+                {% include "partials/post/post-tags.twig" %}
+                {% include "partials/post/post-comments.twig" with {'post':post} %}
+            {% endif %}
         {% endif %}
     </div>
 {% else %}

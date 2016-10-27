@@ -3,9 +3,13 @@ vendor/*
 !resources/views/vendor
 !resources/lang/vendor
 .env
+.enc-pass
+.env.bk
 .env.jenkins
 .idea/*
 puphpet/config.yaml
+!puphpet/config.enc
+!puphpet/config-custom.enc
 parse_yaml.sh
 puphpet/config-custom.yaml
 puphpet/config-local.yaml
@@ -77,3 +81,19 @@ database/dump/w3.paulbunyan.net.gigazone_champ_db.10-13-16.sql
 database/dump/w3.paulbunyan.net.gigazone_wp.10-13-16.sql
 
 !puphpet/files/**/*
+gigazonegaming.sublime-project
+gigazonegaming.sublime-workspace
+.DS_Store
+html/adminer
+html/adminer.php
+html/index.html
+install_runner.sh
+.env.bak
+doc.html
+test.sh
+build/config/hosts/jenkins.host
+build/config/jenkins.config
+GIGAZONEGAMING-jenkins-master.tar.gz
+database/dump/bak
+puphpet/bak/config-custom.yaml
+puphpet/bak/config.yaml

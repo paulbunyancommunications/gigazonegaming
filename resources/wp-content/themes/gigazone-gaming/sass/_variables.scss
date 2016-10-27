@@ -9,6 +9,14 @@ $color-black: mix(#231F20, #000000, 10%);
 $color-white: #FFFFFF;
 $color-dark-gray: shade($color-gz-gray, 50%);
 $color-light-gray: tint($color-gz-gray, 50%);
+$color-map: (
+        branding: $color-gz-orange,
+        dark: $color-black,
+        shadow: $color-dark-gray,
+        midtone: $color-gz-gray,
+        highlight: $color-light-gray,
+        light: $color-white
+);
 
 // fonts
 $font-family-sans-serif: Lucida Sans, Lucida Grande, Lucida Sans Unicode, sans-serif;

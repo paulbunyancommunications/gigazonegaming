@@ -1,3 +1,13 @@
+h1, h2, h3, h4, h5, h6 {
+  @extend .text-color--dark;
+  @extend .strong;
+}
+
+p {
+  @extend .text-color--dark;
+  font-weight: 400;
+}
+
 @include base_typography(1);
 
 @include mq-tablet {
@@ -23,8 +33,12 @@
   text-align: center;
 }
 
+.bold, .strong, b, strong {
+  font-weight: 700;
+}
+
 .lighter {
-  color: $color-light-gray;
+  @extend .txt-color--highlight;
 
    & .insert-page-title {
      color: inherit;

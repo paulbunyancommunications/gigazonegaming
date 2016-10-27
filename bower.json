@@ -17,6 +17,7 @@
     "bootstrap-slider": "*",
     "seiyria-bootstrap-slider": "~7.0.1",
     "bootstrap-switch": "~3.3.2",
-    "select2": "4.0.2"
+    "select2": "4.0.2",
+    "sass-flex-mixin": "~1.0.3"
   }
 }

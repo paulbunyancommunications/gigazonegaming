@@ -58,11 +58,18 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
         $twig->addFilter('format_for_title', new Twig_SimpleFilter('format_for_title', array($this, 'titleFilter')));
         $twig->addFilter('slugify', new Twig_SimpleFilter('slugify', array($this, 'slugify')));
         $twig->addFilter('mdfive', new Twig_SimpleFilter('mdfive', array($this, 'mdfive')));
+        $twig->addFilter('str_to_bool', new Twig_SimpleFilter('str_to_bool', array($this, 'strToBool')));
         $twig->addFilter(
             'auto_version_path',
             new Twig_SimpleFilter('auto_version_path', array($this, 'autoVersionFilter'))
         );
         return $twig;
+    }
+
+
+    public function strToBool($string)
+    {
+        return \utilphp\util::str_to_bool($string);
     }
 
     public function mdfive($string)
@@ -138,7 +145,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
     {
         $attr = shortcode_atts(array(
             'footer' => '',
-            'class' => ''
+            'class' => 'splash'
         ), $attributes);
 
         $params = [
@@ -146,7 +153,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
             'footer' => $attr['footer'],
             'class' => $attr['class']
         ];
-        return Timber::compile('partials/splash.twig', $params);
+        return \Timber::compile('partials/splash.twig', $params);
     }
 
     /**
@@ -162,12 +169,42 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
             'wrap_class' => 'gigazone-info',
         ), $attributes);
 
-        /** @var GigaZoneFromPaulBunyan $gigazone */
-        $gigazone = new GigaZoneFromPaulBunyan();
+        wp_enqueue_style('gigazone-info', get_bloginfo('stylesheet_directory') . '/css/gigazone.css');
+        return $this->getInfo(
+            array_merge(
+                $attr,
+                [
+                    'uri' => GigaZoneFromPaulBunyan::PBC_PATH . '/gigazone/index.html',
+                    'class' => 'GigaZone\\Info\\GigaZoneFromPaulBunyan'
+                ]
+            )
+        );
+
+    }
+
+    /**
+     * Get info block
+     *
+     * @param $attributes
+     * @return string
+     */
+    public function getInfo($attributes)
+    {
+        $attr = shortcode_atts(array(
+            'wrap_tag' => 'div',
+            'wrap_class' => 'gigazone-info',
+            'uri' => '',
+            'class' => 'GigaZone\\Info\\GigaZoneFromPaulBunyan',
+        ), $attributes);
+
+        $driver = new \Stash\Driver\FileSystem(['path' => dirname(dirname(__DIR__)) . "/storage/framework/cache"]);
+        $config = array_merge($attr, ['pool' => new \Stash\Pool($driver)]);
+        $class = $attr['class'];
+        /** @var $info */
+        $info = new $class($config);
 
         /** @var string $content */
-        $content = $gigazone->getGigazoneInfo();
-        wp_enqueue_style('gigazone-info', get_bloginfo('stylesheet_directory') . '/css/gigazone.css');
+        $content = $info->getInfo();
         return '<' . $attr['wrap_tag'] . ' class="' . $attr['wrap_class'] . '">'
         . $content
         . '</' . $attr['wrap_tag'] . '>';
@@ -225,7 +262,8 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
                 case ('legend'):
                     break;
                 case ('special_questions'):
-                    $context[$default] = strpos($special_questions, $delimiter) !== false ? explode($delimiter, $special_questions) : [$special_questions];
+                    $context[$default] = strpos($special_questions, $delimiter) !== false ? explode($delimiter,
+                        $special_questions) : [$special_questions];
                     break;
                 default:
                     $this->parseCsv($context, $$default, $default, $delimiter, $new_line);
@@ -295,8 +333,10 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
     {
         if ($attributes) {
             $image = wp_get_attachment_image_src($attributes[0], '');
-            return '<img src="' . $image[0] . '" width="' . $image[1] . '" height="' . $image[2] . '" class="' . $tag . '" />';
+            return '<!-- '. $content .' --><img src="' . $image[0] . '" width="' . $image[1] . '" height="' . $image[2] . '" class="' . $tag . '" />';
         }
+
+        return null;
     }
 
     /**
@@ -304,14 +344,13 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
      * usage: [env APP_ENV] will get the APP_ENV environment variable and return it
      *
      * @param $attributes
-     * @param $content
-     * @param $tag
      * @return mixed
      */
-    public function getEnvShortCode($attributes, $content, $tag)
+    public function getEnvShortCode($attributes)
     {
         if ($attributes) {
             return env($attributes[0], $attributes[0]);
         }
+        return null;
     }
 }

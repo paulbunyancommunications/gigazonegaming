@@ -87,14 +87,6 @@ Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function (
 //});
 
 /**
- * Api Routes
- */
-Route::group(['namespace' => 'Api\Championship'], function() {
-    Route::get('/api/game', ['as' => 'api.game.index', 'uses' => 'GamesController@index']);
-    Route::get('/api/game/{game}', ['as' => 'api.game.get', 'uses' => 'GamesController@show']);
-});
-
-/**
  * For Codeception Coverage
  */
 // @codeCoverageIgnoreStart

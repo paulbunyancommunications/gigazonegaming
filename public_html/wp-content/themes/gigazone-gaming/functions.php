@@ -12,6 +12,7 @@ $cacheDriver = new Stash\Driver\FileSystem(['path' => $cachePath]);
 add_shortcode('splash', [$bootstrap, 'splashShortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
+add_shortcode('get-info', [$bootstrap, 'getInfo']);
 add_shortcode('update-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('contact-us', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-team-sign-up', [$bootstrap, 'formFieldsShortCode']);

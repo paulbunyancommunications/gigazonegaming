@@ -23,6 +23,7 @@
         ul, li{
             list-style: none;
         }
+
     </style>
     <script src="https://use.typekit.net/bhh0sxx.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
@@ -70,6 +71,16 @@
                         'Team Maker') }}
                         </li>
 
+                        <li>{{ Html::linkAction('Backend\Manage\EmailController@email',
+                        'Email Lists') }}
+                        </li>
+                        <li>
+                            <form id="searchbox" action="">
+                                <input id="searchText" type="text" placeholder="Type here">
+                                <input id="searchButton" type="submit" value="Search">
+                            </form>
+                        </li>
+
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -96,6 +107,9 @@
 //        });
 
         $(document).ready(function () {
+            $('#searchBar').change(function () {
+                $(this).val();
+            });
             $('#theIframe', window.parent.document).height($('#page-content').height()).css('min-height', 700);
 //            $('#wpfooter', window.parent.document).addClass('hidden');
             var toAdd = '</div><div id="pageLinker2" class="btn-group btn-group-justified" role="group" aria-label="Justified button group">';

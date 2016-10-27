@@ -12,6 +12,7 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+#        - Codeception\Extension\Recorder
 modules:
     config:
         Db:
@@ -24,5 +25,6 @@ coverage:
     whitelist:
         include:
             - app/*
+            - src/*
         exclude:
             - app/Exceptions/*

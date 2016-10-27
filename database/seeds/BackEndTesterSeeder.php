@@ -21,7 +21,6 @@ class BackEndTesterSeeder extends Seeder
         $tournaments = [];
         $teams = [];
         $playerWithoutRelations = [];
-        $spPlayerWithRelations = [];
         $playerWithRelations = [];
         for($i=0; $i<10; $i++) {
             $games[] = \App\Models\Championship\Game::create(
@@ -59,7 +58,14 @@ class BackEndTesterSeeder extends Seeder
                 'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
                 'max_players' => 6,
             ] );
-        for($i=0; $i<74; $i++) {
+        $sp_team = \App\Models\Championship\Team::create(
+            [
+                'name' => "Tester Team",
+                'emblem' => $faker->imageUrl(),
+                'tournament_id' => $sp_tournament['id'],
+                'captain' => 0
+            ])->toArray();
+        for($i=0; $i<34; $i++) {
             $teams[] = \App\Models\Championship\Team::create(
                 [
                     'name' => implode('-', $faker->words()),
@@ -68,49 +74,46 @@ class BackEndTesterSeeder extends Seeder
                     'captain' => 0
                 ])->toArray();
         }
-        $sp_team = \App\Models\Championship\Team::create(
-            [
-                'name' => "Tester Team",
-                'emblem' => $faker->imageUrl(),
-                'tournament_id' => $sp_tournament['id'],
-                'captain' => 0
-            ])->toArray();
-
+        $first = true;
         // create the tester user if not already created
-        for($i=0; $i<6; $i++) {
-            $spPlayerWithRelations[] = \App\Models\Championship\Player::create(
+        for($i=0; $i<5; $i++) {
+            $player = \App\Models\Championship\Player::create(
                 [
-                    'name' => "Tester Player".$i,
-                    'username' => "The Tester Player".$i,
-                    'email' => $faker->email,
-                    'phone' => $faker->phoneNumber,
+                    'name' => "Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
+                    'username' => "The Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
+                    'email' => "player".str_pad($i, 3, '0', STR_PAD_LEFT)."@test.com",
+                    'phone' => "(218)-444-".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
-        }
-        foreach ($playerWithRelations as $k => $player){
             \App\Models\Championship\PlayerRelation::create([
                 'player_id' => $player['id'],
                 'relation_type' => \App\Models\Championship\Game::class,
                 'relation_id' => $sp_game['id'],
             ]);
             \App\Models\Championship\PlayerRelation::create([
-                    'player_id' => $player['id'],
-                    'relation_type' => \App\Models\Championship\Tournament::class,
-                    'relation_id' => $sp_tournament['id'],
-                ]);
+                'player_id' => $player['id'],
+                'relation_type' => \App\Models\Championship\Tournament::class,
+                'relation_id' => $sp_tournament['id'],
+            ]);
             \App\Models\Championship\PlayerRelation::create([
-                    'player_id' => $player['id'],
-                    'relation_type' => \App\Models\Championship\Team::class,
-                    'relation_id' => $sp_team['id'],
-                ]);
+                'player_id' => $player['id'],
+                'relation_type' => \App\Models\Championship\Team::class,
+                'relation_id' => $sp_team['id'],
+            ]);
+            if($first){
+                $first=false;
+                \App\Models\Championship\Team::where('id', '=', $sp_team['id'])
+                    ->update(['captain'=>$player['id']]);
+            }
+
         }
         for($i=0; $i<123; $i++) {
             $playerWithRelations[] = \App\Models\Championship\Player::create(
                 [
-                    'name' => "Tester Player".($i+6),
-                    'username' => "The Tester Player".($i+6),
-                    'email' => $faker->email,
-                    'phone' => $faker->phoneNumber,
+                    'name' => "Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
+                    'username' => "The Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
+                    'email' => "player".str_pad($i+5, 3, '0', STR_PAD_LEFT)."@test.com",
+                    'phone' => "(218)-444-".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
         }// create the tester user if not already created
@@ -126,7 +129,7 @@ class BackEndTesterSeeder extends Seeder
                     'relation_type' => \App\Models\Championship\Game::class,
                     'relation_id' => $sp_game['id'],
                 ]);
-            }else {
+            } else {
                 $relation[] = \App\Models\Championship\PlayerRelation::create(
                     [
                         'player_id' => $player['id'],
@@ -141,7 +144,6 @@ class BackEndTesterSeeder extends Seeder
                     'name' => $faker->name,
                     'username' => $faker->userName,
                     'email' => $faker->email,
-                    'phone' => $faker->phoneNumber,
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
         }

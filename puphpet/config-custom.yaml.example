@@ -9,7 +9,8 @@ vagrantfile:
                         hostname: gigazonegaming.local
                         network:
                             private_network: 192.168.56.101
-                                                     
+                        memory: '2048'
+                        cpus: '8'
 cron:
     install: '1'
     jobs:
@@ -32,6 +33,14 @@ apache:
                     path: /var/www/public_html
 xdebug:
         install: '1'
+php:
+        modules:
+            php:
+                - cli
+                - intl
+                - xml
+                - mbstring
+                - gd
 mysql:
     settings:
         root_password: 'root'
@@ -60,11 +69,5 @@ mysql:
             table: 'gzgaming_champ_db.*'
             privileges:
               - ALL
-php:
-        modules:
-            php:
-                - cli
-                - intl
-                - xml
-                - mbstring
-                - gd
+sqlight:
+    install: '1'

@@ -1,0 +1,28 @@
+@each $color-name, $bg-color in $color-map {
+
+  /** Text color **/
+  .txt-color--#{$color-name},
+  .text-color--#{$color-name} {
+    color: $bg-color;
+  }
+
+  /** Background color **/
+  .bg-color--#{$color-name},
+  .background-color--#{$color-name} {
+    background-color: $bg-color;
+  }
+
+  /** all over border color **/
+  .bdr-color--#{$color-name}
+  .border-color--#{$color-name} {
+    border-color: $bg-color;
+  }
+
+  /** Directional border coloir **/
+  @each $direction in (top,right,bottom,left) {
+    .bdr-color-#{$direction}--#{$color-name}
+    .border-color-#{$direction}--#{$color-name} {
+      border-#{$direction}-color: $bg-color;
+    }
+  }
+}

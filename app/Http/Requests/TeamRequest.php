@@ -61,7 +61,6 @@ class TeamRequest extends Request
     }
 
     /**
-     * @todo Nelson, Where are the rules for required name and game_id? Are they handled in the model? They should be in the rules method.
      * @return array
      */
     public function messages()

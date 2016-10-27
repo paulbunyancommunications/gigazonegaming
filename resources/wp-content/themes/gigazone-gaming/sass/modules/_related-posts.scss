@@ -1,16 +1,17 @@
 .related-title {
-  color: $color-light-gray;
+  @extend .txt-color--highlight;
+  font-weight: 400;
 }
 
 .related-posts {
   @include margin-bottom(1.5);
 
   &-container {
-    height: 100%;
+    @extend .bg-color--highlight;
+    height: auto;
     width: 100%;
     position: relative;
     z-index: 10;
-    background: $color-light-gray;
     @include max-h(14);
     overflow: hidden;
     @include border-radius(5px);
@@ -18,13 +19,13 @@
     @include margin-bottom(1);
 
     &:hover {
-      background: $color-gz-orange;
+      @extend .bg-color--branding;
+      @extend .txt-color--branding;
     }
-
   }
 
   &-title {
-    color: $color-light-gray;
+    @extend .txt-color--highlight;
   }
 
   &-image {
@@ -32,6 +33,7 @@
     @include background-image(linear-gradient($color-gz-gray 20%, $color-gz-orange 75%, $color-white));
     overflow: hidden;
     @include border-radius(10px);
+    @include min-h(5);
 
     a {
       display: block;
@@ -45,6 +47,9 @@
       @include opacity(.5);
       text-decoration: none;
       content: "";
+      &:hover {
+        @include opacity(.6);
+      }
     }
     img {
       @include opacity(.1);
@@ -60,7 +65,7 @@
     @include padding-equal(1);
     pointer-events: none;
     &-text {
-      color: $color-white;
+      @extend .text-color--light;
       @include font-size(2.125);
       @include line-height(1.75);
 
@@ -75,14 +80,25 @@
       }
 
       a {
-        color: $color-white;
+        @extend .text-color--light;
         text-decoration: none;
-        &:visited, &active, &:hover {
-          color: $color-white;
+        &:visited {
+          @extend .text-color--light;
+        }
+        &:active, &:hover {
+          @extend .text-color--highlight;
         }
       }
     }
+  }
 
+  // Force the title text to color
+  &-container:hover .related-posts-title > .related-posts-title-text {
+    @extend .text-color--branding;
+    @include text-stroke(2, $color-dark-gray);
+    & a {
+      @extend .text-color--branding;
+    }
 
   }
 }
