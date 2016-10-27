@@ -39,7 +39,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->wantTo('Submit email address to the update controller with the participate flag');
         $I->amOnPage('/');
         // label might be hidden on this form, so just check for the string in the source
-        $I->seeInSource('Sign up for updates');
+        $I->seeInSource('Signup For Updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
@@ -64,7 +64,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->amOnPage('/');
 
         // label might be hidden on this form, so just check for the string in the source
-        $I->seeInSource('Sign up for updates');
+        $I->seeInSource('Signup For Updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
@@ -90,7 +90,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->amOnPage('/');
 
         // label might be hidden on this form, so just check for the string in the source
-        $I->seeInSource('Sign up for updates');
+        $I->seeInSource('Signup For Updates');
         $email = $faker->md5();
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
@@ -116,7 +116,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->amOnPage('/');
         $I->wait(self::DEFAULT_WAIT);
         // label might be hidden on this form, so just check for the string in the source
-        $I->seeInSource('Sign up for updates');
+        $I->seeInSource('Signup For Updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
@@ -141,7 +141,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->amOnPage('/');
 
         // label might be hidden on this form, so just check for the string in the source
-        $I->seeInSource('Sign up for updates');
+        $I->seeInSource('Signup For Updates');
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
