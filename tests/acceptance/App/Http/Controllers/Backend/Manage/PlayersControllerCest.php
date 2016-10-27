@@ -85,6 +85,8 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAndEditAPlayerByAddingAGame(AcceptanceTester $I)
     {
         $I->wantTo('create a player with no team, no tournament but a game attached');
+
+        $I->click("#player-edit-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({
@@ -103,7 +105,7 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAndEditAPlayerByAddingATournament(AcceptanceTester $I)
     {
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
-
+        $I->click("#player-edit-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $I->selectOption(array("id" => "tournament_id"), 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
@@ -122,7 +124,7 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAndEditAPlayerByAddingATeam(AcceptanceTester $I)
     {
         $I->wantTo('create a player with a team attached which will automatically attach a tournament and a game');
-
+        $I->click("#player-edit-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $I->selectOption(array("id" => "team_id"), 'Tester Team');
         $I->executeJS("$('#team_id').select2({
@@ -179,7 +181,7 @@ class PlayersControllerCest extends BaseAcceptance
      */
     public function tryToCreateAPlayerWithAnUsernameProblem(AcceptanceTester $I)
     {
-        $this->playerCreation($I);
+        $I->click("#player-edit-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $username = "DummyUserA-Tester";
         $username2 = "DummyUserA-Tester2"; //username should be unique
@@ -212,6 +214,7 @@ class PlayersControllerCest extends BaseAcceptance
      */
     public function tryToCreateAPlayerWithManyPhoneNumberVariations(AcceptanceTester $I)
     {
+        $I->click("#player-edit-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $phone1 = "(218) - 444 - 4654";
         $phone2 = "+1 - (218) - 444 - 4784";
