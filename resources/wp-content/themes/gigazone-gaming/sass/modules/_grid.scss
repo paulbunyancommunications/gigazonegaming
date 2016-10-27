@@ -1,3 +1,4 @@
+@import "../../../../../../public_html/bower_components/sass-flex-mixin/flex";
 @include margin-padding(1);
 @include mq-cinema {
   @include margin-padding(1.25);
@@ -35,18 +36,14 @@
  * --------------------------------------------------
  */
 .row-flex, .row-flex > div[class*='col-'] {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex:1 1 auto;
+  @include flexbox;
+  @include flex(1 1 auto);
 }
 
 .row-flex-wrap {
-  -webkit-flex-flow: row wrap;
-  align-content: flex-start;
-  flex:0;
+  @include flex-flow(row wrap);
+  @include align-content(flex-start);
+  @include flex(0);
 }
 
 .row-flex > div[class*='col-'], .container-flex > div[class*='col-'] {
@@ -59,14 +56,12 @@
 
 
 .flex-col {
-  display: flex;
-  display: -webkit-flex;
-  flex: 1 100%;
-  flex-flow: column nowrap;
+  @include flexbox;
+  @include flex(1 100%);
+  @include flex-flow(column nowrap);
 }
 
 .flex-grow {
-  display: flex;
-  -webkit-flex: 2;
-  flex: 2;
+  @include flexbox;
+  @include flex(2);
 }

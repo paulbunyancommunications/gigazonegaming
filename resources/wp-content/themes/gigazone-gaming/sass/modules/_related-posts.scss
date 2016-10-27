@@ -6,7 +6,7 @@
   @include margin-bottom(1.5);
 
   &-container {
-    height: 100%;
+    height: auto;
     width: 100%;
     position: relative;
     z-index: 10;
@@ -32,6 +32,7 @@
     @include background-image(linear-gradient($color-gz-gray 20%, $color-gz-orange 75%, $color-white));
     overflow: hidden;
     @include border-radius(10px);
+    @include min-h(5);
 
     a {
       display: block;
