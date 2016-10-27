@@ -281,6 +281,6 @@ class PlayersControllerCest extends BaseAcceptance
      */
     private function playerCreation(AcceptanceTester $I)
     {
-        $I->click("#player-edit-TheTesterPlayer000");
+        $I->click("#player-edit-TheTesterPlayerX");
     }
 }

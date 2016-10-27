@@ -107,6 +107,14 @@ class BackEndTesterSeeder extends Seeder
             }
 
         }
+        \App\Models\Championship\Player::create(
+            [
+                'name' => "Tester PlayerX",
+                'username' => "The Tester PlayerX",
+                'email' => "playerx@test.com",
+                'phone' => "(218)-444-9999",
+                'user_id' => 99999999999
+            ])->toArray();
         for($i=0; $i<123; $i++) {
             $playerWithRelations[] = \App\Models\Championship\Player::create(
                 [
