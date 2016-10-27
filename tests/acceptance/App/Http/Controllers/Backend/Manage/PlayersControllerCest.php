@@ -181,9 +181,8 @@ class PlayersControllerCest extends BaseAcceptance
      */
     public function tryToCreateAPlayerWithAnUsernameProblem(AcceptanceTester $I)
     {
-        $I->click("#player-edit-TheTesterPlayerX");
         $name = "Tester PlayerX";
-        $username = "DummyUserA-Tester";
+        $username = "The Tester PlayerX";
         $username2 = "DummyUserA-Tester2"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique

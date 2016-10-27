@@ -65,7 +65,7 @@ class BackEndTesterSeeder extends Seeder
                 'tournament_id' => $sp_tournament['id'],
                 'captain' => 0
             ])->toArray();
-        for($i=0; $i<34; $i++) {
+        for($i=0; $i<14; $i++) {
             $teams[] = \App\Models\Championship\Team::create(
                 [
                     'name' => implode('-', $faker->words()),
@@ -115,7 +115,7 @@ class BackEndTesterSeeder extends Seeder
                 'phone' => "(218)-444-9999",
                 'user_id' => 99999999999
             ])->toArray();
-        for($i=0; $i<123; $i++) {
+        for($i=0; $i<63; $i++) {
             $playerWithRelations[] = \App\Models\Championship\Player::create(
                 [
                     'name' => "Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
@@ -146,7 +146,7 @@ class BackEndTesterSeeder extends Seeder
                     ])->toArray();
             }
         }
-        for($i=0; $i<121; $i++) {
+        for($i=0; $i<60; $i++) {
             $playerWithoutRelations[] = \App\Models\Championship\Player::create(
                 [
                     'name' => $faker->name,
