@@ -15,6 +15,8 @@
                 Markdown formatting
         </h3>
         <div class="markdown-referencephp hidden hidden-able">
+            <img src="/app/content/img/htmlTagsForForm1" alt="How to style text">
+            <img src="/app/content/img/htmlTagsForForm2" alt="How to style text">
         </div>
     </div>
     <div class="col-xs-12">
