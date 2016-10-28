@@ -8,18 +8,7 @@
     }
 @endsection
 @section('content')
-    <div class="col-xs-12">
-        <h3 class="click-hide col-xs-12">
-            <i class="fa fa-eye hidden-able" aria-hidden="true"></i>
-            <i class="fa fa-eye-slash hidden-able hidden" aria-hidden="true"></i>
-                Markdown formatting
-        </h3>
-        <div class="markdown-referencephp hidden hidden-able">
-            <img src="/app/content/img/htmlTagsForForm1" alt="How to style text">
-            <img src="/app/content/img/htmlTagsForForm2" alt="How to style text">
-        </div>
-    </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12 col-md-6">
         {{ Form::open(array('id' => "email_getter", 'action' => array('Backend\Manage\EmailController@email_send'), 'class' => 'form-horizontal')) }}
         <div class="form-group">
             <h1 style="text-align: center;">Super awesome email sender.</h1>
@@ -46,8 +35,9 @@
         <div class="form-group">
             <label for="message" class="control-label col-xs-3">Message: </label>
             <div class="col-xs-9 @if(isset($user_message) and $user_message=='') bg-danger @endif">
-                <textarea name="message" id="message" rows="10" class="form-control"
-                          value="@if(isset($user_message)){{$user_message}}@endif"></textarea>
+                <textarea name="message" id="message" rows="10" class="form-control">
+                          @if(isset($user_message)){{$user_message}}@endif
+                </textarea>
             </div>
         </div>
         <div class="form-group">
@@ -62,6 +52,14 @@
         <input name="emailList" id="emailList" rows="10" class="hidden" value="@if(isset($ids_get)){{$ids_get}}@endif">
 
         {{ Form::close() }}
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <h3 class="col-xs-12">
+            Markdown formatting
+        </h3>
+        <div class="markdown-reference col-xs-12">
+            <img src="/app/content/img/htmlTagsForForm.jpg" class="col-xs-12" alt="How to style text">
+        </div>
     </div>
 @endsection
 @section('js')

@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
+use League\CommonMark\CommonMarkConverter;
 
 class EmailController extends Controller
 {
@@ -82,15 +83,18 @@ class EmailController extends Controller
         list($subject, $message, $to, $toUser, $errors) = $this->cleanEmailPost($_POST);
         if (isset($_POST["send"]) and $_POST["send"] == "Send Email") {
             if ($errors == '') {
+
+                $converter = new CommonMarkConverter();
+                $message =  $converter->convertToHtml($message);
                 $this->sendEmail($to, $subject, $message);
                 return redirect('/manage/email/')->with('success', "The email has being sent");
             } else {
                 return View::make('game.emailform')
                     ->with('error', $errors)
-                    ->with('names_get', $toUser)
-                    ->with('user_subject', $subject)
-                    ->with('user_message', $message)
-                    ->with('ids_get', $to);
+                    ->with('names_get', $_POST['emails'])
+                    ->with('user_subject', $_POST['subject'])
+                    ->with('user_message', $_POST["message"])
+                    ->with('ids_get', $_POST['emailList']);
             }
         }else {
             return redirect('/manage/email/')->with('error', "No Player email address found");
@@ -112,6 +116,8 @@ class EmailController extends Controller
     }
 
     /**
+     * @todo Nate this is where I need the connection to your emailer.
+     * @todo Replace the mailing function that is commented out for you function.
      * @param $to
      * @param $subject
      * @param $message
@@ -129,6 +135,7 @@ class EmailController extends Controller
             if($name =='' or $name==null){
                 $name = $player->username;
             }
+
             //mailingFunction::send($value,$subject,$message,$headers);
         }
     }

@@ -13,6 +13,9 @@
         body{
             overflow: scroll;
         }
+        .container{
+            width: 100%!important;
+        }
         .fa,
         .fa:before{
             font-family: "FontAwesome"!important;
