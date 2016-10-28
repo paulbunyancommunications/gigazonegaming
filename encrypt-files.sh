@@ -33,6 +33,14 @@ do
         mv ${ws}/${prefix[i]}.enc.temp ${ws}/${prefix[i]}.enc
         continue
     fi
-    cmp --silent ${ws}/${prefix[i]}.enc.temp ${ws}/${prefix[i]}.enc || echo "${ws}/${prefix[i]}.enc does not match new encrypted file."; mv ${ws}/${prefix[i]}.enc.temp ${ws}/${prefix[i]}.enc
 
+    if [[ $(stat -c%s ${ws}/${prefix[i]}.enc.temp) -ge $(stat -c%s ${ws}/${prefix[i]}${suffix[i]}) ]];
+    then
+        echo "Old file ${ws}/${prefix[i]}${suffix[i]} does not match the file size of the new file so it will be replaced."
+        mv ${ws}/${prefix[i]}.enc.temp ${ws}/${prefix[i]}.enc
+    fi
+    if [ test -f ${ws}/${prefix[i]}.enc.temp ]
+    then
+        rm ${ws}/${prefix[i]}.enc.temp
+    fi
 done
