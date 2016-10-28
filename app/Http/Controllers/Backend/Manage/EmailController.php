@@ -135,8 +135,7 @@ class EmailController extends Controller
             if($name =='' or $name==null){
                 $name = $player->username;
             }
-
-            //mailingFunction::send($value,$subject,$message,$headers);
+            //mailingFunction::send($value,$subject,$message);
         }
     }
 
