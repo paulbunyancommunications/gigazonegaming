@@ -1,4 +1,10 @@
 ##!/usr/bin/env bash
+#sudo yum update
+#sudo yum install firefox Xvfb libXfont Xorg
+#sudo mkdir /usr/lib/selenium /var/log/selenium /var/log/Xvfb
+#sudo chown screener.screener  /usr/lib/selenium /var/log/selenium /var/log/Xvfb
+#sudo apt-get update && sudo apt-get upgrade
+#puppet module install puppetlabs-mysql
 # Node step
 #sudo node update
 #sudo node upgrade
