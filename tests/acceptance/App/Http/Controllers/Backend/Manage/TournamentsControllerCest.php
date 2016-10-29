@@ -63,6 +63,10 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->wantTo('create a tournament on the management page');
         list($name, $max_players, $game_id) = $this->createATournament($I);
 
+        $I->seeInField(['id' => 'name'], $name." new");
+        $I->seeInField(['id' => 'max_players'], $max_players);
+        $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
+
         // check return, we should have a message and all the fields filled
         $I->see('The tournament '.$name.' was added');
         
@@ -79,7 +83,7 @@ class TournamentsControllerCest extends BaseAcceptance
 
         $name2 = implode('-', $this->faker->words(3));
         $max_players2 = $this->faker->numberBetween(1, 10);
-        $I->click(['id'=>'edit-'.$name]);
+        $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
@@ -108,7 +112,7 @@ class TournamentsControllerCest extends BaseAcceptance
 
         // make a tournament, then update
         list($name, $max_players, $game_id) = $this->createATournament($I);
-        $I->click(['id'=>'edit-'.$name]);
+        $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
@@ -186,7 +190,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->click('#submit');
+        $I->click(['id','submit']);
         $I->see('The name has already been taken');
     }
 
