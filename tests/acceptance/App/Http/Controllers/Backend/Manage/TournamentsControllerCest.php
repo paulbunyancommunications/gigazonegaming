@@ -62,14 +62,11 @@ class TournamentsControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a tournament on the management page');
         list($name, $max_players, $game_id) = $this->createATournament($I);
-
         $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
-
         // check return, we should have a message and all the fields filled
-        
     }
 
     /**

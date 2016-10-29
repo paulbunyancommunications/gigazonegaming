@@ -18,7 +18,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $I->wait(3);
         $this->populateDB($I);
+        $I->wait(3);
         $this->loginWithAdminUser($I);
 
     }
@@ -62,7 +64,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->click('Tester Team');
         $I->see('Create a new Player');
         $I->executeJS("$('#team_sort').show();");
-        $I->waitForElementVisible(['id' => 'team_sort'], 30);
+        $I->waitForElementVisible(['id' => 'team_sort'],4);
         $I->seeOptionIsSelected('#team_sort', 'Tester Team');
     }
     /**

@@ -55,8 +55,9 @@ class AuthControllerCest extends BaseAcceptance
     /**
      * Check that if I send the form without the email field that I was get an error back
      */
-    public function i_get_an_error_if_email_field_is_missing(AcceptanceTester $I)
+    public function i_get_an_error_if_email_field_is_missing(AcceptanceTester $I, $scenario)
     {
+        $scenario->skip();
         $I->wantTo('Check that if I send the form without the email field that I was get an error back');
         $I->amOnPage('/app/auth/login');
         $I->click(['id' => 'doSubmit']);
