@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <style type="text/css">
+        /* -------------------------------------
+            GLOBAL
+        ------------------------------------- */
+        * {
+            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+            font-size: 100%;
+            line-height: 1.6em;
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            max-width: 600px;
+            width: auto;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            height: 100%;
+            -webkit-text-size-adjust: none;
+            width: 100% !important;
+        }
+
+        /* -------------------------------------
+            ELEMENTS
+        ------------------------------------- */
+        a {
+            color: #348eda;
+        }
+
+        .btn-primary {
+            Margin-bottom: 10px;
+            width: auto !important;
+        }
+
+        .btn-primary td {
+            background-color: #fbb040;
+            border-radius: 25px;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .btn-primary td a, .btn-primary td .href {
+            background-color: #fbb040;
+            border: solid 1px #fbb040;
+            border-radius: 25px;
+            border-width: 10px 20px;
+            display: inline-block;
+            color: #585858;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1.3em;
+            text-decoration: none;
+        }
+
+        .last {
+            margin-bottom: 0;
+        }
+
+        .first {
+            margin-top: 0;
+        }
+
+        .padding {
+            padding: 10px 0;
+        }
+
+        /* -------------------------------------
+            BODY
+        ------------------------------------- */
+        table.body-wrap {
+            padding: 20px;
+            width: 100%;
+        }
+
+        table.body-wrap .container {
+            border: 1px solid #f0f0f0;
+        }
+
+        /* -------------------------------------
+            FOOTER
+        ------------------------------------- */
+        table.footer-wrap {
+            clear: both !important;
+            width: 100%;
+        }
+
+        .footer-wrap .container p {
+            color: #666666;
+            font-size: 12px;
+
+        }
+
+        table.footer-wrap a {
+            color: #999999;
+        }
+
+        /* -------------------------------------
+            TYPOGRAPHY
+        ------------------------------------- */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #040303;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-weight: 200;
+            line-height: 1.2em;
+            margin: 40px 0 10px;
+            clear: both;
+        }
+
+        h2, h3, h4, h5, h6 {
+            color: #585858;
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 400;
+
+        }
+
+        h5 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 400;
+
+        }
+
+        h6 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #D39037;
+        }
+
+        a:visited {
+            color: #59585B;
+        }
+
+        a:hover, a:active {
+            color: #59585B;
+        }
+
+        p,
+        ul,
+        ol {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            color: #040303;
+        }
+
+        p {
+            margin-left: 10px;
+            margin-right: 10px;
+            line-height: 30px;
+        }
+
+        p ol, p ul {
+            margin-top: 20px;
+        }
+
+        ul li,
+        ol li {
+            margin-left: 5px;
+            list-style-position: inside;
+            margin-bottom: 5px;
+            line-height: 30px;
+        }
+
+        /* ---------------------------------------------------
+            RESPONSIVENESS
+        ------------------------------------------------------ */
+
+        /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+        .container {
+            clear: both !important;
+            display: block !important;
+            Margin: 0 auto !important;
+            max-width: 600px !important;
+        }
+
+        /* Set the padding on the td rather than the div for Outlook compatibility */
+        .body-wrap .container {
+            padding: 20px;
+        }
+
+        /* This should also be a block element, so that it will fill 100% of the .container */
+        .content {
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        /* Let's make sure tables in the content area are 100% wide */
+        .content table {
+            width: 100%;
+        }
+
+        /* ---------------------------------------------------
+            Gigazone Gaming
+        ------------------------------------------------------ */
+
+        .logo {
+            /**
+            max-width: 100%;
+            height: auto;
+            */
+        }
+
+        .social-media-icon {
+            max-height: 45px;
+            width: auto;
+        }
+
+        .social-media-container {
+            margin: 15px 0;
+            height: 45px;
+        }
+
+        .embeded {
+            max-width: 250px;
+            height: auto;
+        }
+
+        .embeded.left {
+            margin-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        .embeded.right {
+            margin-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .block-center {
+            width: auto !important;
+            margin-left: auto;
+            margin-right: auto;
+            display: table;
+        }
+
+        .banner-container {
+            background-color: #333;
+            background-image: url(https://gigazonegaming.com/wp-content/themes/gigazone-gaming/images/backgrounds/social-banner-v-2-black.jpg);
+            background-position: center center;
+            background-repeat: repeat;
+        }
+
+        .img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+    </style>
+</head>
+<body bgcolor="#f6f6f6">
+
+
+<!-- body -->
+<table class="body-wrap" bgcolor="#f6f6f6">
+    <tr>
+        <td></td>
+        <td class="container" bgcolor="#FFFFFF">
+
+            <!-- content -->
+            <div class="content">
+                <table>
+                    <tr>
+                        <td>
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td></td>
+                                    <td class="content text-center">
+                                        <SimpleURLProperty name="gigazonegaming.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/bower_components/image.php/image.php/email-header-600.jpg?width=600&image=/wp-content/uploads/2016/07/gzg-email-header.png"
+                                                           href="https://gigazonegaming.com">
+                                            <a href="https://gigazonegaming.com"><img
+                                                    src="https://gigazonegaming.com/bower_components/image.php/image.php/email-header-600.jpg?width=600&image=/wp-content/uploads/2016/07/gzg-email-header.png"
+                                                    alt="Gigazone Gaming" class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <table width="100%" cellspacing="0" cellpadding="0" class="content">
+                                <tr>
+                                    <td>
+                                        <div class="start-content-here"></div>
+                                        <h1><Greeting /></h1>
+                                        <h2>The first ever Gigazone Gaming Championship is two weeks away, November
+                                            12th, 2016!</h2>
+                                        <p>We're busy putting the final touches on the first ever <a
+                                                href="https://gigazonegaming.com/">Gigazone Gaming Championship</a>,
+                                            presented by
+                                            <a href="http://www.paulbunyan.net/">Paul Bunyan Communications</a>.
+                                            <strong>Admission is free, we hope to see you there!</strong></p>
+                                        <table width="100%" cellpadding="0" cellspacing="0" class="content">
+                                            <tr>
+                                                <td>
+                                                    <SimpleURLProperty name="gigazonegaming.event.youtube"
+                                                                       track="true"
+                                                                       type="plain"
+                                                                       img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-600.jpg?width=600&image=/wp-content/uploads/2016/10/Screenshot-at-Oct-29-12-02-04.png"
+                                                                       href="https://youtu.be/SGMiSUyz4wE">
+                                                        <a href="https://youtu.be/SGMiSUyz4wE">
+                                                            <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-600.jpg?width=600&image=/wp-content/uploads/2016/10/Screenshot-at-Oct-29-12-02-04.png"
+                                                                 alt="Watch the into video" class="img"/>
+                                                        </a>
+                                                    </SimpleURLProperty>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                        <h3>Here's a few of the highlights:</h3>
+
+                                        <table width="100%" cellpadding="0" cellspacing="0" class="content">
+                                            <tr>
+                                                <td class="banner-container">
+                                                    <table class="content" width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" cellpadding="0" cellspacing="0"
+                                                                       class="content">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <SimpleURLProperty
+                                                                                    name="gigazonegaming.main.event.banner"
+                                                                                    track="true"
+                                                                                    type="plain"
+                                                                                    img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-2-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-lol.png"
+                                                                                    href="https://gigazonegaming.com/gzgc-league-of-legends-preliminary-matches/">
+                                                                                <a href="https://gigazonegaming.com/gzgc-league-of-legends-preliminary-matches/"><img
+                                                                                        src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-2-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-lol.png"
+                                                                                        alt="Main Event: League of Legends"
+                                                                                        class="img"/></a>
+                                                                            </SimpleURLProperty>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <p><br/>The <a
+                                                href="https://gigazonegaming.com/gzgc-league-of-legends-preliminary-matches/">League
+                                            of Legends preliminary matches</a> are getting close to completion.
+                                            By next week we'll know the final 8 teams that will compete in the finals on
+                                            November 12th.
+                                            <a href="http://challonge.com/gigazonegaming_2016">You can follow the
+                                                bracket online</a>.
+                                            They have been pretty exciting to watch! Our announcer for the event, <a
+                                                    href="https://www.twitch.tv/synergis7">synergis7</a>, has been doing
+                                            play by
+                                            play of quite a few of the matches, which you can check out on <a
+                                                    href="https://www.twitch.tv/synergis7">his Twitch stream</a>.</p>
+
+                                        <h3>Side Tournaments</h3>
+                                        <p>In addition to the League of Legends tournament there will be several side
+                                            tournaments. Each will have unique prizes that will be awarded to the
+                                            players who come out on top.
+                                            <a href="https://gigazonegaming.com/tournament/2016-game-day-schedule/">You
+                                                can find a schedule of when to register for these
+                                                tournaments on our site.</a> <strong>All are free to play!</strong></p>
+                                        <table width="100%" cellpadding="0" cellspacing="0" class="content">
+                                            <tr>
+                                                <td class="banner-container">
+                                                    <table class="content" width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td>
+                                                                <SimpleURLProperty
+                                                                        name="gigazonegaming.street.fighter.5.banner"
+                                                                        track="true"
+                                                                        type="plain"
+                                                                        img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-3-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-sf5.png"
+                                                                        href="https://gigazonegaming.com/">
+                                                                    <a href="https://gigazonegaming.com/">
+                                                                        <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-3-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-sf5.png"
+                                                                             alt="Side Tournament: Street Fighter 5 (PS4)"
+                                                                             class="img"/></a>
+                                                                </SimpleURLProperty>
+
+                                                                <SimpleURLProperty
+
+                                                                        name="gigazonegaming.mario.cart.8.banner"
+                                                                        track="true"
+                                                                        type="plain"
+                                                                        img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-4-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-mc8-1.png"
+                                                                        href="https://gigazonegaming.com/">
+                                                                    <a href="https://gigazonegaming.com/">
+                                                                        <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-4-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-mc8-1.png"
+                                                                             alt="Side Tournament: Mario Cart 8 (WiiU)"
+                                                                             class="img"/></a>
+                                                                </SimpleURLProperty>
+                                                                <SimpleURLProperty
+                                                                        name="gigazonegaming.retro.tournament.banner"
+
+                                                                        track="true"
+                                                                        type="plain"
+                                                                        img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-5-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-retro.png"
+                                                                        href="https://gigazonegaming.com/">
+                                                                    <a href="https://gigazonegaming.com/">
+                                                                        <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-5-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-retro.png"
+                                                                             alt="Side Tournament: Retro High Score (WiiU)"
+                                                                             class="img"/></a>
+                                                                </SimpleURLProperty>
+                                                                <SimpleURLProperty name="gigazonegaming.magic.banner"
+                                                                                   track="true"
+                                                                                   type="plain"
+                                                                                   img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-6-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-magic.png"
+                                                                                   href="https://gigazonegaming.com/tournament/magic-the-gathering-booster-draft-tournament/">
+                                                                    <a href="https://gigazonegaming.com/tournament/magic-the-gathering-booster-draft-tournament">
+                                                                        <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-6-600.jpg?width=600&image=/wp-content/uploads/2016/10/rotator-images-for-gzg-magic.png"
+                                                                             alt="Free Magic: The Gathering Kaladesh Booster Draft hosted by Accidentally Cool Games"
+                                                                             class="img"/></a>
+                                                                </SimpleURLProperty>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <h3>Door Prizes</h3>
+                                        <p>In addition to participating in any of the side tournaments you will have a
+                                            chance to win some awesome door prizes.
+                                            <a href="https://twitter.com/GigazoneGaming/status/792414512175611913">Cooler
+                                                Master sent us a big box of peripherals to give
+                                                away.</a> There will also be
+                                            <a href="http://store.steampowered.com/app/353380/">Steam Links</a>,
+                                            <a href="http://store.steampowered.com/app/353370/">Steam Controllers</a>,
+                                            and Gift cards.
+                                            The final big door prize will be an <a
+                                                    href="https://www3.oculus.com/en-us/rift/">Oculus Rift</a>! You must
+                                            be present to win.</p>
+
+
+                                        <div class="end-content-here"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0"
+                                   class="content">
+                                <tr>
+                                    <td>
+                                        <SimpleURLProperty name="gigazone.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-7-600.jpg?width=600&image=/wp-content/uploads/2016/10/GigaZone.png"
+                                                           href="http://www.paulbunyan.net/gigazone/index.html">
+                                        <a href="http://www.paulbunyan.net/gigazone/index.html">
+                                            <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-7-600.jpg?width=600&image=/wp-content/uploads/2016/10/GigaZone.png"
+                                                 alt="Gigazone Service"
+                                                 class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                                   class="social-media-container">
+                                <tr>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.facebook.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/facebook.png"
+                                                           href="https://www.facebook.com/gigazonegaming/"/>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.twitter.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/twitter.png"
+                                                           href="https://twitter.com/GigazoneGaming"/>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.instagram.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/instagram.png"
+                                                           href="https://www.instagram.com/gigazonegaming/"/>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.youtube.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/youtube.png"
+                                                           href="https://www.youtube.com/channel/UCo7den73ECxyP-l55STBj0w"/>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.youtube.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/twitch.png"
+                                                           href="https://www.twitch.tv/gigazonegaming"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /content -->
+
+        </td>
+        <td></td>
+    </tr>
+</table>
+<!-- /body -->
+
+<!-- footer -->
+<table class="footer-wrap">
+    <tr>
+        <td></td>
+        <td class="container">
+
+            <!-- content -->
+
+            <!-- /content -->
+
+        </td>
+        <td></td>
+    </tr>
+</table>
+<!-- /footer -->
+
+</body>
+</html>
