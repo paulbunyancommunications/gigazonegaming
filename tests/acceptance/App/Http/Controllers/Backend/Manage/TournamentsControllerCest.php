@@ -51,7 +51,7 @@ class TournamentsControllerCest extends BaseAcceptance
     {
         $I->wantTo('get to the tournament management page');
         $I->amOnPage('/app/manage/tournament');
-        $I->see('Create a new tournament');
+        $I->see('Create a new Tournament');
         $I->see('Tournament List');
     }
 
@@ -186,7 +186,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->click(['id' => 'submit']);
+        $I->click('#submit');
         $I->see('The name has already been taken');
     }
 
@@ -197,15 +197,10 @@ class TournamentsControllerCest extends BaseAcceptance
      */
     private function createATournament(AcceptanceTester $I, $attributes = [])
     {
-        $I->amOnPage('/app/manage/tournament');
-        $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->words(3));
-        $max_players = array_key_exists('max_players', $attributes) ? $attributes['max_players'] : $this->faker->numberBetween(1, 10);
+        $name = "Tester Tournament";
+        $max_players = 6;
         $game_id = "tester-game";
 
-        $I->fillField(['id' => 'name'], $name);
-        $I->fillField(['id' => 'max_players'], $max_players);
-        $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->click(['id' => 'submit']);
         return array($name, $max_players, $game_id);
     }
 
