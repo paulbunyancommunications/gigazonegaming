@@ -35,6 +35,14 @@ return [
                     'sender' => 'A new player ":username" created on :url',
                 ]
             ]
+        ],
+        'email' => [
+            'send' => [
+                'subject' => []
+            ]
         ]
     ]
 ];
+
+
+//"pbc_form_mail::body.manage.email.send.sender"
