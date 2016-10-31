@@ -248,6 +248,9 @@ return [
 
         // recaptcha
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+
+        // Form Mail helper facade
+        'FormMailHelper' => \Pbc\FormMail\Facades\FormMailHelper::class,
     ],
 
 ];

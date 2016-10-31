@@ -4,22 +4,18 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GameRequest;
-use App\Http\Requests\Request;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use League\CommonMark\CommonMarkConverter;
 
 class EmailController extends Controller
 {
+    protected $sentErrors = [];
+
     /**
      * Remove the specified resource from storage.
      *
@@ -86,8 +82,21 @@ class EmailController extends Controller
 
                 $converter = new CommonMarkConverter();
                 $message =  $converter->convertToHtml($message);
-                $this->sendEmail($to, $subject, $message);
-                return redirect('/manage/email/')->with('success', "The email has being sent");
+                $sent = $this->sendEmail($to, $subject, $message);
+                if (!$sent || count($this->sentErrors) > 0) {
+                    return redirect('/manage/email/')->with(
+                        'error',
+                        ( $sent === 0
+                            ? 'The email was sent to no recipients.'
+                            : 'The email has being sent to '. $sent.' recipient'. ($sent > 1 ? 's' : null).'.'
+                        )  .
+                        (count($this->sentErrors) > 0
+                            ? ' There were errors. '.implode('. ', $this->sentErrors)
+                            : null
+                        )
+                    );
+                }
+                return redirect('/manage/email/')->with('success', "The email has being sent to ". $sent.' recipient'. ($sent > 1 ? 's' : null) .'!');
             } else {
                 return View::make('game.emailform')
                     ->with('error', $errors)
@@ -116,8 +125,6 @@ class EmailController extends Controller
     }
 
     /**
-     * @todo Nate this is where I need the connection to your emailer.
-     * @todo Replace the mailing function that is commented out for you function.
      * @param $to
      * @param $subject
      * @param $message
@@ -128,6 +135,7 @@ class EmailController extends Controller
         if(!is_array($to)){
             $to = explode(', ', $to);
         }
+        $emailSendCount = 0;
         foreach ($to as $k => $value) {
             $player = Player::where('id', '=', $value)->first();
             $email = $player->email;
@@ -135,8 +143,27 @@ class EmailController extends Controller
             if($name =='' or $name==null){
                 $name = $player->username;
             }
-            //mailingFunction::send($value,$subject,$message);
+            try {
+                \FormMailHelper::makeMessage([
+                    'sender' => 'contact_us@' . str_replace_first('www.', '',
+                            parse_url(\Config::get('app.url'), PHP_URL_HOST)),
+                    'recipient' => $email,
+                    'name' => $name,
+                    'subject' => [
+                        'recipient' => $subject,
+                    ],
+                    'head' => [
+                        'recipient' => $message,
+                    ],
+                    'body' => $message,
+                ]);
+                $emailSendCount++;
+            } catch (\Exception $ex) {
+                aray_push($this->sentErrors, $ex->getMessage());
+            }
         }
+
+        return $emailSendCount;
     }
 
     /**

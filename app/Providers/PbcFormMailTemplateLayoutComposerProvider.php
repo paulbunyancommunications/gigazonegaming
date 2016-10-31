@@ -37,11 +37,16 @@ class PbcFormMailTemplateLayoutComposerProvider extends ServiceProvider
                     $social[$key] = $link->toArray();
                     array_push($found, $social[$key]['link_name']);
                     $social[$key]['link_image'] = 'https://gigazonegaming.com/wp-content/uploads/2016/06/' . strtolower($social[$key]['link_name']) . '.png';
+                    // check that the image exists, if not, then continue to the next icon
+                    $data = @file_get_contents($social[$key]['link_image']);
+                    if(!$data) {
+                        unset($social[$key]);
+                        continue;
+                    }
                     $social[$key]['link_slug'] = $slugify->slugify($social[$key]['link_name']);
 
                     // make base64 image version of image
                     $social[$key]['link_image_type'] = pathinfo($social[$key]['link_image'], PATHINFO_EXTENSION);
-                    $data = file_get_contents($social[$key]['link_image']);
                     $social[$key]['link_image_64'] = 'data:image/' . $social[$key]['link_image_type'] . ';base64,' . base64_encode($data);
                 }
             }
