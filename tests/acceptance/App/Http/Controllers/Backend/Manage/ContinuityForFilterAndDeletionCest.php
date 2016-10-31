@@ -192,6 +192,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->dontSeeElement('input', ['value' => 'Tester Team']);
+
         
     }
 
