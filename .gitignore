@@ -97,3 +97,7 @@ GIGAZONEGAMING-jenkins-master.tar.gz
 database/dump/bak
 puphpet/bak/config-custom.yaml
 puphpet/bak/config.yaml
+puphpet/files/exec-always/node-v6.8.0.tar.gz
+puphpet/files/exec-always/node-v6.8.0.tar.gz.1
+puphpet/files/exec-always/node-v6.8.0/**/*
+puphpet/files/exec-always/node-v6.8.0/*
