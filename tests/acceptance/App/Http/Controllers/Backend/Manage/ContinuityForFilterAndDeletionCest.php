@@ -18,9 +18,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
-        $I->wait(3);
         $this->populateDB($I);
-        $I->wait(3);
         $this->loginWithAdminUser($I);
 
     }
@@ -194,8 +192,6 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->dontSeeElement('input', ['value' => 'Tester Team']);
-
-
     }
 
 }
