@@ -34,60 +34,7 @@
 <body>
 <div class="container" id="page-content">
     <div class="row">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-
-                        <li>{{ Html::linkAction('Backend\Manage\GamesController@index',
-                        'Games') }}
-                        </li>
-
-                        <li>{{ Html::linkAction('Backend\Manage\TournamentsController@index',
-                        'Tournaments') }}
-                        </li>
-
-                        <li>{{ Html::linkAction('Backend\Manage\TeamsController@index',
-                        'Team') }}
-                        </li>
-
-                        <li>{{ Html::linkAction('Backend\Manage\PlayersController@index',
-                        'Players') }}
-                        </li>
-
-                        <li>{{ Html::linkAction('Backend\Manage\IndividualPlayersController@index',
-                        'Individual Players') }}
-                        </li>
-
-                        <li>{{ Html::linkAction('Backend\Manage\IndividualPlayersController@teamMake',
-                        'Team Maker') }}
-                        </li>
-
-                        <li>{{ Html::linkAction('Backend\Manage\EmailController@email',
-                        'Email Lists') }}
-                        </li>
-                        <li>
-                            <form id="searchbox" action="">
-                                <input id="searchText" type="text" placeholder="Type here">
-                                <input id="searchButton" type="submit" value="Search">
-                            </form>
-                        </li>
-
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
+        @include('game.partials.navigation.main')
     </div>
     <div class="messages-container">
         {!! $messageHtml !!}
