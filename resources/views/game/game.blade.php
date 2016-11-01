@@ -21,8 +21,6 @@
             <h2 class="txt-color--shadow">{{ $pageTitle }}</h2>
             {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
         @endif
-
-        <div class="form-group">
             @if(isset($theGame->name))
                 <input name="_method" type="hidden" value="PUT">
             @else
@@ -69,7 +67,7 @@
                            value="Edit Game {{ $pageTitle }}">
                 </div>
             </div>
-        </div>
+
         {{ Form::close() }}
     </div>
     <div class="col-md-12">
