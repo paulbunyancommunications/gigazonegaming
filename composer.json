@@ -169,10 +169,10 @@
     "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
     "ircmaxell/password-compat": "^1.0",
     "greggilbert/recaptcha": "^2.1",
-    "paulbunyannet/form_mail": "1.4.x",
+    "paulbunyannet/form_mail": "1.4.10",
     "propaganistas/laravel-phone": "^2.8",
     "guzzlehttp/guzzle": "~5.3|~6.0",
-    "brandonwamboldt/utilphp": "1.0.*",
+    "brandonwamboldt/utilphp": "1.1.*",
     "league/commonmark": "^0.15.0"
   },
   "require-dev": {
