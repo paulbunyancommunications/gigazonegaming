@@ -12,10 +12,12 @@
 @section('content')
     <div class="col-xs-6">
         @if(isset($theGame->title))
-            <h1>Update game &#8220;{{ $theGame->title }}&#8221;</h1>
+            @php ($pageTitle = $theGame->title)
+            <h1 class="txt-color--primary-color-text">Editing Game:<br><small class="txt-color--primary-color" id="title-game-title">{{ $pageTitle }}</small></h1>
             {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
         @else
-            <h1>Create a new Game</h1>
+            @php ($pageTitle = "Create a new Game")
+            <h1 class="txt-color--primary-color-text">{{ $pageTitle }}</h1>
             {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
         @endif
 
@@ -55,9 +57,16 @@
             </div>
 
             <div class="form-group">
-                {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default col-sm-6'))}}
-                <input type="submit" name="submit" id="submit" class='btn btn-default btn-primary col-sm-6'
-                       value="{{ isset($theGame) ? 'Update '. $theGame->title : 'Create' }}">
+                <div class="col-xs-6">
+                    {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default btn-block'))}}
+                </div>
+                <div class="col-xs-6">
+                    <input type="submit"
+                           name="submit"
+                           id="submit"
+                           class='btn btn-default btn-primary btn-block'
+                           value="Edit Game {{ $pageTitle }}">
+                </div>
             </div>
         </div>
         {{ Form::close() }}
