@@ -13,7 +13,7 @@
   }
 
   /** all over border color **/
-  .bdr-color--#{$color-name}
+  .bdr-color--#{$color-name},
   .border-color--#{$color-name} {
     border-color: $bg-color;
   }

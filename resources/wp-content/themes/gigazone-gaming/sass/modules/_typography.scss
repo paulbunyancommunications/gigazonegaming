@@ -1,3 +1,5 @@
+@import "typography-text-styles";
+
 h1, h2, h3, h4, h5, h6 {
   @extend .text-color--dark;
   @extend .strong;
@@ -17,38 +19,6 @@ p {
 @include mq-phone {
   @include base_typography(.825);
 }
-
-.uppercase {
-  text-transform: uppercase;
-}
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-center, .txt-center {
-  text-align: center;
-}
-
-.bold, .strong, b, strong {
-  font-weight: 700;
-}
-
-.text-normal, .txt-normal {
-  font-weight: 400;
-}
-
-.lighter {
-  @extend .txt-color--highlight;
-
-   & .insert-page-title {
-     color: inherit;
-   }
-}
-
 
 
 

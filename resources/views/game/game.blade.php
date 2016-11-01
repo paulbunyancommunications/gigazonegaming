@@ -10,14 +10,15 @@
     }
 @endsection
 @section('content')
-    <div class="col-xs-6">
+    <div class="col-md-12">
         @if(isset($theGame->title))
             @php ($pageTitle = $theGame->title)
-            <h1 class="txt-color--primary-color-text">Editing Game:<br><small class="txt-color--primary-color" id="title-game-title">{{ $pageTitle }}</small></h1>
+            <h2>Edit Game</h2>
+            <p class="txt-color--highlight" id="title-game-title">Editing: <span class="strong txt-color--primary-color-dark">{{ $pageTitle }}</span></p>
             {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
         @else
             @php ($pageTitle = "Create a new Game")
-            <h1 class="txt-color--primary-color-text">{{ $pageTitle }}</h1>
+            <h2 class="txt-color--shadow">{{ $pageTitle }}</h2>
             {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
         @endif
 
@@ -58,40 +59,53 @@
 
             <div class="form-group">
                 <div class="col-xs-6">
-                    {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default btn-block'))}}
+                    {{ Html::link('/manage/game/', (isset($theGame) ? 'Create a new game' : 'Clear'), array('id' => 'reset', 'class' => 'btn btn-default btn-block btn-gz-default '))}}
                 </div>
                 <div class="col-xs-6">
                     <input type="submit"
                            name="submit"
                            id="submit"
-                           class='btn btn-default btn-primary btn-block'
+                           class='btn btn-default btn-primary btn-block btn-gz'
                            value="Edit Game {{ $pageTitle }}">
                 </div>
             </div>
         </div>
         {{ Form::close() }}
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-12">
         <h2>Game List</h2>
         <div id="listOfGames" class="listing">
             @if(!isset($games) || $games == [])
-                <p>There are no games yet</p>
+                <div class="alert alert-info">There are no games yet!</div>
             @else
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="col-md-5">Game</th>
+                        <th class="col-md-5">Game's Tournament</th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                 @foreach($games as $id => $game)
-                    <div class="margin-sm-bottom">
-                        {{ Form::open(array('id' => "toForm".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms form")) }}
-                        <input name="_method" type="hidden" value="POST">
-                        <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
-                        {!!
-                            Form::submit(
-                                ($game["game_name"] ? $game["game_name"] : $game["game_title"]),
-                                array('class'=>'gameName btn btn-default btn-block list')
-                            )
-                        !!}
-                        {{ Form::close() }}
-                        &nbsp;&nbsp;
-                        {{ Html::linkAction('Backend\Manage\GamesController@edit', '', array('game_id'=>$game["game_id"]), array('class' => 'btn btn-success list fa fa-pencil-square-o', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
-                        &nbsp;&nbsp;
+
+                        <tr>
+                            <td class="text-left">
+                                {{ Html::linkAction('Backend\Manage\GamesController@edit', $game["game_title"], array('game_id'=>$game["game_id"]), array('class' => 'btn btn-link text-left btn-wrap', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
+                            </td>
+                            <td class="text-left">
+                                {{ Form::open(array('id' => "toForm".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms form")) }}
+                                <input name="_method" type="hidden" value="POST">
+                                <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
+                                {!!
+                                    Form::submit(
+                                        ($game["game_name"] ? $game["game_name"] : $game["game_title"]),
+                                        array('class'=>'gameName btn btn-link text-left btn-wrap')
+                                    )
+                                !!}
+                                {{ Form::close() }}
+                            </td>
+                        &nbsp;&nbsp;<td class="text-center">
                         {{ Form::open(array('id' => "gameForm".$game["game_id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["game_id"]), 'class' => "deletingForms")) }}
                         <input name="_method" type="hidden" value="DELETE">
                         {!!
@@ -101,8 +115,11 @@
                             )
                         !!}
                         {{ Form::close() }}
-                    </div>
+                        </td>
+                        </tr>
                 @endforeach
+                    </tbody>
+                </table>
             @endif
         </div>
     </div>

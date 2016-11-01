@@ -1,5 +1,7 @@
+@import "../../../wp-content/themes/gigazone-gaming/sass/modules/typography-text-styles";
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  @extend .text-color--primary-color-text;
+  @extend .strong;
   font-family: $font-family-display;
 }
