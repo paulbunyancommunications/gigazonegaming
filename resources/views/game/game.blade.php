@@ -71,6 +71,7 @@
         {{ Form::close() }}
     </div>
     <div class="col-md-12">
+        <div class="well">
         <h2>Game List</h2>
         <div id="listOfGames" class="listing">
             @if(!isset($games) || $games == [])
@@ -151,6 +152,7 @@
                     </tbody>
                 </table>
             @endif
+        </div>
         </div>
     </div>
 
