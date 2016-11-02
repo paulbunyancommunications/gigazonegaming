@@ -37,26 +37,26 @@ class EmailController extends Controller
         $ids = '';
         $emailsUserRequest = '';
         $relations = '';
-        list($separator, $game, $tournament, $team, $player) = $this->cleanPostToGetEmails($_POST);
-        if (isset($_POST["get_game"]) and $game) {
+        list($separator, $game, $tournament, $team, $player) = $this->cleanPostToGetEmails($_POST); //clean all the emails
+        if (isset($_POST["get_game"]) and $game) { //if user want to get all players on a game
             $theGame = Game::where('id', '=', $game)->first();
             $relations = $this->returnErrorsIfNull($theGame, $_POST);
             list($ids,$name) = $this->getEmail($relations, $separator);
-        } elseif (isset($_POST["get_tournament"]) and $tournament) {
+        } elseif (isset($_POST["get_tournament"]) and $tournament) {//else if user want to get all players on a tournament
             $theTournament = Tournament::where('id', '=', $tournament)->first();
             $relations = $this->returnErrorsIfNull($theTournament, $_POST);
             list($ids,$name)  = $this->getEmail($relations, $separator);
-        } elseif (isset($_POST["get_team"]) and $team) {
+        } elseif (isset($_POST["get_team"]) and $team) {//else if user want to get all players on a team
             $theTeam = Team::where('id', '=', $team)->first();
             $relations = $this->returnErrorsIfNull($theTeam, $_POST);
             list($ids,$name)  = $this->getEmail($relations, $separator);
-        } elseif (isset($_POST["get_player"]) and $player) {
+        } elseif (isset($_POST["get_player"]) and $player) {//else if user want to get just one player
             $player = Player::where('id', '=', $player)->first();
             $this->returnErrorsIfNull($player, $_POST);
             $name = $player->name;
             $ids = $player->id;
         }
-        if($game or $tournament or $team or $player) {
+        if($game or $tournament or $team or $player) { //if we see at least one player selected we can send an email otherwise return an error
             return View::make('game.emailForm')->with('sorts', $_POST)->with('names_get', $name)->with('ids_get', $ids);
         }else{
             return Redirect::back()
@@ -72,14 +72,9 @@ class EmailController extends Controller
      */
     public function email_send()
     {
-//        $email_get
-//        $user_subject
-//        $user_message
-//        $email_send
-        list($subject, $message, $to, $toUser, $errors) = $this->cleanEmailPost($_POST);
+        list($subject, $message, $to, $toUser, $errors) = $this->cleanEmailPost($_POST); //clean the post so
         if (isset($_POST["send"]) and $_POST["send"] == "Send Email") {
             if ($errors == '') {
-
                 $converter = new CommonMarkConverter();
                 $message =  $converter->convertToHtml($message);
                 $sent = $this->sendEmail($to, $subject, $message);
@@ -105,6 +100,17 @@ class EmailController extends Controller
                     ->with('user_message', $_POST["message"])
                     ->with('ids_get', $_POST['emailList']);
             }
+        }elseif(isset($_POST["preview"]) and $_POST["preview"] == "Preview Email") {
+            $converter = new CommonMarkConverter();
+            $message = $converter->convertToHtml($message);
+            return View::make('game.emailform')
+                ->with('error', $errors)
+                ->with('names_get', $_POST['emails'])
+                ->with('user_subject', $_POST['subject'])
+                ->with('user_message', $_POST["message"])
+                ->with('preview_message', $message)
+                ->with('ids_get', $_POST['emailList']);
+
         }else {
             return redirect('/manage/email/')->with('error', "No Player email address found");
         }
@@ -121,7 +127,7 @@ class EmailController extends Controller
                 $username .= $e->username . $separator;
             }
         }
-        return array(trim(trim(trim($ids, $separator), ']'), '['),trim(trim(trim($username, $separator), ']'), '['));
+        return array(trim(trim(trim(trim($ids, $separator), ']')), '['),trim(trim(trim(trim($username, $separator), ']'), '[')));
     }
 
     /**
@@ -159,7 +165,7 @@ class EmailController extends Controller
                 ]);
                 $emailSendCount++;
             } catch (\Exception $ex) {
-                aray_push($this->sentErrors, $ex->getMessage());
+                array_push($this->sentErrors, $ex->getMessage());
             }
         }
 
@@ -206,23 +212,11 @@ class EmailController extends Controller
     private function cleanPostToGetEmails($thePost)
     {
         $separator = ', ';
-//        $space = 'yes';
         $game = '';
         $tournament = '';
         $team = '';
         $player = '';
 
-//        if (isset($thePost['separator'])) {
-//            $separator = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost['separator']);
-//        }
-//        if (isset($thePost['space'])) {
-//            $space = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost["space"]);
-//        }
-//        if ($separator and $space) {
-//            $separator = $this->checkSeparator($separator, $space);
-//        } else {
-//            $separator = ", ";
-//        }
         if (isset($thePost['game_sort'])) {
             $game = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost["game_sort"]);
         }

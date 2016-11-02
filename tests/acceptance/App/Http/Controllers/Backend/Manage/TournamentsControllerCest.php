@@ -50,7 +50,6 @@ class TournamentsControllerCest extends BaseAcceptance
     public function tryToGetToTheTournamentApp(AcceptanceTester $I)
     {
         $I->wantTo('get to the tournament management page');
-        $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
         $I->see('Tournament List');
     }
@@ -187,7 +186,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->click(['id','submit']);
+        $I->waitForJS('return $("#submit").click();', 10);
         $I->see('The name has already been taken');
     }
 
