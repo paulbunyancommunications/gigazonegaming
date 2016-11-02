@@ -117,13 +117,28 @@ class TournamentsController extends Controller
      */
     public function destroy(Tournament $tournament)
     {
-        PlayerRelation::where('relation_id', '=', $tournament->getRouteKey())->where('relation_type', '=', Tournament::class)->delete();
-        foreach (Team::where('tournament_id', '=', $tournament->getRouteKey())->get() as $k => $t){
-            PlayerRelation::where('relation_id', '=', $t->id)->where('relation_type', '=', Team::class)->delete();
-            $t->delete();
+        $tournamentName = $tournament->name;
+        DB::beginTransaction();
+        try {
+            PlayerRelation::where('relation_id', '=', $tournament->getRouteKey())->where('relation_type', '=', Tournament::class)->delete();
+            foreach (Team::where('tournament_id', '=', $tournament->getRouteKey())->get() as $k => $t) {
+                PlayerRelation::where('relation_id', '=', $t->id)->where('relation_type', '=', Team::class)->delete();
+                $t->delete();
+            }
+        } catch(\Exception $ex) {
+            DB::rollback();
+            return Redirect::back()->with('error', $ex->getMessage());
         }
-        $tournament->where('id', $tournament->getRouteKey())->delete();
-        return Redirect::back();
+
+        try {
+            $tournament->where('id', $tournament->getRouteKey())->delete();
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return Redirect::back()->with('error', $ex->getMessage());
+        }
+        DB::commit();
+
+        return redirect()->route('manage.tournament.index')->with('success', 'Tournament '.$tournamentName.' successfully deleted!');
     }
     /**
      * Display the specified resource.

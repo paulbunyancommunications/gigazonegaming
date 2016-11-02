@@ -13,12 +13,12 @@
     <div class="col-md-12">
         @if(isset($theGame->title))
             @php ($pageTitle = $theGame->title)
-            <h2>Edit Game</h2>
-            <p class="txt-color--highlight" id="title-game-title">Editing: <span class="strong txt-color--primary-color-dark">{{ $pageTitle }}</span></p>
+            <h1 class="txt-color--shadow">Edit Game</h1>
+            <p class="txt-color--highlight" id="title-game-title">Editing: <span class="strong txt-color--primary-color-dark">&#8220;{{ $pageTitle }}&#8221;</span></p>
             {{ Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@update', $theGame->id), 'class' => 'form-horizontal')) }}
         @else
             @php ($pageTitle = "Create a new Game")
-            <h2 class="txt-color--shadow">{{ $pageTitle }}</h2>
+            <h1 class="txt-color--shadow">{{ $pageTitle }}</h1>
             {{  Form::open(array('id' => "gameForm", 'action' => array('Backend\Manage\GamesController@store'), 'class' => 'form-horizontal')) }}
         @endif
             @if(isset($theGame->name))
@@ -27,29 +27,29 @@
                 <input name="_method" type="hidden" value="POST">
             @endif
             <div class="form-group">
-                <label for="name" class="control-label col-xs-3">Game Name:</label>
-                <div class="col-xs-9">
+                <label for="name" class="control-label col-xs-4">Game Name:</label>
+                <div class="col-xs-8">
                     <input type="text" name="name" id="name" class="form-control" placeholder="The name of the game"
                            value="@if(isset($theGame->name)){{ $theGame->name }}@else{{ old('name') }}@endif"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="title" class="control-label col-xs-3">Game Title:</label>
-                <div class="col-xs-9">
+                <label for="title" class="control-label col-xs-4">Game Title:</label>
+                <div class="col-xs-8">
                     <input type="text" name="title" id="title" class="form-control" placeholder="The title of the game"
                            value="@if(isset($theGame->title)){{ $theGame->title }}@else{{ old('title') }}@endif"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="uri" class="control-label col-xs-3">Game URI:</label>
-                <div class="col-xs-9">
+                <label for="uri" class="control-label col-xs-4">Game URI:</label>
+                <div class="col-xs-8">
                     <input type="text" name="uri" id="uri" class="form-control" placeholder="The uri of the game"
                            value="@if(isset($theGame->uri)){{ $theGame->uri }}@else{{ old('uri') }}@endif"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="description" class="control-label col-xs-3">Game Description:</label>
-                <div class="col-xs-9">
+                <label for="description" class="control-label col-xs-4">Game Description:</label>
+                <div class="col-xs-8">
                     <textarea name="description" id="description" class="form-control"
                               placeholder="The description of the game">@if(isset($theGame->description)){{ $theGame->description }}@else{{ old('description') }}@endif</textarea>
                 </div>
@@ -64,7 +64,7 @@
                            name="submit"
                            id="submit"
                            class='btn btn-default btn-primary btn-block btn-gz'
-                           value="Edit Game {{ $pageTitle }}">
+                           value="{{ isset($theGame->title) ? "Edit Game" : null  }} {{ $pageTitle }}">
                 </div>
             </div>
 

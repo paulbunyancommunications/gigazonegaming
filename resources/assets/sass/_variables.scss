@@ -1,14 +1,2 @@
-@import "material_palette";
+// colors
 @import "../../wp-content/themes/gigazone-gaming/sass/pallet";
-$color-map-material: (
-        primary-color-dark:   $primary-color-dark,
-        primary-color:        $primary-color,
-        primary-color-light:  $primary-color-light,
-        primary-color-text:   $primary-color-text,
-        accent-color:         $accent-color,
-        primary-text-color:   $primary-text-color,
-        secondary-text-color: $secondary-text-color,
-        divider-color:        $divider-color
-);
-
-$color-map: map_merge($color-map, $color-map-material)
