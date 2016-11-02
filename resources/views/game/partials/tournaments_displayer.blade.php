@@ -15,28 +15,38 @@
             <div class="btn-group" role="group" aria-label="Tournament Actions">
                 {{
                    Form::button(
-                       'Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i>',
+                       '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',
                        array('type' => 'button', 'id' => 'submit-toForm-edit-'.$tournament["tournament_id"], 'class'=>'btn btn-primary toForm','title'=>"Edit tournament ".$tournament['tournament_name'])
                    )
                }}
 
                 {{
-                    Form::button(
-                        'Filter Teams <i class="fa fa-filter" aria-hidden="true"></i>',
-                        array('type' => 'button', 'id' => 'submit-toForm-filter-'.$tournament["tournament_id"], 'class'=>'btn btn-default toForm','title'=>"Filter teams by tournament ".$tournament['tournament_name'])
-                    )
+                   Form::button(
+                       '<i class="fa fa-print" aria-hidden="true"></i>',
+                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$tournament["tournament_id"], 'class'=>'btn btn-primary btn-gz toForm','title'=>"Edit tournament ".$tournament['tournament_name'])
+                   )
                 }}
 
                 {{
                     Form::button(
-                        'Delete <i class="fa fa-trash-o" aria-hidden="true"></i>',
+                        '<i class="fa fa-trash-o" aria-hidden="true"></i>',
                         array('type' => 'button', 'id' => 'submit-toForm-delete-'.$tournament["tournament_id"], 'class'=>'btn btn-danger toForm','title'=>"Delete tournament ".$tournament['tournament_name'])
+                    )
+                }}
+                {{
+                    Form::button(
+                        'Teams <i class="fa fa-filter" aria-hidden="true"></i>',
+                        array('type' => 'button', 'id' => 'submit-toForm-filter-'.$tournament["tournament_id"], 'class'=>'btn btn-default toForm','title'=>"Filter teams by tournament ".$tournament['tournament_name'])
                     )
                 }}
             </div>
 
+
             {{--Submit the edit tournament link--}}
             {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('id'=>'submit-toForm-edit-form-'.$tournament['tournament_id'], 'class' => 'btn btn-default hidden', 'title'=>"Edit tournament ".$tournament['tournament_name'])) }}
+
+            {{--Load printable view--}}
+            {{ Html::linkAction('Backend\Manage\TournamentsController@printTournament', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('id'=>'submit-toForm-print-form-'.$tournament['tournament_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print tournament details for ".$tournament['tournament_name'])) }}
 
             {{ Form::open(array('id' => "submit-toForm-filter-form-".$tournament["tournament_id"], 'action' => array('Backend\Manage\TeamsController@filter'), 'class' => "toForms")) }}
                 <input name="_method" type="hidden" value="POST">

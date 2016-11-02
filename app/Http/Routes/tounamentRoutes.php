@@ -13,4 +13,7 @@ Route::group(['middleware' => ['WPAdmin']], function () {
     Route::put('/manage/tournament/edit/{tournament_id}', ['as' => 'manage.tournament.edited', 'uses' => 'Backend\Manage\TournamentsController@update']);
     Route::post('/manage/tournament/new', ['as' => 'manage.tournament.new', 'uses' => 'Backend\Manage\TournamentsController@store']);
     Route::delete('/manage/tournament/delete/{tournament_id}', ['as' => 'manage.tournament.delete', 'uses' => 'Backend\Manage\TournamentsController@destroy']);
+
+    Route::get('/manage/tournament/print', ['as' => 'manage.tournament.print_tournaments', 'uses' => 'Backend\Manage\TournamentsController@printAll']);
+    Route::get('/manage/tournament/print/{tournament_id}', ['as' => 'manage.tournament.print_tournament', 'uses' => 'Backend\Manage\TournamentsController@printTournament']);
 });

@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\TournamentRequest;
 
+/**
+ * Class TournamentsController
+ * @package App\Http\Controllers\Backend\Manage
+ */
 class TournamentsController extends Controller
 {
     /**
@@ -169,6 +173,25 @@ class TournamentsController extends Controller
                 ->toArray();
         }
         return View::make('game/tournament')->with("tournaments_filter", $tournament)->with("sorts", $ids);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @todo make printable view
+     */
+    public function printAll()
+    {
+        return Tournament::all();
+    }
+
+    /**
+     * @param Tournament $tournament
+     * @return Tournament
+     * @todo make printable view
+     */
+    public function printTournament(Tournament $tournament)
+    {
+        return $tournament;
     }
 
 }
