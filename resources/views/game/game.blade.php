@@ -114,7 +114,7 @@
                                     {{
                                         Form::button(
                                             '<i class="fa fa-trash-o" aria-hidden="true"></i>',
-                                            array('type' => 'button', 'id' => 'submit-toForm-delete-'.$game["game_id"], 'class'=>'btn btn-danger toForm','title'=>"Delete game ".$game['game_name'])
+                                            array('type' => 'button', 'id' => 'submit-toForm-delete-'.$game["game_id"], 'class'=>'btn btn-danger toForm delete-'.str_replace(" ","", $game["game_name"]),'title'=>"Delete game ".$game['game_name'])
                                         )
                                     }}
                                     {{

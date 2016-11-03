@@ -30,7 +30,7 @@
                 {{
                     Form::button(
                         '<i class="fa fa-trash-o" aria-hidden="true"></i>',
-                        array('type' => 'button', 'id' => 'submit-toForm-delete-'.$tournament["tournament_id"], 'class'=>'btn btn-danger toForm','title'=>"Delete tournament ".$tournament['tournament_name'])
+                        array('type' => 'button', 'id' => 'submit-toForm-delete-'.$tournament["tournament_id"], 'class'=>'btn btn-danger toForm delete-'.str_replace(" ","", $tournament["tournament_name"]),'title'=>"Delete tournament ".$tournament['tournament_name'])
                     )
                 }}
                 {{
