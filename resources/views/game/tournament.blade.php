@@ -10,7 +10,8 @@
     }
 @endsection
 @section('content')
-    <div class="col-xs-8">
+    <div class="row">
+        <div class="col-xs-8">
         @if(isset($games) || $games != [])
             @if(isset($theTournament->name))
                 @php ($pageTitle = $theTournament->name)
@@ -102,7 +103,9 @@
             {{ Form::close() }}
         </div>
     </div>
-    <div class="col-md-12">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
         <div class="well">
         <h2>Tournament List</h2>
         {{
@@ -111,7 +114,7 @@
                 array('type' => 'button', 'id' => 'print-all-button-1', 'class'=>'btn btn-lg btn-gz margin-bottom toForm', 'title'=>"Print all tournament details")
             )
         }}
-        {{ Html::linkAction('Backend\Manage\TournamentsController@printAll', 'Printable Tournament List <i class="fa fa-print" aria-hidden="true"></i>', [], array('id'=>'print-all-button-form-1', 'class' => 'btn btn-default btn-lg btn-gz margin-bottom hidden', 'title'=>"Print all tournament details")) }}
+        {{ Html::linkAction('Backend\Manage\TournamentsController@printAll', 'Printable Tournament List <i class="fa fa-print" aria-hidden="true"></i>', [], array('target'=>'_blank','id'=>'print-all-button-form-1', 'class' => 'btn btn-default btn-lg btn-gz margin-bottom hidden', 'title'=>"Print all tournament details")) }}
         <div id="listOfTournaments" class="listing">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -153,6 +156,7 @@
                 {{ Html::link('/manage/game/', 'Create a Game', array('id' => 'new_game', 'class' => 'btn btn-default')) }}
             @endif
         </div>
+    </div>
     </div>
 
 @endsection
