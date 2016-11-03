@@ -67,7 +67,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 
         $I->wantTo('check enable and disable inputs');
         $I->amOnPage('/app/manage/individualPlayer');
-        $I->executeJS("".
+        $I->waitForJS("".
             "var submit_button = document.getElementById('submit_button');".
             "submit_button = submit_button.getAttribute('disabled');".
             "if(submit_button == true || submit_button == 'disabled'){".
@@ -118,7 +118,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
             "if(reset_ == false || reset_ == undefined){".
             "document.getElementById('playerForm').appendChild(document.createTextNode('Reset Button is enabled.   '));".
             "}"
-        );
+        , 60);
         sleep(3); // wait for js
         $I->see("Submit Button is disabled");
         $I->see("Name Field is disabled");
@@ -148,7 +148,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $i++;
         $I->selectOption(['id' => 'game_sort'], "league-of-legends");
 
-        $I->executeJS("".
+        $I->waitForJS("".
             "var game_sort = document.getElementById('game_sort');".
             "game_sort = game_sort.getAttribute('disabled');".
             "if(game_sort == false || game_sort == undefined){".
@@ -169,7 +169,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
             "if(submit_button == true || submit_button == 'disabled'){".
             "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled".$i.".   '));".
             "}"
-        );
+        , 60);
         sleep(3); // wait for js
         $I->see("Game Sort Field is enabled".$i."");
         $I->see("Tournament Sort Field is enabled".$i."");
@@ -180,7 +180,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $i++;
         $I->selectOption(['id' => 'tournament_sort'], "gigazone-gaming-2016-league-of-legends");
 
-        $I->executeJS("".
+        $I->waitForJS("".
             "var game_sort = document.getElementById('game_sort');".
             "game_sort = game_sort.getAttribute('disabled');".
             "if(game_sort == false || game_sort == undefined){".
@@ -201,7 +201,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
             "if(submit_button == true || submit_button == 'disabled'){".
             "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled".$i.".   '));".
             "}"
-        );
+        , 60);
         sleep(3); // wait for js
         $I->see("Game Sort Field is enabled".$i."");
         $I->see("Tournament Sort Field is enabled".$i."");
@@ -222,11 +222,11 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->selectOption(['id' => 'game_sort'], 'tester-game');//this will enable users under this game and the tournament select
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');//this will enable the team select
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');//this will pre-select the team
-        $id = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("id")');
-        $name = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_name")');
-        $user = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_user")');
-        $phone = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_phone")');
-        $email = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_email")');
+        $id = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("id")', 30);
+        $name = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_name")', 30);
+        $user = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_user")', 30);
+        $phone = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_phone")', 30);
+        $email = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_email")', 30);
 
         $I->wait(3);
         $this->CheckIfFieldsAreDisabledAfterTeamSelection($I);
@@ -246,7 +246,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
      */
     private function CheckIfFieldsAreDisabled(AcceptanceTester $I, $i=0)
     {
-        $I->executeJS("" .
+        $I->waitForJS("" .
             "var game_sort = document.getElementById('game_sort');" .
             "game_sort = game_sort.getAttribute('disabled');" .
             "if(game_sort == false || game_sort == undefined){" .
@@ -267,8 +267,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
             "if(submit_button == true || submit_button == 'disabled'){" .
             "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled" . $i . ".   '));" .
             "}"
-        );
-        sleep(3); // wait for js
+        , 60);
         $I->see("Game Sort Field is enabled" . $i . "");
         $I->see("Tournament Sort Field is disabled" . $i . "");
         $I->see("Team Sort Field is disabled" . $i . "");
@@ -280,7 +279,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
      */
     private function CheckIfFieldsAreDisabledAfterTeamSelection(AcceptanceTester $I, $i=0)
     {
-        $I->executeJS("" .
+        $I->waitForJS("" .
             "var game_sort = document.getElementById('game_sort');" .
             "game_sort = game_sort.getAttribute('disabled');" .
             "if(game_sort == false || game_sort == undefined){" .
@@ -301,8 +300,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
             "if(submit_button == false || submit_button == undefined){" .
             "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is enabled double check.  '));" .
             "}"
-        );
-        sleep(3); // wait for js
+        , 60);
         $I->see("Game Sort Field is enabled double check.");
         $I->see("Tournament Sort Field is enabled double check.");
         $I->see("Team Sort Field is enabled double check.");
