@@ -169,6 +169,18 @@
         </div>
     </div>
 @endsection
+@section('js')
+    $('#game_sort').on("change", function() {
+        var val_g = $('#game_sort option:selected').val();
+        var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
+        $('#tournament_sort option').prop("disabled", true);
+        $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
+        $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+        $('#tournament_sort').select2({
+            allowClear: true
+        });
+    });
+@endsection
 @section('js-sheet')
     <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection
