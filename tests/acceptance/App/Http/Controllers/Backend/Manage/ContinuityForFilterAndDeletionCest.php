@@ -79,9 +79,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team but not the players');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
 //        $I->click(".delete_soft-form-TesterTeam");
-        $I->waitForJS("$('.delete_soft-form-TesterTeam').click();", 10);
-        $I->click("OK");
+        $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new Player');
@@ -102,8 +102,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team and the players');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->waitForJS("$('.delete_hard-form-TesterTeam').click();", 10);
-        $I->click("OK");
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete_hard-form-TesterTeam').click();", 10);
+        $I->acceptPopup();
         $I->see('Create a new Team');
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
@@ -125,6 +126,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->seeElement('input', ['value' => 'Tester Team']);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->acceptPopup();
         $I->see('Create a new Team');
@@ -133,6 +135,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
         $I->seeElement('input', ['value' => 'Tester Tournament']);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
         $I->acceptPopup();
         $I->see('Create a new Tournament');
@@ -141,6 +144,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->seeElement('input', ['value' => 'tester-game']);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-tester-game').click();", 10);
         $I->click("OK");
         $I->see('Create a new Game');
@@ -158,8 +162,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
         $I->seeElement('input', ['value' => 'Tester Tournament']);
-        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
-        $I->wait(3);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
+        $I->acceptPopup();
         $I->see('Create a new Tournament');
         $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
 
@@ -170,8 +175,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->seeElement('input', ['value' => 'tester-game']);
-        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->wait(3);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-tester-game').click();", 10);
+        $I->acceptPopup();
         $I->see('Create a new Game');
         $I->dontSeeElement('input', ['value' => 'tester-game']);
 
@@ -186,8 +192,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->seeElement('input', ['value' => 'tester-game']);
-        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->wait(3);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-tester-game').click();", 10);
+        $I->acceptPopup();
         $I->see('Create a new Game');
         $I->dontSeeElement('input', ['value' => 'tester-game']);
 
