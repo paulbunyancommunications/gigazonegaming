@@ -45,11 +45,17 @@
         </ul>
 
         <div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search" id="searchbox" action="">
+
+{{--            {{ Form::open(array('id' => 'page-text-search', 'action' => array('Backend\Manage\search@doSearch'), 'class' => "toForms")) }}
+                <input name="_method" type="hidden" value="POST">
+                <input name="tournament_sort" type="hidden" value="{{$tournament["tournament_id"]}}">
+            {{ Form::close() }}--}}
+
+            <form class="navbar-form page-text-search" role="search" id="searchbox" action="">
                 <div class="input-group">
-                    <input id="searchText" class="form-control" type="text" placeholder="Search">
+                    <input id="searchText" class="form-control" type="text" placeholder="Search" disabled>
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
+                        <button class="btn btn-default" type="submit" disabled><i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
