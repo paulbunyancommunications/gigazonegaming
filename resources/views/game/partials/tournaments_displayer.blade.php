@@ -36,7 +36,7 @@
                 {{
                     Form::button(
                         'Teams <i class="fa fa-filter" aria-hidden="true"></i>',
-                        array('type' => 'button', 'id' => 'submit-toForm-filter-'.$tournament["tournament_id"], 'class'=>'btn btn-default toForm','title'=>"Filter teams by tournament ".$tournament['tournament_name'])
+                        array('type' => 'button', 'id' => 'submit-toForm-filter-'.$tournament["tournament_id"], 'class'=>'btn btn-default toForm filter-'.str_replace(" ","", $tournament["tournament_name"]),'title'=>"Filter teams by tournament ".$tournament['tournament_name'])
                     )
                 }}
             </div>

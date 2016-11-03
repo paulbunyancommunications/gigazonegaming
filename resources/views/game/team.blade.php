@@ -169,38 +169,6 @@
         </div>
     </div>
 @endsection
-@section('js')
-    $(document).ready(function() {
-    $('#game_sort').on("change", function() {
-    var val_g = $('#game_sort option:selected').val();
-    var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
-    $('#tournament_sort option').prop("disabled", true);
-    $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled",
-    false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
-    $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-    {{--$('#tournament_sort').select2({--}}
-    {{--allowClear: true--}}
-    {{--});--}}
-    });
-    $('.delete_message').click(function() {
-    var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players
-    list for this tournament');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    $('.delete_message2').click(function() {
-    var conf = confirm('Are you sure? This will remove the team and players from the database for all
-    tournaments and games');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    });
+@section('js-sheet')
+    <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection

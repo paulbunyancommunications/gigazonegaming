@@ -52,18 +52,12 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-//        $('select').select2({
-//            allowClear: true
-//        });
-
-        $(document).ready(function () {
             $('#searchBar').change(function () {
                 $(this).val();
             });
             $('#theIframe', window.parent.document).height($('#page-content').height()).css('min-height', 700);
 //            $('#wpfooter', window.parent.document).addClass('hidden');
             var toAdd = '</div><div id="pageLinker2" class="btn-group btn-group-justified" role="group" aria-label="Justified button group">';
-        });
         @yield('js')
     });
 </script>

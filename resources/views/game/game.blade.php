@@ -79,9 +79,9 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th class="col-md-5">Game</th>
-                        <th class="col-md-5">Game's Tournament</th>
-                        <th class="col-md-2"></th>
+                        <th class="col-md-4">Game</th>
+                        <th class="col-md-4">Game's Tournament</th>
+                        <th class="col-md-4"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -92,28 +92,60 @@
                                 {{ Html::linkAction('Backend\Manage\GamesController@edit', $game["game_title"], array('game_id'=>$game["game_id"]), array('class' => 'btn btn-link text-left btn-wrap', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
                             </td>
                             <td class="text-left">
-                                {{ Form::open(array('id' => "toForm".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms form")) }}
-                                <input name="_method" type="hidden" value="POST">
-                                <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
-                                {!!
-                                    Form::submit(
-                                        ($game["game_name"] ? $game["game_name"] : $game["game_title"]),
-                                        array('class'=>'gameName btn btn-link text-left btn-wrap')
-                                    )
-                                !!}
-                                {{ Form::close() }}
+                                {{ Html::linkAction('Backend\Manage\GamesController@edit', $game["game_name"], array('game_id'=>$game["game_id"]), array('class' => 'btn btn-link text-left btn-wrap', 'id' => 'edit-'.$game["game_name"], 'title'=>"Edit")) }}
                             </td>
                         &nbsp;&nbsp;<td class="text-center">
-                        {{ Form::open(array('id' => "gameForm".$game["game_id"], 'action' => array('Backend\Manage\GamesController@destroy', $game["game_id"]), 'class' => "deletingForms")) }}
-                        <input name="_method" type="hidden" value="DELETE">
-                        {!!
-                            Form::submit(
-                                '&#xf014; &#xf1c0;',
-                                array('class'=>'btn btn-danger list fa delete_message confirm_choice', 'title'=>"Delete From Database", 'id' => 'delete-'.$game["game_name"])
-                            )
-                        !!}
-                        {{ Form::close() }}
-                        </td>
+
+                                <div class="btn-group" role="group" aria-label="Game Actions">
+                                    {{
+                                       Form::button(
+                                           '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',
+                                           array('type' => 'button', 'id' => 'submit-toForm-edit-'.$game["game_id"], 'class'=>'btn btn-primary toForm','title'=>"Edit game ".$game['game_name'])
+                                       )
+                                   }}
+
+                                    {{
+                                       Form::button(
+                                           '<i class="fa fa-print" aria-hidden="true"></i>',
+                                           array('type' => 'button', 'id' => 'submit-toForm-print-'.$game["game_id"], 'class'=>'btn btn-primary btn-gz toForm','title'=>"Edit game ".$game['game_name'])
+                                       )
+                                    }}
+
+                                    {{
+                                        Form::button(
+                                            '<i class="fa fa-trash-o" aria-hidden="true"></i>',
+                                            array('type' => 'button', 'id' => 'submit-toForm-delete-'.$game["game_id"], 'class'=>'btn btn-danger toForm','title'=>"Delete game ".$game['game_name'])
+                                        )
+                                    }}
+                                    {{
+                                        Form::button(
+                                            'Tournaments <i class="fa fa-filter" aria-hidden="true"></i>',
+                                            array('type' => 'button', 'id' => 'submit-toForm-filter-'.$game["game_id"], 'class'=>'btn btn-default toForm filter-'.str_replace(" ","", $game["game_name"]),'title'=>"Filter tournaments by game ".$game['game_name'])
+                                        )
+                                    }}
+                                </div> {{--Submit the edit tournament link--}}
+                                {{ Html::linkAction('Backend\Manage\GamesController@edit', 'Edit', array('game_id'=>$game["game_id"]), array('id'=>'submit-toForm-edit-form-'.$game['game_id'], 'class' => 'btn btn-default hidden', 'title'=>"Edit tournament ".$game['game_name'])) }}
+
+                                {{--Load printable view--}}
+{{--                                {{ Html::linkAction('Backend\Manage\GamesController@printGame', 'Edit', array('game_id'=>$game["game_id"]), array('id'=>'submit-toForm-print-form-'.$game['game_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print game details for ".$game['game_name'])) }}--}}
+
+                                {{ Form::open(array('id' => "submit-toForm-filter-form-".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms")) }}
+                                <input name="_method" type="hidden" value="POST">
+                                <input name="game_sort" type="hidden" value="{{$game["game_id"]}}">
+                                {{ Form::close() }}
+
+                                {{ Form::open(array(
+                                    'id' => "submit-toForm-delete-form-".$game["game_id"],
+                                    'action' => [
+                                        'Backend\Manage\GamesController@destroy',
+                                        $game["game_id"]
+                                        ],
+                                    'class' => "deletingForms delete_message'",
+                                    'onsubmit'=>"return confirm('Are you sure? Deleting the game ". htmlentities($game['game_name']) ." will erase the game and all dependent tournaments, teams and players relations to such game, tournaments and teams');")) }}
+                                <input name="_method" type="hidden" value="DELETE">
+                                {{ Form::close() }}
+
+                            </td>
                         </tr>
                 @endforeach
                     </tbody>
@@ -123,17 +155,6 @@
     </div>
 
 @endsection
-@section('js')
-    $(document).ready(function() {
-    $('.confirm_choice').click(function() {
-    var conf = confirm('Are you sure?');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    });
-
+@section('js-sheet')
+    <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection
