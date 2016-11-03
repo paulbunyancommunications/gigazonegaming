@@ -59,11 +59,8 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->see('Create a new Team');
         $I->seeOptionIsSelected('#tournament_sort', 'Tester Tournament');
         $I->wantTo('click on a team and land on player page with an applied filter');
-        $I->click('Tester Team');
+        $I->waitForJS("return $('.filter-TesterTeam').click();", 10);
         $I->see('Create a new Player');
-        $I->waitForJS("return $('#team_sort').show();", 10);
-        $I->waitForElementVisible(['id' => 'team_sort'],4);
-        $I->seeOptionIsSelected('#team_sort', 'Tester Team');
     }
     /**
      * @param AcceptanceTester $I
@@ -74,7 +71,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team but not the players');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->waitForJS("return $('.delete-soft-TesterTeam').closest('form').submit()", 10);
+        $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new Player');
@@ -95,7 +92,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team and the players');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->waitForJS("$('#delete-hard-TesterTeam').closest('form').submit()", 10);
+        $I->waitForJS("$('.delete_hard-form-TesterTeam').click();", 10);
         $I->wait(3);
         $I->see('Create a new Team');
         $I->dontSee('Tester Team');
@@ -118,7 +115,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->seeElement('input', ['value' => 'Tester Team']);
-        $I->executeJS("$('#delete-soft-TesterTeam').closest('form').submit()");
+        $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->wait(3);
         $I->see('Create a new Team');
         $I->dontSeeElement('input', ['value' => 'Tester Team']);
