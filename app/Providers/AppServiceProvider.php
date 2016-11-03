@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Blade::directive('autoVersion', function($expression) {
+            return "<?php echo \\Pbc\\AutoVersionSingle::file($expression); ?>";
+        });
     }
 
     /**
