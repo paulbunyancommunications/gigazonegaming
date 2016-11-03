@@ -280,24 +280,29 @@ trait  PlayerRelationable
         $i = 0;
         $playersList = [];
         $Object=false;
+        $exists = false;
+        $existsFilter = true;
         foreach ($players as $k => $player) {
             $exists = false;
             if(isset($filter['team']) and $filter['team']!='' and $filter['team']!='---'){
                 $exists = PlayerRelation::where('player_id','=',$player->id)
                     ->where('relation_id','=',trim($filter['team']))
                     ->where('relation_type','=',Team::class)->exists();
+                $existsFilter = false;
             }
             elseif(isset($filter['tournament']) and $filter['tournament']!='' and $filter['tournament']!='---'){
                 $exists = PlayerRelation::where('player_id','=',$player->id)
                     ->where('relation_id','=',trim($filter['tournament']))
                     ->where('relation_type','=',Tournament::class)->exists();
+                $existsFilter = false;
             }
             elseif(isset($filter['game']) and $filter['game']!='' and $filter['game']!='---'){
                 $exists = PlayerRelation::where('player_id','=',$player->id)
                     ->where('relation_id','=',trim($filter['game']))
                     ->where('relation_type','=',Game::class)->exists();
+                $existsFilter = false;
             }
-            if ($exists) {
+            if ($exists or $existsFilter) {
                 $playersList[$i] = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter);
                 $i++;
             }
