@@ -277,10 +277,33 @@ trait  PlayerRelationable
     public static function playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
         $players = Player::orderBy('username')->get();
-        foreach ($players as $k => $player){
-            $players[$k]=$player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter);
+        $i = 0;
+        $playersList = [];
+        $Object=false;
+        foreach ($players as $k => $player) {
+            $exists = false;
+            if(isset($filter['team']) and $filter['team']!='' and $filter['team']!='---'){
+                $exists = PlayerRelation::where('player_id','=',$player->id)
+                    ->where('relation_id','=',trim($filter['team']))
+                    ->where('relation_type','=',Team::class)->exists();
+            }
+            elseif(isset($filter['tournament']) and $filter['tournament']!='' and $filter['tournament']!='---'){
+                $exists = PlayerRelation::where('player_id','=',$player->id)
+                    ->where('relation_id','=',trim($filter['tournament']))
+                    ->where('relation_type','=',Tournament::class)->exists();
+            }
+            elseif(isset($filter['game']) and $filter['game']!='' and $filter['game']!='---'){
+                $exists = PlayerRelation::where('player_id','=',$player->id)
+                    ->where('relation_id','=',trim($filter['game']))
+                    ->where('relation_type','=',Game::class)->exists();
+            }
+            if ($exists) {
+                $playersList[$i] = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter);
+                $i++;
+            }
         }
-        return $players;
+
+        return $playersList;
     }
 
     /**
@@ -338,6 +361,7 @@ trait  PlayerRelationable
         }
         return false;
     }
+
     public function relationToTeamArray($id)
     {
         return Team::find($id)->get()->toArray();
