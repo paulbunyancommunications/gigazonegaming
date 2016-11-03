@@ -126,22 +126,22 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->see('Create a new Team');
         $I->seeElement('input', ['value' => 'Tester Team']);
         $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
-        $I->click("OK");
+        $I->acceptPopup();
         $I->see('Create a new Team');
         $I->dontSeeLink('Tester Team');
 
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
         $I->seeElement('input', ['value' => 'Tester Tournament']);
-        $I->waitForJS("$('.delete-TesterTournament').click();", 10);
-        $I->click("OK");
+        $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
+        $I->acceptPopup();
         $I->see('Create a new Tournament');
         $I->dontSeeLink('Tester Tournament');
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->seeElement('input', ['value' => 'tester-game']);
-        $I->waitForJS("$('.delete-tester-game').click();", 10);
+        $I->waitForJS("return $('.delete-tester-game').click();", 10);
         $I->click("OK");
         $I->see('Create a new Game');
         $I->dontSeeLink('tester-game');
