@@ -185,10 +185,9 @@
                 <label for="game_sort" class="control-label col-xs-3">Show options only for this Game: </label>
                 <div class="col-xs-9">
                     <select name="game_sort" id="game_sort" class="form-control">
-
                         <option> ---</option>
                         @foreach($games as $g)
-                            <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
+                            <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}"
                                     @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
                             >{{$g['game_name']}}</option>
                         @endforeach
@@ -201,8 +200,7 @@
                     <select name="tournament_sort" id="tournament_sort" class="form-control">
                         <option> ---</option>
                         @foreach($tournaments as $g)
-                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}"
-                                    value="{{$g['tournament_id']}}"
+                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
                                     @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
                             >{{$g['tournament_name']}}</option>
                         @endforeach
@@ -258,41 +256,31 @@
     </div>
 @endsection
 @section('js')
-    $(document).ready(function() {
     $('select').select2({
-    allowClear: true
+        allowClear: true
     });
     $('#game_sort').on("change", function() {
-    var val_g = $('#game_sort option:selected').val();
-    var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
-    $('#tournament_sort option').prop("disabled", true);
-    $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled",
-    false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
-    $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-    $('#tournament_sort').select2({
-    allowClear: true
-    });
+        var val_g = $('#game_sort option:selected').val();
+        var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
+        $('#tournament_sort option').prop("disabled", true);
+        $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
+        $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+        $('#tournament_sort').select2({
+            allowClear: true
+        });
     });
     $('#tournament_sort').on("change", function() {
-    var val_g = $('#tournament_sort option:selected').val();
-    var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
-    d_id = d_id.split('_')[2];
-    $('#team_sort option').prop("disabled", true);
-    $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled",
-    false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
-    $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
-    $('#team_sort').select2({
-    allowClear: true
+        var val_g = $('#tournament_sort option:selected').val();
+        var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
+        d_id = d_id.split('_')[2];
+        $('#team_sort option').prop("disabled", true);
+        $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
+        $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
+        $('#team_sort').select2({
+            allowClear: true
+        });
     });
-    });
-    $('.delete_message').click(function() {
-    var conf = confirm('Are you sure? you are going to delete the player from the database.');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    });
+@endsection
+@section('js-sheet')
+    <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection
