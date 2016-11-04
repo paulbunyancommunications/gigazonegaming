@@ -577,7 +577,7 @@
         <!-- test the return content, if it has
         "Could not open input file" in it
         rebuild the box and rerun tests -->
-        <exec command="v=$(which vagrant); if grep -Fxq &quot;Could not open input file&quot; codecept-result.log; then eval &quot;${v} eval &quot;${v} up&quot; &amp;&amp; bash testing.sh; fi;" checkreturn="true" passthru="true" level="info" />
+        <exec command="v=$(which vagrant); if grep -Fxq &quot;Could not open input file&quot; codecept-result.log; then eval &quot;$v up&quot; &amp;&amp; bash testing.sh; fi;" checkreturn="true" passthru="true" level="info" />
     </target>
 
 
@@ -586,7 +586,7 @@
     <!-- Spin up a vagrant box                         -->
     <!-- ============================================  -->
     <target name="build:vagrant">
-        <exec command="v=$(which vagrant); eval &quot;${v} up&quot;" checkreturn="true" passthru="true" level="info" />
+        <exec command="v=$(which vagrant); eval &quot;$v up&quot;" checkreturn="true" passthru="true" level="info" />
     </target>
 
     <!-- ============================================  -->
