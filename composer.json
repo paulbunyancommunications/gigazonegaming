@@ -81,7 +81,7 @@
         "version": "3.0.2",
         "dist": {
           "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.2.zip"
+          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -126,7 +126,22 @@
         "version": "2.0",
         "dist": {
           "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/rest-api.2.0-beta13.1.zip"
+          "url": "https://downloads.wordpress.org/plugin/rest-api.2.0-beta15.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "disqus/disqus-comment-system",
+        "type": "wordpress-plugin",
+        "version": "2.86",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -173,7 +188,8 @@
     "propaganistas/laravel-phone": "^2.8",
     "guzzlehttp/guzzle": "~5.3|~6.0",
     "brandonwamboldt/utilphp": "1.1.*",
-    "league/commonmark": "^0.15.0"
+    "league/commonmark": "^0.15.0",
+    "disqus/disqus-comment-system": "*"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
