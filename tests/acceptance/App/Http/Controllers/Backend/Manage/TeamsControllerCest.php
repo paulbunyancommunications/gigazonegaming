@@ -144,7 +144,7 @@ class TeamsControllerCest extends BaseAcceptance
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
         $I->see('The team ' . $name . ' was added');
 
-
+        $I->amOnPage('/app/manage/team');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'emblem'], $emblem);
         $I->selectOption(['id' => 'tournament_id'], $tournament_id);
