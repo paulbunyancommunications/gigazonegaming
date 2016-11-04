@@ -124,7 +124,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team but not the tournament or the game');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->seeElement('input', ['value' => 'Tester Team']);
+        $I->see( 'Tester Team');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->see('Create a new Team');
@@ -132,7 +132,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
 
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->seeElement('input', ['value' => 'Tester Tournament']);
+        $I->see( 'Tester Tournament');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
         $I->see('Create a new Tournament');
@@ -140,7 +140,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->seeElement('input', ['value' => 'tester-game']);
+        $I->see( 'tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-tester-game').click();", 10);
         $I->see('Create a new Game');
@@ -157,7 +157,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a Tournament cascading to the team but not the game');
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->seeElement('input', ['value' => 'Tester Tournament']);
+        $I->see( 'Tester Tournament');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
         $I->see('Create a new Tournament');
@@ -169,7 +169,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->seeElement('input', ['value' => 'tester-game']);
+        $I->see( 'tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-tester-game').click();", 10);
         $I->see('Create a new Game');
@@ -185,7 +185,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a game cascading to the team and tournament');
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->seeElement('input', ['value' => 'tester-game']);
+        $I->see( 'tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-tester-game').click();", 10);
         $I->see('Create a new Game');
