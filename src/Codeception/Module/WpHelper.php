@@ -30,11 +30,19 @@ class WpHelper extends CodeceptionModule
      */
     public function logIntoWpAdmin($I, $user, $password)
     {
-        $I->amOnPage('/wp/wp-login.php');
-        $I->fillField(['id' => 'user_login'], $user);
-        $I->fillField(['id' => 'user_pass'], $password);
-        $I->click(['id' => 'wp-submit']);
-        $I->waitForText('Dashboard');
+        try {
+            $I->amOnPage('/wp/wp-login.php');
+            $I->fillField(['id' => 'user_login'], $user);
+            $I->fillField(['id' => 'user_pass'], $password);
+            $I->click(['id' => 'wp-submit']);
+            $I->waitForText('Dashboard', 30);
+        } catch (\Exception $e) {
+            $I->comment('First attempt failed to login, try a second time');
+            $I->fillField(['name' => 'log'], $user);
+            $I->fillField(['name' => 'pwd'], $password);
+            $I->click(['name' => 'wp-submit']);
+            $I->waitForText('Dashboard', 30);
+        }
 
     }
 
