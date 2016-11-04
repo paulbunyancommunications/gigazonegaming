@@ -39,7 +39,8 @@ do
 
     echo -e "\033[30;48;5;200m${TAB}Now running ${testSuites[i]} test suite, started at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}"
 
-    vagrant ssh -c "cd /var/www; php codecept.phar run ${testSuites[i]} -v;" > ${log} 2>&1
+    # run tests in the suite and fail fast
+    vagrant ssh -c "cd /var/www; php codecept.phar run ${testSuites[i]} -v -f;" > ${log} 2>&1
 
     took=${SECONDS}
     ((sec=took%60, took/=60, min=took%60, hrs=took/60))
