@@ -27,7 +27,6 @@ build/GIGAZONEGAMING-staging-master.tar.gz
 build/GIGAZONEGAMING-staging-master.zip
 composer.phar
 codecept.phar
-
 tests/_output/*
 _ide_helper.php
 .phpstorm.meta.php

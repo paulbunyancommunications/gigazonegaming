@@ -250,6 +250,8 @@
             <fileset refid="source:project" />
             <fileset refid="source:app_storage" />
         </copy>
+        <!-- Run exclude of packaged files -->
+        <phingcall target="task:package-exclude" />
         <delete>
             <fileset dir="${dir.package}">
                 <include name="*.git"/>
@@ -603,6 +605,14 @@
         <copy file="${build_dir}tests/${dir.reports}test-logs.xml" tofile="${dir.reports}test-logs.xml"
               overwrite="true"/>
         <delete dir="${build_dir}tests/${build_dir}" verbose="true" failonerror="true"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: PHP Unit Cleanup                      -->
+    <!-- ============================================  -->
+    <target name="task:package-exclude">
+        <echo message="Running package exclude" />
+        <exec command="bash ${build_dir}package-exclude.sh '${dir.package}'" checkreturn="true" passthru="true" level="info" />
     </target>
 
 </project>
