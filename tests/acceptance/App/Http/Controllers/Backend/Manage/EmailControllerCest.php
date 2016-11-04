@@ -54,7 +54,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
         $I->click(['id' => 'get_game']);
         $I->see('email sender');
-        $count = $I->waitForJS('return document.getElementById("emailList").value.split(",").length;', 30);
+        $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
@@ -75,7 +75,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
         $I->click(['id' => 'get_tournament']);
         $I->see('email sender');
-        $count = $I->waitForJS('return document.getElementById("emailList").value.split(",").length;',30);
+        $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
@@ -96,7 +96,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
         $I->click(['id' => 'get_team']);
         $I->see('email sender');
-        $count = $I->waitForJS('return document.getElementById("emailList").value.split(",").length;',30);
+        $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
@@ -116,7 +116,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->selectOption(['id' => 'player_sort'], 'Tester Player000');
         $I->click(['id' => 'get_player']);
         $I->see('email sender');
-        $count = $I->waitForJS('return document.getElementById("emailList").value.split(",").length;', 30);
+        $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
