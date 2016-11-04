@@ -14,10 +14,10 @@
         @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
         @if(isset($tournaments) || $tournaments != [])
             @if(isset($theTeam->name))
-                <h1>Update Team: &#8220;{{ $theTeam->name }}&#8221;</h1>
+                <h1 class="txt-color--shadow" id="gaming-page-title">Update Team: &#8220;{{ $theTeam->name }}&#8221;</h1>
                 {{ Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@update', $theTeam->id), 'class' => 'form-horizontal')) }}
             @else
-                <h1>Create a new Team</h1>
+                <h1 class="txt-color--shadow" id="gaming-page-title">Create a new Team</h1>
                 {{  Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@store'), 'class' => 'form-horizontal')) }}
             @endif
             <div class="form-group">

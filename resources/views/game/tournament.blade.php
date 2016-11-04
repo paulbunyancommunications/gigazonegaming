@@ -15,12 +15,12 @@
         @if(isset($games) || $games != [])
             @if(isset($theTournament->name))
                 @php ($pageTitle = $theTournament->name)
-                <h1 class="txt-color--shadow">Edit Tournament</h1>
+                <h1 class="txt-color--shadow" id="gaming-page-title">Edit Tournament</h1>
                 <p class="txt-color--highlight" id="title-game-title">Editing: <span class="strong txt-color--primary-color-dark">&#8220;{{ $pageTitle }}&#8221;</span></p>
                 {{ Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@update', $theTournament->id), 'class' => 'form-horizontal')) }}
             @else
                 @php ($pageTitle = "Create a new Tournament")
-                <h1>{{ $pageTitle }}</h1>
+                <h1 class="txt-color--shadow" id="gaming-page-title">{{ $pageTitle }}</h1>
                 {{  Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@store'), 'class' => 'form-horizontal')) }}
             @endif
 
