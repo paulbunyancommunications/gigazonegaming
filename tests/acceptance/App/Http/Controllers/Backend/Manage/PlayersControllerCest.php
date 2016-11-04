@@ -105,7 +105,7 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAndEditAPlayerByAddingATournament(AcceptanceTester $I)
     {
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
-        $I->click("#player-edit-TheTesterPlayerX");
+        $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $I->selectOption(array("id" => "tournament_id"), 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
@@ -124,7 +124,7 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAndEditAPlayerByAddingATeam(AcceptanceTester $I)
     {
         $I->wantTo('create a player with a team attached which will automatically attach a tournament and a game');
-        $I->click("#player-edit-TheTesterPlayerX");
+        $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $I->selectOption(array("id" => "team_id"), 'Tester Team');
         $I->executeJS("$('#team_id').select2({
@@ -213,7 +213,7 @@ class PlayersControllerCest extends BaseAcceptance
      */
     public function tryToCreateAPlayerWithManyPhoneNumberVariations(AcceptanceTester $I)
     {
-        $I->click("#player-edit-TheTesterPlayerX");
+        $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $phone1 = "(218) - 444 - 4654";
         $phone2 = "+1 - (218) - 444 - 4784";
@@ -283,6 +283,6 @@ class PlayersControllerCest extends BaseAcceptance
      */
     private function playerCreation(AcceptanceTester $I)
     {
-        $I->click("#player-edit-TheTesterPlayerX");
+        $I->click(".edit-form-TheTesterPlayerX");
     }
 }
