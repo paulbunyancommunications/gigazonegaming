@@ -67,12 +67,12 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 
         $I->wantTo('check enable and disable inputs');
         $I->amOnPage('/app/manage/individualPlayer');
-        $name = $I->waitForJS("return $('#name').getAttribute('disabled');", 10);
-        $username = $I->waitForJS("return $('#username').getAttribute('disabled');", 10);
-        $email = $I->waitForJS("return $('#email').getAttribute('disabled');", 10);
-        $phone = $I->waitForJS("return $('#phone').getAttribute('disabled');", 10);
-        $teamName = $I->waitForJS("return $('#team_name').getAttribute('disabled');", 10);
-        $reset = $I->waitForJS("return $('#reset').getAttribute('disabled');", 10);
+        $name = $I->executeJS("return $('#name').attr('disabled');");
+        $username = $I->executeJS("return $('#username').attr('disabled');");
+        $email = $I->executeJS("return $('#email').attr('disabled');");
+        $phone = $I->executeJS("return $('#phone').attr('disabled');");
+        $teamName = $I->executeJS("return $('#team_name').attr('disabled');");
+        $reset = $I->executeJS("return $('#reset').attr('disabled');");
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(true, $game, "Game Sort should be enabled");
         $I->assertSame(false, $tournament, "Tournament Sort should be disabled");
@@ -132,12 +132,11 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->selectOption(['id' => 'game_sort'], 'tester-game');//this will enable users under this game and the tournament select
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');//this will enable the team select
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');//this will pre-select the team
-        $id = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("id")', 30);
-        $name = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_name")', 30);
-        $user = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_user")', 30);
-        $phone = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_phone")', 30);
-        $email = $I->waitForJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_email")', 30);
-
+        $id = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("id")');
+        $name = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_name")');
+        $user = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_user")');
+        $phone = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_phone")');
+        $email = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_email")');
         $I->wait(3);
         $this->CheckIfFieldsAreDisabledAfterTeamSelection($I);
         $I->click( "#".$id);
@@ -168,10 +167,12 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
      */
     private function ICheckFor_EnablesTrue_Or_DisablesFalse(AcceptanceTester $I)
     {
-        $game = $I->waitForJS("return $('#game_sort').getAttribute('disabled');", 10);
-        $tournament = $I->waitForJS("return $('#tournament_sort').getAttribute('disabled');", 10);
-        $team = $I->waitForJS("return $('#team_sort').getAttribute('disabled');", 10);
-        $submit = $I->waitForJS("return $('#submit_button').getAttribute('disabled');", 10);
+        $game = $I->executeJS("return $('#game_sort').attr('disabled');");
+        $tournament = $I->executeJS("return $('#tournament_sort').attr('disabled');");
+        $team = $I->executeJS("return $('#team_sort').attr('disabled');");
+        $submit = $I->executeJS("return $('#submit_button').attr('disabled');");
+        $I->wait(3);
+//        var_dump($game)
         return array($game, $tournament, $team, $submit);
     }
 
