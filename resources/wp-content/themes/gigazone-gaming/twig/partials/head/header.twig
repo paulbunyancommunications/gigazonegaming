@@ -12,6 +12,9 @@
   {% if post is defined %}
     {% include "partials/head/header-open-graph.twig" with {'post':post} %}
   {% endif %}
+  {% if post is defined %}
+    {% include "partials/head/header-twitter-card.twig" with {'post':post} %}
+  {% endif %}
   {% include "partials/head/header-title.twig" %}
   {{ function('wp_head') }}
   {% include "partials/head/google-recaptcha.twig" %}
