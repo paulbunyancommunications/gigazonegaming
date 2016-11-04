@@ -79,13 +79,11 @@ class BaseAcceptance
     protected function loginWithAdminUser(AcceptanceTester $I)
     {
         $this->createWpAdminUser($I);
-        $I->amOnPage('/wp/wp-login.php');
-
-        $I->fillField(['id' => 'user_login'], $this->wpAdminUser['name']);
-        $I->fillField(['id' => 'user_pass'], $this->wpAdminUser['password']);
-
-        $I->click(['id' => 'wp-submit']);
-        $I->see('Dashboard');
+        \Helper\Acceptance::loginToWordpress(
+            $I,
+            $this->wpAdminUser['name'],
+            $this->wpAdminUser['password']
+        );
     }
 
     /**

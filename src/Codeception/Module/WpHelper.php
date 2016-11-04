@@ -12,6 +12,7 @@
 namespace Codeception\Module;
 
 use Codeception\Module as CodeceptionModule;
+use PHPUnit_Framework_AssertionFailedError;
 
 
 /**
@@ -38,6 +39,7 @@ class WpHelper extends CodeceptionModule
             $I->waitForText('Dashboard', 30);
         } catch (\Exception $e) {
             $I->comment('First attempt failed to login, try a second time');
+            $I->amOnPage('/wp/wp-login.php');
             $I->fillField(['name' => 'log'], $user);
             $I->fillField(['name' => 'pwd'], $password);
             $I->click(['name' => 'wp-submit']);
