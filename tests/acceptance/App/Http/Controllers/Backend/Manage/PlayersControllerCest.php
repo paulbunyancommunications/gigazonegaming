@@ -274,7 +274,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
     }
-
     /**
      * @param AcceptanceTester $I
      * @return string
