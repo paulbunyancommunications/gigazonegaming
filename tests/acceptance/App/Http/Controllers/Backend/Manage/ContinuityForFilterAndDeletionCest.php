@@ -63,12 +63,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('click on a team and land on player page with an applied filter');
         $I->waitForJS("return $('.filter-TesterTeam').click();", 10);
 //        $I->click(".filter-TesterTeam");
-        $I->see('Create a new Player');
-        $I->see('The Tester Player000');
-        $I->see('The Tester Player001');
-        $I->see('The Tester Player002');
-        $I->see('The Tester Player003');
-        $I->see('The Tester Player004');
+        $I->waitForText('Create a new Player', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player000', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player001', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player002', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player003', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player004', BaseAcceptance::TEXT_WAIT_TIMEOUT);
     }
     /**
      * @param AcceptanceTester $I
