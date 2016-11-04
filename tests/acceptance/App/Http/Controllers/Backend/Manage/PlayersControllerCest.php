@@ -86,7 +86,7 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a player with no team, no tournament but a game attached');
 
-        $I->click("#player-edit-TheTesterPlayerX");
+        $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({

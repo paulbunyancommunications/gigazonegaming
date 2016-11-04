@@ -21,10 +21,10 @@
 @if($player!=[] and isset($player["id"]) and $player["id"]!='')
     <tr>
         <td class="text-left">
-            {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["name"], array('id'=>$player["id"]), array('id'=>'edit-'.str_replace(' ', '', $player['id']), 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['name'])) }}
+            {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["name"], array('id'=>$player["id"]), array('id'=>'edit-'.$player['id'], 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['name'])) }}
         </td>
         <td class="text-left">
-            {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["username"], array('id'=>$player["id"]), array('id'=>'edit-'.str_replace(' ', '', $player['id']), 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['username'])) }}
+            {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["username"], array('id'=>$player["id"]), array('id'=>'edit-'. $player['id'].'-a', 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['username'])) }}
         </td>
         <td>
 
@@ -32,21 +32,21 @@
                 {{
                    Form::button(
                        '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',
-                       array('type' => 'button', 'id' => 'submit-toForm-edit-'.$player["id"], 'class'=>'btn btn-primary toForm','title'=>"Edit tournament ".$player['username'])
+                       array('type' => 'button', 'id' => 'submit-toForm-edit-'.$player["id"], 'class'=>'btn btn-primary toForm edit-form-'.str_replace(' ', '', $player['username']),'title'=>"Edit tournament ".$player['username'])
                    )
                }}
 
                 {{
                    Form::button(
                        '<i class="fa fa-print" aria-hidden="true"></i>',
-                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$player["id"], 'class'=>'btn btn-primary btn-gz toForm','title'=>"Edit tournament ".$player['username'])
+                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$player["id"], 'class'=>'btn btn-primary btn-gz toForm print-form-'.str_replace(' ', '', $player['username']),'title'=>"Edit tournament ".$player['username'])
                    )
                 }}
 
                 {{
                     Form::button(
                         '<i class="fa fa-trash-o" aria-hidden="true"></i>',
-                        array('type' => 'button', 'id' => 'submit-toForm-delete-'.$player["id"], 'class'=>'btn btn-danger toForm','title'=>"Delete tournament ".$player['username'])
+                        array('type' => 'button', 'id' => 'submit-toForm-delete-'.$player["id"], 'class'=>'btn btn-danger toForm delete-form-'.str_replace(' ', '', $player['username']),'title'=>"Delete tournament ".$player['username'])
                     )
                 }}
             </div>
