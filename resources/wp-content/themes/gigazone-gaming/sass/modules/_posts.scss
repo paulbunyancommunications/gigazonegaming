@@ -156,7 +156,7 @@
   }
 
   &-content {
-    @include padding(0,0,0,1);
+    @include padding(0,0,0,0);
     @include margin-bottom(2);
     @include margin-top(-0.125);
 
