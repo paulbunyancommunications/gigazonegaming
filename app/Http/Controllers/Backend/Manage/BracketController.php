@@ -21,6 +21,7 @@ class BracketController extends Controller
      */
     public function index()
     {
-        return View::make('game/bracket');
+        $tournament = Tournament::all()->toArray();
+        return View::make('game/bracket')->withTournaments($tournament);
     }
 }

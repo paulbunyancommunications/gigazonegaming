@@ -42,7 +42,7 @@ class PlayersControllerCest extends BaseAcceptance
         $this->logoutOfWp($I);
         parent::_after($I);
     }
-    
+
     /**
      * @param AcceptanceTester $I
      * Get to the player management page and check for the max_playerss

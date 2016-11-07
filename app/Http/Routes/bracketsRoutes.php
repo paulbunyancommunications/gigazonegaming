@@ -8,5 +8,5 @@
 
 
 Route::group(['middleware' => ['WPAdmin']], function () {
-    Route::get('/manage/bracket/', ['as' => 'manage.game.bracket', 'uses' => 'Backend\Manage\BracketController@index']);
+    Route::get('/manage/scoreboard/', ['as' => 'manage.game.bracket', 'uses' => 'Backend\Manage\BracketController@index']);
 });
