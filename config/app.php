@@ -149,6 +149,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
+         * Helper service provider.
+         */
+        App\Providers\HelperServiceProvider::class,
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -187,6 +192,9 @@ return [
 
         //phone validator
         Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+
+        // search view composer for backend manager search view
+        App\Providers\Backend\Manage\SearchViewComposer::class,
 
     ],
 
