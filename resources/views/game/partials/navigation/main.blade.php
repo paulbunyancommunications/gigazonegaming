@@ -52,16 +52,19 @@
             {{ Form::close() }}--}}
 
             <form class="navbar-form page-text-search" role="search" id="searchbox" action="">
+                {{ csrf_field() }}
                 <div class="input-group">
-                    <input id="searchText" class="form-control" type="text" placeholder="Search" disabled>
+                    <input id="searchText" class="form-control" type="text" placeholder="Search" name="search">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit" disabled><i class="fa fa-search" aria-hidden="true"></i>
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
             </form>
+
         </div>
 
     </div><!-- /.navbar-collapse -->
     {{--</div><!-- /.container-fluid -->--}}
+    @include('game.partials.search')
 </nav>
