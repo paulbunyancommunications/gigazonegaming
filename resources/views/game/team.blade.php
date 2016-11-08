@@ -138,8 +138,6 @@
     </div>
     <div class="col-xs-12">
         <h2>Team List</h2>
-        {{--<div class="form-group"><br/>--}}
-            {{--<ul id="listOfTeams" class="listing">--}}
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
@@ -170,9 +168,8 @@
                         @endif
                     @endforeach
                 @endif
-            </tbody>
+        </tbody>
         </table>
-            </ul>
 
             @else
                 <h1>Sorry, no tournaments where found on the database!, please create a tournament before proceding

@@ -229,23 +229,34 @@
             {{ Form::close() }}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12">
         <h2>Player List</h2>
-        <div class="form-group"><br/>
-            <ul id="listOfPlayers" class="listing">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th class="col-md-4 text-center">Name</th>
+                <th class="col-md-4 text-center">Username</th>
+                <th class="col-md-4 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
                 @if(!isset($players_filter))
                     @if(!isset($players) || $players == [])
-                        <li>There are no Players yet</li>
+                        <tr>
+                            <td colspan="4"><div class="alert alert-info">There are no Players yet.</div></td>
+                        </tr>
                     @else
                         @include('game.partials.player_displayer', ['play'=> $players])
                     @endif
                 @elseif($players_filter == [] or $players_filter == [ ])
-                    <li>There are no results with the selected filter.</li>
+                    <tr>
+                        <td colspan="4"><div class="alert alert-info">There are no results with the selected filter.</div></td>
+                    </tr>
                 @else
-                    <li>Filtered results:</li>
                     @include('game.partials.player_displayer', ['play'=> $players_filter])
                 @endif
-            </ul>
+            </tbody>
+        </table>
 
             @else
                 <h1>Sorry, no players where found on the database!, please create a player before proceding with a
