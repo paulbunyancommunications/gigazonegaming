@@ -37,6 +37,7 @@ class EmailController extends Controller
         $ids = '';
         $emailsUserRequest = '';
         $relations = '';
+//        var_dump("here");
         list($separator, $game, $tournament, $team, $player) = $this->cleanPostToGetEmails($_POST); //clean all the emails
         if (isset($_POST["get_game"]) and $game) { //if user want to get all players on a game
             $theGame = Game::where('id', '=', $game)->first();
@@ -52,12 +53,12 @@ class EmailController extends Controller
             list($ids,$name)  = $this->getEmail($relations, $separator);
         } elseif (isset($_POST["get_player"]) and $player) {//else if user want to get just one player
             $player = Player::where('id', '=', $player)->first();
-            $this->returnErrorsIfNull($player, $_POST);
+            $relations = $this->returnErrorsIfNull($player, $_POST);
             $name = $player->name;
             $ids = $player->id;
         }
         if($game or $tournament or $team or $player) { //if we see at least one player selected we can send an email otherwise return an error
-            return View::make('game.emailForm')->with('sorts', $_POST)->with('names_get', $name)->with('ids_get', $ids);
+            return View::make('game.emailForm')->with('names_get', $name)->with('ids_get', $ids);
         }else{
             return Redirect::back()
                 ->with('error', 'Select a game, tournament, team or player.')
@@ -93,7 +94,7 @@ class EmailController extends Controller
                 }
                 return redirect('/manage/email/')->with('success', "The email has being sent to ". $sent.' recipient'. ($sent > 1 ? 's' : null) .'!');
             } else {
-                return View::make('game.emailform')
+                return View::make('game.emailForm')
                     ->with('error', $errors)
                     ->with('names_get', $_POST['emails'])
                     ->with('user_subject', $_POST['subject'])
@@ -103,7 +104,7 @@ class EmailController extends Controller
         }elseif(isset($_POST["preview"]) and $_POST["preview"] == "Preview Email") {
             $converter = new CommonMarkConverter();
             $message = $converter->convertToHtml($message);
-            return View::make('game.emailform')
+            return View::make('game.emailForm')
                 ->with('error', $errors)
                 ->with('names_get', $_POST['emails'])
                 ->with('user_subject', $_POST['subject'])
@@ -124,10 +125,14 @@ class EmailController extends Controller
             $e = Player::where('id', '=', $player['player_id'])->first();
             if ($e != null) {
                 $ids .= $e->id . $separator;
+                if($e->username!=''){
                 $username .= $e->username . $separator;
+                } elseif ($e->name!=''){
+                    $username .= $e->name . $separator;
+                }
             }
         }
-        return array(trim(trim(trim(trim($ids, $separator), ']')), '['),trim(trim(trim(trim($username, $separator), ']'), '[')));
+        return array(trim(trim(trim(trim(trim($ids, $separator), ']'), '['), $separator)),trim(trim(trim(trim(trim($username, $separator), ']'), '['), $separator)));
     }
 
     /**
