@@ -58,7 +58,7 @@
             {{ Html::linkAction('Backend\Manage\PlayersController@edit', 'Edit', array('id'=>$player["id"]), array('id'=>'submit-toForm-edit-form-'.$player['id'], 'class' => 'btn btn-default hidden', 'title'=>"Edit tournament ".$player['username'])) }}
 
             {{--Load printable view--}}
-{{--            {{ Html::linkAction('Backend\Manage\PlayersController@printPlayer', 'Edit', array('id'=>$player["id"]), array('id'=>'submit-toForm-print-form-'.$player['id'], 'class' => 'btn btn-default hidden', 'title'=>"Print tournament details for ".$player['username'])) }}--}}
+            {{ Html::linkAction('Api\Championship\PrintingController@printPlayer', 'Edit', array('id'=>$player["id"]), array('id'=>'submit-toForm-print-form-'.$player['id'], 'class' => 'btn btn-default hidden', 'title'=>"Print tournament details for ".$player['username'])) }}
 
 
             {{ Form::open(array(

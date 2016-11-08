@@ -50,7 +50,7 @@
             {{ Html::linkAction('Backend\Manage\TeamsController@edit', 'Edit', array('team_id'=>$team["team_id"]), array('id'=>'submit-toForm-edit-form-'.$team['team_id'], 'class' => 'btn btn-default hidden', 'title'=>"Edit team ".$team['team_name'])) }}
 
             {{--Load printable view--}}
-{{--            {{ Html::linkAction('Backend\Manage\TeamsController@printTeam', 'Edit', array('team_id'=>$team["team_id"]), array('id'=>'submit-toForm-print-form-'.$team['team_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print team details for ".$team['team_name'])) }}--}}
+            {{ Html::linkAction('Api\Championship\PrintingController@printTeam', 'Edit', array('team_id'=>$team["team_id"]), array('id'=>'submit-toForm-print-form-'.$team['team_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print team details for ".$team['team_name'])) }}
 
             {{ Form::open(array('id' => "submit-toForm-filter-form-".$team["team_id"], 'action' => array('Backend\Manage\PlayersController@filter'), 'class' => "toForms")) }}
             <input name="_method" type="hidden" value="POST">

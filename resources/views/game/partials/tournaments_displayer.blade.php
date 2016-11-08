@@ -46,7 +46,7 @@
             {{ Html::linkAction('Backend\Manage\TournamentsController@edit', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('id'=>'submit-toForm-edit-form-'.$tournament['tournament_id'], 'class' => 'btn btn-default hidden', 'title'=>"Edit tournament ".$tournament['tournament_name'])) }}
 
             {{--Load printable view--}}
-            {{ Html::linkAction('Backend\Manage\TournamentsController@printTournament', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('id'=>'submit-toForm-print-form-'.$tournament['tournament_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print tournament details for ".$tournament['tournament_name'])) }}
+            {{ Html::linkAction('Api\Championship\PrintingController@printTournament', 'Edit', array('tournament_id'=>$tournament["tournament_id"]), array('id'=>'submit-toForm-print-form-'.$tournament['tournament_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print tournament details for ".$tournament['tournament_name'])) }}
 
             {{ Form::open(array('id' => "submit-toForm-filter-form-".$tournament["tournament_id"], 'action' => array('Backend\Manage\TeamsController@filter'), 'class' => "toForms")) }}
                 <input name="_method" type="hidden" value="POST">

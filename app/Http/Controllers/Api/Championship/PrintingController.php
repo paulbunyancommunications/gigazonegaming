@@ -46,11 +46,33 @@ class PrintingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private function returnPrintable($keys)
+    public function printTournament(Tournament $tournament)
     {
-//        $playerList = PlayerRelationable::playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($keys);
-//        $playerList = PlayerRelationable::getPlayersInfoBy($keys);
-//        return $playerList;
+        $playerList = $tournament->getPlayersInfoBy(['tournament'=>$tournament->id, 'order_by'=>'player_username']);
+        return View::make('game.print')->with('playerList', $playerList);
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printTeam(Team $team)
+    {
+        $playerList = $team->getPlayersInfoBy(['team'=>$team->id, 'order_by'=>'player_username']);
+        return View::make('game.print')->with('playerList', $playerList);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printPlayer(Player $player)
+    {
+//        $playerList = $player->getPlayersInfoBy(['player'=>$player->id]);
+        $playerList = $player->getPlayersInfoBy(['player'=>$player->id, 'order_by'=>'player_username']);
+        dd($playerList);
+        return View::make('game.print')->with('playerList', $playerList);
+    }
+
 
 }
