@@ -234,9 +234,10 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th class="col-md-4 text-center">Name</th>
-                <th class="col-md-4 text-center">Username</th>
-                <th class="col-md-4 text-center">Actions</th>
+                <th class="col-md-3 text-center">Name</th>
+                <th class="col-md-3 text-center">Username</th>
+                <th class="col-md-3 text-center">email</th>
+                <th class="col-md-3 text-center">Actions</th>
             </tr>
             </thead>
             <tbody>
