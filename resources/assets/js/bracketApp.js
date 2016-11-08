@@ -115,40 +115,48 @@ $(document).ready(function() {
                 alert(tournaments);
                 alert(this.tournamentIDForm);
                 alert(this.tournamentSelect.text);
-                $.ajax({
-                    type: "POST",
-                    dataType : 'json',
-                    async: false,
-                    url: '/app/json/myFile.json',
-                    data: { data: JSON.stringify(btoa(this.playerArray)) },
-                    failure: function() {alert("Error Tournament not saved!");}
-                })
 
             },
             tournamentPicked: function () {
                 var encodedString = btoa(this.playerArray);
             },
             saveIntoJson: function () {
-                var encodedString = btoa(this.playerArray);
+                var theCodesJson = [];
+
                 $.ajax({
-                    type: "POST",
-                    dataType : 'json',
+                    type: 'POST',
+                    url: 'thePost/theStreetsJson.php',
                     async: false,
-                    url: '/app/json/myFile.json',
-                    data: { data: JSON.stringify(btoa(this.playerArray)) },
-                    failure: function() {alert("Error Tournament not saved!");}
-                })
+                    beforeSend: function (xhr) {
+                        if (xhr && xhr.overrideMimeType) {
+                            xhr.overrideMimeType('application/json;charset=utf-8');
+                        }
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        theStreetsJson = data;
+
+                    }
+                });
             },
             loadJson: function () {
-                var encodedString = btoa(this.playerArray);
+                var theCodesJson = [];
+
                 $.ajax({
-                    type: "GET",
-                    dataType : 'json',
+                    type: 'GET',
+                    url: 'thePost/theStreetsJson.php',
                     async: false,
-                    url: '/app/json/myFile.json',
-                    data: { data: JSON.stringify(btoa(this.playerArray)) },
-                    failure: function() {alert("Error Tournament not saved!");}
-                })
+                    beforeSend: function (xhr) {
+                        if (xhr && xhr.overrideMimeType) {
+                            xhr.overrideMimeType('application/json;charset=utf-8');
+                        }
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        theStreetsJson = data;
+
+                    }
+                });
             }
 
 

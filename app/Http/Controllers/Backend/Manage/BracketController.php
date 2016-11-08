@@ -24,4 +24,39 @@ class BracketController extends Controller
         $tournament = Tournament::all()->toArray();
         return View::make('game/bracket')->withTournaments($tournament);
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTournaments()
+    {
+//        $tournament = Tournament::all()->toArray();
+//
+//        return response()
+//            ->json();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTournament()
+    {
+//        $tournament = Tournament::all()->toArray();
+//
+//        return response()
+//            ->json();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function save()
+    {
+
+//        return response()
+//            ->json();
+    }
 }

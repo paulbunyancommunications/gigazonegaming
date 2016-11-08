@@ -9,4 +9,7 @@
 
 Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/manage/scoreboard/', ['as' => 'manage.game.bracket', 'uses' => 'Backend\Manage\BracketController@index']);
+    Route::get('/manage/scoreboard/getTournament', ['as' => 'manage.game.bracket.t', 'uses' => 'Backend\Manage\BracketController@getTournament']);
+    Route::get('/manage/scoreboard/getTournaments', ['as' => 'manage.game.bracket.ts', 'uses' => 'Backend\Manage\BracketController@getTournaments']);
+    Route::post('/manage/scoreboard/save', ['as' => 'manage.game.bracket.s', 'uses' => 'Backend\Manage\BracketController@save']);
 });
