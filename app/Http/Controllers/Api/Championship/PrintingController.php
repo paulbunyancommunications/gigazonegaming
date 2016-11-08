@@ -37,7 +37,8 @@ class PrintingController extends Controller
      */
     public function printGame(Game $game)
     {
-        $this->returnPrintable(['game'=>$game->id]);
+        $playerList = $game->getPlayersInfoBy(['game'=>$game->id, 'order_by'=>'player_username']);
+        return View::make('game.print')->with('playerList', $playerList);
     }
 
     /**
@@ -47,11 +48,9 @@ class PrintingController extends Controller
      */
     private function returnPrintable($keys)
     {
-//        dd($keys);
-        $players = new Player();
-        $playerList = PlayerRelationable::playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($keys);
-
-        return View::make('game.print');
+//        $playerList = PlayerRelationable::playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($keys);
+//        $playerList = PlayerRelationable::getPlayersInfoBy($keys);
+//        return $playerList;
     }
 
 }
