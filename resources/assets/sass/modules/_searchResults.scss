@@ -1,0 +1,16 @@
+.searchResults {
+
+
+  & .well {
+    @include border-radius(10px);
+  }
+
+  ul {
+    padding-left: 0;
+  }
+
+  li {
+    margin-left: 0;
+  }
+
+}

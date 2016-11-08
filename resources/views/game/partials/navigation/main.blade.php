@@ -50,21 +50,26 @@
                 <input name="_method" type="hidden" value="POST">
                 <input name="tournament_sort" type="hidden" value="{{$tournament["tournament_id"]}}">
             {{ Form::close() }}--}}
+            <div id="searchBar">
+            {{  Form::open(array('method' => 'POST','id' => "searchbox", 'action' => array('Backend\Manage\SearchController@doSearch'), 'class' => 'navbar-form page-text-search doAjaxForm doForm', 'role' => 'search')) }}
 
-            <form class="navbar-form page-text-search" role="search" id="searchbox" action="">
-                {{ csrf_field() }}
                 <div class="input-group">
+                    {{ Form::input('search','search',null, ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'searchText'])  }}
+{{--
                     <input id="searchText" class="form-control" type="text" placeholder="Search" name="search">
+--}}
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
+                        <button class="btn btn-default" type="submit" id="doSearchBoxSubmit"><i class="fa fa-search" aria-hidden="true"></i>
+                            <span style="display: none" class="progress-container"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i></span>
                         </button>
                     </div>
                 </div>
-            </form>
-
+            <div class="message-container"></div>
+            {{ Form::close() }}
+            </div>
         </div>
-
     </div><!-- /.navbar-collapse -->
+    <div class="searchResults" id="searchResults">@include('game.partials.search')</div>
+
     {{--</div><!-- /.container-fluid -->--}}
-    @include('game.partials.search')
 </nav>

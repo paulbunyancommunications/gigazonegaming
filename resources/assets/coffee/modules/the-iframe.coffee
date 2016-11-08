@@ -2,6 +2,7 @@ define ['jquery'], ($) ->
   theIframe = {}
 
   theIframe.init = ->
+    console.log($('#page-content').height());
     $('#theIframe', window.parent.document)
       .height(Math.floor($('#page-content').height() * 1.0375))
       .css({

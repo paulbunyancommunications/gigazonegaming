@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests;
 
 /**
@@ -15,8 +15,17 @@ use App\Http\Requests;
  */
 class SearchController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function doSearch(Request $request)
     {
-        return View::make('game.partials.search');
+        if($request->ajax()) {
+            $response = new \stdClass();
+            $response->result = \View::make('game.partials.search')->render();
+            return \Response::json($response);
+        }
+        return \View::make('game.partials.search');
     }
 }
