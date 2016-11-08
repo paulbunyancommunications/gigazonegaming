@@ -136,28 +136,42 @@
             {{ Form::close() }}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12">
         <h2>Team List</h2>
-        <div class="form-group"><br/>
-            <ul id="listOfTeams" class="listing">
+        {{--<div class="form-group"><br/>--}}
+            {{--<ul id="listOfTeams" class="listing">--}}
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th class="col-md-3 text-center">Team</th>
+                <th class="col-md-2 text-center">Players in team/Max Players Per Team</th>
+                <th class="col-md-7 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
                 @if(!isset($teams_filter))
                     @if(!isset($teams) || $teams == [])
-                        <li>There are no Teams yet</li>
+                        <tr>
+                            <td colspan="3"><div class="alert alert-info">There are no Teams yet.</div></td>
+                        </tr>
                     @else
                         @foreach($teams as $id => $team)
                             @include('game.partials.teams_displayer')
                         @endforeach
                     @endif
                 @elseif($teams_filter == [] or $teams_filter == [ ])
-                    <li>There are no results with the selected filter.</li>
+                    <tr>
+                        <td colspan="3"><div class="alert alert-info">There are no results with the selected filter.</div></td>
+                    </tr>
                 @else
-                    <li>Filtered results:</li>
                     @foreach($teams_filter as $id => $team)
                         @if(isset($team['team_id']) and $team['team_id']!=null and $team['team_id']>0)
                             @include('game.partials.teams_displayer')
                         @endif
                     @endforeach
                 @endif
+            </tbody>
+        </table>
             </ul>
 
             @else
