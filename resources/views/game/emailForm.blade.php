@@ -112,8 +112,7 @@
             </div>
             <div class="form-group">
                 <div class="col-xs-6 col-md-3 col-md-offset-3">
-                    {{ Html::link('/manage/email',
-                                '<- Go back', array( 'class' => 'btn btn-default form-control')) }}
+                    {{ Html::link('/manage/email', '<- Go back', array( 'class' => 'btn btn-default form-control')) }}
                 </div>
                 <div class="col-xs-6 col-md-3">
                     {!! Form::submit( 'Send Email', array('class'=>'btn btn-danger list fa fa-search form-control', 'name'=>'send', 'id'=>'send')) !!}
