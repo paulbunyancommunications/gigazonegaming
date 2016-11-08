@@ -195,6 +195,9 @@ return [
 
         // search view composer for backend manager search view
         App\Providers\Backend\Manage\SearchViewComposer::class,
+        // and provider for championship search
+        App\Providers\Backend\Manage\ChampionshipSearchServiceProvider::class
+
 
     ],
 
@@ -259,6 +262,9 @@ return [
 
         // Form Mail helper facade
         'FormMailHelper' => \Pbc\FormMail\Facades\FormMailHelper::class,
+
+        // Championship Search facade
+        'ChampionshipSearch' => \App\Facades\Backend\Manage\ChampionshipSearch::class
     ],
 
 ];
