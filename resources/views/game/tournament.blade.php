@@ -119,9 +119,9 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th class="col-md-3 text-center">Tournament</th>
+                        <th class="col-md-6 text-center">Tournament</th>
                         <th class="col-md-2 text-center">Max Players Per Team</th>
-                        <th class="col-md-7 text-center">Actions</th>
+                        <th class="col-md-4 text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
