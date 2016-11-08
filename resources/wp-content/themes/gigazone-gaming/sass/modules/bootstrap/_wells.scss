@@ -26,3 +26,23 @@
   text-decoration: none;
   @include border-radius(20px);
 }
+
+
+.well-dark {
+  @extend .bg-color--dark;
+
+  h1, h2, h3, h4, h5, h6, p, li, .close {
+    @extend .txt-color--light;
+  }
+
+  a, .btn-link {
+    @extend .txt-color--branding;
+    &:visited {
+      @extend .txt-color--branding;
+    }
+
+    &:hover, &:active {
+      @extend .txt-color--highlight;
+    }
+  }
+}

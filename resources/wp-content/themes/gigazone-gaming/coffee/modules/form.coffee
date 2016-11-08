@@ -47,6 +47,20 @@ define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
     method = thisForm.attr('method').toUpperCase()
     progress = thisForm.find('.progress-container')
 
+    # make sure the form has an id
+    if !thisForm.attr('id')
+      thisForm.attr('id', Utility.makeid)
+
+    formId = thisForm.attr('id')
+
+    # check and see if there's already a container to hold the raw response
+    if $('#' + formId + '-response-container').length
+      $('#' + formId + '-response-container').html('')
+    else
+      $('body').append('<div id="' + formId + '-response-container" style="display: none"></div>')
+
+    formIdResponseContainer = $('#' + formId + '-response-container')
+
     # initial state of form notification
     progress.show()
     message.html('').hide()
@@ -62,6 +76,7 @@ define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
       method: method
       dataType: "JSON"
       success: (data)->
+        formIdResponseContainer.text(window.JSON.stringify(data))
         progress.hide()
         for messageKey in form.messageKeys
           if data.hasOwnProperty(messageKey)
