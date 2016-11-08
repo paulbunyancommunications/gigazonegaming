@@ -45,7 +45,7 @@
     }
 @endsection
 @section('content')
-    <a href="#" id="create_link"><i class="fa fa-cloud-download" aria-hidden="true"></i> Create csv.</a>
+    <a href="#" id="create_link" class="not_printable"><i class="fa fa-cloud-download" aria-hidden="true"></i> Create csv.</a>
 <table  id="print_table">
     <thead>
     <tr>
