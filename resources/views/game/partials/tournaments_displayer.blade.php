@@ -23,7 +23,7 @@
                 {{
                    Form::button(
                        '<i class="fa fa-print" aria-hidden="true"></i>',
-                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$tournament["tournament_id"], 'class'=>'btn btn-primary btn-gz toForm','title'=>"Edit tournament ".$tournament['tournament_name'])
+                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$tournament["tournament_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $game['tournament_name']),'title'=>"Edit tournament ".$tournament['tournament_name'])
                    )
                 }}
 

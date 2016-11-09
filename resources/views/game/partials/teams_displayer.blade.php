@@ -22,7 +22,7 @@
                 {{
                    Form::button(
                        '<i class="fa fa-print" aria-hidden="true"></i>',
-                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$team["team_id"], 'class'=>'btn btn-primary btn-gz toForm','title'=>"Edit team ".$team['team_name'])
+                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$team["team_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $game['team_name']),'title'=>"Edit team ".$team['team_name'])
                    )
                 }}
                 {{

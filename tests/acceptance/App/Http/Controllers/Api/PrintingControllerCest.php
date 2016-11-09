@@ -49,6 +49,9 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
      */
     public function checkIfGameWorksCorrectly(AcceptanceTester $I)
     {
-
+        $I->wantTo('go to the game controller and try to print one of the elements and see if the response is correct');
+        $I->amOnPage('/app/manage/game');
+        $I->see('Create a new game');
+        $I->click();
     }
 }
