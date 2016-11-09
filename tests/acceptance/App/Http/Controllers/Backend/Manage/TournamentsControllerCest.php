@@ -186,7 +186,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->waitForJS('return $("#submit").click();', 10);
+        $I->waitForJS('return document.getElementById("submit").click();', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->see('The name has already been taken');
     }
 
