@@ -45,7 +45,9 @@
     }
 @endsection
 @section('content')
-    <a href="#" id="create_link" class="not_printable"><i class="fa fa-cloud-download" aria-hidden="true"></i> Create csv.</a>
+    <a href="#" onclick="window.print(); return false;" class="not_printable"><i class="fa fa-print" aria-hidden="true"></i>Print</a>
+    <a href="#" id="create_link" class="not_printable"><i class="fa fa-cloud-download btn" aria-hidden="true"></i> Download all rows into csv.</a>
+    <a href="#" id="selected_rows" class="not_printable"><i class="fa fa-cloud-download btn" aria-hidden="true"></i> Download selected rows into csv.</a>
 <table  id="print_table">
     <thead>
     <tr>
@@ -84,6 +86,14 @@
 @endforeach
     </tbody>
 </table>
+    <input type="hidden" id="for0">
+    <input type="hidden" id="for1">
+    <input type="hidden" id="for2">
+    <input type="hidden" id="for3">
+    <input type="hidden" id="for4">
+    <input type="hidden" id="for5">
+    <input type="hidden" id="for6">
+    <input type="hidden" id="for7">
 @endsection
 @section('js')
     var csvContent = "Username, Name, Email, Phone, Captain, Team, Tournament, Game, \n @foreach($playerList as $player){{$player['player_username']}}, {{$player['player_name']}}, {{$player['player_email']}}, {{$player['player_phone']}}, @if($player['player_id'] == $player['team_captain']) Yes @else No @endif, {{$player['team_name']}}, {{$player['tournament_name']}}, {{$player['game_title']}}, \n @endforeach";
