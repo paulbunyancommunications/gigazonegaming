@@ -17,6 +17,7 @@
     tr:nth-child(odd) {background: #FFF}
     .black{
         background-color:#000!important;
+        color:white;
     }
     th:hover{
         color:#e29e3a;
