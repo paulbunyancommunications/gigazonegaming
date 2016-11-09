@@ -70,7 +70,9 @@ class BaseAcceptance
      */
     protected function createWpAdminUser(AcceptanceTester $I)
     {
-        $I->runShellCommand('php artisan db:seed --class=WpTestAdminUserSeed');
+        //todo I changed this to check if it will run this time but we can remove the line if test doesnt pass and comment out the old one.
+        exec('php artisan db:seed --class=WpTestAdminUserSeed');
+//        $I->runShellCommand('php artisan db:seed --class=WpTestAdminUserSeed');
     }
 
     /**
