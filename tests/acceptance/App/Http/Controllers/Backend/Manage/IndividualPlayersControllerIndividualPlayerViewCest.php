@@ -67,6 +67,12 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 
         $I->wantTo('check enable and disable inputs');
         $I->amOnPage('/app/manage/individualPlayer');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $name = $I->executeJS("return $('#name').attr('disabled');");
         $username = $I->executeJS("return $('#username').attr('disabled');");
         $email = $I->executeJS("return $('#email').attr('disabled');");
@@ -98,6 +104,12 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $i = 0;
         $I->wantTo('check enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame('disabled', $tournament, "Tournament Sort should be disabled");
@@ -136,6 +148,12 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
     {
         $I->wantTo('check if enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->selectOption(['id' => 'game_sort'], 'tester-game');//this will enable users under this game and the tournament select
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');//this will enable the team select
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');//this will pre-select the team

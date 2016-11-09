@@ -52,6 +52,16 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
         $I->wantTo('go to the game controller and try to print one of the elements and see if the response is correct');
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new game');
-        $I->click();
+//        $I->click();
+    }
+
+
+    private function checkJquery(AcceptanceTester $I){
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
     }
 }

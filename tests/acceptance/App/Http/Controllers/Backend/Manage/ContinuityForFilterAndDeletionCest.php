@@ -50,6 +50,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('click on a game and land on tournament page with an applied filter');
         $I->amOnPage('/app/manage/game');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new game');
         $I->waitForJS("return $('.filter-tester-game').click();", 10);
 //        $I->click(".filter-tester-game");
@@ -78,12 +84,24 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('delete a team but not the players');
         $I->amOnPage('/app/manage/team');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Team');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
 //        $I->click(".delete_soft-form-TesterTeam");
         $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Player');
         $I->see('The Tester Player000');
         $I->see('The Tester Player001');
@@ -101,12 +119,24 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('delete a team and the players');
         $I->amOnPage('/app/manage/team');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Team');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete_hard-form-TesterTeam').click();", 10);
         $I->waitForText('Create a new Team', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Player');
         $I->dontSee('The Tester Player000');
         $I->dontSee('The Tester Player001');
@@ -123,6 +153,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('delete a team but not the tournament or the game');
         $I->amOnPage('/app/manage/team');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Team');
         $I->see( 'Tester Team');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
@@ -131,6 +167,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->dontSeeLink('Tester Team');
 
         $I->amOnPage('/app/manage/tournament');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Tournament');
         $I->see( 'Tester Tournament');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
@@ -139,6 +181,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->dontSeeLink('Tester Tournament');
 
         $I->amOnPage('/app/manage/game');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Game');
         $I->see( 'tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
@@ -156,18 +204,35 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('delete a Tournament cascading to the team but not the game');
         $I->amOnPage('/app/manage/tournament');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Tournament', ['id' => 'gaming-page-title']);
         $I->see('Tester Tournament');
-        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
         $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
         $I->waitForText('Create a new Tournament', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
 
         $I->amOnPage('/app/manage/team');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Team');
         $I->dontSeeElement('input', ['value' => 'Tester Team']);
 
         $I->amOnPage('/app/manage/game');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Game');
         $I->see( 'tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
@@ -184,6 +249,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('delete a game cascading to the team and tournament');
         $I->amOnPage('/app/manage/game');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Create a new Game');
         $I->see( 'tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);

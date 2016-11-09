@@ -48,6 +48,12 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForGameWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->wantTo('click on a game and see all the email addresses attached');
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
@@ -63,6 +69,12 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForTournamentWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->wantTo('click on a tournament and see all the email addresses attached');
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
@@ -78,6 +90,12 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForTeamWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->wantTo('click on a team and see all the email addresses attached');
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
@@ -93,6 +111,12 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForPlayerWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->wantTo('click on a player and see the email addresses attached');
         $I->selectOption(['id' => 'player_sort'],  'Tester Player000');

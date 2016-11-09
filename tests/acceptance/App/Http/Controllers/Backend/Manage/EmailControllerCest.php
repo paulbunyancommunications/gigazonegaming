@@ -50,6 +50,12 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a game list we get back the correct message');
         $I->amOnPage('app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
         $I->click(['id' => 'get_game']);
@@ -71,6 +77,12 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a tournament list we get back the correct message');
         $I->amOnPage('app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
         $I->click(['id' => 'get_tournament']);
@@ -92,6 +104,12 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a team list we get back the correct message');
         $I->amOnPage('app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
         $I->click(['id' => 'get_team']);
@@ -112,6 +130,12 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a player we get back the correct message');
         $I->amOnPage('app/manage/email');
+        $I->waitForJS('if(!window.jQuery){'.
+            'var script = document.createElement("script");'.
+            'script.type = "text/javascript";'.
+            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
+            'document.getElementsByTagName("head")[0].appendChild(script);'.
+            'return true;};', 120);
         $I->see('Email Filter');
         $I->selectOption(['id' => 'player_sort'], 'Tester Player000');
         $I->click(['id' => 'get_player']);
