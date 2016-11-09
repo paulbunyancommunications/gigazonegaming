@@ -46,9 +46,9 @@
     }
 @endsection
 @section('content')
-    <a href="#" onclick="window.print(); return false;" class="not_printable"><i class="fa fa-print" aria-hidden="true"></i>Print</a>
-    <a href="#" id="create_link" class="not_printable"><i class="fa fa-cloud-download btn" aria-hidden="true"></i> Download all rows into csv.</a>
-    <a href="#" id="selected_rows" class="not_printable"><i class="fa fa-cloud-download btn" aria-hidden="true"></i> Download selected rows into csv.</a>
+    <a href="#" onclick="window.print(); return false;" class="not_printable btn btn-default"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
+    <a href="#" id="create_link" class="not_printable btn btn-default"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download all rows into csv.</a>
+    <a href="#" id="selected_rows" class="not_printable btn btn-default"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download selected rows into csv.</a>
 <table  id="print_table">
     <thead>
     <tr>

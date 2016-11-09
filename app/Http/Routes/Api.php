@@ -11,6 +11,10 @@ Route::group(['middleware' => 'api', 'namespace' => 'Api\Championship'], functio
     Route::get('/api/tournament_id/{id}', ['as' => 'api.from_tournament_id.get', 'uses' => 'GameTournamentTeamPlayerController@to_id']);
     Route::get('/api/team_name/{name}', ['as' => 'api.from_team_name.get', 'uses' => 'GameTournamentTeamPlayerController@te_name']);
     Route::get('/api/team_id/{id}', ['as' => 'api.from_team_id.get', 'uses' => 'GameTournamentTeamPlayerController@te_id']);
+});
+
+
+Route::group(['middleware' => ['api', 'WPAdmin'], 'namespace' => 'Api\Championship'], function () {
     Route::get('/api/print/', ['as' => 'api.print.get', 'uses' => 'PrintingController@index']);
     Route::get('/api/print/game/{game_id}', ['as' => 'api.print.get', 'uses' => 'PrintingController@printGame']);
     Route::get('/api/print/tournament/{tournament_id}', ['as' => 'api.print.get', 'uses' => 'PrintingController@printTournament']);
