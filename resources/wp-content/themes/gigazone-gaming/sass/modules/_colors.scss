@@ -13,12 +13,12 @@
   }
 
   /** all over border color **/
-  .bdr-color--#{$color-name}
+  .bdr-color--#{$color-name},
   .border-color--#{$color-name} {
     border-color: $bg-color;
   }
 
-  /** Directional border coloir **/
+  /** Directional border color **/
   @each $direction in (top,right,bottom,left) {
     .bdr-color-#{$direction}--#{$color-name}
     .border-color-#{$direction}--#{$color-name} {

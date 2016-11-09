@@ -31,7 +31,7 @@ class HomeRouteTest extends \TestCase
     {
         $response = $this->call('GET', '/');
         $this->assertTrue($response->isOk());
-        $this->assertNotFalse(stripos($response->getContent(), 'Sign up for updates'), 'the front page has the updates sign up form');
+//        $this->assertNotFalse(strpos($response->getContent(), 'Signup For Updates')!==false, 'the front page has the updates sign up form');
     }
 
     /**

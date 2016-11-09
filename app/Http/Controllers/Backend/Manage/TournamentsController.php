@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\TournamentRequest;
 
+/**
+ * Class TournamentsController
+ * @package App\Http\Controllers\Backend\Manage
+ */
 class TournamentsController extends Controller
 {
     /**
@@ -117,13 +121,28 @@ class TournamentsController extends Controller
      */
     public function destroy(Tournament $tournament)
     {
-        PlayerRelation::where('relation_id', '=', $tournament->getRouteKey())->where('relation_type', '=', Tournament::class)->delete();
-        foreach (Team::where('tournament_id', '=', $tournament->getRouteKey())->get() as $k => $t){
-            PlayerRelation::where('relation_id', '=', $t->id)->where('relation_type', '=', Team::class)->delete();
-            $t->delete();
+        $tournamentName = $tournament->name;
+        DB::beginTransaction();
+        try {
+            PlayerRelation::where('relation_id', '=', $tournament->getRouteKey())->where('relation_type', '=', Tournament::class)->delete();
+            foreach (Team::where('tournament_id', '=', $tournament->getRouteKey())->get() as $k => $t) {
+                PlayerRelation::where('relation_id', '=', $t->id)->where('relation_type', '=', Team::class)->delete();
+                $t->delete();
+            }
+        } catch(\Exception $ex) {
+            DB::rollback();
+            return Redirect::back()->with('error', $ex->getMessage());
         }
-        $tournament->where('id', $tournament->getRouteKey())->delete();
-        return Redirect::back();
+
+        try {
+            $tournament->where('id', $tournament->getRouteKey())->delete();
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return Redirect::back()->with('error', $ex->getMessage());
+        }
+        DB::commit();
+
+        return redirect()->route('manage.tournament.index')->with('success', 'Tournament '.$tournamentName.' successfully deleted!');
     }
     /**
      * Display the specified resource.
@@ -154,6 +173,25 @@ class TournamentsController extends Controller
                 ->toArray();
         }
         return View::make('game/tournament')->with("tournaments_filter", $tournament)->with("sorts", $ids);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @todo make printable view
+     */
+    public function printAll()
+    {
+        return Tournament::all();
+    }
+
+    /**
+     * @param Tournament $tournament
+     * @return Tournament
+     * @todo make printable view
+     */
+    public function printTournament(Tournament $tournament)
+    {
+        return $tournament;
     }
 
 }

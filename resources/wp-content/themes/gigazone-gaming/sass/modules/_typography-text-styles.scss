@@ -1,0 +1,30 @@
+.uppercase {
+  text-transform: uppercase;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center, .txt-center {
+  text-align: center;
+}
+
+.bold, .strong, b, strong {
+  font-weight: 700;
+}
+
+.text-normal, .txt-normal {
+  font-weight: 400;
+}
+
+.lighter {
+  @extend .txt-color--highlight;
+
+  & .insert-page-title {
+    color: inherit;
+  }
+}

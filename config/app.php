@@ -149,6 +149,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
+         * Helper service provider.
+         */
+        App\Providers\HelperServiceProvider::class,
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -187,6 +192,12 @@ return [
 
         //phone validator
         Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+
+        // search view composer for backend manager search view
+        App\Providers\Backend\Manage\SearchViewComposer::class,
+        // and provider for championship search
+        App\Providers\Backend\Manage\ChampionshipSearchServiceProvider::class
+
 
     ],
 
@@ -248,6 +259,12 @@ return [
 
         // recaptcha
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+
+        // Form Mail helper facade
+        'FormMailHelper' => \Pbc\FormMail\Facades\FormMailHelper::class,
+
+        // Championship Search facade
+        'ChampionshipSearch' => \App\Facades\Backend\Manage\ChampionshipSearch::class
     ],
 
 ];

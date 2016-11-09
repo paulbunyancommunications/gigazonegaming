@@ -277,10 +277,38 @@ trait  PlayerRelationable
     public static function playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
         $players = Player::orderBy('username')->get();
-        foreach ($players as $k => $player){
-            $players[$k]=$player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter);
+        $i = 0;
+        $playersList = [];
+        $Object=false;
+        $exists = false;
+        $existsFilter = true;
+        foreach ($players as $k => $player) {
+            $exists = false;
+            if(isset($filter['team']) and $filter['team']!='' and $filter['team']!='---'){
+                $exists = PlayerRelation::where('player_id','=',$player->id)
+                    ->where('relation_id','=',trim($filter['team']))
+                    ->where('relation_type','=',Team::class)->exists();
+                $existsFilter = false;
+            }
+            elseif(isset($filter['tournament']) and $filter['tournament']!='' and $filter['tournament']!='---'){
+                $exists = PlayerRelation::where('player_id','=',$player->id)
+                    ->where('relation_id','=',trim($filter['tournament']))
+                    ->where('relation_type','=',Tournament::class)->exists();
+                $existsFilter = false;
+            }
+            elseif(isset($filter['game']) and $filter['game']!='' and $filter['game']!='---'){
+                $exists = PlayerRelation::where('player_id','=',$player->id)
+                    ->where('relation_id','=',trim($filter['game']))
+                    ->where('relation_type','=',Game::class)->exists();
+                $existsFilter = false;
+            }
+            if ($exists or $existsFilter) {
+                $playersList[$i] = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter);
+                $i++;
+            }
         }
-        return $players;
+
+        return $playersList;
     }
 
     /**
@@ -338,6 +366,7 @@ trait  PlayerRelationable
         }
         return false;
     }
+
     public function relationToTeamArray($id)
     {
         return Team::find($id)->get()->toArray();
@@ -373,7 +402,6 @@ trait  PlayerRelationable
             if(is_array($parameter) and $parameter != [] or $parameter != null) {
                 extract($parameter, EXTR_OVERWRITE);
             }
-
             if ($order_by != "" and $order_by != "---" and $order_by != null) {
                 $order_by = trim($order_by);
             }
@@ -415,9 +443,11 @@ trait  PlayerRelationable
             })
             ->leftJoin('teams', function($join){
                 $join->on('tere.relation_id','=','teams.id');
+            })
+            ->leftJoin('players as pl', function($join){
+                $join->on('pl.id','=','tere.player_id');
             });
 //
-
             //first, player
             if ($pl_array) {
                 $player_query->where(function($player_query) use ($player)
@@ -428,16 +458,16 @@ trait  PlayerRelationable
                             $id = $id['id'];
                         } //check if it wasnt just an array of players ids and was an array of players
                         if ($or) {
-                            $player_query->orwhere('players.id', $id);
+                            $player_query->orwhere('players.id', intval($id));
                         } else {
                             $or = true;
-                            $player_query->where('players.id',  $id);
+                            $player_query->where('players.id',  intval($id));
                         }
                     }
 
                 });
             } elseif ($pl_value != '') {
-                $player_query->where('players.id',  $pl_value);
+                $player_query->where('players.id', '=',  intval($pl_value));
             }
             //second, team
             if ($te_array) {
@@ -448,15 +478,15 @@ trait  PlayerRelationable
                             $id = $id['id'];
                         } //check if it wasnt just an array of players ids and was an array of players
                         if ($or) {
-                            $player_query->orwhere('teams.id', $id);
+                            $player_query->orwhere('teams.id', '=', $id);
                         } else {
                             $or = true;
-                            $player_query->where('teams.id', $id);
+                            $player_query->where('teams.id', '=', $id);
                         }
                     }
                 });
             } elseif ($te_value != '') {
-                $player_query->where('teams.id', $te_value);
+                $player_query->where('teams.id', '=', $te_value);
             }
 
             //third, tournament
@@ -468,15 +498,15 @@ trait  PlayerRelationable
                             $id = $id['id'];
                         } //check if it wasnt just an array of players ids and was an array of players
                         if ($or) {
-                            $player_query->orwhere('tournaments.id', $id);
+                            $player_query->orwhere('tournaments.id', '=', $id);
                         } else {
                             $or = true;
-                            $player_query->where('tournaments.id', $id);
+                            $player_query->where('tournaments.id', '=', $id);
                         }
                     }
                 });
             } elseif ($to_value != '') {
-                $player_query->where('tournaments.id', $to_value);
+                $player_query->where('tournaments.id', '=', $to_value);
             }
 
             //fourth, game
@@ -488,15 +518,15 @@ trait  PlayerRelationable
                             $id = $id['id'];
                         } //check if it wasnt just an array of players ids and was an array of players
                         if ($or) {
-                            $player_query->orwhere('games.id', $id);
+                            $player_query->orwhere('games.id', '=', $id);
                         } else {
                             $or = true;
-                            $player_query->where('games.id', $id);
+                            $player_query->where('games.id', '=', $id);
                         }
                     }
                 });
             } elseif ($ga_value != '') {
-                $player_query->where('games.id', $ga_value);
+                $player_query->where('games.id', '=', $ga_value);
             }
         $player_query->addSelect(
             'players.id as id',

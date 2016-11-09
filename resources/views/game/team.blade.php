@@ -14,10 +14,10 @@
         @if(!isset($maxNumOfPlayers)) {{--*/ $maxNumOfPlayers = 5; /*--}}@endif
         @if(isset($tournaments) || $tournaments != [])
             @if(isset($theTeam->name))
-                <h1>Update Team: &#8220;{{ $theTeam->name }}&#8221;</h1>
+                <h1 class="txt-color--shadow" id="gaming-page-title">Update Team: &#8220;{{ $theTeam->name }}&#8221;</h1>
                 {{ Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@update', $theTeam->id), 'class' => 'form-horizontal')) }}
             @else
-                <h1>Create a new Team</h1>
+                <h1 class="txt-color--shadow" id="gaming-page-title">Create a new Team</h1>
                 {{  Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@store'), 'class' => 'form-horizontal')) }}
             @endif
             <div class="form-group">
@@ -136,29 +136,40 @@
             {{ Form::close() }}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12">
         <h2>Team List</h2>
-        <div class="form-group"><br/>
-            <ul id="listOfTeams" class="listing">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th class="col-md-3 text-center">Team</th>
+                <th class="col-md-2 text-center">Players in team/Max Players Per Team</th>
+                <th class="col-md-7 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
                 @if(!isset($teams_filter))
                     @if(!isset($teams) || $teams == [])
-                        <li>There are no Teams yet</li>
+                        <tr>
+                            <td colspan="3"><div class="alert alert-info">There are no Teams yet.</div></td>
+                        </tr>
                     @else
                         @foreach($teams as $id => $team)
                             @include('game.partials.teams_displayer')
                         @endforeach
                     @endif
                 @elseif($teams_filter == [] or $teams_filter == [ ])
-                    <li>There are no results with the selected filter.</li>
+                    <tr>
+                        <td colspan="3"><div class="alert alert-info">There are no results with the selected filter.</div></td>
+                    </tr>
                 @else
-                    <li>Filtered results:</li>
                     @foreach($teams_filter as $id => $team)
                         @if(isset($team['team_id']) and $team['team_id']!=null and $team['team_id']>0)
                             @include('game.partials.teams_displayer')
                         @endif
                     @endforeach
                 @endif
-            </ul>
+        </tbody>
+        </table>
 
             @else
                 <h1>Sorry, no tournaments where found on the database!, please create a tournament before proceding
@@ -170,37 +181,17 @@
     </div>
 @endsection
 @section('js')
-    $(document).ready(function() {
     $('#game_sort').on("change", function() {
-    var val_g = $('#game_sort option:selected').val();
-    var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
-    $('#tournament_sort option').prop("disabled", true);
-    $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled",
-    false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
-    $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-    {{--$('#tournament_sort').select2({--}}
-    {{--allowClear: true--}}
-    {{--});--}}
+        var val_g = $('#game_sort option:selected').val();
+        var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
+        $('#tournament_sort option').prop("disabled", true);
+        $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
+        $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+        $('#tournament_sort').select2({
+            allowClear: true
+        });
     });
-    $('.delete_message').click(function() {
-    var conf = confirm('Are you sure? This will delete the team and move the players to the Individual Players
-    list for this tournament');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    $('.delete_message2').click(function() {
-    var conf = confirm('Are you sure? This will remove the team and players from the database for all
-    tournaments and games');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    });
+@endsection
+@section('js-sheet')
+    <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection

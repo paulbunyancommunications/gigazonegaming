@@ -51,19 +51,24 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('click on a game and land on tournament page with an applied filter');
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new game');
-        $I->click('tester-game');
-        $I->see('Create a new Tournament');
+        $I->waitForJS("return $('.filter-tester-game').click();", 10);
+//        $I->click(".filter-tester-game");
+        $I->waitForText('Create a new Tournament', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->seeOptionIsSelected('#game_sort', 'tester-game');
         $I->wantTo('click on a tournament and land on team page with an applied filter');
-        $I->click('Tester Tournament');
-        $I->see('Create a new Team');
+        $I->click(".filter-TesterTournament");
+        $I->waitForJS("return $('.filter-TesterTournament').click();", 10);
+//        $I->see('Create a new Team');
         $I->seeOptionIsSelected('#tournament_sort', 'Tester Tournament');
         $I->wantTo('click on a team and land on player page with an applied filter');
-        $I->click('Tester Team');
-        $I->see('Create a new Player');
-        $I->executeJS("$('#team_sort').show();");
-        $I->waitForElementVisible(['id' => 'team_sort'], 30);
-        $I->seeOptionIsSelected('#team_sort', 'Tester Team');
+        $I->waitForJS("return $('.filter-TesterTeam').click();", 10);
+//        $I->click(".filter-TesterTeam");
+        $I->waitForText('Create a new Player', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player000', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player001', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player002', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player003', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('The Tester Player004', BaseAcceptance::TEXT_WAIT_TIMEOUT);
     }
     /**
      * @param AcceptanceTester $I
@@ -74,8 +79,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team but not the players');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->executeJS("$('#delete-soft-TesterTeam').closest('form').submit()");
-        $I->wait(3);
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+//        $I->click(".delete_soft-form-TesterTeam");
+        $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new Player');
@@ -96,9 +102,9 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team and the players');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->executeJS("$('#delete-hard-TesterTeam').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Team');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete_hard-form-TesterTeam').click();", 10);
+        $I->waitForText('Create a new Team', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         $I->see('Create a new Player');
@@ -118,27 +124,27 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a team but not the tournament or the game');
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->seeElement('input', ['value' => 'Tester Team']);
-        $I->executeJS("$('#delete-soft-TesterTeam').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Team');
-        $I->dontSeeElement('input', ['value' => 'Tester Team']);
+        $I->see( 'Tester Team');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 10);
+        $I->waitForText('Create a new Team', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->dontSeeLink('Tester Team');
 
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->seeElement('input', ['value' => 'Tester Tournament']);
-        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Tournament');
-        $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
+        $I->see( 'Tester Tournament');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
+        $I->waitForText('Create a new Tournament', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->dontSeeLink('Tester Tournament');
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->seeElement('input', ['value' => 'tester-game']);
-        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Game');
-        $I->dontSeeElement('input', ['value' => 'tester-game']);
+        $I->see( 'tester-game');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-tester-game').click();", 10);
+        $I->waitForText('Create a new Game', BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->dontSeeLink('tester-game');
 
     }
 
@@ -150,11 +156,11 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
     {
         $I->wantTo('delete a Tournament cascading to the team but not the game');
         $I->amOnPage('/app/manage/tournament');
-        $I->see('Create a new Tournament');
-        $I->seeElement('input', ['value' => 'Tester Tournament']);
-        $I->executeJS("$('#delete-TesterTournament').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Tournament');
+        $I->see('Create a new Tournament', ['id' => 'gaming-page-title']);
+        $I->see('Tester Tournament');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-TesterTournament').click();", 10);
+        $I->waitForText('Create a new Tournament', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
 
         $I->amOnPage('/app/manage/team');
@@ -163,10 +169,10 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
 
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->seeElement('input', ['value' => 'tester-game']);
-        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Game');
+        $I->see( 'tester-game');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-tester-game').click();", 10);
+        $I->waitForText('Create a new Game', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->dontSeeElement('input', ['value' => 'tester-game']);
 
     }
@@ -179,10 +185,10 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->wantTo('delete a game cascading to the team and tournament');
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
-        $I->seeElement('input', ['value' => 'tester-game']);
-        $I->executeJS("$('#delete-tester-game').closest('form').submit()");
-        $I->wait(3);
-        $I->see('Create a new Game');
+        $I->see( 'tester-game');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 10);
+        $I->waitForJS("return $('.delete-tester-game').click();", 10);
+        $I->waitForText('Create a new Game', BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->dontSeeElement('input', ['value' => 'tester-game']);
 
         $I->amOnPage('/app/manage/tournament');

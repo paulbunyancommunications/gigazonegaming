@@ -9,7 +9,7 @@ vagrantfile:
                         hostname: gigazonegaming.local
                         network:
                             private_network: 192.168.56.101
-                        memory: '2048'
+                        memory: '10240'
                         cpus: '8'
 cron:
     install: '1'

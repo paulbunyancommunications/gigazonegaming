@@ -7,6 +7,39 @@
   white-space: normal;
 }
 
+.btn-gz-default {
+  @extend .bg-color--light;
+  @extend .bdr-color--branding;
+  @extend .txt-color--midtone;
+  font-family: $font-family-display;
+  @extend .uppercase;
+  text-decoration: none;
+  @extend .bold;
+
+  &:hover, &:active {
+    //background-color: $color-gz-gray;
+    @extend .bg-color--midtone;
+    //border-color: shade($color-gz-gray, 10%);
+    @extend .bdr-color--shadow;
+    //color: $color-white;
+    @extend .txt-color--light;
+  }
+
+  &:active, &:active:focus, &:focus, &.focus {
+    border-color: $color-gz-orange;
+    outline: none;
+    @extend .bg-color--midtone;
+    @extend .txt-color--light;
+    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6));
+  }
+}
+
+/**
+* Set button to wrap on lines rather than staying all on one line
+*/
+.btn-wrap {
+  white-space: normal;
+}
 
 .btn-gz {
   background-color: $color-gz-orange;
@@ -26,9 +59,28 @@
   &:active, &:active:focus, &:focus, &.focus {
     border-color: $color-gz-orange;
     outline: none;
+    @extend .bg-color--midtone;
+    @extend .txt-color--light;
     @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6));
   }
 }
+
+/**
+* Override the default btn-link styles
+*/
+.btn-link {
+  @extend .txt-color--primary-color-dark;
+  text-decoration: none;
+  &:hover, &:active, &:focus {
+    @extend .txt-color--midtone;
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 
 .btn-social {
 

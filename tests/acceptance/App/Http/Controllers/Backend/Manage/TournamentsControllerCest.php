@@ -50,8 +50,7 @@ class TournamentsControllerCest extends BaseAcceptance
     public function tryToGetToTheTournamentApp(AcceptanceTester $I)
     {
         $I->wantTo('get to the tournament management page');
-        $I->amOnPage('/app/manage/tournament');
-        $I->see('Create a new tournament');
+        $I->see('Create a new Tournament');
         $I->see('Tournament List');
     }
 
@@ -62,10 +61,11 @@ class TournamentsControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a tournament on the management page');
         list($name, $max_players, $game_id) = $this->createATournament($I);
-
+        $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
+        $I->seeInField(['id' => 'name'], $name);
+        $I->seeInField(['id' => 'max_players'], $max_players);
+        $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
         // check return, we should have a message and all the fields filled
-        $I->see('The tournament '.$name.' was added');
-        
     }
 
     /**
@@ -79,7 +79,7 @@ class TournamentsControllerCest extends BaseAcceptance
 
         $name2 = implode('-', $this->faker->words(3));
         $max_players2 = $this->faker->numberBetween(1, 10);
-        $I->click(['id'=>'edit-'.$name]);
+        $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
@@ -108,7 +108,7 @@ class TournamentsControllerCest extends BaseAcceptance
 
         // make a tournament, then update
         list($name, $max_players, $game_id) = $this->createATournament($I);
-        $I->click(['id'=>'edit-'.$name]);
+        $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
@@ -186,7 +186,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->click(['id' => 'submit']);
+        $I->waitForJS('return $("#submit").click();', 10);
         $I->see('The name has already been taken');
     }
 
@@ -197,15 +197,10 @@ class TournamentsControllerCest extends BaseAcceptance
      */
     private function createATournament(AcceptanceTester $I, $attributes = [])
     {
-        $I->amOnPage('/app/manage/tournament');
-        $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->words(3));
-        $max_players = array_key_exists('max_players', $attributes) ? $attributes['max_players'] : $this->faker->numberBetween(1, 10);
+        $name = "Tester Tournament";
+        $max_players = 6;
         $game_id = "tester-game";
 
-        $I->fillField(['id' => 'name'], $name);
-        $I->fillField(['id' => 'max_players'], $max_players);
-        $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->click(['id' => 'submit']);
         return array($name, $max_players, $game_id);
     }
 

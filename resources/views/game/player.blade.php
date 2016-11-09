@@ -185,10 +185,9 @@
                 <label for="game_sort" class="control-label col-xs-3">Show options only for this Game: </label>
                 <div class="col-xs-9">
                     <select name="game_sort" id="game_sort" class="form-control">
-
                         <option> ---</option>
                         @foreach($games as $g)
-                            <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
+                            <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}"
                                     @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
                             >{{$g['game_name']}}</option>
                         @endforeach
@@ -201,8 +200,7 @@
                     <select name="tournament_sort" id="tournament_sort" class="form-control">
                         <option> ---</option>
                         @foreach($tournaments as $g)
-                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}"
-                                    value="{{$g['tournament_id']}}"
+                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
                                     @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
                             >{{$g['tournament_name']}}</option>
                         @endforeach
@@ -231,23 +229,35 @@
             {{ Form::close() }}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12">
         <h2>Player List</h2>
-        <div class="form-group"><br/>
-            <ul id="listOfPlayers" class="listing">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th class="col-md-3 text-center">Name</th>
+                <th class="col-md-3 text-center">Username</th>
+                <th class="col-md-3 text-center">email</th>
+                <th class="col-md-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
                 @if(!isset($players_filter))
                     @if(!isset($players) || $players == [])
-                        <li>There are no Players yet</li>
+                        <tr>
+                            <td colspan="4"><div class="alert alert-info">There are no Players yet.</div></td>
+                        </tr>
                     @else
                         @include('game.partials.player_displayer', ['play'=> $players])
                     @endif
                 @elseif($players_filter == [] or $players_filter == [ ])
-                    <li>There are no results with the selected filter.</li>
+                    <tr>
+                        <td colspan="4"><div class="alert alert-info">There are no results with the selected filter.</div></td>
+                    </tr>
                 @else
-                    <li>Filtered results:</li>
                     @include('game.partials.player_displayer', ['play'=> $players_filter])
                 @endif
-            </ul>
+            </tbody>
+        </table>
 
             @else
                 <h1>Sorry, no players where found on the database!, please create a player before proceding with a
@@ -258,41 +268,31 @@
     </div>
 @endsection
 @section('js')
-    $(document).ready(function() {
     $('select').select2({
-    allowClear: true
+        allowClear: true
     });
     $('#game_sort').on("change", function() {
-    var val_g = $('#game_sort option:selected').val();
-    var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
-    $('#tournament_sort option').prop("disabled", true);
-    $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled",
-    false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
-    $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
-    $('#tournament_sort').select2({
-    allowClear: true
-    });
+        var val_g = $('#game_sort option:selected').val();
+        var d_id = $('#game_sort option[value="'+val_g+'"]').attr("id");
+        $('#tournament_sort option').prop("disabled", true);
+        $('#tournament_sort option[id^="'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
+        $('#tournament_sort option[id^="'+d_id+'_"]:first-child').attr("selected","selected");
+        $('#tournament_sort').select2({
+            allowClear: true
+        });
     });
     $('#tournament_sort').on("change", function() {
-    var val_g = $('#tournament_sort option:selected').val();
-    var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
-    d_id = d_id.split('_')[2];
-    $('#team_sort option').prop("disabled", true);
-    $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled",
-    false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
-    $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
-    $('#team_sort').select2({
-    allowClear: true
+        var val_g = $('#tournament_sort option:selected').val();
+        var d_id = $('#tournament_sort option[value="'+val_g+'"]').attr("id");
+        d_id = d_id.split('_')[2];
+        $('#team_sort option').prop("disabled", true);
+        $('#team_sort option[id^="t_option'+d_id+'_"]').prop("disabled", false).attr('disabled',false).removeProp('disabled').removeAttr("disabled");
+        $('#team_sort option[id^="t_option'+d_id+'_"]:first-child').attr("selected","selected");
+        $('#team_sort').select2({
+            allowClear: true
+        });
     });
-    });
-    $('.delete_message').click(function() {
-    var conf = confirm('Are you sure? you are going to delete the player from the database.');
-    if (conf) {
-    var url = $(this).attr('href');
-    $(document).load(url);
-    }else{
-    return false;
-    }
-    });
-    });
+@endsection
+@section('js-sheet')
+    <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection

@@ -67,69 +67,24 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 
         $I->wantTo('check enable and disable inputs');
         $I->amOnPage('/app/manage/individualPlayer');
-        $I->executeJS("".
-            "var submit_button = document.getElementById('submit_button');".
-            "submit_button = submit_button.getAttribute('disabled');".
-            "if(submit_button == true || submit_button == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled.   '));".
-            "}".
-            "var p_name = document.getElementById('name');".
-            "p_name = p_name.getAttribute('disabled');".
-            "if(p_name == true || p_name == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Name Field is disabled.   '));".
-            "}".
-            "var username = document.getElementById('username');".
-            "username = username.getAttribute('disabled');".
-            "if(username == true || username == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Username Field is disabled.   '));".
-            "}".
-            "var email_ = document.getElementById('email');".
-            "email_ = email_.getAttribute('disabled');".
-            "if(email_ == true || email_ == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Email Field is disabled.   '));".
-            "}".
-            "var phone_ = document.getElementById('phone');".
-            "phone_ = phone_.getAttribute('disabled');".
-            "if(phone_ == true || phone_ == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Phone Field is disabled.   '));".
-            "}".
-            "var team_name = document.getElementById('team_name');".
-            "team_name = team_name.getAttribute('disabled');".
-            "if(team_name == true || team_name == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Team Name Field is disabled.   '));".
-            "}".
-            "var game_sort = document.getElementById('game_sort');".
-            "game_sort = game_sort.getAttribute('disabled');".
-            "if(game_sort == false || game_sort == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Game Sort Field is enabled.   '));".
-            "}".
-            "var tournament_sort = document.getElementById('tournament_sort');".
-            "tournament_sort = tournament_sort.getAttribute('disabled');".
-            "if(tournament_sort == true || tournament_sort == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Tournament Sort Field is disabled.   '));".
-            "}".
-            "var team_sort = document.getElementById('team_sort');".
-            "team_sort = team_sort.getAttribute('disabled');".
-            "if(team_sort == true || team_sort == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Team Sort Field is disabled.   '));".
-            "}".
-            "var reset_ = document.getElementById('reset');".
-            "reset_ = reset_.getAttribute('disabled');".
-            "if(reset_ == false || reset_ == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Reset Button is enabled.   '));".
-            "}"
-        );
-        sleep(3); // wait for js
-        $I->see("Submit Button is disabled");
-        $I->see("Name Field is disabled");
-        $I->see("Username Field is disabled");
-        $I->see("Email Field is disabled");
-        $I->see("Phone Field is disabled");
-        $I->see("Team Name Field is disabled");
-        $I->see("Game Sort Field is enabled");
-        $I->see("Tournament Sort Field is disabled");
-        $I->see("Team Sort Field is disabled");
-        $I->see("Reset Button is enabled");
+        $name = $I->executeJS("return $('#name').attr('disabled');");
+        $username = $I->executeJS("return $('#username').attr('disabled');");
+        $email = $I->executeJS("return $('#email').attr('disabled');");
+        $phone = $I->executeJS("return $('#phone').attr('disabled');");
+        $teamName = $I->executeJS("return $('#team_name').attr('disabled');");
+        $reset = $I->executeJS("return $('#reset').attr('disabled');");
+        list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->assertSame(null, $game, "Game Sort should be enabled");
+        $I->assertSame('disabled', $tournament, "Tournament Sort should be disabled");
+        $I->assertSame('disabled', $team, "Team Sort should be disabled");
+        $I->assertSame('disabled', $submit, "Submit Button should be disabled");
+        $I->assertSame(null, $reset, "Reset Button should be enabled");
+        $I->assertSame('disabled', $submit, "Submit Button should be disabled");
+        $I->assertSame('disabled', $name, "Name Field should be disabled");
+        $I->assertSame('disabled', $username, "Username Field should be disabled");
+        $I->assertSame('disabled', $email, "Email Field should be disabled");
+        $I->assertSame('disabled', $phone, "Phone Field should be disabled");
+        $I->assertSame('disabled', $teamName, "TeamName Field should be disabled");
     }
 
 
@@ -143,70 +98,32 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $i = 0;
         $I->wantTo('check enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
-        $this->CheckIfFieldsAreDisabled($I, $i);
-        //new iteration
-        $i++;
-        $I->selectOption(['id' => 'game_sort'], "league-of-legends");
+        list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->assertSame(null, $game, "Game Sort should be enabled");
+        $I->assertSame('disabled', $tournament, "Tournament Sort should be disabled");
+        $I->assertSame('disabled', $team, "Team Sort should be disabled");
+        $I->assertSame('disabled', $submit, "Submit Button should be disabled");
 
-        $I->executeJS("".
-            "var game_sort = document.getElementById('game_sort');".
-            "game_sort = game_sort.getAttribute('disabled');".
-            "if(game_sort == false || game_sort == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Game Sort Field is enabled".$i.".   '));".
-            "}".
-            "var tournament_sort = document.getElementById('tournament_sort');".
-            "tournament_sort = tournament_sort.getAttribute('disabled');".
-            "if(tournament_sort == false || tournament_sort == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Tournament Sort Field is enabled".$i.".   '));".
-            "}".
-            "var team_sort = document.getElementById('team_sort');".
-            "team_sort = team_sort.getAttribute('disabled');".
-            "if(team_sort == true || team_sort == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Team Sort Field is disabled".$i.".   '));".
-            "}".
-            "var submit_button = document.getElementById('submit_button');".
-            "submit_button = submit_button.getAttribute('disabled');".
-            "if(submit_button == true || submit_button == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled".$i.".   '));".
-            "}"
-        );
-        sleep(3); // wait for js
-        $I->see("Game Sort Field is enabled".$i."");
-        $I->see("Tournament Sort Field is enabled".$i."");
-        $I->see("Team Sort Field is disabled".$i."");
-        $I->see("Submit Button is disabled".$i."");
+        $I->selectOption(['id' => 'game_sort'], "tester-game");
+        list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->assertSame(null, $game, "Game Sort should be enabled");
+        $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
+        $I->assertSame('disabled', $team, "Team Sort should be disabled");
+        $I->assertSame('disabled', $submit, "Submit Button should be disabled");
 
-        //new iteration
-        $i++;
-        $I->selectOption(['id' => 'tournament_sort'], "gigazone-gaming-2016-league-of-legends");
+        $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
+        list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->assertSame(null, $game, "Game Sort should be enabled");
+        $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
+        $I->assertSame(null, $team, "Team Sort should be enabled");
+        $I->assertSame('disabled', $submit, "Submit Button should be disabled");
 
-        $I->executeJS("".
-            "var game_sort = document.getElementById('game_sort');".
-            "game_sort = game_sort.getAttribute('disabled');".
-            "if(game_sort == false || game_sort == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Game Sort Field is enabled".$i.".   '));".
-            "}".
-            "var tournament_sort = document.getElementById('tournament_sort');".
-            "tournament_sort = tournament_sort.getAttribute('disabled');".
-            "if(tournament_sort == false || tournament_sort == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Tournament Sort Field is enabled".$i.".   '));".
-            "}".
-            "var team_sort = document.getElementById('team_sort');".
-            "team_sort = team_sort.getAttribute('disabled');".
-            "if(team_sort == false || team_sort == undefined){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Team Sort Field is enabled".$i.".   '));".
-            "}".
-            "var submit_button = document.getElementById('submit_button');".
-            "submit_button = submit_button.getAttribute('disabled');".
-            "if(submit_button == true || submit_button == 'disabled'){".
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled".$i.".   '));".
-            "}"
-        );
-        sleep(3); // wait for js
-        $I->see("Game Sort Field is enabled".$i."");
-        $I->see("Tournament Sort Field is enabled".$i."");
-        $I->see("Team Sort Field is enabled".$i."");
-        $I->see("Submit Button is disabled".$i."");
+        $I->selectOption(['id' => 'team_sort'], "Tester Team");
+        list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->assertSame(null, $game, "Game Sort should be enabled");
+        $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
+        $I->assertSame(null, $team, "Team Sort should be enabled");
+        $I->assertSame(null, $submit, "Submit Button should be enabled");
     }
 
 
@@ -227,11 +144,9 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $user = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_user")');
         $phone = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_phone")');
         $email = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_email")');
-
         $I->wait(3);
         $this->CheckIfFieldsAreDisabledAfterTeamSelection($I);
         $I->click( "#".$id);
-        $I->wait(3);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'username'], $user);
         $I->seeInField(['id' => 'email'], $email);
@@ -244,69 +159,28 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
      * @param AcceptanceTester $I
      * @param $i
      */
-    private function CheckIfFieldsAreDisabled(AcceptanceTester $I, $i=0)
-    {
-        $I->executeJS("" .
-            "var game_sort = document.getElementById('game_sort');" .
-            "game_sort = game_sort.getAttribute('disabled');" .
-            "if(game_sort == false || game_sort == undefined){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Game Sort Field is enabled" . $i . ".   '));" .
-            "}" .
-            "var tournament_sort = document.getElementById('tournament_sort');" .
-            "tournament_sort = tournament_sort.getAttribute('disabled');" .
-            "if(tournament_sort == true || tournament_sort == 'disabled'){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Tournament Sort Field is disabled" . $i . ".   '));" .
-            "}" .
-            "var team_sort = document.getElementById('team_sort');" .
-            "team_sort = team_sort.getAttribute('disabled');" .
-            "if(team_sort == true || team_sort == 'disabled'){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Team Sort Field is disabled" . $i . ".   '));" .
-            "}" .
-            "var submit_button = document.getElementById('submit_button');" .
-            "submit_button = submit_button.getAttribute('disabled');" .
-            "if(submit_button == true || submit_button == 'disabled'){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is disabled" . $i . ".   '));" .
-            "}"
-        );
-        sleep(3); // wait for js
-        $I->see("Game Sort Field is enabled" . $i . "");
-        $I->see("Tournament Sort Field is disabled" . $i . "");
-        $I->see("Team Sort Field is disabled" . $i . "");
-        $I->see("Submit Button is disabled" . $i . "");
-    }
-    /**
-     * @param AcceptanceTester $I
-     * @param $i
-     */
     private function CheckIfFieldsAreDisabledAfterTeamSelection(AcceptanceTester $I, $i=0)
     {
-        $I->executeJS("" .
-            "var game_sort = document.getElementById('game_sort');" .
-            "game_sort = game_sort.getAttribute('disabled');" .
-            "if(game_sort == false || game_sort == undefined){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Game Sort Field is enabled double check.   '));" .
-            "}" .
-            "var tournament_sort = document.getElementById('tournament_sort');" .
-            "tournament_sort = tournament_sort.getAttribute('disabled');" .
-            "if(tournament_sort == false || tournament_sort == undefined){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Tournament Sort Field is enabled double check.   '));" .
-            "}" .
-            "var team_sort = document.getElementById('team_sort');" .
-            "team_sort = team_sort.getAttribute('disabled');" .
-            "if(team_sort == false || team_sort == undefined){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Team Sort Field is enabled double check.  '));" .
-            "}" .
-            "var submit_button = document.getElementById('submit_button');" .
-            "submit_button = submit_button.getAttribute('disabled');" .
-            "if(submit_button == false || submit_button == undefined){" .
-            "document.getElementById('playerForm').appendChild(document.createTextNode('Submit Button is enabled double check.  '));" .
-            "}"
-        );
-        sleep(3); // wait for js
-        $I->see("Game Sort Field is enabled double check.");
-        $I->see("Tournament Sort Field is enabled double check.");
-        $I->see("Team Sort Field is enabled double check.");
-        $I->see("Submit Button is enabled double check.");
+        list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->assertSame(null, $game, "Game Sort should be enabled");
+        $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
+        $I->assertSame(null, $team, "Team Sort should be enabled");
+        $I->assertSame(null, $submit, "Submit Button should be enabled");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return array
+     */
+    private function ICheckFor_EnablesTrue_Or_DisablesFalse(AcceptanceTester $I)
+    {
+        $game = $I->executeJS("return $('#game_sort').attr('disabled');");
+        $tournament = $I->executeJS("return $('#tournament_sort').attr('disabled');");
+        $team = $I->executeJS("return $('#team_sort').attr('disabled');");
+        $submit = $I->executeJS("return $('#submit_button').attr('disabled');");
+        $I->wait(3);
+//        var_dump($game)
+        return array($game, $tournament, $team, $submit);
     }
 
 }

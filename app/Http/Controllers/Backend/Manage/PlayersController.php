@@ -206,6 +206,7 @@ class PlayersController extends Controller
      */
     public function filter(Request $ids)
     {
+//        var_dump($ids);
         $filterArray = [];
         if(isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
             $filterArray['team'] = trim($ids->team_sort);
@@ -216,9 +217,11 @@ class PlayersController extends Controller
         if(isset($ids->game_sort) and trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
             $filterArray['game'] = trim($ids->game_sort);
         }
+//        var_dump($filterArray);
         $players = new Player();
-        $playerList = $players->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filterArray);
+        $playerList = $players->playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filterArray);
 
+//        var_dump($playerList);
         return View::make('game/player')->with("players_filter", $playerList)->with('sorts',$ids);
 
     }

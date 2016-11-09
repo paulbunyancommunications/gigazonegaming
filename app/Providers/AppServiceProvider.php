@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Blade::directive('autoVersion', function($expression) {
+            return "<?php echo \\Pbc\\AutoVersionSingle::file($expression); ?>";
+        });
     }
 
     /**
@@ -28,13 +30,18 @@ class AppServiceProvider extends ServiceProvider
     {
         // production only providers
         if ($this->app->environment('production')) {
-            $this->app->register(RollbarServiceProvider::class);
+            // Rollbar service provider
+            if(class_exists('Jenssegers\\Rollbar\\RollbarServiceProvider')) {
+                $this->app->register(RollbarServiceProvider::class);
+            }
         }
 
         // development only providers
         if ($this->app->environment('local')) {
             // IDE helper
-            $this->app->register(IdeHelperServiceProvider::class);
+            if (class_exists('Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider')) {
+                $this->app->register(IdeHelperServiceProvider::class);
+            }
         }
     }
 }
