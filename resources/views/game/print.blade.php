@@ -66,7 +66,7 @@
         <th class="printable row1 col-md-2 text-center">Player Name <span class="not_printable fa fa-sort"></span></th>
         <th class="printable row2 col-md-2 text-center">Player Email <span class="not_printable fa fa-sort"></span></th>
         <th class="printable row3 col-md-2 text-center">Player Phone <span class="not_printable fa fa-sort"></span></th>
-        <th class="printable row4 col-md-1 text-center">Capitan <span class="not_printable fa fa-sort"></span></th>
+        <th class="printable row4 col-md-1 text-center">Captain <span class="not_printable fa fa-sort"></span></th>
         <th class="printable row5 col-md-1 text-center">Team <span class="not_printable fa fa-sort"></span></th>
         <th class="printable row6 col-md-1 text-center">Tournament <span class="not_printable fa fa-sort"></span></th>
         <th class="printable row7 col-md-1 text-center">Game <span class="not_printable fa fa-sort"></span></th>
