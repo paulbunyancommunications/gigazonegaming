@@ -50,7 +50,7 @@ class GamesControllerTest extends \TestCase
         ];
         $game = factory(Game::class)->create($params);
         $newCaught = false;
-        $response = $this->call('GET','api/game');
+        $response = $this->call('GET','app/api/game');
 
         $this->assertSame($response->getStatusCode(), 200);
 
@@ -92,7 +92,7 @@ class GamesControllerTest extends \TestCase
         ];
         $game = factory(Game::class)->create($params);
 
-        $response = $this->call('GET', 'api/game/'. $game->id);
+        $response = $this->call('GET', 'app/api/game/'. $game->id);
         $this->assertSame($response->getStatusCode(), 200);
 
         $this->assertJson($response->getContent());
@@ -114,7 +114,7 @@ class GamesControllerTest extends \TestCase
         $this->markTestSkipped(
             'The test is being skiped as url is not found - 500 error.'
         );
-        $response = $this->call('GET', 'api/game/' . time(), []);
+        $response = $this->call('GET', 'app/api/game/' . time(), []);
         $this->assertJson($response->getContent());
         $parse = json_decode($response->getContent());
 

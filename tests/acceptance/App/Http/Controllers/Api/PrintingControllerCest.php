@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
  * Class GamesControllerCest
  * @package Tests\Acceptance\App\Http\Controllers\Backend\Manage
  */
-class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
+class PrintingControllerCest extends BaseAcceptance
 {
     /**
      * @param AcceptanceTester $I
