@@ -77,7 +77,7 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->click("Create Team for Selected Tournament");
-        $I->waitForElementVisible(['id' => 'submit_create_team'], 30);
+        $I->waitForElementVisible(['id' => 'submit_create_team'], 60);
         $I->click(['id' => 'submit_create_team']);
         $I->see("The Players had being added to the new team");
 
@@ -85,7 +85,7 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->selectOption(['id' => 'team_sort'], "Tester Team");
         $I->click("Fill selected Team");
-        $I->waitForElementVisible(['id' => 'submit_fill_team'], 30);
+        $I->waitForElementVisible(['id' => 'submit_fill_team'], 60);
         $I->click(['id' => 'submit_fill_team']);
         $I->see("The Players had being added to the team Tester Team");
 
