@@ -108,7 +108,7 @@
                                     {{
                                        Form::button(
                                            '<i class="fa fa-print" aria-hidden="true"></i>',
-                                           array('type' => 'button', 'id' => 'submit-toForm-print-'.$game["game_id"], 'class'=>'btn btn-primary btn-gz toForm','title'=>"Edit game ".$game['game_name'])
+                                           array('type' => 'button', 'id' => 'submit-toForm-print-'.$game["game_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $game['game_name']),'title'=>"Edit game ".$game['game_name'])
                                        )
                                     }}
 
@@ -128,7 +128,7 @@
                                 {{ Html::linkAction('Backend\Manage\GamesController@edit', 'Edit', array('game_id'=>$game["game_id"]), array('id'=>'submit-toForm-edit-form-'.$game['game_id'], 'class' => 'btn btn-default hidden', 'title'=>"Edit tournament ".$game['game_name'])) }}
 
                                 {{--Load printable view--}}
-                                {{ Html::linkAction('Api\Championship\PrintingController@printGame', 'Edit', array('game_id'=>$game["game_id"]), array('id'=>'submit-toForm-print-form-'.$game['game_id'], 'class' => 'btn btn-default hidden print-'.str_replace(' ', '', $game['game_name']), 'title'=>"Print game details for ".$game['game_name'])) }}
+                                {{ Html::linkAction('Api\Championship\PrintingController@printGame', 'Edit', array('game_id'=>$game["game_id"]), array('id'=>'submit-toForm-print-form-'.$game['game_id'], 'class' => 'btn btn-default hidden', 'title'=>"Print game details for ".$game['game_name'])) }}
 
                                 {{ Form::open(array('id' => "submit-toForm-filter-form-".$game["game_id"], 'action' => array('Backend\Manage\TournamentsController@filter'), 'class' => "toForms")) }}
                                 <input name="_method" type="hidden" value="POST">
