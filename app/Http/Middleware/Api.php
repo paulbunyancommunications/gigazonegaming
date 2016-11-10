@@ -28,8 +28,7 @@ class Api
             (isset($_SERVER['APP_ENV']) and $_SERVER['APP_ENV']=='local')
         ) or false);
 
-        if (
-            !in_array($_SERVER['REMOTE_ADDR'],$okSites)
+        if (!in_array($_SERVER['REMOTE_ADDR'], $okSites)
             and
             !$isLocal
         ) {

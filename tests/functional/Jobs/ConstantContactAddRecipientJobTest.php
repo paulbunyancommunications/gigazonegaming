@@ -207,7 +207,6 @@ class ConstantContactAddRecipientJobTest extends \TestCase
         );
         // run handle
         $this->assertTrue($job->handle());
-
     }
 
     /**

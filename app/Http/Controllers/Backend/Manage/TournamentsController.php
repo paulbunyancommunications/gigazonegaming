@@ -50,7 +50,7 @@ class TournamentsController extends Controller
         $tournament->created_at = Carbon::now("CST");
         $tournament->updated_at = Carbon::now("CST");
         $tournament->save();
-        return redirect('manage/tournament')->with('success',"The tournament ".$request['name']." was added");
+        return redirect('manage/tournament')->with('success', "The tournament ".$request['name']." was added");
     }
 
     /**
@@ -100,7 +100,7 @@ class TournamentsController extends Controller
         $toUpdate = array_merge($request->all(), [
             'updated_by' => $updatedBy,
             'updated_on' => $updatedOn
-        ] );
+        ]);
         unset($toUpdate['_token']);
         unset($toUpdate['_method']);
         unset($toUpdate['id']);
@@ -109,7 +109,7 @@ class TournamentsController extends Controller
         $tournament->where('id', $tournament->getRouteKey())->update(
             $toUpdate
         );
-        return Redirect::back()->with('success',"The tournament ".$tournament->fresh()->name." was updated")
+        return Redirect::back()->with('success', "The tournament ".$tournament->fresh()->name." was updated")
             ->with("theTournament", $tournament);
     }
 
@@ -129,7 +129,7 @@ class TournamentsController extends Controller
                 PlayerRelation::where('relation_id', '=', $t->id)->where('relation_type', '=', Team::class)->delete();
                 $t->delete();
             }
-        } catch(\Exception $ex) {
+        } catch (\Exception $ex) {
             DB::rollback();
             return Redirect::back()->with('error', $ex->getMessage());
         }
@@ -152,10 +152,10 @@ class TournamentsController extends Controller
      */
     public function filter(Request $ids)
     {
-        if(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
-            if(is_numeric($ids->game_sort)){
+        if (trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+            if (is_numeric($ids->game_sort)) {
                 $game = trim($ids->game_sort);
-            }else {
+            } else {
                 $game = "%" . trim($ids->game_sort) . "%";
             }
             $tournament =  Tournament::
@@ -166,7 +166,7 @@ class TournamentsController extends Controller
                 ->orderBy('tournament_name', 'asc')
                 ->get()
                 ->toArray();
-        }else{
+        } else {
             $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
                 ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
                 ->get()
@@ -193,5 +193,4 @@ class TournamentsController extends Controller
     {
         return $tournament;
     }
-
 }

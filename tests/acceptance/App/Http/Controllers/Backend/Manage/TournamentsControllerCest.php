@@ -21,7 +21,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/tournament');
-
     }
 
     /**
@@ -95,8 +94,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->seeInField(['id' => 'name'], $name2);
         $I->seeInField(['id' => 'max_players'], $max_players2);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
-
-
     }
 
     /**
@@ -124,7 +121,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
-
     }
 
     /**
@@ -176,7 +172,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'max_players'], "Not A Number");
         $I->click(['id' => 'submit']);
         $I->see('The NUMBER of players needs to be ... a number, LOL.');
-
     }
 
     /**
@@ -209,5 +204,4 @@ class TournamentsControllerCest extends BaseAcceptance
 
         return array($name, $max_players, $game_id);
     }
-
 }

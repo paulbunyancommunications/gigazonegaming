@@ -29,7 +29,6 @@ class PhotoRotatorCest extends \BaseAcceptance
         \Codeception\Util\Debug::debug($imgLink);
         $I->amOnPage($imgLink);
         $I->dontSee('Error');
-
     }
 
     public function it_has_a_malformed_image_path(AcceptanceTester $I)
@@ -46,7 +45,6 @@ class PhotoRotatorCest extends \BaseAcceptance
         \Codeception\Util\Debug::debug($imgLinkError);
         $I->amOnPage(parse_url($imgLinkError, PHP_URL_PATH) . '?' . parse_url($imgLinkError, PHP_URL_QUERY));
         $I->see('Error: malformed image path');
-
     }
 
     public function it_is_linked_to_a_missing_image(AcceptanceTester $I)

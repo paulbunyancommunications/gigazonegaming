@@ -20,7 +20,6 @@ class GamesControllerCest extends BaseAcceptance
         parent::_before($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/game');
-
     }
 
     /**
@@ -115,7 +114,6 @@ class GamesControllerCest extends BaseAcceptance
         $I->seeInField(['id' => 'title'], $title);
         $I->seeInField(['id' => 'uri'], $uri2);
         $I->seeInField(['id' => 'description'], $desc2);
-
     }
 
     /**

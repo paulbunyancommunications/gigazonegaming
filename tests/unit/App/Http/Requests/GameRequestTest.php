@@ -137,7 +137,6 @@ class GameRequestTest extends WpRequestsBase
             'title' => 'required|unique:mysql_champ.games,title',
             'uri' => 'required|url',
         ], $mock->rules());
-
     }
 
     /**
@@ -153,8 +152,7 @@ class GameRequestTest extends WpRequestsBase
         $url = $faker->url;
 
         $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
-            'game_id' => (object)['name' => $name, 'title' => $title, 'uri' => $url]]
-        );
+            'game_id' => (object)['name' => $name, 'title' => $title, 'uri' => $url]]);
         $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.games,name,'.$name.',name');
         $this->assertSame($mock->rules()['title'], 'required|unique:mysql_champ.games,title,'.$title.',title');
         $this->assertSame($mock->rules()['uri'], 'required|url');
@@ -179,7 +177,6 @@ class GameRequestTest extends WpRequestsBase
             ],
             $mock->rules()
         );
-
     }
 
     /**
@@ -199,6 +196,5 @@ class GameRequestTest extends WpRequestsBase
             ],
             $request->messages()
         );
-
     }
 }

@@ -23,5 +23,4 @@ class WpUser extends Model
     {
         $this->attributes['user_pass'] = md5($value);
     }
-
 }

@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Unit\App\Providers;
+
 /**
  * ChampionshipGameComposerProviderTest
  *
@@ -31,8 +32,6 @@ class ChampionshipGameComposerProviderTest extends \TestCase
     {
         parent::tearDown();
         Mockery::close();
-
-
     }
 
     public static function tearDownAfterClass()
@@ -53,7 +52,6 @@ class ChampionshipGameComposerProviderTest extends \TestCase
         $teams = $provider->teams();
         $this->assertTrue(is_array($teams));
         $this->assertCount(10, $teams);
-
     }
 
     /**

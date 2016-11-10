@@ -11,7 +11,6 @@
 
 namespace App\Http\Requests;
 
-
 class GeoLocationRequestTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -50,6 +49,5 @@ class GeoLocationRequestTest extends \PHPUnit_Framework_TestCase
             'geo_lat.regex' => "Geo location latitude should be a float value",
             'geo_long.regex' => "Geo location longitude should be a float value",
         ], $geoLocationRequest->messages());
-
     }
 }

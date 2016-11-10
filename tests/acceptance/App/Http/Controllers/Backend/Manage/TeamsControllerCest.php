@@ -25,7 +25,6 @@ class TeamsControllerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/team');
-
     }
 
     /**
@@ -69,7 +68,6 @@ class TeamsControllerCest extends BaseAcceptance
 
         // check return, we should have a message and all the fields filled
         $I->see('The team ' . $name . ' was added');
-
     }
 
     /**
@@ -88,7 +86,6 @@ class TeamsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name . "-edited");
         $I->click(['id' => 'submit']);
         $I->see("The team " . $name . "-edited was updated");
-
     }
 
     /**
@@ -119,7 +116,6 @@ class TeamsControllerCest extends BaseAcceptance
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'emblem'], $emblem);
         $I->seeOptionIsSelected(['id' => 'tournament_id'], $tournament_id);
-
     }
 
     /**
@@ -153,7 +149,6 @@ class TeamsControllerCest extends BaseAcceptance
 
         // check that the fields are now all updated
         $I->see('The Team Name is in use, pick a new one.');
-
     }
 
     /**

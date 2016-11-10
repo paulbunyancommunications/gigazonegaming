@@ -13,7 +13,7 @@ class CreateGameRelationshipForEachPlayer extends Migration
     public function up()
     {
         $tournaments = \App\Models\Championship\PlayerRelation::where('relation_type', '=', \App\Models\Championship\Tournament::class)->get();
-        foreach ($tournaments as $key => $tournament){
+        foreach ($tournaments as $key => $tournament) {
             $the_tournament = \App\Models\Championship\Tournament::where('id', '=', $tournament->relation_id)->first();
             $p_id = $tournament->player_id;
             $g_id = $the_tournament->game_id;
@@ -22,7 +22,7 @@ class CreateGameRelationshipForEachPlayer extends Migration
             $relation->relation_id = $g_id;
             $relation->relation_type = \App\Models\Championship\Game::class;
             $exists = \App\Models\Championship\Game::find($g_id)->hasPlayerID($p_id);
-            if(!$exists){
+            if (!$exists) {
                 $relation->save();
             }
         }

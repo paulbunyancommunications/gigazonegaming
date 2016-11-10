@@ -152,7 +152,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
          */
         foreach ($teams as $key => $team) {
             $maxPlayers = Tournament::where('tournaments.id', '=', $team['tournament_id'])->first();
-            if(isset($maxPlayers->max_players) and $maxPlayers!='' and $maxPlayers!=null) {
+            if (isset($maxPlayers->max_players) and $maxPlayers!='' and $maxPlayers!=null) {
                 foreach ($playerTeam as $k => $p) {
                     if ($team['team_id'] == $p['team_id']) {
                         $teams[$key]['team_count'] = $p['team_count'];
@@ -167,7 +167,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                     $teams[$key]['team_count'] = 0;
                     $teams[$key]['team_max_players'] = $maxPlayers->max_players;
                 }
-            }else{
+            } else {
                 $teams[$key]['team_count'] = 0;
                 $teams[$key]['team_max_players'] = "0";
             }

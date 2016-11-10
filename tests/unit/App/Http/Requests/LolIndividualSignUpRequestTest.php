@@ -44,7 +44,6 @@ class LolIndividualSignUpRequestTest extends \PHPUnit_Framework_TestCase
         // check for team-captain-phone input and check that the rules are correct
         $this->assertArrayHasKey('your-phone', $individualRequest->rules());
         $this->assertSame($individualRequest->rules()['your-phone'], 'required');
-
     }
 
     /**

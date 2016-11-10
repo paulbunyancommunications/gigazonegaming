@@ -119,11 +119,10 @@ class EmailFilterCest extends BaseAcceptance
             'return true;};', 120);
         $I->see('Email Filter');
         $I->wantTo('click on a player and see the email addresses attached');
-        $I->selectOption(['id' => 'player_sort'],  'Tester Player000');
+        $I->selectOption(['id' => 'player_sort'], 'Tester Player000');
         $I->executeJS('$("#get_player").click()');
         $I->wait(3);
         $I->see('Super awesome email sender.');
         $I->seeElement('input', ['value' => 'Tester Player000']);
     }
-
 }

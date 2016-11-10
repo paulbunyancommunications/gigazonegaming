@@ -60,7 +60,6 @@ class AuthController extends Controller
 
     public function generate(GenerateAccountFormRequest $request)
     {
-
     }
 
 
@@ -89,9 +88,10 @@ class AuthController extends Controller
                     'email' => $request->input('email'),
                     'password' => $request->input('password')
                 ],
-                \Request::input('remember'))
+                \Request::input('remember')
+            )
             ) {
-               return $this->redirectWhenLoggedIn();
+                return $this->redirectWhenLoggedIn();
             } else {
                 return redirect()->back()->withInput()->with('error', trans('auth.failed'));
             }
@@ -121,7 +121,4 @@ class AuthController extends Controller
     {
         return redirect('/dashboard')->with('success', trans('auth.success'));
     }
-
-
-
 }

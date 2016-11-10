@@ -23,7 +23,6 @@ class TournamentTest extends \TestCase
         parent::setUp();
         $this->faker = \Faker\Factory::create();
         $this->resetEventListeners('App\Models\Championship\Tournament');
-
     }
 
     public function tearDown()

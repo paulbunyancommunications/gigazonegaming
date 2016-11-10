@@ -38,8 +38,8 @@ trait NotifyPlayerTrait
 
         $fields = $request->all();
         $fields['fields'] = [];
-        foreach(array_keys($fields) as $field) {
-            if(in_array($field, ['_method','_token','fields','submit'])) {
+        foreach (array_keys($fields) as $field) {
+            if (in_array($field, ['_method','_token','fields','submit'])) {
                 continue;
             }
             array_push($fields['fields'], $field);
@@ -71,4 +71,3 @@ trait NotifyPlayerTrait
         return $handler->requestHandler($request, $data);
     }
 }
-

@@ -21,7 +21,6 @@ class SearchControllerForGameCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-
     }
 
     /**
@@ -61,7 +60,6 @@ class SearchControllerForGameCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($this->gameName.' Game', 'a[title="Game '. strtolower($this->gameName) . '-game"]');
-
     }
 
     /**
@@ -81,7 +79,6 @@ class SearchControllerForGameCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($this->gameName.' Game', 'a[title="Game '. strtolower($this->gameName) . '-game"]');
-
     }
 
     /**
@@ -100,6 +97,5 @@ class SearchControllerForGameCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($this->gameName.' Game', 'a[title="Game '. strtolower($this->gameName) . '-game"]');
-
     }
 }

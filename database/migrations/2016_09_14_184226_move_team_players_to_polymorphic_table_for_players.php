@@ -34,7 +34,8 @@ class MoveTeamPlayersToPolymorphicTableForPlayers extends Migration
                         "player_id" => $player['id'],
                         "created_at" => \Carbon\Carbon::now(),
                         "updated_at" => \Carbon\Carbon::now()
-                    ]);
+                    ]
+                );
         }
     }
 

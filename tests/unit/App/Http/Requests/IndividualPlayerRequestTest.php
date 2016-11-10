@@ -123,7 +123,6 @@ class IndividualPlayerRequestTest extends WpRequestsBase
             ],
             $mock->rules()
         );
-
     }
 
     /**
@@ -144,7 +143,6 @@ class IndividualPlayerRequestTest extends WpRequestsBase
             ],
             $mock->rules()
         );
-
     }
 
     /**
@@ -161,6 +159,5 @@ class IndividualPlayerRequestTest extends WpRequestsBase
         $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)['player_id' => (object)['username' => $name, 'email' => $email]]);
         $this->assertSame($mock->rules()['username'], 'required|unique:mysql_champ.players,username,'.$name.',username');
         $this->assertSame($mock->rules()['email'], 'required|unique:mysql_champ.players,email,'.$email.',email');
-
     }
 }

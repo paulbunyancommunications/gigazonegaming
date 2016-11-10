@@ -11,7 +11,6 @@
 
 namespace App\Services;
 
-
 class Validation extends \Illuminate\Validation\Validator
 {
 

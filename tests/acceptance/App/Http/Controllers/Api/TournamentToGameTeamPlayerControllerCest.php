@@ -22,7 +22,6 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
-
     }
 
     /**

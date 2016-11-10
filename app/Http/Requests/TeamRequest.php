@@ -18,7 +18,7 @@ class TeamRequest extends Request
     {
         if (is_user_logged_in() and (is_super_admin() or is_user_admin())) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -30,8 +30,7 @@ class TeamRequest extends Request
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'GET':
             case 'DELETE':
             {
@@ -54,7 +53,8 @@ class TeamRequest extends Request
                     'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id',
                 ];
             }
-            default:break;
+            default:
+                break;
         }
         return [
         ];

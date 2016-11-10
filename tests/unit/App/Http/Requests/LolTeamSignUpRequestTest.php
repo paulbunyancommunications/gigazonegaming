@@ -70,7 +70,6 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
                 $individualRequest->rules()
             );
             $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-email-address'], 'required|email|unique:mysql_champ.players,email');
-        
         }
     }
 

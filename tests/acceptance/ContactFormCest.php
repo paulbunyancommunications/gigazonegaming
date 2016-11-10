@@ -47,7 +47,6 @@ class ContactFormCest extends \BaseAcceptance
         $I->see($comment, ['id' => 'comment-response-value']);
         $I->see($name, ['id' => 'name-response-value']);
         $I->see($email, ['id' => 'email-response-value']);
-
     }
 
     public function tryToSubmitTheContactFormWithUpdateAndCheckDatabase(AcceptanceTester $I)
@@ -64,7 +63,6 @@ class ContactFormCest extends \BaseAcceptance
 
         $I->see('Thanks for filling out the Contact Us form');
         $I->seeInDatabase('update_recipients', array('email' => $email));
-
     }
 
     public function tryAndSubmitContactFormWithMissingName(AcceptanceTester $I)

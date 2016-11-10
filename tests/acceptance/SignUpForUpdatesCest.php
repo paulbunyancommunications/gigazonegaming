@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Acceptance;
+
 use \AcceptanceTester;
 
 /**
@@ -132,7 +133,6 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->waitForElementVisible(['id' => 'update-sign-up-message-container'], (self::DEFAULT_WAIT * 2));
         $I->see('That email address has already been submitted.');
-
     }
 
     /**
@@ -170,6 +170,4 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->see('Thanks for signing up!');
         $I->seeInDatabase('update_recipients', array('email' => $email, 'participate' => 1, 'geo_lat' => $latitude, 'geo_long' => $longitude));
     }
-
-
 }

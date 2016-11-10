@@ -106,7 +106,6 @@ class TeamLolSignUpTest extends \TestCase
         $this->assertCount(1, $get);
         $this->assertSame($get[0]->geo_lat, $parameters['geo_lat']);
         $this->assertSame($get[0]->geo_long, $parameters['geo_long']);
-
     }
 
     /**
@@ -119,10 +118,10 @@ class TeamLolSignUpTest extends \TestCase
         $name = implode('-', $faker->words());
         $tournament = factory(Tournament::class)->create(['name' => $name, 'max_players' => 5]);
         $parameters = [
-            'email' => md5(time().rand(1,10000)).'@example.com',
+            'email' => md5(time().rand(1, 10000)).'@example.com',
             'name' => $faker->name,
-            'team-name' => $faker->company. ' ' . md5(time().rand(1,10000)),
-            'team-captain-lol-summoner-name' => $faker->userName . ' ' . md5(time().rand(1,10000)),
+            'team-name' => $faker->company. ' ' . md5(time().rand(1, 10000)),
+            'team-captain-lol-summoner-name' => $faker->userName . ' ' . md5(time().rand(1, 10000)),
             'team-captain-phone' => $faker->phoneNumber,
             'tournament' => $tournament->name,
             'fields' => ['email', 'name', 'team-name', 'team-captain-lol-summoner-name', 'team-captain-phone']

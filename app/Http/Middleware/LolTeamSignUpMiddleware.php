@@ -85,7 +85,6 @@ class LolTeamSignUpMiddleware
                     if ($request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name')
                         && filter_var($request->input('teammate-' . Numbers::toWord($i) . '-email-address'), FILTER_VALIDATE_EMAIL)
                     ) {
-
                         $player = new Player();
                         $player->username = $request->input('teammate-' . Numbers::toWord($i) . '-lol-summoner-name');
                         $player->email = $request->input('teammate-' . Numbers::toWord($i) . '-email-address');
@@ -100,7 +99,6 @@ class LolTeamSignUpMiddleware
                     }
                 }
             });
-
         } catch (\Exception $ex) {
             return \Response::json(['error' => [$ex->getMessage()]]);
         }

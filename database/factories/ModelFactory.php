@@ -58,7 +58,7 @@ $factory->define(App\Models\Championship\Player::class, function (Faker\Generato
         'username' => $faker->userName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
-        'user_id' => $faker->numberBetween(22220,22260),
+        'user_id' => $faker->numberBetween(22220, 22260),
     ];
 });
 
@@ -136,7 +136,7 @@ $factory->define(App\Models\Auth\Users\User::class, function (Faker\Generator $f
 $factory->define(App\Models\Auth\Roles\Role::class, function (Faker\Generator $faker) {
 
     $slugify = new Slugify();
-    $name = $faker->word . ' ' .(time() + rand(1,999999));
+    $name = $faker->word . ' ' .(time() + rand(1, 999999));
     return [
         'name' => $name,
         'slug' => $slugify->slugify($name),

@@ -57,14 +57,14 @@ class EmailController extends Controller
             $name = $player->name;
             $ids = $player->id;
         }
-        if($game or $tournament or $team or $player) { //if we see at least one player selected we can send an email otherwise return an error
+        if ($game or $tournament or $team or $player) { //if we see at least one player selected we can send an email otherwise return an error
             return View::make('game.emailForm')->with('names_get', $name)->with('ids_get', $ids);
-        }else{
+        } else {
             return Redirect::back()
                 ->with('error', 'Select a game, tournament, team or player.')
                 ->with('sorts', $_POST);
         }
-     }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -101,7 +101,7 @@ class EmailController extends Controller
                     ->with('user_message', $_POST["message"])
                     ->with('ids_get', $_POST['emailList']);
             }
-        }elseif(isset($_POST["preview"]) and $_POST["preview"] == "Preview Email") {
+        } elseif (isset($_POST["preview"]) and $_POST["preview"] == "Preview Email") {
             $converter = new CommonMarkConverter();
             $message = $converter->convertToHtml($message);
             return View::make('game.emailForm')
@@ -111,8 +111,7 @@ class EmailController extends Controller
                 ->with('user_message', $_POST["message"])
                 ->with('preview_message', $message)
                 ->with('ids_get', $_POST['emailList']);
-
-        }else {
+        } else {
             return redirect('/manage/email/')->with('error', "No Player email address found");
         }
     }
@@ -125,9 +124,9 @@ class EmailController extends Controller
             $e = Player::where('id', '=', $player['player_id'])->first();
             if ($e != null) {
                 $ids .= $e->id . $separator;
-                if($e->username!=''){
-                $username .= $e->username . $separator;
-                } elseif ($e->name!=''){
+                if ($e->username!='') {
+                    $username .= $e->username . $separator;
+                } elseif ($e->name!='') {
                     $username .= $e->name . $separator;
                 }
             }
@@ -143,7 +142,7 @@ class EmailController extends Controller
      */
     private function sendEmail($to, $subject, $message)
     {
-        if(!is_array($to)){
+        if (!is_array($to)) {
             $to = explode(', ', $to);
         }
         $emailSendCount = 0;
@@ -151,13 +150,16 @@ class EmailController extends Controller
             $player = Player::where('id', '=', $value)->first();
             $email = $player->email;
             $name = $player->name;
-            if($name =='' or $name==null){
+            if ($name =='' or $name==null) {
                 $name = $player->username;
             }
             try {
                 \FormMailHelper::makeMessage([
-                    'sender' => 'contact_us@' . str_replace_first('www.', '',
-                            parse_url(\Config::get('app.url'), PHP_URL_HOST)),
+                    'sender' => 'contact_us@' . str_replace_first(
+                        'www.',
+                        '',
+                        parse_url(\Config::get('app.url'), PHP_URL_HOST)
+                    ),
                     'recipient' => $email,
                     'name' => $name,
                     'subject' => [
@@ -244,7 +246,9 @@ class EmailController extends Controller
                 ->with('error', 'Select a game, tournament, team or player.')
                 ->with('sorts', $thePost);
         }
-        if(isset($thePost["get_player"])){return $theObject;}
+        if (isset($thePost["get_player"])) {
+            return $theObject;
+        }
         return $theObject->findPlayersRelations()->get()->toArray();
     }
 
@@ -254,6 +258,6 @@ class EmailController extends Controller
         if ($value != '' and $value != '---') {
             return $value;
         }
-        return False;
+        return false;
     }
 }

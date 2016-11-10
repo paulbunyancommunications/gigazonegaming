@@ -17,7 +17,7 @@ class TournamentRequest extends Request
     {
         if (is_user_logged_in() and (is_super_admin() or is_user_admin())) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -31,8 +31,7 @@ class TournamentRequest extends Request
     {
 //        protected $fillable = ['name', 'game_id','updated_by','updated_on'];
 //        dd($this->route());
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'GET':
             case 'DELETE':
             {
@@ -59,11 +58,11 @@ class TournamentRequest extends Request
                     'max_players' => 'required|numeric',
                 ];
             }
-            default:break;
+            default:
+                break;
         }
         return [
         ];
-
     }
 
     /**

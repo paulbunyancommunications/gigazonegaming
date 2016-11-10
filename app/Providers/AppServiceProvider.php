@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Blade::directive('autoVersion', function($expression) {
+        \Blade::directive('autoVersion', function ($expression) {
             return "<?php echo \\Pbc\\AutoVersionSingle::file($expression); ?>";
         });
     }
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         // production only providers
         if ($this->app->environment('production')) {
             // Rollbar service provider
-            if(class_exists('Jenssegers\\Rollbar\\RollbarServiceProvider')) {
+            if (class_exists('Jenssegers\\Rollbar\\RollbarServiceProvider')) {
                 $this->app->register(RollbarServiceProvider::class);
             }
         }

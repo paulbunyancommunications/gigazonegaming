@@ -110,7 +110,6 @@ class LolIndividualSignUpMiddlewareTest extends \TestCase
             return 'I ran the closure';
         });
         $this->assertSame($handle, 'I ran the closure');
-        
     }
     /**
      * If successful check for call back return
@@ -140,8 +139,6 @@ class LolIndividualSignUpMiddlewareTest extends \TestCase
         $this->assertSame($params['your-lol-summoner-name'], $getPlayer->username);
         $this->assertSame($params['your-phone'], $getPlayer->phone);
         $this->assertSame($params['name'], $getPlayer->name);
-        
-        
     }
 
     /**
@@ -204,5 +201,4 @@ class LolIndividualSignUpMiddlewareTest extends \TestCase
         $middleware->setGame($game);
         $this->assertSame($game, $middleware->getGame());
     }
-    
 }

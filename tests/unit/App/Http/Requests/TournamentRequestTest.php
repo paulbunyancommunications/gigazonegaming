@@ -122,7 +122,6 @@ class TournamentRequestTest extends WpRequestsBase
         $this->assertSame($mock->rules()['game_id'], 'required|numeric|exists:mysql_champ.games,id');
         $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.tournaments');
         $this->assertSame($mock->rules()['max_players'], 'required|numeric');
-
     }
 
     /**
@@ -144,7 +143,6 @@ class TournamentRequestTest extends WpRequestsBase
         $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.tournaments,name,'.$name.',name');
         $this->assertSame($mock->rules()['game_id'], 'required|numeric|exists:mysql_champ.games,id');
         $this->assertSame($mock->rules()['max_players'], 'required|numeric');
-
     }
 
     /**
@@ -166,7 +164,6 @@ class TournamentRequestTest extends WpRequestsBase
         $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.tournaments,name,'.$name.',name');
         $this->assertSame($mock->rules()['game_id'], 'required|numeric|exists:mysql_champ.games,id');
         $this->assertSame($mock->rules()['max_players'], 'required|numeric');
-
     }
 
 

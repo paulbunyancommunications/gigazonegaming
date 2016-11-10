@@ -50,7 +50,7 @@ class GamesControllerTest extends \TestCase
         ];
         $game = factory(Game::class)->create($params);
         $newCaught = false;
-        $response = $this->call('GET','app/api/game');
+        $response = $this->call('GET', 'app/api/game');
 
         $this->assertSame($response->getStatusCode(), 200);
 

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * Class UpdateRecipients
  * @package App\Models
@@ -52,7 +51,8 @@ class UpdateRecipients extends Model
      * @param $value
      * @return float
      */
-    public function getGeoLatAttribute($value) {
+    public function getGeoLatAttribute($value)
+    {
         return round($value, 6, PHP_ROUND_HALF_UP);
     }
 
@@ -62,7 +62,8 @@ class UpdateRecipients extends Model
      * @param $value
      * @return float
      */
-    public function getGeoLongAttribute($value) {
+    public function getGeoLongAttribute($value)
+    {
         return round($value, 6, PHP_ROUND_HALF_UP);
     }
 

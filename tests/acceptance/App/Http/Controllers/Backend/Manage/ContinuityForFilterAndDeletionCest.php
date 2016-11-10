@@ -20,7 +20,6 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
-
     }
 
     /**
@@ -109,7 +108,6 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->see('The Tester Player003');
         $I->see('The Tester Player004');
         $I->see('The Tester Player005');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -160,7 +158,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
             'document.getElementsByTagName("head")[0].appendChild(script);'.
             'return true;};', 120);
         $I->see('Create a new Team');
-        $I->see( 'Tester Team');
+        $I->see('Tester Team');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 30);
         $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", 30);
         $I->waitForText('Create a new Team', 30);
@@ -174,7 +172,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
             'document.getElementsByTagName("head")[0].appendChild(script);'.
             'return true;};', 120);
         $I->see('Create a new Tournament');
-        $I->see( 'Tester Tournament');
+        $I->see('Tester Tournament');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 30);
         $I->waitForJS("return $('.delete-TesterTournament').click();", 30);
         $I->waitForText('Create a new Tournament', 30);
@@ -188,12 +186,11 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
             'document.getElementsByTagName("head")[0].appendChild(script);'.
             'return true;};', 120);
         $I->see('Create a new Game');
-        $I->see( 'tester-game');
+        $I->see('tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 30);
         $I->waitForJS("return $('.delete-tester-game').click();", 30);
         $I->waitForText('Create a new Game', 30);
         $I->dontSeeLink('tester-game');
-
     }
 
     /**
@@ -234,12 +231,11 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
             'document.getElementsByTagName("head")[0].appendChild(script);'.
             'return true;};', 120);
         $I->see('Create a new Game');
-        $I->see( 'tester-game');
+        $I->see('tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 30);
         $I->waitForJS("return $('.delete-tester-game').click();", 30);
         $I->waitForText('Create a new Game', 30);
         $I->dontSeeElement('input', ['value' => 'tester-game']);
-
     }
     /**
      * @param AcceptanceTester $I
@@ -256,7 +252,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
             'document.getElementsByTagName("head")[0].appendChild(script);'.
             'return true;};', 120);
         $I->see('Create a new Game');
-        $I->see( 'tester-game');
+        $I->see('tester-game');
         $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 30);
         $I->waitForJS("return $('.delete-tester-game').click();", 30);
         $I->waitForText('Create a new Game', 30);
@@ -269,8 +265,5 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->dontSeeElement('input', ['value' => 'Tester Team']);
-
-
     }
-
 }

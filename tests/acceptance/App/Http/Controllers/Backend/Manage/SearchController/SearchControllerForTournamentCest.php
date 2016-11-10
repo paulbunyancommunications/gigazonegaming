@@ -21,7 +21,6 @@ class SearchControllerForTournamentCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-
     }
 
     /**
@@ -59,7 +58,6 @@ class SearchControllerForTournamentCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see(strtolower($this->tournamentName).'-tournament', 'a[title="Tournament '. strtolower($this->tournamentName) . '-tournament"]');
-
     }
 
     /**
@@ -79,6 +77,5 @@ class SearchControllerForTournamentCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see(strtolower($this->tournamentName).'-tournament', 'a[title="Tournament '. strtolower($this->tournamentName) . '-tournament"]');
-
     }
 }

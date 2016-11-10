@@ -21,7 +21,7 @@ class SearchController extends Controller
      */
     public function doSearch(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             $response = new \stdClass();
             $response->result = \View::make('game.partials.search')->render();
             return \Response::json($response);

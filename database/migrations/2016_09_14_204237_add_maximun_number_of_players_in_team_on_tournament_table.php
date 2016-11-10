@@ -28,12 +28,10 @@ class AddMaximunNumberOfPlayersInTeamOnTournamentTable extends Migration
      */
     public function down()
     {
-        if (Schema::connection('mysql_champ')->hasColumn('tournaments','max_players')) {
+        if (Schema::connection('mysql_champ')->hasColumn('tournaments', 'max_players')) {
             Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
                 $table->dropColumn('max_players');
             });
         }
     }
-
-
 }

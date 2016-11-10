@@ -123,7 +123,6 @@ class PlayerRequestTest extends WpRequestsBase
             'email' => 'required|email|unique:mysql_champ.players,email',
             'phone' => 'phone:US',
         ], $mock->rules());
-
     }
 
     /**
@@ -172,7 +171,6 @@ class PlayerRequestTest extends WpRequestsBase
         $this->assertSame('required|unique:mysql_champ.players,username,'.$username.',username', $mock->rules()['username']);
         $this->assertSame('required|email|unique:mysql_champ.players,email,'.$email.',email', $mock->rules()['email']);
         $this->assertSame('phone:US', $mock->rules()['phone']);
-
     }
 
     /**
@@ -186,6 +184,5 @@ class PlayerRequestTest extends WpRequestsBase
         $this->assertArrayHasKey('email.required', $request->messages());
         $this->assertArrayHasKey('email.unique', $request->messages());
         $this->assertArrayHasKey('phone.phone', $request->messages());
-
     }
 }

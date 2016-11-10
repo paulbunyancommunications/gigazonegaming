@@ -20,7 +20,6 @@ class Authenticate
      */
     public function __construct()
     {
-
     }
 
     /**
@@ -33,7 +32,7 @@ class Authenticate
     public function handle($request, Closure $next)
     {
         $request->loggedIn = \Sentinel::getUser();
-        if($request->loggedIn && strpos($request->getRequestUri(), '/auth/') !== false && $request->getRequestUri() !== '/auth/logout') {
+        if ($request->loggedIn && strpos($request->getRequestUri(), '/auth/') !== false && $request->getRequestUri() !== '/auth/logout') {
             return redirect('order');
         }
 

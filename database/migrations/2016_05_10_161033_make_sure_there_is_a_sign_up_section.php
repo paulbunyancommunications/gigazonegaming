@@ -24,7 +24,6 @@ class MakeSureThereIsASignUpSection extends Migration
                   (1, \'' . date("Y-m-d H:i:s") . '\', \'' . date("Y-m-d H:i:s") . '\', \'If you&#39;re looking to participate in the [bloginfo key="description"] you can sign up as either <a href="http://gigazonegaming.local/sign-up/lol-team-sign-up/">a team</a> or <a href="http://gigazonegaming.local/sign-up/lol-individual-sign-up/">an individual player</a>.\', \'Sign Up\', \'\', \'publish\', \'closed\', \'closed\', \'\', \'sign-up\', \'\', \'\', \'' . date("Y-m-d H:i:s") . '\', \'' . date("Y-m-d H:i:s") . '\', \'\', 0, \'http://gigazonegaming.local/?page_id=' . $inc[0]->Auto_increment . '\', 0, \'page\', \'\', 0);'
             );
         }
-
     }
 
     /**

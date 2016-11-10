@@ -21,7 +21,6 @@ class SearchControllerForTeamCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-
     }
 
     /**
@@ -103,7 +102,6 @@ class SearchControllerForTeamCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($this->teamName, 'a[title="Team '. $this->teamName .'"]');
-
     }
     /**
      * Check that we can get a team from the search bar by partial emblem
@@ -123,8 +121,5 @@ class SearchControllerForTeamCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($this->teamName, 'a[title="Team '. $this->teamName .'"]');
-
     }
-
-
 }

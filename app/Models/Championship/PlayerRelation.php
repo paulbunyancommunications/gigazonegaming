@@ -20,6 +20,5 @@ class PlayerRelation extends Model
     public static function boot()
     {
         parent::boot();
-
     }
 }

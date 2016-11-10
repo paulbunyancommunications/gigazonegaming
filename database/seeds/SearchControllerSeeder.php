@@ -61,8 +61,5 @@ class SearchControllerSeeder extends Seeder
             'relation_id' => $game->id,
             'relation_type' => App\Models\Championship\Game::class,
         ]);
-
-
-
     }
 }

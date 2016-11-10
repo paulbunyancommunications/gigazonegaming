@@ -46,6 +46,5 @@ class IndividualPlayerRequest extends Request
                 break;
         }
         return [];
-
     }
 }

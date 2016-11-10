@@ -14,7 +14,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
 
-
 class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 {
 
@@ -27,7 +26,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
-
     }
 
     /**
@@ -164,20 +162,18 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $email = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_email")');
         $I->wait(3);
         $this->CheckIfFieldsAreDisabledAfterTeamSelection($I);
-        $I->click( "#".$id);
+        $I->click("#".$id);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'username'], $user);
         $I->seeInField(['id' => 'email'], $email);
         $I->seeInField(['id' => 'phone'], $phone);
-
-
     }
 
     /**
      * @param AcceptanceTester $I
      * @param $i
      */
-    private function CheckIfFieldsAreDisabledAfterTeamSelection(AcceptanceTester $I, $i=0)
+    private function CheckIfFieldsAreDisabledAfterTeamSelection(AcceptanceTester $I, $i = 0)
     {
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(null, $game, "Game Sort should be enabled");
@@ -200,5 +196,4 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 //        var_dump($game)
         return array($game, $tournament, $team, $submit);
     }
-
 }

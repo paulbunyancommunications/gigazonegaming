@@ -13,8 +13,8 @@ class CleanPlayerRelationsWhereTeamDoesntExistAnymore extends Migration
     public function up()
     {
         $teamsRelations = \App\Models\Championship\PlayerRelation::where('relation_type', '=', \App\Models\Championship\Team::class)->get();
-        foreach ($teamsRelations as $key => $team){
-            if(\App\Models\Championship\Team::where('id', '=', $team->relation_id)->get()->toArray()==[]){
+        foreach ($teamsRelations as $key => $team) {
+            if (\App\Models\Championship\Team::where('id', '=', $team->relation_id)->get()->toArray()==[]) {
                 $team->delete();
             }
         }

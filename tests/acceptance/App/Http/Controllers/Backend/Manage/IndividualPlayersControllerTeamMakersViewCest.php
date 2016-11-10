@@ -14,7 +14,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
 
-
 class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
 {
 
@@ -27,7 +26,6 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
-
     }
 
     /**
@@ -88,7 +86,5 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'submit_fill_team'], 60);
         $I->click(['id' => 'submit_fill_team']);
         $I->see("The Players had being added to the team Tester Team");
-
     }
-
 }

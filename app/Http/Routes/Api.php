@@ -3,7 +3,7 @@
 /**
  * Api Routes
  */
-Route::group(['middleware' => 'api', 'namespace' => 'Api\Championship'], function() {
+Route::group(['middleware' => 'api', 'namespace' => 'Api\Championship'], function () {
 //Route::group(['namespace' => 'Api\Championship'], function() {
     Route::get('/api/game', ['as' => 'api.game.index', 'uses' => 'GamesController@index']);
     Route::get('/api/game/{game}', ['as' => 'api.game.get', 'uses' => 'GamesController@show']);

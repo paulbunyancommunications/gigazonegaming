@@ -100,7 +100,6 @@ class GamesController extends Controller
         } catch (\Exception $ex) {
             return redirect()->back()->withInput()->with('error', $ex->getMessage());
         }
-
     }
 
     /**
@@ -113,7 +112,7 @@ class GamesController extends Controller
     {
         $name = $game->name;
         foreach (Tournament::where('game_id', '=', $game->getRouteKey())->get() as $key => $tounament) {
-            foreach (Team::where('tournament_id', '=', $tounament->id)->get() as $k => $team){
+            foreach (Team::where('tournament_id', '=', $tounament->id)->get() as $k => $team) {
                 PlayerRelation::where('relation_id', '=', $team->id)->where('relation_type', '=', Team::class)->delete();
                 $team->delete();
             }
@@ -126,5 +125,4 @@ class GamesController extends Controller
         return View::make('game/game')
             ->with("success", "The game ".$name." was successfully deleted (and all tournaments, teams and relations attached to it).");
     }
-
 }

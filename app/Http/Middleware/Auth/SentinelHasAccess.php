@@ -17,7 +17,7 @@ class SentinelHasAccess
     public function handle($request, Closure $next)
     {
         $user = Sentinel::getUser();
-        if(!$user->hasAccess([$this->parseRouteName($request)])) {
+        if (!$user->hasAccess([$this->parseRouteName($request)])) {
             return redirect()->back()->with('error', 'You don\'t have permission to this route.');
         }
         return $next($request);
@@ -31,15 +31,12 @@ class SentinelHasAccess
     private function parseRouteName($request)
     {
         $name = $request->route()->getName();
-        if(strpos($name, '.') !== false) {
+        if (strpos($name, '.') !== false) {
             $nameArray = explode('.', $name);
         } else {
             $nameArray = (array)$name;
         }
         $nameArray = array_filter($nameArray);
         return implode('.', $nameArray);
-    
     }
-
-
 }

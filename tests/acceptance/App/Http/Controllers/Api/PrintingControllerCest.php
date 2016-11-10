@@ -22,7 +22,6 @@ class PrintingControllerCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
-
     }
 
     /**
@@ -111,7 +110,8 @@ class PrintingControllerCest extends BaseAcceptance
     }
 
 
-    private function checkJquery(AcceptanceTester $I){
+    private function checkJquery(AcceptanceTester $I)
+    {
         $I->waitForJS('if(!window.jQuery){'.
             'var script = document.createElement("script");'.
             'script.type = "text/javascript";'.

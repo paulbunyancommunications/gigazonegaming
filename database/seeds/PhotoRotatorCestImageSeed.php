@@ -13,11 +13,10 @@ class PhotoRotatorCestImageSeed extends Seeder
     {
 
         // there's a tag that all the front page rotator images are in, the image post needs to be attached to.
-        $termId = \DB::table('wp_terms')->where('slug','home-masthead-photo-rotator')->first();
+        $termId = \DB::table('wp_terms')->where('slug', 'home-masthead-photo-rotator')->first();
 
 
-        for($i=1; $i <= 5; $i++) {
-
+        for ($i=1; $i <= 5; $i++) {
             // create image entry
             $image = \App\Models\WpPost::firstOrCreate([
                 'post_name' => 'PhotoRotatorCest'.$i,
@@ -128,7 +127,6 @@ class PhotoRotatorCestImageSeed extends Seeder
                     ['object_id' => $image->ID, 'term_taxonomy_id' => $termId->term_id]
                 );
             }
-
         }
     }
 }

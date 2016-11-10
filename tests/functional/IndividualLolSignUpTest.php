@@ -69,6 +69,5 @@ class IndividualLolSignUpTest extends \TestCase
         $this->assertSame($getIndividual->phone, $parameters['your-phone']);
 
         $this->assertInstanceOf(Game::class, $getIndividual->games[0]);
-
     }
 }

@@ -108,8 +108,10 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $response = json_decode($handle->getContent());
         $this->assertObjectHasAttribute('error', $response);
         $this->assertTrue(is_array($response->error));
-        $this->assertTrue(in_array('Could not find tournament "' . $middleware->getTournament() . '"',
-            $response->error));
+        $this->assertTrue(in_array(
+            'Could not find tournament "' . $middleware->getTournament() . '"',
+            $response->error
+        ));
     }
 
     /**
@@ -126,7 +128,6 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
             return 'I ran the closure';
         });
         $this->assertSame($handle, 'I ran the closure');
-
     }
 
     /**
@@ -195,7 +196,6 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
 
         // check other players
         for ($i = 1; $i < $getTeam->tournament->max_players; $i++) {
-
             $getPlayer = \App\Models\Championship\Player::where(
                 'email',
                 '=',
@@ -266,9 +266,10 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         // check messages
         $this->assertTrue(in_array($rules->messages()['email.email'], $response->error));
         for ($i = 1; $i <= 2; $i++) {
-            $this->assertTrue(in_array($rules->messages()['teammate-' . Numbers::toWord($i) . '-email-address.email'],
-                $response->error));
-
+            $this->assertTrue(in_array(
+                $rules->messages()['teammate-' . Numbers::toWord($i) . '-email-address.email'],
+                $response->error
+            ));
         }
     }
 

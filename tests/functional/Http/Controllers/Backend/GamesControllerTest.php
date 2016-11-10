@@ -1,6 +1,7 @@
 <?php
 
 namespace Test\Functional\Http\Controllers\Backend;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -24,5 +25,4 @@ class GamesControllerTest extends \TestCase
 //        $this->assertEquals(200, $response->getStatusCode());
 //        $this->assertNotFalse(strpos(implode(' ', $this->success), 'There are no games yet') or strpos(implode(' ', $this->success), 'There are no games yet'));
     }
-
 }

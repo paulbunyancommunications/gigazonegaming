@@ -55,7 +55,6 @@ class UpdatesControllerTest extends \TestCase
 
         $update = UpdateRecipients::findUpdateByEmail($email);
         $this->assertTrue($update->participate);
-
     }
     /**
      * @test
@@ -74,7 +73,6 @@ class UpdatesControllerTest extends \TestCase
         $update = UpdateRecipients::findUpdateByEmail($email);
         $this->assertEquals($update->geo_lat, $latitude, 'the stored value of "'.$update->geo_lat.'" equals  "'. $latitude .'"');
         $this->assertEquals($update->geo_long, $longitude, 'the stored value of "'.$update->geo_long.'" equals  "'. $longitude .'"');
-
     }
 
     /**
@@ -90,7 +88,6 @@ class UpdatesControllerTest extends \TestCase
         $decode = json_decode($response->getContent());
         $this->assertObjectHasAttribute('error', $decode);
         $this->assertNotFalse(strpos(implode(', ', $decode->error), 'The email field is required.'));
-
     }
 
     /**
@@ -106,7 +103,6 @@ class UpdatesControllerTest extends \TestCase
         $decode = json_decode($response->getContent());
         $this->assertObjectHasAttribute('error', $decode);
         $this->assertNotFalse(strpos(implode(', ', $decode->error), 'The email must be a valid email address.'));
-
     }
 
     /**
@@ -132,6 +128,5 @@ class UpdatesControllerTest extends \TestCase
         $decode2 = json_decode($response2->getContent());
         $this->assertObjectHasAttribute('error', $decode2);
         $this->assertNotFalse(strpos(implode(', ', $decode2->error), 'That email address has already been submitted.'));
-
     }
 }

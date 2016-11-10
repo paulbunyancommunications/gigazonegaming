@@ -31,7 +31,7 @@ class RemoteContentTest extends \TestCase
         parent::tearDown();
         \Mockery::close();
 
-        if($this->file && file_exists($this->file)) {
+        if ($this->file && file_exists($this->file)) {
             unlink($this->file);
         }
     }
@@ -58,7 +58,6 @@ class RemoteContentTest extends \TestCase
         $content = new RemoteContent(['pool' => $pool, 'uri' => $this->file]);
         $this->assertContains('<p>' . __METHOD__ .'</p>', $content->getInfo());
         $this->assertSame($content->getInfo(), $content->getSource($this->file));
-
     }
 
     /**
@@ -112,5 +111,4 @@ class RemoteContentTest extends \TestCase
         $dom->shouldReceive('find')->with('script')->once()->andReturn($js);
         $this->assertSame($js, $content->getScripts($dom));
     }
-
 }

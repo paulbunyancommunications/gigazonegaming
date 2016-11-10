@@ -16,7 +16,7 @@ class GameRequest extends Request
     {
         if (is_user_logged_in() and (is_super_admin() or is_user_admin())) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

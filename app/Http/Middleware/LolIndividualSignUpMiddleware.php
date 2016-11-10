@@ -56,7 +56,6 @@ class LolIndividualSignUpMiddleware
             });
         } catch (\Exception $ex) {
             return \Response::json(['error' => [$ex->getMessage()]]);
-
         }
 
         return $next($request);

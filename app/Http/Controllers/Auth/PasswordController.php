@@ -63,7 +63,6 @@ class PasswordController extends Controller
     {
         $this->context['title'] = 'Recover Login';
         return \View::make('auth.recover', $this->context);
-
     }
 
     /**
@@ -83,7 +82,6 @@ class PasswordController extends Controller
             $this->context['this_user'] = $user;
             $this->context['reminder'] = $reminder;
             return \View::make('auth.reset', $this->context);
-
         } else {
             // Bad or missing key, redirect back to the homepage with error
             return redirect('auth/login')->with('error', trans('passwords.token'));
@@ -108,8 +106,6 @@ class PasswordController extends Controller
             // Reminder not found or not completed.
             return redirect('auth/login')->with('error', trans('passwords.token'));
         }
-
-
     }
 
     /**
@@ -136,11 +132,8 @@ class PasswordController extends Controller
                 $m->subject('Login Recovery');
                 $m->from(\Config::get('mail.from.address'));
             });
-
         }
 
         return redirect('/auth/login')->with('success', trans('passwords.sent'));
     }
-
-
 }

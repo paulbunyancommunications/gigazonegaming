@@ -19,8 +19,8 @@ class AddVerificationCodeToTeamTable extends Migration
             });
         }
         $teamUpdated = \App\Models\Championship\Team::all()->toArray();
-        foreach ($teamUpdated as $team){
-            \App\Models\Championship\Team::where('id','=',$team['id'])->update(['verification_code'=> str_random(8)]);
+        foreach ($teamUpdated as $team) {
+            \App\Models\Championship\Team::where('id', '=', $team['id'])->update(['verification_code'=> str_random(8)]);
         }
     }
 
@@ -31,7 +31,7 @@ class AddVerificationCodeToTeamTable extends Migration
      */
     public function down()
     {
-        if (Schema::connection('mysql_champ')->hasColumn('teams','verification_code')) {
+        if (Schema::connection('mysql_champ')->hasColumn('teams', 'verification_code')) {
             Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
                 $table->dropColumn('verification_code');
             });

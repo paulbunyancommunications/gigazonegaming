@@ -73,6 +73,4 @@ class PrintingController extends Controller
         dd($playerList);
         return View::make('game.print')->with('playerList', $playerList);
     }
-
-
 }

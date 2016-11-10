@@ -45,7 +45,6 @@ class Tournament extends Model
             /** @var Tournament $tournament */
             $tournament->teams()->delete();
             $tournament->findPlayersRelations()->delete(); //this should delete the relations not the players
-
         });
     }
 

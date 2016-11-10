@@ -18,11 +18,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     public function to_name(Request $tournament)
     {
         $t = Tournament::where('name', '=', $tournament->name)->first();
-        if( $t == null ){
+        if ($t == null) {
             return  json_encode('false');
         }
         $tournamentRet = $this->returnFromTournament($t);
-        if( isset( $tournamentRet['error'] ) ){
+        if (isset($tournamentRet['error'])) {
             return  json_encode('false');
         }
         return $tournamentRet;
@@ -35,11 +35,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     public function to_id(Request $tournament)
     {
         $t = Tournament::where('id', '=', $tournament->id)->first();
-        if( $t == null ){
+        if ($t == null) {
             return  json_encode('false');
         }
         $tournamentRet = $this->returnFromTournament($t);
-        if( isset( $tournamentRet['error'] ) ){
+        if (isset($tournamentRet['error'])) {
             return  json_encode('false');
         }
         return $tournamentRet;
@@ -51,11 +51,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     public function te_name(Request $team)
     {
         $t = Team::where('name', '=', $team->name)->first();
-        if( $t == null ){
+        if ($t == null) {
             return  json_encode('false');
         }
         $teamRet = $this->returnFromTeam($t);
-        if( isset( $tournamentRet['error'] ) ){
+        if (isset($tournamentRet['error'])) {
             return  json_encode('false');
         }
         return $teamRet;
@@ -68,11 +68,11 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
     public function te_id(Request $team)
     {
         $t = Team::where('id', '=', $team->id)->first();
-        if( $t == null ){
+        if ($t == null) {
             return  json_encode('false');
         }
         $teamRet = $this->returnFromTeam($t);
-        if( isset( $tournamentRet['error'] ) ){
+        if (isset($tournamentRet['error'])) {
             return  json_encode('false');
         }
         return $teamRet;
@@ -82,19 +82,20 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
 
 
 
-    private function returnFromTournament(Tournament $tournament){
+    private function returnFromTournament(Tournament $tournament)
+    {
         $t = $tournament;
         $game = $t->game()->first();
         $teams = $tournament->teams()->get();
         $teamArray = [];
-        foreach ($teams as $team){
+        foreach ($teams as $team) {
             $players = $team->getPlayersAttribute();
             $teamArray[$team->name] = [];
             $i = 1;
-            foreach ($players as $player){
-                if($player->id == $team->captain){
+            foreach ($players as $player) {
+                if ($player->id == $team->captain) {
                     $teamArray[$team->name]['captain'] = $player->username;
-                }else {
+                } else {
                     $teamArray[$team->name]['player_'.$i] = $player->username;
                     $i++;
                 }
@@ -113,18 +114,19 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
                 ],
             'teams'=> $teamArray
         ];
-        return json_encode($returnableArray,JSON_PRETTY_PRINT);
+        return json_encode($returnableArray, JSON_PRETTY_PRINT);
     }
-    private function returnFromTeam(Team $team){
+    private function returnFromTeam(Team $team)
+    {
         $tournament = $team->tournament()->first();
         $game = $tournament->game()->first();
         $players = $team->getPlayersAttribute();
         $teamArray = [];
         $i = 1;
-        foreach ($players as $player){
-            if($player->id == $team->captain){
+        foreach ($players as $player) {
+            if ($player->id == $team->captain) {
                 $teamArray[$team->name]['captain'] = $player->username;
-            }else {
+            } else {
                 $teamArray[$team->name]['player_'.$i] = $player->username;
                 $i++;
             }
@@ -142,6 +144,6 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
                 ],
             'teams'=> $teamArray
         ];
-        return json_encode($returnableArray,JSON_PRETTY_PRINT);
+        return json_encode($returnableArray, JSON_PRETTY_PRINT);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Acceptance;
+
 use \AcceptanceTester;
 
 class WpMantienceModeCest
@@ -38,6 +39,5 @@ class WpMantienceModeCest
         $I->runShellCommand('php artisan wp:up --dir='.$dir.' --file='.$file);
         // cleanup
         exec("rm -rf public_html/".$dir.' || true');
-
     }
 }

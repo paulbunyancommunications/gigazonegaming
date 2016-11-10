@@ -68,7 +68,6 @@ class ChampionshipSearch
     protected function modelBasePath()
     {
         return app_path() . "/Models/Championship";
-
     }
 
     /**
@@ -134,8 +133,8 @@ class ChampionshipSearch
         $columns = \Schema::connection($this->connection)->getColumnListing($table);
         foreach ($columns as $column) {
             $resultOfSearch = $model::where([[$column, '!=', ''], [$column, 'LIKE', '%' . $searchTerm . '%']]);
-            if(count($resultOfSearch->get())) {
-                foreach($resultOfSearch->get() as $get) {
+            if (count($resultOfSearch->get())) {
+                foreach ($resultOfSearch->get() as $get) {
                     $search[$modelName][$get->id] = $get;
                 }
             }

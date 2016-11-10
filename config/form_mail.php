@@ -52,4 +52,3 @@ return [
         'send_confirmation' => 45
     ]
 ];
-

@@ -43,7 +43,6 @@ class SwitchSignUpGrammarOnLolForms extends Migration
                     'post_modified_gmt' => \Carbon\Carbon::now()->toDateTimeString(),
                 ]);
         }
-
     }
 
     /**
@@ -86,6 +85,5 @@ class SwitchSignUpGrammarOnLolForms extends Migration
                     'post_modified_gmt' => \Carbon\Carbon::now()->toDateTimeString(),
                 ]);
         }
-
     }
 }

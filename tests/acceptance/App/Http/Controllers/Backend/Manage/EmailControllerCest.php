@@ -65,7 +65,6 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
         $I->see('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!');
-
     }
 
     /**
@@ -92,7 +91,6 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
         $I->see('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!');
-
     }
 
     /**
@@ -145,7 +143,5 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
         $I->see('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!');
-
     }
-
 }

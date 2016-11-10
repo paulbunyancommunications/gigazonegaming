@@ -20,8 +20,6 @@ class SearchViewComposer extends ServiceProvider
             $view->with('search', \ChampionshipSearch::all($request))
                 ->with('searchTerm', $request::get('search'));
         });
-
-
     }
 
     /**
@@ -43,5 +41,3 @@ class SearchViewComposer extends ServiceProvider
         return \ChampionshipSearch::all($request);
     }
 }
-
-

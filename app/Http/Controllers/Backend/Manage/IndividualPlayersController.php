@@ -47,13 +47,11 @@ class IndividualPlayersController extends Controller
         $params['tournament'] = $individualPlayer["tournament_sort"];
         $params['game'] = $individualPlayer["game_id"];
         $hasCreateAnyRelation = PlayerRelationable::createRelation($params);
-        if(!$hasCreateAnyRelation){
+        if (!$hasCreateAnyRelation) {
             return Redirect::back()->withErrors(array('msg'=>'Sorry no relation was created. The player must already have a relation of such type/s'));
-
         }
 
         return View::make('game/individualPlayer');
-
     }
 
     /**
@@ -84,19 +82,18 @@ class IndividualPlayersController extends Controller
     public function teamFill(Request $request)
     {
 
-        DB::transaction( function () use ($request) {
+        DB::transaction(function () use ($request) {
             $team = $request->team;
             $teamName = Team::where('id', $team)->first()->name;
-        foreach ($request->toArray() as $k => $value) {
-            if (substr($k, 0, 6) == 'player') {
-                PlayerRelation::createRelation(["team" => $team, 'player' => $value]);
+            foreach ($request->toArray() as $k => $value) {
+                if (substr($k, 0, 6) == 'player') {
+                    PlayerRelation::createRelation(["team" => $team, 'player' => $value]);
+                }
             }
-        }
             return Redirect::back()->with('success', "The Players had being added to the team $teamName");
-            });
+        });
 
         return Redirect::back();
-
     }
     /**
      * Display a listing of the resource.
@@ -130,7 +127,5 @@ class IndividualPlayersController extends Controller
         });
 
         return Redirect::back();
-
     }
-
 }

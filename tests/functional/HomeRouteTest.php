@@ -10,9 +10,9 @@
  */
 
 namespace Tests\Functional;
+
 use Cache;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 
 class HomeRouteTest extends \TestCase
 {

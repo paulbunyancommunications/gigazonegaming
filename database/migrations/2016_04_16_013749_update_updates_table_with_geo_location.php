@@ -12,9 +12,9 @@ class UpdateUpdatesTableWithGeoLocation extends Migration
      */
     public function up()
     {
-        Schema::table('update_recipients', function(Blueprint $table) {
-           $table->string('geo_lat');
-           $table->string('geo_long');
+        Schema::table('update_recipients', function (Blueprint $table) {
+            $table->string('geo_lat');
+            $table->string('geo_long');
         });
     }
 
@@ -25,7 +25,7 @@ class UpdateUpdatesTableWithGeoLocation extends Migration
      */
     public function down()
     {
-        Schema::table('update_recipients', function(Blueprint $table) {
+        Schema::table('update_recipients', function (Blueprint $table) {
             $table->dropColumn('geo_lat');
             $table->dropColumn('geo_long');
         });

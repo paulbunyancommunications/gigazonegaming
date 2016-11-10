@@ -1,8 +1,7 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'auth', 'namespace' => 'Auth'], function()
-{
-	Route::get('/', 'AuthController@index');
+Route::group(['middleware' => 'web', 'prefix' => 'auth', 'namespace' => 'Auth'], function () {
+    Route::get('/', 'AuthController@index');
 });
 
 Route::group(['middleware' => 'guest', 'namespace' => 'Auth'], function () {

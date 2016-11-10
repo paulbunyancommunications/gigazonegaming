@@ -43,7 +43,6 @@ class GameTest extends \TestCase
         parent::setUp();
         $this->faker = Factory::create();
         $this->resetEventListeners('App\Models\Championship\Game');
-
     }
 
     public function tearDown()
@@ -163,7 +162,6 @@ class GameTest extends \TestCase
         $getByName = Game::byName($name);
 
         $this->assertSame($getByName->name, $name);
-
     }
 
     /**

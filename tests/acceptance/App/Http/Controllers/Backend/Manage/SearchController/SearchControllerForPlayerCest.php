@@ -20,7 +20,6 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-
     }
 
     /**
@@ -69,7 +68,6 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($firstName . ' ' . $lastName, 'a[title="Player '. $firstName . ' ' . $lastName .'"]');
-
     }
 
     /**
@@ -98,7 +96,6 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($firstName . ' ' . $lastName, 'a[title="Player '. $firstName . ' ' . $lastName .'"]');
-
     }
 
     /**
@@ -127,7 +124,6 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($firstName . ' ' . $lastName, 'a[title="Player '. $firstName . ' ' . $lastName .'"]');
-
     }
 
     /**
@@ -157,7 +153,6 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($firstName . ' ' . $lastName, 'a[title="Player '. $firstName . ' ' . $lastName .'"]');
-
     }
 
     /**
@@ -186,7 +181,5 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
         $I->see($firstName . ' ' . $lastName, 'a[title="Player '. $firstName . ' ' . $lastName .'"]');
-
     }
-
 }

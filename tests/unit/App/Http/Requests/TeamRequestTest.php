@@ -122,7 +122,6 @@ class TeamRequestTest extends WpRequestsBase
             'name' => 'required|unique:mysql_champ.teams,name',
             'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
         ], $mock->rules());
-
     }
 
     /**
@@ -143,8 +142,6 @@ class TeamRequestTest extends WpRequestsBase
         ]);
         $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.teams,name,'.$name.',name');
         $this->assertSame($mock->rules()['tournament_id'], 'required|numeric:mysql_champ.tournament,tournament_id'.$tournamentId.',tournament_id');
-
-
     }
 
     /**

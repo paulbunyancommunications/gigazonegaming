@@ -100,8 +100,6 @@ class BaseAcceptance
                             }
         }');
         $I->waitForText('You are now logged out.', self::TEXT_WAIT_TIMEOUT);
-
-
     }
 
     protected function destroySelect2(AcceptanceTester $I)

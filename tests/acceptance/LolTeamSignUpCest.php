@@ -3,6 +3,7 @@ namespace Tests\Acceptance;
 
 use \AcceptanceTester;
 use Pbc\Bandolier\Type\Numbers;
+
 class LolTeamSignUpCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;

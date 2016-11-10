@@ -53,7 +53,7 @@ class Team extends Model
      */
     public function tournament()
     {
-        return $this->belongsTo(Tournament::class,'tournament_id');
+        return $this->belongsTo(Tournament::class, 'tournament_id');
     }
 
     /**
@@ -79,7 +79,6 @@ class Team extends Model
         $relationship = PlayerRelation::where('relation_id', '=', $this->id)
             ->where('relation_type', '=', Team::class)->pluck('player_id');
         return Player::whereIn('id', $relationship);
-
     }
 
     public function getPlayersAttribute()
@@ -105,7 +104,8 @@ class Team extends Model
      *
      * @return boolean
      */
-    public function isTeamFull(){
+    public function isTeamFull()
+    {
 
         $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
         $teamCount = $this->players()->count();
@@ -117,7 +117,8 @@ class Team extends Model
      *
      * @return boolean
      */
-    public function isTeamNotFull(){
+    public function isTeamNotFull()
+    {
 
         $maxPlayers = $this->tournament()->select('max_players')->first()->toArray();
         $teamCount = $this->players()->count();

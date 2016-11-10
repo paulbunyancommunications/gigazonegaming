@@ -13,7 +13,6 @@ class ArchivePaginationCest extends BaseAcceptance
     {
         parent::_before($I);
         exec('wp post generate --count=20 --path=public_html/wp >> /dev/null 2>&1');
-
     }
 
     /**
@@ -23,7 +22,6 @@ class ArchivePaginationCest extends BaseAcceptance
     {
 
         parent::_after($I);
-
     }
 
     /**
@@ -55,6 +53,5 @@ class ArchivePaginationCest extends BaseAcceptance
         $I->see(date('F, Y'));
         $I->see('(Page 2)');
         $I->seeElement('span#pagination-2');
-
     }
 }

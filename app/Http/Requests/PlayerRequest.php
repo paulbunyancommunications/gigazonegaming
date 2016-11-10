@@ -18,7 +18,7 @@ class PlayerRequest extends Request
     {
         if (is_user_logged_in() and (is_super_admin() or is_user_admin())) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -29,8 +29,7 @@ class PlayerRequest extends Request
      */
     public function rules()
     {
-        switch($this->method())
-        {
+        switch ($this->method()) {
             case 'GET':
             case 'DELETE':
             {
@@ -55,11 +54,11 @@ class PlayerRequest extends Request
                     'phone' => 'phone:US'
                 ];
             }
-            default:break;
+            default:
+                break;
         }
         return [
         ];
-
     }
 
     /**

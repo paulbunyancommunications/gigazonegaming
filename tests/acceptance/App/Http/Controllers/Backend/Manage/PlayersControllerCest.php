@@ -21,7 +21,6 @@ class PlayersControllerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-
     }
 
     /**
@@ -76,7 +75,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -96,7 +94,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -115,7 +112,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
         $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -134,7 +130,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
         $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->seeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
 
     /**

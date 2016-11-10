@@ -34,7 +34,7 @@ return [
      * usually named .env you may change that.
      */
 
-    'env-file' =>'.env', 
+    'env-file' =>'.env',
     
     /*
      * --------------------------------------------------------------------------

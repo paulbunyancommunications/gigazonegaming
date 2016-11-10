@@ -51,7 +51,6 @@ class Controller extends BaseController
         $expiresAt = $this->expiresAt(); // 1 min
         $games = Game::orderBy('name')->get()->toArray();
         Cache::put('games_c', $games, $expiresAt);
-
     }
 
     /**
@@ -63,7 +62,6 @@ class Controller extends BaseController
 
         $tournaments = Tournament::orderBy('name')->get()->toArray();
         Cache::put('tournament_c', $tournaments, $expiresAt);
-
     }
 
     /**
@@ -137,7 +135,6 @@ class Controller extends BaseController
             }
             return Cache::put($cacheKey, $this->context, $this->expiresAt());
         }
-
     }
 
     protected function siteName()

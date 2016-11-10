@@ -22,7 +22,6 @@ class MakeLeagueOfLegendsGameEntry extends Migration
             $newGame->setAttribute('title', 'League of Legends');
             $newGame->setAttribute('uri', 'http://leagueoflegends.com/');
             $newGame->save();
-
         }
     }
 

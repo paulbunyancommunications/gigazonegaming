@@ -12,14 +12,12 @@
 
 namespace Tests\Integration\Models\Championship;
 
-
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 
 /**
  * Class RoleTest
@@ -44,7 +42,6 @@ class PlayerTest extends \TestCase
         parent::setUp();
         $this->faker = Factory::create();
         $this->resetEventListeners('App\Models\Championship\Player');
-
     }
 
     public function tearDown()

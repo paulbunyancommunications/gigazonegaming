@@ -28,15 +28,10 @@ class PlayerRelationableTraitTest extends \TestCase
         parent::setUp();
         $this->faker = Factory::create();
         $this->resetEventListeners('App\Models\Championship\PlayerRelation');
-
     }
 
     public function tearDown()
     {
         parent::tearDown();
     }
-
-
-
-
 }

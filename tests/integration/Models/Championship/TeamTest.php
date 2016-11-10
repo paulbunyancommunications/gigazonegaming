@@ -21,7 +21,6 @@ use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-
 /**
  * Class RoleTest
  * @package Tests\Integration\Model
@@ -44,7 +43,6 @@ class TeamTest extends \TestCase
         parent::setUp();
         $this->faker = Factory::create();
         $this->resetEventListeners('App\Models\Championship\Team');
-
     }
 
     public function tearDown()
@@ -172,10 +170,14 @@ class TeamTest extends \TestCase
         $team = factory(Team::class)->create();
         $team_id = $team->id;
         $players = factory(\App\Models\Championship\Player::class, 5)->create();
-        for($i=0; $i < count($players); $i++) {
+        for ($i=0; $i < count($players); $i++) {
             $p = $players[$i]->toArray();
-            if(is_array($p['id'])){dd($p['id']);}
-            if(is_array($team_id)){dd($team_id);}
+            if (is_array($p['id'])) {
+                dd($p['id']);
+            }
+            if (is_array($team_id)) {
+                dd($team_id);
+            }
             \App\Models\Championship\Player::createRelation(['player' => $p['id'], 'team' => $team_id]);
         }
         $team->delete();

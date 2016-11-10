@@ -27,7 +27,6 @@ class Player extends Model
 
         // when deleted
         static::deleting(function ($player) {
-
         });
     }
 
@@ -124,12 +123,13 @@ class Player extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\morphTo
      */
-    public function getThisPlayerInfoBy($parameter = []){
-        if(isset($this->id)) {
+    public function getThisPlayerInfoBy($parameter = [])
+    {
+        if (isset($this->id)) {
             $parameter['player'] = $this->id;
         }
         $playerInfo = $this->getPlayersInfoBy($parameter);
-        if($playerInfo!= null and $playerInfo!= '' and $playerInfo!= []){
+        if ($playerInfo!= null and $playerInfo!= '' and $playerInfo!= []) {
             return $playerInfo[0];
         }
         return $playerInfo;

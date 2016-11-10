@@ -33,7 +33,7 @@ class UpdatesController extends Controller
             $update->participate = $request->input('participate');
 
             // if geolocation fields were passed along then see
-            // to that they get saved in the row 
+            // to that they get saved in the row
             if ($request->input('geo_lat') && $request->input('geo_long')) {
                 $update->geo_lat = $request->input('geo_lat');
                 $update->geo_long = $request->input('geo_long');

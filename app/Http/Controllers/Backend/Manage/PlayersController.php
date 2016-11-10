@@ -44,23 +44,23 @@ class PlayersController extends Controller
         list($request, $theAssociation) = $this->UserCleanUp($request);
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation); //save method for player is in this function call
 
-        if($success!='' and $errors!=''){
+        if ($success!='' and $errors!='') {
             return redirect("manage/player/edit/".$playerArray['id'])
 //                ->withInput()
                 ->with('success', $success)
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        }elseif ($success!=''){
+        } elseif ($success!='') {
             return redirect("manage/player/edit/".$playerArray['id'])
 //                ->withInput()
                 ->with('success', $success)
                 ->with("thePlayer", $playerArray);
-        }elseif ($errors!=''){
+        } elseif ($errors!='') {
             return redirect('manage/player/')
                 ->withInput()
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        }else{
+        } else {
             return redirect("manage/player/edit/".$playerArray['id'])
                 ->with("thePlayer", $playerArray);
         }
@@ -125,23 +125,23 @@ class PlayersController extends Controller
         list($request, $theAssociation) = $this->UserCleanUp($request);
 
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation);
-        if($success!='' and $errors!=''){
+        if ($success!='' and $errors!='') {
             return Redirect::back()
                 ->withInput()
                 ->with('success', $success)
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        }elseif ($success!=''){
+        } elseif ($success!='') {
             return Redirect::back()
                 ->withInput()
                 ->with('success', $success)
                 ->with("thePlayer", $playerArray);
-        }elseif ($errors!=''){
+        } elseif ($errors!='') {
             return Redirect::back()
                 ->withInput()
                 ->with('error', $errors)
                 ->with("thePlayer", $playerArray);
-        }else{
+        } else {
             return Redirect::back()
                 ->withInput()
                 ->with("thePlayer", $playerArray);
@@ -191,7 +191,7 @@ class PlayersController extends Controller
     public function destroy(Player $player)
     {
         $name = $player->username;
-        if($player->name!=''){
+        if ($player->name!='') {
             $name.=" ( " . $player->name . ' )';
         }
         PlayerRelation::where('player_id', '=', $player->getRouteKey())->delete();
@@ -208,13 +208,13 @@ class PlayersController extends Controller
     {
 //        var_dump($ids);
         $filterArray = [];
-        if(isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
+        if (isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
             $filterArray['team'] = trim($ids->team_sort);
         }
-        if(isset($ids->tournament_sort) and trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
+        if (isset($ids->tournament_sort) and trim($ids->tournament_sort) != "" and trim($ids->tournament_sort) != "---" and $ids->tournament_sort!=[]) {
             $filterArray['tournament'] = trim($ids->tournament_sort);
         }
-        if(isset($ids->game_sort) and trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
+        if (isset($ids->game_sort) and trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
             $filterArray['game'] = trim($ids->game_sort);
         }
 //        var_dump($filterArray);
@@ -222,18 +222,16 @@ class PlayersController extends Controller
         $playerList = $players->playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filterArray);
 
 //        var_dump($playerList);
-        return View::make('game/player')->with("players_filter", $playerList)->with('sorts',$ids);
-
+        return View::make('game/player')->with("players_filter", $playerList)->with('sorts', $ids);
     }
     public function filterTeam(Request $ids)
     {
 //        dd($ids);
         $playerList = [];
-        if(isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
-            $playerList = Team::where('id','=',$ids->team_sort)->first()->players()->get();
+        if (isset($ids->team_sort) and trim($ids->team_sort) != "" and trim($ids->team_sort) != "---" and $ids->team_sort!=[]) {
+            $playerList = Team::where('id', '=', $ids->team_sort)->first()->players()->get();
         }
-        return View::make('game/player')->with("players_filter", $playerList)->with('sorts',$ids);
-
+        return View::make('game/player')->with("players_filter", $playerList)->with('sorts', $ids);
     }
 
     /**
@@ -253,13 +251,11 @@ class PlayersController extends Controller
             // then loop through and catch values
             // that are not defaults.
             if (isset($cleanedRequest[$routable . '_id']) && is_array($cleanedRequest[$routable . '_id'])) {
-
                 foreach ($cleanedRequest[$routable . '_id'] as $k => $v) {
                     if (is_numeric($v)) {
                         $theAssociationRequest[$routable] = $v;
                     }
                 }
-
             } elseif (isset($cleanedRequest[$routable . '_id']) && is_string($cleanedRequest[$routable . '_id'])) {
                 $theAssociationRequest[$routable] = $cleanedRequest[$routable . '_id'];
             }
@@ -285,7 +281,7 @@ class PlayersController extends Controller
      * @param $theAssociation
      * @return array
      */
-    private function getPlayerInfoAndErrors( PlayerRequest $request, Player $player, $theAssociation)
+    private function getPlayerInfoAndErrors(PlayerRequest $request, Player $player, $theAssociation)
     {
         $player->name = $request->get('name');
         $player->username = $request->get('username');
@@ -297,11 +293,10 @@ class PlayersController extends Controller
         $player->fresh();
 
         $theAssociation['player'] = $player->id;
-        $result = DB::transaction( function () use ($theAssociation) {
+        $result = DB::transaction(function () use ($theAssociation) {
             PlayerRelation::where('player_id', '=', $theAssociation['player'])->delete();
             $result = '';
             if (count($theAssociation) > 1) {
-
                 $result = Player::createRelation($theAssociation);
             }
             return $result;

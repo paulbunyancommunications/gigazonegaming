@@ -76,7 +76,6 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
             throw new ConstantContactAddRecipientJobException($exceptionMessage);
             /** @codeCoverageIgnoreEnd */
         }
-
     }
 
     private function validateAddress()
@@ -117,7 +116,6 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         }
 
         return $useList;
-
     }
 
     /**
