@@ -1,277 +1,276 @@
 {
-  "name": "paulbunyannet/gigazone-gaming",
-  "description": "Gigazone Gaming website",
-  "authors": [
-    {
-      "name": "Nelson Castillo",
-      "email": "castillo@paulbunyan.net"
+    "name": "paulbunyannet/gigazone-gaming",
+    "description": "Gigazone Gaming website",
+    "authors": [
+        {
+            "name": "Nelson Castillo",
+            "email": "castillo@paulbunyan.net"
+        },
+        {
+            "name": "Nate Nolting",
+            "email": "naten@paulbunyan.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "type": "webroot",
+                "version": "4.6.1",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/WordPress/WordPress/archive/4.6.1.zip"
+                },
+                "require": {
+                    "fancyguy/webroot-installer": "1.0.0"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "pmenard/media-tags",
+                "type": "wordpress-plugin",
+                "version": "3.2.0.2",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/media-tags.3.2.0.2.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "nacin/link-manager",
+                "type": "wordpress-plugin",
+                "version": "0.1-beta",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/link-manager.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "archetyped/cornerstone",
+                "type": "wordpress-plugin",
+                "version": "0.7.5",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/cornerstone.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "lopo/duplicate-post",
+                "type": "wordpress-plugin",
+                "version": "3.0.2",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "mungobbq/enable-media-replace",
+                "type": "wordpress-plugin",
+                "version": "3.0.5",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/enable-media-replace.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "figureone/insert-pages",
+                "type": "wordpress-plugin",
+                "version": "3.1.6",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/insert-pages.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wp/rest-api",
+                "type": "wordpress-plugin",
+                "version": "2.0",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/rest-api.2.0-beta15.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "disqus/disqus-comment-system",
+                "type": "wordpress-plugin",
+                "version": "2.86",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip"
+                },
+                "require": {
+                    "composer/installers": "v1.0.7"
+                }
+            }
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "laravel/framework": "5.3.*",
+        "cartalyst/sentinel": "2.0.*",
+        "doctrine/dbal": "~2.5",
+        "wordpress": "*",
+        "fancyguy/webroot-installer": "1.0.0",
+        "symfony/yaml": "~2.4",
+        "paulbunyannet/autoversion": "~1.0",
+        "pmenard/media-tags": "3.2.0.2",
+        "nacin/link-manager": "0.1-beta",
+        "lopo/duplicate-post": "*",
+        "paulbunyannet/bandolier": "1.2.5",
+        "twig/twig": "^1.24",
+        "cocur/slugify": "^1.4",
+        "archetyped/cornerstone": "*",
+        "anahkiasen/underscore-php": "^2.0",
+        "mungobbq/enable-media-replace": "*",
+        "figureone/insert-pages": "*",
+        "tedivm/stash": "^0.14.1",
+        "wp/rest-api": "*",
+        "vlucas/phpdotenv": "^2.2",
+        "rcrowe/twigbridge": "0.9.3",
+        "paulbunyannet/premailer": "^1.0",
+        "paulbunyannet/wordpress-artisan": "^1.0",
+        "sunra/php-simple-html-dom-parser": "v1.5.0",
+        "league/csv": "^8.1",
+        "laravelcollective/html": "5.3.*",
+        "constantcontact/constantcontact": "2.1.*",
+        "spatie/laravel-backup": "^3.7",
+        "rollbar/rollbar": "~0.18.0",
+        "jenssegers/rollbar": "^1.5",
+        "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
+        "ircmaxell/password-compat": "^1.0",
+        "greggilbert/recaptcha": "^2.1",
+        "paulbunyannet/form_mail": "1.4.*",
+        "propaganistas/laravel-phone": "^2.8",
+        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "brandonwamboldt/utilphp": "1.1.*",
+        "league/commonmark": "^0.15.0",
+        "disqus/disqus-comment-system": "*"
     },
-    {
-      "name": "Nate Nolting",
-      "email": "naten@paulbunyan.net"
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "5.4.*",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*",
+        "barryvdh/laravel-ide-helper": "2.1.*",
+        "codeception/c3": "^2.0",
+        "phing/phing": "2.*"
+    },
+    "extra": {
+        "webroot-dir": "public_html/wp",
+        "webroot-package": "wordpress",
+        "installer-paths": {
+            "public_html/wp-content/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ],
+            "public_html/wp-content/themes/{$name}/": [
+                "type:wordpress-theme"
+            ]
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "files": [
+            "src/Wordpress/functions.php"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Wordpress\\": "src/Wordpress/",
+            "Twig\\": "src/Twig/",
+            "GigaZone\\": "src/GigaZone/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ],
+        "files": [
+            "tests/acceptance/BaseAcceptance.php",
+            "tests/functional/BaseFunctional.php",
+            "tests/integration/BaseIntegration.php"
+        ],
+        "psr-4": {
+            "Codeception\\Module\\": "src/Codeception/Module"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "php -r \"copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "php artisan key:generate"
+        ],
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta",
+            "php artisan optimize"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan optimize"
+        ],
+        "test": [
+            "bash testing.sh"
+        ],
+        "test-failed": [
+            "bash testing.sh failed"
+        ],
+        "get-coverage-checker": [
+            "wget -q -N https://raw.githubusercontent.com/Ocramius/VersionEyeModule/5fcfcc3c2cba7dec9343307c9e75da26d3a51d03/coverage-checker.php -O coverage-checker.php"
+        ],
+        "coverage": [
+            "php coverage-checker.php tests/_output/coverage.xml 80"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist"
     }
-  ],
-  "minimum-stability": "stable",
-  "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "wordpress",
-        "type": "webroot",
-        "version": "4.6.1",
-        "dist": {
-          "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.6.1.zip"
-        },
-        "require": {
-          "fancyguy/webroot-installer": "1.0.0"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "pmenard/media-tags",
-        "type": "wordpress-plugin",
-        "version": "3.2.0.2",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/media-tags.3.2.0.2.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "nacin/link-manager",
-        "type": "wordpress-plugin",
-        "version": "0.1-beta",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/link-manager.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "archetyped/cornerstone",
-        "type": "wordpress-plugin",
-        "version": "0.7.5",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/cornerstone.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "lopo/duplicate-post",
-        "type": "wordpress-plugin",
-        "version": "3.0.2",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "mungobbq/enable-media-replace",
-        "type": "wordpress-plugin",
-        "version": "3.0.5",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/enable-media-replace.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "figureone/insert-pages",
-        "type": "wordpress-plugin",
-        "version": "3.1.6",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/insert-pages.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "wp/rest-api",
-        "type": "wordpress-plugin",
-        "version": "2.0",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/rest-api.2.0-beta15.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "disqus/disqus-comment-system",
-        "type": "wordpress-plugin",
-        "version": "2.86",
-        "dist": {
-          "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip"
-        },
-        "require": {
-          "composer/installers": "v1.0.7"
-        }
-      }
-    }
-  ],
-  "require": {
-    "php": ">=5.5.9",
-    "laravel/framework": "5.2.*",
-    "cartalyst/sentinel": "2.0.*",
-    "doctrine/dbal": "~2.5",
-    "wordpress": "*",
-    "fancyguy/webroot-installer": "1.0.0",
-    "symfony/yaml": "~2.4",
-    "paulbunyannet/autoversion": "~1.0",
-    "pmenard/media-tags": "3.2.0.2",
-    "nacin/link-manager": "0.1-beta",
-    "lopo/duplicate-post": "*",
-    "paulbunyannet/bandolier": "1.2.5",
-    "twig/twig": "^1.24",
-    "cocur/slugify": "^1.4",
-    "archetyped/cornerstone": "*",
-    "anahkiasen/underscore-php": "^2.0",
-    "mungobbq/enable-media-replace":"*",
-    "figureone/insert-pages":"*",
-    "tedivm/stash": "^0.14.1",
-    "wp/rest-api": "*",
-    "vlucas/phpdotenv": "^2.2",
-    "rcrowe/twigbridge": "0.9.3",
-    "paulbunyannet/premailer": "^1.0",
-    "paulbunyannet/wordpress-artisan": "^1.0",
-    "sunra/php-simple-html-dom-parser": "v1.5.0",
-    "league/csv": "^8.1",
-    "laravelcollective/html": "5.2.*",
-    "constantcontact/constantcontact": "2.1.*",
-    "spatie/laravel-backup": "^3.7",
-    "rollbar/rollbar": "~0.18.0",
-    "jenssegers/rollbar": "^1.5",
-    "timber/timber": "dev-master#512e3cf0526dfc9f15bfffa56ea4804bb36e0192",
-    "ircmaxell/password-compat": "^1.0",
-    "greggilbert/recaptcha": "^2.1",
-    "paulbunyannet/form_mail": "1.4.*",
-    "propaganistas/laravel-phone": "^2.8",
-    "guzzlehttp/guzzle": "~5.3|~6.0",
-    "brandonwamboldt/utilphp": "1.1.*",
-    "league/commonmark": "^0.15.0",
-    "disqus/disqus-comment-system": "*"
-  },
-  "require-dev": {
-    "fzaninotto/faker": "~1.4",
-    "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "5.4.*",
-    "symfony/css-selector": "2.8.*|3.0.*",
-    "symfony/dom-crawler": "2.8.*|3.0.*",
-    "barryvdh/laravel-ide-helper": "2.1.*",
-    "codeception/c3": "^2.0",
-    "phing/phing": "2.*"
-  },
-  "extra": {
-    "webroot-dir": "public_html/wp",
-    "webroot-package": "wordpress",
-    "installer-paths": {
-      "public_html/wp-content/plugins/{$name}/": [
-        "type:wordpress-plugin"
-      ],
-      "public_html/wp-content/themes/{$name}/": [
-        "type:wordpress-theme"
-      ]
-    }
-  },
-  "autoload": {
-    "classmap": [
-      "database"
-    ],
-    "files": [
-      "src/Wordpress/functions.php"
-    ],
-    "psr-4": {
-      "App\\": "app/",
-      "Wordpress\\": "src/Wordpress/",
-      "Twig\\": "src/Twig/",
-      "GigaZone\\": "src/GigaZone/"
-    }
-  },
-  "autoload-dev": {
-    "classmap": [
-      "tests/TestCase.php"
-    ],
-    "files": [
-      "tests/acceptance/BaseAcceptance.php",
-      "tests/functional/BaseFunctional.php",
-      "tests/integration/BaseIntegration.php"
-
-    ],
-    "psr-4": {
-      "Codeception\\Module\\" : "src/Codeception/Module"
-    }
-  },
-  "scripts": {
-    "post-root-package-install": [
-      "php -r \"copy('.env.example', '.env');\""
-    ],
-    "post-create-project-cmd": [
-      "php artisan key:generate"
-    ],
-    "post-install-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan ide-helper:generate",
-      "php artisan ide-helper:meta",
-      "php artisan optimize"
-    ],
-    "post-update-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan optimize"
-    ],
-    "test": [
-      "bash testing.sh"
-    ],
-    "test-failed": [
-      "bash testing.sh failed"
-    ],
-    "get-coverage-checker": [
-      "wget -q -N https://raw.githubusercontent.com/Ocramius/VersionEyeModule/5fcfcc3c2cba7dec9343307c9e75da26d3a51d03/coverage-checker.php -O coverage-checker.php"
-    ],
-    "coverage": [
-      "php coverage-checker.php tests/_output/coverage.xml 80"
-    ]
-  },
-  "config": {
-    "preferred-install": "dist"
-  }
 }
