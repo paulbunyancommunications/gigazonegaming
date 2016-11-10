@@ -15,6 +15,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 
 class User extends EloquentUser
 {
+use Notifiable;
     protected $connection = "mysql_champ";
     protected $table = "users";
     protected static $rolesModel        = 'App\Models\Auth\Roles\Role';
