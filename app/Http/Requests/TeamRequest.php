@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 use App\Models\Championship\Team;
 
-class TeamRequest extends Request
+class TeamRequest extends FormRequest
 {
 
     /**
