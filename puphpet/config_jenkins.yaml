@@ -1,0 +1,78 @@
+vagrantfile:
+    vm:
+        provider:
+            local:
+                chosen_virtualizer: virtualbox
+                machines:
+                    machine1:
+                        id: gigazonegaming1
+                        hostname: gigazonegaming.local
+                        network:
+                            private_network: 192.168.56.103
+                        memory: '28000'
+                        cpus: '8'
+cron:
+    install: '1'
+    jobs:
+        job1:
+            name: artisan-schedule-run
+            user: root
+            command: 'php /var/www/artisan schedule:run >> /dev/null 2>&1'
+            minute: '*'
+            hour: '*'
+            weekday: '*'
+            month: '*'
+            monthday: ''
+apache:
+    vhosts:
+        vhost1:
+            servername: gigazonegaming.local
+            docroot: /var/www/public_html
+            directories:
+                directory1:
+                    path: /var/www/public_html
+xdebug:
+        install: '1'
+php:
+        modules:
+            php:
+                - cli
+                - intl
+                - xml
+                - mbstring
+                - gd
+            pecl:
+                - runkit
+mysql:
+    settings:
+        root_password: 'root'
+    users:
+        user1:
+            name: 'gzgaming_user'
+            password: 'MGZvCIeSNeTTstWViDHdrNzIof8edCYWSdbe6YGCCPedpvemHlf14BHLqF4dzrr'
+        user2:
+            name: 'gzgaming_champ'
+            password: 'gihweo67'
+        user3:
+            name: 'gzgaming_sent'
+            password: 'mTYS4Lo3g1oxRGPOdbPrlJgqZ'
+    databases:
+        database1:
+            name: 'gzgaming_wp'
+            sql: '/var/www/database/dump/gzgaming_wp.sql'
+        database2:
+            name: 'gzgaming_champ_db'
+            sql: '/var/www/database/dump/gzgaming_champ_db.sql'
+    grants:
+        grant1:
+            user: 'gzgaming_user'
+            table: 'gzgaming_wp.*'
+            privileges:
+              - ALL
+        grant2:
+            user: 'gzgaming_champ'
+            table: 'gzgaming_champ_db.*'
+            privileges:
+              - ALL
+sqlight:
+    install: '1'
