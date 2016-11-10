@@ -9,6 +9,8 @@
     <!-- environment, default to staging for deployment/testing -->
     <property name="env" value="development" override="true"/>
 
+    <!-- Checker to see if prepare was already run -->
+    <property name="ran_prepare" value="0"/>
     <property name="releaseName" value="master" override="true"/>
 
     <property name="build_dir" value="build/"/>
@@ -186,21 +188,26 @@
     <!-- Target: prepare tests                         -->
     <!-- ============================================  -->
     <target name="build:prepare">
-        <delete dir="${dir.package}"/>
-        <delete dir="${dir.package}${env}"/>
-        <delete dir="${dir.package}${env}/${phing.project.name}"/>
-        <delete dir="${deploy_dir}"/>
-        <mkdir dir="${dir.package}"/>
-        <mkdir dir="${dir.reports}"/>
+        <if>
+            <equals arg1="${ran_prepare}" arg2="0" />
+            <then>
+                <delete dir="${dir.package}"/>
+                <delete dir="${dir.package}${env}"/>
+                <delete dir="${dir.package}${env}/${phing.project.name}"/>
+                <delete dir="${deploy_dir}"/>
+                <mkdir dir="${dir.package}"/>
+                <mkdir dir="${dir.reports}"/>
 
-        <!-- run build commands -->
-        <exec command="npm update" level="info" checkreturn="true" />
-        <exec command="gulp" level="info" checkreturn="true" />
-        <exec command="bower update" level="info" checkreturn="true" />
-        <!-- run download of tools -->
-        <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
-        <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
-
+                <!-- run build commands -->
+                <exec command="npm update" level="info" checkreturn="true" />
+                <exec command="gulp" level="info" checkreturn="true" />
+                <exec command="bower update" level="info" checkreturn="true" />
+                <!-- run download of tools -->
+                <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
+                <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
+                <property name="ran_prepare" value="1"/>
+            </then>
+        </if>
     </target>
 
     <!-- ============================================  -->
