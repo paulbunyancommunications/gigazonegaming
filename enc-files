@@ -21,6 +21,7 @@ prefix=(
 ".env"
 "puphpet/config"
 "puphpet/config-custom"
+"puphpet/config_jenkins"
 "database/dump/gzgaming_wp"
 "database/dump/gzgaming_champ_db"
 )
@@ -28,6 +29,7 @@ suffix=(
 ".config"
 ".host"
 ""
+".yaml"
 ".yaml"
 ".yaml"
 ".sql"

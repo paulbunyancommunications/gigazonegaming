@@ -37,7 +37,10 @@ vagrant box update
 #
 # do install
 #
-
+[ -e /var/www/Vagrantfile ] && rm /var/www/Vagrantfile
+mv /var/www/Vagrantfile_jenkins /var/www/Vagrantfile
+[ -e /var/www/codeception.yml ] && rm /var/www/codeception.yml
+mv /var/www/codeception_jenkins.yml /var/www/codeception.yml
 bash install.sh
 
 # -------------------------------------------------------------
