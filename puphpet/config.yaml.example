@@ -315,7 +315,8 @@ ruby:
                 - sass@3.4.22
                 - compass@1.0.3
                 - haml@4.0.7
-                - selenium-webdriver@3.0.0
+                - selenium-webdriver@3.0.1
+                - jquery-rails@4.2.1
 python:
     install: '1'
     packages: {  }
