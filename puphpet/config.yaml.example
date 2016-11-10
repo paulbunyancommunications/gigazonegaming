@@ -3,8 +3,8 @@ vagrantfile:
     vm:
         provider:
             local:
-                box: puphpet/centos65-x64
-                box_url: puphpet/centos65-x64
+                box: puphpet/centos7-x64
+                box_url: puphpet/centos7-x64
                 box_version: '0'
                 chosen_virtualizer: virtualbox
                 virtualizers:
@@ -324,7 +324,7 @@ python:
 nodejs:
     install: '1'
     settings:
-        version: '0.12'
+        version: '7.1.0'
     npm_packages:
         - npm@3.10.8
         - gulp@3.9.1
@@ -465,4 +465,3 @@ solr:
         port: '8984'
 
 
-        
