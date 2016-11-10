@@ -28,11 +28,13 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
         ],
 
         'api' => [
             'throttle:60,1',
+            'bindings',
             \App\Http\Middleware\Api::class,
         ],
     ];
@@ -45,8 +47,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'WPAdmin' => \App\Http\Middleware\WPAdminMiddleware::class,
         'UpdateRecipient' => \App\Http\Middleware\UpdateRecipientMiddleware::class,
@@ -54,7 +55,8 @@ class Kernel extends HttpKernel
         'LolTeamSignUp' => \App\Http\Middleware\LolTeamSignUpMiddleware::class,
         'LolIndividualSignUp' => \App\Http\Middleware\LolIndividualSignUpMiddleware::class,
         'auth' => \App\Http\Middleware\Auth\SentinelAuthenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\Auth\SentinelRedirectIfAuthenticated::class,
         'standardUser' => \App\Http\Middleware\Auth\SentinelStandardUser::class,
         'admin' => \App\Http\Middleware\Auth\SentinelAdminUser::class,
