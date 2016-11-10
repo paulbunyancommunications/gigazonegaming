@@ -131,7 +131,7 @@ class EmailController extends Controller
                 }
             }
         }
-        return array(trim(trim(trim(trim(trim($ids, $separator), ']'), '['), $separator)),trim(trim(trim(trim(trim($username, $separator), ']'), '['), $separator)));
+        return [trim(trim(trim(trim(trim($ids, $separator), ']'), '['), $separator)),trim(trim(trim(trim(trim($username, $separator), ']'), '['), $separator))];
     }
 
     /**
@@ -210,7 +210,7 @@ class EmailController extends Controller
         if ($to == '') {
             $errors .= "Please add at least a Recipient. ";
         }
-        return array($subject, $message, $to, $toUser, $errors);
+        return [$subject, $message, $to, $toUser, $errors];
     }
 
     /**
@@ -236,7 +236,7 @@ class EmailController extends Controller
         if (isset($thePost['player_sort'])) {
             $player = $this->checkIfTheValuesAreValidReturnValueOrReturnFalse($thePost["player_sort"]);
         }
-        return array($separator, $game, $tournament, $team, $player);
+        return [$separator, $game, $tournament, $team, $player];
     }
 
     private function returnErrorsIfNull($theObject, $thePost)

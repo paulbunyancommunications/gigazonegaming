@@ -48,7 +48,7 @@ class IndividualPlayersController extends Controller
         $params['game'] = $individualPlayer["game_id"];
         $hasCreateAnyRelation = PlayerRelationable::createRelation($params);
         if (!$hasCreateAnyRelation) {
-            return Redirect::back()->withErrors(array('msg'=>'Sorry no relation was created. The player must already have a relation of such type/s'));
+            return Redirect::back()->withErrors(['msg'=>'Sorry no relation was created. The player must already have a relation of such type/s']);
         }
 
         return View::make('game/individualPlayer');

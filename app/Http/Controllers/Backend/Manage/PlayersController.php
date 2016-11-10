@@ -272,7 +272,7 @@ class PlayersController extends Controller
         // replace request with new request list
         $request->replace($cleanedRequest);
 
-        return array($request, $theAssociationRequest);
+        return [$request, $theAssociationRequest];
     }
 
     /**
@@ -314,6 +314,6 @@ class PlayersController extends Controller
                 $errors .= "The player " . $playerArray['name'] . " couldn't be attached to ".$result['fail'];
             }
         }
-        return array($playerArray, $success, $errors);
+        return [$playerArray, $success, $errors];
     }
 }

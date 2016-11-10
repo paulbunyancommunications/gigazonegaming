@@ -194,6 +194,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $submit = $I->executeJS("return $('#submit_button').attr('disabled');");
         $I->wait(3);
 //        var_dump($game)
-        return array($game, $tournament, $team, $submit);
+        return [$game, $tournament, $team, $submit];
     }
 }

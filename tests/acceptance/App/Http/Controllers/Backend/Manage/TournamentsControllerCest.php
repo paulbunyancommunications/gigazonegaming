@@ -202,6 +202,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $max_players = 6;
         $game_id = "tester-game";
 
-        return array($name, $max_players, $game_id);
+        return [$name, $max_players, $game_id];
     }
 }

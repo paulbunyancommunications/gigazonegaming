@@ -221,6 +221,6 @@ class GamesControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'uri'], $uri);
         $I->fillField(['id' => 'description'], $desc);
         $I->click(['id' => 'submit']);
-        return array($name, $title, $uri, $desc);
+        return [$name, $title, $uri, $desc];
     }
 }

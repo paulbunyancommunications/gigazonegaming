@@ -60,7 +60,7 @@ class ConstantContactAddRecipientJobTest extends \TestCase
 
         // get constant contact connection and check that this email has been added
         $connection = new ConstantContact($job->getApiKey());
-        $response = $connection->contactService->getContacts($job->getApiToken(), array("email" => $email));
+        $response = $connection->contactService->getContacts($job->getApiToken(), ["email" => $email]);
         $this->assertNotEmpty($response->results);
     }
 

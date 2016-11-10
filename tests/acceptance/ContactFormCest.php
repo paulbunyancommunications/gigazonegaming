@@ -62,7 +62,7 @@ class ContactFormCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'contact-us-message-container']);
 
         $I->see('Thanks for filling out the Contact Us form');
-        $I->seeInDatabase('update_recipients', array('email' => $email));
+        $I->seeInDatabase('update_recipients', ['email' => $email]);
     }
 
     public function tryAndSubmitContactFormWithMissingName(AcceptanceTester $I)

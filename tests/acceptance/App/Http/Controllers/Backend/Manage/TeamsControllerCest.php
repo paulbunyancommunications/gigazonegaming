@@ -210,6 +210,6 @@ class TeamsControllerCest extends BaseAcceptance
         $I->selectOption(['id' => 'tournament_id'], $tournament);
         $I->click(['id' => 'submit']);
 
-        return array($name, $emblem, $tournament);
+        return [$name, $emblem, $tournament];
     }
 }

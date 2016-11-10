@@ -38,7 +38,7 @@ class ChampionshipSearch
     {
         $searchTerm = $this->searchTerm($request);
         $modelPaths = $this->modelPaths();
-        return array($searchTerm, $modelPaths);
+        return [$searchTerm, $modelPaths];
     }
 
     /**
@@ -96,7 +96,7 @@ class ChampionshipSearch
     {
         $model = $this->modelNameSpace($model);
         $modelName = $this->modelName($model);
-        return array($model, $modelName);
+        return [$model, $modelName];
     }
 
     /**

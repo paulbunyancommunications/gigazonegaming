@@ -141,7 +141,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             }
         }
         /** @var array $teams get teams list with selects above */
-        $teams = call_user_func_array(array(Team::class, 'select'), $select)
+        $teams = call_user_func_array([Team::class, 'select'], $select)
             ->orderBy('name')
             ->get()
             ->toArray();
@@ -217,7 +217,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                     break;
             }
         }
-        $tournaments = call_user_func_array(array(Tournament::class, 'select'), $select)
+        $tournaments = call_user_func_array([Tournament::class, 'select'], $select)
             ->orderBy('name')
             ->get()
             ->toArray();
@@ -244,7 +244,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             }
         }
 
-        $games = call_user_func_array(array(Game::class, 'select'), $select)
+        $games = call_user_func_array([Game::class, 'select'], $select)
             ->orderBy('name')
             ->get()
             ->toArray();

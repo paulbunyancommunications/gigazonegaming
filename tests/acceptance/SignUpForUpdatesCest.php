@@ -52,7 +52,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
         $I->see('Thanks for signing up!');
-        $I->seeInDatabase('update_recipients', array('email' => $email, 'participate' => 1));
+        $I->seeInDatabase('update_recipients', ['email' => $email, 'participate' => 1]);
     }
 
     /**
@@ -78,7 +78,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
         $I->see('Thanks for signing up!');
-        $I->seeInDatabase('update_recipients', array('email' => $email, 'participate' => 0));
+        $I->seeInDatabase('update_recipients', ['email' => $email, 'participate' => 0]);
     }
 
     /**
@@ -105,7 +105,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
         $I->see('The email must be a valid email address.');
-        $I->dontSeeInDatabase('update_recipients', array('email' => $email));
+        $I->dontSeeInDatabase('update_recipients', ['email' => $email]);
     }
 
     /**
@@ -128,7 +128,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'update-sign-up-message-container'], (self::DEFAULT_WAIT * 2));
         $I->see('Thanks for signing up!');
         // do it a second time
-        $I->seeInDatabase('update_recipients', array('email' => $email));
+        $I->seeInDatabase('update_recipients', ['email' => $email]);
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->waitForElementVisible(['id' => 'update-sign-up-message-container'], (self::DEFAULT_WAIT * 2));
@@ -168,6 +168,6 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->wait(self::DEFAULT_WAIT);
         $I->see('Thanks for signing up!');
-        $I->seeInDatabase('update_recipients', array('email' => $email, 'participate' => 1, 'geo_lat' => $latitude, 'geo_long' => $longitude));
+        $I->seeInDatabase('update_recipients', ['email' => $email, 'participate' => 1, 'geo_lat' => $latitude, 'geo_long' => $longitude]);
     }
 }

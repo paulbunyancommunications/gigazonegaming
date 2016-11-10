@@ -15,9 +15,9 @@ class UpdatesController extends Controller
 
     public function store(Request $request)
     {
-        $messages = array(
+        $messages = [
             'email.unique' => trans('UpdatesController.email-unique'),
-        );
+        ];
         $rules = [
             'email' => 'required|email|unique:update_recipients',
         ];
