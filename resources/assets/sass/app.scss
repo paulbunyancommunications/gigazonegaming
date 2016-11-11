@@ -1,7 +1,16 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "compass/css3";
-@import "../../../public_html/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "../../wp-content/themes/gigazone-gaming/sass/variables";
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
 @import "variables";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "../../wp-content/themes/gigazone-gaming/sass/variables";
+
+// Bootstrap
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import "compass/css3";
+
 @import "mixins/all";
 @import "modules/all";
