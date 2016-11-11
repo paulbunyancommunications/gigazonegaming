@@ -100,6 +100,6 @@ Route::get('/c3/{extra}', function () {
 // @codeCoverageIgnoreEnd
 
 
-foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
+foreach (File::allFiles(dirname(__DIR__) . '/app/Http/Routes') as $partials) {
     require_once $partials->getPathname();
 }

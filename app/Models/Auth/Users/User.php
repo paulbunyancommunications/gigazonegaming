@@ -12,6 +12,8 @@
 namespace App\Models\Auth\Users;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
+use Illuminate\Notifications\Notifiable;
+
 
 class User extends EloquentUser
 {
