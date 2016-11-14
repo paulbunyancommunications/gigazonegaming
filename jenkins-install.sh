@@ -41,6 +41,10 @@ vagrant box update
 mv /var/www/Vagrantfile_jenkins /var/www/Vagrantfile
 [ -e /var/www/codeception.yml ] && rm /var/www/codeception.yml
 mv /var/www/codeception_jenkins.yml /var/www/codeception.yml
+[ -e /var/www/codeception.yml ] && rm /var/www/codeception.yml
+mv /var/www/codeception_jenkins.yml /var/www/codeception.yml
+[ -e /var/www/puphpet/config-custom.yml ] && rm /var/www/puphpet/config-custom.yml
+mv /var/www/puphpet/config_jenkins.yml /var/www/puphpet/config-custom.yml
 bash install.sh
 
 # -------------------------------------------------------------
