@@ -11,9 +11,9 @@
 #sudo node update
 # End Node step
 # Npm step
-sudo npm update
-sudo npm upgrade
-sudo npm update
+#sudo npm update
+#sudo npm upgrade
+#sudo npm update
 # End Npm step
 # Ruby step
 #sudo yum remove ruby ruby-devel
@@ -27,5 +27,5 @@ sudo npm update
 #sudo make install
 # End Ruby step
 # Gems step
-gem update --system
-gem update
+#gem update --system
+#gem update
