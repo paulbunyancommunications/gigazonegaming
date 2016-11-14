@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GameRequest;
-use App\Http\Requests\Request;
 use App\Models\Championship\Game;
-use App\Models\Championship\Player;
 use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;

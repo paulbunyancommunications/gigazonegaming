@@ -1,7 +1,7 @@
 <?php
-use Illuminate\Foundation\Http\FormRequest;
-
 namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
 
 class IndividualPlayerRequest extends FormRequest
 {

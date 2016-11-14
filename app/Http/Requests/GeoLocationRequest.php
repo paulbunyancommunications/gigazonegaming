@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request as BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class GeoLocationRequest extends BaseRequest
+class GeoLocationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
