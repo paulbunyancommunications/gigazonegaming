@@ -1,0 +1,29 @@
+actor: Tester
+paths:
+    tests: tests
+    log: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 28000M
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+modules:
+    config:
+        Db:
+            dsn: 'mysql:host=localhost;dbname=gzgaming_wp'
+            user: 'root'
+            password: 'root'
+            dump: 'database/dump/gzgaming_wp.sql'
+coverage:
+    enabled: true
+    whitelist:
+        include:
+            - app/*
+            - src/*
+        exclude:
+            - app/Exceptions/*
