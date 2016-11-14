@@ -1,8 +1,8 @@
+const elixir = require('laravel-elixir');
 var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
     themeResourceFolder = 'resources/wp-content/themes/gigazone-gaming',
     appFolder = 'public_html/app/content',
     appResourceFolder = 'resources/assets',
-    elixir = require('laravel-elixir'),
     gulp = require('gulp'),
     coffee = require('gulp-coffee'),
     gutil = require('gulp-util'),
@@ -12,10 +12,12 @@ var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
     livereload = require('gulp-livereload'),
     uglify = require('gulp-uglify'),
     CleanCSS = require('gulp-clean-css');
+
 require('gulp-util');
 require('laravel-elixir-sass-compass');
 require('laravel-elixir-livereload');
 require('dotenv').config();
+require('laravel-elixir-vue-2');
 
 /*
  |--------------------------------------------------------------------------
@@ -112,6 +114,7 @@ elixir(function (mix) {
             javascript: appFolder + "/js",
             image: appFolder + "/images",
         })
+        .webpack('app.js')
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
         .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
         .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
