@@ -109,14 +109,4 @@ class PrintingControllerCest extends BaseAcceptance
 //        $I->see('Tester Player034');
     }
 
-
-    private function checkJquery(AcceptanceTester $I)
-    {
-        $I->waitForJS('if(!window.jQuery){'.
-            'var script = document.createElement("script");'.
-            'script.type = "text/javascript";'.
-            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
-            'document.getElementsByTagName("head")[0].appendChild(script);'.
-            'return true;};', 120);
-    }
 }

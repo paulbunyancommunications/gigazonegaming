@@ -158,12 +158,7 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
     {
-        $I->waitForJS('if(!window.jQuery){'.
-            'var script = document.createElement("script");'.
-            'script.type = "text/javascript";'.
-            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
-            'document.getElementsByTagName("head")[0].appendChild(script);'.
-            'return true;};', 120);
+        
         $I->executeJS('$("#tournament_id").remove();');
         $I->click(['id' => 'submit']);
         $I->see('The Tournament field can not be empty.');
@@ -176,12 +171,7 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntAnInteger(AcceptanceTester $I)
     {
-        $I->waitForJS('if(!window.jQuery){'.
-            'var script = document.createElement("script");'.
-            'script.type = "text/javascript";'.
-            'script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";'.
-            'document.getElementsByTagName("head")[0].appendChild(script);'.
-            'return true;};', 120);
+        
         $I->executeJS("
             select = document.getElementById('tournament_id');
             var option = document.createElement('option');

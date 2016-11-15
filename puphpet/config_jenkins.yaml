@@ -41,8 +41,6 @@ php:
                 - xml
                 - mbstring
                 - gd
-            pecl:
-                - runkit
 mysql:
     settings:
         root_password: 'root'
