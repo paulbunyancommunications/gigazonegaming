@@ -165,6 +165,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         
         $I->see('Create a new Tournament', ['id' => 'gaming-page-title']);
         $I->see('Tester Tournament');
+        $I->waitForJS('return $("form").attr("onsubmit", "nothing = 1");', 30);
         $I->waitForJS("return $('.delete-TesterTournament').click();", 30);
         $I->waitForText('Create a new Tournament', 30);
         $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
