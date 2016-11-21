@@ -65,7 +65,7 @@
 @endsection
 @section('content')
     <div class="col-xs-12">
-        {{ Form::open(array('id' => "email_getter", 'action' => array('Backend\Manage\EmailController@email_send'), 'class' => 'form-horizontal')) }}
+        {{ Form::open(array('id' => "email-getter", 'action' => array('Backend\Manage\EmailController@email_send'), 'class' => 'form-horizontal')) }}
 
         <div id="emailCreator" class="col-xs-12 rest-form">
             <div class="form-group">

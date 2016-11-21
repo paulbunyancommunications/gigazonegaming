@@ -8,7 +8,7 @@
     }
 @endsection
 @section('content')
-    {{ Form::open(array('id' => "email_getter", 'action' => array('Backend\Manage\EmailController@email_get'), 'class' => 'form-horizontal')) }}
+    {{ Form::open(array('id' => "email-getter", 'action' => array('Backend\Manage\EmailController@email_get'), 'class' => 'form-horizontal')) }}
     <div class="col-xs-10 col-xs-push-1" >
         <h2>Email Filter</h2>
          <div class="form-group">

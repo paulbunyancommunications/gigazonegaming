@@ -53,7 +53,7 @@ class EmailFilterCest extends BaseAcceptance
         $I->wantTo('click on a game and see all the email addresses attached');
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
         $I->waitForJS('return $("#get_game").click()', 30);
-        $I->see('super awesome email sender');
+        $I->seeElement('#email-getter');
         $I->seeElement('input', ['value' => 'The Tester Player000, The Tester Player001, The Tester Player002, The Tester Player003, The Tester Player004, The Tester Player005, The Tester Player006, The Tester Player007, The Tester Player008, The Tester Player009, The Tester Player010, The Tester Player011, The Tester Player012, The Tester Player013, The Tester Player014, The Tester Player015, The Tester Player016, The Tester Player017, The Tester Player018, The Tester Player019, The Tester Player020, The Tester Player021, The Tester Player022, The Tester Player023, The Tester Player024, The Tester Player025, The Tester Player026, The Tester Player027, The Tester Player028, The Tester Player029, The Tester Player030, The Tester Player031, The Tester Player032, The Tester Player033, The Tester Player034']);
     }
     /**
@@ -68,7 +68,7 @@ class EmailFilterCest extends BaseAcceptance
         $I->wantTo('click on a tournament and see all the email addresses attached');
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
         $I->waitForJS('return $("#get_tournament").click()', 30);
-        $I->see('Super awesome email sender.');
+        $I->seeElement('#email-getter');
         $I->seeElement('input', ['value' => 'The Tester Player000, The Tester Player001, The Tester Player002, The Tester Player003, The Tester Player004, The Tester Player005, The Tester Player006, The Tester Player007, The Tester Player008, The Tester Player009, The Tester Player010, The Tester Player011, The Tester Player012, The Tester Player013, The Tester Player014, The Tester Player015, The Tester Player016, The Tester Player017, The Tester Player018, The Tester Player019, The Tester Player020, The Tester Player021, The Tester Player022, The Tester Player023, The Tester Player024, The Tester Player025, The Tester Player026, The Tester Player027, The Tester Player028, The Tester Player029, The Tester Player030, The Tester Player031, The Tester Player032, The Tester Player033, The Tester Player034']);
     }
     /**
@@ -83,7 +83,7 @@ class EmailFilterCest extends BaseAcceptance
         $I->wantTo('click on a team and see all the email addresses attached');
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
         $I->waitForJS('return $("#get_team").click()', 30);
-        $I->see('Super awesome email sender.');
+        $I->seeElement('#email-getter');
         $I->seeElement('input', ['value' => 'The Tester Player000, The Tester Player001, The Tester Player002, The Tester Player003, The Tester Player004']);
     }
     /**
@@ -98,7 +98,7 @@ class EmailFilterCest extends BaseAcceptance
         $I->wantTo('click on a player and see the email addresses attached');
         $I->selectOption(['id' => 'player_sort'],  'Tester Player000');
         $I->waitForJS('return $("#get_player").click()', 30);
-        $I->see('Super awesome email sender.');
+        $I->seeElement('#email-getter');
         $I->seeElement('input', ['value' => 'Tester Player000']);
     }
 
