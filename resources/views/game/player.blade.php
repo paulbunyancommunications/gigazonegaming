@@ -221,7 +221,7 @@
                     {!! Form::submit( 'Filter', array('class'=>'form-control btn btn-success btn-block list')) !!}
                 </div>
                 <div class="col-md-6">
-                    {{ Html::linkAction('Backend\Manage\TournamentsController@index', 'Reset Filter', [], ['class' => 'btn btn-default btn-block'])  }}
+                    {{ Html::linkAction('Backend\Manage\PlayersController@index', 'Reset Filter', [], ['class' => 'btn btn-default btn-block'])  }}
                 </div>
             </div>
             {{ Form::close() }}
