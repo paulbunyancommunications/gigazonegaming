@@ -91,12 +91,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="game_id[]" class="control-label col-xs-3">Attach to Game: </label>
+                    <label for="game_id" class="control-label col-xs-3">Attach to Game: </label>
                     <div class="col-xs-9">
                         <select type="text" name="game_id[]" id="game_id" multiple="multiple" class="form-control">
                             <option> ---</option>
                             @foreach($games as $g)
-                                <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
+                                <option id="t_option{{$g['game_id']}}-g" value="{{$g['game_id']}}" class="gameSelector"
                                         @if(isset($thePlayer['game']) and $thePlayer['game']!='' and $thePlayer['game']!=[])
                                         @foreach($thePlayer['game'] as $k => $v)
                                         @if ($v['id']==$g['game_id'])
@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tournament_id[]" class="control-label col-xs-3">Attach to Tournament: </label>
+                    <label for="tournament_id" class="control-label col-xs-3">Attach to Tournament: </label>
                     <div class="col-xs-9">
                         <select name="tournament_id[]" id="tournament_id" multiple="multiple" class="form-control">
                             <option> ---</option>
@@ -181,7 +181,7 @@
                     <select name="game_sort" id="game_sort" class="form-control">
                         <option> ---</option>
                         @foreach($games as $g)
-                            <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}"
+                            <option id="t_option{{$g['game_id']}}-fgm" value="{{$g['game_id']}}"
                                     @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
                             >{{$g['game_name']}}</option>
                         @endforeach
@@ -194,7 +194,7 @@
                     <select name="tournament_sort" id="tournament_sort" class="form-control">
                         <option> ---</option>
                         @foreach($tournaments as $g)
-                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
+                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}-ftnt" value="{{$g['tournament_id']}}"
                                     @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
                             >{{$g['tournament_name']}}</option>
                         @endforeach
@@ -207,7 +207,7 @@
                     <select name="team_sort" id="team_sort" class="form-control">
                         <option> ---</option>
                         @foreach($teams as $g)
-                            <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}"
+                            <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}-ftm" value="{{$g['team_id']}}"
                                     @if(isset($sorts) and isset($sorts->team_sort) and ($g['team_id'] == $sorts->team_sort or $g['team_name'] == $sorts->team_sort)) selected="selected" @endif
                             >{{$g['team_name']}} <i class="fa fa-users" aria-hidden="true"></i>: {{$g['team_count']}}
                                 /{{$g['team_max_players']}}</option>
