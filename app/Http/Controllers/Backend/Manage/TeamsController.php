@@ -164,6 +164,7 @@ class TeamsController extends Controller
      * @param  Request $ids
      * max is a game and a tournament id
      * @return \Illuminate\Http\Response
+     * @todo Result isn't returning the correct count
      */
     public function filter(Request $ids)
     {
