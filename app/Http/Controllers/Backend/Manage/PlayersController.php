@@ -43,7 +43,6 @@ class PlayersController extends Controller
         $player = new Player();
         list($request, $theAssociation) = $this->UserCleanUp($request);
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation); //save method for player is in this function call
-
         if($success!='' and $errors!=''){
             return redirect("manage/player/edit/".$playerArray['id'])
 //                ->withInput()
@@ -287,14 +286,22 @@ class PlayersController extends Controller
      */
     private function getPlayerInfoAndErrors( PlayerRequest $request, Player $player, $theAssociation)
     {
-        $player->name = $request->get('name');
-        $player->username = $request->get('username');
-        $player->email = $request->get('email');
-        $player->phone = $request->get('phone');
-        $player->updated_by =  $this->getUserId();
-        $player->updated_on = Carbon::now("CST");
-        $player->save();
-        $player->fresh();
+        $success = '';
+        $errors = '';
+        try {
+            $player->name = $request->get('name');
+            $player->username = $request->get('username');
+            $player->email = $request->get('email');
+            $player->phone = $request->get('phone');
+            $player->updated_by = $this->getUserId();
+            $player->updated_on = Carbon::now("CST");
+            $player->save();
+            $player->fresh();
+            $success .= trans('player.'. (strtoupper($request->getMethod()) === 'PUT' ? 'update' : 'create') .'.success');
+        } catch (\Exception $ex) {
+            $errors .= trans('player.'. (strtoupper($request->getMethod()) === 'PUT' ? 'update' : 'create') .'.error', ['error' => $ex->getMessage()]);
+            return array([], '', $errors);
+        }
 
         $theAssociation['player'] = $player->id;
         $result = DB::transaction( function () use ($theAssociation) {
@@ -307,16 +314,13 @@ class PlayersController extends Controller
             return $result;
         });
         $playerArray = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
-//        dd($playerArray);
-        $success = '';
-        $errors = '';
+
         if (isset($result) and $result != []) {
             if (isset($result['success'])) {
-                $success .= "The player " . $playerArray['name'] . " was successfully attached to ".$result['success'];
+                $success .=  trans('player.attach.success', ['name' => $playerArray['name'], 'result' => $result['success']]);
             }
-
             if (isset($result['fail'])) {
-                $errors .= "The player " . $playerArray['name'] . " couldn't be attached to ".$result['fail'];
+                $errors .= trans('player.attach.error', ['name' => $playerArray['name'], 'result' => $result['fail']]);
             }
         }
         return array($playerArray, $success, $errors);
