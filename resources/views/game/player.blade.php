@@ -48,7 +48,7 @@
                 {{  Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@store'), 'class' => 'form-horizontal')) }}
             @endif
 
-            <div class="form-group">
+
                 @if(isset($thePlayer['name']))
                     <input name="_method" type="hidden" value="PUT">
                 @else
@@ -160,21 +160,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default btn-block btn-gz-default'))}}
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="submit" name="submit" id="submit" class="btn btn-default btn-primary btn-block btn-gz" value="{{ isset($thePlayer['name']) ? "Update Player" : "Save Player"  }}">
+                        </div>
                 </div>
-                <div class="form-group">
-                    {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default col-sm-6'))}}
-                    <input type="submit" name="submit" id="submit" class='btn btn-primary col-sm-6' value=
-                    @if(isset($thePlayer['name']))
-                            "Update"
-                    @else
-                        "Save"
-                    @endif
-                    >
-                </div>
-            </div>
-            </form>
+            {{ Form::close() }}
     </div>
     <div class="col-xs-6">
         <h2>Player Filter</h2>
@@ -221,9 +215,13 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-group">
-                <div class="col-xs-6 col-xs-push-6">
-                    {!! Form::submit( 'Filter', array('class'=>'btn btn-success list fa fa-search form-control')) !!}
+                <div class="col-md-6">
+                    {!! Form::submit( 'Filter', array('class'=>'form-control btn btn-success btn-block list')) !!}
+                </div>
+                <div class="col-md-6">
+                    {{ Html::linkAction('Backend\Manage\TournamentsController@index', 'Reset Filter', [], ['class' => 'btn btn-default btn-block'])  }}
                 </div>
             </div>
             {{ Form::close() }}
