@@ -62,10 +62,4 @@ vagrant ssh -c "cd /var/www; mkdir -m 0770 cache || echo ''"
 vagrant ssh -c "cd /var/www; npm install";
 vagrant ssh -c "cd /var/www; gulp";
 
-# -------------------------------------------------------------
-# get Phing
-#
-
-vagrant ssh -c "cd /var/www; php composer.phar require phing/phing:2.* --dev"
-
 exit 0
