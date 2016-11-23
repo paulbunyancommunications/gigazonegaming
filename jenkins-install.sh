@@ -58,8 +58,13 @@ vagrant ssh -c "cd /var/www; mkdir -m 0770 cache || echo ''"
 #
 # Make sure that npm install was run and then run gulp
 #
-
 vagrant ssh -c "cd /var/www; npm install";
 vagrant ssh -c "cd /var/www; gulp";
+
+# -------------------------------------------------------------
+#
+# Make sure that composer install
+#
+vagrant ssh -c "cd /var/www; composer install"
 
 exit 0
