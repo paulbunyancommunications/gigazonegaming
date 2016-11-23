@@ -23,7 +23,8 @@ testSuites=(
 )
 
 # do codeception cleanup
-vagrant ssh -c "cd /var/www; ./vendor/bin/codecept clean && ./vendor/bin/codecept build >/dev/null 2>&"
+wget -N -q http://codeception.com/codecept.phar >/dev/null 2>&1
+vagrant ssh -c "cd /var/www; php codecept.phar clean && php codecept.phar build" >/dev/null 2>&1
 
 errorKeys=("PHPUnit_Framework_Exception" "FATAL ERROR. TESTS NOT FINISHED" "FAILURES!" "ERRORS!" "TESTS EXECUTION TERMINATED")
 errorMessage="TESTS FAILED. See ${log} for output.";
@@ -39,7 +40,7 @@ do
     echo -e "\033[30;48;5;200m${TAB}Now running ${testSuites[i]} test suite, started at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}"
 
     # run tests in the suite and fail fast
-    vagrant ssh -c "cd /var/www; ./vendor/bin/codecept run ${testSuites[i]} -v -f;" > ${log} 2>&1
+    vagrant ssh -c "cd /var/www; php codecept.phar run ${testSuites[i]} -v -f;" > ${log} 2>&1
 
     took=${SECONDS}
     ((sec=took%60, took/=60, min=took%60, hrs=took/60))
