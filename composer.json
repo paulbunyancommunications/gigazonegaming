@@ -199,7 +199,8 @@
     "symfony/dom-crawler": "2.8.*|3.0.*",
     "barryvdh/laravel-ide-helper": "2.1.*",
     "codeception/c3": "^2.0",
-    "phing/phing": "2.*"
+    "phing/phing": "2.*",
+    "codeception/codeception": "^2.2"
   },
   "extra": {
     "webroot-dir": "public_html/wp",
