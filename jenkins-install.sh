@@ -58,13 +58,22 @@ vagrant ssh -c "cd /var/www; mkdir -m 0770 cache || echo ''"
 #
 # Make sure that npm install was run and then run gulp
 #
+echo "now installing npm and running bulp for the first time"
 vagrant ssh -c "cd /var/www; npm install";
 vagrant ssh -c "cd /var/www; gulp";
 
 # -------------------------------------------------------------
 #
+# Make sure that bower packages are installed
+#
+echo "Now running bower install"
+vagrant ssh -c "cd /var/www; bower install";
+
+# -------------------------------------------------------------
+#
 # Make sure that composer install
 #
+echo "Now installing composer"
 vagrant ssh -c "cd /var/www; composer install"
 
 exit 0
