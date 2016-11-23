@@ -67,7 +67,7 @@ For options that you would traditionally represent in this format:
 thing = X
 ```
 
-...you can make an entry like `thing => true`, `thing => value`, or `thing => "` in the hash. Alternatively, you can pass an array, as `thing => ['value', 'value2']`, or list each `thing => value` separately on separate lines.
+...you can make an entry like `thing => true`, `thing => value`, or `thing => "` in the hash. Alternatively, you can pass an array, as `thing => ['value', 'value2']`, or list each `thing => value` separately on separate lines. 
 
 You can pass a variable in the hash without setting a value for it; the variable would then use MySQL's default settings. To exclude an option from the my.cnf file --- for example, when using `override_options` to revert to a default value --- pass `thing => undef`.
 
@@ -174,7 +174,7 @@ mysql::db { 'mydb':
 ### Install Percona server on CentOS
 
 This example shows how to do a minimal installation of a Percona server on a
-CentOS system. This sets up the Percona server, client, and bindings (including Perl and Python bindings). You can customize this usage and update the version as needed.
+CentOS system. This sets up the Percona server, client, and bindings (including Perl and Python bindings). You can customize this usage and update the version as needed. 
 
 This usage has been tested on Puppet 4.4 / CentOS 7 / Percona Server 5.7.
 
@@ -256,7 +256,7 @@ apt::source { 'mariadb':
   location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu',
   release  => $::lsbdistcodename,
   repos    => 'main',
-  key      => {
+  key      => { 
     id     => '199369E5404BD5FC7D2FE43BCBCB082A1BB943DB',
     server => 'hkp://keyserver.ubuntu.com:80',
   },
@@ -378,7 +378,7 @@ The MySQL root password. Puppet attempts to set the root password and update `/r
 
 This is required if `create_root_user` or `create_root_my_cnf` are true. If `root_password` is 'UNSET', then `create_root_user` and `create_root_my_cnf` are assumed to be false --- that is, the MySQL root user and `/root/.my.cnf` are not created.
 
-Password changes are supported; however, the old password must be set in `/root/.my.cnf`. Effectively, Puppet uses the old password, configured in `/root/my.cnf`, to set the new password in MySQL, and then updates `/root/.my.cnf` with the new password.
+Password changes are supported; however, the old password must be set in `/root/.my.cnf`. Effectively, Puppet uses the old password, configured in `/root/my.cnf`, to set the new password in MySQL, and then updates `/root/.my.cnf` with the new password. 
 
 ##### `old_root_password`
 
@@ -815,7 +815,7 @@ Specifies whether executing the sqlfiles should happen on every run. If set to f
  
 ##### `ensure`
 
-Specifies whether to create the database. Valid values are 'present', 'absent'. Defaults to 'present'.
+Specifies whether to create the database. Valid values are 'present', 'absent'. Defaults to 'present'. 
 
 ##### `import_timeout`
 

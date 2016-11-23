@@ -9,7 +9,7 @@ Facter.add("nodejs_stable_version") do
     if !value
       value = get_stable_version
       set_cached_value('stable_version', value)
-    end
+    end    
     value
   end
 end

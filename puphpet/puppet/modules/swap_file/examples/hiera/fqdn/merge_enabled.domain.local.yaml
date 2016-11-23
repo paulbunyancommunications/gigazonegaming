@@ -12,3 +12,5 @@ swap_file::files:
 # This will:
 # - create a file '/mnt/swap.common' using /bin/dd with the default size taken from the $::memorysizeinbytes and create a mount for it.
 # - create a file '/mnt/swap.fqdn' using /usr/bin/fallocate with size set to '2 GB' and creates mount for it.
+
+

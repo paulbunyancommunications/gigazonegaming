@@ -17,7 +17,7 @@ describe 'mysql_grant' do
   describe 'missing privileges for user' do
     it 'should fail' do
       pp = <<-EOS
-        mysql_user { 'test1@tester':
+        mysql_user { 'test1@tester': 
           ensure => present,
         }
         mysql_grant { 'test1@tester/test.*':

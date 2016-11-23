@@ -802,7 +802,7 @@ describe 'ntp' do
 
       describe "on osfamily Solaris and kernelrelease 5.10" do
         let :facts do
-          super().merge({ :osfamily        => 'Solaris',
+          super().merge({ :osfamily        => 'Solaris', 
                           :kernelrelease   => '5.10',
                           :operatingsystem => 'Solaris' })
         end

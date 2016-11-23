@@ -13,7 +13,7 @@
     * [CVS](#cvs)
     * [Mercurial](#mercurial)
     * [Perforce](#perforce)
-    * [Subversion](#subversion)
+    * [Subversion](#subversion)  
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Type: vcsrepo](#type-vcsrepo)
         * [Providers](#providers)
@@ -184,7 +184,7 @@ vcsrepo { '/path/to/repo':
   provider => git,
   remote   => 'origin'
   source   => {
-    'origin'       => 'https://github.com/puppetlabs/puppetlabs-vcsrepo.git',
+    'origin'       => 'https://github.com/puppetlabs/puppetlabs-vcsrepo.git', 
     'other_remote' => 'https://github.com/other_user/puppetlabs-vcsrepo.git'
   },
 }
@@ -420,7 +420,7 @@ vcsrepo { '/path/to/repo':
 }
 ~~~
 
-####Connect via SSH
+####Connect via SSH 
 
 To connect to your source repository via SSH (e.g., `'ssh://...'`), we recommend using the [`require` metaparameter](http://docs.puppetlabs.com/references/stable/metaparameter.html#require) to make sure your SSH keys are present before the `vcsrepo` resource is applied:
 
@@ -438,7 +438,7 @@ vcsrepo { '/path/to/repo':
 
 ####Create an empty workspace
 
-To set up the connection to your Perforce service, set `p4config` to the location of a valid Perforce [config file](http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.settings.configfiles) stored on the node:
+To set up the connection to your Perforce service, set `p4config` to the location of a valid Perforce [config file](http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.settings.configfiles) stored on the node: 
 
 ~~~
 vcsrepo { '/path/to/repo':
@@ -518,7 +518,7 @@ vcsrepo { '/path/to/repo':
 }
 ~~~
 
-####Use a specific Subversion configuration directory
+####Use a specific Subversion configuration directory 
 
 Use the `configuration` parameter to designate the directory that contains your Subversion configuration files (typically, '/path/to/.subversion'):
 
@@ -531,7 +531,7 @@ vcsrepo { '/path/to/repo':
 }
 ~~~
 
-####Connect via SSH
+####Connect via SSH 
 
 To connect to your source repository via SSH (e.g., `'svn+ssh://...'`), we recommend using the [`require` metaparameter](http://docs.puppetlabs.com/references/stable/metaparameter.html#require) to make sure your SSH keys are present before the `vcsrepo` resource is applied:
 
@@ -617,81 +617,81 @@ All parameters are optional, except where specified otherwise.
 
 ##### `basic_auth_password`
 
-Specifies the password for HTTP Basic authentication. (Requires the `basic_auth` feature.) Valid options: a string. Default: none.
+Specifies the password for HTTP Basic authentication. (Requires the `basic_auth` feature.) Valid options: a string. Default: none. 
 
 ##### `basic_auth_username`
 
-Specifies the username for HTTP Basic authentication. (Requires the `basic_auth` feature.) Valid options: a string. Default: none.
+Specifies the username for HTTP Basic authentication. (Requires the `basic_auth` feature.) Valid options: a string. Default: none. 
 
 ##### `compression`
 
-Sets the GZIP compression level for the repository history. (Requires the `gzip_compression` feature.) Valid options: an integer between 0 and 6. Default: none.
+Sets the GZIP compression level for the repository history. (Requires the `gzip_compression` feature.) Valid options: an integer between 0 and 6. Default: none. 
 
 ##### `configuration`
 
-Sets the configuration directory to use. (Requires the `configuration` feature.) Valid options: a string containing an absolute path. Default: none.
+Sets the configuration directory to use. (Requires the `configuration` feature.) Valid options: a string containing an absolute path. Default: none. 
 
 ##### `conflict`
 
-Tells Subversion how to resolve any conflicts between the source repository and your working copy. (Requires the `conflict` feature.) Valid options: 'base', 'mine-full', 'theirs-full', and 'working'. Default: none.
+Tells Subversion how to resolve any conflicts between the source repository and your working copy. (Requires the `conflict` feature.) Valid options: 'base', 'mine-full', 'theirs-full', and 'working'. Default: none. 
 
 ##### `cvs_rsh`
 
-Provides a value for the `CVS_RSH` environment variable. (Requires the `cvs_rsh` feature.) Valid options: a string. Default: none.
+Provides a value for the `CVS_RSH` environment variable. (Requires the `cvs_rsh` feature.) Valid options: a string. Default: none. 
 
 ##### `depth`
 
-In `git` sets the number of commits to include when creating a shallow clone. (Requires the `depth` feature.) Valid options: an integer. Default: none.
+In `git` sets the number of commits to include when creating a shallow clone. (Requires the `depth` feature.) Valid options: an integer. Default: none. 
 
-In `svn` instructs Subversion to limit the scope of an operation to a particular tree depth. (Requires the `depth` feature.) Valid options: 'empty', 'files', 'immediates', 'infinity'. Default: none.
+In `svn` instructs Subversion to limit the scope of an operation to a particular tree depth. (Requires the `depth` feature.) Valid options: 'empty', 'files', 'immediates', 'infinity'. Default: none. 
 
 ##### `ensure`
 
-Specifies whether the repository should exist. Valid options: 'present', 'bare', 'absent', and 'latest'. Default: 'present'.
+Specifies whether the repository should exist. Valid options: 'present', 'bare', 'absent', and 'latest'. Default: 'present'. 
 
 ##### `excludes`
 
-Lists any files the repository shouldn't track (similar to .gitignore). Valid options: a string (separate multiple values with the newline character). Default: none.
+Lists any files the repository shouldn't track (similar to .gitignore). Valid options: a string (separate multiple values with the newline character). Default: none. 
 
 ##### `force`
 
-Specifies whether to delete any existing files in the repository path if creating a new repository. **Use with care.** Valid options: 'true' and 'false'. Default: 'false'.
+Specifies whether to delete any existing files in the repository path if creating a new repository. **Use with care.** Valid options: 'true' and 'false'. Default: 'false'. 
 
 ##### `fstype`
 
-Sets the filesystem type. (Requires the `filesystem_types` feature.) Valid options: 'fsfs' or 'bdb'. Default: none.
+Sets the filesystem type. (Requires the `filesystem_types` feature.) Valid options: 'fsfs' or 'bdb'. Default: none. 
 
 ##### `group`
 
-Specifies a group to own the repository files. Valid options: a string containing a group name or GID. Default: none.
+Specifies a group to own the repository files. Valid options: a string containing a group name or GID. Default: none. 
 
 ##### `identity`
 
-Specifies an identity file to use for SSH authentication. (Requires the `ssh_identity` feature.) Valid options: a string containing an absolute path. Default: none.
+Specifies an identity file to use for SSH authentication. (Requires the `ssh_identity` feature.) Valid options: a string containing an absolute path. Default: none. 
 
 ##### `module`
 
-Specifies the repository module to manage. (Requires the `modules` feature.) Valid options: a string containing the name of a CVS module. Default: none.
+Specifies the repository module to manage. (Requires the `modules` feature.) Valid options: a string containing the name of a CVS module. Default: none. 
 
 ##### `owner`
 
-Specifies a user to own the repository files. Valid options: a string containing a username or UID. Default: none.
+Specifies a user to own the repository files. Valid options: a string containing a username or UID. Default: none. 
 
 ##### `p4config`
 
-Specifies a config file that contains settings for connecting to the Perforce service. (Requires the `p4config` feature.) Valid options: a string containing the absolute path to a valid [Perforce config file](http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.settings.configfiles). Default: none.
+Specifies a config file that contains settings for connecting to the Perforce service. (Requires the `p4config` feature.) Valid options: a string containing the absolute path to a valid [Perforce config file](http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.settings.configfiles). Default: none. 
 
 ##### `path`
 
-Specifies a location for the managed repository. Valid options: a string containing an absolute path. Default: the title of your declared resource.
+Specifies a location for the managed repository. Valid options: a string containing an absolute path. Default: the title of your declared resource. 
 
 ##### `provider`
 
-*Required.* Specifies the backend to use for this vcsrepo resource. Valid options: 'bzr', 'cvs', 'git', 'hg', 'p4', and 'svn'.
+*Required.* Specifies the backend to use for this vcsrepo resource. Valid options: 'bzr', 'cvs', 'git', 'hg', 'p4', and 'svn'. 
 
 ##### `remote`
 
-Specifies the remote repository to track. (Requires the `multiple_remotes` feature.) Valid options: a string containing one of the remote names specified in `source`. Default: 'origin'.
+Specifies the remote repository to track. (Requires the `multiple_remotes` feature.) Valid options: a string containing one of the remote names specified in `source`. Default: 'origin'. 
 
 ##### `revision`
 
@@ -704,7 +704,7 @@ Sets the revision of the repository. Valid options vary by provider:
 * `p4` - a string containing a Perforce [change number, label name, client name, or date spec](http://www.perforce.com/perforce/r12.1/manuals/cmdref/o.fspecs.html)
 * `svn` - a string containing a Subversion [revision number](http://svnbook.red-bean.com/en/1.7/svn.basic.in-action.html#svn.basic.in-action.revs), [revision keyword, or revision date](http://svnbook.red-bean.com/en/1.7/svn.tour.revs.specifiers.html)
 
-Default: none.
+Default: none. 
 
 ##### `source`
 
@@ -717,15 +717,15 @@ Specifies a source repository to serve as the upstream for your managed reposito
 * `p4` - a string containing a Perforce depot path
 * `svn` - a string containing a Subversion repository URL
 
-Default: none.
+Default: none. 
 
 ##### `submodules`
 
-Specifies whether to initialize and update each submodule in the repository. (Requires the `submodules` feature.) Valid options: 'true' and 'false'. Default: 'true'.
+Specifies whether to initialize and update each submodule in the repository. (Requires the `submodules` feature.) Valid options: 'true' and 'false'. Default: 'true'. 
 
 ##### `trust_server_cert`
 
-Instructs Subversion to accept SSL server certificates issued by unknown certificate authorities. Valid options: 'true' and 'false'. Default: 'false'.
+Instructs Subversion to accept SSL server certificates issued by unknown certificate authorities. Valid options: 'true' and 'false'. Default: 'false'. 
 
 ##### `user`
 

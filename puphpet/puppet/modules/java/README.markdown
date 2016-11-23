@@ -34,7 +34,7 @@ class { 'java':
 }
 ~~~
 
-To install the latest patch version of Java 8 on CentOS
+To install the latest patch version of Java 8 on CentOS 
 
 ~~~
 class { 'java' :
@@ -77,23 +77,23 @@ java::oracle { 'jdk8' :
 The following parameters are available in `java`:
 
 ##### `distribution`
-Specifies the Java distribution to install.
+Specifies the Java distribution to install.  
 Valid options:  'jdk', 'jre', or, where the platform supports alternative packages, 'sun-jdk', 'sun-jre', 'oracle-jdk', 'oracle-jre'. Default: 'jdk'.
 
 #####`java_alternative`
-Specifies the name of the Java alternative to use. If you set this parameter, *you must also set the `java_alternative_path`.*
+Specifies the name of the Java alternative to use. If you set this parameter, *you must also set the `java_alternative_path`.*  
 Valid options: Run command `update-java-alternatives -l` for a list of available choices. Default: OS and distribution dependent defaults on *deb systems, undef on others.
 
-#####`java_alternative_path`
-*Required when `java_alternative` is specified.* Defines the path to the `java` command.
+#####`java_alternative_path`  
+*Required when `java_alternative` is specified.* Defines the path to the `java` command.  
 Valid option: String. Default: OS and distribution dependent defaults on *deb systems, undef on others.
 
 #####`package`
-Specifies the name of the Java package. This is configurable in case you want to install a non-standard Java package. If not set, the module installs the appropriate package for the `distribution` parameter and target platform. If you set `package`, the `distribution` parameter does nothing.
-Valid option: String. Default: undef.
+Specifies the name of the Java package. This is configurable in case you want to install a non-standard Java package. If not set, the module installs the appropriate package for the `distribution` parameter and target platform. If you set `package`, the `distribution` parameter does nothing.  
+Valid option: String. Default: undef. 
 
 #####`version`
-Sets the version of Java to install, if you want to ensure a particular version.
+Sets the version of Java to install, if you want to ensure a particular version.  
 Valid options: 'present', 'installed', 'latest', or a string matching `/^[.+_0-9a-zA-Z:-]+$/`. Default: 'present'.
 
 ####Public defined types
@@ -138,7 +138,7 @@ Oracle Java packages are not included in Debian 7 and Ubuntu 12.04/14.04 reposit
 
 This module is officially [supported](https://forge.puppetlabs.com/supported) for the following Java versions and platforms:
 
-OpenJDK is supported on:
+OpenJDK is supported on:  
 
 * Red Hat Enterprise Linux (RHEL) 5, 6, 7
 * CentOS 5, 6, 7
@@ -150,7 +150,7 @@ OpenJDK is supported on:
 * SLES 11 SP1, 12 
 * OpenBSD 5.6, 5.7
 
-Sun Java is supported on:
+Sun Java is supported on:  
 
 * Debian 6
 

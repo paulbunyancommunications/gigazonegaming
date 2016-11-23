@@ -296,7 +296,7 @@ describe 'ini_setting resource' do
             setting     => 'something',
             value       => '#{i[:value]}',
             path        => "#{tmpdir}/test_show_diff.ini",
-            show_diff   => #{i[:show_diff]}
+            show_diff   => #{i[:show_diff]} 
           }
         EOS
 

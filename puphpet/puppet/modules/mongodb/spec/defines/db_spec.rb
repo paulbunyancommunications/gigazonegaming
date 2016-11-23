@@ -44,7 +44,7 @@ describe 'mongodb::db', :type => :define do
     let(:title) { 'testdb-title' }
 
     let(:params) {
-      {
+      { 
         'db_name'  => 'testdb',
         'user'     => 'testuser',
         'password' => 'testpass',

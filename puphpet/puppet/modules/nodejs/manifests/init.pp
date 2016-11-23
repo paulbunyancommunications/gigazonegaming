@@ -61,13 +61,13 @@ class nodejs (
   $node_default_symlink_target = "${nodejs_default_path}/bin/node"
   $npm_default_symlink = "${target_dir}/npm"
   $npm_default_symlink_target = "${nodejs_default_path}/bin/npm"
-
+  
   file { $node_default_symlink:
     ensure  => link,
     target  => $node_default_symlink_target,
     require => File[$nodejs_default_path]
   }
-
+  
   file { $npm_default_symlink:
     ensure  => link,
     target  => $npm_default_symlink_target,

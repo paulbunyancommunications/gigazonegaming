@@ -1,7 +1,7 @@
 ## Supported Release 4.2.0
 ### Summary
 
-A large release with many new features. Multiple additions to parameters and work contributed to OS compatibility. Also includes several bug fixes, including clean ups of code.
+A large release with many new features. Multiple additions to parameters and work contributed to OS compatibility. Also includes several bug fixes, including clean ups of code. 
 
 #### Features
 - Updated spec helper for more consistency

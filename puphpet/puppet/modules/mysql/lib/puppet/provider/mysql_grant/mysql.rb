@@ -46,7 +46,7 @@ Puppet::Type.type(:mysql_grant).provide(:mysql, :parent => Puppet::Provider::Mys
             end
           end
           # Same here, but to remove OPTION leaving just GRANT.
-          if rest.match(/WITH\sGRANT\sOPTION/)
+          if rest.match(/WITH\sGRANT\sOPTION/)           
 		options = ['GRANT']
           else
                 options = ['NONE']

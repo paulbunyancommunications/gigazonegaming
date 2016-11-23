@@ -4,25 +4,25 @@ describe Puppet::Type.type(:mysql_user).provider(:mysql) do
 
   # Output of mysqld -V
   mysql_version_string_hash = {
-      'mysql-5.5' =>
+      'mysql-5.5' => 
       {
         :version => '5.5.46',
         :string => '/usr/sbin/mysqld  Ver 5.5.46-log for Linux on x86_64 (MySQL Community Server (GPL))',
         :mysql_type => 'mysql',
       },
-      'mysql-5.6' =>
+      'mysql-5.6' => 
       {
         :version => '5.6.27',
         :string => '/usr/sbin/mysqld  Ver 5.6.27 for Linux on x86_64 (MySQL Community Server (GPL))',
         :mysql_type => 'mysql',
       },
-      'mysql-5.7.1' =>
+      'mysql-5.7.1' => 
       {
         :version => '5.7.1',
         :string => '/usr/sbin/mysqld  Ver 5.7.1 for Linux on x86_64 (MySQL Community Server (GPL))',
         :mysql_type => 'mysql',
       },
-      'mysql-5.7.6' =>
+      'mysql-5.7.6' => 
       {
         :version => '5.7.8',
         :string => '/usr/sbin/mysqld  Ver 5.7.8-rc for Linux on x86_64 (MySQL Community Server (GPL))',

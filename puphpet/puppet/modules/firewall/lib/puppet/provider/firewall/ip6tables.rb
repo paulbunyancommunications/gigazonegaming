@@ -163,7 +163,7 @@ Puppet::Type.type(:firewall).provide :ip6tables, :parent => :iptables, :source =
     :kernel_timezone,
   ]
 
-  # Properties that use "-m <ipt module name>" (with the potential to have multiple
+  # Properties that use "-m <ipt module name>" (with the potential to have multiple 
   # arguments against the same IPT module) must be in this hash. The keys in this
   # hash are the IPT module names, with the values being an array of the respective
   # supported arguments for this IPT module.

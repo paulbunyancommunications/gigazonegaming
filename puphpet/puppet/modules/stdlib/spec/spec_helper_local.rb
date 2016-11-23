@@ -14,7 +14,7 @@ RSpec.configure do |config|
     # Facter.collection.loader.load(:ipaddress)
     Facter.clear
     Facter.clear_messages
-
+    
     RSpec::Mocks.setup
   end
 

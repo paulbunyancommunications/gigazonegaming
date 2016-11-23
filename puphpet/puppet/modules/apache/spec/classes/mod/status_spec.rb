@@ -22,7 +22,7 @@ end
 
 describe 'apache::mod::status', :type => :class do
   it_behaves_like "a mod class, without including apache"
-
+  
   context "default configuration with parameters" do
     context "on a Debian OS with default params" do
       let :facts do

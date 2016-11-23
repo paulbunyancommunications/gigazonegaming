@@ -161,7 +161,7 @@ describe 'wget::fetch' do
     let(:params) { super().merge({
       :destination => '/tmp/dest/',
     })}
-
+  
     it { should contain_exec('wget-test').with({
       'command' => "wget --no-verbose --output-document=\"#{destination}//source\" \"http://localhost/source\"",
       'environment' => []

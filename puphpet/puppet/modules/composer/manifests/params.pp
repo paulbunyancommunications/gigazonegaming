@@ -66,7 +66,7 @@ class composer::params {
       $curl_package    = 'curl'
       $wget_package    = 'wget'
       $php_bin         = 'php'
-      $suhosin_enabled = false
+      $suhosin_enabled = false 
     }
     default: {
       fail("Unsupported platform: ${family}")

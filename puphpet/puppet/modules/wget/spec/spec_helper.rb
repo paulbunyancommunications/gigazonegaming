@@ -30,3 +30,4 @@ end
 shared_examples :compile, :compile => true do
   it { should compile.with_all_deps }
 end
+

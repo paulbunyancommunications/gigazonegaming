@@ -155,7 +155,7 @@ Puppet::Type.type(:firewall).provide :iptables, :parent => Puppet::Provider::Fir
     :clusterip_new,
   ]
 
-  # Properties that use "-m <ipt module name>" (with the potential to have multiple
+  # Properties that use "-m <ipt module name>" (with the potential to have multiple 
   # arguments against the same IPT module) must be in this hash. The keys in this
   # hash are the IPT module names, with the values being an array of the respective
   # supported arguments for this IPT module.
@@ -434,8 +434,8 @@ Puppet::Type.type(:firewall).provide :iptables, :parent => Puppet::Provider::Fir
     [:dport, :sport, :port, :state, :ctstate].each do |prop|
       hash[prop] = hash[prop].split(',') if ! hash[prop].nil?
     end
-
-    ## clean up DSCP class to HEX mappings
+  
+    ## clean up DSCP class to HEX mappings 
     valid_dscp_classes = {
       '0x0a' => 'af11',
       '0x0c' => 'af12',
