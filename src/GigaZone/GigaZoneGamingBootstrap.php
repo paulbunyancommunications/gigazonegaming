@@ -353,4 +353,56 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
         }
         return null;
     }
+
+    public function showExtraProfileFields($user)
+    {
+        echo '<h3>Extra Profile Information</h3>';
+        for($i=0; $i < count(self::extraProfileFields()); $i++) {
+            echo \Timber::compile('forms/show-extra-profile-fields.twig', ['user' => $user, 'field' => self::extraProfileFields()[$i]]);
+        }
+        echo '<hr />';
+    }
+
+    public static function extraProfileFields()
+    {
+        return ['twitter','twitch','youtube','steam'];
+    }
+
+    public function saveExtraProfileFields($user_id)
+    {
+        if ( !current_user_can( 'edit_user', $user_id ) ) {
+            return false;
+        }
+
+        /* Copy and paste this line for additional fields. */
+        for($i=0; $i < count(self::extraProfileFields()); $i++) {
+            if(isset($_POST[self::extraProfileFields()[$i]])) {
+                update_user_meta($user_id, self::extraProfileFields()[$i], $_POST[self::extraProfileFields()[$i]]);
+            }
+            if(isset($_POST[self::extraProfileFields()[$i].'_profile'])) {
+                update_user_meta($user_id, self::extraProfileFields()[$i].'_profile', $_POST[self::extraProfileFields()[$i].'_profile']);
+            }
+        }
+    }
+
+    public function userProfileShortCode($attributes)
+    {
+        $attr = shortcode_atts(array(
+            'id' => '',
+        ), $attributes);
+
+        $user = get_user_by((is_numeric($attr['id']) ? 'ID' : 'login'), $attr['id']);
+        if(!$user) {
+            return false;
+        }
+        $userProfileData = ['fields' =>  self::extraProfileFields()];
+        $userProfileData['user'] = $user;
+        $userProfileData['meta'] = [];
+        for($i=0; $i < count($userProfileData['fields']); $i++) {
+            $userProfileData['meta'][$userProfileData['fields'][$i]] = get_user_meta($user->ID, $userProfileData['fields'][$i]);
+            $userProfileData['meta'][$userProfileData['fields'][$i].'_profile'] = get_user_meta($user->ID, $userProfileData['fields'][$i].'_profile');
+
+        }
+        return \Timber::compile('partials/user/profile.twig', $userProfileData);
+    }
 }

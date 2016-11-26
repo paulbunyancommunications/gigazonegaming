@@ -10,6 +10,14 @@
   @include margin-padding(.675);
 }
 
+.one-third {
+  width: floor(100% * .33);
+}
+
+.two-thirds {
+  width: floor(100% * .66);
+}
+
 /*
  * Row with equal height columns
  http://www.bootply.com/126437

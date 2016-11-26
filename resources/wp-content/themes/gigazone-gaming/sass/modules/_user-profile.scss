@@ -1,0 +1,108 @@
+.user-profile {
+  padding: 0;
+  font-family: $font-family-display;
+  @include margin-top(2);
+  @include margin-bottom(1);
+  @include inline-block();
+
+
+  &--social, &--avatar, &--name {
+    &::before {
+      background: none;
+    }
+  }
+
+  &--social {
+    list-style: none;
+    font-family: $font-family-display;
+    @include font-size(1.375);
+    font-weight: 700;
+    @include inline-block();
+    @include padding(.375, .5, .375, 0);
+    background: rgba(red($color-light-gray), blue($color-light-gray), green($color-light-gray), .2);
+    @include border-radius(50px);
+    white-space: nowrap;
+    small {
+      @include font-size(.875);
+      font-weight: normal;
+    }
+    a {
+      text-decoration: none;
+      &:hover, &:active {
+        color: $color-gz-gray;
+      }
+    }
+    .fa {
+      position: relative;
+      z-index: 10;
+      @include margin-right(.5);
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -40%;
+        left: -40%;
+        width: 175%;
+        height: 175%;
+        @include border-radius(50px);
+        z-index: -1;
+        background: $color-gz-orange;
+      }
+    }
+
+    &:hover {
+      .fa {
+        color: $color-white;
+      }
+      .fa::after {
+        background-color: $color-gz-gray;
+      }
+    }
+  }
+
+  &--avatar {
+    display: block;
+    @include border-radius(100px);
+    @include height(6);
+    @include width(6);
+    border: 5px solid $color-gz-orange;
+    overflow: hidden;
+    padding: 0;
+    @include margin-top(-1.5);
+    @include margin-right(.5);
+    float: right;
+    &::before {
+      display: none;
+    }
+
+    &-container {
+      //width: 24%;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &--meta-container {
+    //width: 74%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  &--name {
+    font-family: $font-family-display;
+    display: block;
+    @include font-size(2);
+    color: $color-gz-gray;
+    font-weight: 700;
+    @include padding-bottom(.25);
+    @include margin-bottom(.25);
+    border-bottom: 1px solid rgba(red($color-light-gray), blue($color-light-gray), green($color-light-gray), .2);
+    text-transform: uppercase;
+
+
+  }
+}

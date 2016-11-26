@@ -19,6 +19,8 @@ add_shortcode('lol-team-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('build-form', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('env', [$bootstrap, 'getEnvShortCode']);
+add_shortcode('user-profile', [$bootstrap, 'userProfileShortCode']);
+
 // get image by id, usage [get-image 12345]
 // this will output the image with height and width attributes and class of get-image
 add_shortcode('get-image', [$bootstrap, 'getMediaImageShortCode']);
@@ -114,3 +116,11 @@ function remove_empty_p($content)
 }
 
 add_filter('the_content', 'remove_empty_p', 20, 1);
+
+// extra fields dialog
+add_action( 'show_user_profile', [$bootstrap, 'showExtraProfileFields'] );
+add_action( 'edit_user_profile', [$bootstrap, 'showExtraProfileFields'] );
+
+// saving extra fields
+add_action( 'personal_options_update', [$bootstrap, 'saveExtraProfileFields'] );
+add_action( 'edit_user_profile_update', [$bootstrap,'saveExtraProfileFields'] );
