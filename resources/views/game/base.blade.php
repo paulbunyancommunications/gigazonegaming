@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Controller</title>
-    <link rel="stylesheet" href="@autoVersion('/bower_components/bootstrap/dist/css/bootstrap.css')">
+    <link rel="stylesheet" href="@autoVersion('/app/content/libraries/bootstrap/css/bootstrap.css')">
     <link rel="stylesheet" href="@autoVersion('/bower_components/select2/dist/css/select2.min.css')">
     <link rel="stylesheet" href="@autoVersion('/bower_components/font-awesome/css/font-awesome.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/app.css')">
@@ -46,9 +46,9 @@
             </div>
         </div>
         <script type="text/javascript" src="@autoVersion('/bower_components/jquery/dist/jquery.min.js')"></script>
-        <script type="text/javascript" src="@autoVersion('/bower_components/bootstrap/dist/js/bootstrap.min.js')"></script>
+        <script type="text/javascript" src="@autoVersion('/app/content/libraries/bootstrap/js/bootstrap.min.js')"></script>
         <script type="text/javascript" src="@autoVersion('/bower_components/select2/dist/js/select2.full.min.js')"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+        <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>-->
 
         <script src="@autoVersion('/app/content/js/common-require.js')"></script>
         <script src="@autoVersion('/bower_components/requirejs/require.js')"></script>

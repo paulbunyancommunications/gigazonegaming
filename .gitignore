@@ -71,6 +71,7 @@ database/dump/gzgaming_wp.sql
 form-template.haml.old
 public_html/app/content/js
 public_html/app/content/css
+public_html/app/content/libraries
 !public_html/app/content/css/app.css
 PlayerRelationable.php.orig
 phpunit.phar
@@ -100,3 +101,6 @@ puphpet/files/exec-always/node-v6.8.0.tar.gz
 puphpet/files/exec-always/node-v6.8.0.tar.gz.1
 puphpet/files/exec-always/node-v6.8.0/**/*
 puphpet/files/exec-always/node-v6.8.0/*
+public_html/wp-content/themes/gigazone-gaming/libraries
+resources/assets/sass/libraries
+resources/wp-content/themes/gigazone-gaming/sass/libraries

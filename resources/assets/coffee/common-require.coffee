@@ -4,7 +4,7 @@ require =
   paths:
     #third party libraries
     jquery: [ "../../../bower_components/jquery/dist/jquery.min" ]
-    bootstrap: [ "../../../bower_components/bootstrap/dist/js/bootstrap.min" ]
+    bootstrap: [ "../libraries/bootstrap/js/bootstrap.min" ]
     underscore: [ "../../../bower_components/underscore/underscore-min" ]
     handlebars: [ "../../../bower_components/handlebars/handlebars.min" ]
     select2: [ "../../../bower_components/select2/dist/js/select2.full.min" ]

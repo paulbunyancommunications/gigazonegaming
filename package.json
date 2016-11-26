@@ -17,11 +17,12 @@
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "gulp-watch": "4.3.5",
-    "laravel-elixir": "^4.0.0",
+    "laravel-elixir": "6.0.0-14",
     "laravel-elixir-livereload": "^1.1.4",
     "laravel-elixir-sass-compass": "^0.5.0"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "dotenv": "^2.0.0"
   }
 }

@@ -39,7 +39,7 @@ function enqueueCss()
 {
     $themeDir = parse_url(get_template_directory_uri(), PHP_URL_PATH);
     $autoVersion = new \Pbc\AutoVersion();
-    wp_enqueue_style('bootstrap', '/..' . $autoVersion->file('/bower_components/bootstrap/dist/css/bootstrap.min.css'));
+    wp_enqueue_style('bootstrap', $autoVersion->file('/..'. $themeDir . '/libraries/bootstrap/css/bootstrap.min.css'));
     wp_enqueue_style('fontawesome',
         '/..' . $autoVersion->file('/bower_components/font-awesome/css/font-awesome.min.css'));
     wp_enqueue_style(

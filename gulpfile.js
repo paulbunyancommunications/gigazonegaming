@@ -98,6 +98,18 @@ elixir.extend('cleanCss', function(src){
  * Main gulp elixir task
  */
 elixir(function (mix) {
+
+    /** ================================================
+     * Copy Boostrap css and js files to themes and app folder
+     ================================================ */
+    // copy bootstrap from node_modules to theme folder
+    mix.copyFiles('node_modules/bootstrap/dist/**/*', themeFolder  + '/libraries/bootstrap')
+    // copy bootstrap from node_modules to app folder
+        .copyFiles('node_modules/bootstrap/dist/**/*', appFolder  + '/libraries/bootstrap');
+
+    /** ================================================
+     * Compile theme css
+     ================================================ */
     mix.compass('*.scss', themeFolder + '/css/', {
         sass: themeResourceFolder + '/sass',
         style: "compressed",
@@ -106,19 +118,31 @@ elixir(function (mix) {
         javascript: themeFolder + "/js",
         comments: false,
     })
+    /** ================================================
+     * Compile app css
+     ================================================ */
         .compass('*.scss', appFolder + '/css/', {
             sass: appResourceFolder + '/sass',
             style: "compressed",
             javascript: appFolder + "/js",
             image: appFolder + "/images",
         })
+        // compile theme coffee files to js
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
+        // compile app coffee files to js
         .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
+        // convert theme haml to twig
         .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
+        // convert app haml to twig
         .hamlToTwig(appResourceFolder + '/haml', appFolder + '/views')
+        // copy twig views from resources to theme folder
         .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views')
+        // copy js files from resources to theme folder
         .copyFiles(appResourceFolder + '/js/**/*.js', appFolder + '/js');
 
+    /** ================================================
+     * If app it set to production then minimize things
+     ================================================ */
         if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
             mix.cleanCss(themeFolder + '/css')
                .minifyJs(themeFolder + '/js')
