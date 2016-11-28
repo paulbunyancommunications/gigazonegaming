@@ -1,4 +1,4 @@
-@import "../../../../../../public_html/bower_components/Gutenberg/src/style/gutenberg-mixins";
+@import "../libraries/gutenberg/src/style/gutenberg-mixins";
 
 @mixin social-media-icons($multiplier: 1) {
   text-decoration: none;

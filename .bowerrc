@@ -3,5 +3,8 @@
   "json": "bower.json",
   "searchpath": [
     "https://bower.herokuapp.com"
-  ]
+  ],
+  "scripts": {
+    "postinstall": "bower_post_install.sh"
+  }
 }
