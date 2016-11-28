@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+latestBashPackageCommitHash=$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')
 # -------------------------------------------------------------
 # Make sure that WORKSPACE is set
 # http://stackoverflow.com/a/13864829/405758
@@ -25,13 +25,13 @@ fi;
 
 # -------------------------------------------------------------
 # decrypt all files needed for build to work
-
+# get decrypt first
+wget -N -q https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPackageCommitHash}/setup/files/decrypt-files.sh -O ${WORKSPACE}/decrypt-files.sh
 bash ${WORKSPACE}/decrypt-files.sh -w "${WORKSPACE}" -p "${decrypt_password}"
 
 # -------------------------------------------------------------
 # Get latest main installer for npm, composer and vagrant
 
-latestBashPackageCommitHash=$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')
 wget -N -q https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPackageCommitHash}/setup/puphpet/install_and_setup_assets_in_vagrant_box.sh -O install_runner.sh
 . install_runner.sh
 
