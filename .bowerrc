@@ -1,10 +1,11 @@
 {
+  "name" : "paulbunyannet.gigazone-gaming",
   "directory": "public_html/bower_components",
   "json": "bower.json",
   "searchpath": [
     "https://bower.herokuapp.com"
   ],
   "scripts": {
-    "postinstall": "bower_post_install.sh"
+    "postinstall": "./.bower_post_install.sh"
   }
 }
