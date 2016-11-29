@@ -11,12 +11,6 @@ body {
   @include font-size(1.4);
   @include line-height(1.6);
 
-  &:before {
-    content: "SASS COMPILED";
-    display: block;
-    color: #ffffff;
-  }
-
   @include mq-phone {
     overflow-x: hidden;
   }
@@ -24,7 +18,7 @@ body {
 
 .meter {
   background: transparent inline_image('backgrounds/meter-16.png') repeat;
-  height: 1000%;
+  height: 100%;
   width: 100%;
   position: absolute;
   pointer-events: none;

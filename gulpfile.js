@@ -1,9 +1,12 @@
+'use strict';
+
 var path = require("path");
 var rootDir = __dirname;
 var themeFolder = path.join(rootDir,'public_html/wp-content/themes/gigazone-gaming');
-var themeResourceFolder = path.join(rootDir, 'resources/wp-content/themes/gigazone-gaming');
+var resourceRoot = path.join(rootDir, 'resources')
+var themeResourceFolder = path.join(resourceRoot, 'wp-content/themes/gigazone-gaming');
 var appFolder = path.join(rootDir,'public_html/app/content');
-var appResourceFolder = path.join(rootDir,'resources/assets');
+var appResourceFolder = path.join(resourceRoot,'assets');
 
 var sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -16,9 +19,9 @@ var sass = require('gulp-sass'),
     del = require('del'),
     livereload = require('gulp-livereload'),
     uglify = require('gulp-uglify'),
-    CleanCSS = require('gulp-clean-css');
+    CleanCSS = require('gulp-clean-css'),
+    sourcemaps = require('gulp-sourcemaps');
 require('gulp-util');
-require('laravel-elixir-sass-compass');
 require('laravel-elixir-livereload');
 require('dotenv').config();
 
@@ -61,7 +64,7 @@ elixir.extend('hamlToTwig', function (src, outputDir) {
                 return path;
             }))
             .pipe(gulp.dest(outputDir));
-    }).watch(src + '/**/*.haml');
+    }).watch(path.join(src, '**/*.haml'));
 });
 
 /**
@@ -105,13 +108,24 @@ elixir.extend('cleanCss', function(src){
  */
 elixir.extend('sassy', function(source, destination, options){
     new Task('sassy', function() {
-        return gulp.src(path.join(source + '**/*.scss'))
+        return gulp.src(source)
+            .pipe(sourcemaps.init())
             .pipe(sass(options).on("error", sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
                 cascade: false
             }))
+            .pipe(sourcemaps.write('./maps'))
             .pipe(gulp.dest(destination));
+    }).watch(source)
+})
+
+/**
+ * Cleaner task to remove files/folders
+ */
+elixir.extend('delete', function(toClean){
+    new Task('delete', function(){
+        return del(toClean)
     })
 })
 
@@ -144,21 +158,31 @@ elixir(function (mix) {
     /** ================================================
      * Compile Theme SASS -> CSS
      ================================================ */
-       .sassy(path.join(themeResourceFolder, 'sass'), path.join(themeFolder, 'css'), {
-           outputStyle: 'compressed',
+       .sassy(path.join(themeResourceFolder, 'sass/*.scss'), path.join(themeFolder, 'css'), {
+           outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
+           indentWidth: 4,
+           indentType: 'space',
            includePaths: [
                path.join(themeResourceFolder, 'sass/libraries')
            ]
        })
-       /** ================================================
+        // get rid of the left over sass folder
+        .delete(path.join(themeFolder, 'css/sass'))
+
+        /** ================================================
         * Compile App SASS -> CSS
         ================================================ */
-        .sassy(path.join(appResourceFolder, 'scss'), path.join(appFolder, 'css'), {
-            outputStyle: 'compressed',
+        .sassy(path.join(appResourceFolder, 'sass/*.scss'), path.join(appFolder, 'css'), {
+            outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
+            indentWidth: 4,
+            indentType: 'space',
             includePaths: [
                 path.join(appResourceFolder, 'sass/libraries')
             ]
         })
+        // get rid of the left over sass folder
+        .delete(path.join(appFolder, 'css/sass'))
+
         // compile theme coffee files to js
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
         // compile app coffee files to js
@@ -184,3 +208,10 @@ elixir(function (mix) {
     //mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
     mix.livereload(['app/**/*', 'public_html/**/*', 'resources/views/**/*'], {});
 });
+
+/*
+// watch sass files
+// https://github.com/laravel/elixir/issues/297#issuecomment-247015075
+elixir.tasks.byName('sassy').forEach(function (task) {
+    task.watch(path.join(resourceRoot, '**!/!*.scss') );
+});*/

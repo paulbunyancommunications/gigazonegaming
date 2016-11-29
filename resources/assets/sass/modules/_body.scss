@@ -18,5 +18,5 @@ body{
   left: 0;
   background: transparent url('/app/content/img/gigazone-gaming.svg') center #{ -10 * $leading + 'px'} no-repeat;
   background: transparent url('/app/content/img/gigazone-gaming.svg') center #{ -10 * $leading-rem + 'rem'} no-repeat;
-  @include opacity(.025);
+  opacity: .025;
 }
