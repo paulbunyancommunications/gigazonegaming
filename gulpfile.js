@@ -121,7 +121,8 @@ elixir.extend('sassy', function(source, destination, options){
 })
 
 /**
- * Cleaner task to remove files/folders
+ * Delete task to remove files/folders
+ * https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md
  */
 elixir.extend('delete', function(toClean){
     new Task('delete', function(){
