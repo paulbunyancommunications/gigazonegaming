@@ -7,7 +7,7 @@
     line-height: normal;
     margin: 0;
     padding: 0;
-    @include inline-block();
+    display: inline-block;
     &:before {
       display: none;
     }
@@ -15,8 +15,8 @@
 
       background: $color-gz-orange;
       color: $color-gz-gray;
-      @include border-radius(#{ ($paginationSize * 2) * $leading + 'px'});
-      @include border-radius(#{ ($paginationSize * 2) * $leading-rem + 'rem'});
+      border-radius:#{ ($paginationSize * 2) * $leading + 'px'};
+      border-radius:#{ ($paginationSize * 2) * $leading-rem + 'rem'};
       @include height(($paginationSize * 2));
       @include width(($paginationSize * 2));
       @include line-height(($paginationSize * 2));
@@ -30,8 +30,8 @@
       display: block;
 
       &:first-child, &:last-child {
-        @include border-radius(#{ ($paginationSize * 2) * $leading + 'px'});
-        @include border-radius(#{ ($paginationSize * 2) * $leading-rem + 'rem'});
+        border-radius:#{ ($paginationSize * 2) * $leading + 'px'};
+        border-radius:#{ ($paginationSize * 2) * $leading-rem + 'rem'};
       }
 
       &.next {

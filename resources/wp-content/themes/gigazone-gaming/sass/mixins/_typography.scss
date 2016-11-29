@@ -1,9 +1,9 @@
 @mixin text-stroke($width:1, $stroke-color:$color-black) {
-  @include text-shadow(
+  text-shadow:
                   -#{$width}px -#{$width}px 0 $stroke-color,
                   #{$width}px -#{$width}px 0 $stroke-color,
                   -#{$width}px #{$width}px 0 $stroke-color,
-                  #{$width}px #{$width}px 0 $stroke-color);
+                  #{$width}px #{$width}px 0 $stroke-color;
 }
 
 
@@ -92,7 +92,7 @@
       width: floor(15px*$diamondScale);
       height: floor(25px*$diamondScale);
       color: $color-gz-gray;
-      @include inline-block();
+      display: inline-block;
       @include margin(-0.25, .5 * $multiplier, 0, 0);
     }
 

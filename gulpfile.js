@@ -1,7 +1,12 @@
-var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
-    themeResourceFolder = 'resources/wp-content/themes/gigazone-gaming',
-    appFolder = 'public_html/app/content',
-    appResourceFolder = 'resources/assets',
+var path = require("path");
+var rootDir = __dirname;
+var themeFolder = path.join(rootDir,'public_html/wp-content/themes/gigazone-gaming');
+var themeResourceFolder = path.join(rootDir, 'resources/wp-content/themes/gigazone-gaming');
+var appFolder = path.join(rootDir,'public_html/app/content');
+var appResourceFolder = path.join(rootDir,'resources/assets');
+
+var sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
     elixir = require('laravel-elixir'),
     gulp = require('gulp'),
     coffee = require('gulp-coffee'),
@@ -64,7 +69,7 @@ elixir.extend('hamlToTwig', function (src, outputDir) {
  */
 elixir.extend('copyFiles', function(src, output){
     new Task('copyFiles', function() {
-        gulp.src(src)
+        return gulp.src(src)
             .pipe(gulp.dest(output))
     }).watch(src);
 });
@@ -95,6 +100,22 @@ elixir.extend('cleanCss', function(src){
 });
 
 /**
+ * Compile sass file to css with eyeglass
+ * https://github.com/sass-eyeglass/eyeglass/blob/master/site-src/docs/integrations/gulp.md
+ */
+elixir.extend('sassy', function(source, destination, options){
+    new Task('sassy', function() {
+        return gulp.src(path.join(source + '**/*.scss'))
+            .pipe(sass(options).on("error", sass.logError))
+            .pipe(autoprefixer({
+                browsers: ['last 2 versions'],
+                cascade: false
+            }))
+            .pipe(gulp.dest(destination));
+    })
+})
+
+/**
  * Main gulp elixir task
  */
 elixir(function (mix) {
@@ -102,30 +123,41 @@ elixir(function (mix) {
     /** ================================================
      * Copy Boostrap css and js files to themes and app folder
      ================================================ */
-    // copy bootstrap from node_modules to theme folder
-    mix.copyFiles('node_modules/bootstrap/dist/**/*', themeFolder  + '/libraries/bootstrap')
-    // copy bootstrap from node_modules to app folder
-        .copyFiles('node_modules/bootstrap/dist/**/*', appFolder  + '/libraries/bootstrap');
+
+    mix.copyFiles(path.join(rootDir, 'node_modules/bootstrap/dist/**/*'), path.join(themeFolder, 'libraries/bootstrap'))
+       .copyFiles(path.join(rootDir, 'node_modules/bootstrap/dist/**/*'), path.join(appFolder, 'libraries/bootstrap'))
+       .copyFiles(path.join(rootDir, 'node_modules/bootstrap-sass/assets/**/*'), path.join(themeResourceFolder, 'sass/libraries/bootstrap-sass'))
+       .copyFiles(path.join(rootDir, 'node_modules/bootstrap-sass/assets/**/*'), path.join(appResourceFolder, 'sass/libraries/bootstrap-sass'))
 
     /** ================================================
-     * Compile theme css
+     * Copy Bourbon sass files to themes and app folder
      ================================================ */
-    mix.compass('*.scss', themeFolder + '/css/', {
-        sass: themeResourceFolder + '/sass',
-        style: "compressed",
-        font: themeFolder + "/fonts",
-        image: themeFolder + "/images",
-        javascript: themeFolder + "/js",
-        comments: false,
-    })
+       .copyFiles(path.join(rootDir, 'public_html/bower_components/bourbon/app/assets/stylesheets/**/*'), path.join(themeResourceFolder, 'sass/libraries/bourbon'))
+       .copyFiles(path.join(rootDir, 'public_html/bower_components/bourbon/app/assets/stylesheets/**/*'), path.join(appResourceFolder, 'sass/libraries/bourbon'))
+
     /** ================================================
-     * Compile app css
+     * Copy Gutenberg sass files to themes and app folder
      ================================================ */
-        .compass('*.scss', appFolder + '/css/', {
-            sass: appResourceFolder + '/sass',
-            style: "compressed",
-            javascript: appFolder + "/js",
-            image: appFolder + "/images",
+       .copyFiles(path.join(rootDir, 'public_html/bower_components/Gutenberg/src/style/**/*'), path.join(themeResourceFolder, 'sass/libraries/gutenberg'))
+       .copyFiles(path.join(rootDir, 'public_html/bower_components/Gutenberg/src/style/**/*'), path.join(appResourceFolder, 'sass/libraries/gutenberg'))
+
+    /** ================================================
+     * Compile Theme SASS -> CSS
+     ================================================ */
+       .sassy(path.join(themeResourceFolder, 'sass'), path.join(themeFolder, 'css'), {
+           outputStyle: 'compressed',
+           includePaths: [
+               path.join(themeResourceFolder, 'sass/libraries')
+           ]
+       })
+       /** ================================================
+        * Compile App SASS -> CSS
+        ================================================ */
+        .sassy(path.join(appResourceFolder, 'scss'), path.join(appFolder, 'css'), {
+            outputStyle: 'compressed',
+            includePaths: [
+                path.join(appResourceFolder, 'sass/libraries')
+            ]
         })
         // compile theme coffee files to js
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')

@@ -1,7 +1,7 @@
 .sidebar {
   @include background-image(linear-gradient($color-white, tint($color-light-gray, 85), tint($color-light-gray, 50)));
-  @include border-radius(#{ 1 * $leading + 'px'});
-  @include border-radius(#{ 1 * $leading-rem + 'rem'});
+  border-radius: #{ 1 * $leading + 'px'};
+  border-radius: #{ 1 * $leading-rem + 'rem'};
   overflow: hidden;
   @include padding(0,0);
   @include margin-bottom(1);
@@ -16,7 +16,7 @@
     margin-bottom: 0;
     margin-left: -($grid-gutter-width/2);
     margin-right: -($grid-gutter-width/2);
-    @include border-radius(0);
+    border-radius: 0;
   }
 
   // special case for when the sidebar class is called in the footer
@@ -29,8 +29,8 @@
   &-highlight-link {
     @include padding(.5, .5, 1, .5);
     background: rgba($color-white, 0.25);
-    @include border-radius(#{ 1 * $leading + 'px'});
-    @include border-radius(#{ 1 * $leading-rem + 'rem'});
+    border-radius: #{ 1 * $leading + 'px'};
+    border-radius: #{ 1 * $leading-rem + 'rem'};
     @include margin(0, .5, .5, .5);
 
     &-title {
@@ -39,8 +39,8 @@
       //@include height(4);
       @include line-height(0);
       background: $color-white;
-      @include border-radius(#{ .5 * $leading + 'px'});
-      @include border-radius(#{ .5 * $leading-rem + 'rem'});
+      border-radius: #{ .5 * $leading + 'px'};
+      border-radius: #{ .5 * $leading-rem + 'rem'};
       @include font-size(2);
       font-weight: 700;
 
@@ -83,8 +83,8 @@
       background-color: $color-white;
       border: none;
       margin: 0;
-      @include border-radius(#{ .5 * $leading + 'px'});
-      @include border-radius(#{ .5 * $leading-rem + 'rem'});
+      border-radius: #{ .5 * $leading + 'px'};
+      border-radius: #{ .5 * $leading-rem + 'rem'};
     }
 
     label, .checkbox label, .radio label {

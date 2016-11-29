@@ -1,4 +1,5 @@
-@import "compass/css3";
+@import "bourbon/bourbon";
+
 .splash {
   // .splash.page
   &.page {
@@ -25,8 +26,8 @@
   &-inner-container {
     @include padding-equal(2);
     background: $color-white;
-    @include border-radius(#{ 1 * $leading + 'px'});
-    @include border-radius(#{ 1 * $leading-rem + 'rem'});
+    border-radius: #{ 1 * $leading + 'px'};
+    border-radius: #{ 1 * $leading-rem + 'rem'};
     border: 8px solid $color-gz-orange;
     background: transparent inline_image('backgrounds/social-banner-v-1.jpg') repeat top left;
     position: relative;
@@ -34,7 +35,7 @@
     height: auto;
     width: 100%;
     &-bg {
-      @include opacity(.96);
+      opacity: .96;
       @include background-image(linear-gradient($color-black, tint($color-black, 10%)));
       content: "";
       width: 100%;
@@ -111,7 +112,7 @@
     background: none;
     margin-bottom: 0;
     @include social-media(3);
-    @include border-radius(5px);
+    border-radius: 5px;
     padding-bottom: 0;
   }
 

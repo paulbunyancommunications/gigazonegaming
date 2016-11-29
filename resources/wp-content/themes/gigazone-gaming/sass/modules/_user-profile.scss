@@ -3,7 +3,7 @@
   font-family: $font-family-display;
   @include margin-top(2);
   @include margin-bottom(1);
-  @include inline-block();
+  display: inline-block;
 
 
   &--social, &--avatar, &--name {
@@ -17,10 +17,10 @@
     font-family: $font-family-display;
     @include font-size(1.375);
     font-weight: 700;
-    @include inline-block();
+    display: inline-block;
     @include padding(.375, .5, .375, 0);
     background: rgba(red($color-light-gray), blue($color-light-gray), green($color-light-gray), .2);
-    @include border-radius(50px);
+    border-radius: 50px;
     white-space: nowrap;
     small {
       @include font-size(.875);
@@ -44,7 +44,7 @@
         left: -40%;
         width: 175%;
         height: 175%;
-        @include border-radius(50px);
+        border-radius: 50px;
         z-index: -1;
         background: $color-gz-orange;
       }
@@ -62,7 +62,7 @@
 
   &--avatar {
     display: block;
-    @include border-radius(100px);
+    border-radius: 100px;
     @include height(6);
     @include width(6);
     border: 5px solid $color-gz-orange;

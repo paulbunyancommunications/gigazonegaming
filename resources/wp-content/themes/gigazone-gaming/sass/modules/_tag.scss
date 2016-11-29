@@ -1,4 +1,4 @@
-@import "compass/css3";
+@import "bourbon/bourbon";
 .tag {
   display: block;
   height: auto;
@@ -19,7 +19,7 @@
     text-decoration: none;
     text-align: right;
     text-transform: uppercase;
-    @include inline-block();
+    display: inline-block;
     font-style: normal;
 
     @include mq_cinema {
@@ -66,7 +66,7 @@
 
     .paged {
       float: none;
-      @include inline-block();
+      display: inline-block;
     }
 
     &::after{
@@ -91,7 +91,7 @@
         $tag-title-image-container-height: 3;
         @include height($tag-title-image-container-height);
         @include width($tag-title-image-container-height);
-        @include border-radius(25px);
+        border-radius: 25px;
         overflow: hidden;
         @include margin(-($tag-title-image-container-height / 4.25), .25, 0, .25);
         @include mq-tablet {
@@ -147,7 +147,7 @@
 
     @include margin-top(1);
     @include margin-bottom(1);
-    @include inline-block();
+    display: inline-block;
     &:before {
       display: none;
     }
@@ -156,7 +156,7 @@
       @include font-size(.875);
       color: $color-gz-gray;
       @include padding-equal(.375);
-      @include border-radius(5px);
+      border-radius: 5px;
       display: block;
       line-height: normal;
       background: tint($color-light-gray, 60%);
@@ -185,7 +185,7 @@
         }
         img {
           @include height(.75);
-          @include border-radius(5px);
+          border-radius: 5px;
           max-height: none;
           width: auto;
           max-width: none;

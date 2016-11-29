@@ -2,7 +2,7 @@
   background-color: tint($color-light-gray, 85%);
   @include padding(1, 1);
   @include margin-bottom(1);
-  @include border-radius(0 0 10px 10px);
+  border-radius: 0 0 10px 10px;
   border: 1px solid tint($color-light-gray, 65%);
   border-top: none;
   .well-gz {

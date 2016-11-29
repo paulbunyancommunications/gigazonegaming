@@ -1,4 +1,4 @@
-@import "../libraries/gutenberg/src/style/gutenberg-mixins";
+@import "../libraries/gutenberg/gutenberg-mixins";
 
 @mixin social-media-icons($multiplier: 1) {
   text-decoration: none;
@@ -8,7 +8,7 @@
   @include font-size(1.625 * $multiplier);
   @include line-height(1.75 * $multiplier);
   @include width(1.75 * $multiplier);
-  @include border-radius(#{ (1.75 * $multiplier) * $leading-rem + 'rem'});
+  border-radius:#{ (1.75 * $multiplier) * $leading-rem + 'rem'};
   padding: 0;
   text-align: center;
   @include margin(0, 0);
@@ -36,7 +36,7 @@
   }
 
   .main-navigation-toggler, .social-media {
-    @include inline-block();
+    display: inline-block;
     float: none;
     @include font-size(1.4);
     border: none;
@@ -100,7 +100,7 @@
       @include margin(0, .5, 0, .625);
     }
     &.social-media {
-      @include inline-block();
+      display: inline-block;
       @include margin(0, .5, 0, 0);
       height: auto;
       &:after, &:before {
@@ -142,7 +142,7 @@
 
     }
     li:last-child a {
-      @include border-radius(0);
+      border-radius:0;
     }
   }
 
@@ -164,8 +164,8 @@
       @include line-height(1.25);
       @include font-size(1.625);
       @include width(1.5);
-      @include border-radius(#{ 1.5 * $leading + 'px'});
-      @include border-radius(#{ 1.5 * $leading-rem + 'rem'});
+      border-radius:#{ 1.5 * $leading + 'px'};
+      border-radius:#{ 1.5 * $leading-rem + 'rem'};
       background: $color-white;
       color: $color-gz-gray;
       border: none;

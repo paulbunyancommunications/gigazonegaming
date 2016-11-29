@@ -1,9 +1,9 @@
 @mixin base-social-media-styles($multiplier:1, $sm-color:$color-gz-gray, $sm-color-hover:$color-white, $sm-background:$color-gz-orange, $sm-background-hover:$color-gz-gray) {
-  @include inline-block();
+  display: inline-block;
   @include height($multiplier);
   @include width($multiplier);
-  @include border-radius(#{ $multiplier * $leading + 'px'});
-  @include border-radius(#{ $multiplier * $leading-rem + 'rem'});
+  border-radius:#{ $multiplier * $leading + 'px'};
+  border-radius:#{ $multiplier * $leading-rem + 'rem'};
   background: $sm-background;
   color: $sm-color;
   text-align: center;

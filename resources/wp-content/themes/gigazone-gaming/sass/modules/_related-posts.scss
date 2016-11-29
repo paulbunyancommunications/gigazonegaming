@@ -14,7 +14,7 @@
     z-index: 10;
     @include max-h(14);
     overflow: hidden;
-    @include border-radius(5px);
+    border-radius: 5px;
     @include padding-equal(.5);
     @include margin-bottom(1);
 
@@ -32,7 +32,7 @@
     position: relative;
     @include background-image(linear-gradient($color-gz-gray 20%, $color-gz-orange 75%, $color-white));
     overflow: hidden;
-    @include border-radius(10px);
+    border-radius: 10px;
     @include min-h(5);
 
     a {
@@ -43,16 +43,16 @@
       background-repeat: no-repeat;
       background-position: center center;
       background-attachment: fixed;
-      @include background-size(cover);
-      @include opacity(.5);
+      background-size: cover;
+      opacity: .5;
       text-decoration: none;
       content: "";
       &:hover {
-        @include opacity(.6);
+        opacity: .6;
       }
     }
     img {
-      @include opacity(.1);
+      opacity: .1;
       max-height:  100%;
       width: auto;
     }

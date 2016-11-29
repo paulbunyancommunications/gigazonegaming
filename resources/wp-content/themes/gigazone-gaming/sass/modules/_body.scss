@@ -1,5 +1,6 @@
+@import "bourbon/bourbon";
 @import "../variables";
-@import "compass/css3";
+
 
 body {
   font-family: $font-family-sans-serif;
@@ -9,6 +10,12 @@ body {
   background-color: $color-white;
   @include font-size(1.4);
   @include line-height(1.6);
+
+  &:before {
+    content: "SASS COMPILED";
+    display: block;
+    color: #ffffff;
+  }
 
   @include mq-phone {
     overflow-x: hidden;
@@ -22,7 +29,7 @@ body {
   position: absolute;
   pointer-events: none;
   z-index: 10000;
-  @include opacity(0.5);
+  opacity: 0.5;
 }
 .meter-8 {
   background: transparent inline_image('backgrounds/meter-16.png') repeat;
@@ -32,6 +39,6 @@ body {
   pointer-events: none;
   z-index: 10000;
   margin-top: 8px;
-  @include opacity(0.5);
+  opacity: 0.5;
 
 }

@@ -1,4 +1,4 @@
-@import "compass/css3";
+@import "bourbon/bourbon";
 
 .article-container {
   margin-top: -1px;
@@ -77,7 +77,7 @@
 }
 
 .child-post {
-  @include border-radius(10px);
+  border-radius: 10px;
   @include padding-equal(1);
   @include margin-bottom(1);
   @include background-image(linear-gradient(to right, tint($color-light-gray, 85), $color-white));
@@ -185,7 +185,7 @@
     line-height: normal;
     color: $color-gz-gray;
     @include padding-equal(.5);
-    @include border-radius(10px);
+    border-radius: 10px;
     @include margin-top(1);
     @include margin-bottom(1);
     display: table;
