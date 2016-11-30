@@ -40,6 +40,21 @@
     float: none;
     @include font-size(1.4);
     border: none;
+    @include margin-right(.5);
+    @include padding-right(.5);
+  }
+
+  .main-navigation-toggler > a {
+    background: none;
+    &:hover, &:active {
+      background: none;
+      color: $color-gz-orange;
+    }
+  }
+
+  .social-media:last-child {
+    @include margin-right(0);
+    @include padding-right(0)
   }
 
   // don't initially show the sub nav,
