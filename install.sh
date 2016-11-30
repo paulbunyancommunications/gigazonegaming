@@ -35,6 +35,10 @@ bash ${WORKSPACE}/decrypt-files.sh -w "${WORKSPACE}" -p "${decrypt_password}"
 wget -N -q https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPackageCommitHash}/setup/puphpet/install_and_setup_assets_in_vagrant_box.sh -O install_runner.sh
 . install_runner.sh
 
+# run copy libraries npm script and rerun gulp
+vagrant ssh -c "cd /var/www; npm run-script copy-libraries;"
+vagrant ssh -c "cd /var/www; gulp;"
+
 # -------------------------------------------------------------
 # download codecept.phar for running tests
 

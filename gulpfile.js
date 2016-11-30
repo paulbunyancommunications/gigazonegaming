@@ -47,7 +47,7 @@ elixir.extend('blueMountain', function (src, outputDir) {
         return gulp.src(src + '/**/*.coffee')
             .pipe(coffee({bare: true}).on('error', gutil.log))
             .pipe(gulp.dest(outputDir));
-    }).watch(src + '/**/*.coffee');
+    }).watch(path.join(src, '/**/*.coffee'));
 
 });
 
@@ -139,23 +139,7 @@ elixir(function (mix) {
      * Copy Boostrap css and js files to themes and app folder
      ================================================ */
 
-    mix.copyFiles(path.join(rootDir, 'node_modules/bootstrap/dist/**/*'), path.join(themeFolder, 'libraries/bootstrap'))
-       .copyFiles(path.join(rootDir, 'node_modules/bootstrap/dist/**/*'), path.join(appFolder, 'libraries/bootstrap'))
-       .copyFiles(path.join(rootDir, 'node_modules/bootstrap-sass/assets/**/*'), path.join(themeResourceFolder, 'sass/libraries/bootstrap-sass'))
-       .copyFiles(path.join(rootDir, 'node_modules/bootstrap-sass/assets/**/*'), path.join(appResourceFolder, 'sass/libraries/bootstrap-sass'))
-
-    /** ================================================
-     * Copy Bourbon sass files to themes and app folder
-     ================================================ */
-       .copyFiles(path.join(rootDir, 'public_html/bower_components/bourbon/app/assets/stylesheets/**/*'), path.join(themeResourceFolder, 'sass/libraries/bourbon'))
-       .copyFiles(path.join(rootDir, 'public_html/bower_components/bourbon/app/assets/stylesheets/**/*'), path.join(appResourceFolder, 'sass/libraries/bourbon'))
-
-    /** ================================================
-     * Copy Gutenberg sass files to themes and app folder
-     ================================================ */
-       .copyFiles(path.join(rootDir, 'public_html/bower_components/Gutenberg/src/style/**/*'), path.join(themeResourceFolder, 'sass/libraries/gutenberg'))
-       .copyFiles(path.join(rootDir, 'public_html/bower_components/Gutenberg/src/style/**/*'), path.join(appResourceFolder, 'sass/libraries/gutenberg'))
-
+    mix
     /** ================================================
      * Compile Theme SASS -> CSS
      ================================================ */
@@ -209,10 +193,3 @@ elixir(function (mix) {
     //mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
     mix.livereload(['app/**/*', 'public_html/**/*', 'resources/views/**/*'], {});
 });
-
-/*
-// watch sass files
-// https://github.com/laravel/elixir/issues/297#issuecomment-247015075
-elixir.tasks.byName('sassy').forEach(function (task) {
-    task.watch(path.join(resourceRoot, '**!/!*.scss') );
-});*/

@@ -29,5 +29,9 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "dotenv": "^2.0.0"
+  },
+  "scripts" : {
+    "copy-libraries": "npm run-script bower && bash .npm_copy_libraries.sh",
+    "bower": "bower install && bower update"
   }
 }
