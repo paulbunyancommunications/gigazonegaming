@@ -16,7 +16,6 @@
     width: 100%;
     background: $color-gz-gray;
     text-align: center;
-    overflow-x: hidden;
 
     &::after {
     }
@@ -142,8 +141,7 @@
         content: "";
         @include height(1.70);
         width: 1px;
-        @include right(0);
-        @include margin-right(-.5);
+        left: 1px;
         //top: 0.85em;
         @include top(0.75);
         position: absolute;
