@@ -31,7 +31,7 @@
     "dotenv": "^2.0.0"
   },
   "scripts" : {
-    "copy-libraries": "npm run-script bower && bash .npm_copy_libraries.sh",
-    "bower": "bower install && bower update"
+    "copy-libraries": "npm run-script bower && bash .npm_copy_libraries.sh >/dev/null 2>&1",
+    "bower": "bower install && bower update >/dev/null 2>&1"
   }
 }
