@@ -143,7 +143,7 @@ elixir(function (mix) {
     /** ================================================
      * Compile Theme SASS -> CSS
      ================================================ */
-       .sassy(path.join(themeResourceFolder, 'sass/*.scss'), path.join(themeFolder, 'css'), {
+       .sassy(path.join(themeResourceFolder, 'sass/**/*.scss'), path.join(themeFolder, 'css'), {
            outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
            indentWidth: 4,
            indentType: 'space',
@@ -157,7 +157,7 @@ elixir(function (mix) {
         /** ================================================
         * Compile App SASS -> CSS
         ================================================ */
-        .sassy(path.join(appResourceFolder, 'sass/*.scss'), path.join(appFolder, 'css'), {
+        .sassy(path.join(appResourceFolder, 'sass/**/*.scss'), path.join(appFolder, 'css'), {
             outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
             indentWidth: 4,
             indentType: 'space',
