@@ -1,11 +1,11 @@
 %div{:id=>"footer-content"}
-  .footer-items-container
+  .footer--items-container
     .container
       %div{:class=>"row row-flex row-flex-wrap"}
         {% if footer_highlight_links is defined and footer_highlight_links|length > 0 %}
         {% for link in footer_highlight_links %}
         .col-sm-4
-          %div{:class=>"sidebar-highlight-link footer-highlight-link  flex-col"}
+          %div{:class=>"sidebar-highlight-link footer--highlight-link  flex-col"}
             .sidebar-highlight-link-title
               {% if link.link_image|length > 0 %}
               %a{:href=>"{{link.link_url}}", :target=>"{{ link.link_target }}"}
@@ -24,7 +24,7 @@
                 %strong Learn More&#8230;
         {% endfor %}
         {% endif %}
-  .footer-bottom
+  .footer--bottom
     .container
       .row
         .col-sm-6
@@ -33,9 +33,7 @@
         .col-sm-6
           .sidebar
             .sidebar-social-media
-              %ul{:class=>"inline-list"}
-                %li
-                  {% include 'partials/social-media.twig' %}
-                %li
-                  {% include "partials/wigets/constant_contact_signup_button.twig" %}
+              %ul{:class=>"footer--bottom--social-list"}
+                \<li class="inline-block footer--bottom--social-list-item">{% include 'partials/social-media.twig' %}</li><li class="inline-block footer--bottom--social-list-item">{% include "partials/wigets/constant_contact_signup_button.twig" %}</li>
+
 {% include "partials/footer-js.twig" %}
