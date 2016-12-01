@@ -4,10 +4,14 @@ namespace App\Helpers\Backend\Manage;
 /**
  * Class ChampionshipSearch
  */
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Schema;
+
 /**
  * Class ChampionshipSearch
  * @package App\Helpers\Backend\Manage
  */
+
 class ChampionshipSearch
 {
 
@@ -19,10 +23,10 @@ class ChampionshipSearch
     /**
      * Get all by keyword
      *
-     * @param \Request $request
+     * @param Request $request
      * @return array
      */
-    public function all(\Request $request)
+    public function all(Request $request)
     {
         list($searchTerm, $modelPaths) = $this->prepSearch($request);
         $search = $this->searchModels($modelPaths, $searchTerm, ['Game', 'Player','Tournament','Team']);
@@ -31,10 +35,10 @@ class ChampionshipSearch
     }
 
     /**
-     * @param \Request $request
+     * @param Request $request
      * @return array
      */
-    protected function prepSearch(\Request $request)
+    protected function prepSearch(Request $request)
     {
         $searchTerm = $this->searchTerm($request);
         $modelPaths = $this->modelPaths();
@@ -42,10 +46,10 @@ class ChampionshipSearch
     }
 
     /**
-     * @param \Request $request
+     * @param Request $request
      * @return mixed
      */
-    protected function searchTerm(\Request $request)
+    protected function searchTerm(Request $request)
     {
         return $request::get('search');
     }
@@ -131,7 +135,7 @@ class ChampionshipSearch
     {
         $search[$modelName] = [];
         $table = with(new $model)->getTable();
-        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $columns = Schema::connection($this->connection)->getColumnListing($table);
         foreach ($columns as $column) {
             $resultOfSearch = $model::where([[$column, '!=', ''], [$column, 'LIKE', '%' . $searchTerm . '%']]);
             if(count($resultOfSearch->get())) {
@@ -145,10 +149,10 @@ class ChampionshipSearch
     /**
      * Get players by key word
      *
-     * @param \Request $request
+     * @param Request $request
      * @return mixed
      */
-    public function player(\Request $request)
+    public function player(Request $request)
     {
         list($searchTerm, $modelPaths) = $this->prepSearch($request);
         $search = $this->searchModels($modelPaths, $searchTerm, ['Player']);
@@ -158,10 +162,10 @@ class ChampionshipSearch
 
     /**
      * Search for game by keyword
-     * @param \Request $request
+     * @param Request $request
      * @return mixed
      */
-    public function game(\Request $request)
+    public function game(Request $request)
     {
         list($searchTerm, $modelPaths) = $this->prepSearch($request);
         $search = $this->searchModels($modelPaths, $searchTerm, ['Game']);
@@ -172,7 +176,7 @@ class ChampionshipSearch
     /**
      * Search for team by keyword
      */
-    public function team(\Request $request)
+    public function team(Request $request)
     {
         list($searchTerm, $modelPaths) = $this->prepSearch($request);
         $search = $this->searchModels($modelPaths, $searchTerm, ['Team']);
@@ -183,7 +187,7 @@ class ChampionshipSearch
     /**
      * Search for tournament by keyword
      */
-    public function tournament(\Request $request)
+    public function tournament(Request $request)
     {
         list($searchTerm, $modelPaths) = $this->prepSearch($request);
         $search = $this->searchModels($modelPaths, $searchTerm, ['Tournament']);
