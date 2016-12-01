@@ -61,11 +61,11 @@ class TeamsController extends Controller
      *
      * @param  Team  $team
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function create(Team $team)
     {
-        dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
+        return null;
 //        $updatedBy = $this->getUserId();
 //        $updatedOn = Carbon::now("CST");
 //        $toUpdate = array_merge($request->all(), [

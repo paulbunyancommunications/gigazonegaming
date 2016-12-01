@@ -106,11 +106,12 @@ class Controller extends BaseController
     }
 
     /**
-     * @return string
+     * @return null
      */
     public function flushAll()
     {
         Cache::flush();
+        return null;
     }
     /**
      * @return string

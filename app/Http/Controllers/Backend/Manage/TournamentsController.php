@@ -58,11 +58,11 @@ class TournamentsController extends Controller
      *
      * @param  Tournament  $tournament
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function create(Tournament $tournament)
     {
-        dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
+        return null;
     }
 
     /**
