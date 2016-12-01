@@ -33,5 +33,5 @@ do
         fi
 done
 
-
+touch ${WORKSPACE}/jenkinsInstallComplete.txt
 exit 0
