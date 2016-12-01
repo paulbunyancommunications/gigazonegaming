@@ -1,33 +1,37 @@
-/**
-* Check out project from source control
-*/
-node {
-   stage('Checkout') {
-        checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: 'https://github.com/paulbunyannet/gigazonegaming.git']]])
-    }
-}
 
-/**
-* Create the decrypt password file to decrypt encoded files in 'Install Assets' stage
-*/
 node {
+
+    /**
+     * Check out project from source control
+     */
+   stage('Checkout') {
+        checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'scm_checkout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: 'https://github.com/paulbunyannet/gigazonegaming.git']]])
+        sh 'yes | cp -R ${WORKSPACE}/scm_checkout/. ${WORKSPACE}/'
+        deleteDir('scm_checkout')
+
+    }
+
+    /**
+     * Create the decrypt password file to decrypt encoded files in 'Install Assets' stage
+     */
+
     stage('Decrypt password') {
         withCredentials([string(credentialsId: '083e48b1-8bab-4937-87b8-833e6afdcf68', variable: 'decrypt_password')]) {
             writeFile file: '.enc-pass', text: decrypt_password
         }
     }
-}
 
-/**
-* Run install
-* if the 'jenkinsInstallComplete.txt' file exist that means that the install was already run.
-* Still grab assets and and run gulp if install already ran
-*/
-node {
+
+    /**
+    * Run install
+    * if the 'jenkinsInstallComplete.txt' file exist that means that the install was already run.
+    * Still grab assets and and run gulp if install already ran
+    */
+
     stage('Install Assets') {
         def jenkinsInstallComplete = fileExists 'jenkinsInstallComplete.txt'
         if(!jenkinsInstallComplete) {
-            sh 'bash jenkins-install.sh'
+            sh 'jenkins-install.sh'
         } else {
 
             // still make sure that enc files are decrypted
@@ -37,8 +41,7 @@ node {
 
             // check status of vagrant box
             sh 'echo $(vagrant status) >> ${WORKSPACE}/vagrantStatus.txt'
-            def vagrant = new File('${WORKSPACE}/vagrantStatus.txt')
-            def vagrantStatus = vagrant.getText('UTF-8')
+            def vagrantStatus = readFile 'vagrantStatus.txt'
             if(!vagrantStatus.contains('running')) {
                 sh 'vagrant up'
                 vagrantStatus.delete()
@@ -62,36 +65,29 @@ node {
 
         }
     }
-}
 
-
-node {
+    /**
+     * Run Tests
+     */
 
     stage('Assertion Tests') {
         sh 'vagrant ssh -c "cd /var/www; php codecept.phar run acceptance -f -v"'
     }
-}
 
 
-node {
 
     stage('Functional Tests') {
         sh 'vagrant ssh -c "cd /var/www; php codecept.phar run functional -f -v"'
     }
-}
 
 
-node {
 
     stage('Integration Tests') {
         sh 'vagrant ssh -c "cd /var/www; php codecept.phar run intigration -f -v"'
     }
-}
 
 
-node {
 
     stage('Unit Tests') {
         sh 'vagrant ssh -c "cd /var/www; php codecept.phar run unit -f -v"'
     }
-}
