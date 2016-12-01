@@ -27,7 +27,7 @@ class BracketController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function getTournaments()
     {
@@ -35,11 +35,12 @@ class BracketController extends Controller
 //
 //        return response()
 //            ->json();
+        return null;
     }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function getTournament()
     {
@@ -47,16 +48,18 @@ class BracketController extends Controller
 //
 //        return response()
 //            ->json();
+        return null;
     }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function save()
     {
 
 //        return response()
 //            ->json();
+        return null;
     }
 }
