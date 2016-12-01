@@ -25,8 +25,8 @@ node {
 */
 node {
     stage('Install Assets') {
-        Path jenkinsInstallComplete = Paths.get('jenkinsInstallComplete.txt')
-        if(!${Files.exists(jenkinsInstallComplete)}) {
+        def jenkinsInstallComplete = fileExists 'jenkinsInstallComplete.txt'
+        if(!jenkinsInstallComplete) {
             sh 'bash jenkins-install.sh'
         } else {
 
@@ -37,8 +37,9 @@ node {
 
             // check status of vagrant box
             sh 'echo $(vagrant status) >> ${WORKSPACE}/vagrantStatus.txt'
-            def vagrantStatus = new File('${WORKSPACE}/vagrantStatus.txt')
-            if(!vagrantStatus.getText('UTF-8').contains('running')) {
+            def vagrant = new File('${WORKSPACE}/vagrantStatus.txt')
+            def vagrantStatus = vagrant.getText('UTF-8')
+            if(!vagrantStatus.contains('running')) {
                 sh 'vagrant up'
                 vagrantStatus.delete()
             }
