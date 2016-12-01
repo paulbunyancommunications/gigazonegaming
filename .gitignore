@@ -107,3 +107,4 @@ resources/wp-content/themes/gigazone-gaming/sass/libraries
 decrypt-files.sh
 encrypt-files.sh
 public_html/app/content/sass/libraries
+phan.phar
