@@ -68,13 +68,14 @@ class PlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Player  $player
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Player $player
+     * @return null
+     * @internal param Request $request
      */
     public function create(Player $player)
     {
-        dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
+        return null;
+//
 //        $updatedBy = $this->getUserId();
 //        $updatedOn = Carbon::now("CST");
 //        $toUpdate = array_merge($request->all(), [
