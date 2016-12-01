@@ -12,6 +12,7 @@ use App\Models\Championship\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -35,7 +36,7 @@ class GamesController extends Controller
      */
     public function store(GameRequest $request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try {
             $game = new Game();
             $game->uri = $request['uri'];
@@ -47,10 +48,10 @@ class GamesController extends Controller
             $game->created_at = Carbon::now("CST");
             $game->updated_at = Carbon::now("CST");
             $game->save();
-            \DB::commit();
+            DB::commit();
             return redirect('/manage/game/edit/' . $game->id)->with('success', "The game ".$request['title']." was added!");
         } catch (\Exception $ex) {
-            \DB::rollback();
+            DB::rollback();
             return redirect()->back()->withInput()->with('error', $ex->getMessage());
         }
     }
