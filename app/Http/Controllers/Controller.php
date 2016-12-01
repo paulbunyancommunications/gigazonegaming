@@ -7,7 +7,7 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\WpOption;
-use Cache;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
