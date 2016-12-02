@@ -15,7 +15,7 @@ if File.file?("#{dir}/puphpet/config-#{provider}.yaml")
   configValues.deep_merge!(custom)
 end
 
-if File.file?("#{dir}/puphpet/config-custom.yaml")
+if File.file?("#{dir}/puphpet/config-jenkins.yaml")
   custom = YAML.load_file("#{dir}/puphpet/config-jenkins.yaml")
   configValues.deep_merge!(custom)
 end
