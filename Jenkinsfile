@@ -43,6 +43,7 @@ node {
             sh 'echo $(vagrant status) >> ${WORKSPACE}/vagrantStatus.txt'
             def vagrantStatus = readFile 'vagrantStatus.txt'
             if(!vagrantStatus.contains('running')) {
+                sh 'vagrant provision'
                 sh 'vagrant up'
                 vagrantStatus.delete()
             }
