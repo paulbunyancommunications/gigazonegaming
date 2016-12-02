@@ -108,3 +108,4 @@ decrypt-files.sh
 encrypt-files.sh
 public_html/app/content/sass/libraries
 phan.phar
+puphpet/config_jenkins.yaml
