@@ -119,10 +119,11 @@ class Player extends Model
     {
         return PlayerRelationable::playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
     }
+
     /**
      * Get tournament which team is playing in
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     * @param array $parameter
+     * @return array
      */
     public function getThisPlayerInfoBy($parameter = []){
         if(isset($this->id)) {

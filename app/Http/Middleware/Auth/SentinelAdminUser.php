@@ -3,7 +3,7 @@
 namespace App\Http\Middleware\Auth;
 
 use Closure;
-use Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class SentinelAdminUser
 {

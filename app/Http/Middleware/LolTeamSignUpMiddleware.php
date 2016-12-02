@@ -2,11 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
+use Exception;
 use App\Http\Requests\LolTeamSignUpRequest;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
-use Closure;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;
 use Pbc\Bandolier\Type\Numbers;
 
 class LolTeamSignUpMiddleware
@@ -23,9 +27,9 @@ class LolTeamSignUpMiddleware
     public function handle($request, Closure $next)
     {
         $rules = new LolTeamSignUpRequest;
-        $validator = \Validator::make($request->all(), $rules->rules(), $rules->messages());
+        $validator = Validator::make($request->all(), $rules->rules(), $rules->messages());
         if ($validator->fails()) {
-            return \Response::json(['error' => $validator->errors()->all()]);
+            return Response::json(['error' => $validator->errors()->all()]);
         }
 
         // set tournament from request
@@ -35,7 +39,7 @@ class LolTeamSignUpMiddleware
         // get tournament by name
         $tournament = Tournament::where('name', $this->getTournament())->first();
         if ($tournament === null) {
-            return \Response::json([
+            return Response::json([
                 'error' => [
                     trans('tournament.not_found', ['tournament' => $this->getTournament()
                     ])
@@ -43,7 +47,7 @@ class LolTeamSignUpMiddleware
             ]);
         }
         try {
-            \DB::transaction(function () use ($tournament, $request) {
+            DB::transaction(function () use ($tournament, $request) {
 
                 // make new team
                 $team = new Team();
@@ -54,7 +58,7 @@ class LolTeamSignUpMiddleware
                 // check if captain already exists, if they do then return message about logging in to update their settings
                 $findCaptain = Player::where('email', '=', $request->input('email'))->first();
                 if ($findCaptain) {
-                    return \Response::json([
+                    return Response::json([
                         'warning' => [
                             trans('team.player_already_exists', ['email' => $request->input('email')])
                         ]
@@ -101,8 +105,8 @@ class LolTeamSignUpMiddleware
                 }
             });
 
-        } catch (\Exception $ex) {
-            return \Response::json(['error' => [$ex->getMessage()]]);
+        } catch (Exception $ex) {
+            return Response::json(['error' => [$ex->getMessage()]]);
         }
 
         return $next($request);

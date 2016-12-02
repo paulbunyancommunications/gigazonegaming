@@ -374,13 +374,12 @@ trait  PlayerRelationable
 
     /**
      * Display the specified resource.
-     *
-     * @param  can be a multidemsional array
      * key game for all games or one game
      * key tournament for all tournaments or one tournament
      * key team for all teams or one team
      * key player for all players or one player
      * key order_by for only one orderBy string value
+     * @param array $parameter
      * @return array
      */
     public function getPlayersInfoBy($parameter = []){
@@ -394,14 +393,12 @@ trait  PlayerRelationable
             $to_value = "";
             $te_value = "";
             $pl_value = "";
-            $game = '';
-            $tournament = '';
-            $team = '';
-            $player = '';
+            $game = [];
+            $tournament = [];
+            $team = [];
+            $player = [];
             $order_by = '';
-            if(is_array($parameter) and $parameter != [] or $parameter != null) {
-                extract($parameter, EXTR_OVERWRITE);
-            }
+            extract($parameter, EXTR_OVERWRITE);
             if ($order_by != "" and $order_by != "---" and $order_by != null) {
                 $order_by = trim($order_by);
             }

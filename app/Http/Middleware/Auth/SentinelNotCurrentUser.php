@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware\Auth;
 
-use Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Closure;
 
 class SentinelNotCurrentUser

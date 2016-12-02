@@ -5,6 +5,7 @@
  * Date: 5/19/16
  * Time: 4:44 PM
  */
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/manage/individualPlayer', ['as' => 'manage.individualPlayer.index', 'uses' => 'Backend\Manage\IndividualPlayersController@index']);

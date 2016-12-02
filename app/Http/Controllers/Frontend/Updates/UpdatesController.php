@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\UpdateRecipients;
 use Illuminate\Http\Request;
-use Response;
-use Validator;
-use View;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class UpdatesController extends Controller
 {

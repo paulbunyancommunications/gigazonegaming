@@ -45,7 +45,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth' => \App\Http\Middleware\Auth\Authenticate::class,
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'WPAdmin' => \App\Http\Middleware\WPAdminMiddleware::class,
