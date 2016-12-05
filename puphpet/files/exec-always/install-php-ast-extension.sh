@@ -6,5 +6,6 @@ if ! grep -q extension=ast.so "$File"; then
     sudo phpize
     sudo ./configure
     sudo make install
+    #http://stackoverflow.com/a/550808/405758
     echo "extension=ast.so" | sudo tee --append /etc/php.ini
 fi;
