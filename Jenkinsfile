@@ -16,7 +16,7 @@ node {
      */
 
     stage('Decrypt password') {
-        withCredentials([string(credentialsId: '083e48b1-8bab-4937-87b8-833e6afdcf68', variable: 'decrypt_password')]) {
+        withCredentials([string(credentialsId: 'gigazone-gaming-decode-code', variable: 'decrypt_password')]) {
             writeFile file: '.enc-pass', text: decrypt_password
         }
     }
