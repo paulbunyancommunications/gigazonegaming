@@ -124,3 +124,15 @@ add_action( 'edit_user_profile', [$bootstrap, 'showExtraProfileFields'] );
 // saving extra fields
 add_action( 'personal_options_update', [$bootstrap, 'saveExtraProfileFields'] );
 add_action( 'edit_user_profile_update', [$bootstrap,'saveExtraProfileFields'] );
+
+/**
+ * Allow for svg files to be uploaded via media upload
+ * https://css-tricks.com/snippets/wordpress/allow-svg-through-wordpress-media-uploader/
+ * @param $mimes
+ * @return mixed
+ */
+function cc_mime_types($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'cc_mime_types');
