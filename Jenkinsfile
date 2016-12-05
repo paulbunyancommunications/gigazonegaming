@@ -92,3 +92,4 @@ node {
     stage('Unit Tests') {
         sh 'vagrant ssh -c "cd /var/www; php codecept.phar run unit -f -v"'
     }
+}
