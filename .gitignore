@@ -109,3 +109,4 @@ encrypt-files.sh
 public_html/app/content/sass/libraries
 phan.phar
 puphpet/config_jenkins.yaml
+public_html/press-kit
