@@ -5,9 +5,13 @@ node {
      * Check out project from source control
      */
    stage('Checkout') {
+
+        sh 'mkdir ${WORKSPACE}/scm_checkout || true'
         checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'scm_checkout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: 'https://github.com/paulbunyannet/gigazonegaming.git']]])
-        sh 'yes | cp -R ${WORKSPACE}/scm_checkout/. ${WORKSPACE}/'
-        deleteDir('scm_checkout')
+        sh 'echo $(date +%s) >> ${WORKSPACE}/scm_checkout/scm-checked-out.txt'
+        sh 'rm -rf ${WORKSPACE}/scm_checkout/.git || true'
+        sh 'yes | cp -Ru ${WORKSPACE}/scm_checkout/* ${WORKSPACE}/'
+        sh 'rm -rt ${WORKSPACE}/scm_checkout || true'
 
     }
 
@@ -29,9 +33,9 @@ node {
     */
 
     stage('Install Assets') {
-        def jenkinsInstallComplete = fileExists 'jenkinsInstallComplete.txt'
+        def jenkinsInstallComplete = fileExists '${WORKSPACE}/jenkinsInstallComplete.txt'
         if(!jenkinsInstallComplete) {
-            sh 'jenkins-install.sh'
+            sh 'bash ${WORKSPACE}/jenkins-install.sh'
         } else {
 
             // still make sure that enc files are decrypted
@@ -52,8 +56,8 @@ node {
             // run composer
             sh 'vagrant ssh -c "cd /var/www; php composer.phar update"'
 
-            // run npm
-            sh 'vagrant ssh -c "cd /var/www; npm update"'
+            // run yarn (FB Node packages installer)
+            sh 'vagrant ssh -c "cd /var/www; yarn install"'
 
             // run bower
             sh 'vagrant ssh -c "cd /var/www; bower update"'
