@@ -16,7 +16,7 @@ vagrant box update
 #
 # Update the Vagrantfile to use the jenkins config rather than the regular one
 #
-sed 's/config-custom.yaml/config-jenkins.yaml/' ${WORKSPACE}/Vagrantfile | tee ${WORKSPACE}/Vagrantfile >/dev/null
+sed 's/config-custom.yaml/config-jenkins.yaml/' ${WORKSPACE}/Vagrantfile >/dev/null
 
 # -------------------------------------------------------------
 #
