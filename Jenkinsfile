@@ -126,7 +126,7 @@ node {
      */
    stage('Composer') {
         echo "\u2605 Installing Composer dependencies \u2605"
-        sh "vagrant ssh -c \"cd /var/wwww; php composer.phar install\""
+        sh "vagrant ssh -c \"cd /var/www; php composer.phar install\""
    }
 
     /**
@@ -134,7 +134,7 @@ node {
      */
    stage('Bower') {
         echo "\u2605 Installing Bower dependencies \u2605"
-        sh "vagrant ssh -c \"sudo npm install -g bower; cd /var/wwww; bower install\""
+        sh "vagrant ssh -c \"sudo npm install -g bower; cd /var/www; bower install\""
    }
 
     /**
@@ -142,7 +142,7 @@ node {
      */
    stage('Node Copy') {
         echo "\u2605 Copying script to required places \u2605"
-        sh "vagrant ssh -c \"cd /var/wwww; npm run-script copy-libraries\""
+        sh "vagrant ssh -c \"cd /var/www; npm run-script copy-libraries\""
    }
 
 
@@ -151,7 +151,7 @@ node {
      */
    stage('Gulp') {
         echo "\u2605 Copying script to required places \u2605"
-        sh "vagrant ssh -c \"sudo npm install -g gulp; cd /var/wwww; gulp\""
+        sh "vagrant ssh -c \"sudo npm install -g gulp; cd /var/www; gulp\""
    }
 
     /**
