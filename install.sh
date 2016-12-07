@@ -37,6 +37,7 @@ wget -N -q https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPack
 
 # run copy libraries npm script and rerun gulp
 vagrant ssh -c "cd /var/www; yarn install"
+vagrant ssh -c "cd /var/www; bower install"
 vagrant ssh -c "cd /var/www; npm run-script copy-libraries;"
 vagrant ssh -c "cd /var/www; gulp;"
 
