@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Relation\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\WpUser;

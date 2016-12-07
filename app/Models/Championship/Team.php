@@ -3,6 +3,8 @@
 namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
+use App\Models\Championship\Relation\PlayerRelation;
 
 /**
  * Class Team

@@ -85,17 +85,17 @@ class BackEndTesterSeeder extends Seeder
                     'phone' => "(218)-444-".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
-            \App\Models\Championship\PlayerRelation::create([
+            \App\Models\Championship\Relation\PlayerRelation::create([
                 'player_id' => $player['id'],
                 'relation_type' => \App\Models\Championship\Game::class,
                 'relation_id' => $sp_game['id'],
             ]);
-            \App\Models\Championship\PlayerRelation::create([
+            \App\Models\Championship\Relation\PlayerRelation::create([
                 'player_id' => $player['id'],
                 'relation_type' => \App\Models\Championship\Tournament::class,
                 'relation_id' => $sp_tournament['id'],
             ]);
-            \App\Models\Championship\PlayerRelation::create([
+            \App\Models\Championship\Relation\PlayerRelation::create([
                 'player_id' => $player['id'],
                 'relation_type' => \App\Models\Championship\Team::class,
                 'relation_id' => $sp_team['id'],
@@ -127,18 +127,18 @@ class BackEndTesterSeeder extends Seeder
         }// create the tester user if not already created
         foreach ($playerWithRelations as $k => $player){
             if($k < 30){
-                \App\Models\Championship\PlayerRelation::create([
+                \App\Models\Championship\Relation\PlayerRelation::create([
                     'player_id' => $player['id'],
                     'relation_type' => \App\Models\Championship\Tournament::class,
                     'relation_id' => $sp_tournament['id'],
                 ]);
-                \App\Models\Championship\PlayerRelation::create([
+                \App\Models\Championship\Relation\PlayerRelation::create([
                     'player_id' => $player['id'],
                     'relation_type' => \App\Models\Championship\Game::class,
                     'relation_id' => $sp_game['id'],
                 ]);
             } else {
-                $relation[] = \App\Models\Championship\PlayerRelation::create(
+                $relation[] = \App\Models\Championship\Relation\PlayerRelation::create(
                     [
                         'player_id' => $player['id'],
                         'relation_type' => \App\Models\Championship\Team::class,

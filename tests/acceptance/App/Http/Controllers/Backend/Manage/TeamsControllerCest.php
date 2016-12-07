@@ -3,7 +3,7 @@ namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
 
 use \AcceptanceTester;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use \BaseAcceptance;
 

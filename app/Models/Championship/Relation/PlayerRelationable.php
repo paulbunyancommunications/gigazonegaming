@@ -7,10 +7,14 @@
  */
 
 
-namespace App\Models\Championship;
+namespace App\Models\Championship\Relation;
 
 use Doctrine\DBAL\Schema\Schema;
 use Illuminate\Support\Facades\DB;
+use App\Models\Championship\Player;
+use App\Models\Championship\Game;
+use App\Models\Championship\Tournament;
+use App\Models\Championship\Team;
 
 trait  PlayerRelationable
 {
@@ -156,6 +160,8 @@ trait  PlayerRelationable
 
         self::prepParameters($parameters);
 
+        /** @var string $modelNameSpace base namespace for championship models, should be App\Models\Championship, one up from this  */
+        $champModelNameSpace = self::relationshipNameSpace();
         /**
          * Loop over the player routables and set up
          * relations for Game and Tournament, they
@@ -171,13 +177,13 @@ trait  PlayerRelationable
                     $relation = new PlayerRelation();
                     $relation->player_id = $parameters['player'];
                     $relation->relation_id = $parameters[$routable];
-                    $relation->relation_type = __NAMESPACE__ . '\\' . Player::routables()[$i];
+                    $relation->relation_type = $champModelNameSpace . '\\' . Player::routables()[$i];
                     $relation->save();
                     // forward call to routable where and get it's name for success message
-                    $ret[$routable]['success'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters[$routable])->pluck("name")->first();
+                    $ret[$routable]['success'] .= forward_static_call([$champModelNameSpace . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters[$routable])->pluck("name")->first();
                 } else {
                     // forward call to routable where and get it's name for fail message
-                    $ret[$routable]['fail'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters[$routable])->pluck("name")->first();
+                    $ret[$routable]['fail'] .= forward_static_call([$champModelNameSpace . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters[$routable])->pluck("name")->first();
                 }
             } elseif (isset($parameters[$routable]) and is_array($parameters[$routable])) {
                 foreach ($parameters[$routable] as $k => $v) {
@@ -185,13 +191,13 @@ trait  PlayerRelationable
                         $relation = new PlayerRelation();
                         $relation->player_id = $parameters['player'];
                         $relation->relation_id = $v;
-                        $relation->relation_type = __NAMESPACE__ . '\\' . Player::routables()[$i];
+                        $relation->relation_type = $champModelNameSpace . '\\' . Player::routables()[$i];
                         $relation->save();
                         // forward call to routable where and get it's name for success message
-                        $ret[$routable]['success'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $v)->pluck("name")->first() . ', ';
+                        $ret[$routable]['success'] .= forward_static_call([$champModelNameSpace . '\\' .self::routables()[$i], 'where'], 'id', '=', $v)->pluck("name")->first() . ', ';
                     } else {
                         // forward call to routable where and get it's name for fail message
-                        $ret[$routable]['fail'] .= forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters['game'])->pluck("name")->first() . ', ';
+                        $ret[$routable]['fail'] .= forward_static_call([$champModelNameSpace . '\\' .self::routables()[$i], 'where'], 'id', '=', $parameters['game'])->pluck("name")->first() . ', ';
                     }
                     $ret[$routable]['success'] = trim($ret[$routable]['success'], ', ');
                     $ret[$routable]['fail'] = trim($ret[$routable]['fail'], ', ');
@@ -317,6 +323,8 @@ trait  PlayerRelationable
      */
     public function playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
+        $relationNameSpace = self::relationshipNameSpace();
+
         if(isset($this) and isset($this->id)) {
             $relations = PlayerRelation::where('player_id', '=', $this->id);
             if ($filter != [] and is_array($filter)) {
@@ -329,7 +337,7 @@ trait  PlayerRelationable
                 for ($i = 0; $i < count(self::routables()); $i++) {
                     if (array_key_exists(strtolower(self::routables()[$i]), $filter)) {
                         $relations->where('relation_id', '=', $filter[strtolower(self::routables()[$i])])
-                            ->where('relation_type', '=', __NAMESPACE__ . '\\' . self::routables()[$i]);
+                            ->where('relation_type', '=', $relationNameSpace . '\\' . self::routables()[$i]);
                     }
                 }
             }
@@ -346,11 +354,11 @@ trait  PlayerRelationable
                      * in the return array.
                      */
                     for($i=0; $i < count(self::routables()); $i++) {
-                        if ($someT['relation_type'] == __NAMESPACE__ . '\\' .self::routables()[$i]) {
+                        if ($someT['relation_type'] == $relationNameSpace . '\\' .self::routables()[$i]) {
                             if (!isset($returnableArray[strtolower(self::routables()[$i])])) {
                                 $returnableArray[strtolower(self::routables()[$i])] = [];
                             }
-                            $x = forward_static_call([__NAMESPACE__ . '\\' .self::routables()[$i], 'where'], 'id', '=', $someT['relation_id'])->first();
+                            $x = forward_static_call([$relationNameSpace . '\\' .self::routables()[$i], 'where'], 'id', '=', $someT['relation_id'])->first();
                             if($x!=null){
                                     $x = $x->toArray();
                             }
@@ -736,5 +744,17 @@ trait  PlayerRelationable
     public function tableColumnAsColumn($table = null, $column = null)
     {
         return $table . '.' . $column . ' as ' . $column;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function relationshipNameSpace()
+    {
+        $relationNameSpaceParts = explode('\\', __NAMESPACE__);
+        array_pop($relationNameSpaceParts);
+        $relationNameSpace = implode('\\', $relationNameSpaceParts);
+        unset($relationNameSpaceParts);
+        return $relationNameSpace;
     }
 }

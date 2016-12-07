@@ -110,15 +110,15 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
         $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
-        $I->selectOption(array("id" => "tournament_id"), 'Tester Tournament');
+        $I->selectOption(["id" => "tournament_id"], 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
                 allowClear: true
             });");
         $I->click("Update");
         $I->see('Update Player: “' . $name . '”');
-        $I->seeOptionIsSelected('select#game_id', 'tester-game');
-        $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->seeOptionIsSelected(['id' => 'game_id'], 'tester-game');
+        $I->seeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
+        $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
 
     }
     /**

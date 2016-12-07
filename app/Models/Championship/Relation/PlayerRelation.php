@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models\Championship;
+namespace App\Models\Championship\Relation;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
 
 class PlayerRelation extends Model
 {

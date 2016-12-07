@@ -43,7 +43,7 @@ $factory->define(App\Models\Championship\Team::class, function (Faker\Generator 
     ];
 });
 
-$factory->define(App\Models\Championship\PlayerRelation::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Championship\Relation\PlayerRelation::class, function (Faker\Generator $faker) {
 
     return [
         'player_id' => factory(App\Models\Championship\Player::class)->create([])->id,

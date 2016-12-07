@@ -7,7 +7,7 @@ use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Player_Team;
 use App\Models\Championship\Player_Tournament;
-use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;

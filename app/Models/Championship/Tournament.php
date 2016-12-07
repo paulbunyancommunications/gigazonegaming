@@ -3,6 +3,7 @@
 namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
 
 /**
  * Class Tournament
@@ -73,7 +74,7 @@ class Tournament extends Model
      */
     public function playerRelation()
     {
-        return $this->morphMany('App\Models\Championship\PlayerRelationable', 'relation');
+        return $this->morphMany('App\Models\Championship\Relation\PlayerRelationable', 'relation');
     }
 
     /**

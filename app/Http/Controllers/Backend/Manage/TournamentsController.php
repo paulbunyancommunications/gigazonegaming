@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Models\Championship\Game;
-use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;

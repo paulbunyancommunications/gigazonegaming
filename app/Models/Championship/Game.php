@@ -4,6 +4,7 @@ namespace App\Models\Championship;
 
 use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
 
 /**
  * Class Game
