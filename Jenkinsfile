@@ -219,7 +219,7 @@ retry(2) {
 
             stage('Assertion Tests') {
                 def test_started = sh (
-                    script: "$(date +'%Y-%m-%d %H:%M:%S')",
+                    script: "date +'%Y-%m-%d %H:%M:%S'",
                     returnStdout: true
                 )
                 echo "\u2605 Running Assertion Tests, started at ${test_started} \u2605"
@@ -232,7 +232,7 @@ retry(2) {
 
             stage('Functional Tests') {
                 def test_started = sh (
-                    script: "$(date +'%Y-%m-%d %H:%M:%S')",
+                    script: "date +'%Y-%m-%d %H:%M:%S'",
                     returnStdout: true
                 )
                 echo "\u2605 Running Functional Tests, started at ${test_started} \u2605"
@@ -245,7 +245,7 @@ retry(2) {
 
             stage('Integration Tests') {
                 def test_started = sh (
-                    script: "$(date +'%Y-%m-%d %H:%M:%S')",
+                    script: "date +'%Y-%m-%d %H:%M:%S'",
                     returnStdout: true
                 )
                 echo "\u2605 Running Integration Tests, started at ${test_started} \u2605"
@@ -257,7 +257,7 @@ retry(2) {
              */
             stage('Unit Tests') {
                 def test_started = sh (
-                    script: "$(date +'%Y-%m-%d %H:%M:%S')",
+                    script: "date +'%Y-%m-%d %H:%M:%S'",
                     returnStdout: true
                 )
                 echo "\u2605 Running Unit Tests, started at ${test_started} \u2605"
