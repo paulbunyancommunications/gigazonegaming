@@ -12,5 +12,6 @@ return [
 	    'vendor',
         'public_html/wp',
         'tests/_support',
+        'app/Models/Championship/Relation'
     ],
 ];
