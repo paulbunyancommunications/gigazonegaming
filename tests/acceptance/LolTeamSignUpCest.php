@@ -18,9 +18,8 @@ class LolTeamSignUpCest extends \BaseAcceptance
     }
 
     // tests
-    public function submitATeamToTheSystemFromForm(AcceptanceTester $I, $scenario)
+    public function submitATeamToTheSystemFromForm(AcceptanceTester $I)
     {
-        $scenario->skip();
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL team sign up form');
         $I->amOnPage('/sign-up/lol-team-signup/');
@@ -53,7 +52,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         }
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElement(['id' => 'team-name-response-value']);
 
         $I->see('Thanks for signing up your team to play League of Legends!');
         $I->see($teamName, ['id' => 'team-name-response-value']);

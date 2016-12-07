@@ -25,15 +25,13 @@ class LolIndividualSignUpCest extends \BaseAcceptance
 
     // tests
 
-    public function seeTitleOnIndividualSignUpPage(AcceptanceTester $I, $scenario)
+    public function seeTitleOnIndividualSignUpPage(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->see('League of Legends Individual SignUp');
     }
 
-    public function submitAnIndividualToTheSystem(AcceptanceTester $I, $scenario)
+    public function submitAnIndividualToTheSystem(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->wantTo('Submit the LOL individual sign up form');
 
         $name = $this->faker->name;
@@ -55,9 +53,8 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->see($phone, ['id' => 'your-phone-response-value']);
     }
 
-    public function submitFailsWithBadEmail(AcceptanceTester $I, $scenario)
+    public function submitFailsWithBadEmail(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->wantTo('Submit the LOL individual sign up form with a bad email address');
 
         $email = $this->faker->words(4);
@@ -69,9 +66,8 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->see('Your email address must be a valid address');
     }
 
-    public function submitFailsWithMissingEmail(AcceptanceTester $I, $scenario)
+    public function submitFailsWithMissingEmail(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->wantTo('Submit the LOL individual sign up form with a missing email address');
 
         $I->fillField(['name' => 'name'], $this->faker->name);
@@ -82,9 +78,8 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->see('Your email address is required');
     }
 
-    public function submitFailsWithMissingSummonerName(AcceptanceTester $I, $scenario)
+    public function submitFailsWithMissingSummonerName(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->wantTo('Submit the LOL individual sign up form with a missing summoner name');
 
         $I->fillField(['name' => 'name'], $this->faker->name);
@@ -95,9 +90,8 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->see('Your League of Legends summoner name is required');
     }
 
-    public function submitFailsWithMissingName(AcceptanceTester $I, $scenario)
+    public function submitFailsWithMissingName(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->wantTo('Submit the LOL individual sign up form with a missing name');
 
         $I->fillField(['name' => 'email'], $this->faker->email);
@@ -108,9 +102,8 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->see('Your name is required');
     }
 
-    public function submitFailsWithMissingPhone(AcceptanceTester $I, $scenario)
+    public function submitFailsWithMissingPhone(AcceptanceTester $I)
     {
-        $scenario->skip();
         $I->wantTo('Submit the LOL individual sign up form with a missing phone');
 
         $I->fillField(['name' => 'email'], $this->faker->email);
