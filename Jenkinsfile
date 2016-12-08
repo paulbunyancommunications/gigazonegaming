@@ -49,7 +49,7 @@ retry(2) {
                     returnStdout: true
                     )
                 def decryptPass = sh (
-                    script: "\$(cat .enc-pass)"
+                    script: "\$(cat .enc-pass)",
                     returnStdout: true
                     )
                 sh "wget -N -q https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPackageCommitHash}/setup/files/decrypt-files.sh -O ${env.WORKSPACE}/decrypt-files.sh"
