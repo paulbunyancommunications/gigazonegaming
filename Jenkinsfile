@@ -41,6 +41,22 @@ retry(2) {
 
             }
 
+            stage('Decrypt Files') {
+
+                def latestBashPackageCommitHash = sh (
+
+                    script: "\$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')",
+                    returnStdout: true
+                    )
+                def decryptPass = sh (
+                    script: "\$(cat .enc-pass)"
+                    returnStdout: true
+                    )
+                sh "wget -N -q https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPackageCommitHash}/setup/files/decrypt-files.sh -O ${env.WORKSPACE}/decrypt-files.sh"    
+                sh "bash ${env.WORKSPACE}/decrypt-files.sh -w \"${env.WORKSPACE}\" -p \"${decrypt_password}\""
+
+            }
+
             /**
              * Fix phing config files
              */
