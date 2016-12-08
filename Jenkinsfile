@@ -88,12 +88,20 @@ retry(2) {
            stage('Download Tools') {
 
                 echo "\u2605 Download tools needed for later \u2605"
-                // get composer.phar
-                sh "wget -q -N https://getcomposer.org/composer.phar -O ${env.WORKSPACE}/composer.phar"
-                // get c3.phar
-                sh "wget -q -N https://raw.github.com/Codeception/c3/2.0/c3.php -O ${env.WORKSPACE}/c3.php"
-                // get codecept.phar
-                sh "wget -q -N http://codeception.com/codecept.phar -O ${env.WORKSPACE}/codecept.phar"
+                parallel (
+                    phase1: {
+                        // get composer.phar
+                        sh "wget -q -N https://getcomposer.org/composer.phar -O ${env.WORKSPACE}/composer.phar"
+                    }
+                    phase2: {
+                        // get c3.phar
+                        sh "wget -q -N https://raw.github.com/Codeception/c3/2.0/c3.php -O ${env.WORKSPACE}/c3.php"
+                    }
+                    phase3: {
+                        // get codecept.phar
+                        sh "wget -q -N http://codeception.com/codecept.phar -O ${env.WORKSPACE}/codecept.phar"
+                    }
+                )
 
            }
 
@@ -117,39 +125,49 @@ retry(2) {
                 echo "\u2605 Vagrant status: ${vagrant_status} \u2605"
            }
 
-            /**
-             * Install NPM modules though Yarn
-             */
-           stage('NPM') {
-                echo "\u2605 Installing NPM libraries through Yarn \u2605"
-                sh "vagrant ssh -c \"sudo npm install -g yarn; cd /var/www; yarn install\""
 
-           }
+        /**
+         * Run third party installers in parallel
+         */
+         stage('Install 3rd party libraries') {
 
-            /**
-             * Install Composer modules
-             */
-           stage('Composer') {
-                echo "\u2605 Installing Composer dependencies \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php composer.phar install\""
-           }
+             parallel (
 
-            /**
-             * Install Bower modules
-             */
-           stage('Bower') {
-                echo "\u2605 Installing Bower dependencies \u2605"
-                sh "vagrant ssh -c \"sudo npm install -g bower; cd /var/www; bower install\""
-           }
+                /**
+                 * Install NPM modules though Yarn
+                 */
+               phase1: {
+                    echo "\u2605 Installing NPM libraries through Yarn \u2605"
+                    sh "vagrant ssh -c \"sudo npm install -g yarn; cd /var/www; yarn install\""
 
-            /**
-             * Copying script to required places
-             */
-           stage('Node Copy') {
-                echo "\u2605 Copying script to required places \u2605"
-                sh "vagrant ssh -c \"cd /var/www; npm run-script copy-libraries\""
-           }
+               }
 
+                /**
+                 * Install Composer modules
+                 */
+               phase2: {
+                    echo "\u2605 Installing Composer dependencies \u2605"
+                    sh "vagrant ssh -c \"cd /var/www; php composer.phar install\""
+               }
+
+                /**
+                 * Install Bower modules
+                 */
+               phase3: {
+                    echo "\u2605 Installing Bower dependencies \u2605"
+                    sh "vagrant ssh -c \"sudo npm install -g bower; cd /var/www; bower install\""
+               }
+
+                /**
+                 * Copying script to required places
+                 */
+               phase4: {
+                    echo "\u2605 Copying script to required places \u2605"
+                    sh "vagrant ssh -c \"cd /var/www; npm run-script copy-libraries\""
+               }
+
+            )
+         }
 
             /**
              * Compile scripts with Gulp
@@ -159,59 +177,65 @@ retry(2) {
                 sh "vagrant ssh -c \"sudo npm install -g gulp; cd /var/www; gulp\""
            }
 
-            /**
-             * Compile scripts with Gulp
-             */
-           stage('Clean Wordpress wp folder') {
-                def wp_folder = "${env.WORKSPACE}/public_html/wp"
-                echo "\u2605 Cleaning ${wp_folder} folder \u2605"
-                sh "rm -rf ${wp_folder}/wp-content"
-                sh "rm -f ${wp_folder}/wp-config-sample.php"
-                sh "rm -f ${wp_folder}/.htaccess"
-
-           }
 
 
-            /**
-             * create cache dir if not already existing
-             */
-           stage('Make Cache Directory') {
-                echo "\u2605 Create cache dir if not already existing \u2605"
-                sh "vagrant ssh -c \"cd /var/www; mkdir -m 0770 cache || echo ''\""
-           }
+           stage('Additonal build prep tasks') {
+                parallel (
+
+                    /**
+                     * Clean Wordpress wp folder
+                     */
+                   phase1: {
+                        def wp_folder = "${env.WORKSPACE}/public_html/wp"
+                        echo "\u2605 Cleaning ${wp_folder} folder \u2605"
+                        sh "rm -rf ${wp_folder}/wp-content"
+                        sh "rm -f ${wp_folder}/wp-config-sample.php"
+                        sh "rm -f ${wp_folder}/.htaccess"
+
+                   }
+
+                    /**
+                     * create cache dir if not already existing
+                     */
+                   phase2: {
+                        echo "\u2605 Create cache dir if not already existing \u2605"
+                        sh "vagrant ssh -c \"cd /var/www; mkdir -m 0770 cache || echo ''\""
+                   }
 
 
-            /**
-             * generate new Laravel app key
-             */
-           stage('Generate App Key') {
-                echo "\u2605 Generate new Laravel app key \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php artisan key:generate;\""
-           }
+                    /**
+                     * generate new Laravel app key
+                     */
+                   phase3: {
+                        echo "\u2605 Generate new Laravel app key \u2605"
+                        sh "vagrant ssh -c \"cd /var/www; php artisan key:generate;\""
+                   }
 
-            /**
-             * generate new Laravel app key
-             */
-           stage('Generate Wp Keys') {
-                echo "\u2605 Generate new Wordpress app keys \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php artisan wp:keys --file=.env;\""
-           }
+                    /**
+                     * generate new Laravel app key
+                     */
+                   phase4: {
+                        echo "\u2605 Generate new Wordpress app keys \u2605"
+                        sh "vagrant ssh -c \"cd /var/www; php artisan wp:keys --file=.env;\""
+                   }
 
-            /**
-             * Migrate dbs
-             */
-           stage('Run Migration') {
-                echo "\u2605 Run DB migrations \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php artisan migrate\""
-           }
+                    /**
+                     * Migrate dbs
+                     */
+                   phase5: {
+                        echo "\u2605 Run DB migrations \u2605"
+                        sh "vagrant ssh -c \"cd /var/www; php artisan migrate\""
+                   }
 
-            /**
-             * Preping testing environment
-             */
-           stage('Prep testing environment') {
-                echo "\u2605 Prep testing environment \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php codecept.phar clean && php codecept.phar build\" >/dev/null 2>&1"
-           }
+                    /**
+                     * Preping testing environment
+                     */
+                   phase5: {
+                        echo "\u2605 Prep testing environment \u2605"
+                        sh "vagrant ssh -c \"cd /var/www; php codecept.phar clean && php codecept.phar build\" >/dev/null 2>&1"
+                   }
+                )
+            }
 
             /**
              * Run Assertion Tests
@@ -249,7 +273,7 @@ retry(2) {
                     returnStdout: true
                 )
                 echo "\u2605 Running Integration Tests, started at ${test_started} \u2605"
-                sh 'vagrant ssh -c "cd /var/www; php codecept.phar run intigration -f -v"'
+                sh 'vagrant ssh -c "cd /var/www; php codecept.phar run integration -f -v"'
             }
 
             /**
@@ -269,12 +293,26 @@ retry(2) {
              */
             stage('success') {
 
+                wrap([$class: 'BuildUser']) {
+                    def email = env.BUILD_USER_EMAIL
+                    def first_name = env.BUILD_USER_FIRST_NAME
 
-                mail body: "Hi ${env.BUILD_USER_FIRST_NAME}, The project build was successful for ${currentBuild.displayName} (build number ${currentBuild.number})!",
-                            from: 'notify@jenkins.paulbunyan.net',
-                            replyTo: 'notify@jenkins.paulbunyan.net',
-                            subject: 'Project build successful for ${currentBuild.displayName}',
-                            to: "${env.BUILD_USER_EMAIL}"
+                    def groovyDomain = fileLoader.fromGit('domain-name-from-url.groovy',
+                                                                   'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+
+                    def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
+
+                    def groovyNiceDuration = fileLoader.fromGit('nice-duration.groovy',
+                                               'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+
+                    def duration = groovyNiceDuration.niceDuration("${currentBuild.timeInMillis}")
+
+                    mail body: "Hi ${first_name}, The project build was successful for job ${env.JOB_NAME} (build number ${currentBuild.number})! The job took ${duration} to build.",
+                                from: "notify@${domain}",
+                                replyTo: "notify@${domain}",
+                                subject: "Project build successful for job ${env.JOB_NAME}",
+                                to: "${email}"
+                }
 
             }
 
@@ -282,11 +320,18 @@ retry(2) {
             /**
              * Job failed, send out a message with the failure
              */
+
             currentBuild.result = "FAILURE"
+
+            def groovyDomain = fileLoader.fromGit('domain-name-from-url.groovy',
+                                                                   'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+
+            def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
+
             mail body: "Oh no ${env.BUILD_USER_FIRST_NAME}, the project build for ${currentBuild.displayName} (build number ${currentBuild.number}) was unsuccessfull. See the output here: ${currentBuild.absoluteUrl}" ,
-                 from: 'notify@jenkins.paulbunyan.net',
-                 replyTo: 'notify@jenkins.paulbunyan.net',
-                 subject: 'Project build error for ${currentBuild.displayName}',
+                 from: "notify@${domain}",
+                 replyTo: "notify@${domain}",
+                 subject: "Project build error for ${currentBuild.displayName}",
                  to: "${env.BUILD_USER_EMAIL}"
 
             throw err
