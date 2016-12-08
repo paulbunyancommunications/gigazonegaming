@@ -21,7 +21,7 @@
         "version": "4.6.1",
         "dist": {
           "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.6.1.zip"
+          "url": "https://wordpress.org/wordpress-4.6.1.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -260,7 +260,7 @@
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "php artisan optimize",
-      "echp 'Fixing meta-tags plugin constructor. THIS IS TEMPORARY!'; sed -i.bak 's/function MediaTags()/function __construct()/' ${PWD}/public_html/wp-content/plugins/media-tags/media_tags.php >/dev/null"
+      "echo 'Fixing meta-tags plugin constructor. THIS IS TEMPORARY!'; sed -i.bak 's/function MediaTags()/function __construct()/' ${PWD}/public_html/wp-content/plugins/media-tags/media_tags.php >/dev/null"
     ],
     "test": [
       "bash testing.sh"
