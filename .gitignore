@@ -66,8 +66,8 @@ gigazone_wp.sql
 individualPlayersTableBkup.csv
 PlayersTableBkup.csv
 gzgaming_sentinel.sql
-database/dump/gzgaming_champ_db.sql
-database/dump/gzgaming_wp.sql
+database/dump/gzgaming_champ_db.enc
+database/dump/gzgaming_wp.enc
 form-template.haml.old
 public_html/app/content/js
 public_html/app/content/css
