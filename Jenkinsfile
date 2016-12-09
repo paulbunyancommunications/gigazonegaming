@@ -305,19 +305,21 @@ retry(2) {
             /**
              * Job failed, send out a message with the failure
              */
-            currentBuild.result = "FAILURE"
-            def groovyDomain = fileLoader.fromGit('domain-name-from-url.groovy',
-                                                                   'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+            wrap([$class: 'BuildUser']) {
+                currentBuild.result = "FAILURE"
+                def groovyDomain = fileLoader.fromGit('domain-name-from-url.groovy',
+                                                                       'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
 
-            def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
+                def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
 
-            mail body: "Oh no ${env.BUILD_USER_FIRST_NAME}, the project build for ${currentBuild.displayName} (build number ${currentBuild.number}) was unsuccessfull. See the output here: ${currentBuild.absoluteUrl}" ,
-                 from: "notify@${domain}",
-                 replyTo: "notify@${domain}",
-                 subject: 'Project build error for ${currentBuild.displayName}',
-                 to: "${env.BUILD_USER_EMAIL}"
+                mail body: "Oh no ${env.BUILD_USER_FIRST_NAME}, the project build for ${currentBuild.displayName} (build number ${currentBuild.number}) was unsuccessfull. See the output here: ${currentBuild.absoluteUrl}" ,
+                     from: "notify@${domain}",
+                     replyTo: "notify@${domain}",
+                     subject: 'Project build error for ${currentBuild.displayName}',
+                     to: "${env.BUILD_USER_EMAIL}"
 
-            throw err
+                throw err
+            }
         }
     }
 }

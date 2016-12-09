@@ -255,12 +255,12 @@
       "php artisan ide-helper:generate",
       "php artisan ide-helper:meta",
       "php artisan optimize",
-      "echo 'Fixing meta-tags plugin constructor. THIS IS TEMPORARY!; 'sed -i.bak 's/function MediaTags()/function __construct()/' ${PWD}/public_html/wp-content/plugins/media-tags/media_tags.php >/dev/null"
+      "bash ${PWD}/composer_post_fixes.sh"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "php artisan optimize",
-      "echo 'Fixing meta-tags plugin constructor. THIS IS TEMPORARY!'; sed -i.bak 's/function MediaTags()/function __construct()/' ${PWD}/public_html/wp-content/plugins/media-tags/media_tags.php >/dev/null"
+      "bash ${PWD}/composer_post_fixes.sh"
     ],
     "test": [
       "bash testing.sh"
