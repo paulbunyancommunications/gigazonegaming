@@ -69,20 +69,22 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
         for($i=0; $i < count($fields); $i++) {
             $fieldValue = '';
             $fieldProfileValue = '';
+            $I->scrollTo(['id' => $fields[$i]]);
             $I->fillField(['id' => $fields[$i]], $fieldValue);
+            $I->scrollTo(['id' => $fields[$i].'_profile']);
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
+            $I->scrollTo(['id' => 'submit']);
             $I->click(['id' => 'submit']);
             // make a new post and check to see that the field are missing on page with the profile shortcode
             $I->amOnPage('/wp/wp-admin/post-new.php');
             $I->fillField(['id' => 'title'], $faker->sentence);
-            $I->click(['id' => 'content-html']);
-            $I->wait(1);
             $I->fillField(['id' => 'content'], '[user-profile id="'.$this->wpAdminUser['name'].'"]');
-            $I->wait(3);
+            $I->waitForElementVisible(['id' => 'publish'], self::TEXT_WAIT_TIMEOUT*3);
             $I->click(['id' => 'publish']);
-            $I->see('Post published');
+            $I->waitForText('Post published', self::TEXT_WAIT_TIMEOUT*3);
+            // now go to the posted page and make sure this social element is not on the page
             $I->click('#sample-permalink a');
-            $I->wait(1);
+            $I->waitForElementVisible(['class' => 'masthead-logo'], self::TEXT_WAIT_TIMEOUT*3);
             $I->dontSeeElementInDOM(['class' => 'user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i]]);
             $I->dontSee(ucfirst($fields[$i]));
             $I->amOnPage('/wp/wp-admin/profile.php');
