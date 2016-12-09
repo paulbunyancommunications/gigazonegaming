@@ -318,9 +318,9 @@ retry(2) {
              */
             wrap([$class: 'BuildUser']) {
 
-                def email = env.BUILD_USER_EMAIL
-                def first_name = env.BUILD_USER_FIRST_NAME
-                def user = env.BUILD_USER_ID
+                def email = BUILD_USER_EMAIL
+                def first_name = BUILD_USER_FIRST_NAME
+                def user = BUILD_USER_ID
                 def groovyDomain = fileLoader.fromGit(
                     'domain-name-from-url.groovy',
                     'https://github.com/paulbunyannet/groovy-scripts.git',
