@@ -279,20 +279,30 @@ retry(2) {
             stage('success') {
 
                 wrap([$class: 'BuildUser']) {
-                    def email = env.BUILD_USER_EMAIL
-                    def first_name = env.BUILD_USER_FIRST_NAME
+                    def email = BUILD_USER_EMAIL
+                    def first_name = BUILD_USER_FIRST_NAME
 
-                    def groovyDomain = fileLoader.fromGit('domain-name-from-url.groovy',
-                                                                   'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+                    def groovyDomain = fileLoader.fromGit(
+                        'domain-name-from-url.groovy',
+                        'https://github.com/paulbunyannet/groovy-scripts.git',
+                        'master',
+                        null,
+                        ''
+                    )
 
                     def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
 
-                    def groovyNiceDuration = fileLoader.fromGit('nice-duration.groovy',
-                                               'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+                    def groovyNiceDuration = fileLoader.fromGit(
+                        'nice-duration.groovy',
+                        'https://github.com/paulbunyannet/groovy-scripts.git',
+                        'master',
+                        null,
+                        ''
+                    )
 
                     def duration = groovyNiceDuration.niceDuration("${currentBuild.timeInMillis}")
 
-                    mail body: "Hi ${first_name}, The project build was successful for job ${env.JOB_NAME} (build number ${currentBuild.number})! The job took ${duration} to build.",
+                    mail body: "Hi ${first_name}, The project build was successful for job ${env.JOB_NAME} (build number ${currentBuild.number})!\n\rThe job took ${duration} to build.",
                                 from: "notify@${domain}",
                                 replyTo: "notify@${domain}",
                                 subject: "Project build successful for job ${env.JOB_NAME}",
@@ -302,24 +312,41 @@ retry(2) {
             }
 
         } catch(Exception e) {
+
             /**
              * Job failed, send out a message with the failure
              */
             wrap([$class: 'BuildUser']) {
-                currentBuild.result = "FAILURE"
-                def groovyDomain = fileLoader.fromGit('domain-name-from-url.groovy',
-                                                                       'https://github.com/paulbunyannet/groovy-scripts.git', 'master', null, '')
+
+                def email = env.BUILD_USER_EMAIL
+                def first_name = env.BUILD_USER_FIRST_NAME
+                def user = env.BUILD_USER_ID
+                def groovyDomain = fileLoader.fromGit(
+                    'domain-name-from-url.groovy',
+                    'https://github.com/paulbunyannet/groovy-scripts.git',
+                    'master',
+                    null,
+                    ''
+                )
 
                 def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
+                withCredentials([usernamePassword(credentialsId: "${user}-api-access", passwordVariable: 'token', usernameVariable: 'username')]) {
+                    def result_cmd = "curl -u ${username}:${token} \"${env.JENKINS_URL}job/${env.JOB_NAME}/lastBuild/consoleText\""
+                    def result = sh (
+                        script: "${result_cmd}",
+                        returnStdout: true
+                    ).trim()
 
-                mail body: "Oh no ${env.BUILD_USER_FIRST_NAME}, the project build for ${currentBuild.displayName} (build number ${currentBuild.number}) was unsuccessfull. See the output here: ${currentBuild.absoluteUrl}" ,
+
+                mail body: "Oh no ${first_name}, the project build for ${env.JOB_NAME} (build number ${currentBuild.number}) was unsuccessful. \n\rSee the output here: ${currentBuild.absoluteUrl}\n\rConsole Log Output:\n\r${result}" ,
                      from: "notify@${domain}",
                      replyTo: "notify@${domain}",
-                     subject: 'Project build error for ${currentBuild.displayName}',
-                     to: "${env.BUILD_USER_EMAIL}"
-
-                throw err
+                     subject: "Project build error for ${env.JOB_NAME}",
+                     to: "${email}"
+                }
             }
+
+            throw err
         }
     }
 }
