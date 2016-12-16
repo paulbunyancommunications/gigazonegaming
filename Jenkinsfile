@@ -222,56 +222,19 @@ retry(2) {
                 sh "vagrant ssh -c \"cd /var/www; php codecept.phar clean && php codecept.phar build\" >/dev/null 2>&1"
            }
 
-            /**
-             * Run Assertion Tests
-             */
+           /**
+            *   Execute Test Runner
+            */
 
-            stage('Assertion Tests') {
+            stage('Run Tests') {
                 def test_started = sh (
                     script: "date +'%Y-%m-%d %H:%M:%S'",
                     returnStdout: true
                 )
-                echo "\u2605 Running Assertion Tests, started at ${test_started} \u2605"
-                sh 'vagrant ssh -c "cd /var/www; php codecept.phar run acceptance -f -v"'
+                echo "\u2605 Executing Test Runner, started at ${test_started} \u2605"
+                sh 'bash /var/www/testing.sh'
             }
 
-            /**
-             * Run Functional Tests
-             */
-
-            stage('Functional Tests') {
-                def test_started = sh (
-                    script: "date +'%Y-%m-%d %H:%M:%S'",
-                    returnStdout: true
-                )
-                echo "\u2605 Running Functional Tests, started at ${test_started} \u2605"
-                sh 'vagrant ssh -c "cd /var/www; php codecept.phar run functional -f -v"'
-            }
-
-            /**
-             * Run Integration Tests
-             */
-
-            stage('Integration Tests') {
-                def test_started = sh (
-                    script: "date +'%Y-%m-%d %H:%M:%S'",
-                    returnStdout: true
-                )
-                echo "\u2605 Running Integration Tests, started at ${test_started} \u2605"
-                sh 'vagrant ssh -c "cd /var/www; php codecept.phar run integration -f -v"'
-            }
-
-            /**
-             * Run Unit Tests
-             */
-            stage('Unit Tests') {
-                def test_started = sh (
-                    script: "date +'%Y-%m-%d %H:%M:%S'",
-                    returnStdout: true
-                )
-                echo "\u2605 Running Unit Tests, started at ${test_started} \u2605"
-                sh 'vagrant ssh -c "cd /var/www; php codecept.phar run unit -f -v"'
-            }
 
             /**
              * Build successful, send out an email to the one who prompted the job
