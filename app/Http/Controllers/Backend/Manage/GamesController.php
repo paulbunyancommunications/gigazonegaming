@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GameRequest;
-use App\Http\Requests\Request;
 use App\Models\Championship\Game;
-use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;
-use App\Models\Championship\Relation\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Carbon\Carbon;
@@ -31,7 +28,7 @@ class GamesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Game  $game
+     * @param GameRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(GameRequest $request)
@@ -60,7 +57,6 @@ class GamesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  Game  $game
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function edit(Game $game)
@@ -71,7 +67,7 @@ class GamesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  GameRequest  $request
      * @param   Game  $game
      * @return \Illuminate\Http\Response
      */
@@ -113,13 +109,13 @@ class GamesController extends Controller
     public function destroy(Game $game)
     {
         $name = $game->name;
-        foreach (Tournament::where('game_id', '=', $game->getRouteKey())->get() as $key => $tounament) {
-            foreach (Team::where('tournament_id', '=', $tounament->id)->get() as $k => $team){
+        foreach (Tournament::where('game_id', '=', $game->getRouteKey())->get() as $key => $tournament) {
+            foreach (Team::where('tournament_id', '=', $tournament->id)->get() as $k => $team){
                 PlayerRelation::where('relation_id', '=', $team->id)->where('relation_type', '=', Team::class)->delete();
                 $team->delete();
             }
-            PlayerRelation::where('relation_id', '=', $tounament->id)->where('relation_type', '=', Tournament::class)->delete();
-            $tounament->delete();
+            PlayerRelation::where('relation_id', '=', $tournament->id)->where('relation_type', '=', Tournament::class)->delete();
+            $tournament->delete();
         }
         PlayerRelation::where('relation_id', '=', $game->getRouteKey())->where('relation_type', '=', Game::class)->delete();
         $game->where('id', $game->getRouteKey())->delete();

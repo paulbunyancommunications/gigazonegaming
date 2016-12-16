@@ -18,7 +18,6 @@ class Authenticate
     /**
      * Create a new middleware instance.
      *
-     * @return void
      */
     public function __construct()
     {

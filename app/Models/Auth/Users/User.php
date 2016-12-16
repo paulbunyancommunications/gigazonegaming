@@ -11,6 +11,7 @@
 
 namespace App\Models\Auth\Users;
 
+use App\Models\Championship\Player;
 use Cartalyst\Sentinel\Users\EloquentUser;
 
 class User extends EloquentUser
@@ -42,6 +43,6 @@ class User extends EloquentUser
      */
     public function player()
     {
-        return $this->hasOne(\App\Models\Championship\Player::class);
+        return $this->hasOne(Player::class);
     }
 }

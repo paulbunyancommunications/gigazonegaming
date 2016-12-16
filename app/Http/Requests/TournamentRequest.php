@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
-use App\Models\Championship\Tournament;
-
+/**
+ * Class TournamentRequest
+ * @package App\Http\Requests
+ */
 class TournamentRequest extends Request
 {
     /**

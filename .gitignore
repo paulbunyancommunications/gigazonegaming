@@ -110,3 +110,5 @@ public_html/app/content/sass/libraries
 phan.phar
 puphpet/config-jenkins.yaml
 public_html/press-kit
+phan_output.txt
+tests/test-suites

@@ -7,6 +7,7 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\WpOption;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -33,7 +34,7 @@ class Controller extends BaseController
     }
 
     /**
-     * @return array
+     * @return null
      */
     public function DBProcessCacheAllForced()
     {
@@ -41,29 +42,30 @@ class Controller extends BaseController
         $this->DBProcessCacheTournamentsForced();
         $this->DBProcessCacheTeamsForced();
         $this->DBProcessCachePlayersForced();
+
+        return null;
     }
 
     /**
-     * @return array
+     * @return null
      */
     public function DBProcessCacheGamesForced()
     {
         $expiresAt = $this->expiresAt(); // 1 min
         $games = Game::orderBy('name')->get()->toArray();
-        Cache::put('games_c', $games, $expiresAt);
+        return Cache::put('games_c', $games, $expiresAt);
 
     }
 
     /**
-     * @return array
+     * @return null
      */
     public function DBProcessCacheTournamentsForced()
     {
         $expiresAt = $this->expiresAt(); // 1 min
 
         $tournaments = Tournament::orderBy('name')->get()->toArray();
-        Cache::put('tournament_c', $tournaments, $expiresAt);
-
+        return Cache::put('tournament_c', $tournaments, $expiresAt);
     }
 
     /**
@@ -82,11 +84,11 @@ class Controller extends BaseController
                 }
             }
         }
-        Cache::put('teams_c', $teams, $expiresAt);
+        return Cache::put('teams_c', $teams, $expiresAt);
     }
 
     /**
-     * @return array
+     * @return null
      */
     public function DBProcessCachePlayersForced()
     {
@@ -102,7 +104,7 @@ class Controller extends BaseController
                 }
             }
         }
-        Cache::put('players_c', $players, $expiresAt);
+        return Cache::put('players_c', $players, $expiresAt);
     }
 
     /**
@@ -132,7 +134,7 @@ class Controller extends BaseController
                     $this->{$method}();
                 }
             });
-        } catch (\Illuminate\Database\QueryException $ex) {
+        } catch (QueryException $ex) {
             foreach ($get as $method) {
                 $this->{$method}();
             }

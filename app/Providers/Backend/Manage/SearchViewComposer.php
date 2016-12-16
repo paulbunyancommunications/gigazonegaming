@@ -2,7 +2,10 @@
 
 namespace App\Providers\Backend\Manage;
 
+use App\Facades\Backend\Manage\ChampionshipSearch;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Request;
 
 class SearchViewComposer extends ServiceProvider
 {
@@ -15,9 +18,9 @@ class SearchViewComposer extends ServiceProvider
      */
     public function boot()
     {
-        \View::composer(['game.partials.search'], function ($view) {
-            $request = new \Request();
-            $view->with('search', \ChampionshipSearch::all($request))
+        View::composer(['game.partials.search'], function ($view) {
+            $request = new Request();
+            $view->with('search', ChampionshipSearch::all($request))
                 ->with('searchTerm', $request::get('search'));
         });
 
@@ -38,9 +41,9 @@ class SearchViewComposer extends ServiceProvider
      * @param \Request $request
      * @return array
      */
-    public function doSearch(\Request $request)
+    public function doSearch(Request $request)
     {
-        return \ChampionshipSearch::all($request);
+        return ChampionshipSearch::all($request);
     }
 }
 

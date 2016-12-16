@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 
-use App\Models\Championship\Player;
 
 class PlayerRequest extends Request
 {

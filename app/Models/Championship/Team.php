@@ -91,8 +91,8 @@ class Team extends Model
 
     /**
      * Get team captain
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return bool|object
+     * @throws \Exception
      */
     public function captain()
     {

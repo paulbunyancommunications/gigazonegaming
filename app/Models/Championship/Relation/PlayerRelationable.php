@@ -9,7 +9,6 @@
 
 namespace App\Models\Championship\Relation;
 
-use Doctrine\DBAL\Schema\Schema;
 use Illuminate\Support\Facades\DB;
 use App\Models\Championship\Player;
 use App\Models\Championship\Game;
@@ -124,7 +123,7 @@ trait  PlayerRelationable
             return Game::where('id','=',$parameters['game'])->first()->hasPlayerID($parameters['player']);
         }
 
-        return true; //if there was something sent that it shouldnt be sent, return true so stops them from a false comparison.
+        return true; //if there was something sent that it shouldn't be sent, return true so stops them from a false comparison.
     }
 
     protected static function prepParameters(&$parameters)
@@ -280,6 +279,10 @@ trait  PlayerRelationable
             ->exists();
     }
 
+    /**
+     * @param array $filter
+     * @return array
+     */
     public static function playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
         $players = Player::orderBy('username')->get();
@@ -320,6 +323,8 @@ trait  PlayerRelationable
     /**
      * Get the player relationship to an array
      * @todo shorten this method name, it doesn't need to be so verbose
+     * @param array $filter
+     * @return bool|array
      */
     public function playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames($filter = [])
     {
@@ -461,7 +466,7 @@ trait  PlayerRelationable
                     foreach ($player as $key => $id) {
                         if (is_array($id)) {
                             $id = $id['id'];
-                        } //check if it wasnt just an array of players ids and was an array of players
+                        } //check if it wasn't just an array of players ids and was an array of players
                         if ($or) {
                             $player_query->orwhere('players.id', intval($id));
                         } else {
@@ -481,7 +486,7 @@ trait  PlayerRelationable
                     foreach ($team as $key => $id) {
                         if (is_array($id)) {
                             $id = $id['id'];
-                        } //check if it wasnt just an array of players ids and was an array of players
+                        } //check if it wasn't just an array of players ids and was an array of players
                         if ($or) {
                             $player_query->orwhere('teams.id', '=', $id);
                         } else {
@@ -501,7 +506,7 @@ trait  PlayerRelationable
                     foreach ($tournament as $key => $id) {
                         if (is_array($id)) {
                             $id = $id['id'];
-                        } //check if it wasnt just an array of players ids and was an array of players
+                        } //check if it wasn't just an array of players ids and was an array of players
                         if ($or) {
                             $player_query->orwhere('tournaments.id', '=', $id);
                         } else {
@@ -521,7 +526,7 @@ trait  PlayerRelationable
                     foreach ($game as $key => $id) {
                         if (is_array($id)) {
                             $id = $id['id'];
-                        } //check if it wasnt just an array of players ids and was an array of players
+                        } //check if it wasn't just an array of players ids and was an array of players
                         if ($or) {
                             $player_query->orwhere('games.id', '=', $id);
                         } else {
@@ -601,15 +606,16 @@ trait  PlayerRelationable
         }
         return $players;
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  can be a multidemsional array
      * key game for all games or one game
      * key tournament for all tournaments or one tournament
      * key team for all teams or one team
      * key player for all players or one player
      * key order_by for only one orderBy string value
+     * @param array $parameter
      * @return array
      */
     public function getSinglePlayersInfoBy($parameter = [])
@@ -620,15 +626,16 @@ trait  PlayerRelationable
         $parameter['single_players'] = true;
         return $this->getPlayersInfoBy($parameter);
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  can be a multidemsional array
      * key game for all games or one game
      * key tournament for all tournaments or one tournament
      * key team for all teams or one team
      * key player for all players or one player
      * key order_by for only one orderBy string value
+     * @param array $parameter
      * @return array
      */
     public function getTeamPlayersInfoBy($parameter = [])

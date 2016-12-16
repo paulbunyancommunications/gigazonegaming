@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Requests\UpdateRecipientRequest;
 use Closure;
 use App\Http\Requests\GeoLocationRequest;
 use App\Models\UpdateRecipients;
@@ -19,11 +20,11 @@ class UpdateRecipientMiddleware
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
-     * @return
+     * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        $updateRequest = new \App\Http\Requests\UpdateRecipientRequest();
+        $updateRequest = new UpdateRecipientRequest();
         // check for base rules, if pass then setup the insert of a new update recipient
         $validator = Validator::make($request->all(), $updateRequest->rules(), []);
         if (!$validator->fails()) {

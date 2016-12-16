@@ -66,12 +66,16 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
         $fields = GigaZoneGamingBootstrap::extraProfileFields();
         $I->amOnPage('/wp/wp-admin/profile.php');
         $I->fillField(['id' => 'nickname'], $faker->userName);
+        $I->click(['id' => 'submit']);
         for($i=0; $i < count($fields); $i++) {
+            $I->amOnPage('/wp/wp-admin/profile.php');
             $fieldValue = '';
             $fieldProfileValue = '';
             $I->scrollTo(['id' => $fields[$i]]);
+            $I->wait(1);
             $I->fillField(['id' => $fields[$i]], $fieldValue);
             $I->scrollTo(['id' => $fields[$i].'_profile']);
+            $I->wait(1);
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
             // make a new post and check to see that the field are missing on page with the profile shortcode
@@ -87,7 +91,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->wait(1);
             $I->dontSeeElementInDOM(['class' => 'user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i]]);
             $I->dontSee(ucfirst($fields[$i]));
-            $I->amOnPage('/wp/wp-admin/profile.php');
+
         }
     }
 
@@ -103,12 +107,16 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
         $fields = GigaZoneGamingBootstrap::extraProfileFields();
         $I->amOnPage('/wp/wp-admin/profile.php');
         $I->fillField(['id' => 'nickname'], $faker->userName);
+        $I->click(['id' => 'submit']);
         for($i=0; $i < count($fields); $i++) {
+            $I->amOnPage('/wp/wp-admin/profile.php');
             $fieldValue = $faker->userName;
             $fieldProfileValue = $faker->url;
             $I->scrollTo(['id' => $fields[$i]]);
+            $I->wait(1);
             $I->fillField(['id' => $fields[$i]], $fieldValue);
             $I->scrollTo(['id' => $fields[$i].'_profile']);
+            $I->wait(1);
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
 
@@ -126,7 +134,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->seeElementInDOM(['class' => 'user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i]]);
             $I->see(ucfirst($fields[$i]));
             $I->assertSame($fieldProfileValue, $I->grabAttributeFrom('.user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i].' a', 'href'));
-            $I->amOnPage('/wp/wp-admin/profile.php');
+
         }
     }
 }

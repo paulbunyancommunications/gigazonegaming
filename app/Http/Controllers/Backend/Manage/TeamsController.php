@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use App\Models\Championship\Game;
-use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Player_Team;
 use App\Models\Championship\Player_Tournament;
 use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
-use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
-
-use App\Models\WpUser;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
-use \Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\TeamRequest;
+
+/**
+ * Class TeamsController
+ * @package App\Http\Controllers\Backend\Manage
+ */
 class TeamsController extends Controller
 {
     /**
@@ -36,7 +34,7 @@ class TeamsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Team  $team
+     * @param TeamRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(TeamRequest $request)
@@ -59,11 +57,9 @@ class TeamsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Team  $team
-     * @param  \Illuminate\Http\Request  $request
      * @return null
      */
-    public function create(Team $team)
+    public function create()
     {
         return null;
 //        $updatedBy = $this->getUserId();
@@ -105,7 +101,7 @@ class TeamsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  TeamRequest  $request
      * @param   Team  $team
      * @return \Illuminate\Http\Response
      */

@@ -10,7 +10,6 @@ use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Validator;
 use Illuminate\Support\Facades\View;
 
 /**
@@ -81,6 +80,7 @@ class AuthController extends Controller
     /**
      * Authenticate a user submitting from the login form
      *
+     * @param LoginFormRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function authenticate(LoginFormRequest $request)
@@ -107,7 +107,7 @@ class AuthController extends Controller
     /**
      * Logout user
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function logout()
     {

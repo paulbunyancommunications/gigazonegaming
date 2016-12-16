@@ -6,11 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Password\PasswordResetLoginRequest;
 use App\Http\Requests\Auth\Password\PasswordResetPasswordRequest;
 use App\Http\Requests\Auth\Password\PasswordSendRecoverCodeRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Auth\Users\User;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Support\Facades\Password;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\View;
 use Cartalyst\Sentinel\Laravel\Facades\Reminder;
@@ -120,6 +118,7 @@ class PasswordController extends Controller
     /**
      * Send recovery code to requester if they exist in the database
      *
+     * @param PasswordSendRecoverCodeRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function sendRecoverCode(PasswordSendRecoverCodeRequest $request)

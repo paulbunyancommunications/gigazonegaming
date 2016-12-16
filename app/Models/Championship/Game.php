@@ -84,8 +84,7 @@ class Game extends Model
 
     /**
      * Get tournaments playing this game
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function teams()
     {

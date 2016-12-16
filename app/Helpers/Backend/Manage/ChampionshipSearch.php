@@ -175,6 +175,8 @@ class ChampionshipSearch
 
     /**
      * Search for team by keyword
+     * @param Request $request
+     * @return mixed
      */
     public function team(Request $request)
     {
@@ -186,6 +188,8 @@ class ChampionshipSearch
 
     /**
      * Search for tournament by keyword
+     * @param Request $request
+     * @return mixed
      */
     public function tournament(Request $request)
     {

@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use App\Models\Championship\Game;
 use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
-
-use App\Models\WpUser;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -36,7 +32,7 @@ class TournamentsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Tournament  $tournament
+     * @param TournamentRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(TournamentRequest $request)
@@ -56,11 +52,9 @@ class TournamentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Tournament  $tournament
-     * @param  \Illuminate\Http\Request  $request
      * @return null
      */
-    public function create(Tournament $tournament)
+    public function create()
     {
         return null;
     }
@@ -89,7 +83,7 @@ class TournamentsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  TournamentRequest  $request
      * @param   Tournament  $tournament
      * @return \Illuminate\Http\Response
      */

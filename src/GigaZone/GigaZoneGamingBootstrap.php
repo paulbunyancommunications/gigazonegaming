@@ -6,15 +6,18 @@ use GigaZone\Info\GigaZoneFromPaulBunyan;
 use League\Csv\Reader;
 use Pbc\AutoVersion;
 use Pbc\Bandolier\Type\Strings;
+use Timber\Timber;
+use Timber\Menu;
 use TimberSite;
 use Twig_Extension_StringLoader;
 use Twig_SimpleFilter;
+
 
 /**
  * Class RedLakeElectricTimber
  * @package Wordpress\Timber
  */
-class GigaZoneGamingBootstrap extends \Timber\Timber
+class GigaZoneGamingBootstrap extends Timber
 {
 
     /**
@@ -35,7 +38,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
      */
     public function addToContext($context)
     {
-        $context['menu'] = new \TimberMenu();
+        $context['menu'] = new Menu();
         $context['site'] = $this;
         return $context;
     }
@@ -123,7 +126,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
             'type' => '',
         ), $attributes);
 
-        return Timber::compile('forms/update-sign-up' . ($attr['type'] ? '-' . $attr['type'] : '') . '.twig', $attr);
+        return Timber::compile(['forms/update-sign-up' . ($attr['type'] ? '-' . $attr['type'] : '') . '.twig'], $attr);
     }
 
     /**
@@ -153,7 +156,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
             'footer' => $attr['footer'],
             'class' => $attr['class']
         ];
-        return \Timber::compile('partials/splash.twig', $params);
+        return Timber::compile(['partials/splash.twig'], $params);
     }
 
     /**
@@ -254,13 +257,29 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
         );
         $attr = shortcode_atts($defaults, $attributes);
         extract($attr);
-        $context = \Timber::get_context();
+
+        /** @var string $special_questions */
+        $special_questions = $attr['special_questions'];
+
+        /** @var string $delimiter */
+        $delimiter = $attr['delimiter'];
+
+        /** @var string $new_line */
+        $new_line = $attr['new_line'];
+
+        /** @var string $name */
+        $name = $attr['name'];
+
+        /** @var string $questions */
+        $questions = $attr['questions'];
+
+        $context = self::get_context();
         foreach (array_keys($defaults) as $default) {
             switch ($default) {
                 case ('new_line'):
                 case ('delimiter'):
                 case ('legend'):
-                    break;
+                break;
                 case ('special_questions'):
                     $context[$default] = strpos($special_questions, $delimiter) !== false ? explode($delimiter,
                         $special_questions) : [$special_questions];
@@ -291,7 +310,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
         $context['legend'] = Strings::formatForTitle(str_replace('-', ' ', $name));
         $context['tag'] = $tag;
         $context['submitId'] = 'doFormSubmit';
-        return \Timber::compile('forms/form-template.twig', $context);
+        return Timber::compile(['forms/form-template.twig'], $context);
     }
 
     /**
@@ -327,7 +346,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
      * @param $attributes
      * @param $content
      * @param $tag
-     * @return string
+     * @return string|null
      */
     public function getMediaImageShortCode($attributes, $content, $tag)
     {
@@ -358,7 +377,7 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
     {
         echo '<h3>Extra Profile Information</h3>';
         for($i=0; $i < count(self::extraProfileFields()); $i++) {
-            echo \Timber::compile('forms/show-extra-profile-fields.twig', ['user' => $user, 'field' => self::extraProfileFields()[$i]]);
+            echo Timber::compile(['forms/show-extra-profile-fields.twig'], ['user' => $user, 'field' => self::extraProfileFields()[$i]]);
         }
         echo '<hr />';
     }
@@ -403,6 +422,6 @@ class GigaZoneGamingBootstrap extends \Timber\Timber
             $userProfileData['meta'][$userProfileData['fields'][$i].'_profile'] = get_user_meta($user->ID, $userProfileData['fields'][$i].'_profile');
 
         }
-        return \Timber::compile('partials/user/profile.twig', $userProfileData);
+        return Timber::compile(['partials/user/profile.twig'], $userProfileData);
     }
 }

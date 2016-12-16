@@ -12,9 +12,21 @@
 namespace App\Services;
 
 
-class Validation extends \Illuminate\Validation\Validator
+use Illuminate\Validation\Validator;
+
+/**
+ * Class Validation
+ * @package App\Services
+ */
+class Validation extends Validator
 {
 
+    /**
+     * @param $attribute
+     * @param $value
+     * @param $parameters
+     * @return int
+     */
     public function validateFloat($attribute, $value, $parameters)
     {
         //https://txt2re.com/index-php.php3?s=-1000.12345&1

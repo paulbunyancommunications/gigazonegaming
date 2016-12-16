@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;
-use App\Models\Championship\Relation\PlayerRelationable;
 use App\Models\Championship\Team;
-use App\Models\Championship\Tournament;
-use App\Models\WpUser;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -35,7 +29,7 @@ class PlayersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Player  $player
+     * @param PlayerRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(PlayerRequest $request)
@@ -68,11 +62,10 @@ class PlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Player $player
      * @return null
      * @internal param Request $request
      */
-    public function create(Player $player)
+    public function create()
     {
         return null;
 //
@@ -237,7 +230,7 @@ class PlayersController extends Controller
     }
 
     /**
-     * @param PlayerRequest $cleanedRequest
+     * @param PlayerRequest $request
      * @return array
      */
     private function UserCleanUp(PlayerRequest $request)

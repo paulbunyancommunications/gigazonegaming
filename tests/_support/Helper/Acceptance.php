@@ -20,21 +20,23 @@ class Acceptance extends \Codeception\Module
         exec('php artisan migrate:refresh');
     }
 
-    public static function loginToWordpress(\AcceptanceTester $I, $user, $pass)
+    public static function loginToWordpress(\AcceptanceTester $I, $user, $pass, $maxAttempts = 10)
     {
-        try {
-            $I->amOnPage('/wp/wp-login.php');
-            $I->fillField(['id' => 'user_login'], $user);
-            $I->fillField(['id' => 'user_pass'], $pass);
-            $I->click(['id' => 'wp-submit']);
-            $I->waitForText('Dashboard', 10);
-        } catch (\Exception $e) {
-            $I->comment('First attempt failed to login, try a second time');
-            $I->amOnPage('/wp/wp-login.php');
-            $I->fillField(['name' => 'log'], $user);
-            $I->fillField(['name' => 'pwd'], $pass);
-            $I->click(['name' => 'wp-submit']);
-            $I->waitForText('Dashboard', 10);
+
+        for($i=0; $i <= $maxAttempts; $i++ ) {
+            try {
+                $I->amOnPage('/wp/wp-login.php');
+                $I->fillField(['id' => 'user_login'], $user);
+                $I->fillField(['id' => 'user_pass'], $pass);
+                $I->click(['id' => 'wp-submit']);
+                $I->waitForText('Dashboard', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+                return;
+            } catch (\Exception $e) {
+                if ($i === $maxAttempts) {
+                    $I->fail("{$i} login attempts were made.");
+                }
+              continue;
+            }
         }
     }
 }

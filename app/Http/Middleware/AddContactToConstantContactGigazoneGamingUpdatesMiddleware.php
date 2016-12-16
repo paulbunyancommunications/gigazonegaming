@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Jobs\ConstantContactAddRecipientJob;
 use Closure;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -25,7 +26,7 @@ class AddContactToConstantContactGigazoneGamingUpdatesMiddleware
     {
         // if update-recipient is set to yes then add the user to the queue to ber added
         if (strtolower($request->input('update-recipient')) === 'yes') {
-            $newConstantContactUser = (new \App\Jobs\ConstantContactAddRecipientJob(
+            $newConstantContactUser = (new ConstantContactAddRecipientJob(
                 [
                     'apiKey' => config('constant_contact.api_key'),
                     'apiToken' => config('constant_contact.api_token'),

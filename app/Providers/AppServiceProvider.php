@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Jenssegers\Rollbar\RollbarServiceProvider;
 
@@ -15,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Blade::directive('autoVersion', function($expression) {
+        Blade::directive('autoVersion', function($expression) {
             return "<?php echo \\Pbc\\AutoVersionSingle::file($expression); ?>";
         });
     }
@@ -24,12 +25,11 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      *
      * @return void // IDE helper
-    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
      */
     public function register()
     {
         // production only providers
-        if ($this->app->environment('production')) {
+        if ($this->app->environment() === 'production') {
             // Rollbar service provider
             if(class_exists('Jenssegers\\Rollbar\\RollbarServiceProvider')) {
                 $this->app->register(RollbarServiceProvider::class);
@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // development only providers
-        if ($this->app->environment('local')) {
+        if ($this->app->environment() === 'local') {
             // IDE helper
             if (class_exists('Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider')) {
                 $this->app->register(IdeHelperServiceProvider::class);

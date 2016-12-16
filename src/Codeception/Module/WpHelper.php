@@ -22,28 +22,32 @@ use PHPUnit_Framework_AssertionFailedError;
 class WpHelper extends CodeceptionModule
 {
 
+    const TEXT_WAIT_TIMEOUT = 30;
+
     /**
      * Log a user into the Wordpress backend
      *
      * @param \AcceptanceTester|\FunctionalTester $I
      * @param $user
-     * @param $password
+     * @param $pass
+     * @param $maxAttempts
      */
-    public function logIntoWpAdmin($I, $user, $password)
+    public function logIntoWpAdmin($I, $user, $pass, $maxAttempts)
     {
-        try {
-            $I->amOnPage('/wp/wp-login.php');
-            $I->fillField(['id' => 'user_login'], $user);
-            $I->fillField(['id' => 'user_pass'], $password);
-            $I->click(['id' => 'wp-submit']);
-            $I->waitForText('Dashboard', 10);
-        } catch (\Exception $e) {
-            $I->comment('First attempt failed to login, try a second time');
-            $I->amOnPage('/wp/wp-login.php');
-            $I->fillField(['name' => 'log'], $user);
-            $I->fillField(['name' => 'pwd'], $password);
-            $I->click(['name' => 'wp-submit']);
-            $I->waitForText('Dashboard', 10);
+        for($i=0; $i <= $maxAttempts; $i++ ) {
+            try {
+                $I->amOnPage('/wp/wp-login.php');
+                $I->fillField(['id' => 'user_login'], $user);
+                $I->fillField(['id' => 'user_pass'], $pass);
+                $I->click(['id' => 'wp-submit']);
+                $I->waitForText('Dashboard', self::TEXT_WAIT_TIMEOUT);
+                return;
+            } catch (\Exception $e) {
+                if ($i === $maxAttempts) {
+                    $I->fail("{$i} login attempts were made.");
+                }
+                continue;
+            }
         }
 
     }
