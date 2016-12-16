@@ -232,7 +232,7 @@ retry(2) {
                     returnStdout: true
                 )
                 echo "\u2605 Executing Test Runner, started at ${test_started} \u2605"
-                sh 'bash /var/www/testing.sh'
+                sh 'bash ${WORKSPACE}/testing.sh'
             }
 
 
