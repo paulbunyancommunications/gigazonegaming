@@ -1,6 +1,8 @@
 define ['jquery'], ($) ->
   Utility = {}
 
+  Utility.possibleId = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
   Utility.slugify = (string) ->
     slug = '';
     trimmed = $.trim(string);
@@ -19,11 +21,10 @@ define ['jquery'], ($) ->
     words.join ' '
 
   Utility.makeid = ->
-    text = ''
-    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    text = ""
     i = 0
     while i < 12
-      text += possible.charAt(Math.floor(Math.random() * possible.length))
+      text += Utility.possibleId.charAt(Math.floor(Math.random() * Utility.possibleId.length))
       i++
     text
 
@@ -38,4 +39,4 @@ define ['jquery'], ($) ->
       i++
     token  
 
-  return Utility
+  Utility
