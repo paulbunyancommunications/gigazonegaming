@@ -21,6 +21,8 @@ from=(
     ${bowerRoot}/bourbon/app/assets/stylesheets
     ${bowerRoot}/Gutenberg/src/style
     ${bowerRoot}/Gutenberg/src/style
+    ${nodeRoot}/vue/dist
+    ${nodeRoot}/axios/dist
 )
 to=(
     ${publicRoot}/${themeFolder}/libraries/bootstrap
@@ -31,6 +33,8 @@ to=(
     ${resourceRoot}/${themeFolder}/sass/libraries/bourbon
     ${resourceRoot}/${themeFolder}/assets/sass/libraries/gutenberg
     ${resourceRoot}/${themeFolder}/sass/libraries/gutenberg
+    ${publicRoot}/app/content/libraries/vue
+    ${publicRoot}/app/content/libraries/axios
 )
 
 for ((i=0; i<${#from[@]}; i++))

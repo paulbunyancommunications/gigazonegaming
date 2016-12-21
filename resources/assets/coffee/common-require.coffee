@@ -13,6 +13,10 @@ require =
       "../../../bower_components/handlebars/handlebars.min"
     select2:
       "../../../bower_components/select2/dist/js/select2.full.min"
+    vue:
+      "../../../app/content/libraries/vue/vue"
+    axios:
+      "../../../app/content/libraries/axios/axios"
     # modules
     init:
       "init"

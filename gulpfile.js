@@ -84,7 +84,7 @@ elixir.extend('copyFiles', function(src, output){
 elixir.extend('minifyJs', function(src){
     new Task('minifyJs', function() {
         return gulp.src(src + '/**/*.js')
-            .pipe(uglify())
+            .pipe(uglify().on('error', gutil.log))
             .pipe(gulp.dest(src))
     });
 });
@@ -97,7 +97,7 @@ elixir.extend('minifyJs', function(src){
 elixir.extend('cleanCss', function(src){
    new Task('cleanCss', function() {
        gulp.src(src + '/style.css')
-           .pipe(CleanCSS({}))
+           .pipe(CleanCSS({}).on('error', gutil.log))
            .pipe(gulp.dest(src));
    })
 });

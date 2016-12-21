@@ -18,7 +18,7 @@
     "gulp-ruby-haml": "0.0.7",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.9.1",
-    "gulp-uglify": "^1.5.3",
+    "gulp-uglify": "2.0.0",
     "gulp-util": "^3.0.7",
     "gulp-watch": "4.3.5",
     "laravel-elixir": "6.0.0-14",
@@ -27,10 +27,12 @@
     "node-sass": "^3.13.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "bootstrap": "^3.3.7",
-    "dotenv": "^2.0.0"
+    "dotenv": "^2.0.0",
+    "vue": "^2.1.6"
   },
-  "scripts" : {
+  "scripts": {
     "copy-libraries": "npm run-script bower && bash .npm_copy_libraries.sh >/dev/null 2>&1",
     "bower": "bower install && bower update >/dev/null 2>&1"
   }

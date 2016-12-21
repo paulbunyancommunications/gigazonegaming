@@ -1,10 +1,10 @@
 <div class="form-group">
-    <lable for="game" class="control-label col-xs-3">Game</lable>
+    <label for="tournament" class="control-label col-xs-3">Tournament</label>
     <div class="col-xs-9">
-    <select id="game" name="game" class="form-control">
-        <option>Select a game</option>
-        @foreach($games as $key => $game)
-            <option value="{{ $game['game_id'] }}">{{ $game['game_title'] ? $game['game_title'] : $game['game_name'] }}</option>
+    <select id="tournament" name="tournament" class="form-control">
+        <option value="0">Select a Tournament</option>
+        @foreach($tournaments as $key => $tournament)
+            <option value="{{ $tournament['tournament_id'] }}">{{ $tournament['tournament_title'] ? $tournament['tournament_title'] : $tournament['tournament_name'] }}</option>
         @endforeach
     </select>
     </div>

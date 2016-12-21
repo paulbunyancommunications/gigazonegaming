@@ -1,5 +1,5 @@
 <div class="form-group">
-    <lable for="game" class="control-label col-xs-3">Game</lable>
+    <label for="game" class="control-label col-xs-3">Game</label>
     <div class="col-xs-9">
     <select id="game" name="game" class="form-control">
         <option>Select a game</option>

@@ -40,7 +40,7 @@
                 {!! $messageHtml !!}
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" id="root">
                     @yield('content')
                 </div>
             </div>
@@ -48,7 +48,7 @@
         <script type="text/javascript" src="@autoVersion('/bower_components/jquery/dist/jquery.min.js')"></script>
         <script type="text/javascript" src="@autoVersion('/app/content/libraries/bootstrap/js/bootstrap.min.js')"></script>
         <script type="text/javascript" src="@autoVersion('/bower_components/select2/dist/js/select2.full.min.js')"></script>
-        <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>-->
+
 
         <script src="@autoVersion('/app/content/js/common-require.js')"></script>
         <script src="@autoVersion('/bower_components/requirejs/require.js')"></script>

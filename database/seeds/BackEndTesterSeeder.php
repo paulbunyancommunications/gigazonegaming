@@ -163,5 +163,11 @@ class BackEndTesterSeeder extends Seeder
             'games'=>$games
 
         ];
+
+        // add scores to the db
+        factory(App\Models\Championship\Score::class, 50)->create([
+            'tournament' => factory(App\Models\Championship\Game::class)->create([])->id
+        ]);
+
     }
 }

@@ -120,6 +120,32 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 ->with('teams', $teams)
                 ->with('players', Player::playersRelations());
         });
+
+        /**
+         * Variable for the games select view
+         */
+        View::composer(['game.partials.form.game-select'], function ($view) {
+            extract($this->getViewComposerElements(['games']));
+            /** @var array $games */
+            $view->with('games', $games);
+        });
+
+        /**
+         * Variable for the tournament select view
+         */
+        View::composer(['game.partials.form.tournament-select'], function ($view) {
+            extract($this->getViewComposerElements(['tournaments']));
+            /** @var array $tournaments */
+            $view->with('tournaments', $tournaments);
+        });
+
+        /**
+         * Variable for the player data list view
+         */
+        View::composer(['game.partials.form.player-select'], function ($view) {
+            /** @var array $players */
+            $view->with('players', Player::all()->toArray());
+        });
     }
 
     /**
@@ -227,6 +253,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         for ($c = 0; $c < count($columns); $c++) {
             switch ($columns[$c]) {
                 case ('name'):
+                case ('title'):
                 case ('id'):
                     array_push($select, $this->tableColumnAsTableColumn($table, $columns[$c]));
                     break;
