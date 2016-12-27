@@ -26,10 +26,13 @@
 
                 @if(isset($theTournament->name))
                     <input name="_method" type="hidden" value="PUT">
+                    @include('game.partials.form.tournament-required-fields', ['theTournament' => $theTournament, 'games' => $games])
                 @else
                     <input name="_method" type="hidden" value="POST">
+                    @include('game.partials.form.tournament-required-fields', ['theTournament' => [], 'games' => $games])
                 @endif
-                <div class="form-group">
+
+{{--                <div class="form-group">
                     <label for="name" class="control-label col-xs-4">Tournament Name: </label>
                     <div class="col-xs-8">
                         <input type="text" name="name" id="name" class="form-control"
@@ -58,7 +61,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
+                </div>--}}
                 <div class="form-group">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 </div>

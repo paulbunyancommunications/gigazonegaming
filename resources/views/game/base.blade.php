@@ -45,22 +45,16 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="@autoVersion('/bower_components/jquery/dist/jquery.min.js')"></script>
-        <script type="text/javascript" src="@autoVersion('/app/content/libraries/bootstrap/js/bootstrap.min.js')"></script>
-        <script type="text/javascript" src="@autoVersion('/bower_components/select2/dist/js/select2.full.min.js')"></script>
-
-
-        <script src="@autoVersion('/app/content/js/common-require.js')"></script>
-        <script src="@autoVersion('/bower_components/requirejs/require.js')"></script>
-        <script type="application/javascript">
-            define('jquery', [], function() {
-                return jQuery;
-            });
-            require(['jquery', 'select2', 'bootstrap'], function($) {
-                @yield('js')
-            })
-        </script>
-        <script src="@autoVersion('/app/content/js/main-require.js')"></script>
+        {{-- if the requirejs flag is set then load libraries as atm, otherwise load them normally --}}
+        @if (isset($requireJs) && $requireJs === true)
+            <script src="@autoVersion('/app/content/js/common-require.js')"></script>
+            <script src="@autoVersion('/bower_components/requirejs/require.js')"></script>
+            <script src="@autoVersion('/app/content/js/main-require.js')"></script>
+        @else
+            <script type="text/javascript" src="@autoVersion('/bower_components/jquery/dist/jquery.min.js')"></script>
+            <script type="text/javascript" src="@autoVersion('/app/content/libraries/bootstrap/js/bootstrap.min.js')"></script>
+            <script type="text/javascript" src="@autoVersion('/bower_components/select2/dist/js/select2.full.min.js')"></script>
+        @endif
         @yield('js-sheet')
     </body>
 </html>

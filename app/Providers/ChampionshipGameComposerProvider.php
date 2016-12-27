@@ -121,6 +121,17 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 ->with('players', Player::playersRelations());
         });
 
+        View::composer(['game.score'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', Player::playersRelations());
+        });
+
         /**
          * Variable for the games select view
          */

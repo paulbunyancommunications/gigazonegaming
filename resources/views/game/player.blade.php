@@ -51,10 +51,12 @@
 
                 @if(isset($thePlayer['name']))
                     <input name="_method" type="hidden" value="PUT">
+                    @include('game.partials.form.player-required-fields', ['thePlayer' => $thePlayer])
                 @else
                     <input name="_method" type="hidden" value="POST">
+                    @include('game.partials.form.player-required-fields', ['thePlayer' => []])
                 @endif
-                <div class="form-group">
+{{--                <div class="form-group">
                     <label for="name" class="control-label col-xs-3">Player Name: </label>
                     <div class="col-xs-9">
                         <input type="text" name="name" id="name" placeholder="The name of the player"
@@ -89,7 +91,7 @@
                                @if(isset($thePlayer['phone']))value="{{$thePlayer['phone']}}"
                                @else value="{{ old('phone') }}" @endif/>
                     </div>
-                </div>
+                </div>--}}
                 <div class="form-group">
                     <label for="game_id" class="control-label col-xs-3">Attach to Game: </label>
                     <div class="col-xs-9">

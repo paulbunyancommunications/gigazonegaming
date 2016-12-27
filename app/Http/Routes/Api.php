@@ -1,6 +1,7 @@
 <?php
 use App\Helpers\Backend\Manage\Api\Filter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
 
 /**
  * Api Routes
@@ -42,7 +43,7 @@ Route::group(['middleware' => ['api']], function () {
     /**
      * get scores from backend
      */
-    Route::get('/api/manage/score/all', function () use ($filterFields, $types) {
+    Route::get('/api/manage/score/all', ['as' => 'api.manage.score.all', function () use ($filterFields, $types) {
         $model = '\\App\\Models\\Championship\\Score';
         try {
             $get = Filter::filterMultiDimension(
@@ -52,14 +53,14 @@ Route::group(['middleware' => ['api']], function () {
             );
             return $get;
         } catch (\Exception $ex) {
-            return ['error' => 'Could not find any scores'];
+            return Response::json(['error' => ['Could not find any scores.']], 400);
         }
-    });
+    }]);
 
     /**
      * get scores by column
      */
-    Route::get('/api/manage/score/{type}/{id}', function ($type, $typeId) use ($filterFields, $types) {
+    Route::get('/api/manage/score/{type}/{id}', ['as' => 'api.manage.score.find', function ($type, $typeId) use ($filterFields, $types) {
         try {
             $model = '\\App\\Models\\Championship\\Score';
             if(strpos(',', $typeId) !== false) {
@@ -75,50 +76,55 @@ Route::group(['middleware' => ['api']], function () {
                     $types
                 );
             }
-            return $get;
+            return Response::json($get, 200);
         } catch (\Exception $ex) {
-            return ['error' => 'Could not find score for ' . $type . ' with an id of ' . $typeId];
+            return Response::json(['error' => ['Could not find score for ' . $type . ' with an id of ' . $typeId]], 400);
         }
-    });
+    }]);
 
     /**
      * Get all of a type
      */
-    Route::get('/api/manage/{type}/all', function ($type) use ($filterFields) {
+    Route::get('/api/manage/{type}/all', ['as' => 'api.manage.type.all',  function ($type) use ($filterFields) {
         $model = '\\App\\Models\\Championship\\' . ucfirst($type);
 
         if (!class_exists($model)) {
-            return ['error' => 'Model ' . $model . ' does not exist.'];
+            return Response::json(['error' => ['Model ' . $model . ' does not exist.']], 400);
         }
         $get = Filter::filterSingleDimension($model::all()->toArray(), $filterFields);
-        return $get;
-    });
+        return Response::json($get, 200);
+    }]);
 
     /**
      * Find one of type, either by id if id is numeric, or by name column
      */
-    Route::get('/api/manage/{type}/find/{id}', function ($type, $typeId) use ($filterFields, $types) {
+    Route::get('/api/manage/{type}/find/{id}', ['as' => 'api.manage.type.find', function ($type, $typeId) use ($filterFields, $types) {
         $model = '\\App\\Models\\Championship\\' . ucfirst($type);
 
         if (!class_exists($model)) {
-            return ['error' => 'Model ' . $model . ' does not exist.'];
+            return ['error' => ['Model ' . $model . ' does not exist.']];
         }
         try {
-            if (is_numeric($typeId)) {
-                $get = Filter::filterSingleDimension($model::find($typeId)->toArray());
-            } elseif (strpos(',', $typeId) !== false) {
-                $get = Filter::filterMultiDimension(
-                    $model::whereIn($type, implode(',', $typeId))->get()->toArray(),
-                    $filterFields,
-                    $types
-                );
-            } else {
-                $get = Filter::filterSingleDimension($model::where('name', $typeId)->first()->toArray());
+            // if typeId is a csv of ids then do a wherein call
+            if(strpos($typeId, ',') !== false) {
+                $get = [];
+                $ids = explode(',', $typeId);
+                $getIn = $model::whereIn('id', $ids)->get()->toArray();
+                foreach($getIn as $in) {
+                    array_push($get, Filter::filterSingleDimension($in, $filterFields));
+                }
             }
-            return $get;
+            // if typeId is numeric then do a find
+            elseif (is_numeric($typeId)) {
+                $get = Filter::filterSingleDimension($model::find($typeId)->toArray(), $filterFields);
+            // otherwise get the typeId by the name field
+            } else {
+                $get = Filter::filterSingleDimension($model::where('name', $typeId)->first()->toArray(), $filterFields);
+            }
+            return Response::json($get, 200);
         } catch (\Exception $ex) {
-            return ['error' => 'Could not find ' . $type . ' with id or name of ' . $typeId];
+            return Response::json(['error' => ['Could not find ' . $type . ' with id or name of ' . $typeId]], 400);
         }
 
-    });
+    }]);
 });

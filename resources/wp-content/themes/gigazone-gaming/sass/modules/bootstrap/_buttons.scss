@@ -7,6 +7,10 @@
   white-space: normal;
 }
 
+.btn-wrap {
+  white-space: normal;
+}
+
 .btn-gz-default {
   @extend .bg-color--light;
   @extend .bdr-color--branding;
@@ -51,6 +55,12 @@
   font-weight: 700;
 
   &:hover, &:active {
+    background-color: $color-gz-gray;
+    border-color: shade($color-gz-gray, 10%);
+    color: $color-white;
+  }
+
+  &[disabled]:hover, &[disabled]:hover {
     background-color: $color-gz-gray;
     border-color: shade($color-gz-gray, 10%);
     color: $color-white;

@@ -39,6 +39,10 @@
                         'Team Maker') }}
             </li>
 
+            <li>{{ Html::linkAction('Backend\Manage\ScoresController@index',
+                        'Scores') }}
+            </li>
+
             <li>{{ Html::linkAction('Backend\Manage\EmailController@email',
                         'Email Lists') }}
             </li>

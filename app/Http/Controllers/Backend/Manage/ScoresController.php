@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\View;
 use App\Http\Requests\ScoreRequest;
 use App\Models\Championship\Score;
+use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
 
 class ScoresController extends Controller
 {
+
+    /**
+     * @return GuzzleClient
+     */
+    protected static function GuzzleClient()
+    {
+        return new GuzzleClient(['timeout' => 10]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +43,7 @@ class ScoresController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ScoreRequest  $request
+     * @param  \App\Http\Requests\ScoreRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(ScoreRequest $request)
@@ -44,13 +53,33 @@ class ScoresController extends Controller
             $score = new Score($request->all());
             $score->save();
             DB::commit();
+            $message = trans('score.store', [
+                'player' => $score->player->name,
+                'tournament' => $score->tournament->name,
+                'score' => $score->score
+            ]);
+            if ($request->ajax()) {
+                return Response::json(
+                    [
+                        'success' => [$message],
+                        'id' => [$score->id],
+                        'redirect' => [action('Backend\Manage\ScoresController@edit', [$score->id])],
+                        'model' => self::GuzzleClient()->get(route('api.manage.score.find', ['id', $score->id]))->json()
+                    ],
+                    200
+                );
+            }
             return redirect()->action('Backend\Manage\ScoresController@show', ['scores' => $score->id])
-                ->with('success','Score created successfully!');
+                ->with('success', $message);
         } catch (\Exception $ex) {
             DB::rollback();
-            return redirect()->back()
-                ->with('error', $ex->getMessage())
-                ->withInput();
+            if ($request->ajax()) {
+                return Response::json(['error' => $ex->getMessage()], 400);
+            } else {
+                return redirect()->back()
+                    ->with('error', $ex->getMessage())
+                    ->withInput();
+            }
         }
     }
 
@@ -79,13 +108,40 @@ class ScoresController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param ScoreRequest $request
      * @param Score $scores
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Score $scores)
+    public function update(ScoreRequest $request, Score $scores)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $scores->score = $request->input('score');
+            $scores->save();
+            DB::commit();
+            if ($request->ajax()) {
+                return Response::json(
+                    [
+                        'success' => [trans('score.update')],
+                        'id' => [$scores->id],
+                        'redirect' => [action('Backend\Manage\ScoresController@edit', [$scores->id])],
+                        'model' => self::GuzzleClient()->get(route('api.manage.score.find', ['id', $scores->id]))->json()
+                    ],
+                    200
+                );
+            }
+            return redirect()->action('Backend\Manage\ScoresController@edit', ['scores' => $scores->id])
+                ->with('success', trans('score.update'));
+        } catch (\Exception $ex) {
+            DB::rollback();
+            if ($request->ajax()) {
+                return Response::json(['error' => $ex->getMessage()], 400);
+            } else {
+                return redirect()->back()
+                    ->with('error', $ex->getMessage())
+                    ->withInput();
+            }
+        }
     }
 
     /**
