@@ -1,3 +1,13 @@
+
+/**
+ * Set of line height styles
+ */
+.line-height {
+  &--normalize {
+    @include line-height(1);
+  }
+}
+
 .uppercase, .text-uppercase {
   text-transform: uppercase;
 }

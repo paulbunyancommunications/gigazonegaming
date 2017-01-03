@@ -28,12 +28,22 @@
     .container
       .row
         .col-sm-6
-          %p{:class=>"text-left"}
-            &copy; {{ "now"|date('Y') }} {{ function('get_option','blogname') }}, All rights reserved
+          %div{:class=>"text-left font--display text-uppercase footer--information"}
+
+            %hr{:class=>"divider horizontal dashed slim"}
+            %strong
+              Content &copy; {{ first_post.post_date|date("Y") }} - {{ "now"|date('Y') }} {{ function('get_option','blogname') }}, all the things reserved.
+            %hr{:class=>"divider horizontal dashed slim"}
+            %strong
+              Presented By:
+            %br/
+            %span{:class=>"logos--pbc-on-dark footer--presented-by-logo"}
+              Paul Bunyan Communications, Right Here
+            %hr{:class=>"divider horizontal dashed slim"}
+
         .col-sm-6
           .sidebar
             .sidebar-social-media
               %ul{:class=>"footer--bottom--social-list"}
                 \<li class="inline-block footer--bottom--social-list-item">{% include 'partials/social-media.twig' %}</li><li class="inline-block footer--bottom--social-list-item">{% include "partials/wigets/constant_contact_signup_button.twig" %}</li>
-
 {% include "partials/footer-js.twig" %}

@@ -122,6 +122,10 @@
         @include margin(0, .625, 0, .375);
         position: relative;
         background: none;
+
+        @include mq-tablet {
+          display: none;
+        }
       }
 
       &:last-child::after {
@@ -139,13 +143,54 @@
   &--container {
     .social-media {
       @include margin-bottom(-.5);
+      @include mq-tablet {
+        @include margin-bottom(.5);
+      }
     }
 
-    .sidebar-social-media > .inline-list {
+    .sidebar-social-media {
+      @include mq-tablet {
+        display: block;
+        text-align: center;
+      }
+
+    & > .inline-list {
       @include margin-top(0);
       @include margin-bottom(0);
       @include padding-bottom(0);
       @include padding-top(0);
+    }
+  }
+  }
+  &--presented-by-logo {
+    @include height(3.5);
+    width: auto;
+    text-indent: -9999px;
+    display: block;
+    @include margin(.25, 0, .25, 0);
+    background-position: top left;
+    @include mq-tablet {
+      display: block;
+      width: 100%;
+      background-position: top left;
+    }
+    @include mq-phone {
+      display: block;
+      width: 100%;
+      background-position: top center;
+    }
+  }
+
+  &--information {
+    @include font-size(1.5);
+    @include line-height(1);
+    @include mq-tablet {
+      @include font-size(1.25);
+    }
+    @include mq-phone {
+      test-align: center;
+      @include font-size(1.5);
+
     }
   }
 }
