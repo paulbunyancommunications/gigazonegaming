@@ -12,6 +12,10 @@ class CreateScoresTable extends Migration
      */
     public function up()
     {
+        if(Schema::connection('mysql_champ')->hasTable('scores')) {
+            Schema::connection('mysql_champ')->drop('scores');
+        }
+
         Schema::connection('mysql_champ')->create('scores', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('player');
