@@ -76,6 +76,7 @@
     @include dark-pattern-background();
     color: $color-light-gray;
     @include padding-bottom(1);
+    @include padding-top(1);
 
     .text-left, .text-right {
       @include mq_phone {
@@ -100,7 +101,7 @@
 
     &--social-list {
       margin: 0;
-      @include padding(0.75, 0);
+      @include padding(0, 0);
       list-style: none;
 
     }
@@ -115,17 +116,21 @@
 
       &::after {
         content: "|";
-        @include line-height(1);
-        @include height(1);
-        @include font-size(2);
-        display: inline-block;
-        @include margin(0, .625, 0, .375);
+        @include line-height(1.25);
+        @include height(1.25);
+        @include font-size(2.25);
+        display: block;
+        float: right;
+        @include margin(.25, .625, 0, .5);
         position: relative;
         background: none;
 
         @include mq-tablet {
           display: none;
         }
+      }
+      &--signup {
+        margin-top: -1px;
       }
 
       &:last-child::after {
@@ -142,7 +147,7 @@
   }
   &--container {
     .social-media {
-      @include margin-bottom(-.5);
+      @include margin-bottom(-.75);
       @include mq-tablet {
         @include margin-bottom(.5);
       }
@@ -163,7 +168,7 @@
   }
   }
   &--presented-by-logo {
-    @include height(3.5);
+    @include height(4.5);
     width: auto;
     text-indent: -9999px;
     display: block;
@@ -178,6 +183,17 @@
       display: block;
       width: 100%;
       background-position: top center;
+    }
+
+  }
+
+  &--presented-by-label {
+    text-align: right;
+    @include mq-tablet {
+      text-align: left;
+    }
+    @include mq-phone {
+      text-align: center;
     }
   }
 
