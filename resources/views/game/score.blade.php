@@ -62,7 +62,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" data-form="{{ $type }}" data-formid="createNew{{ ucfirst($type) }}Form" data-formtype="modal" v-on:click="createNewForm" class="btn btn-primary btn-gz">Save New {{ $type  }}<span v-show="loadingNew{{ ucfirst($type) }}Form" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span></button>
+                        <button id="createNew{{ ucfirst($type) }}Button" type="button" data-form="{{ $type }}" data-formid="createNew{{ ucfirst($type) }}Form" data-formtype="modal" v-on:click="createNewForm" class="btn btn-primary btn-gz">Save New {{ $type  }}<span v-show="loadingNew{{ ucfirst($type) }}Form" class="txt-color--branding" id="createNew{{ ucfirst($type) }}Spinner">&nbsp;<i class="fa fa-refresh fa-spin"></i></span></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -186,16 +186,16 @@
             @if(isset($score))
                 <div class="row">
                     <div class="col-xs-4">{{ link_to_action('Backend\\Manage\\ScoresController@index', 'Create a new score', [], ['class'=> 'btn btn-default btn-primary btn-block btn-info btn-wrap text-uppercase'])  }}</div>
-                    <div class="col-xs-4"><a href="#" v-on:click="createNewForm" data-form="score" data-formtype="update" data-formid="updateScoreForm" class="btn btn-default btn-primary btn-block btn-gz btn-wrap" :disabled="!score">
-                        Update Player Score<span v-show="loadingNewScoreForm" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
+                    <div class="col-xs-4"><a href="#" id="updateScorebutton" v-on:click="createNewForm" data-form="score" data-formtype="update" data-formid="updateScoreForm" class="btn btn-default btn-primary btn-block btn-gz btn-wrap" :disabled="!score">
+                        Update Player Score<span id="updateScoreSpinner" v-show="loadingNewScoreForm" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
                         </a></div>
 
                     <div class="col-xs-4">{{ link_to_action('Backend\Manage\ScoresController@destroy', 'Delete player Score', [$score->id], ['class'=> 'btn btn-default btn-primary btn-block btn-danger btn-wrap text-uppercase'])  }}</div>
                 </div>
             {{-- otherwise just show the create button --}}
             @else
-                    <a href="#" v-on:click="createNewForm" data-form="score" data-formtype="create" data-formid="createNewScoreForm" class="btn btn-default btn-primary btn-block btn-gz btn-wrap" :disabled="!playerSelect || !tournamentSelect || !score" class="">
-                        Create a New Player Score<span v-show="loadingNewScoreForm" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
+                    <a href="#" id="createNewScorebutton" v-on:click="createNewForm" data-form="score" data-formtype="create" data-formid="createNewScoreForm" class="btn btn-default btn-primary btn-block btn-gz btn-wrap" :disabled="!playerSelect || !tournamentSelect || !score" class="">
+                        Create a New Player Score<span id="createNewScoreSpinner" v-show="loadingNewScoreForm" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
                     </a>
             @endif
         {!! Form::close() !!}

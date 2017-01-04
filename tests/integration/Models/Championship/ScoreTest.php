@@ -26,7 +26,7 @@ use Cocur\Slugify\Slugify;
  * Class LeaderBoardTest
  * @package Tests\Integration\Model
  */
-class LeaderBoardTest extends \TestCase
+class ScoreTest extends \TestCase
 {
 
     use DatabaseTransactions, DatabaseMigrations;
@@ -43,7 +43,7 @@ class LeaderBoardTest extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
-        $this->resetEventListeners('App\Models\Championship\LeaderBoard');
+        $this->resetEventListeners('App\Models\Championship\Score');
 
     }
 
@@ -59,17 +59,18 @@ class LeaderBoardTest extends \TestCase
      *
      * @test
      */
-    public function it_has_a_game_attribute()
+    public function it_has_a_tournament_attribute()
     {
-        $name = $this->faker->name;
-        $score = $this->faker->numberBetween(1000, 10000);
-        $game = factory(Game::class)->create(['name' => $name]);
-        $player = factory(Player::class)->create();
-        $leaderBoard = factory(\App\Models\Championship\LeaderBoard::class)->create([
-            'score' => $score, 'game' => $game->id, 'player' => $player->id
-        ]);
         $slug = Slugify::create();
-        $this->assertSame($slug->slugify($name), $leaderBoard->game->name);
+        $name = $slug->slugify($this->faker->name);
+        $score = $this->faker->numberBetween(1000, 10000);
+        $tournament = factory(Tournament::class)->create(['name' => $name]);
+        $player = factory(Player::class)->create();
+        $MakeScore = factory(\App\Models\Championship\Score::class)->create([
+            'score' => $score, 'tournament' => $tournament->id, 'player' => $player->id
+        ]);
+
+        $this->assertSame($name, $MakeScore->tournament->name);
     }
 
     /**
@@ -83,12 +84,12 @@ class LeaderBoardTest extends \TestCase
     {
         $name = $this->faker->name;
         $score = $this->faker->numberBetween(1000, 10000);
-        $game = factory(Game::class)->create();
+        $tournament = factory(Tournament::class)->create();
         $player = factory(Player::class)->create(['name' => $name]);
-        $leaderBoard = factory(\App\Models\Championship\LeaderBoard::class)->create([
-            'score' => $score, 'game' => $game->id, 'player' => $player->id
+        $makeScore = factory(\App\Models\Championship\Score::class)->create([
+            'score' => $score, 'tournament' => $tournament->id, 'player' => $player->id
         ]);
-        $this->assertSame($name, $leaderBoard->player->name);
+        $this->assertSame($name, $makeScore->player->name);
     }
 
    }

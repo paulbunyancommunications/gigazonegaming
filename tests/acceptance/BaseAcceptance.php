@@ -109,4 +109,12 @@ class BaseAcceptance
         $I->executeJS('$("select").each(function(ele){ $(this).select2("destroy"); });');
         $I->wait(1);
     }
+
+    /**
+     * Populate db with test seeder
+     */
+    protected function populateDB(AcceptanceTester $I)
+    {
+        exec('php artisan db:seed --class=DatabaseSeeder');
+    }
 }

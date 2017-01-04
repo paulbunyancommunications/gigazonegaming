@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="{{ $field }}" class="control-label col-xs-3">{{ $label }}
-        <span v-show="{{ $loading }}" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
+        <span id="loading{{ ucfirst($field) }}Spinner" v-show="{{ $loading }}" class="txt-color--branding">&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
         </label>
     <div class="col-xs-9">
         <select name="{{ $field }}" id="{{ $field }}" class="form-control" v-model="{{ $model }}">
