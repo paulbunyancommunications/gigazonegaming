@@ -54,6 +54,12 @@
             <script type="text/javascript" src="@autoVersion('/bower_components/jquery/dist/jquery.min.js')"></script>
             <script type="text/javascript" src="@autoVersion('/app/content/libraries/bootstrap/js/bootstrap.min.js')"></script>
             <script type="text/javascript" src="@autoVersion('/bower_components/select2/dist/js/select2.full.min.js')"></script>
+            {{-- if this is not a requirejs route then load require along side the above libraries --}}
+            <script src="@autoVersion('/app/content/js/common-require.js')"></script>
+            <script src="@autoVersion('/bower_components/requirejs/require.js')"></script>
+            {{-- Since jquery and bootstrap are already loaded, don't load them again --}}
+            <script src="@autoVersion('/app/content/js/modules/paths-require.js')"></script>
+            <script src="@autoVersion('/app/content/js/main-require.js')"></script>
         @endif
         @yield('js-sheet')
     </body>

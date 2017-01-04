@@ -35,7 +35,6 @@ if (!jQuery || oldjQuery) {
 var bootstrap3Enabled = (typeof $().emulateTransitionEnd == 'function')
     // Bootstrap.js load path from /app/content/js
     localBoostrapPath = "../libraries/bootstrap/js/bootstrap.min";
-console.log(bootstrap3Enabled);
 if (!bootstrap3Enabled) {
     paths.bootstrap = localBoostrapPath;
     shims.bootstrap = ['jquery']
