@@ -310,7 +310,6 @@ ruby:
                 - activesupport@4.2.6
                 - vine@0.2
                 - sass@3.4.22
-                - compass@1.0.3
                 - haml@4.0.7
 python:
     install: '1'
