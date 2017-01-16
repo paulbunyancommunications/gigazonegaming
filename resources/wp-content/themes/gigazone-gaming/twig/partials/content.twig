@@ -40,7 +40,7 @@
         {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
         {% if display_as_a_page is same as(false) %}
             {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
-                {% include "partials/post/post-author.twig" with {'post':post} %}
+                {#{% include "partials/post/post-author.twig" with {'post':post} %}#}
             {% endif %}
         {% endif %}
         <div class="clearfix"></div>
@@ -51,9 +51,13 @@
         <div class="clearfix"></div>
         {% if display_as_a_page is same as(false) %}
             {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
+                <hr class="divider horizontal slim dashed">
+                {# Just load the avatar from the short code #}
+                {{ function('do_shortcode', '[user-profile id="' ~ post.post_author ~ '" author_prefix="Posted By "]') }}
                 {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
                 {% include "partials/post/post-permalink.twig" %}
                 {% include "partials/post/post-tags.twig" %}
+                <hr class="divider horizontal slim dashed">
             {% endif %}
         {% endif %}
         {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
