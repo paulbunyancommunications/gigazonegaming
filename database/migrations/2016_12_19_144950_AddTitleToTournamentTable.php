@@ -26,8 +26,10 @@ class AddTitleToTournamentTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->dropColumn('title');
-        });
+        if (Schema::connection('mysql_champ')->hasColumn('tournaments', 'title')) {
+            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+                $table->dropColumn('title');
+            });
+        }
     }
 }
