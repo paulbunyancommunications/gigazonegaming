@@ -199,9 +199,10 @@
                 <mkdir dir="${dir.reports}"/>
 
                 <!-- run build commands -->
-                <exec command="npm update" level="info" checkreturn="true" />
-                <exec command="gulp" level="info" checkreturn="true" />
+                <exec command="rm -rf node_modules; yarn" level="info" checkreturn="true" />
                 <exec command="bower update" level="info" checkreturn="true" />
+                <exec command="npm run-script copy-libraries" level="info" checkreturn="true" />
+                <exec command="gulp" level="info" checkreturn="true" />
                 <!-- run download of tools -->
                 <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
                 <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
@@ -284,6 +285,10 @@
     <!-- Target: Post deployment actions               -->
     <!-- ============================================  -->
     <target name="build:post_deploy">
+
+        <!-- create cache directory on the other side -->
+        <phingcall target="task:make_cache_dir"/>
+
         <!-- install fresh version of composer over on server side -->
         <phingcall target="task:composer_refresh"/>
 
@@ -337,6 +342,31 @@
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
                      command="cd /home/${ftp.username}; php artisan clear-compiled; php artisan optimize; php artisan cache:clear; php artisan view:clear; php artisan config:cache"
+                     display="true"/>
+            </else>
+        </if>
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Create remote cache directory         -->
+    <!-- with the correct permissions                  -->
+    <!-- ============================================  -->
+
+    <target name="task:make_cache_dir">
+
+        <if>
+            <equals arg1="${env}" arg2="development"/>
+            <then>
+                <echo message="laravel optimize is not required for ${env} environment"/>
+            </then>
+            <else>
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub"
+                     command="cd /home/${ftp.username}; rm -rf cache | true; mkdir -m 0770 cache || echo '';"
                      display="true"/>
             </else>
         </if>
@@ -446,7 +476,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; php artisan key:generate; php artisan wp:keys;"
+                     command="cd /home/${ftp.username}; php artisan key:generate; php artisan wp:keys --file=.env;"
                      display="true"/>
             </else>
         </if>
