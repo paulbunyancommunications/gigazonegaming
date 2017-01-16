@@ -402,7 +402,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update &amp;&amp; php composer.phar dump-autoload --no-dev --optimize"
+                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update --no-dev &amp;&amp; php composer.phar dump-autoload --no-dev --optimize"
                      display="true"/>
             </else>
         </if>
