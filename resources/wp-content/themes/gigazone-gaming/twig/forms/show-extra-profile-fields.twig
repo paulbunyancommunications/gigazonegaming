@@ -1,0 +1,19 @@
+<hr />
+<table class="form-table">
+    <tr>
+        <th><label for="{{ field }}">{{ field|capitalize }} Username</label></th>
+        <td>
+            <input type="text" name="{{ field }}" id="{{ field }}" value="{{ function('esc_attr', function('get_the_author_meta', field, user.ID)) }}" class="regular-text" /><br />
+            <span class="description">Please enter your {{ field|capitalize }} username.</span>
+        </td>
+    </tr>
+</table>
+<table class="form-table">
+    <tr>
+        <th><label for="{{ field }}_profile">{{ field|capitalize }} Profile URL</label></th>
+        <td>
+            <input type="text" name="{{ field }}_profile" id="{{ field }}_profile" value="{{ function('esc_attr', function('get_the_author_meta', field ~'_profile', user.ID)) }}" class="regular-text" /><br />
+            <span class="description">Please enter the url to your {{ field|capitalize }} profile.</span>
+        </td>
+    </tr>
+</table>

@@ -1,8 +1,7 @@
 .searchResults {
 
-
   & .well {
-    @include border-radius(10px);
+    border-radius: 10px;
   }
 
   ul {

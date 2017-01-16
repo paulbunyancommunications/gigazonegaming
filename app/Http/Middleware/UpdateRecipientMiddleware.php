@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Requests\UpdateRecipientRequest;
+use Closure;
 use App\Http\Requests\GeoLocationRequest;
 use App\Models\UpdateRecipients;
-use Closure;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class RequestTokenMiddleware
@@ -18,13 +20,13 @@ class UpdateRecipientMiddleware
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
-     * @return
+     * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        $updateRequest = new \App\Http\Requests\UpdateRecipientRequest();
+        $updateRequest = new UpdateRecipientRequest();
         // check for base rules, if pass then setup the insert of a new update recipient
-        $validator = \Validator::make($request->all(), $updateRequest->rules(), []);
+        $validator = Validator::make($request->all(), $updateRequest->rules(), []);
         if (!$validator->fails()) {
             $updates = new UpdateRecipients();
             $updates->email = $request->input('email');
@@ -34,7 +36,7 @@ class UpdateRecipientMiddleware
                 return floatval($e);
             }, $request->all());
             $geoValidation = new GeoLocationRequest();
-            $geoValidator = \Validator::make(
+            $geoValidator = Validator::make(
                 $geoLocations,
                 $geoValidation->rules(),
                 $geoValidation->messages()
@@ -47,7 +49,7 @@ class UpdateRecipientMiddleware
             }
 
             // check if the participate flag exists in the request
-            if (!\Validator::make($request->all(), ['participate' => 'required_with:email|in:yes'])->fails()) {
+            if (!Validator::make($request->all(), ['participate' => 'required_with:email|in:yes'])->fails()) {
                 $updates->participate = true;
             }
             $updates->save();

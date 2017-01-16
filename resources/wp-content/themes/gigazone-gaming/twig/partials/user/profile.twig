@@ -1,0 +1,20 @@
+<ul class="user-profile user-profile--avatar-container inline-block one-third">
+    {# show user gravitar #}
+    <li class="user-profile--container user-profile--avatar"><img src="https://www.gravatar.com/avatar/{{ user.user_email|mdfive }}?s=200" /></li>
+</ul><ul class="user-profile user-profile--meta-container inline-block two-thirds">
+    {# show user name #}
+    <li class="user-profile--container user-profile--name user-profile--{{ user.user_login }}-name">{{ user.display_name }}</li>
+    {# if the user_url field is set then display the link #}
+    {% if attribute(user, user_url) is defined and user.user_url != '' %}
+        <li class="user-profile--container user-profile--social user-profile--{{ user.user_login }}-url"><a href="{{ user.user_url }}" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> Website</a></li>
+    {% endif %}
+    {# Show link to this user's posts #}
+    <li class="user-profile--container user-profile--social user-profile--{{ user.user_login }}-posts"><a href="/author/{{ user.user_login }}/"><i class="fa fa-pencil" aria-hidden="true"></i> Posts</a></li>
+
+     {% for field in fields %}
+         {# for the field if there's a field filled and a field profile link filled then show the links here #}
+            {% if attribute(meta, field) is defined and meta[field][0] is defined and meta[field][0] != '' and attribute(meta, field~'_profile') is defined and meta[field~'_profile'][0] is defined and meta[field~'_profile'][0] != '' %}
+                    <li class="user-profile--container user-profile--social user-profile--{{ user.user_login }}-{{ field }}"><a href="{{ attribute(meta, field~'_profile').0 }}" title="{{ attribute(meta, field).0 }} on {{ field|capitalize }}" target="_blank"><i class="fa fa-{{ field }}" aria-hidden="true"></i> {{ field|capitalize }} <small>({{ attribute(meta, field).0 }})</small></a></li>
+            {% endif %}
+     {% endfor %}
+ </ul>

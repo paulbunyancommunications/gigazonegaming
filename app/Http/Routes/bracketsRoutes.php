@@ -6,6 +6,7 @@
  * Time: 8:44 AM
  */
 
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/manage/scoreboard/', ['as' => 'manage.game.bracket', 'uses' => 'Backend\Manage\BracketController@index']);

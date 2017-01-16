@@ -7,6 +7,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Session\TokenMismatchException;
 
@@ -36,7 +38,7 @@ class Handler extends ExceptionHandler
     {
         // only log errors to Rollbar if in production
         if (env('APP_ENV') == 'production') {
-            \Log::error($e);
+            Log::error($e);
         }
         parent::report($e);
     }
@@ -46,7 +48,7 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Exception $e
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $e)
     {
@@ -56,14 +58,14 @@ class Handler extends ExceptionHandler
          * an ajax request return json error message
          */
         if ($e instanceof ModelNotFoundException && (substr($request->path(), 0, 3) === 'api' || $request->ajax())) {
-            return \Response::json(['error' => [$e->getMessage()]]);
+            return Response::json(['error' => [$e->getMessage()]]);
         }
 
         /**
          * Handle exception if TokenMismatchException and is an ajax request
          */
         if ($e instanceof TokenMismatchException && $request->ajax()) {
-            return \Response::json(['error' => ['Token mismatch, please refresh the page and try again.']]);
+            return Response::json(['error' => ['Token mismatch, please refresh the page and try again.']]);
         }
 
         return parent::render($request, $e);

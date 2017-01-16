@@ -164,6 +164,7 @@ class TournamentsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenMaxPlayersIsntANumber(AcceptanceTester $I)
     {
+        
         $I->executeJS(
             'document.getElementsByName("max_players")[0].type="text";'
         );

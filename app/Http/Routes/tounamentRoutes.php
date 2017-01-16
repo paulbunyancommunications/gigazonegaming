@@ -6,6 +6,8 @@
  * Time: 4:44 PM
  */
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/manage/tournament', ['as' => 'manage.tournament.index', 'uses' => 'Backend\Manage\TournamentsController@index']);
     Route::post('/manage/tournament', ['as' => 'manage.tournament.filter', 'uses' => 'Backend\Manage\TournamentsController@filter']);

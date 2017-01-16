@@ -3,6 +3,8 @@
 namespace App\Http\Middleware\Auth;
 
 use Closure;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Redirect;
 
 class ValidateRole
 {
@@ -21,29 +23,29 @@ class ValidateRole
 
         switch($request->getMethod()) {
             case('POST'):
-                $getRole = \Sentinel::getRoleRepository()->findBySlug($request->input('slug'));
+                $getRole = Sentinel::getRoleRepository()->findBySlug($request->input('slug'));
                 if($getRole && in_array($request->input('slug'), $this->lockedRoles)) {
-                    return \Redirect::back()->withInput()->with('error', 'Can not '.strtolower($request->getMethod()).' role ' . $getRole->name);
+                    return Redirect::back()->withInput()->with('error', 'Can not '.strtolower($request->getMethod()).' role ' . $getRole->name);
                 }
                 break;
             case('GET'):
                 $parts = explode('/', $request->getPathInfo());
-                $getRole = isset($parts[2]) ? \Sentinel::getRoleRepository()->findById($parts[2]) : null;
+                $getRole = isset($parts[2]) ? Sentinel::getRoleRepository()->findById($parts[2]) : null;
                 if(isset($parts[3])
                     && $parts[3] === 'edit'
                     && $getRole
                     && in_array($getRole->getRoleSlug(), $this->lockedRoles))
                 {
-                    return \Redirect::back()->withInput()->with('error', 'Can not '.$parts[3].' role ' . $getRole->name);
+                    return Redirect::back()->withInput()->with('error', 'Can not '.$parts[3].' role ' . $getRole->name);
                 }
                 break;
             case('DELETE'):
             case('PUT'):
             case('PATCH'):
                 $parts = explode('/', $request->getPathInfo());
-                $getRole = \Sentinel::getRoleRepository()->findById($parts[2]);
+                $getRole = Sentinel::getRoleRepository()->findById($parts[2]);
                 if($getRole && in_array($getRole->getRoleSlug(), $this->lockedRoles)) {
-                    return \Redirect::back()->withInput()->with('error', 'Can not '.strtolower($request->getMethod()).' role ' . $getRole->name);
+                    return Redirect::back()->withInput()->with('error', 'Can not '.strtolower($request->getMethod()).' role ' . $getRole->name);
                 }
                 break;
         }

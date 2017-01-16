@@ -3,13 +3,7 @@
 namespace App\Http\Controllers\Backend\Manage;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GameRequest;
-use App\Models\Championship\Game;
-use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
 class BracketController extends Controller
@@ -27,7 +21,7 @@ class BracketController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function getTournaments()
     {
@@ -35,11 +29,12 @@ class BracketController extends Controller
 //
 //        return response()
 //            ->json();
+        return null;
     }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function getTournament()
     {
@@ -47,16 +42,18 @@ class BracketController extends Controller
 //
 //        return response()
 //            ->json();
+        return null;
     }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return null
      */
     public function save()
     {
 
 //        return response()
 //            ->json();
+        return null;
     }
 }

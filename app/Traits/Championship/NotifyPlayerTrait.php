@@ -18,6 +18,9 @@ use Pbc\FormMail\Http\Controllers\FormMailController;
 use Pbc\FormMail\Helpers\FormMailHelper;
 use App\Models\Championship\Player;
 use Pbc\Premailer;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Route;
 
 trait NotifyPlayerTrait
 {
@@ -47,7 +50,7 @@ trait NotifyPlayerTrait
         }
         $request->replace($fields);
 
-        $hostUrl = parse_url(\Config::get('app.url'), PHP_URL_HOST);
+        $hostUrl = parse_url(Config::get('app.url'), PHP_URL_HOST);
         $paramsForLang = array_merge(
             $player->toArray(),
             [
@@ -58,14 +61,14 @@ trait NotifyPlayerTrait
         );
         $data = [
             'subject' => json_encode([
-                $handler::RECIPIENT => \Lang::get($helper::resourceRoot() .'.'. \Route::currentRouteName() . '.subject.'.$handler::RECIPIENT, $paramsForLang),
-                $handler::SENDER => \Lang::get($helper::resourceRoot() .'.'. \Route::currentRouteName() . '.subject.'.$handler::SENDER, $paramsForLang),
+                $handler::RECIPIENT => Lang::get($helper::resourceRoot() .'.'. Route::currentRouteName() . '.subject.'.$handler::RECIPIENT, $paramsForLang),
+                $handler::SENDER => Lang::get($helper::resourceRoot() .'.'. Route::currentRouteName() . '.subject.'.$handler::SENDER, $paramsForLang),
             ]),
             $handler::SENDER => 'players@'.$hostUrl,
             $handler::RECIPIENT => $request->input('email'),
             'head' => json_encode([
-                $handler::RECIPIENT => \Lang::get($helper::resourceRoot() .'.'. \Route::currentRouteName() . '.'.$handler::RECIPIENT, $paramsForLang),
-                $handler::SENDER => \Lang::get($helper::resourceRoot() .'.'. \Route::currentRouteName() . '.'.$handler::SENDER, $paramsForLang),
+                $handler::RECIPIENT => Lang::get($helper::resourceRoot() .'.'. Route::currentRouteName() . '.'.$handler::RECIPIENT, $paramsForLang),
+                $handler::SENDER => Lang::get($helper::resourceRoot() .'.'. Route::currentRouteName() . '.'.$handler::SENDER, $paramsForLang),
             ]),
         ];
         return $handler->requestHandler($request, $data);

@@ -22,6 +22,18 @@ $factory->define(App\Models\UpdateRecipients::class, function (Faker\Generator $
     ];
 });
 
+/**
+ * Leader Board
+ */
+$factory->define(App\Models\Championship\Score::class, function (Faker\Generator $faker) {
+
+    return [
+        'player' => factory(App\Models\Championship\Player::class)->create([])->id,
+        'tournament' => factory(App\Models\Championship\Tournament::class)->create([])->id,
+        'score' => $faker->numberBetween(1000, 10000),
+    ];
+});
+
 $factory->define(App\Models\Championship\Game::class, function (Faker\Generator $faker) {
 
     return [
@@ -43,7 +55,7 @@ $factory->define(App\Models\Championship\Team::class, function (Faker\Generator 
     ];
 });
 
-$factory->define(App\Models\Championship\PlayerRelation::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Championship\Relation\PlayerRelation::class, function (Faker\Generator $faker) {
 
     return [
         'player_id' => factory(App\Models\Championship\Player::class)->create([])->id,

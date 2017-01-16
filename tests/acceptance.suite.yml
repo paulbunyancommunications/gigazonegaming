@@ -12,7 +12,7 @@ modules:
             host: localhost
             browser: firefox
             port: 4444
-            window_size: 1280x1024
+            window_size: 1366x768
             clear_cookies: 1
             restart: 1
             capabilities:

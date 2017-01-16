@@ -32,6 +32,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('tournament_id', 'App\Models\Championship\Tournament');
         $router->model('team_id', 'App\Models\Championship\Team');
         $router->model('player_id', 'App\Models\Championship\Player');
+        $router->model('score_id', 'App\Models\Championship\Score');
     }
 
     /**

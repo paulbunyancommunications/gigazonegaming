@@ -25,3 +25,4 @@ CONFIG:
   pooling_api: http://vcloud.delivery.puppetlabs.net/
   ssh:
     timeout: 600
+

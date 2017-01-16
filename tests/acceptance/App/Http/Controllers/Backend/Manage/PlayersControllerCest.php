@@ -15,6 +15,10 @@ class PlayersControllerCest extends BaseAcceptance
      * @param AcceptanceTester $I
      */
     public $faker;
+
+    /**
+     * @param AcceptanceTester $I
+     */
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
@@ -106,15 +110,15 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
         $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
-        $I->selectOption(array("id" => "tournament_id"), 'Tester Tournament');
+        $I->selectOption(["id" => "tournament_id"], 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
                 allowClear: true
             });");
         $I->click("Update");
         $I->see('Update Player: “' . $name . '”');
-        $I->seeOptionIsSelected('select#game_id', 'tester-game');
-        $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->seeOptionIsSelected(['id' => 'game_id'], 'tester-game');
+        $I->seeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
+        $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
 
     }
     /**
@@ -140,8 +144,9 @@ class PlayersControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
-    public function tryToCreateAPlayerWithAnEmailProblem(AcceptanceTester $I)
+    public function tryToCreateAPlayerWithAnEmailMissing(AcceptanceTester $I)
     {
+        $faker = \Faker\Factory::create();
         $this->playerCreation($I);
         $name = "Tester PlayerX";
         $username = "The Tester PlayerX";
@@ -152,24 +157,70 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page without an email');
         $I->amOnPage('/app/manage/player');
         $I->fillField(['id' => 'name'], $name);
-        $I->fillField(['id' => 'username'], $username2);
+        $I->fillField(['id' => 'username'], $username);
         $I->fillField(['id' => 'phone'], $phone);
-        $I->click("Save");
+        $I->click(['id' => 'submit']);
         $I->see("A email address is required");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateAPlayerWithAnEmailBadEmail(AcceptanceTester $I)
+    {
+        $faker = \Faker\Factory::create();
+        $this->playerCreation($I);
+        $name = "Tester PlayerX";
+        $username = "The Tester PlayerX";
+        $username2 = "The Tester PlayerX2"; //username should be unique
+        $email = "playerx@test.com";
+        $email2 = "DummyUserA@bpaosd.com"; //email should be unique
+        $phone = "(218) - 444 - 4444";
 
         $I->wantTo('create a player on the management page with an email that is not valid');
-        $I->fillField(['id' => 'email'], "adasdasdasdas");
-        $I->click("Save");
+        $I->fillField(['id' => 'email'], implode(' ', $faker->words(3)));
+        $I->click(['id' => 'submit']);
         $I->see("That doesn't look like an email, try again");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateAPlayerWithAnEmailDuplicateEmail(AcceptanceTester $I)
+    {
+        $faker = \Faker\Factory::create();
+        $name = "Tester PlayerX";
+        $username = "The Tester PlayerX";
+        $username2 = "The Tester PlayerX2"; //username should be unique
+        $email = "playerx@test.com";
+        $email2 = "DummyUserA@bpaosd.com"; //email should be unique
+        $phone = "(218) - 444 - 4444";
 
         $I->wantTo('create a player on the management page with an email that is already in the db');
         $I->fillField(['id' => 'email'], $email);
-        $I->click("Save");
+        $I->click(['id' => 'submit']);
         $I->see("A email address is already been used, use your previously created account or create a new one");
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateAPlayerWithAnEmail(AcceptanceTester $I)
+    {
+        $faker = \Faker\Factory::create();
+        $this->playerCreation($I);
+        $name = "Tester PlayerX";
+        $username = "The Tester PlayerX";
+        $username2 = $faker->userName; //username should be unique
+        $email = "playerx@test.com";
+        $email2 = "DummyUserA@bpaosd.com"; //email should be unique
+        $phone = "(218) - 444 - 4444";
 
         $I->wantTo('create a player on the management page with an email that is not in the db (correct)');
+        $I->fillField(['id' => 'name'], $name);
+        $I->fillField(['id' => 'username'], $username2);
         $I->fillField(['id' => 'email'], $email2);
-        $I->click("Save");
+        $I->click(['id' => 'submit']);
         $I->see('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
@@ -178,7 +229,7 @@ class PlayersControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
-    public function tryToCreateAPlayerWithAnUsernameProblem(AcceptanceTester $I)
+    public function tryToCreateAPlayerWithAnUsernameProblemMissingUserName(AcceptanceTester $I)
     {
         $name = "Tester PlayerX";
         $username = "The Tester PlayerX";
@@ -194,13 +245,45 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click("Save");
         $I->see("A Username is required");
 
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateAPlayerWithAnUsernameProblemAlreadyExists(AcceptanceTester $I)
+    {
+        $name = "Tester PlayerX";
+        $username = "The Tester PlayerX";
+        $username2 = "DummyUserA-Tester2"; //username should be unique
+        $email = "playerx@test.com";
+        $email2 = "DummyUserA@bpaosd.com"; //email should be unique
+        $phone = "(218) - 444 - 4444";
+
+
         $I->wantTo('create a player on the management page with a username that is already in the db');
         $I->fillField(['id' => 'username'], $username);
         $I->click("Save");
         $I->see("The Username is already in use, please select a new one");
 
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateAPlayerWithAnUsername(AcceptanceTester $I)
+    {
+        $faker = \Faker\Factory::create();
+        $name = $faker->name;
+        $username = "The Tester PlayerX";
+        $username2 = "DummyUserA-Tester2"; //username should be unique
+        $email = "playerx@test.com";
+        $email2 = "DummyUserA@bpaosd.com"; //email should be unique
+        $phone = "(218) - 444 - 4444";
+
         $I->wantTo('create a player on the management page with a username that is not in the db (correct)');
         $I->fillField(['id' => 'username'], $username2);
+        $I->fillField(['id' => 'email'], $email2);
+        $I->fillField(['id' => 'name'], $name);
         $I->click("Save");
         $I->see('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');

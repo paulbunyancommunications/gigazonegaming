@@ -42,21 +42,21 @@ class SearchControllerSeeder extends Seeder
         ]);
 
         /** Player to team relation */
-        factory(App\Models\Championship\PlayerRelation::class)->create([
+        factory(App\Models\Championship\Relation\PlayerRelation::class)->create([
             'player_id' => $player->id,
             'relation_id' => $team->id,
             'relation_type' => App\Models\Championship\Team::class,
         ]);
 
         /** Player to tournament relation */
-        factory(App\Models\Championship\PlayerRelation::class)->create([
+        factory(App\Models\Championship\Relation\PlayerRelation::class)->create([
             'player_id' => $player->id,
             'relation_id' => $tournament->id,
             'relation_type' => App\Models\Championship\Tournament::class,
         ]);
 
         /** Player to game relation */
-        factory(App\Models\Championship\PlayerRelation::class)->create([
+        factory(App\Models\Championship\Relation\PlayerRelation::class)->create([
             'player_id' => $player->id,
             'relation_id' => $game->id,
             'relation_type' => App\Models\Championship\Game::class,

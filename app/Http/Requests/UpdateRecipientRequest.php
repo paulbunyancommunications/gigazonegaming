@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
+/**
+ * Class UpdateRecipientRequest
+ * @package App\Http\Requests
+ */
 class UpdateRecipientRequest extends Request
 {
     /**

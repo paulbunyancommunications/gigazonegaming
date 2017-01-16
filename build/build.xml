@@ -9,6 +9,8 @@
     <!-- environment, default to staging for deployment/testing -->
     <property name="env" value="development" override="true"/>
 
+    <!-- Checker to see if prepare was already run -->
+    <property name="ran_prepare" value="0"/>
     <property name="releaseName" value="master" override="true"/>
 
     <property name="build_dir" value="build/"/>
@@ -89,6 +91,7 @@
         <exclude name="${dir.remote.coverage}**/*"/>
         <exclude name="${build_dir}**/*"/>
         <exclude name="${dir.node}**/*"/>
+        <exclude name="${dir.vendor}**/*"/>
         <exclude name="${dir.phpstorm}**/*"/>
         <exclude name="${dir.vagrant}**/*"/>
         <exclude name="${dir.puphpet}**/*"/>
@@ -186,21 +189,27 @@
     <!-- Target: prepare tests                         -->
     <!-- ============================================  -->
     <target name="build:prepare">
-        <delete dir="${dir.package}"/>
-        <delete dir="${dir.package}${env}"/>
-        <delete dir="${dir.package}${env}/${phing.project.name}"/>
-        <delete dir="${deploy_dir}"/>
-        <mkdir dir="${dir.package}"/>
-        <mkdir dir="${dir.reports}"/>
+        <if>
+            <equals arg1="${ran_prepare}" arg2="0" />
+            <then>
+                <delete dir="${dir.package}"/>
+                <delete dir="${dir.package}${env}"/>
+                <delete dir="${dir.package}${env}/${phing.project.name}"/>
+                <delete dir="${deploy_dir}"/>
+                <mkdir dir="${dir.package}"/>
+                <mkdir dir="${dir.reports}"/>
 
-        <!-- run build commands -->
-        <exec command="npm update" level="info" checkreturn="true" />
-        <exec command="gulp" level="info" checkreturn="true" />
-        <exec command="bower update" level="info" checkreturn="true" />
-        <!-- run download of tools -->
-        <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
-        <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
-
+                <!-- run build commands -->
+                <exec command="rm -rf node_modules; yarn" level="info" checkreturn="true" />
+                <exec command="bower update" level="info" checkreturn="true" />
+                <exec command="npm run-script copy-libraries" level="info" checkreturn="true" />
+                <exec command="gulp" level="info" checkreturn="true" />
+                <!-- run download of tools -->
+                <exec command="wget -q -N https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php -O c3.php" level="info" checkreturn="true" />
+                <exec command="wget -q -N http://codeception.com/codecept.phar -O codecept.phar" level="info" checkreturn="true" />
+                <property name="ran_prepare" value="1"/>
+            </then>
+        </if>
     </target>
 
     <!-- ============================================  -->
@@ -277,6 +286,10 @@
     <!-- Target: Post deployment actions               -->
     <!-- ============================================  -->
     <target name="build:post_deploy">
+
+        <!-- create cache directory on the other side -->
+        <phingcall target="task:make_cache_dir"/>
+
         <!-- install fresh version of composer over on server side -->
         <phingcall target="task:composer_refresh"/>
 
@@ -292,9 +305,7 @@
         <!-- run config cache remake on remote -->
         <phingcall target="task:artisan_clear_config"/>
 
-        <!-- run cleanup -->
-        <phingcall target="build:cleanup" />
-
+        <!-- tell rollbar there is a new deployment -->
         <phingcall target="task:rollbar_deploy"/>
 
     </target>
@@ -337,6 +348,31 @@
     </target>
 
     <!-- ============================================  -->
+    <!-- Target: Create remote cache directory         -->
+    <!-- with the correct permissions                  -->
+    <!-- ============================================  -->
+
+    <target name="task:make_cache_dir">
+
+        <if>
+            <equals arg1="${env}" arg2="development"/>
+            <then>
+                <echo message="laravel optimize is not required for ${env} environment"/>
+            </then>
+            <else>
+                <ssh username="${ftp.username}"
+                     host="${ftp.host}"
+                     port="${ssh.port}"
+                     privkeyfile="~/.ssh/id_rsa"
+                     pubkeyfile="~/.ssh/id_rsa.pub"
+                     command="cd /home/${ftp.username}; rm -rf cache | true; mkdir -m 0770 cache || echo '';"
+                     display="true"/>
+            </else>
+        </if>
+
+    </target>
+
+    <!-- ============================================  -->
     <!-- Target: cleanup after packaging               -->
     <!-- ============================================  -->
     <target name="build:cleanup">
@@ -344,7 +380,6 @@
         <delete dir="${dir.package}${env}"/>
         <delete dir="${dir.package}${env}/${phing.project.name}"/>
         <delete dir="${deploy_dir}"/>
-        <delete dir="${build_dir}${build_dir}"/>
     </target>
 
     <!-- ============================================  -->
@@ -365,7 +400,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update &amp;&amp; php composer.phar dump-autoload --no-dev --optimize"
+                     command="cd /home/${ftp.username}; if [ ! -f composer.phar ]; then wget https://getcomposer.org/composer.phar; fi; php composer.phar self-update; yes | php composer.phar update --no-dev &amp;&amp; php composer.phar dump-autoload --no-dev --optimize"
                      display="true"/>
             </else>
         </if>
@@ -439,7 +474,7 @@
                      port="${ssh.port}"
                      privkeyfile="~/.ssh/id_rsa"
                      pubkeyfile="~/.ssh/id_rsa.pub"
-                     command="cd /home/${ftp.username}; php artisan key:generate; php artisan wp:keys;"
+                     command="cd /home/${ftp.username}; php artisan key:generate; php artisan wp:keys --file=.env;"
                      display="true"/>
             </else>
         </if>

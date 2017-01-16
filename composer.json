@@ -18,10 +18,10 @@
       "package": {
         "name": "wordpress",
         "type": "webroot",
-        "version": "4.6.1",
+        "version": "4.7.1",
         "dist": {
           "type": "zip",
-          "url": "https://github.com/WordPress/WordPress/archive/4.6.1.zip"
+          "url": "https://wordpress.org/wordpress-4.7.1.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -78,7 +78,7 @@
       "package": {
         "name": "lopo/duplicate-post",
         "type": "wordpress-plugin",
-        "version": "3.0.2",
+        "version": "3.0.3",
         "dist": {
           "type": "zip",
           "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip"
@@ -150,7 +150,7 @@
     }
   ],
   "require": {
-    "php": ">=5.5.9",
+    "php": ">=7.0",
     "laravel/framework": "5.2.*",
     "cartalyst/sentinel": "2.0.*",
     "doctrine/dbal": "~2.5",
@@ -174,7 +174,7 @@
     "rcrowe/twigbridge": "0.9.3",
     "paulbunyannet/premailer": "^1.0",
     "paulbunyannet/wordpress-artisan": "^1.0",
-    "sunra/php-simple-html-dom-parser": "v1.5.0",
+    "sunra/php-simple-html-dom-parser": "v1.5.2",
     "league/csv": "^8.1",
     "laravelcollective/html": "5.2.*",
     "constantcontact/constantcontact": "2.1.*",
@@ -199,7 +199,9 @@
     "symfony/dom-crawler": "2.8.*|3.0.*",
     "barryvdh/laravel-ide-helper": "2.1.*",
     "codeception/c3": "^2.0",
-    "phing/phing": "2.*"
+    "phing/phing": "2.*",
+    "codeception/codeception": "^2.2",
+    "etsy/phan": "dev-master"
   },
   "extra": {
     "webroot-dir": "public_html/wp",
@@ -252,11 +254,13 @@
       "Illuminate\\Foundation\\ComposerScripts::postInstall",
       "php artisan ide-helper:generate",
       "php artisan ide-helper:meta",
-      "php artisan optimize"
+      "php artisan optimize",
+      "bash ${PWD}/composer_post_fixes.sh"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan optimize"
+      "php artisan optimize",
+      "bash ${PWD}/composer_post_fixes.sh"
     ],
     "test": [
       "bash testing.sh"

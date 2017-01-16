@@ -3,6 +3,8 @@
 namespace App\Http\Middleware\Auth;
 
 use Closure;
+use Illuminate\Contracts\Auth\Guard;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class Authenticate
 {
@@ -16,7 +18,6 @@ class Authenticate
     /**
      * Create a new middleware instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -32,12 +33,13 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        $request->loggedIn = \Sentinel::getUser();
-        if($request->loggedIn && strpos($request->getRequestUri(), '/auth/') !== false && $request->getRequestUri() !== '/auth/logout') {
+
+        $loggedIn = Sentinel::getUser();
+        if($loggedIn && strpos($request->getRequestUri(), '/auth/') !== false && $request->getRequestUri() !== '/auth/logout') {
             return redirect('order');
         }
 
-        if (!$request->loggedIn && strpos($request->getRequestUri(), '/auth/') === false) {
+        if (!$loggedIn && strpos($request->getRequestUri(), '/auth/') === false) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {

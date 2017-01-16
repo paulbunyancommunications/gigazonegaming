@@ -1,7 +1,15 @@
-var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
-    themeResourceFolder = 'resources/wp-content/themes/gigazone-gaming',
-    appFolder = 'public_html/app/content',
-    appResourceFolder = 'resources/assets',
+'use strict';
+
+var path = require("path");
+var rootDir = __dirname;
+var themeFolder = path.join(rootDir,'public_html/wp-content/themes/gigazone-gaming');
+var resourceRoot = path.join(rootDir, 'resources')
+var themeResourceFolder = path.join(resourceRoot, 'wp-content/themes/gigazone-gaming');
+var appFolder = path.join(rootDir,'public_html/app/content');
+var appResourceFolder = path.join(resourceRoot,'assets');
+
+var sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
     elixir = require('laravel-elixir'),
     gulp = require('gulp'),
     coffee = require('gulp-coffee'),
@@ -11,9 +19,9 @@ var themeFolder = 'public_html/wp-content/themes/gigazone-gaming',
     del = require('del'),
     livereload = require('gulp-livereload'),
     uglify = require('gulp-uglify'),
-    CleanCSS = require('gulp-clean-css');
+    CleanCSS = require('gulp-clean-css'),
+    sourcemaps = require('gulp-sourcemaps');
 require('gulp-util');
-require('laravel-elixir-sass-compass');
 require('laravel-elixir-livereload');
 require('dotenv').config();
 
@@ -39,7 +47,7 @@ elixir.extend('blueMountain', function (src, outputDir) {
         return gulp.src(src + '/**/*.coffee')
             .pipe(coffee({bare: true}).on('error', gutil.log))
             .pipe(gulp.dest(outputDir));
-    }).watch(src + '/**/*.coffee');
+    }).watch(path.join(src, '/**/*.coffee'));
 
 });
 
@@ -56,7 +64,7 @@ elixir.extend('hamlToTwig', function (src, outputDir) {
                 return path;
             }))
             .pipe(gulp.dest(outputDir));
-    }).watch(src + '/**/*.haml');
+    }).watch(path.join(src, '**/*.haml'));
 });
 
 /**
@@ -64,7 +72,7 @@ elixir.extend('hamlToTwig', function (src, outputDir) {
  */
 elixir.extend('copyFiles', function(src, output){
     new Task('copyFiles', function() {
-        gulp.src(src)
+        return gulp.src(src)
             .pipe(gulp.dest(output))
     }).watch(src);
 });
@@ -76,7 +84,7 @@ elixir.extend('copyFiles', function(src, output){
 elixir.extend('minifyJs', function(src){
     new Task('minifyJs', function() {
         return gulp.src(src + '/**/*.js')
-            .pipe(uglify())
+            .pipe(uglify().on('error', gutil.log))
             .pipe(gulp.dest(src))
     });
 });
@@ -89,36 +97,93 @@ elixir.extend('minifyJs', function(src){
 elixir.extend('cleanCss', function(src){
    new Task('cleanCss', function() {
        gulp.src(src + '/style.css')
-           .pipe(CleanCSS({}))
+           .pipe(CleanCSS({}).on('error', gutil.log))
            .pipe(gulp.dest(src));
    })
 });
 
 /**
+ * Compile sass file to css with eyeglass
+ * https://github.com/sass-eyeglass/eyeglass/blob/master/site-src/docs/integrations/gulp.md
+ */
+elixir.extend('sassy', function(source, destination, options){
+    new Task('sassy', function() {
+        return gulp.src(source)
+            .pipe(sourcemaps.init())
+            .pipe(sass(options).on("error", sass.logError))
+            .pipe(autoprefixer({
+                browsers: ['last 2 versions'],
+                cascade: false
+            }))
+            .pipe(sourcemaps.write('./maps'))
+            .pipe(gulp.dest(destination));
+    }).watch(source)
+})
+
+/**
+ * Delete task to remove files/folders
+ * https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md
+ */
+elixir.extend('delete', function(toClean){
+    new Task('delete', function(){
+        return del(toClean)
+    })
+})
+
+/**
  * Main gulp elixir task
  */
 elixir(function (mix) {
-    mix.compass('*.scss', themeFolder + '/css/', {
-        sass: themeResourceFolder + '/sass',
-        style: "compressed",
-        font: themeFolder + "/fonts",
-        image: themeFolder + "/images",
-        javascript: themeFolder + "/js",
-        comments: false,
-    })
-        .compass('*.scss', appFolder + '/css/', {
-            sass: appResourceFolder + '/sass',
-            style: "compressed",
-            javascript: appFolder + "/js",
-            image: appFolder + "/images",
+
+    /** ================================================
+     * Copy Boostrap css and js files to themes and app folder
+     ================================================ */
+
+    mix
+    /** ================================================
+     * Compile Theme SASS -> CSS
+     ================================================ */
+       .sassy(path.join(themeResourceFolder, 'sass/**/*.scss'), path.join(themeFolder, 'css'), {
+           outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
+           indentWidth: 4,
+           indentType: 'space',
+           includePaths: [
+               path.join(themeResourceFolder, 'sass/libraries')
+           ]
+       })
+        // get rid of the left over sass folder
+        .delete(path.join(themeFolder, 'css/sass'))
+
+        /** ================================================
+        * Compile App SASS -> CSS
+        ================================================ */
+        .sassy(path.join(appResourceFolder, 'sass/**/*.scss'), path.join(appFolder, 'css'), {
+            outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
+            indentWidth: 4,
+            indentType: 'space',
+            includePaths: [
+                path.join(appResourceFolder, 'sass/libraries')
+            ]
         })
+        // get rid of the left over sass folder
+        .delete(path.join(appFolder, 'css/sass'))
+
+        // compile theme coffee files to js
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
+        // compile app coffee files to js
         .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
+        // convert theme haml to twig
         .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
+        // convert app haml to twig
         .hamlToTwig(appResourceFolder + '/haml', appFolder + '/views')
+        // copy twig views from resources to theme folder
         .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views')
+        // copy js files from resources to theme folder
         .copyFiles(appResourceFolder + '/js/**/*.js', appFolder + '/js');
 
+    /** ================================================
+     * If app it set to production then minimize things
+     ================================================ */
         if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
             mix.cleanCss(themeFolder + '/css')
                .minifyJs(themeFolder + '/js')

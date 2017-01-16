@@ -30,7 +30,7 @@ Puppet::Type.newtype(:sysctl) do
     defaultto '/etc/sysctl.conf'
     validate do |value|
       unless value =~ /^\/\S+/
-        raise ArgumentError, "Path is not a fully qualified path: #{value}"
+        raise ArgumentError, "Path is not a fully qualified path: #{value}" 
       end
     end
   end

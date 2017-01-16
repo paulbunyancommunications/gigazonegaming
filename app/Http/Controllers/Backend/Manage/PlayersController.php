@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
-use App\Models\Championship\Tournament;
-use App\Models\WpUser;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -35,7 +29,7 @@ class PlayersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Player  $player
+     * @param PlayerRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(PlayerRequest $request)
@@ -43,7 +37,6 @@ class PlayersController extends Controller
         $player = new Player();
         list($request, $theAssociation) = $this->UserCleanUp($request);
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation); //save method for player is in this function call
-
         if($success!='' and $errors!=''){
             return redirect("manage/player/edit/".$playerArray['id'])
 //                ->withInput()
@@ -69,13 +62,13 @@ class PlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Player  $player
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return null
+     * @internal param Request $request
      */
-    public function create(Player $player)
+    public function create()
     {
-        dd("Are you trying to hack us? ip_address:".$_SERVER['REMOTE_ADDR']);
+        return null;
+//
 //        $updatedBy = $this->getUserId();
 //        $updatedOn = Carbon::now("CST");
 //        $toUpdate = array_merge($request->all(), [
@@ -116,7 +109,7 @@ class PlayersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  PlayerRequest  $request
      * @param   Player  $player
      * @return \Illuminate\Http\Response
      */
@@ -237,7 +230,7 @@ class PlayersController extends Controller
     }
 
     /**
-     * @param PlayerRequest $cleanedRequest
+     * @param PlayerRequest $request
      * @return array
      */
     private function UserCleanUp(PlayerRequest $request)
@@ -287,14 +280,22 @@ class PlayersController extends Controller
      */
     private function getPlayerInfoAndErrors( PlayerRequest $request, Player $player, $theAssociation)
     {
-        $player->name = $request->get('name');
-        $player->username = $request->get('username');
-        $player->email = $request->get('email');
-        $player->phone = $request->get('phone');
-        $player->updated_by =  $this->getUserId();
-        $player->updated_on = Carbon::now("CST");
-        $player->save();
-        $player->fresh();
+        $success = '';
+        $errors = '';
+        try {
+            $player->name = $request->get('name');
+            $player->username = $request->get('username');
+            $player->email = $request->get('email');
+            $player->phone = $request->get('phone');
+            $player->updated_by = $this->getUserId();
+            $player->updated_on = Carbon::now("CST");
+            $player->save();
+            $player->fresh();
+            $success .= trans('player.'. (strtoupper($request->getMethod()) === 'PUT' ? 'update' : 'create') .'.success');
+        } catch (\Exception $ex) {
+            $errors .= trans('player.'. (strtoupper($request->getMethod()) === 'PUT' ? 'update' : 'create') .'.error', ['error' => $ex->getMessage()]);
+            return array([], '', $errors);
+        }
 
         $theAssociation['player'] = $player->id;
         $result = DB::transaction( function () use ($theAssociation) {
@@ -307,16 +308,13 @@ class PlayersController extends Controller
             return $result;
         });
         $playerArray = $player->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
-//        dd($playerArray);
-        $success = '';
-        $errors = '';
+
         if (isset($result) and $result != []) {
             if (isset($result['success'])) {
-                $success .= "The player " . $playerArray['name'] . " was successfully attached to ".$result['success'];
+                $success .=  trans('player.attach.success', ['name' => $playerArray['name'], 'result' => $result['success']]);
             }
-
             if (isset($result['fail'])) {
-                $errors .= "The player " . $playerArray['name'] . " couldn't be attached to ".$result['fail'];
+                $errors .= trans('player.attach.error', ['name' => $playerArray['name'], 'result' => $result['fail']]);
             }
         }
         return array($playerArray, $success, $errors);

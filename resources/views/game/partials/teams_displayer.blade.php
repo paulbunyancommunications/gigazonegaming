@@ -4,7 +4,7 @@
             {{ Html::linkAction('Backend\Manage\TeamsController@edit', $team["team_name"], array('team_id'=>$team["team_id"]), array('id'=>'edit-'.str_replace(' ', '', $team['team_name']), 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit team ".$team['team_name'])) }}
         </td>
         <td>
-            <p><span class="fa-stack fa-lg">
+            <p class="text-center"><span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x txt-color--midtone"></i>
                     <strong class="fa-stack-1x txt-color--light small">{{$team["team_count"]}}/{{$team["team_max_players"]}}</strong>
                 </span></p>
@@ -22,7 +22,7 @@
                 {{
                    Form::button(
                        '<i class="fa fa-print" aria-hidden="true"></i>',
-                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$team["team_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $game['team_name']),'title'=>"Edit team ".$team['team_name'])
+                       array('type' => 'button', 'id' => 'submit-toForm-print-'.$team["team_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $team['team_name']),'title'=>"Edit team ".$team['team_name'])
                    )
                 }}
                 {{
@@ -63,8 +63,8 @@
                     'Backend\Manage\TeamsController@destroy_soft',
                     $team["team_id"]
                     ],
-                'class' => "deletingForms delete_message'",
-                'onsubmit'=>"return confirm('Are you sure? Deleting the team ". htmlentities($team['team_name']) ." will erase the team and players relations to such team');")) }}
+                'class' => "deletingForms delete_message",
+                'onsubmit'=>new Illuminate\Support\HtmlString("return confirm('Are you sure? Deleting the team ". htmlentities($team['team_name']) ." will erase the team and players relations to such team');"))) }}
             <input name="_method" type="hidden" value="DELETE">
             {{ Form::close() }}
             {{ Form::open(array(
@@ -74,7 +74,7 @@
                     $team["team_id"]
                     ],
                 'class' => "deletingForms delete_message delete_hard-form-".str_replace(' ', '', $team["team_name"])."-hidden",
-                'onsubmit'=>"return confirm('Are you sure? Deleting the team ". htmlentities($team['team_name']) ." will erase the team and players and their relations to the games, tournaments associated to them');")) }}
+                'onsubmit'=>new Illuminate\Support\HtmlString("return confirm('Are you sure? Deleting the team ". htmlentities($team['team_name']) ." will erase the team and players and their relations to the games, tournaments associated to them');"))) }}
             <input name="_method" type="hidden" value="DELETE">
             {{ Form::close() }}
             {{ Form::open(array(
@@ -84,7 +84,7 @@
                     $team["team_id"]
                     ],
                 'class' => "deletingForms delete_message delete_soft-form-".str_replace(' ', '', $team["team_name"])."-hidden",
-                'onsubmit'=>"return confirm('Are you sure? Deleting the team ". htmlentities($team['team_name']) ." will erase the team and players and their relations to the games, tournaments associated to them');")) }}
+                'onsubmit'=>new Illuminate\Support\HtmlString("return confirm('Are you sure? Deleting the team ". htmlentities($team['team_name']) ." will erase the team and players and their relations to the games, tournaments associated to them');"))) }}
             <input name="_method" type="hidden" value="DELETE">
             {{ Form::close() }}
 

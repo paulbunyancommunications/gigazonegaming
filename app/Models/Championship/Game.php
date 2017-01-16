@@ -4,6 +4,7 @@ namespace App\Models\Championship;
 
 use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
 
 /**
  * Class Game
@@ -83,8 +84,7 @@ class Game extends Model
 
     /**
      * Get tournaments playing this game
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function teams()
     {

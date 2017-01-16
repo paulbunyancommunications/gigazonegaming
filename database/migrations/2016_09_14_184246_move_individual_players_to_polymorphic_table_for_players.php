@@ -18,7 +18,7 @@ class MoveIndividualPlayersToPolymorphicTableForPlayers extends Migration
         $allPlayers = \App\Models\Championship\Player::all();
         foreach ($allPlayers as $key => $player) {
             try {
-                \App\Models\Championship\PlayerRelation::firstOrCreate([
+                \App\Models\Championship\Relation\PlayerRelation::firstOrCreate([
                     'relation_type' => \App\Models\Championship\Tournament::class,
                     'relation_id' => 1,
                     "player_id" => $player->id

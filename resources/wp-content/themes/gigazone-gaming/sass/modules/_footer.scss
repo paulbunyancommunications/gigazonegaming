@@ -1,150 +1,212 @@
-.footer-items-container {
-  background: $color-gz-gray;
-  @include padding(1.875, 0, 0, 0);
+.footer {
+  &--items-container {
+    background: $color-gz-gray;
+    @include padding(1.875, 0, 0, 0);
 
-      @include mq-phone {
-        @include bs-full-width-columns;
-        .container {
-          width: 90%;
-          margin-right: auto;
-          margin-left: auto;
+    @include mq-phone {
+      @include bs-full-width-columns;
+      .container {
+        width: 90%;
+        margin-right: auto;
+        margin-left: auto;
+      }
+    }
+  }
+  &--highlight-link {
+    background: rgba($color-white, 0.1);
+    @include padding-equal(1);
+    @include margin-bottom(1.5);
+    border-radius: 10px;
+    @include font-size(1.5);
+    @include line-height(1);
+    color: $color-white;
+    text-transform: uppercase;
+
+    &-description {
+      text-align: left;
+    }
+
+    .sidebar-highlight-link-title img {
+      max-width: 250px;
+    }
+
+    h2 {
+      @include font-size(2.125);
+      @include line-height(1.675);
+      font-family: $font-family-sans-serif;
+      @include margin-bottom(.5);
+      margin-top: 0;
+      font-weight: 700;
+    }
+
+    & h2 + p {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 0;
+      @include font-size(1.5);
+      @include line-height(1.125);
+      color: $color-black;
+      @include margin-bottom(.5);
+    }
+
+    a {
+      color: $color-gz-orange;
+      text-decoration: none;
+
+      &:hover {
+        color: saturate($color-gz-orange, 50%);
+      }
+    }
+    strong, b {
+      color: $color-gz-orange;
+      //white-space: nowrap;
+      font-family: $font-family-display;
+      @include font-size(1.625);
+      @include margin-bottom(.75);
+      display: block;
+
+      &:hover {
+        color: saturate($color-gz-orange, 50%);
+      }
+    }
+  }
+  &--bottom {
+    @include dark-pattern-background();
+    color: $color-light-gray;
+    @include padding-bottom(1);
+    @include padding-top(1);
+
+    .text-left, .text-right {
+      @include mq_phone {
+        text-align: center;
+        margin-bottom: 0;
+        @include padding-equal(0.25);
+        margin: 0;
+
+        li {
+          margin-bottom: 0;
         }
       }
-}
-.footer-highlight-link {
-  background: rgba($color-white, 0.1);
-  @include padding-equal(1);
-  @include margin-bottom(1.5);
-  @include border-radius(10px);
-  @include font-size(1.5);
-  @include line-height(1);
-  color: $color-white;
-  text-transform: uppercase;
-
-  &-description {
-    text-align: left;
-  }
-
-  .sidebar-highlight-link-title img {
-    max-width: 250px;
-  }
-
-
-  h2 {
-    @include font-size(2.125);
-    @include line-height(1.675);
-    font-family: $font-family-sans-serif;
-    @include margin-bottom(.5);
-    margin-top: 0;
-    font-weight: 700;
-  }
-
-  & h2 + p {
-    margin-top: 0;
-  }
-
-  p {
-    margin-bottom: 0;
-    @include font-size(1.5);
-    @include line-height(1.125);
-    color: $color-black;
-    @include margin-bottom(.5);
-  }
-
-
-
-  a {
-    color: $color-gz-orange;
-    text-decoration: none;
-
-    &:hover {
-      color: saturate($color-gz-orange, 50%);
     }
-  }
-  strong, b {
-    color: $color-gz-orange;
-    //white-space: nowrap;
-    font-family: $font-family-display;
-    @include font-size(1.625);
-    @include margin-bottom(.75);
-    display: block;
 
-    &:hover {
-      color: saturate($color-gz-orange, 50%);
-    }
-  }
-}
-
-.footer-bottom {
-  @include dark-pattern-background();
-  color: $color-light-gray;
-  @include padding-bottom(1);
-
-  .text-left, .text-right {
-    @include mq_phone {
-      text-align: center;
-      margin-bottom: 0;
-      @include padding-equal(0.25);
+    p {
+      @include padding(0.75, 0);
       margin: 0;
-
-      li {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  p {
-    @include padding(0.75, 0);
-    margin: 0;
-    color: $color-light-gray;
-    @include font-size(1.25);
-
-
-  }
-
-  ul {
-    margin: 0;
-    @include padding(0.75, 0);
-
-  }
-
-
-  li {
-    list-style: none;
-    color: $color-light-gray;
-    margin-bottom: 0;
-    &::before {
-      display: none;
-    }
-
-    &::after {
-      content: "|";
-      @include inline-block();
-      @include margin(0,0,0,.375);
-    }
-
-    &:last-child::after {
-      display: none;
-    }
-
-    a:not(.btn) {
       color: $color-light-gray;
-      &:hover {
-        color: $color-white
+      @include font-size(1.25);
+
+    }
+
+    &--social-list {
+      margin: 0;
+      @include padding(0, 0);
+      list-style: none;
+
+    }
+
+    &--social-list-item {
+      list-style: none;
+      color: $color-light-gray;
+      margin-bottom: 0;
+      &::before {
+        display: none;
+      }
+
+      &::after {
+        content: "|";
+        @include line-height(1.25);
+        @include height(1.25);
+        @include font-size(2.25);
+        display: block;
+        float: right;
+        @include margin(.25, .625, 0, .5);
+        position: relative;
+        background: none;
+
+        @include mq-tablet {
+          display: none;
+        }
+      }
+      &--signup {
+        margin-top: -1px;
+      }
+
+      &:last-child::after {
+        display: none;
+      }
+
+      a:not(.btn) {
+        color: $color-light-gray;
+        &:hover {
+          color: $color-white
+        }
       }
     }
   }
-}
+  &--container {
+    .social-media {
+      @include margin-bottom(-.75);
+      @include mq-tablet {
+        @include margin-bottom(.5);
+      }
+    }
 
-.footer-container {
-  .social-media {
-    @include margin-top(.5);
+    .sidebar-social-media {
+      @include mq-tablet {
+        display: block;
+        text-align: center;
+      }
+
+    & > .inline-list {
+      @include margin-top(0);
+      @include margin-bottom(0);
+      @include padding-bottom(0);
+      @include padding-top(0);
+    }
+  }
+  }
+  &--presented-by-logo {
+    @include height(4.5);
+    width: auto;
+    text-indent: -9999px;
+    display: block;
+    @include margin(.25, 0, .25, 0);
+    background-position: top left;
+    @include mq-tablet {
+      display: block;
+      width: 100%;
+      background-position: top left;
+    }
+    @include mq-phone {
+      display: block;
+      width: 100%;
+      background-position: top center;
+    }
+
   }
 
-  .sidebar-social-media > .inline-list {
-    @include margin-top(0);
-    @include margin-bottom(0);
-    @include padding-bottom(0);
-    @include padding-top(0);
+  &--presented-by-label {
+    text-align: right;
+    @include mq-tablet {
+      text-align: left;
+    }
+    @include mq-phone {
+      text-align: center;
+    }
+  }
+
+  &--information {
+    @include font-size(1.5);
+    @include line-height(1);
+    @include mq-tablet {
+      @include font-size(1.25);
+    }
+    @include mq-phone {
+      test-align: center;
+      @include font-size(1.5);
+
+    }
   }
 }

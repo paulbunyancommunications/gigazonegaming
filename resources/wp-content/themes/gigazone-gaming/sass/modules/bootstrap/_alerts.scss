@@ -28,6 +28,9 @@ $alertMessages: success warning error info;
       }
       p, li {
         @include message-set-color($messageType);
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
   }

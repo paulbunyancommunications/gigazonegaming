@@ -48,13 +48,15 @@
                 {{  Form::open(array('id' => "playerForm", 'action' => array('Backend\Manage\PlayersController@store'), 'class' => 'form-horizontal')) }}
             @endif
 
-            <div class="form-group">
+
                 @if(isset($thePlayer['name']))
                     <input name="_method" type="hidden" value="PUT">
+                    @include('game.partials.form.player-required-fields', ['thePlayer' => $thePlayer])
                 @else
                     <input name="_method" type="hidden" value="POST">
+                    @include('game.partials.form.player-required-fields', ['thePlayer' => []])
                 @endif
-                <div class="form-group">
+{{--                <div class="form-group">
                     <label for="name" class="control-label col-xs-3">Player Name: </label>
                     <div class="col-xs-9">
                         <input type="text" name="name" id="name" placeholder="The name of the player"
@@ -89,14 +91,14 @@
                                @if(isset($thePlayer['phone']))value="{{$thePlayer['phone']}}"
                                @else value="{{ old('phone') }}" @endif/>
                     </div>
-                </div>
+                </div>--}}
                 <div class="form-group">
-                    <label for="game_id[]" class="control-label col-xs-3">Attach to Game: </label>
+                    <label for="game_id" class="control-label col-xs-3">Attach to Game: </label>
                     <div class="col-xs-9">
                         <select type="text" name="game_id[]" id="game_id" multiple="multiple" class="form-control">
                             <option> ---</option>
                             @foreach($games as $g)
-                                <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}" class="gameSelector"
+                                <option id="t_option{{$g['game_id']}}-g" value="{{$g['game_id']}}" class="gameSelector"
                                         @if(isset($thePlayer['game']) and $thePlayer['game']!='' and $thePlayer['game']!=[])
                                         @foreach($thePlayer['game'] as $k => $v)
                                         @if ($v['id']==$g['game_id'])
@@ -116,7 +118,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tournament_id[]" class="control-label col-xs-3">Attach to Tournament: </label>
+                    <label for="tournament_id" class="control-label col-xs-3">Attach to Tournament: </label>
                     <div class="col-xs-9">
                         <select name="tournament_id[]" id="tournament_id" multiple="multiple" class="form-control">
                             <option> ---</option>
@@ -160,21 +162,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default btn-block btn-gz-default'))}}
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="submit" name="submit" id="submit" class="btn btn-default btn-primary btn-block btn-gz" value="{{ isset($thePlayer['name']) ? "Update Player" : "Save Player"  }}">
+                        </div>
                 </div>
-                <div class="form-group">
-                    {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default col-sm-6'))}}
-                    <input type="submit" name="submit" id="submit" class='btn btn-primary col-sm-6' value=
-                    @if(isset($thePlayer['name']))
-                            "Update"
-                    @else
-                        "Save"
-                    @endif
-                    >
-                </div>
-            </div>
-            </form>
+            {{ Form::close() }}
     </div>
     <div class="col-xs-6">
         <h2>Player Filter</h2>
@@ -187,7 +183,7 @@
                     <select name="game_sort" id="game_sort" class="form-control">
                         <option> ---</option>
                         @foreach($games as $g)
-                            <option id="t_option{{$g['game_id']}}" value="{{$g['game_id']}}"
+                            <option id="t_option{{$g['game_id']}}-fgm" value="{{$g['game_id']}}"
                                     @if(isset($sorts) and isset($sorts->game_sort) and ($g['game_id'] == $sorts->game_sort or $g['game_name'] == $sorts->game_sort)) selected="selected" @endif
                             >{{$g['game_name']}}</option>
                         @endforeach
@@ -200,7 +196,7 @@
                     <select name="tournament_sort" id="tournament_sort" class="form-control">
                         <option> ---</option>
                         @foreach($tournaments as $g)
-                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}" value="{{$g['tournament_id']}}"
+                            <option id="t_option{{$g['game_id']}}_{{$g['tournament_id']}}-ftnt" value="{{$g['tournament_id']}}"
                                     @if(isset($sorts) and isset($sorts->tournament_sort) and ($g['tournament_id'] == $sorts->tournament_sort or $g['tournament_name'] == $sorts->tournament_sort)) selected="selected" @endif
                             >{{$g['tournament_name']}}</option>
                         @endforeach
@@ -213,7 +209,7 @@
                     <select name="team_sort" id="team_sort" class="form-control">
                         <option> ---</option>
                         @foreach($teams as $g)
-                            <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}" value="{{$g['team_id']}}"
+                            <option id="t_option{{$g['tournament_id']}}_{{$g['team_id']}}-ftm" value="{{$g['team_id']}}"
                                     @if(isset($sorts) and isset($sorts->team_sort) and ($g['team_id'] == $sorts->team_sort or $g['team_name'] == $sorts->team_sort)) selected="selected" @endif
                             >{{$g['team_name']}} <i class="fa fa-users" aria-hidden="true"></i>: {{$g['team_count']}}
                                 /{{$g['team_max_players']}}</option>
@@ -221,9 +217,13 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-group">
-                <div class="col-xs-6 col-xs-push-6">
-                    {!! Form::submit( 'Filter', array('class'=>'btn btn-success list fa fa-search form-control')) !!}
+                <div class="col-md-6">
+                    {!! Form::submit( 'Filter', array('class'=>'form-control btn btn-success btn-block list')) !!}
+                </div>
+                <div class="col-md-6">
+                    {{ Html::linkAction('Backend\Manage\PlayersController@index', 'Reset Filter', [], ['class' => 'btn btn-default btn-block'])  }}
                 </div>
             </div>
             {{ Form::close() }}

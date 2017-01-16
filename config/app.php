@@ -161,7 +161,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-
         // twig bridge
         'TwigBridge\ServiceProvider',
 
@@ -195,8 +194,14 @@ return [
 
         // search view composer for backend manager search view
         App\Providers\Backend\Manage\SearchViewComposer::class,
+
         // and provider for championship search
-        App\Providers\Backend\Manage\ChampionshipSearchServiceProvider::class
+        App\Providers\Backend\Manage\ChampionshipSearchServiceProvider::class,
+
+        // and provider for championship search
+        App\Providers\Backend\Manage\RequireJsRouteProvider::class
+
+
 
 
     ],

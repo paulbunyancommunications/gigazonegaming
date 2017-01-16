@@ -3,6 +3,8 @@
 namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
+use App\Models\Championship\Relation\PlayerRelation;
 
 /**
  * Class Team
@@ -89,8 +91,8 @@ class Team extends Model
 
     /**
      * Get team captain
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return bool|object
+     * @throws \Exception
      */
     public function captain()
     {

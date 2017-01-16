@@ -3,7 +3,7 @@ namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
 
 use \AcceptanceTester;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use \BaseAcceptance;
 
@@ -163,6 +163,7 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
     {
+        
         $I->executeJS('$("#tournament_id").remove();');
         $I->click(['id' => 'submit']);
         $I->see('The Tournament field can not be empty.');
@@ -175,6 +176,7 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntAnInteger(AcceptanceTester $I)
     {
+        
         $I->executeJS("
             select = document.getElementById('tournament_id');
             var option = document.createElement('option');

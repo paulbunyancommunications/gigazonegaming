@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Backend\Manage;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Response;
 
 /**
  * Search class for when the search function from the head is triggered
@@ -23,9 +24,9 @@ class SearchController extends Controller
     {
         if($request->ajax()) {
             $response = new \stdClass();
-            $response->result = \View::make('game.partials.search')->render();
-            return \Response::json($response);
+            $response->result = View::make('game.partials.search')->render();
+            return Response::json($response);
         }
-        return \View::make('game.partials.search');
+        return View::make('game.partials.search');
     }
 }

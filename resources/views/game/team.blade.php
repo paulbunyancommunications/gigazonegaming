@@ -20,7 +20,6 @@
                 <h1 class="txt-color--shadow" id="gaming-page-title">Create a new Team</h1>
                 {{  Form::open(array('id' => "teamForm", 'action' => array('Backend\Manage\TeamsController@store'), 'class' => 'form-horizontal')) }}
             @endif
-            <div class="form-group">
                 @if(isset($theTeam->name))
                     <input name="_method" type="hidden" value="PUT">
                 @else
@@ -34,8 +33,7 @@
                                id="name"
                                class="form-control"
                                placeholder="The name of the team"
-                               @if(isset($theTeam->name))value="{{$theTeam->name}}"@endif
-                        />
+                               value="@if(isset($theTeam->name)){{$theTeam->name}}@else{{ old('name') }}@endif" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -43,7 +41,7 @@
                     <div class="col-xs-9">
                         <input type="text" name="emblem" id="emblem" class="form-control"
                                placeholder="The url to the emblem of the team"
-                               @if(isset($theTeam->emblem))value="{{$theTeam->emblem}}"@endif/>
+                               value="@if(isset($theTeam->emblem)){{$theTeam->emblem}}@else{{ old('emblem') }}@endif" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -55,11 +53,13 @@
                             @else
                                 <option>If the team is a new team please add players to choose a captain</option>
                             @endif
+
                             @foreach($players as $key => $player)
                                 @if(isset($theTeam->name))
                                     @if($theTeam->id == $player['team_id'])
                                         <option value="{{$player['player_id']}}"
-                                                @if( isset($theTeam->captain) and $theTeam->captain==$player['player_id']) selected @endif>{{ $player['player_username'] }}
+                                                {{-- If current captain matches this player id or the old value matches this player id set this option to selected --}}
+                                                @if( isset($theTeam->captain) and $theTeam->captain==$player['player_id']) selected @elseif(old('captain') == $player['player_id']) selected @endif>{{ $player['player_username'] }}</option>
                                     @endif
                                 @endif
                             @endforeach
@@ -74,27 +74,24 @@
                             <option>---</option>
                             @foreach($tournaments as $key => $tournament)
                                 <option value="{{$tournament['tournament_id']}}"
-                                        @if(isset($theTeam['tournament_id']) and $theTeam['tournament_id'] == $tournament['tournament_id']) selected @endif>{{ $tournament['tournament_name'] }}</option>
+                                        {{-- If current tournament matches this tournament option or the old tournament Id matches then set option to selected --}}
+                                        @if(isset($theTeam['tournament_id']) and $theTeam['tournament_id'] == $tournament['tournament_id']) selected @elseif(old('tournament_id') == $tournament['tournament_id']) selected @endif>{{ $tournament['tournament_name'] }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                </div>
-                <div class="form-group">
-                    {{ Html::link('/manage/team/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default col-sm-6'))}}
-                    <input type="submit" name="submit" id="submit" class='btn btn-primary col-sm-6' value=
-                    @if(isset($theTeam->name))
-                            "Update"
-                    @else
-                        "Save"
-                    @endif
-                    >
+                    <div class="col-xs-6">
+                        {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default btn-block btn-gz-default'))}}
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="submit" name="submit" id="submit" class="btn btn-default btn-primary btn-block btn-gz" value="{{ isset($theTeam->name) ? "Update Team" : "Save Team" }}">
+                    </div>
                 </div>
 
                 {{ Form::close() }}
-            </div>
+
     </div>
     <div class="col-xs-6">
         <h2>Filter Team</h2>
@@ -129,8 +126,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-6 col-xs-push-6">
-                    {!! Form::submit( 'Filter', array('class'=>'btn btn-success list fa fa-search form-control')) !!}
+                <div class="col-md-6">
+                    {!! Form::submit( 'Filter', array('class'=>'form-control btn btn-success btn-block list')) !!}
+                </div>
+                <div class="col-md-6">
+                    {{ Html::linkAction('Backend\Manage\TeamsController@index', 'Reset Filter', [], ['class' => 'btn btn-default btn-block'])  }}
                 </div>
             </div>
             {{ Form::close() }}
@@ -142,7 +142,7 @@
             <thead>
             <tr>
                 <th class="col-md-3 text-center">Team</th>
-                <th class="col-md-2 text-center">Players in team/Max Players Per Team</th>
+                <th class="col-md-2 text-center">Players of Max</th>
                 <th class="col-md-7 text-center">Actions</th>
             </tr>
             </thead>

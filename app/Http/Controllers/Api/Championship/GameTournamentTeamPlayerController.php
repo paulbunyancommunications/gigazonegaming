@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Api\Championship;
 
-use App\Models\Championship\Game;
+use App\Http\Controllers\Controller;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-
-class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controller
+class GameTournamentTeamPlayerController extends Controller
 {
     /**
      * Get all the games
+     * @param Request $tournament
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function to_name(Request $tournament)
@@ -30,6 +29,7 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
 
     /**
      * Try and get Game by Id
+     * @param Request $tournament
      * @return \Illuminate\Http\JsonResponse
      */
     public function to_id(Request $tournament)
@@ -44,8 +44,10 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
         }
         return $tournamentRet;
     }
+
     /**
      * Get all the games
+     * @param Request $team
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function te_name(Request $team)
@@ -63,6 +65,7 @@ class GameTournamentTeamPlayerController extends \App\Http\Controllers\Controlle
 
     /**
      * Try and get Game by Id
+     * @param Request $team
      * @return \Illuminate\Http\JsonResponse
      */
     public function te_id(Request $team)

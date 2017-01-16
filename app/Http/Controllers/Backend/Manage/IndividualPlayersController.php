@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
-use App\Models\Championship\IndividualPlayer;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Relation\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelationable;
 use App\Models\Championship\Team;
-use App\Models\Championship\Tournament;
-use App\Models\WpUser;
-use App\Providers\ChampionshipGameComposerProvider;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use App\Http\Requests\PlayerRequest;
 
 class IndividualPlayersController extends Controller
 {
@@ -34,8 +27,7 @@ class IndividualPlayersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  all sort  $indPlayer
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $IndividualPlayer
      * @return \Illuminate\Http\Response
      */
     public function change(Request $IndividualPlayer)
@@ -59,6 +51,7 @@ class IndividualPlayersController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Player $player
      * @return \Illuminate\Http\Response
      */
     public function destroy(Player $player)
@@ -67,18 +60,21 @@ class IndividualPlayersController extends Controller
         $player->delete();
         return Redirect::back();
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamMake(Request $request)
+    public function teamMake()
     {
         return View::make('game/teamMaker');
     }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function teamFill(Request $request)
@@ -98,9 +94,11 @@ class IndividualPlayersController extends Controller
         return Redirect::back();
 
     }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function teamCreate(Request $request)

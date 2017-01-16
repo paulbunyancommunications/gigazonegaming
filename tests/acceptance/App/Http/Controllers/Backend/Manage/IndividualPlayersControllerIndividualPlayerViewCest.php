@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
 
 use App\Providers\ChampionshipGameComposerProvider;
@@ -6,14 +7,13 @@ use Illuminate\Support\Facades\DB;
 use \AcceptanceTester;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use \BaseAcceptance;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
-
 
 class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 {
@@ -67,6 +67,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 
         $I->wantTo('check enable and disable inputs');
         $I->amOnPage('/app/manage/individualPlayer');
+        
         $name = $I->executeJS("return $('#name').attr('disabled');");
         $username = $I->executeJS("return $('#username').attr('disabled');");
         $email = $I->executeJS("return $('#email').attr('disabled');");
@@ -98,6 +99,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $i = 0;
         $I->wantTo('check enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
+        
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame('disabled', $tournament, "Tournament Sort should be disabled");
@@ -136,6 +138,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
     {
         $I->wantTo('check if enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
+        
         $I->selectOption(['id' => 'game_sort'], 'tester-game');//this will enable users under this game and the tournament select
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');//this will enable the team select
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');//this will pre-select the team

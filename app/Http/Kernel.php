@@ -2,7 +2,30 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AddContactToConstantContactGigazoneGamingUpdatesMiddleware;
+use App\Http\Middleware\Api;
+use App\Http\Middleware\Auth\SentinelAdminUser;
+use App\Http\Middleware\Auth\SentinelAuthenticate;
+use App\Http\Middleware\Auth\SentinelHasAccess;
+use App\Http\Middleware\Auth\SentinelNotCurrentUser;
+use App\Http\Middleware\Auth\SentinelRedirectAdmin;
+use App\Http\Middleware\Auth\SentinelRedirectIfAuthenticated;
+use App\Http\Middleware\Auth\SentinelStandardUser;
+use App\Http\Middleware\Auth\ValidateRole;
+use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\LolIndividualSignUpMiddleware;
+use App\Http\Middleware\LolTeamSignUpMiddleware;
+use App\Http\Middleware\UpdateRecipientMiddleware;
+use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Middleware\WPAdminMiddleware;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\Authorize;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
@@ -14,7 +37,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        CheckForMaintenanceMode::class,
     ];
 
     /**
@@ -24,16 +47,16 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
         ],
 
         'api' => [
             'throttle:60,1',
-            \App\Http\Middleware\Api::class,
+            Api::class,
         ],
     ];
 
@@ -45,22 +68,21 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'WPAdmin' => \App\Http\Middleware\WPAdminMiddleware::class,
-        'UpdateRecipient' => \App\Http\Middleware\UpdateRecipientMiddleware::class,
-        'CCAddRecipient' => \App\Http\Middleware\AddContactToConstantContactGigazoneGamingUpdatesMiddleware::class,
-        'LolTeamSignUp' => \App\Http\Middleware\LolTeamSignUpMiddleware::class,
-        'LolIndividualSignUp' => \App\Http\Middleware\LolIndividualSignUpMiddleware::class,
-        'auth' => \App\Http\Middleware\Auth\SentinelAuthenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \App\Http\Middleware\Auth\SentinelRedirectIfAuthenticated::class,
-        'standardUser' => \App\Http\Middleware\Auth\SentinelStandardUser::class,
-        'admin' => \App\Http\Middleware\Auth\SentinelAdminUser::class,
-        'hasAccess' => \App\Http\Middleware\Auth\SentinelHasAccess::class,
-        'notCurrentUser' => \App\Http\Middleware\Auth\SentinelNotCurrentUser::class,
-        'redirectAdmin' => \App\Http\Middleware\Auth\SentinelRedirectAdmin::class,
-        'validateRole' => \App\Http\Middleware\Auth\ValidateRole::class,
+        'can' => Authorize::class,
+        'throttle' => ThrottleRequests::class,
+        'WPAdmin' => WPAdminMiddleware::class,
+        'UpdateRecipient' => UpdateRecipientMiddleware::class,
+        'CCAddRecipient' => AddContactToConstantContactGigazoneGamingUpdatesMiddleware::class,
+        'LolTeamSignUp' => LolTeamSignUpMiddleware::class,
+        'LolIndividualSignUp' => LolIndividualSignUpMiddleware::class,
+        'auth' => SentinelAuthenticate::class,
+        'auth.basic' => AuthenticateWithBasicAuth::class,
+        'guest' => SentinelRedirectIfAuthenticated::class,
+        'standardUser' => SentinelStandardUser::class,
+        'admin' => SentinelAdminUser::class,
+        'hasAccess' => SentinelHasAccess::class,
+        'notCurrentUser' => SentinelNotCurrentUser::class,
+        'redirectAdmin' => SentinelRedirectAdmin::class,
+        'validateRole' => ValidateRole::class,
     ];
 }

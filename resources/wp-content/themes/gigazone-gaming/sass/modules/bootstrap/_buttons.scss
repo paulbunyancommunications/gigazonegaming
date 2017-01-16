@@ -7,6 +7,10 @@
   white-space: normal;
 }
 
+.btn-wrap {
+  white-space: normal;
+}
+
 .btn-gz-default {
   @extend .bg-color--light;
   @extend .bdr-color--branding;
@@ -30,7 +34,7 @@
     outline: none;
     @extend .bg-color--midtone;
     @extend .txt-color--light;
-    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6));
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6);
   }
 }
 
@@ -56,12 +60,18 @@
     color: $color-white;
   }
 
+  &[disabled]:hover, &[disabled]:hover {
+    background-color: $color-gz-gray;
+    border-color: shade($color-gz-gray, 10%);
+    color: $color-white;
+  }
+
   &:active, &:active:focus, &:focus, &.focus {
     border-color: $color-gz-orange;
     outline: none;
     @extend .bg-color--midtone;
     @extend .txt-color--light;
-    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6));
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(red($color-gz-orange),green($color-gz-orange),blue($color-gz-orange),.6);
   }
 }
 

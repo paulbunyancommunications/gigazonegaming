@@ -17,7 +17,7 @@ This release includes some ruby path and lint fixes.
 ##2015-06-02 - Supported Release 2.0.1 [YANKED]
 ###Summary
 
-This is a bugfix release.
+This is a bugfix release. 
 
 ####Bugfixes
 - Fixes dependency graphing with concurrent modification of the same file.

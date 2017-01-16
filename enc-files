@@ -12,8 +12,6 @@ desc=(
 "Environment file"
 "Puphpet main config file"
 "Puphpet custom config file"
-"Wordpress database sql file"
-"Championship database sql file"
 )
 prefix=(
 "build/config/jenkins"
@@ -21,8 +19,7 @@ prefix=(
 ".env"
 "puphpet/config"
 "puphpet/config-custom"
-"database/dump/gzgaming_wp"
-"database/dump/gzgaming_champ_db"
+"puphpet/config-jenkins"
 )
 suffix=(
 ".config"
@@ -30,6 +27,5 @@ suffix=(
 ""
 ".yaml"
 ".yaml"
-".sql"
-".sql"
+".yaml"
 )

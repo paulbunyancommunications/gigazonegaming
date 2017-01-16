@@ -1,15 +1,14 @@
 {
-  "name": "paulbunyannet/gigazone-gaming",
+  "name": "paulbunyannet.gigazone-gaming",
   "version": "1.0.0",
   "description": "Gigazome Gaming",
   "homepage": "https://gigazonegaming.com/",
   "dependencies": {
     "requirejs": "2.1.15",
-    "bootstrap": "3.3.6",
     "jquery": "2.1.3",
     "font-awesome": "4.7.0",
     "imager.js": "0.5.0",
-    "underscore": "1.7.0",
+    "underscore": "1.8.3",
     "image.php": "~1.4.3",
     "bootstrap-sass": "~3.3.6",
     "ResponsiveSlides": "master",
@@ -18,6 +17,7 @@
     "seiyria-bootstrap-slider": "~7.0.1",
     "bootstrap-switch": "~3.3.2",
     "select2": "4.0.2",
-    "sass-flex-mixin": "~1.0.3"
+    "sass-flex-mixin": "~1.0.3",
+    "bourbon": "^4.2.7"
   }
 }

@@ -4,13 +4,14 @@ namespace App\Providers;
 
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
-use App\Models\Championship\PlayerRelation;
-use App\Models\Championship\PlayerRelationable;
+use App\Models\Championship\Relation\PlayerRelation;
+use App\Models\Championship\Relation\PlayerRelationable;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use View;
+use Illuminate\Support\Facades\Schema;
 
 class ChampionshipGameComposerProvider extends ServiceProvider
 {
@@ -48,23 +49,30 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function boot()
     {
         View::composer(['game.base'], function ($view) {
-            $messages = \View::make('base.partials.messages');
+            $messages = View::make('base.partials.messages');
             $view->with('messageHtml', $messages);
         });
 
         View::composer(['game.game'], function ($view) {
             extract($this->getViewComposerElements(['games']));
+            /** @var array $games */
             $view->with('games', $games);
         });
 
         View::composer(['game.tournament'], function ($view) {
             extract($this->getViewComposerElements(['games','tournaments']));
+            /** @var array $games */
+            /** @var array $tournaments */
             $view->with('games', $games)
                 ->with('tournaments', $tournaments);
         });
 
         View::composer(['game.team'], function ($view) {
             extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
+            /** @var array $getPlayersInfoBy */
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
@@ -73,6 +81,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 
         View::composer(['game.player'], function ($view) {
             extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
@@ -81,6 +92,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
 
         View::composer(['game.individualPlayer'], function ($view) {
             extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
@@ -88,6 +102,9 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         });
         View::composer(['game.teamMaker'], function ($view) {
             extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
@@ -95,10 +112,50 @@ class ChampionshipGameComposerProvider extends ServiceProvider
         });
         View::composer(['game.email'], function ($view) {
             extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
             $view->with('games', $games)
                 ->with('tournaments', $tournaments)
                 ->with('teams', $teams)
                 ->with('players', Player::playersRelations());
+        });
+
+        View::composer(['game.score'], function ($view) {
+            extract($this->getViewComposerElements(['games','tournaments','getPlayersInfoBy','teams']));
+            /** @var array $games */
+            /** @var array $tournaments */
+            /** @var array $teams */
+            $view->with('games', $games)
+                ->with('tournaments', $tournaments)
+                ->with('teams', $teams)
+                ->with('players', Player::playersRelations());
+        });
+
+        /**
+         * Variable for the games select view
+         */
+        View::composer(['game.partials.form.game-select'], function ($view) {
+            extract($this->getViewComposerElements(['games']));
+            /** @var array $games */
+            $view->with('games', $games);
+        });
+
+        /**
+         * Variable for the tournament select view
+         */
+        View::composer(['game.partials.form.tournament-select'], function ($view) {
+            extract($this->getViewComposerElements(['tournaments']));
+            /** @var array $tournaments */
+            $view->with('tournaments', $tournaments);
+        });
+
+        /**
+         * Variable for the player data list view
+         */
+        View::composer(['game.partials.form.player-select'], function ($view) {
+            /** @var array $players */
+            $view->with('players', Player::all()->toArray());
         });
     }
 
@@ -124,7 +181,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
             ->toArray();
 
         $table = with(new Team)->getTable();
-        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $columns = Schema::connection($this->connection)->getColumnListing($table);
         $select = [];
         for ($c = 0; $c < count($columns); $c++) {
             switch ($columns[$c]) {
@@ -176,8 +233,8 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     }
 
     /**
-     * @This method is calling the trait for only single players
-     * @param $players
+     * This method is calling the trait for only single players
+     * @param array $params
      * @return mixed
      */
     public function individualPlayers($params = [])
@@ -186,7 +243,6 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     }
     /**
      * @This method is calling the trait for team players only
-     * @param $players
      * @return mixed
      */
     public function teamPlayers()
@@ -203,11 +259,12 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function tournaments()
     {
         $table = with(new Tournament)->getTable();
-        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $columns = Schema::connection($this->connection)->getColumnListing($table);
         $select = [];
         for ($c = 0; $c < count($columns); $c++) {
             switch ($columns[$c]) {
                 case ('name'):
+                case ('title'):
                 case ('id'):
                     array_push($select, $this->tableColumnAsTableColumn($table, $columns[$c]));
                     break;
@@ -230,7 +287,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
     public function games()
     {
         $table = with(new Game)->getTable();
-        $columns = \Schema::connection($this->connection)->getColumnListing($table);
+        $columns = Schema::connection($this->connection)->getColumnListing($table);
         $select = [];
         for ($c = 0; $c < count($columns); $c++) {
             switch ($columns[$c]) {

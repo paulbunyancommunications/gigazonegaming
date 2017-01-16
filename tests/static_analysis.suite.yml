@@ -1,0 +1,6 @@
+class_name: Static_analsysTester
+modules:
+    enabled:
+        - \Helper\Static_analsys
+        - Asserts
+        - Cli

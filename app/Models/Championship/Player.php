@@ -3,6 +3,7 @@
 namespace App\Models\Championship;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Championship\Relation\PlayerRelationable;
 
 /**
  * Class Player
@@ -33,8 +34,7 @@ class Player extends Model
 
     /**
      * Get player's teams
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function teams()
     {
@@ -51,8 +51,7 @@ class Player extends Model
 
     /**
      * Get player's games
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function games()
     {
@@ -103,26 +102,26 @@ class Player extends Model
 
     /**
      * Get tournament which team is playing in
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     * @return array|bool
      */
     public function playerRelations()
     {
         return $this->playerRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
     }
+
     /**
      * Get tournament which team is playing in
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     * @return array
      */
     public static function playersRelations()
     {
         return PlayerRelationable::playersRelationsToAnArrayOfObjectsOfTeamsAndTournamentsAndGames();
     }
+
     /**
      * Get tournament which team is playing in
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     * @param array $parameter
+     * @return array
      */
     public function getThisPlayerInfoBy($parameter = []){
         if(isset($this->id)) {

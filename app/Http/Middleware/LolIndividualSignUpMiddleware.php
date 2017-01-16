@@ -6,6 +6,9 @@ use App\Http\Requests\LolIndividualSignUpRequest;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use Closure;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
 
 class LolIndividualSignUpMiddleware
 {
@@ -25,9 +28,9 @@ class LolIndividualSignUpMiddleware
          * Validate request, if fails return an error
          */
         $rules = new LolIndividualSignUpRequest();
-        $validator = \Validator::make($request->all(), $rules->rules(), $rules->messages());
+        $validator = Validator::make($request->all(), $rules->rules(), $rules->messages());
         if ($validator->fails()) {
-            return \Response::json(['error' => $validator->errors()->all()]);
+            return Response::json(['error' => $validator->errors()->all()]);
         }
 
         /**
@@ -35,13 +38,13 @@ class LolIndividualSignUpMiddleware
          */
         $game = Game::where('name', '=', $this->getGame())->first();
         if (!$game) {
-            return \Response::json(['error' => ['Could not find game "' . $this->getGame() . '"']]);
+            return Response::json(['error' => ['Could not find game "' . $this->getGame() . '"']]);
         }
         /**
          * Make new individual team
          */
         try {
-            \DB::transaction(function () use ($game, $request) {
+            DB::transaction(function () use ($game, $request) {
                 $individual = new Player();
                 $individual->username = $request->input('your-lol-summoner-name');
                 $individual->email = $request->input('email');
@@ -55,7 +58,7 @@ class LolIndividualSignUpMiddleware
                     ]);
             });
         } catch (\Exception $ex) {
-            return \Response::json(['error' => [$ex->getMessage()]]);
+            return Response::json(['error' => [$ex->getMessage()]]);
 
         }
 

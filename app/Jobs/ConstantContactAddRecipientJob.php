@@ -9,6 +9,7 @@ use Ctct\Exceptions\CtctException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Validator;
 
 class ConstantContactAddRecipientJob extends Job implements ShouldQueue
 {
@@ -81,7 +82,7 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
 
     private function validateAddress()
     {
-        $validator = \Validator::make(['email' => $this->email], ['email' => 'required|email'], ['email.email' => 'The :attribute must be a valid email address to add recipient.']);
+        $validator = Validator::make(['email' => $this->email], ['email' => 'required|email'], ['email.email' => 'The :attribute must be a valid email address to add recipient.']);
         if ($validator->fails()) {
             // email not set or failed validation
             $message = is_array($validator->getMessageBag()) ? implode(' ', (array)$validator->getMessageBag()) : $validator->getMessageBag();

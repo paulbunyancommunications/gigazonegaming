@@ -1,5 +1,5 @@
 @import "../variables";
-@import "compass/css3";
+
 
 body {
   font-family: $font-family-sans-serif;
@@ -17,12 +17,12 @@ body {
 
 .meter {
   background: transparent inline_image('backgrounds/meter-16.png') repeat;
-  height: 1000%;
+  height: 100%;
   width: 100%;
   position: absolute;
   pointer-events: none;
   z-index: 10000;
-  @include opacity(0.5);
+  opacity: 0.5;
 }
 .meter-8 {
   background: transparent inline_image('backgrounds/meter-16.png') repeat;
@@ -32,6 +32,6 @@ body {
   pointer-events: none;
   z-index: 10000;
   margin-top: 8px;
-  @include opacity(0.5);
+  opacity: 0.5;
 
 }

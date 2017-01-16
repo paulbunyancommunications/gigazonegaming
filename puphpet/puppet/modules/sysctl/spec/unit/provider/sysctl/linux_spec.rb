@@ -69,7 +69,7 @@ OUTPUT
     it 'returns an array of sysctl' do
       params = subject.instances
       puts params[0].permanent
-      params_array = params.collect { |x| x.name }
+      params_array = params.collect { |x| x.name } 
       params_array.should match_array(parsed_params)
     end
   end

@@ -7,7 +7,7 @@ describe 'nodejs::install', :type => :define do
   }}
 
   describe 'with default parameters' do
-
+    
     let(:params) {{ }}
 
     it { should contain_file('nodejs-install-dir') \
@@ -168,9 +168,9 @@ describe 'nodejs::install', :type => :define do
       :version => '0.10.20'
     }}
 
-    it { should contain_package('gcc-c++').with(
+    it { should contain_package('gcc-c++').with( 
       :ensure => 'present'
-    )}
+    )} 
   end
 
   describe 'on a OpenSuse based OS (osfamily = Suse)' do

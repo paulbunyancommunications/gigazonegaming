@@ -49,16 +49,28 @@
   right: #{ $number * $leading-rem + 'rem'};
 }
 
-// Margin-top
+// padding top
 @mixin padding-top($number) {
   padding-top: #{ $number * $leading + 'px'};
   padding-top: #{ $number * $leading-rem + 'rem'};
 }
 
-// Margin-bottom
+// padding bottom
 @mixin padding-bottom($number) {
   padding-bottom: #{ $number * $leading + 'px'};
   padding-bottom: #{ $number * $leading-rem + 'rem'};
+}
+
+// padding right
+@mixin padding-right($number) {
+  padding-right: #{ $number * $leading + 'px'};
+  padding-right: #{ $number * $leading-rem + 'rem'};
+}
+
+// padding left
+@mixin padding-left($number) {
+  padding-left: #{ $number * $leading + 'px'};
+  padding-left: #{ $number * $leading-rem + 'rem'};
 }
 
 // Margin-left

@@ -1,4 +1,14 @@
-.uppercase {
+
+/**
+ * Set of line height styles
+ */
+.line-height {
+  &--normalize {
+    @include line-height(1);
+  }
+}
+
+.uppercase, .text-uppercase {
   text-transform: uppercase;
 }
 .text-right {
@@ -27,4 +37,8 @@
   & .insert-page-title {
     color: inherit;
   }
+}
+
+.font--display {
+  font-family: $font-family-display;
 }

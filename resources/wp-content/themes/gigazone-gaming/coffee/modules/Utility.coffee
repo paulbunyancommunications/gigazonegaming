@@ -1,5 +1,7 @@
-define ['jquery'], ($) ->
+define ['jquery', 'underscore'], ($, _) ->
   Utility = {}
+
+  Utility.possibleId = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
   Utility.slugify = (string) ->
     slug = '';
@@ -18,12 +20,15 @@ define ['jquery'], ($) ->
       i++
     words.join ' '
 
+  # http://stackoverflow.com/a/1026087/405758
+  Utility.capitalizeFirstLetter = (string) ->
+    string.charAt(0).toUpperCase() + string.slice(1)
+
   Utility.makeid = ->
-    text = ''
-    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    i = 0
+    text = "";
+    i = 0;
     while i < 12
-      text += possible.charAt(Math.floor(Math.random() * possible.length))
+      text += Utility.possibleId.charAt(Math.floor(Math.random() * Utility.possibleId.length))
       i++
     text
 
@@ -36,6 +41,26 @@ define ['jquery'], ($) ->
       if cookie[0] == 'XSRF-TOKEN'
         token = decodeURIComponent(cookie[1])
       i++
-    token  
+    token
 
-  return Utility
+  ###*
+  # Flatten messages
+  # @param originals
+  # @param blacklist
+  # @returns {Array}
+  ###
+
+  Utility.flattenMessages = (originals, blacklist) ->
+    list = []
+    keys = _.keys(originals)
+    i = 0
+    while i < keys.length
+      if blacklist.indexOf(keys[i]) != -1
+        i++
+        continue
+      list = list.concat(_.flatten(originals[keys[i]]))
+      i++
+    list
+
+
+  Utility

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\WpLink;
 use Cocur\Slugify\Slugify;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class PbcFormMailTemplateLayoutComposerProvider extends ServiceProvider
 {
@@ -15,7 +16,7 @@ class PbcFormMailTemplateLayoutComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        \View::composer(['partials.form_mail.social_media_icons'], function ($view) {
+        View::composer(['partials.form_mail.social_media_icons'], function ($view) {
 
             $slugify = new Slugify();
             $links = WpLink::whereIn(

@@ -1,5 +1,3 @@
-@import "compass/css3";
-
 @mixin dots {
   position: absolute;
   height: $dividerDotSize;
@@ -26,6 +24,11 @@
     border-top: 2px solid $dividerColor;
     margin-bottom: $dividerDotSize * 2;
     margin-top: $dividerDotSize * 2;
+    &.slim {
+      margin-bottom: floor($dividerDotSize * 1.25);
+      margin-top: floor($dividerDotSize * 1.25);
+    }
+
     &.dots {
       &:before, &:after {
         @include dots;
@@ -105,6 +108,9 @@
     background: transparent url($theme-directory + 'images/backgrounds/divider-dashed.png') center repeat-x;
     border-top: none;
     height: 12px;
-    @include opacity(.3);
+    opacity: .3;
+    &.slim {
+      height: 9px;
+    }
   }
 }

@@ -22,3 +22,4 @@ Facter.add(:java_libjvm_path) do
     end
   end
 end
+

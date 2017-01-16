@@ -72,7 +72,7 @@ if fact('osfamily') != 'Suse'
             config => {
               'node.name' => 'elasticsearch001',
               'http.port' => '#{test_settings['port_a']}'
-            }
+            } 
           }
         EOS
 

@@ -8,6 +8,8 @@ use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use Illuminate\Support\Facades\Config;
+use Pbc\FormMail\Facades\FormMailHelper;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use League\CommonMark\CommonMarkConverter;
@@ -35,9 +37,6 @@ class EmailController extends Controller
     {
         $name = '';
         $ids = '';
-        $emailsUserRequest = '';
-        $relations = '';
-//        var_dump("here");
         list($separator, $game, $tournament, $team, $player) = $this->cleanPostToGetEmails($_POST); //clean all the emails
         if (isset($_POST["get_game"]) and $game) { //if user want to get all players on a game
             $theGame = Game::where('id', '=', $game)->first();
@@ -139,7 +138,7 @@ class EmailController extends Controller
      * @param $to
      * @param $subject
      * @param $message
-     * @param $headers
+     * @return int
      */
     private function sendEmail($to, $subject, $message)
     {
@@ -155,9 +154,9 @@ class EmailController extends Controller
                 $name = $player->username;
             }
             try {
-                \FormMailHelper::makeMessage([
+                FormMailHelper::makeMessage([
                     'sender' => 'contact_us@' . str_replace_first('www.', '',
-                            parse_url(\Config::get('app.url'), PHP_URL_HOST)),
+                            parse_url(Config::get('app.url'), PHP_URL_HOST)),
                     'recipient' => $email,
                     'name' => $name,
                     'subject' => [
@@ -178,6 +177,7 @@ class EmailController extends Controller
     }
 
     /**
+     * @param $thePost
      * @return array
      */
     private function cleanEmailPost($thePost)
@@ -212,6 +212,7 @@ class EmailController extends Controller
     }
 
     /**
+     * @param $thePost
      * @return array
      */
     private function cleanPostToGetEmails($thePost)

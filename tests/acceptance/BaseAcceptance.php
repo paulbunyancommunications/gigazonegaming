@@ -39,14 +39,14 @@ class BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         // reset all the databases
-        $this->resetDB($I);
-        $I->runMigration($I);
+        //$this->resetDB($I);
+        //$I->runMigration($I);
     }
 
     /**
      * @param AcceptanceTester $I
      */
-    private function resetDB(AcceptanceTester $I)
+    protected function resetDB(AcceptanceTester $I)
     {
         // reset all the databases
         $I->populateDatabase($I, [
@@ -108,5 +108,13 @@ class BaseAcceptance
     {
         $I->executeJS('$("select").each(function(ele){ $(this).select2("destroy"); });');
         $I->wait(1);
+    }
+
+    /**
+     * Populate db with test seeder
+     */
+    protected function populateDB(AcceptanceTester $I)
+    {
+        exec('php artisan db:seed --class=DatabaseSeeder');
     }
 }

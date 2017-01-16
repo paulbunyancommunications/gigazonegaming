@@ -27,7 +27,7 @@ class PlayerRelationableTraitTest extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
-        $this->resetEventListeners('App\Models\Championship\PlayerRelation');
+        $this->resetEventListeners('App\Models\Championship\Relation\PlayerRelation');
 
     }
 

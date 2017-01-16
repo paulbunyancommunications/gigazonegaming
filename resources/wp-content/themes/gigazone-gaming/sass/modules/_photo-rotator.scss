@@ -1,6 +1,3 @@
-@import "compass/css3";
-
-
 .photo-rotator-container {
   position: relative;
   background:  $color-dark-gray;
@@ -81,7 +78,7 @@
   background: none;
   border: none;
   text-align: center;
-  @include opacity(.0625);
+  opacity: .0625;
   color: $color-white;
 
   &:visited {
@@ -91,7 +88,7 @@
   &:hover, &:active {
     display: block;
     z-index: 9999;
-    @include opacity(0.85);
+    opacity: 0.85;
     color: $color-white;
 
   }

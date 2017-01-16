@@ -4,7 +4,7 @@ namespace App\Http\Middleware\Auth;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class SentinelRedirectIfAuthenticated
 {
@@ -19,7 +19,6 @@ class SentinelRedirectIfAuthenticated
      * Create a new filter instance.
      *
      * @param  Guard  $auth
-     * @return void
      */
     public function __construct(Guard $auth)
     {

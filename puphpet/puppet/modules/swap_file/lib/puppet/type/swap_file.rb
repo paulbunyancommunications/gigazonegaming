@@ -30,11 +30,11 @@ Puppet::Type.newtype(:swap_file) do
   end
 
   newproperty(:used) do
-    desc "The amount of space used"
+    desc "The amount of space used" 
   end
 
   newproperty(:priority) do
-    desc "The priority of the swapfile"
+    desc "The priority of the swapfile" 
   end
 
 end

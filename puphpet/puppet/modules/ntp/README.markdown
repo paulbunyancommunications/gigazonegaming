@@ -235,10 +235,10 @@ Tells Puppet to use non-standard maximal poll interval of upstream servers. Vali
 ####`ntpsigndsocket`
 
 Tells NTP to sign packets using the socket in the ntpsigndsocket path. NTP must be configured to sign sockets for this to work.
-Valid option: a path to the socket directory; for example, for Samba it would be:
+Valid option: a path to the socket directory; for example, for Samba it would be: 
 
 ~~~~
-ntpsigndsocket = usr/local/samba/var/lib/ntp_signd/
+ntpsigndsocket = usr/local/samba/var/lib/ntp_signd/ 
 ~~~~
 
 Default value: undef.

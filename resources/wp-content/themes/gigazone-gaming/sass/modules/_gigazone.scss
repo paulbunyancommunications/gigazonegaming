@@ -1,5 +1,5 @@
 .gigazone-info {
-  @include border-radius(10px);
+  border-radius: 10px;
   @include padding-equal(3);
   background: $color-white;
 

@@ -7,9 +7,10 @@ use App\Http\Requests\Auth\LoginFormRequest;
 use App\Http\Requests\Auth\GenerateAccountFormRequest;
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
-use Sentinel;
-use Session;
-use Validator;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class AuthController
@@ -55,7 +56,7 @@ class AuthController extends Controller
     {
         $this->context['title'] = "Create an account";
         $this->context['layout'] = "auth";
-        return \View::make('auth.create', $this->context);
+        return View::make('auth.create', $this->context);
     }
 
     public function generate(GenerateAccountFormRequest $request)
@@ -73,12 +74,13 @@ class AuthController extends Controller
     {
         $this->context['title'] = "Login";
         $this->context['layout'] = "auth";
-        return \View::make('auth.login', $this->context);
+        return View::make('auth.login', $this->context);
     }
 
     /**
      * Authenticate a user submitting from the login form
      *
+     * @param LoginFormRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function authenticate(LoginFormRequest $request)
@@ -89,7 +91,7 @@ class AuthController extends Controller
                     'email' => $request->input('email'),
                     'password' => $request->input('password')
                 ],
-                \Request::input('remember'))
+                Request::input('remember'))
             ) {
                return $this->redirectWhenLoggedIn();
             } else {
@@ -105,7 +107,7 @@ class AuthController extends Controller
     /**
      * Logout user
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function logout()
     {

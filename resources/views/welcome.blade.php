@@ -9,7 +9,6 @@
             html, body {
                 height: 100%;
             }
-
             body {
                 margin: 0;
                 padding: 0;
@@ -18,7 +17,6 @@
                 font-weight: 100;
                 font-family: 'Lato';
             }
-
             .container {
                 text-align: center;
                 display: table-cell;

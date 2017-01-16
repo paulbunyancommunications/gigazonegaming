@@ -40,8 +40,7 @@ class GamesControllerCest extends BaseAcceptance
     public function tryToGetToTheGameApp(AcceptanceTester $I)
     {
         $I->wantTo('get to the game management page');
-        $I->amOnPage('/app/manage/game');
-        $I->see('Create a new game');
+        $I->see('Create a new Game');
         $I->see('Game List');
     }
 

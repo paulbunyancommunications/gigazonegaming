@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'web', 'prefix' => 'auth', 'namespace' => 'Auth'], function()
 {

@@ -10,12 +10,10 @@ namespace App\Http\Controllers\Api\Championship;
  * @package App\Http\Controllers\Api\Championship
  */
 
+use App\Http\Controllers\Controller;
 use App\Models\Championship\Game;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
-
-class GamesController extends \App\Http\Controllers\Controller
+class GamesController extends Controller
 {
     /**
      * Get all the games
@@ -28,7 +26,8 @@ class GamesController extends \App\Http\Controllers\Controller
 
     /**
      * Try and get Game by Id
-     * @return \Illuminate\Http\JsonResponse
+     * @param Game $game
+     * @return Game
      */
     public function show(Game $game)
     {

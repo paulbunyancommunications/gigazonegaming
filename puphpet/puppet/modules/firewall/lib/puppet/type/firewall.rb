@@ -374,7 +374,7 @@ Puppet::Type.newtype(:firewall) do
     end.flatten)
     defaultto "tcp"
   end
-
+  
   # tcp-specific
   newproperty(:mss) do
     desc <<-EOS
@@ -894,7 +894,7 @@ Puppet::Type.newtype(:firewall) do
       Set DSCP Markings.
     EOS
   end
-
+  
   newproperty(:set_dscp_class, :required_features => :iptables) do
     desc <<-EOS
       This sets the DSCP field according to a predefined DiffServ class.

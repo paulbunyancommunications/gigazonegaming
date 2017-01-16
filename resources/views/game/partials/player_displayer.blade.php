@@ -27,7 +27,7 @@
             {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["username"], array('id'=>$player["id"]), array('id'=>'edit-'. $player['id'].'-a', 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['username'])) }}
         </td>
         <td class="text-left">
-            {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["email"], array('id'=>$player["id"]), array('id'=>'edit-'. $player['id'].'-a', 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['email'])) }}
+            {{ Html::linkAction('Backend\Manage\PlayersController@edit', $player["email"], array('id'=>$player["id"]), array('id'=>'edit-'. $player['id'].'-b', 'class' => 'btn btn-link btn-wrap text-left', 'title'=>"Edit player ".$player['email'])) }}
         </td>
         <td>
 
@@ -68,7 +68,10 @@
                     $player["id"]
                     ],
                 'class' => "deletingForms delete_message'",
-                'onsubmit'=>"return confirm('Are you sure? Deleting the tournament ". htmlentities($player['username']) ." will erase all teams and players relations to such tournament and teams (but not to the game)');")) }}
+                'onsubmit'=> new Illuminate\Support\HtmlString(
+                    "return confirm('Are you sure? Deleting the tournament ". htmlentities($player['username']) ." will erase all teams and players relations to such tournament and teams (but not to the game)');"))
+                )
+                }}
             <input name="_method" type="hidden" value="DELETE">
             {{ Form::close() }}
 
