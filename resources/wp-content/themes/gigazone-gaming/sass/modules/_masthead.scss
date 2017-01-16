@@ -30,8 +30,8 @@ $masthead-logo-multiplier: 1.75;
     @include padding-bottom(.75);
     @include mq_phone {
       width: 100%;
-      @include padding-top(1);
-      @include padding-bottom(0);
+      @include padding-top(.5);
+      @include padding-bottom(.5);
 
     }
     a {
