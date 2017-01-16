@@ -12,6 +12,7 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+        - Codeception\Extension\Recorder
 modules:
     config:
         Db:
@@ -19,6 +20,9 @@ modules:
             user: 'root'
             password: 'root'
             dump: 'database/dump/gzgaming_wp.sql'
+        Codeception\Extension\Recorder:
+            delete_successful: true
+            module: WebDriver
 coverage:
     enabled: true
     whitelist:
