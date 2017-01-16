@@ -53,3 +53,13 @@ p.gz {
 .gz-slogan-sidebar, .gz-logo-sidebar, .gz-speeds-sidebar {
   margin-right: 0;
 }
+
+/**
+Style fix for #gz-nav, the li's need the ::before hidden to override the default styling
+ */
+#gz-nav li {
+  @include margin-bottom(.125);
+  &::before {
+    display: none;
+  }
+}

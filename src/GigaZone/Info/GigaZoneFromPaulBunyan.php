@@ -108,6 +108,9 @@ class GigaZoneFromPaulBunyan extends RemoteContent implements RemoteContentInter
         if (strpos($element->outertext, 'ddtabcontent') !== false) {
             return;
         }
+        if (strpos($element->outertext, 'MM_swapImage') !== false) {
+            return;
+        }
 
         $string .= $element->outertext;
 
