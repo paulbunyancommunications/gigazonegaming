@@ -112,3 +112,4 @@ puphpet/config-jenkins.yaml
 public_html/press-kit
 phan_output.txt
 tests/test-suites
+public_html/tmp
