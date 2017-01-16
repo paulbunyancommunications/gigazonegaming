@@ -91,6 +91,7 @@
         <exclude name="${dir.remote.coverage}**/*"/>
         <exclude name="${build_dir}**/*"/>
         <exclude name="${dir.node}**/*"/>
+        <exclude name="${dir.vendor}**/*"/>
         <exclude name="${dir.phpstorm}**/*"/>
         <exclude name="${dir.vagrant}**/*"/>
         <exclude name="${dir.puphpet}**/*"/>
@@ -304,9 +305,7 @@
         <!-- run config cache remake on remote -->
         <phingcall target="task:artisan_clear_config"/>
 
-        <!-- run cleanup -->
-        <phingcall target="build:cleanup" />
-
+        <!-- tell rollbar there is a new deployment -->
         <phingcall target="task:rollbar_deploy"/>
 
     </target>
@@ -381,7 +380,6 @@
         <delete dir="${dir.package}${env}"/>
         <delete dir="${dir.package}${env}/${phing.project.name}"/>
         <delete dir="${deploy_dir}"/>
-        <delete dir="${build_dir}${build_dir}"/>
     </target>
 
     <!-- ============================================  -->
