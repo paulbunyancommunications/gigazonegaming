@@ -39,9 +39,9 @@
                         'Team Maker') }}
             </li>
 
-            <li>{{ Html::linkAction('Backend\Manage\ScoresController@index',
+            {{--<li>{{ Html::linkAction('Backend\Manage\ScoresController@index',
                         'Scores') }}
-            </li>
+            </li>--}}
 
             <li>{{ Html::linkAction('Backend\Manage\EmailController@email',
                         'Email Lists') }}

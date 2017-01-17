@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 Route::get('/', function () {
-    $path = env('APP_URL', 'http://example.local');
+    $path = Config::get('app.url'); // env('APP_URL', 'http://example.local');
     try {
         return Cache::remember('front-page-from-wp', 2, function () use ($path) {
             return file_get_contents($path);
