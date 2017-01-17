@@ -408,6 +408,8 @@ class GigaZoneGamingBootstrap extends Timber
     {
         $attr = shortcode_atts(array(
             'id' => '',
+            'author_prefix' => '',
+            'author_suffix' => '',
         ), $attributes);
 
         $user = get_user_by((is_numeric($attr['id']) ? 'ID' : 'login'), $attr['id']);
@@ -416,6 +418,8 @@ class GigaZoneGamingBootstrap extends Timber
         }
         $userProfileData = ['fields' =>  self::extraProfileFields()];
         $userProfileData['user'] = $user;
+        $userProfileData['author_prefix'] = $attr['author_prefix'];
+        $userProfileData['author_suffix'] = $attr['author_suffix'];
         $userProfileData['meta'] = [];
         for($i=0; $i < count($userProfileData['fields']); $i++) {
             $userProfileData['meta'][$userProfileData['fields'][$i]] = get_user_meta($user->ID, $userProfileData['fields'][$i]);

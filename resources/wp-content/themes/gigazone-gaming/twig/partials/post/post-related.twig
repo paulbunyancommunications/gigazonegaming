@@ -1,4 +1,4 @@
-{% if related is defined and related is iterable %}
+{% if related is defined and related is iterable and related|length > 0 %}
 <hr class="divider horizontal dashed" />
 <div class="related-posts">
     <h3 class="related-title">{% if related_title is defined %}{{ related_title }}{% else %}Related{% endif %}:</h3>

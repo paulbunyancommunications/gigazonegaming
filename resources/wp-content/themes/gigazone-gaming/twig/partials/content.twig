@@ -37,12 +37,15 @@
 
 {% elseif post is defined and single is defined %}
     <div class="{{ post.class }}">
-        {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
-        {% if display_as_a_page is same as(false) %}
-            {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
-                {% include "partials/post/post-author.twig" with {'post':post} %}
-            {% endif %}
+        {% if post.thumbnail %}
+        <div class="post-title-with-bg">
+            <div class="post-title-bg" style="background-image: url({{post.thumbnail.src}}); "></div>
+            {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
+        </div>
+        {% else %}
+            {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
         {% endif %}
+
         <div class="clearfix"></div>
         {# {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}#}
         <div class="post-content the-content">
@@ -51,9 +54,13 @@
         <div class="clearfix"></div>
         {% if display_as_a_page is same as(false) %}
             {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
+                <hr class="divider horizontal slim dashed">
+                {# Just load the avatar from the short code #}
+                {{ function('do_shortcode', '[user-profile id="' ~ post.post_author ~ '" author_prefix="Posted By "]') }}
                 {% include "partials/posted-on.twig" with {'post':post, 'single':single} %}
                 {% include "partials/post/post-permalink.twig" %}
                 {% include "partials/post/post-tags.twig" %}
+                <hr class="divider horizontal slim dashed">
             {% endif %}
         {% endif %}
         {% if section is not defined or section == false or ( section is defined and section.post_name == 'blog' ) %}
