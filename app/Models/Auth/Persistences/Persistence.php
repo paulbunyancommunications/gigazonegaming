@@ -15,7 +15,7 @@ use Cartalyst\Sentinel\Persistences\EloquentPersistence;
 
 class Persistence extends EloquentPersistence
 {
-    protected $connection = "mysql_champ";
+    protected $connection = "mysql_sentinel";
     protected $table = "persistences";
     protected static $usersModel = 'App\Models\Auth\Users\User';
 }

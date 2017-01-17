@@ -15,6 +15,6 @@ use Cartalyst\Sentinel\Throttling\EloquentThrottle;
 
 class Throttle extends EloquentThrottle
 {
-    protected $connection = "mysql_champ";
+    protected $connection = "mysql_sentinel";
     protected $table = "throttle";
 }

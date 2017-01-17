@@ -48,25 +48,14 @@ mysql:
         user1:
             name: user
             password: 'password'
-        user2:
-            name: user_2
-            password: 'password_2'
     databases:
         database1:
             name: gzgaming_wp
             sql: '/var/www/database/dump/gzgaming_wp.sql'
-        database2:
-            name: gzgaming_champ_db
-            sql: '/var/www/database/dump/gzgaming_champ_db.sql'
     grants:
         grant1:
             user: user
             table: 'gzgaming_wp.*'
-            privileges:
-              - ALL
-        grant2:
-            user: user_2
-            table: 'gzgaming_champ_db.*'
             privileges:
               - ALL
 sqlight:

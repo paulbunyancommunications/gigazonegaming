@@ -56,13 +56,6 @@ class BaseAcceptance
             'database' => getenv('DB_DATABASE'),
             'dump' => 'database/dump/gzgaming_wp.sql',
         ]);
-        $I->populateDatabase($I, [
-            'server' => getenv('DB_HOST_CHAMP'),
-            'user' => getenv('DB_USERNAME_CHAMP'),
-            'password' => getenv('DB_PASSWORD_CHAMP'),
-            'database' => getenv('DB_DATABASE_CHAMP'),
-            'dump' => 'database/dump/gzgaming_champ_db.sql',
-        ]);
     }
 
     /**

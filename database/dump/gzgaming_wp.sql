@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.35)
 # Database: gzgaming_wp
-# Generation Time: 2017-01-16 15:41:46 +0000
+# Generation Time: 2017-01-17 16:01:08 +0000
 # ************************************************************
 
 
@@ -32,6 +32,155 @@ CREATE TABLE `cache` (
   UNIQUE KEY `cache_key_unique` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+
+# Dump of table champ_games
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_games`;
+
+CREATE TABLE `champ_games` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `uri` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `games_name_unique` (`name`),
+  KEY `games_title_index` (`title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+LOCK TABLES `champ_games` WRITE;
+/*!40000 ALTER TABLE `champ_games` DISABLE KEYS */;
+
+INSERT INTO `champ_games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`, `updated_by`, `updated_on`)
+VALUES
+	(1,'unknown','','Unknown game','',NULL,NULL,0,0),
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2017-01-17 16:00:36','2017-01-17 16:00:36',0,0);
+
+/*!40000 ALTER TABLE `champ_games` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table champ_player_relations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_player_relations`;
+
+CREATE TABLE `champ_player_relations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `player_id` int(11) NOT NULL,
+  `relation_id` int(11) NOT NULL,
+  `relation_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `player_relations_player_id_relation_id_relation_type_unique` (`player_id`,`relation_id`,`relation_type`),
+  KEY `player_relations_player_id_index` (`player_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table champ_players
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_players`;
+
+CREATE TABLE `champ_players` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `players_username_unique` (`username`),
+  UNIQUE KEY `players_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table champ_scores
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_scores`;
+
+CREATE TABLE `champ_scores` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `player` int(11) NOT NULL,
+  `tournament` int(11) NOT NULL,
+  `score` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table champ_teams
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_teams`;
+
+CREATE TABLE `champ_teams` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `verification_code` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'abcdefgh',
+  `emblem` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `captain` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `tournament_id` int(10) unsigned NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `teams_tournament_id_foreign` (`tournament_id`),
+  CONSTRAINT `teams_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `champ_tournaments` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table champ_tournaments
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_tournaments`;
+
+CREATE TABLE `champ_tournaments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `max_players` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `game_id` int(10) unsigned NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` int(11) NOT NULL,
+  `sign_up_open` datetime NOT NULL,
+  `sign_up_close` datetime NOT NULL,
+  `occurring` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tournaments_name_unique` (`name`),
+  KEY `tournaments_game_id_foreign` (`game_id`),
+  CONSTRAINT `tournaments_game_id_foreign` FOREIGN KEY (`game_id`) REFERENCES `champ_games` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+LOCK TABLES `champ_tournaments` WRITE;
+/*!40000 ALTER TABLE `champ_tournaments` DISABLE KEYS */;
+
+INSERT INTO `champ_tournaments` (`id`, `name`, `title`, `max_players`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`, `sign_up_open`, `sign_up_close`, `occurring`)
+VALUES
+	(1,'gigazone-gaming-2016-league-of-legends','',5,'2017-01-17 16:00:36','2017-01-17 16:00:36',2,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00');
+
+/*!40000 ALTER TABLE `champ_tournaments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table failed_jobs
@@ -167,6 +316,129 @@ VALUES
 
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+# Dump of table sentinel_activations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_activations`;
+
+CREATE TABLE `sentinel_activations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT '0',
+  `completed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table sentinel_persistences
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_persistences`;
+
+CREATE TABLE `sentinel_persistences` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `persistences_code_unique` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table sentinel_reminders
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_reminders`;
+
+CREATE TABLE `sentinel_reminders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT '0',
+  `completed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table sentinel_role_users
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_role_users`;
+
+CREATE TABLE `sentinel_role_users` (
+  `user_id` int(10) unsigned NOT NULL,
+  `role_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table sentinel_roles
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_roles`;
+
+CREATE TABLE `sentinel_roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `permissions` text COLLATE utf8_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `roles_slug_unique` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table sentinel_throttle
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_throttle`;
+
+CREATE TABLE `sentinel_throttle` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ip` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `throttle_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# Dump of table sentinel_users
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sentinel_users`;
+
+CREATE TABLE `sentinel_users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `permissions` text COLLATE utf8_unicode_ci,
+  `last_login` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 
 # Dump of table update_recipients
@@ -451,7 +723,7 @@ VALUES
 	(93,'widget_archives','a:2:{i:2;a:3:{s:5:\"title\";s:0:\"\";s:5:\"count\";i:0;s:8:\"dropdown\";i:0;}s:12:\"_multiwidget\";i:1;}','yes'),
 	(94,'widget_meta','a:2:{i:2;a:1:{s:5:\"title\";s:0:\"\";}s:12:\"_multiwidget\";i:1;}','yes'),
 	(95,'sidebars_widgets','a:3:{s:19:\"wp_inactive_widgets\";a:0:{}s:18:\"orphaned_widgets_1\";a:6:{i:0;s:8:\"search-2\";i:1;s:14:\"recent-posts-2\";i:2;s:17:\"recent-comments-2\";i:3;s:10:\"archives-2\";i:4;s:12:\"categories-2\";i:5;s:6:\"meta-2\";}s:13:\"array_version\";i:3;}','yes'),
-	(97,'cron','a:4:{i:1484594697;a:1:{s:30:\"wp_scheduled_auto_draft_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1484598514;a:3:{s:16:\"wp_version_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:17:\"wp_update_plugins\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:16:\"wp_update_themes\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1484598528;a:1:{s:19:\"wp_scheduled_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}s:7:\"version\";i:2;}','yes'),
+	(97,'cron','a:4:{i:1484681097;a:1:{s:30:\"wp_scheduled_auto_draft_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1484684914;a:3:{s:16:\"wp_version_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:17:\"wp_update_plugins\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:16:\"wp_update_themes\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1484684928;a:1:{s:19:\"wp_scheduled_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}s:7:\"version\";i:2;}','yes'),
 	(104,'_transient_random_seed','4fb91205b4c9b70c051be261267bdfd7','yes'),
 	(126,'widget_pages','a:1:{s:12:\"_multiwidget\";i:1;}','yes'),
 	(127,'widget_calendar','a:1:{s:12:\"_multiwidget\";i:1;}','yes'),
@@ -520,11 +792,7 @@ VALUES
 	(4817,'duplicate_post_blacklist','','yes'),
 	(4818,'duplicate_post_types_enabled','a:2:{i:0;s:4:\"post\";i:1;s:4:\"page\";}','yes'),
 	(5969,'duplicate_post_show_notice','0','no'),
-	(6299,'_site_transient_timeout_theme_roots','1484582458','no'),
-	(6300,'_site_transient_theme_roots','a:2:{s:15:\"gigazone-gaming\";s:7:\"/themes\";s:13:\"twentysixteen\";s:7:\"/themes\";}','no'),
-	(6301,'_site_transient_update_themes','O:8:\"stdClass\":4:{s:12:\"last_checked\";i:1484580661;s:7:\"checked\";a:2:{s:15:\"gigazone-gaming\";s:3:\"1.0\";s:13:\"twentysixteen\";s:3:\"1.1\";}s:8:\"response\";a:1:{s:13:\"twentysixteen\";a:4:{s:5:\"theme\";s:13:\"twentysixteen\";s:11:\"new_version\";s:3:\"1.3\";s:3:\"url\";s:43:\"https://wordpress.org/themes/twentysixteen/\";s:7:\"package\";s:59:\"https://downloads.wordpress.org/theme/twentysixteen.1.3.zip\";}}s:12:\"translations\";a:0:{}}','no'),
-	(6302,'_site_transient_update_plugins','O:8:\"stdClass\":4:{s:12:\"last_checked\";i:1484580660;s:8:\"response\";a:1:{s:33:\"duplicate-post/duplicate-post.php\";O:8:\"stdClass\":9:{s:2:\"id\";s:4:\"1295\";s:4:\"slug\";s:14:\"duplicate-post\";s:6:\"plugin\";s:33:\"duplicate-post/duplicate-post.php\";s:11:\"new_version\";s:5:\"3.1.2\";s:3:\"url\";s:45:\"https://wordpress.org/plugins/duplicate-post/\";s:7:\"package\";s:63:\"https://downloads.wordpress.org/plugin/duplicate-post.3.1.2.zip\";s:14:\"upgrade_notice\";s:36:\"Fixes the problem with custom fields\";s:6:\"tested\";s:5:\"4.7.1\";s:13:\"compatibility\";O:8:\"stdClass\":1:{s:6:\"scalar\";O:8:\"stdClass\":1:{s:6:\"scalar\";b:0;}}}}s:12:\"translations\";a:0:{}s:9:\"no_update\";a:7:{s:20:\"cornerstone/main.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:5:\"16695\";s:4:\"slug\";s:11:\"cornerstone\";s:6:\"plugin\";s:20:\"cornerstone/main.php\";s:11:\"new_version\";s:5:\"0.7.5\";s:3:\"url\";s:42:\"https://wordpress.org/plugins/cornerstone/\";s:7:\"package\";s:54:\"https://downloads.wordpress.org/plugin/cornerstone.zip\";}s:32:\"disqus-comment-system/disqus.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"4500\";s:4:\"slug\";s:21:\"disqus-comment-system\";s:6:\"plugin\";s:32:\"disqus-comment-system/disqus.php\";s:11:\"new_version\";s:4:\"2.86\";s:3:\"url\";s:52:\"https://wordpress.org/plugins/disqus-comment-system/\";s:7:\"package\";s:69:\"https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip\";}s:45:\"enable-media-replace/enable-media-replace.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"8351\";s:4:\"slug\";s:20:\"enable-media-replace\";s:6:\"plugin\";s:45:\"enable-media-replace/enable-media-replace.php\";s:11:\"new_version\";s:5:\"3.0.5\";s:3:\"url\";s:51:\"https://wordpress.org/plugins/enable-media-replace/\";s:7:\"package\";s:63:\"https://downloads.wordpress.org/plugin/enable-media-replace.zip\";}s:29:\"insert-pages/insert-pages.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:5:\"45710\";s:4:\"slug\";s:12:\"insert-pages\";s:6:\"plugin\";s:29:\"insert-pages/insert-pages.php\";s:11:\"new_version\";s:5:\"3.1.8\";s:3:\"url\";s:43:\"https://wordpress.org/plugins/insert-pages/\";s:7:\"package\";s:55:\"https://downloads.wordpress.org/plugin/insert-pages.zip\";}s:29:\"link-manager/link-manager.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:5:\"33981\";s:4:\"slug\";s:12:\"link-manager\";s:6:\"plugin\";s:29:\"link-manager/link-manager.php\";s:11:\"new_version\";s:8:\"0.1-beta\";s:3:\"url\";s:43:\"https://wordpress.org/plugins/link-manager/\";s:7:\"package\";s:55:\"https://downloads.wordpress.org/plugin/link-manager.zip\";}s:25:\"media-tags/media_tags.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"5606\";s:4:\"slug\";s:10:\"media-tags\";s:6:\"plugin\";s:25:\"media-tags/media_tags.php\";s:11:\"new_version\";s:7:\"3.2.0.2\";s:3:\"url\";s:41:\"https://wordpress.org/plugins/media-tags/\";s:7:\"package\";s:61:\"https://downloads.wordpress.org/plugin/media-tags.3.2.0.2.zip\";}s:19:\"rest-api/plugin.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"7769\";s:4:\"slug\";s:8:\"rest-api\";s:6:\"plugin\";s:19:\"rest-api/plugin.php\";s:11:\"new_version\";s:10:\"2.0-beta15\";s:3:\"url\";s:39:\"https://wordpress.org/plugins/rest-api/\";s:7:\"package\";s:62:\"https://downloads.wordpress.org/plugin/rest-api.2.0-beta15.zip\";}}}','no'),
-	(6303,'_site_transient_update_core','O:8:\"stdClass\":4:{s:7:\"updates\";a:1:{i:0;O:8:\"stdClass\":10:{s:8:\"response\";s:6:\"latest\";s:8:\"download\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.7.1.zip\";s:6:\"locale\";s:5:\"en_US\";s:8:\"packages\";O:8:\"stdClass\":5:{s:4:\"full\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.7.1.zip\";s:10:\"no_content\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.7.1-no-content.zip\";s:11:\"new_bundled\";s:71:\"https://downloads.wordpress.org/release/wordpress-4.7.1-new-bundled.zip\";s:7:\"partial\";b:0;s:8:\"rollback\";b:0;}s:7:\"current\";s:5:\"4.7.1\";s:7:\"version\";s:5:\"4.7.1\";s:11:\"php_version\";s:5:\"5.2.4\";s:13:\"mysql_version\";s:3:\"5.0\";s:11:\"new_bundled\";s:3:\"4.7\";s:15:\"partial_version\";s:0:\"\";}}s:12:\"last_checked\";i:1484580849;s:15:\"version_checked\";s:5:\"4.7.1\";s:12:\"translations\";a:0:{}}','no'),
+	(6303,'_site_transient_update_core','O:8:\"stdClass\":4:{s:7:\"updates\";a:1:{i:0;O:8:\"stdClass\":10:{s:8:\"response\";s:6:\"latest\";s:8:\"download\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.7.1.zip\";s:6:\"locale\";s:5:\"en_US\";s:8:\"packages\";O:8:\"stdClass\":5:{s:4:\"full\";s:59:\"https://downloads.wordpress.org/release/wordpress-4.7.1.zip\";s:10:\"no_content\";s:70:\"https://downloads.wordpress.org/release/wordpress-4.7.1-no-content.zip\";s:11:\"new_bundled\";s:71:\"https://downloads.wordpress.org/release/wordpress-4.7.1-new-bundled.zip\";s:7:\"partial\";b:0;s:8:\"rollback\";b:0;}s:7:\"current\";s:5:\"4.7.1\";s:7:\"version\";s:5:\"4.7.1\";s:11:\"php_version\";s:5:\"5.2.4\";s:13:\"mysql_version\";s:3:\"5.0\";s:11:\"new_bundled\";s:3:\"4.7\";s:15:\"partial_version\";s:0:\"\";}}s:12:\"last_checked\";i:1484662040;s:15:\"version_checked\";s:5:\"4.7.1\";s:12:\"translations\";a:0:{}}','no'),
 	(6305,'_site_transient_timeout_browser_dff177876e22ddc43470e135e8edbe87','1485185649','no'),
 	(6306,'_site_transient_browser_dff177876e22ddc43470e135e8edbe87','a:9:{s:8:\"platform\";s:9:\"Macintosh\";s:4:\"name\";s:6:\"Chrome\";s:7:\"version\";s:12:\"55.0.2883.95\";s:10:\"update_url\";s:28:\"http://www.google.com/chrome\";s:7:\"img_src\";s:49:\"http://s.wordpress.org/images/browsers/chrome.png\";s:11:\"img_src_ssl\";s:48:\"https://wordpress.org/images/browsers/chrome.png\";s:15:\"current_version\";s:2:\"18\";s:7:\"upgrade\";b:0;s:8:\"insecure\";b:0;}','no'),
 	(6310,'can_compress_scripts','0','no'),
@@ -547,7 +815,14 @@ VALUES
 	(6324,'_transient_plugin_slugs','a:9:{i:0;s:20:\"cornerstone/main.php\";i:1;s:32:\"disqus-comment-system/disqus.php\";i:2;s:33:\"duplicate-post/duplicate-post.php\";i:3;s:45:\"enable-media-replace/enable-media-replace.php\";i:4;s:22:\"gzg-manager/caller.php\";i:5;s:29:\"insert-pages/insert-pages.php\";i:6;s:29:\"link-manager/link-manager.php\";i:7;s:25:\"media-tags/media_tags.php\";i:8;s:19:\"rest-api/plugin.php\";}','no'),
 	(6325,'_transient_timeout_dash_88ae138922fe95674369b1cb3d215a2b','1484624053','no'),
 	(6326,'_transient_dash_88ae138922fe95674369b1cb3d215a2b','<div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://wordpress.org/news/2017/01/wordpress-4-7-1-security-and-maintenance-release/\'>WordPress 4.7.1 Security and Maintenance Release</a> <span class=\"rss-date\">January 11, 2017</span><div class=\"rssSummary\">WordPress 4.7 has been downloaded over 10 million times since its release on December 6, 2016 and we are pleased to announce the immediate availability of WordPress 4.7.1. This is a security release for all previous versions and we strongly encourage you to update your sites immediately. WordPress versions 4.7 and earlier are affected by eight security issues: [&hellip;]</div></li></ul></div><div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://wptavern.com/aaron-d-campbell-replaces-nikolay-bachiyski-as-wordpress-security-czar\'>WPTavern: Aaron D. Campbell Replaces Nikolay Bachiyski as WordPress’ Security Czar</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/automattic-releases-free-plugin-for-exporting-photos-from-lightroom-to-wordpress\'>WPTavern: Automattic Releases Free Plugin for Exporting Photos from Lightroom to WordPress</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/wes-bos-launches-javascript30-a-free-30-day-vanilla-js-coding-course\'>WPTavern: Wes Bos Launches JavaScript30, a Free 30-Day Vanilla JS Coding Course</a></li></ul></div><div class=\"rss-widget\"><ul><li class=\"dashboard-news-plugin\"><span>Popular Plugin:</span> Google Analytics Dashboard for WP&nbsp;<a href=\"plugin-install.php?tab=plugin-information&amp;plugin=google-analytics-dashboard-for-wp&amp;_wpnonce=4b396ce43b&amp;TB_iframe=true&amp;width=600&amp;height=800\" class=\"thickbox open-plugin-details-modal\" aria-label=\"Install Google Analytics Dashboard for WP\">(Install)</a></li></ul></div>','no'),
-	(6330,'duplicate_post_version','3.0.3','no');
+	(6332,'_site_transient_timeout_browser_bd77e1c781c66eef9d4dc33df710c7e5','1485191087','no'),
+	(6333,'_site_transient_browser_bd77e1c781c66eef9d4dc33df710c7e5','a:9:{s:8:\"platform\";s:5:\"Linux\";s:4:\"name\";s:7:\"Firefox\";s:7:\"version\";s:4:\"45.0\";s:10:\"update_url\";s:23:\"http://www.firefox.com/\";s:7:\"img_src\";s:50:\"http://s.wordpress.org/images/browsers/firefox.png\";s:11:\"img_src_ssl\";s:49:\"https://wordpress.org/images/browsers/firefox.png\";s:15:\"current_version\";s:2:\"16\";s:7:\"upgrade\";b:0;s:8:\"insecure\";b:0;}','no'),
+	(6385,'fresh_site','0','yes'),
+	(6440,'_site_transient_timeout_theme_roots','1484663841','no'),
+	(6441,'_site_transient_theme_roots','a:2:{s:15:\"gigazone-gaming\";s:7:\"/themes\";s:13:\"twentysixteen\";s:7:\"/themes\";}','no'),
+	(6442,'_site_transient_update_themes','O:8:\"stdClass\":4:{s:12:\"last_checked\";i:1484662044;s:7:\"checked\";a:2:{s:15:\"gigazone-gaming\";s:3:\"1.0\";s:13:\"twentysixteen\";s:3:\"1.1\";}s:8:\"response\";a:1:{s:13:\"twentysixteen\";a:4:{s:5:\"theme\";s:13:\"twentysixteen\";s:11:\"new_version\";s:3:\"1.3\";s:3:\"url\";s:43:\"https://wordpress.org/themes/twentysixteen/\";s:7:\"package\";s:59:\"https://downloads.wordpress.org/theme/twentysixteen.1.3.zip\";}}s:12:\"translations\";a:0:{}}','no'),
+	(6443,'_site_transient_update_plugins','O:8:\"stdClass\":4:{s:12:\"last_checked\";i:1484662043;s:8:\"response\";a:1:{s:33:\"duplicate-post/duplicate-post.php\";O:8:\"stdClass\":9:{s:2:\"id\";s:4:\"1295\";s:4:\"slug\";s:14:\"duplicate-post\";s:6:\"plugin\";s:33:\"duplicate-post/duplicate-post.php\";s:11:\"new_version\";s:5:\"3.1.2\";s:3:\"url\";s:45:\"https://wordpress.org/plugins/duplicate-post/\";s:7:\"package\";s:63:\"https://downloads.wordpress.org/plugin/duplicate-post.3.1.2.zip\";s:14:\"upgrade_notice\";s:36:\"Fixes the problem with custom fields\";s:6:\"tested\";s:5:\"4.7.1\";s:13:\"compatibility\";O:8:\"stdClass\":1:{s:6:\"scalar\";O:8:\"stdClass\":1:{s:6:\"scalar\";b:0;}}}}s:12:\"translations\";a:0:{}s:9:\"no_update\";a:7:{s:20:\"cornerstone/main.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:5:\"16695\";s:4:\"slug\";s:11:\"cornerstone\";s:6:\"plugin\";s:20:\"cornerstone/main.php\";s:11:\"new_version\";s:5:\"0.7.5\";s:3:\"url\";s:42:\"https://wordpress.org/plugins/cornerstone/\";s:7:\"package\";s:54:\"https://downloads.wordpress.org/plugin/cornerstone.zip\";}s:32:\"disqus-comment-system/disqus.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"4500\";s:4:\"slug\";s:21:\"disqus-comment-system\";s:6:\"plugin\";s:32:\"disqus-comment-system/disqus.php\";s:11:\"new_version\";s:4:\"2.86\";s:3:\"url\";s:52:\"https://wordpress.org/plugins/disqus-comment-system/\";s:7:\"package\";s:69:\"https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip\";}s:45:\"enable-media-replace/enable-media-replace.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"8351\";s:4:\"slug\";s:20:\"enable-media-replace\";s:6:\"plugin\";s:45:\"enable-media-replace/enable-media-replace.php\";s:11:\"new_version\";s:5:\"3.0.5\";s:3:\"url\";s:51:\"https://wordpress.org/plugins/enable-media-replace/\";s:7:\"package\";s:63:\"https://downloads.wordpress.org/plugin/enable-media-replace.zip\";}s:29:\"insert-pages/insert-pages.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:5:\"45710\";s:4:\"slug\";s:12:\"insert-pages\";s:6:\"plugin\";s:29:\"insert-pages/insert-pages.php\";s:11:\"new_version\";s:5:\"3.1.8\";s:3:\"url\";s:43:\"https://wordpress.org/plugins/insert-pages/\";s:7:\"package\";s:55:\"https://downloads.wordpress.org/plugin/insert-pages.zip\";}s:29:\"link-manager/link-manager.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:5:\"33981\";s:4:\"slug\";s:12:\"link-manager\";s:6:\"plugin\";s:29:\"link-manager/link-manager.php\";s:11:\"new_version\";s:8:\"0.1-beta\";s:3:\"url\";s:43:\"https://wordpress.org/plugins/link-manager/\";s:7:\"package\";s:55:\"https://downloads.wordpress.org/plugin/link-manager.zip\";}s:25:\"media-tags/media_tags.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"5606\";s:4:\"slug\";s:10:\"media-tags\";s:6:\"plugin\";s:25:\"media-tags/media_tags.php\";s:11:\"new_version\";s:7:\"3.2.0.2\";s:3:\"url\";s:41:\"https://wordpress.org/plugins/media-tags/\";s:7:\"package\";s:61:\"https://downloads.wordpress.org/plugin/media-tags.3.2.0.2.zip\";}s:19:\"rest-api/plugin.php\";O:8:\"stdClass\":6:{s:2:\"id\";s:4:\"7769\";s:4:\"slug\";s:8:\"rest-api\";s:6:\"plugin\";s:19:\"rest-api/plugin.php\";s:11:\"new_version\";s:10:\"2.0-beta15\";s:3:\"url\";s:39:\"https://wordpress.org/plugins/rest-api/\";s:7:\"package\";s:62:\"https://downloads.wordpress.org/plugin/rest-api.2.0-beta15.zip\";}}}','no'),
+	(6506,'duplicate_post_version','3.0.3','no');
 
 /*!40000 ALTER TABLE `wp_options` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -736,7 +1011,7 @@ VALUES
 	(1413,387,'_menu_item_xfn',''),
 	(1414,387,'_menu_item_url',''),
 	(1418,388,'_edit_last','1'),
-	(1419,388,'_edit_lock','1479929930:1'),
+	(1419,388,'_edit_lock','1484608115:1'),
 	(1424,392,'_menu_item_type','post_type'),
 	(1425,392,'_menu_item_menu_item_parent','0'),
 	(1426,392,'_menu_item_object_id','388'),
@@ -953,7 +1228,7 @@ VALUES
 	(1911,622,'_edit_last','1'),
 	(1912,624,'_edit_lock','1477585894:1'),
 	(1913,624,'_edit_last','1'),
-	(1914,627,'_edit_lock','1472651788:1'),
+	(1914,627,'_edit_lock','1484662457:1'),
 	(1915,627,'_edit_last','1'),
 	(1918,629,'_edit_lock','1472651826:1'),
 	(1919,629,'_edit_last','1'),
@@ -984,7 +1259,6 @@ VALUES
 	(1969,629,'_thumbnail_id','645'),
 	(1973,647,'_wp_attached_file','2016/08/title_card_elder-scrolls-online-01-overlay.jpg'),
 	(1974,647,'_wp_attachment_metadata','a:5:{s:5:\"width\";i:1920;s:6:\"height\";i:1080;s:4:\"file\";s:54:\"2016/08/title_card_elder-scrolls-online-01-overlay.jpg\";s:5:\"sizes\";a:4:{s:9:\"thumbnail\";a:4:{s:4:\"file\";s:54:\"title_card_elder-scrolls-online-01-overlay-150x150.jpg\";s:5:\"width\";i:150;s:6:\"height\";i:150;s:9:\"mime-type\";s:10:\"image/jpeg\";}s:6:\"medium\";a:4:{s:4:\"file\";s:54:\"title_card_elder-scrolls-online-01-overlay-300x169.jpg\";s:5:\"width\";i:300;s:6:\"height\";i:169;s:9:\"mime-type\";s:10:\"image/jpeg\";}s:12:\"medium_large\";a:4:{s:4:\"file\";s:54:\"title_card_elder-scrolls-online-01-overlay-768x432.jpg\";s:5:\"width\";i:768;s:6:\"height\";i:432;s:9:\"mime-type\";s:10:\"image/jpeg\";}s:5:\"large\";a:4:{s:4:\"file\";s:55:\"title_card_elder-scrolls-online-01-overlay-1024x576.jpg\";s:5:\"width\";i:1024;s:6:\"height\";i:576;s:9:\"mime-type\";s:10:\"image/jpeg\";}}s:10:\"image_meta\";a:12:{s:8:\"aperture\";s:1:\"0\";s:6:\"credit\";s:0:\"\";s:6:\"camera\";s:0:\"\";s:7:\"caption\";s:0:\"\";s:17:\"created_timestamp\";s:1:\"0\";s:9:\"copyright\";s:0:\"\";s:12:\"focal_length\";s:1:\"0\";s:3:\"iso\";s:1:\"0\";s:13:\"shutter_speed\";s:1:\"0\";s:5:\"title\";s:0:\"\";s:11:\"orientation\";s:1:\"0\";s:8:\"keywords\";a:0:{}}}'),
-	(1975,627,'_thumbnail_id','647'),
 	(1982,629,'dsq_thread_id','5108862653'),
 	(1983,627,'dsq_thread_id','5108864721'),
 	(1987,649,'_wp_attached_file','2016/09/title_card_template_-the-forest-01-just-overlay.jpg'),
@@ -994,7 +1268,7 @@ VALUES
 	(1993,650,'_thumbnail_id','649'),
 	(1997,650,'layout','full-width'),
 	(2001,650,'dsq_thread_id','5111529856'),
-	(2012,653,'_edit_lock','1473871387:1'),
+	(2012,653,'_edit_lock','1484603747:1'),
 	(2013,653,'_edit_last','1'),
 	(2014,653,'_thumbnail_id','654'),
 	(2015,653,'layout','full-width'),
@@ -1249,7 +1523,7 @@ LOCK TABLES `wp_posts` WRITE;
 
 INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`)
 VALUES
-	(388,1,'2016-04-04 15:43:10','2016-04-04 15:43:10','Paul Bunyan Communications of Bemidji, MN proudly presents our inaugural League of Legends Tournament! This tournament has over $4,500 in cash and prizes for the taking, plus door prize drawings for attendees at finals held at the Sanford Center November 12!\r\n<ul>\r\n 	<li>Registration has closed</li>\r\n 	<li>Online preliminary rounds begin shortly - registered teams stay tuned for details</li>\r\n 	<li>Finals hosted at the Sanford Center in Bemidji, MN November 12, 2016</li>\r\n 	<li>Everyone and everyone welcome and encouraged to attend the live finals at the Sanford Center</li>\r\n 	<li>Live gaming, door prizes and more at the live tournament event</li>\r\n</ul>\r\nThe 2016 Gigazone Gaming Tournament will be hosted at the Sanford Center, located at 1111 Event Center Dr NE, in Bemidji, Minnesota. The tournament proper will take place on November 12th.\r\n\r\n<div class=\"col-md-4\"><ul class=\"user-profile clearfix\">\r\n    <li class=\"user-profile--container user-profile--avatar\"><img src=\"http://placehold.it/400x400\" /></li>\r\n    <li class=\"user-profile--container user-profile--name\">Nate Nolting</li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitch.tv/fordlincolnmercury\"><i class=\"fa fa-twitch\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitter.com/natenolting\"><i class=\"fa fa-twitter\" aria-hidden=\"true\"></i> NateNolting</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"http://steamcommunity.com/id/fordlincolnhg\"><i class=\"fa fa-steam\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n</ul></div>','About','','publish','closed','closed','','about','','','2016-11-23 19:41:00','2016-11-23 19:41:00','',0,'https://gigazonegaming.com/?page_id=388',0,'page','',0),
+	(388,1,'2016-04-04 15:43:10','2016-04-04 15:43:10','Paul Bunyan Communications of Bemidji, MN proudly presents our inaugural League of Legends Tournament! This tournament has over $4,500 in cash and prizes for the taking, plus door prize drawings for attendees at finals held at the Sanford Center November 12!\r\n<ul>\r\n 	<li>Registration has closed</li>\r\n 	<li>Online preliminary rounds begin shortly - registered teams stay tuned for details</li>\r\n 	<li>Finals hosted at the Sanford Center in Bemidji, MN November 12, 2016</li>\r\n 	<li>Everyone and everyone welcome and encouraged to attend the live finals at the Sanford Center</li>\r\n 	<li>Live gaming, door prizes and more at the live tournament event</li>\r\n</ul>\r\nThe 2016 Gigazone Gaming Tournament will be hosted at the Sanford Center, located at 1111 Event Center Dr NE, in Bemidji, Minnesota. The tournament proper will take place on November 12th.\r\n','About','','publish','closed','closed','','about','','','2017-01-16 23:10:54','2017-01-16 23:10:54','',0,'https://gigazonegaming.com/?page_id=388',0,'page','',0),
 	(389,1,'2016-04-04 15:43:03','2016-04-04 15:43:03','','About','','inherit','closed','closed','','388-revision-v1','','','2016-04-04 15:43:03','2016-04-04 15:43:03','',388,'https://gigazonegaming.com/%postpath%/388-revision-v1/',0,'revision','',0),
 	(392,1,'2016-04-04 15:44:26','2016-04-04 15:44:26',' ','','','publish','closed','closed','','392','','','2016-11-14 16:34:50','2016-11-14 16:34:50','',0,'https://gigazonegaming.com/?p=392',1,'nav_menu_item','',0),
 	(396,1,'2016-04-04 16:39:26','2016-04-04 16:39:26','<div class=\"row\">\r\n    <div class=\"col-sm-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n    </div>\r\n    <div class=\"col-md-6\"><h2 class=\"p1\"><span class=\"s1\">ProFreakz of Deer River Win GigaZone Gaming Championship!</span></h2></div>\r\n    <div class=\"col-md-6\"><p>The first stadium style eSports event in the region, the GigaZone Gaming Championship was held Saturday, November 12 at the Sanford Center George W. Neilson Convention Center.</p>\r\n        <p>26 of northern Minnesota’s best League of Legends teams competed online with the top eight teams making it to the Championship rounds in the GigaZone Championship Arena.</p>\r\n    </div>\r\n\r\n    <div class=\"col-sm-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n    </div>\r\n\r\n    <div class=\"col-sm-6\" id=\"profreakz-photo\">\r\n        <img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/14991423_1448473348501440_331658940345634904_o-1.jpg\"\r\n             alt=\"ProFreakz take first place\"/>\r\n    </div>\r\n    <div class=\"col-sm-6\" id=\"profreakz-summoners\">\r\n\r\n        <h3>ProFreakz of Deer River Win GigaZone Gaming Championship</h3>\r\n        <p>ProFreakz Summoners:</p>\r\n        <ul>\r\n            <li>Isaac Rasmusson (<a href=\"http://lolprofile.net/summoner/na/Isske\" target=\"_blank\">Isske</a>)</li>\r\n            <li>Joshua O\'Shea (<a href=\"http://lolprofile.net/summoner/na/oO%20Salsa%20Oo\" target=\"_blank\">oO Salsa Oo</a>)\r\n            </li>\r\n            <li>Iain Belgarde (<a href=\"http://lolprofile.net/summoner/na/Pfkz%20Belgardex\" target=\"_blank\">Pfkz Belgardex</a>)\r\n            </li>\r\n            <li>Cody Mattews (<a href=\"http://lolprofile.net/summoner/na/PineApplesx\" target=\"_blank\">PineapplesX</a>)\r\n            </li>\r\n            <li>Alyis Grauman (<a href=\"http://lolprofile.net/summoner/na/Tuckerz\" target=\"_blank\">Tuckerz</a>)</li>\r\n        </ul>\r\n    </div>\r\n\r\n    <div class=\"col-sm-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n    </div>\r\n\r\n    <div class=\"col-sm-6\" id=\"synergy-photo\">\r\n        <img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/15068511_1448473355168106_4042420793489975742_o-1.jpg\"\r\n             alt=\"Team Synergy takes second place\"/>\r\n    </div>\r\n    <div class=\"col-sm-6\" id=\"synergy-summoners\">\r\n        <h3>Team Synergy Takes Second Place</h3>\r\n        <p>Team Synergy Summoners:</p>\r\n        <ul>\r\n            <li>Brad Kovacovich (<a href=\"http://lolprofile.net/summoner/na/Bard%20the%20Brad\" target=\"_blank\">Bard the Brad</a>)</li>\r\n            <li>Ben Francisco (<a href=\"http://lolprofile.net/summoner/na/Benny%20FuFoo\" target=\"_blank\">Benny Fufoo</a>)</li>\r\n            <li>Matthan Althiser (<a href=\"http://lolprofile.net/summoner/na/ChinchiIla%20King\" target=\"_blank\">Chinchiila King</a>)</li>\r\n            <li>Kyle Labernik (<a href=\"http://lolprofile.net/summoner/na/Dangerous%20Kyle\" target=\"_blank\">Dangerous Kyle</a>)</li>\r\n            <li>Taylor Otness (<a href=\"http://lolprofile.net/summoner/na/King%20Bear\" target=\"_blank\">King Bear</a>)</li>\r\n        </ul>\r\n    </div>\r\n\r\n    <div class=\"col-sm-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n    </div>\r\n\r\n    <div class=\"col-sm-6\" id=\"irl-photo\">\r\n        <img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/20161112_195115.jpg\"\r\n             alt=\"Iron Range Legends take third place\"/>\r\n    </div>\r\n    <div class=\"col-sm-6\" id=\"irl-summoners\">\r\n        <h3>Iron Range Legends Take Third Place</h3>\r\n        <p>Iron Range Legends Summoners:</p>\r\n        <ul>\r\n            <li>Prescott Weis (<a href=\"http://lolprofile.net/summoner/na/DenRaines\" target=\"_blank\">DenRaines</a>)</li>\r\n            <li>Sean Mull (<a href=\"http://lolprofile.net/summoner/na/DJMixture\" target=\"_blank\">DJMixture</a>)</li>\r\n            <li>Ben Monson (<a href=\"http://lolprofile.net/summoner/na/is%20trevor%20strong\" target=\"_blank\">Is Trevor Strong</a>)</li>\r\n            <li>Brad Monson (<a href=\"http://lolprofile.net/summoner/na/Pullz%20for%20dayz\" target=\"_blank\">Pullz for dayz</a>)</li>\r\n            <li>Kyle Maki (<a href=\"http://lolprofile.net/summoner/na/Saucy%20Spliffs\" target=\"_blank\">Saucy Spliffs</a>)</li>\r\n        </ul>\r\n    </div>\r\n\r\n    <div class=\"col-md-12\">\r\n        [splash]\r\n        <h2 class=\"uppercase\">GigaZone Gaming Championship League of Legends</h2>\r\n        <p>The 8 teams that participated in the first Gigazone Gaming Championship LoL Finals on November 12th, 2016\r\n        were:</p>\r\n        <ul>\r\n            <li>ProFreakz from Deer River, GigaZone Gaming Champions, $2,500 Prize</li>\r\n            <li>Team Synergy from Bemidji, Second Place, $1,250 Prize</li>\r\n            <li>Iron Range Legends, Third Place, $750 Prize</li>\r\n            <li><span class=\"light\">W8 This Isn\'t Dota</span></li>\r\n            <li><span class=\"light\">Team Roar</span></li>\r\n            <li><span class=\"light\">Endeavor</span></li>\r\n            <li><span class=\"light\">Lone Wolf <small>(formerly Lone Wolf 4)</small></span></li>\r\n            <li><span class=\"light\">Team BANTZ <small>(formerly Lone Wolf 7)</small></span></li>\r\n        </ul>\r\n        <h3>2016 LoL Finals Bracket</h3>\r\n        <hr class=\"divider horizontal dashed\"/>\r\n        <iframe src=\"https://challonge.com/GigazoneGaming2016Finals/module\" width=\"100%\" height=\"500\" frameborder=\"0\"\r\n                scrolling=\"auto\"></iframe>\r\n        [/splash]\r\n    </div>\r\n    <div class=\"col-sm-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n    </div>\r\n    <div class=\"col-md-6\">\r\n        <h3>Open Side Tournament Winners</h3>\r\n        <ul>\r\n            <li>Street Fighter 5, Anthony Belgarve</li>\r\n            <li>Mario Kart, Brad Monson</li>\r\n            <li>Donkey Kong, Adam - 71,000 points</li>\r\n            <li>Pac Man, Sabbastian - 38,000 points</li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"col-md-6\">\r\n        [splash]\r\n        <h3>Oculus Rift</h3>\r\n        <div class=\"row\">\r\n\r\n            <div class=\"col-md-6\">\r\n                <img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/Occulus-Rift-Winner-Ben-Fransisco.jpg\" alt=\"\">\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n                 \r\n                <p>Ben Francisco from Team Synergy won the grand prize drawing for an <a href=\"https://www3.oculus.com/en-us/rift/\" target=\"_blank\">Oculus Rift</a> – the incredibly immersive virtual reality (VR) headset.</p>\r\n                 \r\n            </div>\r\n        </div>\r\n        [/splash]\r\n    </div>\r\n\r\n    <div class=\"col-md-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n        <h3>Magic the Gathering Booster Tournaments</h3>\r\n        <p>Both of the Magic the Gathering Booster Tournaments were full!</p>\r\n    </div>\r\n    <div class=\"col-sm-4\"><img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/IMG_0805.jpg\" alt=\"\"></div>\r\n    <div class=\"col-sm-4\"><img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/IMG_0917.jpg\" alt=\"\"></div>\r\n    <div class=\"col-sm-4\"><img src=\"https://gigazonegaming.com/wp-content/uploads/2016/11/IMG_0918.jpg\" alt=\"\"></div>\r\n\r\n    <div class=\"col-md-12\">\r\n        <hr class=\"divider horizontal dashed\"/>\r\n        <p>Many participated in open gaming of Move or Die, Street Fighter 5, Mario Kart 8, Donkey Kong, and Pac Man.</p>\r\n\r\n        <blockquote>“There is a large gaming community in our area and GigaZone Gaming Championship not only showcased\r\n            some of the region’s best League of Legends teams but it gave everyone a chance to get in on the action! It\r\n            was great to see so many people of all ages gaming and have so much fun.” said Gary Johnson, Paul Bunyan\r\n            Communications CEO/General Manager.\r\n        </blockquote>\r\n\r\n        <blockquote>“Our cooperative continues to expand one of the largest rural fiber gigabit networks in the country\r\n            and that brings many advantages to our members. The GigaZone provides extreme speed and low latency which\r\n            are critical for the best online gaming experience which the GigaZone Gaming Championship showcased,” added\r\n            Leo Anderson, Paul Bunyan Communications Digital Services Supervisor.\r\n        </blockquote>\r\n\r\n        <blockquote>“It was a great chance for people to come together, have fun, and experience the growing eSports\r\n            phenomenon. We plan to do this again in 2017 and it will be even bigger and better!” added Brian Bissonette,\r\n            Paul Bunyan Communications Marketing Supervisor.\r\n        </blockquote>\r\n\r\n    </div>\r\n\r\n</div>\n\r[gigazone-info]','Home','','publish','closed','closed','','home','','','2016-11-14 20:14:02','2016-11-14 20:14:02','',0,'https://gigazonegaming.com/?page_id=396',0,'page','',0),
@@ -1438,7 +1712,7 @@ VALUES
 	(623,1,'2016-08-23 13:18:37','2016-08-23 13:18:37','<a href=\"https://gigazonegaming.com/sign-up/\">{{img}}</a>','LOL_Header_Intro_Final','','inherit','open','closed','','lol_header_intro_final','','','2016-09-19 16:21:41','2016-09-19 16:21:41','',0,'https://gigazonegaming.com/wp-content/uploads/2016/08/LOL_Header_Intro_Final.png',0,'attachment','image/png',0),
 	(624,1,'2016-08-23 13:18:39','2016-08-23 13:18:39','<a href=\"https://gigazonegaming.com/sign-up/\">{{img}}</a>','LOL_Header_Oculus_Rift','','inherit','open','closed','','lol_header_oculus_rift','','','2016-09-19 16:22:25','2016-09-19 16:22:25','',0,'https://gigazonegaming.com/wp-content/uploads/2016/08/LOL_Header_Oculus_Rift.png',0,'attachment','image/png',0),
 	(626,1,'2016-08-23 17:14:02','2016-08-23 17:14:02','<div class=\"row margin-before\">\r\n<div class=\"col-md-12\">\r\n<div class=\"dark-pattern-background front-page-signup-banner clickable\">\r\n<h4 class=\"tight light front-page-signup-banner-title\"><a href=\"https://gigazonegaming.com/sign-up/\">Sign up for the League of Legends Tournament</a></h4>\r\n<a href=\"https://gigazonegaming.com/sign-up/\" class=\"front-page-signup-banner-image\"><img src=\"[bloginfo key=template_url]/images/front-page/gzgc-orange-cutout.png\" alt=\"Gigazone Gaming Championship\" /></a>\r\n</div>\r\n<div class=\"clearfix\"></div>\r\n</div>\r\n</div>\r\n<div class=\"row margin-after margin-before\">\r\n<div class=\"col-sm-4 col-sm-push-8\">\r\n<h2 class=\"tight\">Summoners!</h2>\r\nGrab your teammates, don your favorite skin, and come compete in Paul Bunyan Communication’s <a href=\"http://gigazonegaming.local/about/about-gigazone/\">Gigazone</a> first League of Legends Tournament! Boasting over $4,500 in cash and prizes for competitors, as well as door prize drawings for attendees, you’ll want to be sure to be there for all of the excitement!\r\n<ul>\r\n<li>Free to enter</li>\r\n<li>No level requirement</li>\r\n<li>Preliminaries to start shortly after the sign up cutoff</li>\r\n<li>Incomplete teams are welcome to enter. <a href=\"https://gigazonegaming.com/about/contact-us/\">Contact us</a> with your team status &amp; we\'ll do our best to complete your team.</li>\r\n</ul>\r\n</div>\r\n<div class=\"col-sm-8 col-sm-pull-4\"><iframe class=\"splash-video\" src=\"https://www.youtube.com/embed/9aayHMY9qx8\" width=\"560\" height=\"315\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe></div>\r\n</div>\r\n<div class=\"well front-page-form-container hide-text-label hide-legend\">\r\n\r\n<!--Sign up for updates-->\r\n<h3 class=\"tight\">Please register your email address below.</h3>\r\nWe’ll keep you up to date on the latest news and updates regarding the tournament, team sign-up process, and further details as they materialize from the rift!\r\n\r\n[update-sign-up new_line=\",\" delimiter=\"|\" questions=\"Your Email Address|email,update-recipient|hidden|yes,I would like to participate in the tournament|boolean|yes\" inputs=\"i-would-like-to-participate-in-the-tournament|participate,your-email-address|email\" legend=\"Sign up for updates\" ids=\"email|updateSignUpForm-email,participate|updateSignUpForm-participate,submit|updateSignUpFormSubmit\"]\r\n\r\n</div>','Home','','inherit','closed','closed','','396-revision-v1','','','2016-08-23 17:14:02','2016-08-23 17:14:02','',396,'https://gigazonegaming.com/%postpath%/396-revision-v1/',0,'revision','',0),
-	(627,1,'2016-08-23 18:37:16','2016-08-23 18:37:16','<iframe class=\"splash-video\" src=\"https://www.youtube.com/embed/cBbbCKjTXMM\" width=\"560\" height=\"315\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>','Let\'s Play Elder Scrolls Online Ep. 1 with Josh','','publish','open','open','','lets-play-elder-scrolls-online-ep-1-with-josh','','','2016-08-31 13:58:46','2016-08-31 13:58:46','',0,'https://gigazonegaming.com/auto-draft/',0,'post','',0),
+	(627,1,'2016-08-23 18:37:16','2016-08-23 18:37:16','<iframe class=\"splash-video\" src=\"https://www.youtube.com/embed/cBbbCKjTXMM\" width=\"560\" height=\"315\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>','Let\'s Play Elder Scrolls Online Ep. 1 with Josh','','publish','open','open','','lets-play-elder-scrolls-online-ep-1-with-josh','','','2017-01-17 14:16:34','2017-01-17 14:16:34','',0,'https://gigazonegaming.com/auto-draft/',0,'post','',0),
 	(628,1,'2016-08-23 18:37:16','2016-08-23 18:37:16','<iframe width=\"560\" height=\"315\" class=\"splash-video\" src=\"https://www.youtube.com/embed/cBbbCKjTXMM\" frameborder=\"0\" allowfullscreen></iframe>','Let\'s Play Elder Scrolls Online Ep. 1 with Josh','','inherit','closed','closed','','627-revision-v1','','','2016-08-23 18:37:16','2016-08-23 18:37:16','',627,'https://gigazonegaming.com/%postpath%/627-revision-v1/',0,'revision','',0),
 	(629,1,'2016-08-23 18:39:16','2016-08-23 18:39:16','<iframe class=\"splash-video\" src=\"https://www.youtube.com/embed/GpAASR_vOLk\" width=\"560\" height=\"315\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>','Let\'s Play No Man\'s Sky Ep. 1 with Josh','','publish','open','open','','lets-play-no-mans-sky-ep-1-with-josh','','','2016-08-31 13:59:20','2016-08-31 13:59:20','',0,'https://gigazonegaming.com/auto-draft/',0,'post','',0),
 	(630,1,'2016-08-23 18:39:16','2016-08-23 18:39:16','<iframe width=\"560\" height=\"315\" class=\"splash-video\" src=\"https://www.youtube.com/embed/GpAASR_vOLk\" frameborder=\"0\" allowfullscreen></iframe>','Let\'s Play No Man\'s Sky Ep. 1 with Josh','','inherit','closed','closed','','629-revision-v1','','','2016-08-23 18:39:16','2016-08-23 18:39:16','',629,'https://gigazonegaming.com/%postpath%/629-revision-v1/',0,'revision','',0),
@@ -1673,9 +1947,9 @@ VALUES
 	(944,1,'2016-11-23 19:10:52','2016-11-23 19:10:52','Paul Bunyan Communications of Bemidji, MN proudly presents our inaugural League of Legends Tournament! This tournament has over $4,500 in cash and prizes for the taking, plus door prize drawings for attendees at finals held at the Sanford Center November 12!\r\n<ul>\r\n 	<li>Registration has closed</li>\r\n 	<li>Online preliminary rounds begin shortly - registered teams stay tuned for details</li>\r\n 	<li>Finals hosted at the Sanford Center in Bemidji, MN November 12, 2016</li>\r\n 	<li>Everyone and everyone welcome and encouraged to attend the live finals at the Sanford Center</li>\r\n 	<li>Live gaming, door prizes and more at the live tournament event</li>\r\n</ul>\r\nThe 2016 Gigazone Gaming Tournament will be hosted at the Sanford Center, located at 1111 Event Center Dr NE, in Bemidji, Minnesota. The tournament proper will take place on November 12th.\r\n\r\n<div class=\"col-md-4\"><ul class=\"user-profile\">\r\n    <li class=\"user-profile--container user-profile--avatar\"><img src=\"http://placehold.it/400x400\" class=\"user-profile--avatar\" /></li>\r\n    <li class=\"user-profile--container user-profile--name\">Nate Nolting</li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitch.tv/fordlincolnmercury\"><i class=\"fa fa-twitch\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitter.com/natenolting\"><i class=\"fa fa-twitter\" aria-hidden=\"true\"></i> NateNolting</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"http://steamcommunity.com/id/fordlincolnhg\"><i class=\"fa fa-steam\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n</ul></div>','About','','inherit','closed','closed','','388-revision-v1','','','2016-11-23 19:10:52','2016-11-23 19:10:52','',388,'http://gigazonegaming.local/%postpath%/388-revision-v1/',0,'revision','',0),
 	(945,1,'2016-11-23 19:37:24','2016-11-23 19:37:24','Paul Bunyan Communications of Bemidji, MN proudly presents our inaugural League of Legends Tournament! This tournament has over $4,500 in cash and prizes for the taking, plus door prize drawings for attendees at finals held at the Sanford Center November 12!\r\n<ul>\r\n 	<li>Registration has closed</li>\r\n 	<li>Online preliminary rounds begin shortly - registered teams stay tuned for details</li>\r\n 	<li>Finals hosted at the Sanford Center in Bemidji, MN November 12, 2016</li>\r\n 	<li>Everyone and everyone welcome and encouraged to attend the live finals at the Sanford Center</li>\r\n 	<li>Live gaming, door prizes and more at the live tournament event</li>\r\n</ul>\r\nThe 2016 Gigazone Gaming Tournament will be hosted at the Sanford Center, located at 1111 Event Center Dr NE, in Bemidji, Minnesota. The tournament proper will take place on November 12th.\r\n\r\n<div class=\"col-md-4\"><ul class=\"user-profile\">\r\n    <li class=\"user-profile--container user-profile--avatar\"><img src=\"http://placehold.it/400x400\" /></li>\r\n    <li class=\"user-profile--container user-profile--name\">Nate Nolting</li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitch.tv/fordlincolnmercury\"><i class=\"fa fa-twitch\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitter.com/natenolting\"><i class=\"fa fa-twitter\" aria-hidden=\"true\"></i> NateNolting</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"http://steamcommunity.com/id/fordlincolnhg\"><i class=\"fa fa-steam\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n</ul></div>','About','','inherit','closed','closed','','388-revision-v1','','','2016-11-23 19:37:24','2016-11-23 19:37:24','',388,'http://gigazonegaming.local/%postpath%/388-revision-v1/',0,'revision','',0),
 	(946,1,'2016-11-23 19:41:00','2016-11-23 19:41:00','Paul Bunyan Communications of Bemidji, MN proudly presents our inaugural League of Legends Tournament! This tournament has over $4,500 in cash and prizes for the taking, plus door prize drawings for attendees at finals held at the Sanford Center November 12!\r\n<ul>\r\n 	<li>Registration has closed</li>\r\n 	<li>Online preliminary rounds begin shortly - registered teams stay tuned for details</li>\r\n 	<li>Finals hosted at the Sanford Center in Bemidji, MN November 12, 2016</li>\r\n 	<li>Everyone and everyone welcome and encouraged to attend the live finals at the Sanford Center</li>\r\n 	<li>Live gaming, door prizes and more at the live tournament event</li>\r\n</ul>\r\nThe 2016 Gigazone Gaming Tournament will be hosted at the Sanford Center, located at 1111 Event Center Dr NE, in Bemidji, Minnesota. The tournament proper will take place on November 12th.\r\n\r\n<div class=\"col-md-4\"><ul class=\"user-profile clearfix\">\r\n    <li class=\"user-profile--container user-profile--avatar\"><img src=\"http://placehold.it/400x400\" /></li>\r\n    <li class=\"user-profile--container user-profile--name\">Nate Nolting</li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitch.tv/fordlincolnmercury\"><i class=\"fa fa-twitch\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"https://www.twitter.com/natenolting\"><i class=\"fa fa-twitter\" aria-hidden=\"true\"></i> NateNolting</a></li>\r\n    <li class=\"user-profile--container user-profile--social\"><a href=\"http://steamcommunity.com/id/fordlincolnhg\"><i class=\"fa fa-steam\" aria-hidden=\"true\"></i> FordLincolnHg</a></li>\r\n</ul></div>','About','','inherit','closed','closed','','388-revision-v1','','','2016-11-23 19:41:00','2016-11-23 19:41:00','',388,'http://gigazonegaming.local/%postpath%/388-revision-v1/',0,'revision','',0),
-	(963,1,'2016-12-07 23:06:59','2016-12-07 23:06:59','[lol-individual-sign-up new_line=\",\" delimiter=\"|\" questions=\"game|hidden|league-of-legends,update-recipient|hidden|yes,participate|hidden|yes,Your Name,Your LOL Summoner Name,Your Email Address|email,Your Phone|tel\" inputs=\"your-name|name,your-email-address|email\"]Please fill out the form below to let us know that your are interested in participating in the event but don&#39;t have a team to compete with . We will try and find you a team[/lol-individual-sign-up]\r\n','League of Legends Individual Signup','','publish','open','open','','lol-individual-signup','','','2017-01-16 15:30:51','2017-01-16 15:30:51','',465,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
+	(963,1,'2016-12-07 23:06:59','2016-12-07 23:06:59','[lol-individual-sign-up new_line=\",\" delimiter=\"|\" questions=\"game|hidden|league-of-legends,update-recipient|hidden|yes,participate|hidden|yes,Your Name,Your LOL Summoner Name,Your Email Address|email,Your Phone|tel\" inputs=\"your-name|name,your-email-address|email\"]Please fill out the form below to let us know that your are interested in participating in the event but don&#39;t have a team to compete with . We will try and find you a team[/lol-individual-sign-up]\r\n','League of Legends Individual Signup','','publish','open','open','','lol-individual-signup','','','2017-01-17 16:00:36','2017-01-17 16:00:36','',465,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
 	(964,1,'2016-12-07 23:06:59','2016-12-07 23:06:59','[lol-individual-sign-up new_line=\",\" delimiter=\"|\" questions=\"game|hidden|league-of-legends,update-recipient|hidden|yes,participate|hidden|yes,Your Name,Your LOL Summoner Name,Your Email Address|email,Your Phone|tel\" inputs=\"your-name|name,your-email-address|email\"]Please fill out the form below to let us know that your are interested in participating in the event but don&#39;t have a team to compete with . We will try and find you a team[/lol-individual-sign-up]\r\n','League of Legends Individual Signup','','inherit','closed','closed','','963-revision-v1','','','2016-12-07 23:06:59','2016-12-07 23:06:59','',963,'http://gigazonegaming.local/%postpath%/963-revision-v1/',0,'revision','',0),
-	(965,1,'2016-12-07 23:09:50','2016-12-07 23:09:50','[lol-team-sign-up new_line=\",\" delimiter=\"|\" questions=\"tournament|hidden|gigazone-gaming-2016-league-of-legends,Team Name,update-recipient|hidden|yes,participate|hidden|yes,Team Captain,Team Captain LOL Summoner Name,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One LOL Summoner Name,Teammate One Email Address|email,Teammate Two LOL Summoner Name,Teammate Two Email Address|email,Teammate Three LOL Summoner Name,Teammate Three Email Address|email,Teammate Four LOL Summoner Name,Teammate Four Email Address|email\" inputs=\"team-captain|name,team-captain-email-address|email\" headings=\"Team Info|team-name,Team Captain|team-captain,Team Members|teammate-one-lol-summoner-name\"]Please fill out the form below to let us know that your are interested in participating in the event[/lol-team-sign-up]\r\n','League of Legends Team Signup','','publish','open','open','','lol-team-signup','','','2017-01-16 15:30:51','2017-01-16 15:30:51','',465,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
+	(965,1,'2016-12-07 23:09:50','2016-12-07 23:09:50','[lol-team-sign-up new_line=\",\" delimiter=\"|\" questions=\"tournament|hidden|gigazone-gaming-2016-league-of-legends,Team Name,update-recipient|hidden|yes,participate|hidden|yes,Team Captain,Team Captain LOL Summoner Name,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One LOL Summoner Name,Teammate One Email Address|email,Teammate Two LOL Summoner Name,Teammate Two Email Address|email,Teammate Three LOL Summoner Name,Teammate Three Email Address|email,Teammate Four LOL Summoner Name,Teammate Four Email Address|email\" inputs=\"team-captain|name,team-captain-email-address|email\" headings=\"Team Info|team-name,Team Captain|team-captain,Team Members|teammate-one-lol-summoner-name\"]Please fill out the form below to let us know that your are interested in participating in the event[/lol-team-sign-up]\r\n','League of Legends Team Signup','','publish','open','open','','lol-team-signup','','','2017-01-17 16:00:36','2017-01-17 16:00:36','',465,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
 	(966,1,'2016-12-07 23:09:50','2016-12-07 23:09:50','[lol-team-sign-up new_line=\",\" delimiter=\"|\" questions=\"tournament|hidden|gigazone-gaming-2016-league-of-legends,Team Name,update-recipient|hidden|yes,participate|hidden|yes,Team Captain,Team Captain LOL Summoner Name,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One LOL Summoner Name,Teammate One Email Address|email,Teammate Two LOL Summoner Name,Teammate Two Email Address|email,Teammate Three LOL Summoner Name,Teammate Three Email Address|email,Teammate Four LOL Summoner Name,Teammate Four Email Address|email\" inputs=\"team-captain|name,team-captain-email-address|email\" headings=\"Team Info|team-name,Team Captain|team-captain,Team Members|teammate-one-lol-summoner-name\"]Please fill out the form below to let us know that your are interested in participating in the event[/lol-team-sign-up]\r\n','League of Legends Team Signup','','inherit','closed','closed','','965-revision-v1','','','2016-12-07 23:09:50','2016-12-07 23:09:50','',965,'http://gigazonegaming.local/%postpath%/965-revision-v1/',0,'revision','',0),
 	(967,1,'2016-12-07 23:15:11','2016-12-07 23:15:11','If you\'re looking to participate in the [bloginfo key=\"description\"] you can sign up as either <a href=\"http://gigazonegaming.com/sign-up/lol-team-sign-up/\">a team</a> or <a href=\"http://gigazonegaming.local/sign-up/lol-individual-sign-up/\">an individual player</a>.\r\n\r\nWe also welcome incomplete teams to sign up. No matter if you have two, three or four teammates, <a href=\"https://gigazonegaming.com/about/contact-us/\">contact us</a> and we\'ll do our best to pair you with other players to complete a team.\r\n<div>\r\n<ul class=\"nav nav-tabs\">\r\n 	<li class=\"active\"><a href=\"#team-signup-form-content\" data-toggle=\"tab\">Team</a></li>\r\n 	<li><a href=\"#lone-wolf-form-content\" data-toggle=\"tab\">Individual</a></li>\r\n</ul>\r\n<div class=\"tab-content\">\r\n<div id=\"team-signup-form-content\" class=\"tab-pane active\">\r\n<h3 class=\"tab-pane-title\">[insert page=\'lol-team-signup\' display=\'title\']</h3>\r\n<div class=\"tab-pane-content hide-legend\">[insert page=\'lol-team-sign-up\' display=\'content\']</div>\r\n</div>\r\n<div id=\"lone-wolf-form-content\" class=\"tab-pane\">\r\n<h3 class=\"tab-pane-title\">[insert page=\'lol-individual-signup\' display=\'title\']</h3>\r\n<div class=\"tab-pane-content hide-legend\">[insert page=\'lol-individual-sign-up\' display=\'content\']</div>\r\n</div>\r\n</div>\r\n</div>','Signup','','inherit','closed','closed','','465-revision-v1','','','2016-12-07 23:15:11','2016-12-07 23:15:11','',465,'http://gigazonegaming.local/%postpath%/465-revision-v1/',0,'revision','',0),
 	(968,1,'2016-12-07 23:17:25','2016-12-07 23:17:25','If you\'re looking to participate in the [bloginfo key=\"description\"] you can sign up as either <a href=\"http://gigazonegaming.com/sign-up/lol-team-sign-up/\">a team</a> or <a href=\"http://gigazonegaming.local/sign-up/lol-individual-sign-up/\">an individual player</a>.\r\n\r\nWe also welcome incomplete teams to sign up. No matter if you have two, three or four teammates, <a href=\"https://gigazonegaming.com/about/contact-us/\">contact us</a> and we\'ll do our best to pair you with other players to complete a team.\r\n<div>\r\n<ul class=\"nav nav-tabs\">\r\n 	<li class=\"active\"><a href=\"#team-signup-form-content\" data-toggle=\"tab\">Team</a></li>\r\n 	<li><a href=\"#lone-wolf-form-content\" data-toggle=\"tab\">Individual</a></li>\r\n</ul>\r\n<div class=\"tab-content\">\r\n<div id=\"team-signup-form-content\" class=\"tab-pane active\">\r\n<h3 class=\"tab-pane-title\">[insert page=\'lol-team-signup\' display=\'title\']</h3>\r\n<div class=\"tab-pane-content hide-legend\">[insert page=\'lol-team-signup\' display=\'content\']</div>\r\n</div>\r\n<div id=\"lone-wolf-form-content\" class=\"tab-pane\">\r\n<h3 class=\"tab-pane-title\">[insert page=\'lol-individual-signup\' display=\'title\']</h3>\r\n<div class=\"tab-pane-content hide-legend\">[insert page=\'lol-individual-signup\' display=\'content\']</div>\r\n</div>\r\n</div>\r\n</div>','Signup','','inherit','closed','closed','','465-revision-v1','','','2016-12-07 23:17:25','2016-12-07 23:17:25','',465,'http://gigazonegaming.local/%postpath%/465-revision-v1/',0,'revision','',0),
@@ -1683,8 +1957,10 @@ VALUES
 	(972,2,'2016-12-09 19:27:36','2016-12-09 19:27:36','[user-profile id=\"tester\"]','Dolorem esse aliquid nam aut.','','trash','open','open','','dolorem-esse-aliquid-nam-aut__trashed','','','2016-12-09 19:34:38','2016-12-09 19:34:38','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
 	(974,2,'2016-12-09 19:27:52','2016-12-09 19:27:52','[user-profile id=\"tester\"]','Non consectetur quo doloribus quisquam consequatur.','','trash','open','open','','non-consectetur-quo-doloribus-quisquam-consequatur__trashed','','','2016-12-09 19:34:38','2016-12-09 19:34:38','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
 	(976,2,'2016-12-09 19:28:11','2016-12-09 19:28:11','[user-profile id=\"tester\"]','Et nam eaque natus dolores quaerat quaerat omnis et.','','trash','open','open','','et-nam-eaque-natus-dolores-quaerat-quaerat-omnis-et__trashed','','','2016-12-09 19:34:38','2016-12-09 19:34:38','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
-	(979,1,'2017-01-16 15:30:50','2017-01-16 15:30:50','[bloginfo key=\"name\"] isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.','Riot Disclaimer','','publish','open','open','','riot-disclaimer','','','2017-01-16 15:30:50','2017-01-16 15:30:50','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
-	(980,1,'2017-01-16 15:34:09','0000-00-00 00:00:00','','Auto Draft','','auto-draft','open','open','','','','','2017-01-16 15:34:09','0000-00-00 00:00:00','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0);
+	(980,1,'2017-01-16 15:34:09','0000-00-00 00:00:00','','Auto Draft','','auto-draft','open','open','','','','','2017-01-16 15:34:09','0000-00-00 00:00:00','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
+	(982,2,'2017-01-16 17:04:47','0000-00-00 00:00:00','','Auto Draft','','auto-draft','open','open','','','','','2017-01-16 17:04:47','0000-00-00 00:00:00','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
+	(984,1,'2017-01-16 23:10:54','2017-01-16 23:10:54','Paul Bunyan Communications of Bemidji, MN proudly presents our inaugural League of Legends Tournament! This tournament has over $4,500 in cash and prizes for the taking, plus door prize drawings for attendees at finals held at the Sanford Center November 12!\r\n<ul>\r\n 	<li>Registration has closed</li>\r\n 	<li>Online preliminary rounds begin shortly - registered teams stay tuned for details</li>\r\n 	<li>Finals hosted at the Sanford Center in Bemidji, MN November 12, 2016</li>\r\n 	<li>Everyone and everyone welcome and encouraged to attend the live finals at the Sanford Center</li>\r\n 	<li>Live gaming, door prizes and more at the live tournament event</li>\r\n</ul>\r\nThe 2016 Gigazone Gaming Tournament will be hosted at the Sanford Center, located at 1111 Event Center Dr NE, in Bemidji, Minnesota. The tournament proper will take place on November 12th.\r\n','About','','inherit','closed','closed','','388-revision-v1','','','2017-01-16 23:10:54','2017-01-16 23:10:54','',388,'http://gigazonegaming.local/%postpath%/388-revision-v1/',0,'revision','',0),
+	(985,1,'2017-01-17 16:00:36','2017-01-17 16:00:36','[bloginfo key=\"name\"] isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.','Riot Disclaimer','','publish','open','open','','riot-disclaimer','','','2017-01-17 16:00:36','2017-01-17 16:00:36','',0,'http://gigazonegaming.local/auto-draft/',0,'post','',0);
 
 /*!40000 ALTER TABLE `wp_posts` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -2102,16 +2378,18 @@ VALUES
 	(107,1,'closedpostboxes_post','a:0:{}'),
 	(108,1,'metaboxhidden_post','a:3:{i:0;s:11:\"postexcerpt\";i:1;s:13:\"trackbacksdiv\";i:2;s:7:\"slugdiv\";}'),
 	(111,1,'session_tokens','a:1:{s:64:\"0c723a625f65fcd982ecae9a6499cb0a3a37278d665d668c0e1b42394fa2939d\";a:4:{s:10:\"expiration\";i:1484753613;s:2:\"ip\";s:12:\"192.168.56.1\";s:2:\"ua\";s:120:\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36\";s:5:\"login\";i:1484580813;}}'),
-	(135,1,'twitter',''),
-	(136,1,'twitter_profile',''),
-	(137,1,'twitch',''),
-	(138,1,'twitch_profile',''),
-	(139,1,'youtube',''),
-	(140,1,'youtube_profile',''),
-	(141,1,'steam',''),
-	(142,1,'steam_profile',''),
+	(135,1,'twitter','Twitter'),
+	(136,1,'twitter_profile','Twitter'),
+	(137,1,'twitch','Twitch'),
+	(138,1,'twitch_profile','Twitch'),
+	(139,1,'youtube','YouTube'),
+	(140,1,'youtube_profile','YouTube'),
+	(141,1,'steam','Steam'),
+	(142,1,'steam_profile','Steam'),
 	(143,2,'wp_capabilities','a:1:{s:13:\"administrator\";b:1;}'),
-	(144,2,'session_tokens','a:4:{s:64:\"369da7a69647ca9844fa093a972a691dd0a2aa6e33a59e76893760d92ab39b90\";a:4:{s:10:\"expiration\";i:1484753458;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580658;}s:64:\"d9b643dd5ad9c99693a748e599df3fe096c2f3716398837dd67dbecc7a1a1f55\";a:4:{s:10:\"expiration\";i:1484753493;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580693;}s:64:\"6916a896c3cf59178fd06180c735beadee17092719b97191ed1c04de56d7d326\";a:4:{s:10:\"expiration\";i:1484753526;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580726;}s:64:\"4ce649f710c7685bb29683f7090ed413206defcc6b4e4679f35b4c7f355294f9\";a:4:{s:10:\"expiration\";i:1484753560;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580760;}}');
+	(144,2,'session_tokens','a:5:{s:64:\"369da7a69647ca9844fa093a972a691dd0a2aa6e33a59e76893760d92ab39b90\";a:4:{s:10:\"expiration\";i:1484753458;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580658;}s:64:\"d9b643dd5ad9c99693a748e599df3fe096c2f3716398837dd67dbecc7a1a1f55\";a:4:{s:10:\"expiration\";i:1484753493;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580693;}s:64:\"6916a896c3cf59178fd06180c735beadee17092719b97191ed1c04de56d7d326\";a:4:{s:10:\"expiration\";i:1484753526;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580726;}s:64:\"4ce649f710c7685bb29683f7090ed413206defcc6b4e4679f35b4c7f355294f9\";a:4:{s:10:\"expiration\";i:1484753560;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484580760;}s:64:\"5ce265310d048de050766f58091cf955d7af8be03b29298d043248da9c2dc1e8\";a:4:{s:10:\"expiration\";i:1484759086;s:2:\"ip\";s:9:\"127.0.0.1\";s:2:\"ua\";s:68:\"Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0\";s:5:\"login\";i:1484586286;}}'),
+	(145,2,'wp_dashboard_quick_press_last_post_id','982'),
+	(146,1,'locale','');
 
 /*!40000 ALTER TABLE `wp_usermeta` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -2144,8 +2422,8 @@ LOCK TABLES `wp_users` WRITE;
 
 INSERT INTO `wp_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`)
 VALUES
-	(1,'admin','$P$B7alobEXbWiM8sI2nCgOhSVPwOXDth.','admin','admin@gigazonegaming.local','','2015-08-11 20:28:34','',0,'admin'),
-	(2,'tester','$P$BE57qArd3IvkS9ThihZz8UE7.Vk5SA.','','tester@example.com','','0000-00-00 00:00:00','',0,'');
+	(1,'admin','$P$B7alobEXbWiM8sI2nCgOhSVPwOXDth.','admin','admin@gigazonegaming.local','','2015-08-11 20:28:34','',0,'Admin Istrator'),
+	(2,'tester','$P$BpCp/RIStczqiW0YSJASqp/x7jT3.Z.','','tester@example.com','','0000-00-00 00:00:00','',0,'');
 
 /*!40000 ALTER TABLE `wp_users` ENABLE KEYS */;
 UNLOCK TABLES;

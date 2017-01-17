@@ -15,6 +15,6 @@ use Cartalyst\Sentinel\Activations\EloquentActivation;
 
 class Activation extends EloquentActivation
 {
-    protected $connection = "mysql_champ";
+    protected $connection = "mysql_sentinel";
     protected $table = "activations";
 }

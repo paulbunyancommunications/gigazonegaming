@@ -15,6 +15,6 @@ use Cartalyst\Sentinel\Reminders\EloquentReminder;
 
 class Reminder extends EloquentReminder
 {
-    protected $connection = "mysql_champ";
+    protected $connection = "mysql_sentinel";
     protected $table = "reminders";
 }
