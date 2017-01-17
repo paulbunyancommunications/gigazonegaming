@@ -20,20 +20,15 @@ class Api
           '209.191.200.242', //pbnet.pbndev.net
           '209.191.199.89', //paulbunyan.net
           '209.191.200.106', //gigazonegaming
-          '192.168.56.1' //testing if you need another for testing, add a comma and add an extra string
+          '192.168.56.1', //testing if you need another for testing, add a comma and add an extra string
+          'gigazonegaming.com',
+          'gigazonegaming.local',
         ];
-        $isLocal = ((
-        ((isset($_SERVER['HOSTNAME']) and $_SERVER['HOSTNAME']=="gigazonegaming.local") or (isset($_SERVER['HOSTNAME']) and $_SERVER['HOSTNAME']=="gigazonegaming.com"))
-            and
-            (isset($_SERVER['APP_ENV']) and $_SERVER['APP_ENV']=='local')
-        ) or false);
+        //https://laracasts.com/discuss/channels/general-discussion/laravel-5-referrer-url/replies/105536
+        $hostName = parse_url(app('Illuminate\Routing\UrlGenerator')->previous(), PHP_URL_HOST);
 
-        if (
-            !in_array($_SERVER['REMOTE_ADDR'],$okSites)
-            and
-            !$isLocal
-        ) {
-            return redirect('/');
+        if (!in_array($hostName, $okSites) && !in_array($request::ip(), $okSites)) {
+            return \Response::json(['error' => ['Not allowed!']], 400);
         }
         return $next($request);
     }
