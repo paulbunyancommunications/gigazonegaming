@@ -25,7 +25,6 @@ class BaseIntegration extends \TestCase
     {
         parent::setUpBeforeClass();
         exec('mysql -h "'.getenv('DB_HOST').'" -u "'.getenv('DB_USERNAME').'" "-p'.getenv('DB_PASSWORD').'" "'.getenv('DB_DATABASE').'" < '.dirname(dirname(__DIR__)) . '/database/dump/gzgaming_wp.sql 2> nul');
-        exec('mysql -h "'.getenv('DB_HOST_CHAMP').'" -u "'.getenv('DB_USERNAME_CHAMP').'" "-p'.getenv('DB_PASSWORD_CHAMP').'" "'.getenv('DB_DATABASE_CHAMP').'" < '.dirname(dirname(__DIR__)) . '/database/dump/gzgaming_champ_db.sql 2> nul');
     }
 
     /**

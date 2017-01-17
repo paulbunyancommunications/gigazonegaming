@@ -12,7 +12,7 @@ class MakeChampionshipDefaultGame extends Migration
      */
     public function up()
     {
-        $query = "INSERT INTO `games` (`name`, `description`, `uri`, `created_at`, `updated_at`)
+        $query = "INSERT INTO `champ_games` (`name`, `description`, `uri`, `created_at`, `updated_at`)
             VALUES ('unknown', 'Unknown game', '', NULL, NULL);";
         DB::connection('mysql_champ')->insert($query);
     }
@@ -24,6 +24,6 @@ class MakeChampionshipDefaultGame extends Migration
      */
     public function down()
     {
-        DB::connection('mysql_champ')->delete("DELETE FROM `games` WHERE `name`='unknown'");
+        DB::connection('mysql_champ')->delete("DELETE FROM `champ_games` WHERE `name`='unknown'");
     }
 }

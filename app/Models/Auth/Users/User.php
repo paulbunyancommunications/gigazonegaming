@@ -16,7 +16,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 
 class User extends EloquentUser
 {
-    protected $connection = "mysql_champ";
+    protected $connection = "mysql_sentinel";
     protected $table = "users";
     protected static $rolesModel        = 'App\Models\Auth\Roles\Role';
     protected static $persistencesModel = 'App\Models\Auth\Persistences\Persistence';
