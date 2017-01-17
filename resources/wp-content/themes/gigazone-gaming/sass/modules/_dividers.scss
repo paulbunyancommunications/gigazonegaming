@@ -9,6 +9,8 @@
   display: block;
   background: $dividerColor;
   }
+
+
 /**
 * Example for Divider:
 * <hr class="divider horizontal dots" /> gives a horizontal divider with dots on the ends
@@ -105,12 +107,9 @@
 
   // dashed alternative divider, <hr class="divider horizontal dashed" /> gives a horizontal divider with slash mark graphic background
   &.dashed {
-    background: transparent url($theme-directory + 'images/backgrounds/divider-dashed.png') center repeat-x;
-    border-top: none;
-    height: 12px;
-    opacity: .3;
+    @include divider-dashed(1);
     &.slim {
-      height: 9px;
+     @include height(.5);
     }
   }
 }

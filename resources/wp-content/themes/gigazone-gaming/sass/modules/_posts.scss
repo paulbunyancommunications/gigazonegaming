@@ -229,3 +229,58 @@ float: left;
     @include font-size(1);
   }
 }
+
+/**
+ Post title with article image background
+ will assume there is a background image on the post-title-bg div
+
+ usages:
+   <div class="post-title-with-bg">
+            <div class="post-title-bg" style="background-image: url({{post.thumbnail.src}}); "></div>
+            {% include "partials/post-title.twig" with {'title':post.post_title, 'this_post':post, 'single':true} %}
+   </div>
+
+ */
+.post-title-with-bg {
+  position: relative;
+  @include margin-bottom(1.625);
+  & .post-title {
+    color: $color-dark-gray;
+    @include padding(2.75, 1.75);
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    @include divider-dashed(1);
+    position:absolute;
+    @include margin-bottom(0);
+    bottom: 0;
+    left: 0;
+
+    @include mq-tablet {
+      @include height(.5);
+      @include margin-bottom(-.5);
+    }
+    @include mq-phone {
+      @include height(.5);
+      @include margin-bottom(-.5);
+    }
+
+  }
+}
+
+.post-title-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: 25% 110%;
+  background-attachment: fixed;
+  background-size: 250%;
+  opacity: .1;
+  z-index: -1;
+  transform: rotate(180deg);
+
+}

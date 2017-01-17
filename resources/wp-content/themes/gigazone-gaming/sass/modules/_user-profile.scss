@@ -1,9 +1,14 @@
+$avatar-bottom-offset: -1.75;
 .user-profile {
   padding: 0;
   font-family: $font-family-display;
   @include margin-top(2);
   @include margin-bottom(1);
   display: inline-block;
+
+  &--outer-container {
+    @include margin-top($avatar-bottom-offset)
+  }
 
   &--social, &--avatar, &--name {
     &::before {
@@ -86,7 +91,7 @@
       padding-right: 0;
       margin-left: 0;
       margin-right: 0;
-      @include margin-bottom(-1.5);
+      @include margin-bottom($avatar-bottom-offset);
     }
   }
 

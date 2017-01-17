@@ -1,0 +1,6 @@
+@mixin divider-dashed($height: 1) {
+  background: transparent url($theme-directory + 'images/backgrounds/divider-dashed.png') center repeat-x;
+  border-top: none;
+  @include height(1);
+  opacity: .3;
+}
