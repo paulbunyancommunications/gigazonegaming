@@ -1,26 +1,32 @@
 {% if related is defined and related is iterable and related|length > 0 %}
-<hr class="divider horizontal dashed" />
-<div class="related-posts">
-    <h3 class="related-title">{% if related_title is defined %}{{ related_title }}{% else %}Related{% endif %}:</h3>
-    <div class="row row-flex row-flex-wrap">
-    {% for post in related|slice(0, 4) %}
-        <div class="col-sm-3">
-            <div class="flex-col">
-                <div class="related-posts-container">
-                    <div class="related-posts-image">
-                        {% if function('has_post_thumbnail', post) %}
-                            <a href="{{ function('get_permalink', post) }}" style="background-image: url({{post.thumbnail.src}}); ">&nbsp;</a>
-                        {% else %}
-                            <a href="{{ function('get_permalink', post) }}" style="background-image: url('{{ theme.uri }}/images/backgrounds/social-banner-v-2-black.jpg'); ">&nbsp;</a>
-                        {% endif %}
-                    </div>
-                    <div class="related-posts-title">
-                        <h4 class="related-posts-title-text"><a href="{{ function('get_permalink', post) }}">{{ post.post_title }}</a></h4>
+<div class="{{ wrapper_class }}">
+    <hr class="divider horizontal dashed" />
+    <div class="related-posts">
+        <h3 class="related-title">{% if related_title is defined %}{{ related_title }}{% else %}Related{% endif %}</h3>
+        <div class="row row-flex row-flex-wrap">
+            {# if related_count is not set or is not a number set default to 4 #}
+            {% if not related_count is defined or not related_count matches '/^\\d+$/' %}
+                {% set related_count = 4 %}
+            {% endif %}
+            {% for post in related|slice(0, related_count) %}
+                <div class="col-md-{{ (24 / related_count)|round(0, 'floor') }}">
+                    <div class="flex-col">
+                        <div class="related-posts-container">
+                            <div class="related-posts-image">
+                                {% if function('has_post_thumbnail', post) %}
+                                    <a href="{{ function('get_permalink', post) }}" style="background-image: url({{post.thumbnail.src}}); ">&nbsp;</a>
+                                {% else %}
+                                    <a href="{{ function('get_permalink', post) }}" style="background-image: url('{{ function('get_template_directory_uri') }}/images/backgrounds/social-banner-v-2-black.jpg'); ">&nbsp;</a>
+                                {% endif %}
+                            </div>
+                            <div class="related-posts-title">
+                                <h4 class="related-posts-title-text"><a href="{{ function('get_permalink', post) }}">{{ post.post_title }}</a></h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
     </div>
 </div>
 {% endif %}

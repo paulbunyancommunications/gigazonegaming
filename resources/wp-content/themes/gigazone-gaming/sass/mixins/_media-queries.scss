@@ -16,8 +16,15 @@
   }
 }
 
+
 @mixin mq-cinema {
   @media (min-width: $screen-lg-min) {
+    @content;
+  }
+}
+
+@mixin mq-desktop-cinema {
+  @media (min-width: $screen-md-min) {
     @content;
   }
 }

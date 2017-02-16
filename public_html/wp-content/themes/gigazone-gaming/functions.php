@@ -21,9 +21,14 @@ add_shortcode('build-form', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('env', [$bootstrap, 'getEnvShortCode']);
 add_shortcode('user-profile', [$bootstrap, 'userProfileShortCode']);
 
+
 // get image by id, usage [get-image 12345]
 // this will output the image with height and width attributes and class of get-image
 add_shortcode('get-image', [$bootstrap, 'getMediaImageShortCode']);
+
+// get recent posts preview, usage [recent-post-preview]
+// see https://codex.wordpress.org/Function_Reference/wp_get_recent_posts for all options
+add_shortcode('recent-post-preview', ["\\Pbc\\GigaZoneGaming\\ShortCodes\\RecentPostPreview", 'shortCode']);
 
 
 // if the WP_FRONT_PAGE_ONLY flat is true then relay all requests to the front page post

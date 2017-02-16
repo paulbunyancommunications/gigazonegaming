@@ -12,6 +12,11 @@
     }
   ],
   "minimum-stability": "stable",
+  "config": {
+    "preferred-install": "dist",
+    "discard-changes": true,
+    "php": ">=7.1.*"
+  },
   "repositories": [
     {
       "type": "package",
@@ -226,7 +231,8 @@
       "App\\": "app/",
       "Wordpress\\": "src/Wordpress/",
       "Twig\\": "src/Twig/",
-      "GigaZone\\": "src/GigaZone/"
+      "GigaZone\\": "src/GigaZone/",
+      "Pbc\\GigaZoneGaming\\": "src/paulbunyannet/gigazonegaming/src"
     }
   },
   "autoload-dev": {
@@ -274,8 +280,5 @@
     "coverage": [
       "php coverage-checker.php tests/_output/coverage.xml 80"
     ]
-  },
-  "config": {
-    "preferred-install": "dist"
   }
 }
