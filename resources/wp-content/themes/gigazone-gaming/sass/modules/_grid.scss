@@ -44,8 +44,10 @@
  * --------------------------------------------------
  */
 .row-flex, .row-flex > div[class*='col-'] {
-  @include flexbox;
-  @include flex(1 1 auto);
+  @include mq-desktop-cinema {
+    @include flexbox;
+    @include flex(1 1 auto);
+  }
 }
 
 .row-flex-wrap {
