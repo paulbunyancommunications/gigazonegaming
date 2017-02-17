@@ -34,7 +34,7 @@
     width: 100%;
     &-bg {
       opacity: .96;
-      @include background-image(linear-gradient($color-black, tint($color-black, 10%)));
+      background-image: linear-gradient($color-black, tint($color-black, 10%));
       content: "";
       width: 100%;
       height: 100%;
