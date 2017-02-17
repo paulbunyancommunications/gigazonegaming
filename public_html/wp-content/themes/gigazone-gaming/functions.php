@@ -9,7 +9,7 @@ $bootstrap = new \GigaZone\GigaZoneGamingBootstrap();
 $cachePath = realpath(dirname(__DIR__) . '/../../../cache/');
 $cacheDriver = new Stash\Driver\FileSystem(['path' => $cachePath]);
 
-add_shortcode('splash', [$bootstrap, 'splashShortCode']);
+add_shortcode('splash', ["\\Pbc\\GigaZoneGaming\\ShortCodes\\Splash", 'shortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
 add_shortcode('get-info', [$bootstrap, 'getInfo']);

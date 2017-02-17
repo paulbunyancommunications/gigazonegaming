@@ -144,21 +144,6 @@ class GigaZoneGamingBootstrap extends Timber
         return get_bloginfo($attr['key'], $attr['filter']);
     }
 
-    public function splashShortCode($attributes, $content)
-    {
-        $attr = shortcode_atts(array(
-            'footer' => '',
-            'class' => 'splash'
-        ), $attributes);
-
-        $params = [
-            'content' => $content,
-            'footer' => $attr['footer'],
-            'class' => $attr['class']
-        ];
-        return Timber::compile(['partials/splash.twig'], $params);
-    }
-
     /**
      * Get Gigazone info block
      *
