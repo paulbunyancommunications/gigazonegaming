@@ -1,9 +1,9 @@
 <?php
 /**
- * Splash
+ * Option
  *
  * Created 2/17/17 11:55 AM
- * Handle the "splash" container
+ * Handle getting an option from the wp_options db
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  * @package Pbc\GigaZoneGaming\ShortCodes
@@ -12,21 +12,16 @@
 namespace Pbc\GigaZoneGaming\ShortCodes;
 
 
-class Splash implements ShortCodeInterface
+class Option implements ShortCodeInterface
 {
     public static function shortCode($attributes, $content = null, $tag = null)
     {
         $attr = shortcode_atts(array(
-            'footer' => '',
-            'class' => 'splash'
+            'key' => 'blogname',
         ), $attributes);
 
-        $params = [
-            'content' => $content,
-            'footer' => $attr['footer'],
-            'class' => $attr['class']
-        ];
-        return \Timber::compile(['partials/splash.twig'], $params);
+        /** @var string $key */
+        return get_option($attr['key']);
     }
 
 }
