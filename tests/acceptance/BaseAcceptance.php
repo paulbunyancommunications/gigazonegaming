@@ -50,11 +50,11 @@ class BaseAcceptance
     {
         // reset all the databases
         $I->populateDatabase($I, [
-            'server' => getenv('DB_HOST'),
-            'user' => getenv('DB_USERNAME'),
-            'password' => getenv('DB_PASSWORD'),
-            'database' => getenv('DB_DATABASE'),
-            'dump' => 'database/dump/gzgaming_wp.sql',
+            'server' => env('DB_HOST'),
+            'user' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_DATABASE'),
+            'dump' => 'database/dump/gigazone_wp.sql',
         ]);
     }
 

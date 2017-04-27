@@ -8,7 +8,8 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: 'http://gigazonegaming.local'
+            #url: 'http://gigazonegaming.local'
+            url: 'http://web'
             host: localhost
             browser: firefox
             port: 4444
@@ -19,6 +20,7 @@ modules:
                unexpectedAlertBehaviour: 'accept'
                javascriptEnabled: true
                locationContextEnabled: true
+               acceptInsecureCerts: true
         - \Helper\Acceptance
         - DbHelper
         - BackEndAcceptanceCreators

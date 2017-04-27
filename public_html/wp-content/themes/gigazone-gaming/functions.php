@@ -98,7 +98,7 @@ add_action('wp_footer', 'loadJs');
  */
 function showSplashPageOnly()
 {
-    if (filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
+    if (filter_var(env('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
         include(locate_template('get-context.php'));
         $homeId = get_option('page_on_front');
         $context['page'] = Timber::get_post(get_option('page_on_front'));

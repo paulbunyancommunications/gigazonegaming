@@ -20,7 +20,6 @@ from=(
     ${bowerRoot}/bourbon/app/assets/stylesheets
     ${bowerRoot}/bourbon/app/assets/stylesheets
     ${bowerRoot}/Gutenberg/src/style
-    ${bowerRoot}/Gutenberg/src/style
     ${nodeRoot}/vue/dist
     ${nodeRoot}/axios/dist
 )
@@ -31,7 +30,6 @@ to=(
     ${resourceRoot}/assets/${sassFolder}/libraries/bootstrap-sass
     ${resourceRoot}/assets/sass/libraries/bourbon
     ${resourceRoot}/${themeFolder}/sass/libraries/bourbon
-    ${resourceRoot}/${themeFolder}/assets/sass/libraries/gutenberg
     ${resourceRoot}/${themeFolder}/sass/libraries/gutenberg
     ${publicRoot}/app/content/libraries/vue
     ${publicRoot}/app/content/libraries/axios
@@ -39,5 +37,6 @@ to=(
 
 for ((i=0; i<${#from[@]}; i++))
 do
-    mkdir ${to[i]} || true && cp -R "${from[i]}"/. "${to[i]}"/
+    mkdir ${to[i]} || true;
+    cp -R "${from[i]}"/. "${to[i]}"/
 done

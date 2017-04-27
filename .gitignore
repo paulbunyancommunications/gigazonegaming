@@ -62,7 +62,7 @@ queue.pid
 presentations
 nul
 gigazone_champ_db.sql
-gigazone_wp.sql
+!database/dump/gigazone_wp.sql
 individualPlayersTableBkup.csv
 PlayersTableBkup.csv
 gzgaming_sentinel.sql
@@ -113,3 +113,17 @@ public_html/press-kit
 phan_output.txt
 tests/test-suites
 public_html/tmp
+dock.sh
+docker-compose.yml
+docker-jenkins-start.sh
+Dockerfile.httpd
+get_docker_assets.sh
+httpd.conf
+php.ini
+php-override.ini
+Dockerfile
+php-ast
+phan.log
+server.crt
+server.key
+update_docker_assets_file.sh

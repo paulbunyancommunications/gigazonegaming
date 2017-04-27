@@ -19,5 +19,8 @@
     "select2": "4.0.2",
     "sass-flex-mixin": "~1.0.3",
     "bourbon": "^4.2.7"
+  },
+  "resolutions": {
+    "jquery": "2.1.3"
   }
 }
