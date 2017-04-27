@@ -111,7 +111,7 @@ class GigaZoneGamingBootstrap extends Timber
      */
     public function autoVersionFilter($value)
     {
-        $autoVersion = new AutoVersion(getenv('DOCUMENT_ROOT'));
+        $autoVersion = new AutoVersion(env('DOCUMENT_ROOT'));
         return $autoVersion->file($value);
     }
 

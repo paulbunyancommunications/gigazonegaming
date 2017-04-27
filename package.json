@@ -15,8 +15,9 @@
     "gulp-haml": "^0.1.6",
     "gulp-livereload": "^3.8.1",
     "gulp-rename": "^1.2.2",
-    "gulp-ruby-haml": "0.0.7",
+    "gulp-ruby-haml": "^0.0.9",
     "gulp-sass": "^2.3.2",
+    "gulp-shell": "^0.6.3",
     "gulp-sourcemaps": "^1.9.1",
     "gulp-uglify": "2.0.0",
     "gulp-util": "^3.0.7",
@@ -33,7 +34,7 @@
     "vue": "^2.1.6"
   },
   "scripts": {
-    "copy-libraries": "npm run-script bower && bash .npm_copy_libraries.sh >/dev/null 2>&1",
-    "bower": "bower install && bower update >/dev/null 2>&1"
+    "copy-libraries": "yarn run bower && bash .npm_copy_libraries.sh",
+    "bower": "bower update --allow-root --force --silent"
   }
 }
