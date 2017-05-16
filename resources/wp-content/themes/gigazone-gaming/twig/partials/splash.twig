@@ -6,7 +6,7 @@
                     <div class='splash-inner-container'>
                         <div class='splash-inner-container-bg'></div>
                         <div class='splash-content'>
-                            {{ content|raw }}
+                            {{ function("apply_filters","the_content", content|raw) }}
                         </div>
                     </div>
                 </div>

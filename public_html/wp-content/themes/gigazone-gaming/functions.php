@@ -9,7 +9,7 @@ $bootstrap = new \GigaZone\GigaZoneGamingBootstrap();
 $cachePath = realpath(dirname(__DIR__) . '/../../../cache/');
 $cacheDriver = new Stash\Driver\FileSystem(['path' => $cachePath]);
 
-add_shortcode('splash', [$bootstrap, 'splashShortCode']);
+add_shortcode('splash', ["\\Pbc\\GigaZoneGaming\\ShortCodes\\Splash", 'shortCode']);
 add_shortcode('bloginfo', [$bootstrap, 'blogInfoShortCode']);
 add_shortcode('gigazone-info', [$bootstrap, 'getGigazoneInfo']);
 add_shortcode('get-info', [$bootstrap, 'getInfo']);
@@ -20,6 +20,7 @@ add_shortcode('lol-individual-sign-up', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('build-form', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('env', [$bootstrap, 'getEnvShortCode']);
 add_shortcode('user-profile', [$bootstrap, 'userProfileShortCode']);
+add_shortcode('get-option', ["\\Pbc\\GigaZoneGaming\\ShortCodes\\Option", 'shortCode']);
 
 
 // get image by id, usage [get-image 12345]
@@ -97,7 +98,7 @@ add_action('wp_footer', 'loadJs');
  */
 function showSplashPageOnly()
 {
-    if (filter_var(getenv('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
+    if (filter_var(env('WP_FRONT_PAGE_ONLY'), FILTER_VALIDATE_BOOLEAN) === true) {
         include(locate_template('get-context.php'));
         $homeId = get_option('page_on_front');
         $context['page'] = Timber::get_post(get_option('page_on_front'));

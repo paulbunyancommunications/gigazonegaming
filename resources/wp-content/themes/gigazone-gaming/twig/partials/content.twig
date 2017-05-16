@@ -48,8 +48,12 @@
 
         <div class="clearfix"></div>
         {# {% include "partials/post/post-thumbnail.twig" with {'post': post, 'size':'post-thumbnail', 'class':'post-image-callout'} %}#}
-        <div class="post-content the-content">
-            {{ function("apply_filters","the_content", post.post_content) }}
+        <div class="post-content the-content post-{{ post.post_type }}">
+            {% if post.post_type == "attachment" %}
+                {% include "partials/post/post-attachment.twig" with {'post':post} %}
+            {% else %}
+                {{ function("apply_filters","the_content", post.post_content) }}
+            {% endif %}
         </div>
         <div class="clearfix"></div>
         {% if display_as_a_page is same as(false) %}

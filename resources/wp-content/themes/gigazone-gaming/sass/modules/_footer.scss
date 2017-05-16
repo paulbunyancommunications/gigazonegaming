@@ -125,7 +125,7 @@
         position: relative;
         background: none;
 
-        @include mq-tablet {
+        @include mq-tablet-phone {
           display: none;
         }
       }
@@ -148,13 +148,13 @@
   &--container {
     .social-media {
       @include margin-bottom(-.75);
-      @include mq-tablet {
+      @include mq-tablet-phone {
         @include margin-bottom(.5);
       }
     }
 
     .sidebar-social-media {
-      @include mq-tablet {
+      @include mq-tablet-phone {
         display: block;
         text-align: center;
       }
@@ -174,7 +174,7 @@
     display: block;
     @include margin(.25, 0, .25, 0);
     background-position: top left;
-    @include mq-tablet {
+    @include mq-tablet-phone {
       display: block;
       width: 100%;
       background-position: top left;
@@ -200,7 +200,7 @@
   &--information {
     @include font-size(1.5);
     @include line-height(1);
-    @include mq-tablet {
+    @include mq-tablet-phone {
       @include font-size(1.25);
     }
     @include mq-phone {

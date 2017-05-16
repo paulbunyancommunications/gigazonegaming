@@ -78,7 +78,7 @@
   border-radius: 10px;
   @include padding-equal(1);
   @include margin-bottom(1);
-  @include background-image(linear-gradient(to right, tint($color-light-gray, 85), $color-white));
+  background-image: linear-gradient(to right, tint($color-light-gray, 85), $color-white);
 
 }
 
@@ -203,6 +203,28 @@
     }
     &:first-of-type {
       border-top: none;
+    }
+  }
+  /**
+   * Added styles for Attachment type post
+   */
+  &-attachment {
+    overflow: hidden;
+    border-radius: 5px;
+
+    &-link {
+      @include margin-top(1);
+      border-radius: 10px;
+      background-color: $gray-lighter;
+      @include padding(.5, .5);
+      a, p {
+        @include font-size(1.5);
+        font-family: $font-family-display;
+        color: $gray-light;
+        &:hover, &:active {
+          color: $gray;
+        }
+      }
     }
   }
 }
