@@ -43,6 +43,7 @@ vm_flush.sh
 !public_html/wp-content/index.php
 !public_html/wp-content/plugins/gzg-manager
 cache
+!cache/.gitignore
 config/ide-helper.php
 coverage-checker.php
 .sass-cache/*
