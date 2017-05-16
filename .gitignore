@@ -128,3 +128,4 @@ server.crt
 server.key
 update_docker_assets_file.sh
 AdvancedEditorUserGuide_1010.pdf
+install.sh.old
