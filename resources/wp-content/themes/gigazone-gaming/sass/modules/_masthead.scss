@@ -16,7 +16,7 @@ $masthead-logo-multiplier: 1.75;
       height: 100%;
       width: 100%;
       opacity: .95;
-      @include background-image(linear-gradient(tint($color-black, 10%), $color-black));
+      background-image: linear-gradient(tint($color-black, 10%), $color-black);
       position: absolute;
       top: 0;
       right: 0

@@ -16,10 +16,10 @@ extensions:
 modules:
     config:
         Db:
-            dsn: 'mysql:host=localhost;dbname=gzgaming_wp'
+            dsn: 'mysql:host=db;dbname=gigazone_wp'
             user: 'root'
             password: 'root'
-            dump: 'database/dump/gzgaming_wp.sql'
+            dump: 'database/dump/gigazone_wp.sql'
         Codeception\Extension\Recorder:
             delete_successful: true
             module: WebDriver

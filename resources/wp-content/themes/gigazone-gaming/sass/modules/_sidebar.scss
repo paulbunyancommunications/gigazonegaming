@@ -1,5 +1,5 @@
 .sidebar {
-  @include background-image(linear-gradient($color-white, tint($color-light-gray, 85), tint($color-light-gray, 50)));
+  background-image: linear-gradient($color-white, tint($color-light-gray, 85), tint($color-light-gray, 50));
   border-radius: #{ 1 * $leading + 'px'};
   border-radius: #{ 1 * $leading-rem + 'rem'};
   overflow: hidden;

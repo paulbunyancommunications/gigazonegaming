@@ -26,7 +26,7 @@ class AutoVersion extends \Twig_Extension
 
     public function autoversionFilter($value)
     {
-        $av = new \Pbc\AutoVersion(getenv('DOCUMENT_ROOT'));
+        $av = new \Pbc\AutoVersion(env('DOCUMENT_ROOT'));
         return $av->file($value);
     }
 

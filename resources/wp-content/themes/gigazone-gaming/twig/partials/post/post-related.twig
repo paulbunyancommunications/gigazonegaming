@@ -14,7 +14,7 @@
                         <div class="related-posts-container">
                             <div class="related-posts-image">
                                 {% if function('has_post_thumbnail', post) %}
-                                    <a href="{{ function('get_permalink', post) }}" style="background-image: url({{post.thumbnail.src}}); ">&nbsp;</a>
+                                    <a href="{{ function('get_permalink', post) }}" style="background-image: url({{ function('get_the_post_thumbnail_url', post) }}); ">&nbsp;</a>
                                 {% else %}
                                     <a href="{{ function('get_permalink', post) }}" style="background-image: url('{{ function('get_template_directory_uri') }}/images/backgrounds/social-banner-v-2-black.jpg'); ">&nbsp;</a>
                                 {% endif %}

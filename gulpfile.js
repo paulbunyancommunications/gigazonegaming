@@ -19,7 +19,7 @@ var sass = require('gulp-sass'),
     del = require('del'),
     livereload = require('gulp-livereload'),
     uglify = require('gulp-uglify'),
-    CleanCSS = require('gulp-clean-css'),
+    cleanCSS = require('gulp-clean-css'),
     sourcemaps = require('gulp-sourcemaps');
 require('gulp-util');
 require('laravel-elixir-livereload');
@@ -97,7 +97,7 @@ elixir.extend('minifyJs', function(src){
 elixir.extend('cleanCss', function(src){
    new Task('cleanCss', function() {
        gulp.src(src + '/style.css')
-           .pipe(CleanCSS({}).on('error', gutil.log))
+           .pipe(cleanCSS({}).on('error', gutil.log))
            .pipe(gulp.dest(src));
    })
 });

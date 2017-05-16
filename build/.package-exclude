@@ -32,7 +32,7 @@ individualPlayersTableBkup.csv
 PlayersTableBkup.csv
 gzgaming_sentinel.sql
 database/dump/gzgaming_champ_db.sql
-database/dump/gzgaming_wp.sql
+database/dump/gigazone_wp.sql
 form-template.haml.old
 PlayerRelationable.php.orig
 phpunit.phar
