@@ -18,28 +18,28 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
 $dotenv->load();
 // installs global error and exception handlers
-if(getenv('APP_ENV') === 'production') {
+if(env('APP_ENV') === 'production') {
     Rollbar::init([
-        'access_token' => getenv('ROLLBAR_SERVER_SIDE_TOKEN'),
-        'environment' => getenv('APP_ENV')
+        'access_token' => env('ROLLBAR_SERVER_SIDE_TOKEN'),
+        'environment' => env('APP_ENV')
     ]);
 }
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', getenv('DB_DATABASE'));
+define('DB_NAME', env('DB_DATABASE'));
 
 /** MySQL database username */
-define('DB_USER', getenv('DB_USERNAME'));
+define('DB_USER', env('DB_USERNAME'));
 
 /** MySQL database password */
-define('DB_PASSWORD', getenv('DB_PASSWORD'));
+define('DB_PASSWORD', env('DB_PASSWORD'));
 
 /** MySQL hostname */
-define('DB_HOST', getenv('DB_HOST'));
+define('DB_HOST', env('DB_HOST'));
 
 /** Database Charset to use in creating database tables. */
-define('DB_CHARSET', getenv('DB_CHARSET'));
+define('DB_CHARSET', env('DB_CHARSET'));
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
@@ -53,22 +53,22 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY', getenv('WP_AUTH_KEY'));
-define('SECURE_AUTH_KEY', getenv('WP_SECURE_AUTH_KEY'));
-define('LOGGED_IN_KEY', getenv('WP_LOGGED_IN_KEY'));
-define('NONCE_KEY', getenv('WP_NONCE_KEY'));
-define('AUTH_SALT', getenv('WP_AUTH_SALT'));
-define('SECURE_AUTH_SALT', getenv('WP_SECURE_AUTH_SALT'));
-define('LOGGED_IN_SALT', getenv('WP_LOGGED_IN_SALT'));
-define('NONCE_SALT', getenv('WP_NONCE_SALT'));
+define('AUTH_KEY', env('WP_AUTH_KEY'));
+define('SECURE_AUTH_KEY', env('WP_SECURE_AUTH_KEY'));
+define('LOGGED_IN_KEY', env('WP_LOGGED_IN_KEY'));
+define('NONCE_KEY', env('WP_NONCE_KEY'));
+define('AUTH_SALT', env('WP_AUTH_SALT'));
+define('SECURE_AUTH_SALT', env('WP_SECURE_AUTH_SALT'));
+define('LOGGED_IN_SALT', env('WP_LOGGED_IN_SALT'));
+define('NONCE_SALT', env('WP_NONCE_SALT'));
 
 /**
  * Path configuration
  */
 define('WP_CONTENT_DIR', __DIR__ . '/wp-content');
-define('WP_CONTENT_URL', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME'] . '/wp-content');
-define('WP_SITEURL', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME'] . '/wp');
-define('WP_HOME', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME']);
+define('WP_CONTENT_URL', env('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME'] . '/wp-content');
+define('WP_SITEURL', env('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME'] . '/wp');
+define('WP_HOME', env('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME']);
 
 
 /**#@-*/
@@ -79,7 +79,7 @@ define('WP_HOME', getenv('WP_HTTP_SCHEME') . '://' . $_SERVER['SERVER_NAME']);
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix = getenv('DB_PREFIX');
+$table_prefix = env('DB_PREFIX');
 
 /**
  * For developers: WordPress debugging mode.
@@ -88,7 +88,7 @@ $table_prefix = getenv('DB_PREFIX');
  * It is strongly recommended that plugin and theme developers use WP_DEBUG
  * in their development environments.
  */
-define('WP_DEBUG', getenv('APP_ENV') === 'local' ? true : false);
+define('WP_DEBUG', env('APP_ENV') === 'local' ? true : false);
 
 /* That's all, stop editing! Happy blogging. */
 

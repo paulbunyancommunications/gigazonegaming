@@ -17,7 +17,7 @@
 
     # force https for all but local development
     RewriteCond %{HTTPS} off
-    RewriteCond %{HTTP_HOST} !^gigazonegaming\.local$
+    RewriteCond %{HTTP_HOST} !^gigazonegaming\.localhost
     RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
 
 </IfModule>

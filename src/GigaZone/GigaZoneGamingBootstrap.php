@@ -111,7 +111,7 @@ class GigaZoneGamingBootstrap extends Timber
      */
     public function autoVersionFilter($value)
     {
-        $autoVersion = new AutoVersion(getenv('DOCUMENT_ROOT'));
+        $autoVersion = new AutoVersion(env('DOCUMENT_ROOT'));
         return $autoVersion->file($value);
     }
 
@@ -142,21 +142,6 @@ class GigaZoneGamingBootstrap extends Timber
         /** @var string $key */
         /** @var string $filter */
         return get_bloginfo($attr['key'], $attr['filter']);
-    }
-
-    public function splashShortCode($attributes, $content)
-    {
-        $attr = shortcode_atts(array(
-            'footer' => '',
-            'class' => 'splash'
-        ), $attributes);
-
-        $params = [
-            'content' => $content,
-            'footer' => $attr['footer'],
-            'class' => $attr['class']
-        ];
-        return Timber::compile(['partials/splash.twig'], $params);
     }
 
     /**

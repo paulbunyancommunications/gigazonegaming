@@ -30,7 +30,7 @@
 
   &-image {
     position: relative;
-    @include background-image(linear-gradient($color-gz-gray 20%, $color-gz-orange 75%, $color-white));
+    background-image: linear-gradient(180deg, $color-gz-gray 25%, $color-gz-orange 65%, $color-white);
     overflow: hidden;
     border-radius: 10px;
     @include min-h(5);

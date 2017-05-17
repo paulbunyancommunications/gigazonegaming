@@ -10,6 +10,14 @@
   }
 }
 
+
+@mixin mq-tablet-phone {
+  @media (max-width: $screen-sm-max) {
+    @content;
+  }
+}
+
+
 @mixin mq-desktop {
   @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
     @content;

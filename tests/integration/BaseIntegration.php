@@ -24,7 +24,7 @@ class BaseIntegration extends \TestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        exec('mysql -h "'.getenv('DB_HOST').'" -u "'.getenv('DB_USERNAME').'" "-p'.getenv('DB_PASSWORD').'" "'.getenv('DB_DATABASE').'" < '.dirname(dirname(__DIR__)) . '/database/dump/gzgaming_wp.sql 2> nul');
+        exec('mysql -h "'.env('DB_HOST').'" -u "'.env('DB_USERNAME').'" "-p'.env('DB_PASSWORD').'" "'.env('DB_DATABASE').'" < '.dirname(dirname(__DIR__)) . '/database/dump/gigazone_wp.sql 2> nul');
     }
 
     /**
