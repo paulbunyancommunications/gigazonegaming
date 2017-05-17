@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
+
+
+
+
+
+
 Route::get('/', function () {
     $path = Config::get('app.url'); // env('APP_URL', 'http://example.local');
     try {
@@ -109,3 +115,20 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
     require_once $partials->getPathname();
 }
 
+
+/**
+ * Roman and Simon
+ * Routes - LOL
+ *
+ */
+
+Route::get('/start', function () {
+    return view('LeaugeOfLegends/startPage');
+});
+Route::get('/Team1', function () {
+    return view('LeaugeOfLegends/DisplayTeam1');
+});
+
+Route::get('/Team2', function () {
+    return view('LeaugeOfLegends/DisplayTeam2');
+});
