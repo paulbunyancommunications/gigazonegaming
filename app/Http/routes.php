@@ -116,12 +116,15 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
 }
 
 
+<<<<<<< HEAD
 /**
  * Roman and Simon
  * Routes - LOL
  *
  */
 
+=======
+>>>>>>> a7ac180ba8337832106529d490df394d9023cbbd
 Route::get('/start', function () {
     return view('LeaugeOfLegends/startPage');
 });
@@ -132,3 +135,7 @@ Route::get('/Team1', function () {
 Route::get('/Team2', function () {
     return view('LeaugeOfLegends/DisplayTeam2');
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> a7ac180ba8337832106529d490df394d9023cbbd
