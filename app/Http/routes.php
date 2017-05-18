@@ -110,14 +110,16 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
 }
 
 
-Route::get('/start', function () {
+//Riot Display Routes
+
+Route::get('/RiotDisplay/start', function () {
     return view('LeaugeOfLegends/startPage');
 });
-Route::get('/Team1', function () {
+Route::get('/RiotDisplay/Team1', function () {
     return view('LeaugeOfLegends/DisplayTeam1');
 });
 
-Route::get('/Team2', function () {
+Route::get('/RiotDisplay/Team2', function () {
     return view('LeaugeOfLegends/DisplayTeam2');
 });
 
