@@ -108,3 +108,23 @@ Route::get('/c3/{extra}', function () {
 foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
     require_once $partials->getPathname();
 }
+
+
+
+/**
+ * Roman and Simon
+ * Routes - LOL
+ *
+ */
+
+Route::get('/RiotDisplay/start', function () {
+    return view('LeaugeOfLegends/startPage');
+});
+Route::get('/RiotDisplay/Team1', function () {
+    return view('LeaugeOfLegends/DisplayTeam1');
+});
+
+Route::get('/RiotDisplay/Team2', function () {
+    return view('LeaugeOfLegends/DisplayTeam2');
+});
+
