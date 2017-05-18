@@ -110,7 +110,12 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
 }
 
 
-//Riot Display Routes
+
+/**
+ * Roman and Simon
+ * Routes - LOL
+ *
+ */
 
 Route::get('/RiotDisplay/start', function () {
     return view('LeaugeOfLegends/startPage');
