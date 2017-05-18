@@ -35,6 +35,7 @@ class FilldbWithTestData extends Command
      */
     public function handle()
     {
+        dd("Stoped for testing");
         $this->fillDB();
         dd("This is working");
     }
@@ -59,12 +60,13 @@ class FilldbWithTestData extends Command
             'game' => 2,
             'team' => $team,
         ]);
-        $playerUserNameArray = array('spartan7warrior', 'gigazoneplayer1', 'gigazoneplayer2', 'gigazoneplayer3');
+        $playerUserNameArray = array('spartan7warrior', 'ReckonStuff', 'ThatBoy18', 'DidYouSeeMe31');
+        $i = 0;
         #creat players for team
         foreach ($playerUserNameArray as $Player){
             $player = new Player();
             $player->username = $Player;
-            $player->email = "simoncecer7@gmail.com";
+            $player->email = "ready_player_" . $i . "@gigazonegaming.com";
             $player->phone = "6125555555";
             $player->save();
             // attach player to team/tournament/game
@@ -74,6 +76,7 @@ class FilldbWithTestData extends Command
                 'game' => 2,
                 'team' => $team,
             ]);
+            $i++;
         }
     }
 }
