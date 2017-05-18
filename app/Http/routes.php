@@ -108,16 +108,3 @@ Route::get('/c3/{extra}', function () {
 foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
     require_once $partials->getPathname();
 }
-
-
-Route::get('/start', function () {
-    return view('LeaugeOfLegends/startPage');
-});
-Route::get('/Team1', function () {
-    return view('LeaugeOfLegends/DisplayTeam1');
-});
-
-Route::get('/Team2', function () {
-    return view('LeaugeOfLegends/DisplayTeam2');
-});
-
