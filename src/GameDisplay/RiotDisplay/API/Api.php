@@ -1,21 +1,40 @@
 <?php
 
-namespace RiotDisplay\API;
+namespace GameDisplay\RiotDisplay\API;
 
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Message\Request;
 use GuzzleHttp\Client;
 
-class api{
+class Api{
 
     protected $client;
-    protected $staticSummoner;
+    protected $Summoner;
+    protected $summonerID;
+    protected $Icon;
 
-    function __construct($staticSummoner)
+    function __construct($SummonerName)
     {
-        $this->staticSummoner = $staticSummoner;
+        $this->Summoner = $SummonerName;
+        $this->apiKey = $_ENV['RIOT_API_KEY'];
         $this->client = new Client();
 
     }
+
+    public function getSummonerId(){
+        $request = new Request('Get', 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey);
+        $response = $this->client->send($request);
+        $Info = json_decode($response->getBody());
+
+        #sets summoner ID for further use with the api.
+        $this->summonerID = $Info->id;
+
+        return $this->summonerID;
+    }
+
+    public function getSummonerIcon(){
+        return "https://avatar.leagueoflegends.com/NA1/".$this->Summoner.".png";
+    }
+
 
     public function getTeam($teamNumber){
         $apiKey = $_ENV['RIOT_API_KEY'];

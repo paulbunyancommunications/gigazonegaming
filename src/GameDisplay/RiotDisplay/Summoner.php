@@ -1,37 +1,56 @@
 <?php
-
-namespace RiotDisplay\Game;
-
+namespace GameDisplay\RiotDisplay;
 
 
-class summuner{
+use GameDisplay\RiotDisplay\API\Api;
+
+class Summoner{
 
 # Variables
 #----------------------------------------------------------------------
     protected $champion;
-    protected $name;
+    protected $summonerName;
+    protected $summonerID;
     protected $icon;
     protected $rank;
     protected $winLoss;
+    protected $api;
 
 # Constructor
 #----------------------------------------------------------------------
     function __construct($summonerName)
     {
-        $this->setName($summonerName);
+
+        $this->setSummonerName($summonerName);
+
+        #Sets up api so that its ready for requests
+        $this->setApi();
+
+        #set Summoner properties
+        $this->setSummonerID();
         $this->setIcon();
+        $this->setChampion();
+        dd($this->icon);
         $this->setChampion();
         $this->setRank();
         $this->setRank();
     }
 # Setters
 #----------------------------------------------------------------------
-    public function setName($summonerName){
-        $this->name = $summonerName;
+    public function setSummonerName($summonerName){
+        $this->summonerName = $summonerName;
+    }
+
+    public function setApi(){
+        $this->api = new Api($this->summonerName);
+    }
+
+    public function setSummonerID(){
+        $this->summonerID = $this->api->getSummonerId();
     }
 
     public function  setIcon(){
-
+        $this->icon = $this->api->getSummonerIcon();
     }
 
     public function setRank(){
@@ -43,12 +62,14 @@ class summuner{
     }
 
     public function setChampion(){
-
+        $this->champion = $this->api->getChampion();
     }
+
+
 
 # Getters
 #----------------------------------------------------------------------
-    public function getName(){
+    public function getSummonerName(){
 
     }
 
