@@ -12,8 +12,10 @@ class Summoner{
     protected $summonerName;
     protected $summonerID;
     protected $icon;
-    protected $rank;
-    protected $winLoss;
+    protected $soloRank;
+    protected $soloRankedWinLoss;
+    protected $FLEXRank;
+    protected $FLEXRankedWinLoss;
     protected $api;
 
 # Constructor
@@ -21,6 +23,7 @@ class Summoner{
     function __construct($summonerName)
     {
 
+        #Initailize the name of the summoner
         $this->setSummonerName($summonerName);
 
         #Sets up api so that its ready for requests
@@ -29,11 +32,15 @@ class Summoner{
         #set Summoner properties
         $this->setSummonerID();
         $this->setIcon();
-        $this->setChampion();
-        dd($this->icon);
-        $this->setChampion();
-        $this->setRank();
-        $this->setRank();
+        $this->setSoloRankedWinLoss();
+        $this->setSoloRank();
+        $this->setFLEXRank();
+        $this->setFLEXRankedWinLoss();
+
+
+//        dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
+//        $this->setChampion();
+//        $this->setSoloRank();
     }
 # Setters
 #----------------------------------------------------------------------
@@ -42,6 +49,7 @@ class Summoner{
     }
 
     public function setApi(){
+        #creats a new api object
         $this->api = new Api($this->summonerName);
     }
 
@@ -53,13 +61,25 @@ class Summoner{
         $this->icon = $this->api->getSummonerIcon();
     }
 
-    public function setRank(){
-
+    public function setSoloRank(){
+        $this->soloRank = $this->api->getSoloRank();
     }
 
-    public function setWinLoss(){
-
+    public function setSoloRankedWinLoss(){
+        $this->soloRankedWinLoss = $this->api->getSoloRankedWinLoss();
     }
+
+    public function setFLEXRank()
+    {
+        $this->FLEXRank = $this->api->getFLEXRank();
+    }
+
+    public function setFLEXRankedWinLoss()
+    {
+        $this->FLEXRankedWinLoss = $this->api->getFLEXRankedWinLoss();
+    }
+
+
 
     public function setChampion(){
         $this->champion = $this->api->getChampion();
@@ -69,8 +89,12 @@ class Summoner{
 
 # Getters
 #----------------------------------------------------------------------
-    public function getSummonerName(){
-
+    /**
+     * @return mixed
+     */
+    public function getIcon()
+    {
+        return $this->icon;
     }
 
     /**
@@ -84,25 +108,56 @@ class Summoner{
     /**
      * @return mixed
      */
-    public function getIcon()
+    public function getApi()
     {
-        return $this->icon;
+        return $this->api;
     }
 
     /**
      * @return mixed
      */
-    public function getRank()
+    public function getFLEXRank()
     {
-        return $this->rank;
+        return $this->FLEXRank;
     }
 
     /**
      * @return mixed
      */
-    public function getWinLoss()
+    public function getFLEXRankedWinLoss()
     {
-        return $this->winLoss;
+        return $this->FLEXRankedWinLoss;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSoloRank()
+    {
+        return $this->soloRank;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSoloRankedWinLoss()
+    {
+        return $this->soloRankedWinLoss;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSummonerID()
+    {
+        return $this->summonerID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSummonerName()
+    {
+        return $this->summonerName;
+    }
 }

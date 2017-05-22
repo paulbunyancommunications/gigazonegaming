@@ -40,5 +40,14 @@ class testGameDispalyController extends Command
         $TeamName = "Power Rangers";
         $TournamentName = "gigazone-gaming-2016-league-of-legends";
         $controller->setTeam($TeamName, $TournamentName);
+
+        $string ="";
+        dd("Here");
+        foreach($controller->team as $player){
+            $string = "/n/nSummoner Name: " . $player->getSummonerName() . "/nSummoner Icon: " . $player->getIcon . "/nSolo Rank: " . $player->getSoloRank() . "/nSolo Win|Loss: " . $player->getSoloRankedWinLoss() . "/nFlex Rank:" . $player->getFLEXRank() . "/nFlex Win|Loss:" . $player->getFLEXRankedWinLoss() . $string;
+        }
+
+        dd($string);
+
     }
 }
