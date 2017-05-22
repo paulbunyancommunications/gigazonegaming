@@ -16,21 +16,12 @@ class GameDisplayController extends Controller
 
     public function startGameDisplay()
     {
-        $teams = Team::all();
-        foreach($teams as $team){
-            array_push($this->teams,$team->name);
-        }
-        $teams = $this->teams;
+        $tournaments = Tournament::select('id', 'name')->get()->toArray();
+        $teams = Team::select('id', 'name', 'tournament_id')->get()->toArray();
+        $tournaments = json_encode($tournaments);
         $teams = json_encode($teams);
 
-        $tournaments = Tournament::all();
-        foreach($tournaments as $tournament){
-            array_push($this->tournaments,$tournament->name);
-        }
-        $tournaments = $this->tournaments;
-        $tournaments = json_encode($tournaments);
-
-        return view('/LeagueOfLegends/startPage',compact('teams','tournaments'));
+        return view('/LeagueOfLegends/startPage')->withTournaments($tournaments)->withTeams($teams);
     }
 
     public function teamViewDisplay()
