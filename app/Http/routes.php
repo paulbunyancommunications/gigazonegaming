@@ -117,14 +117,13 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  *
  */
 
-Route::get('/RiotDisplay/start', function () {
-    return view('LeaugeOfLegends/startPage');
-});
-Route::get('/RiotDisplay/Team1', function () {
-    return view('LeaugeOfLegends/DisplayTeam1');
-});
+Route::get('/GameDisplay/start','GameDisplayController@startGameDisplay');
 
-Route::get('/RiotDisplay/Team2', function () {
-    return view('LeaugeOfLegends/DisplayTeam2');
-});
+//Route::get('/RiotDisplay/Team1', function () {
+//    return view('LeaugeOfLegends/DisplayTeam1');
+//});
+//
+//Route::get('/RiotDisplay/Team2', function () {
+//    return view('LeaugeOfLegends/DisplayTeam2');
+//});
 
