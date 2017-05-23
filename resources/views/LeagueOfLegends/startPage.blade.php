@@ -9,12 +9,12 @@
 </head>
 <body>
 <div class="startForm" id="root">
-    <form action="/app/GameDisplay/DisplayTeam1">
+    <form action="/app/GameDisplay/DisplayTeam1" method="GET">
         <select id="Tournament" onchange="showTeams()">
             <option id="defaultTournament"  value="default">Select a Tournament</option>
             <option v-for="tournament in tournaments" v-bind:value="tournament.id">@{{tournament['name']}}</option>
         </select><br />
-        <select id="Team">
+        <select id="Team" name ='team'>
             <option id="defaultTeam" value="default">Select a Team</option>
             <option  v-for="team in teams" v-model="selected" v-bind:t_id="team.tournament_id" v-bind:value="team.id">@{{team['name']}}</option>
         </select><br/>
