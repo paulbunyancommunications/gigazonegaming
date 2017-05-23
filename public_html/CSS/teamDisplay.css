@@ -1,0 +1,135 @@
+body{
+    background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');
+}
+.startImage{
+    text-align:center;
+    padding: 50px 10px 10px 10px;
+}
+.startForm{
+    text-align:center;
+}
+.hidden{
+    display: none;
+}
+select{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FBB042;
+    border: none;
+    margin: 5px 5px 5px 5px;
+
+}
+button{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FBB042;
+    border: none;
+    margin: 5px 5px 5px 5px;
+
+}
+h1{
+    text-align:center;
+    color:#FBB042;
+    font-size:3vw;
+}
+td{
+    text-align:center;
+}
+.summonerName{
+    color:#FBB042;
+    vertical-align:7px;
+    font-size:1.5vw;
+}
+.icon{
+    max-width:30px;
+    padding: 0px 0px 0px 10px;
+}
+.playerInfo{
+    color:#FBB042;
+}
+.WinLoss{
+    float:left;
+    margin-left:20px;
+}
+.rank{
+    float:right;
+    margin-right:20px;
+}
+.playerImage{
+    max-width:100%;
+    height:auto;
+}
+.players{
+
+}
+.giga_teamImage{
+    width:300px
+}
+.teamFooter{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align:center;
+}
+@media (min-width:1200px) {
+    .col-lg {
+        width: 20%!important;
+        float: left;
+    }
+}
+@media (max-width:1199px) {
+    .col-lg {
+        width: 33%!important;
+        float: left;
+    }
+    .summonerName{
+        color:#FBB042;
+        vertical-align:7px;
+        font-size:2vw;
+    }
+    h1{
+        text-align:center;
+        color:#FBB042;
+        font-size:4vw;
+    }
+}
+@media (max-width:850px) {
+    .col-lg {
+        width: 50%!important;
+        float: left;
+    }
+    .summonerName{
+        color:#FBB042;
+        vertical-align:7px;
+        font-size:3vw;
+    }
+    h1{
+        text-align:center;
+        color:#FBB042;
+        font-size:5vw;
+    }
+}
+@media (max-width:450px) {
+    .col-lg {
+        width: 100%!important;
+        float: left;
+    }
+    .summonerName{
+        color:#FBB042;
+        vertical-align:7px;
+        font-size:4vw;
+    }
+    h1{
+        text-align:center;
+        color:#FBB042;
+        font-size:6vw;
+    }
+}
