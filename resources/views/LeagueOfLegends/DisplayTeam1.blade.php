@@ -1,8 +1,6 @@
-@extends('Layout')
+@extends('LeagueOfLegends/Layout')
 
 @section('content')
-    <?php $team = filter_input(INPUT_GET,"team1");?>
-    <h1><?php echo $team; ?></h1>
     <?php
     $playerNames = array(0=> 'KingMorpheus2131','Spartan7Warrior','TheDestroyerOfWorlds','CoolCat56','Dominator6789');
     $icons = array(0=> 'http://news.cdn.leagueoflegends.com/public/images/articles/2014/november_2014/sru-beta/Red.jpg','http://news.cdn.leagueoflegends.com/public/images/articles/2014/november_2014/sru-beta/Red.jpg','http://news.cdn.leagueoflegends.com/public/images/articles/2014/november_2014/sru-beta/Red.jpg','http://news.cdn.leagueoflegends.com/public/images/articles/2014/november_2014/sru-beta/Red.jpg','http://news.cdn.leagueoflegends.com/public/images/articles/2014/november_2014/sru-beta/Red.jpg');

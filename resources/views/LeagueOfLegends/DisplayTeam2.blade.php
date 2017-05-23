@@ -1,4 +1,4 @@
-@extends('Layout')
+@extends('LeagueOfLegends/Layout')
 
 @section('content')
     <?php $team2 = filter_input(INPUT_GET,"team2");?>

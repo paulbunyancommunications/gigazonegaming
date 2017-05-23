@@ -7,6 +7,7 @@ use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
 
 class GameDisplayController extends Controller
 {
@@ -26,7 +27,10 @@ class GameDisplayController extends Controller
 
     public function teamViewDisplay()
     {
+        $team = Team::where('name','=','Power Rangers')->get();
+        $team = json_encode($team);
 
+        return view('/LeagueOfLegends/DisplayTeam1')->withTeam($team);
     }
 
     public function setTeams()
