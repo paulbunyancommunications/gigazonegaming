@@ -35,7 +35,7 @@ class FilldbWithTestData extends Command
      */
     public function handle()
     {
-       dd("Stoped for testing");
+       //dd("Stoped for testing");
         $this->fillDB();
         dd("This is working");
     }

@@ -9,22 +9,22 @@
 
 <?php for($i = 0; $i < count($team); $i++){ ?>
     @section('Player' . $i . 'Name')
-        <? echo $team[$i]->getSummonerName(); ?>
+        <? echo "spartan7Warrior" ?>
     @stop
     @section('Player' . $i . 'Icon')
-        <img class="icon" src="<? echo $team[$i]->getIcon(); ?>"/>
+        <img class="icon" src=""/>
     @stop
     @section('Player' . $i . 'SoloWinLoss')
-        <? echo $team[$i]->getSoloRankedWinLoss(); ?>
+        <? echo "12|12" ?>
     @stop
     @section('Player' . $i . 'SoloRank')
-        <? echo $team[$i]->getSoloRank(); ?>
+        <? echo "SILVER III" ?>
     @stop
     @section('Player' . $i . 'FlexWinLoss')
-        <? echo $team[$i]->getFLEXRankedWinLoss(); ?>
+        <? echo "12|12" ?>
     @stop
     @section('Player' . $i . 'FlexRank')
-        <? echo $team[$i]->getFLEXRank(); ?>
+        <? echo "SILVER III" ?>
     @stop
     @section('Player' . $i . 'Champion')
         <img class="playerImage" src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
