@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{ config('app.locale')}}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/CSS/teamDisplay.css">
+    <link rel="stylesheet" type="text/css" href="/LeagueOfLegendsDisplay/CSS/teamDisplay.css">
     <Title>Tournament</Title>
 </head>
 <body>
@@ -17,6 +17,10 @@
         <select id="Team">
             <option id="defaultTeam" value="default">Select a Team</option>
             <option  v-for="team in teams" v-model="selected" v-bind:t_id="team.tournament_id" v-bind:value="team.id">@{{team['name']}}</option>
+        </select>
+        <select id="Color">
+            <option id="defaultColor" value="default">Select a Color</option>
+            <option  v-for="color in colors" v-model="selected">@{{ color }}</option>
         </select><br/>
         <button id="submit" type="submit" onclick="viewTeam();">Submit</button>
     </form>
@@ -36,10 +40,11 @@
         data: {
             tournaments: {!!$tournaments!!},
             teams: {!!$teams!!},
+            colors: ["Red","Blue"],
         }
 
     });
 </script>
-<script src="/JS/teamDisplay.js"></script>
+<script src="/LeagueOfLegendsDisplay/JS/teamDisplay.js"></script>
 </body>
 </html>

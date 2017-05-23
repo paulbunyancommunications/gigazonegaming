@@ -118,5 +118,5 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  */
 
 Route::get('/GameDisplay/start','GameDisplayController@startGameDisplay');
-Route::get('/GameDisplay/{tournament}/{team}','GameDisplayController@teamViewDisplay');
+Route::get('/GameDisplay/{tournament}/{team}/{color}','GameDisplayController@teamViewDisplay');
 
