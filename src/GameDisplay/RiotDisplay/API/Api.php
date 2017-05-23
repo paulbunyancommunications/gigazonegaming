@@ -15,6 +15,13 @@ class Api{
     protected $summonerID;
     protected $Icon;
     protected $LeagueV3Json;
+    protected $currentGameInfo;
+    protected $championId;
+    protected $championName;
+    protected $championImg;
+    protected $currentGameStatus = false;
+
+
 
 # Constructor
 #----------------------------------------------------------------------
@@ -34,6 +41,20 @@ class Api{
         $this->setLeagueV3Json();
 
     }
+
+# Methods
+#----------------------------------------------------------------------
+    public function checkCurrentGameStatus(){
+        $request = new Request('Get', 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey);
+        $response = $this->client->send($request);
+//        dd($response->getStatusCode());
+        if($response->getStatusCode() == '200'){
+            $this->currentGameStatus = true;
+        }
+        return $this->currentGameStatus;
+    }
+
+
 
 # Setters
 #----------------------------------------------------------------------
@@ -55,6 +76,42 @@ class Api{
         $this->summonerID = $Info->id;
     }
 
+    public function setCurrentGameInfo(){
+        #Gets players states json
+        $request = new Request('Get', 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey);
+        $response = $this->client->send($request);
+        $Info = json_decode($response->getBody());
+        $this->currentGameInfo = $Info;
+
+
+    }
+
+    public function setChampionId(){
+
+        foreach($this->currentGameInfo->participants as $player){
+            if($player->summonerId == $this->summonerID){
+                $this->championId = $player->championId;
+            }
+        }
+
+    }
+
+    Public function setChampionName($ChampionId){
+        $apiKey = $_ENV['RIOT_API_KEY'];
+
+        $request = new Request('GET', "https://na.api.riotgames.com/api/lol/static-data/na/v1.2/champion/". $ChampionId ."?api_key=" . $apiKey);
+        $response = $this->client->send($request);
+        $Info = json_decode($response->getBody());
+        $this->championName = $Info->key;
+
+    }
+
+    public function setChampionIMG($ChampionName){
+
+        $this->championImg = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" . $ChampionName . "_0.jpg";
+    }
+
+
 # Getters
 #----------------------------------------------------------------------
     public function getSummonerId(){
@@ -68,13 +125,22 @@ class Api{
     public function getSoloRankedWinLoss(){
         $soloRankWinsLosses = "";
 
-        foreach ($this->LeagueV3Json as $RankType){
-            if($RankType->queueType == "RANKED_SOLO_5x5"){
-                $soloRankWinsLosses = $RankType->wins . " | " . $RankType->losses;
+        #if player has a rank
+        if($this->LeagueV3Json != []){
+            foreach ($this->LeagueV3Json as $RankType){
+                #if player has solo rank
+                if($RankType->queueType == "RANKED_SOLO_5x5"){
+                    $soloRankWinsLosses = $RankType->wins . " | " . $RankType->losses;
+                }
+                #not solo ranked
+                else{
+                    $soloRankWinsLosses = "Unranked";
+                }
             }
-            elseif ($soloRankWinsLosses == ""){
-                $soloRankWinsLosses = "Unranked";
-            }
+        }
+        #player does not have a rank
+        else{
+            $soloRankWinsLosses = "Unranked";
         }
         return $soloRankWinsLosses;
     }
@@ -82,65 +148,84 @@ class Api{
     public function getSoloRank(){
         $soloRank = "";
 
-        foreach ($this->LeagueV3Json as $RankType){
-            if($RankType->queueType == "RANKED_SOLO_5x5"){
-                $soloRank = $RankType->tier . " " . $RankType->rank;
-            }
-            elseif ($soloRank == ""){
-                $soloRank = "Unranked";
+        #if player has a rank
+        if($this->LeagueV3Json != []){
+            foreach ($this->LeagueV3Json as $RankType){
+                #if player has solo rank
+                if($RankType->queueType == "RANKED_SOLO_5x5"){
+                    $soloRank = $RankType->tier . " " . $RankType->rank;
+                }
+                #not solo ranked
+                else{
+                    $soloRank = "Unranked";
+                }
             }
         }
-
+        #player does not have a rank
+        else{
+            $soloRank = "Unranked";
+        }
         return $soloRank;
     }
 
     public function getFLEXRankedWinLoss(){
+
+
         $FLEXRankWinsLosses = "";
 
-        foreach ($this->LeagueV3Json as $RankType){
-            if($RankType->queueType == "RANKED_FLEX_SR"){
-                $FLEXRankWinsLosses = $RankType->wins . " | " . $RankType->losses;
+        #if player has a rank
+        if($this->LeagueV3Json != []){
+            foreach ($this->LeagueV3Json as $RankType){
+                #if player has solo rank
+                if($RankType->queueType == "RANKED_FLEX_SR"){
+                    $FLEXRankWinsLosses = $RankType->wins . " | " . $RankType->losses;
+                }
+                #not flex ranked
+                else{
+                    $FLEXRankWinsLosses = "Unranked";
+                }
             }
-            elseif ($FLEXRankWinsLosses == ""){
-                $FLEXRankWinsLosses = "Unranked";
-            }
-
         }
-
+        #player does not have a rank
+        else{
+            $FLEXRankWinsLosses = "Unranked";
+        }
         return $FLEXRankWinsLosses;
     }
 
     public function getFLEXRank(){
+
         $FLEXRank = "";
 
-        foreach ($this->LeagueV3Json as $RankType){
-            if($RankType->queueType == "RANKED_FLEX_SR"){
-                $FLEXRank = $RankType->tier . " " . $RankType->rank;
-            }
-            elseif ($FLEXRank == ""){
-                $FLEXRank = "Unranked";
+        #if player has a rank
+        if($this->LeagueV3Json != []){
+            foreach ($this->LeagueV3Json as $RankType){
+                #if player has solo rank
+                if($RankType->queueType == "RANKED_FLEX_SR"){
+                    $FLEXRank = $RankType->tier . " " . $RankType->rank;
+                }
+                #not flex ranked
+                else{
+                    $FLEXRank = "Unranked";
+                }
             }
         }
-
+        #player does not have a rank
+        else{
+            $FLEXRank = "Unranked";
+        }
         return $FLEXRank;
     }
 
 #These will be called every 2 seconds till this info has been grabbed successfully
-    Public function getChampionName($ChampionId){
-        $apiKey = $_ENV['RIOT_API_KEY'];
-
-        $request = new Request('GET', "https://na.api.riotgames.com/api/lol/static-data/na/v1.2/champion/". $ChampionId ."?api_key=" . $apiKey);
-        $response = $this->client->send($request);
-        $Info = json_decode($response->getBody());
-
-        ///return champion name
-
+    public function getChampion(){
+        $this->setCurrentGameInfo();
+        $this->setChampionId();
+        $this->setChampionName($this->championId);
+        $this->setChampionIMG($this->championName);
+        return $this->championImg;
     }
 
-    public function getChampionIMG($ChampionName){
-
-        return "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" . $ChampionName . "_0.jpg";
-    }
 
 
 }

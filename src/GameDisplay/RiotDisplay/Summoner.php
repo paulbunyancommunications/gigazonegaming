@@ -38,10 +38,18 @@ class Summoner{
         $this->setFLEXRankedWinLoss();
 
 
+
 //        dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
 //        $this->setChampion();
 //        $this->setSoloRank();
     }
+# Setters
+#----------------------------------------------------------------------
+    public function checkCurrentGameStatus(){
+        $status = $this->api->checkCurrentGameStatus();
+        return $status;
+    }
+
 # Setters
 #----------------------------------------------------------------------
     public function setSummonerName($summonerName){

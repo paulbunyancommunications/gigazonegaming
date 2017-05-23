@@ -8,12 +8,13 @@ use App\Models\Championship\Tournament;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
+use GameDisplay\RiotDisplay\Summoner;
 
 class GameDisplayController extends Controller
 {
     protected $tournaments = array();
     protected $teams = array();
-    protected $team = array();
+    public $team = array();
 
     #for testing purposes
     public function __construct()
@@ -34,10 +35,9 @@ class GameDisplayController extends Controller
 
     public function teamViewDisplay($tournament, $team)
     {
-        dd($tournament, $team);
-
-        $this->setTeam($team, $tournament);
-        return view();
+//        dd($tournament, $team);
+////        $this->setTeam($team, $tournament);
+////        return view();
     }
 
     public function setTeams()

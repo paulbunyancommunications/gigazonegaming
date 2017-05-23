@@ -3,7 +3,7 @@ namespace App\Console\Commands;
 
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\GameDisplay\GameDisplayController;
+use App\Http\Controllers\GameDisplayController;
 
 class testGameDispalyController extends Command
 {
@@ -37,14 +37,21 @@ class testGameDispalyController extends Command
     {
 
         $controller = new GameDisplayController();
-        $TeamName = "Power Rangers";
+        $TeamName = "TestTeamSingle";
         $TournamentName = "gigazone-gaming-2016-league-of-legends";
         $controller->setTeam($TeamName, $TournamentName);
 
         $string ="";
-        dd("Here");
+
+
         foreach($controller->team as $player){
-            $string = "/n/nSummoner Name: " . $player->getSummonerName() . "/nSummoner Icon: " . $player->getIcon . "/nSolo Rank: " . $player->getSoloRank() . "/nSolo Win|Loss: " . $player->getSoloRankedWinLoss() . "/nFlex Rank:" . $player->getFLEXRank() . "/nFlex Win|Loss:" . $player->getFLEXRankedWinLoss() . $string;
+            if($player->checkCurrentGameStatus() != false){
+                $player->setChampion();
+            }
+            else{
+                dd("Not Ready");
+            }
+            $string = "Summoner Name: " . $player->getSummonerName() . "\nSummoner Icon: " . $player->getIcon() . "\nSolo Rank: " . $player->getSoloRank() . "\nSolo Win|Loss: " . $player->getSoloRankedWinLoss() . "\nFlex Rank:" . $player->getFLEXRank() . "\nFlex Win|Loss:" . $player->getFLEXRankedWinLoss() . "\nChampion: " . $player->getChampion() . $string;
         }
 
         dd($string);
