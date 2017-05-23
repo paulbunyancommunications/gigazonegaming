@@ -25,9 +25,9 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/startPage')->withTournaments($tournaments)->withTeams($teams);
     }
 
-    public function teamViewDisplay()
+    public function teamViewDisplay($tournament,$team)
     {
-        $team = Team::where('name','=','Power Rangers')->get();
+        $team = Team::where('name','=',$team)->get();
         $team = json_encode($team);
 
         return view('/LeagueOfLegends/DisplayTeam1')->withTeam($team);
