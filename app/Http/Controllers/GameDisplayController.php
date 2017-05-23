@@ -33,11 +33,23 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/startPage')->withTournaments($tournaments)->withTeams($teams);
     }
 
-    public function teamViewDisplay($tournament, $team)
+    public function teamViewDisplay($tournament,$team,$color)
     {
-//        dd($tournament, $team);
-////        $this->setTeam($team, $tournament);
-////        return view();
+        $this->setTeam($team,$tournament);
+
+        if($color == "Red"){
+            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
+        }
+        else{
+            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
+        }
+        $team = Team::where('name','=',$team)->first();
+
+        return view('/LeagueOfLegends/DisplayTeam', [
+            'teamName' => $team->name,
+            'color' => $color,
+            'team' => $this->team
+        ]);
     }
 
     public function setTeams()

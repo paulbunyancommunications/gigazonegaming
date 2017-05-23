@@ -105,6 +105,8 @@ class Summoner{
         return $this->icon;
     }
 
+
+
     /**
      * @return mixed
      */
@@ -168,4 +170,5 @@ class Summoner{
     {
         return $this->summonerName;
     }
+
 }

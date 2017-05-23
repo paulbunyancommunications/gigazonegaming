@@ -35,14 +35,14 @@ class FilldbWithTestData extends Command
      */
     public function handle()
     {
-//       dd("Stoped for testing");
+       dd("Stoped for testing");
         $this->fillDB();
         dd("This is working");
     }
     public function fillDB(){
         #Captian
         $Captian = new Player();
-        $Captian->setAttribute('username', "spartan7warrior");
+        $Captian->setAttribute('username', "KingMorpheus2131");
         $Captian->setAttribute('email', "simoncecer7@gmail.com");
         $Captian->setAttribute('name', "Simon");
         $Captian->setAttribute('phone', "6125596450");
@@ -50,7 +50,7 @@ class FilldbWithTestData extends Command
         #Team
         $team = new Team();
         $team->tournament_id = 1;
-        $team->name =  "TestTeamSingle";
+        $team->name =  "Power Rangers";
         #add captain and save the team
         $team->captain = $Captian->id;
         $team->save();
@@ -60,23 +60,23 @@ class FilldbWithTestData extends Command
             'game' => 2,
             'team' => $team,
         ]);
-//        $playerUserNameArray = array('KingMorpheus2131', 'spartan7warrior', 'ReckonStuff', 'ThatBoy18');
-//        $i = 0;
-//        #creat players for team
-//        foreach ($playerUserNameArray as $Player){
-//            $player = new Player();
-//            $player->username = $Player;
-//            $player->email = "ready_player_" . $i . "@gigazonegaming.com";
-//            $player->phone = "6125555555";
-//            $player->save();
-//            // attach player to team/tournament/game
-//            $player::createRelation([
-//                'player' => $player,
-//                'tournament' => 1,
-//                'game' => 2,
-//                'team' => $team,
-//            ]);
-//            $i++;
-//        }
+        $playerUserNameArray = array('Juanpablomontoya', 'spartan7warrior', 'ReckonStuff', 'ThatBoy18');
+        $i = 0;
+        #creat players for team
+        foreach ($playerUserNameArray as $Player){
+            $player = new Player();
+            $player->username = $Player;
+            $player->email = "ready_player_" . $i . "@gigazonegaming.com";
+            $player->phone = "6125555555";
+            $player->save();
+            // attach player to team/tournament/game
+            $player::createRelation([
+                'player' => $player,
+                'tournament' => 1,
+                'game' => 2,
+                'team' => $team,
+            ]);
+            $i++;
+        }
     }
 }

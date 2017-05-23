@@ -82,13 +82,11 @@ td{
 @media (min-width:1200px) {
     .col-lg {
         width: 20%!important;
-        float: left;
     }
 }
 @media (max-width:1199px) {
     .col-lg {
         width: 33%!important;
-        float: left;
     }
     .summonerName{
         color:#FBB042;
@@ -104,7 +102,6 @@ td{
 @media (max-width:850px) {
     .col-lg {
         width: 50%!important;
-        float: left;
     }
     .summonerName{
         color:#FBB042;
@@ -120,7 +117,6 @@ td{
 @media (max-width:450px) {
     .col-lg {
         width: 100%!important;
-        float: left;
     }
     .summonerName{
         color:#FBB042;
@@ -132,4 +128,31 @@ td{
         color:#FBB042;
         font-size:6vw;
     }
+}
+.spinner-container{
+    height: 100%;
+    width: 100%;
+    overflow:hidden;
+}
+.image{
+    height: 100%;
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+}
+
+.spinner-overlay, .spinner-image{
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    position: absolute;
+    display:block;
+}
+.spinner-overlay{
+
+}
+.spinner-image{
+    background: #000 url("/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif") center center no-repeat;
+
+
 }
