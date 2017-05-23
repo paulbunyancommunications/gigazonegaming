@@ -40,7 +40,7 @@ h1{
     color:#FBB042;
     font-size:3vw;
 }
-td{
+.playerNameContainer{
     text-align:center;
 }
 .summonerName{
@@ -56,16 +56,17 @@ td{
     color:#FBB042;
 }
 .WinLoss{
-    float:left;
-    margin-left:20px;
+    margin-left:10px;
+    margin-right:10px;
 }
 .rank{
-    float:right;
-    margin-right:20px;
+    margin-left:10px;
+    margin-right:10px;
 }
 .playerImage{
     max-width:100%;
     height:auto;
+    padding: 5px 5px 5px 5px;
 }
 .players{
 
@@ -81,12 +82,14 @@ td{
 }
 @media (min-width:1200px) {
     .col-lg {
-        width: 20%!important;
+        width: 19%!important;
+        display:inline-block;
     }
 }
 @media (max-width:1199px) {
     .col-lg {
         width: 33%!important;
+        display:inline-block;
     }
     .summonerName{
         color:#FBB042;
@@ -101,7 +104,8 @@ td{
 }
 @media (max-width:850px) {
     .col-lg {
-        width: 50%!important;
+        width: 45%!important;
+        display:inline-block;
     }
     .summonerName{
         color:#FBB042;
@@ -114,9 +118,10 @@ td{
         font-size:5vw;
     }
 }
-@media (max-width:450px) {
+@media (max-width:492px) {
     .col-lg {
         width: 100%!important;
+        display:inline-block;
     }
     .summonerName{
         color:#FBB042;
@@ -129,30 +134,16 @@ td{
         font-size:6vw;
     }
 }
-.spinner-container{
-    height: 100%;
-    width: 100%;
-    overflow:hidden;
+.mainDiv{
+    text-align:center;
 }
-.image{
-    height: 100%;
-    width: 100%;
-    padding: 5px 5px 5px 5px;
-}
-
-.spinner-overlay, .spinner-image{
-    height:100%;
-    width:100%;
-    top:0;
-    left:0;
-    position: absolute;
-    display:block;
-}
-.spinner-overlay{
-
-}
-.spinner-image{
-    background: #000 url("/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif") center center no-repeat;
-
-
+.spinner{
+    /*background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');*/
+    /*background-size: 300px 560px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: center;*/
+    /*height: 560px;*/
+    /*width: 300px;*/
+    overflow: hidden;
+    text-align:center;
 }
