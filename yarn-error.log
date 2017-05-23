@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/nodejs /usr/share/yarn/bin/yarn.js add node-sass
+  /usr/bin/nodejs /usr/share/yarn/bin/yarn.js add jscs
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -4159,4 +4159,4 @@ Lockfile:
       wordwrap "0.0.2"
 
 Trace: 
-  Error: EINVAL: invalid argument, symlink '../../../semver/bin/semver' -> '/var/www/html/node_modules/accord/node_modules/.bin/semver'
+  Error: EINVAL: invalid argument, symlink '../../../acorn/bin/acorn' -> '/var/www/html/node_modules/astw/node_modules/.bin/acorn'

@@ -15,6 +15,13 @@ class GameDisplayController extends Controller
     protected $teams = array();
     protected $team = array();
 
+    #for testing purposes
+    public function __construct()
+    {
+
+    }
+
+
     public function startGameDisplay()
     {
         $tournaments = Tournament::select('id', 'name')->get()->toArray();
@@ -25,12 +32,12 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/startPage')->withTournaments($tournaments)->withTeams($teams);
     }
 
-    public function teamViewDisplay()
+    public function teamViewDisplay($tournament, $team)
     {
-        $team = Team::where('name','=','Power Rangers')->get();
-        $team = json_encode($team);
+        dd($tournament, $team);
 
-        return view('/LeagueOfLegends/DisplayTeam1')->withTeam($team);
+        $this->setTeam($team, $tournament);
+        return view();
     }
 
     public function setTeams()
@@ -41,9 +48,30 @@ class GameDisplayController extends Controller
     {
 
     }
-    public function setTeam()
+    public function setTeam($TeamName, $TournamentName)
     {
 
+        #Select the team that has been chosen from the start page
+        $team = Team::where('name', $TeamName)->first();
+        $players = $team->players;
+
+        #Loop through player of the chosen team and create an array of player objects
+        foreach($players as $player){
+
+            #Creat player object depending on which game is selected.
+            switch ($TournamentName){
+                #LOL
+                case str_contains($TournamentName, "league-of-legends"):
+                    $summoner = new Summoner($player->username);
+                    array_push($this->team, $summoner);
+                    break;
+                #Overwatch
+
+                #Default
+                default:
+                    break;
+            }
+        }
     }
 
 }
