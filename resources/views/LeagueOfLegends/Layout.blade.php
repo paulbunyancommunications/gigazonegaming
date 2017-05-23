@@ -9,48 +9,38 @@
     <Title>Tournament</Title>
 </head>
 <body>
-<div id="other" style=@yield('Color')>
+<div class="mainDiv" id="other" style=@yield('Color')>
     <h1>@yield('TeamName')</h1>
 
-    <div class='col-lg' style='display:inline-block;float:none;'>
-        <div><div><b class="summonerName">@yield('Player0Name')</b>@yield('Player0Icon')</div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Solo: </b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player0SoloWinLoss')</b> <b class="rank">Rank: @yield('Player0SoloRank')</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Flex:</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player0FlexWinLoss')</b> <b class="rank">Rank: @yield('Player0FlexWinLoss')</b></div></div>
-        <div><div class="spinner-container">@yield('Player0Champion')</div></div>
+    <div class='col-lg'>
+        <div><div class="playerNameContainer"><b class="summonerName">@yield('Player0Name')</b>@yield('Player0Icon')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player0SoloWinLoss')</b> <b class="rank">Rank:@yield('Player0SoloRank')</b></div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player0FlexWinLoss')</b> <b class="rank">Rank: @yield('Player0FlexRank')</b></div></div>
+        <div><div class="spinner">@yield('Player0Champion')</div></div>
     </div>
-    <div class='col-lg' style='display:inline-block;float:none;'>
-        <div><div><b class="summonerName">@yield('Player1Name')</b>@yield('Player1Icon')</div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Solo: </b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player1SoloWinLoss')</b> <b class="rank">Rank: @yield('Player1SoloRank')</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Flex:</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player1FlexWinLoss')</b> <b class="rank">Rank: @yield('Player1FlexWinLoss')</b></div></div>
-        <div><div class="spinner-container">@yield('Player1Champion')</div></div>
+    <div class='col-lg'>
+        <div><div class="playerNameContainer"><b class="summonerName">@yield('Player1Name')</b>@yield('Player1Icon')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player1SoloWinLoss')</b> <b class="rank">Rank:@yield('Player1SoloRank')</b></div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player1FlexWinLoss')</b> <b class="rank">Rank: @yield('Player1FlexRank')</b></div></div>
+        <div><div class="spinner">@yield('Player1Champion')</div></div>
     </div>
-    <div class='col-lg' style='display:inline-block;float:none;'>
-        <div><div><b class="summonerName">@yield('Player2Name')</b>@yield('Player2Icon')</div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Solo: </b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player2SoloWinLoss')</b> <b class="rank">Rank: @yield('Player2SoloRank')</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Flex:</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player2FlexWinLoss')</b> <b class="rank">Rank: @yield('Player2FlexWinLoss')</b></div></div>
-        <div><div class="spinner-container">@yield('Player2Champion')</div></div>
+    <div class='col-lg'>
+        <div><div class="playerNameContainer"><b class="summonerName">@yield('Player2Name')</b>@yield('Player2Icon')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player2SoloWinLoss')</b> <b class="rank">Rank:@yield('Player2SoloRank')</b></div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player2FlexWinLoss')</b> <b class="rank">Rank: @yield('Player2FlexRank')</b></div></div>
+        <div><div class="spinner">@yield('Player2Champion')</div></div>
     </div>
-    <div class='col-lg' style='display:inline-block;float:none;'>
-        <div><div><b class="summonerName">@yield('Player3Name')</b>@yield('Player3Icon')</div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Solo: </b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player3SoloWinLoss')</b> <b class="rank">Rank: @yield('Player3SoloRank')</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Flex:</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player3FlexWinLoss')</b> <b class="rank">Rank: @yield('Player3FlexWinLoss')</b></div></div>
-        <div><div class="spinner-container">@yield('Player3Champion')</div></div>
+    <div class='col-lg'>
+        <div><div class="playerNameContainer"><b class="summonerName">@yield('Player3Name')</b>@yield('Player3Icon')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player3SoloWinLoss')</b> <b class="rank">Rank:@yield('Player3SoloRank')</b></div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player3FlexWinLoss')</b> <b class="rank">Rank: @yield('Player3FlexRank')</b></div></div>
+        <div><div class="spinner">@yield('Player3Champion')</div></div>
     </div>
-    <div class='col-lg' style='display:inline-block;float:none;'>
-        <div><div><b class="summonerName">@yield('Player4Name')</b>@yield('Player4Icon')</div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Solo: </b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player4SoloWinLoss')</b> <b class="rank">Rank: @yield('Player4SoloRank')</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Flex:</b></div></div>
-        <div><div class="playerInfo"><b class="WinLoss">Win/Loss: @yield('Player4FlexWinLoss')</b> <b class="rank">Rank: @yield('Player4FlexWinLoss')</b></div></div>
-        <div><div class="spinner-container">@yield('Player4Champion')</div></div>
+    <div class='col-lg'>
+        <div><div class="playerNameContainer"><b class="summonerName">@yield('Player4Name')</b>@yield('Player4Icon')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player4SoloWinLoss')</b> <b class="rank">Rank:@yield('Player4SoloRank')</b></div></div>
+        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player4FlexWinLoss')</b> <b class="rank">Rank: @yield('Player4FlexRank')</b></div></div>
+        <div><div class="spinner">@yield('Player4Champion')</div></div>
     </div>
 </div>
 

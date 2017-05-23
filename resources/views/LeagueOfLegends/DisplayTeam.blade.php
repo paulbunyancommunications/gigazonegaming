@@ -12,7 +12,7 @@
         <? echo $team[$i]->getSummonerName(); ?>
     @stop
     @section('Player' . $i . 'Icon')
-        <img src="<? echo $team[$i]->getIcon(); ?>"/>
+        <img class="icon" src="<? echo $team[$i]->getIcon(); ?>"/>
     @stop
     @section('Player' . $i . 'SoloWinLoss')
         <? echo $team[$i]->getSoloRankedWinLoss(); ?>
@@ -23,10 +23,10 @@
     @section('Player' . $i . 'FlexWinLoss')
         <? echo $team[$i]->getFLEXRankedWinLoss(); ?>
     @stop
-    @section('Player' . $i . 'FlexWinLoss')
+    @section('Player' . $i . 'FlexRank')
         <? echo $team[$i]->getFLEXRank(); ?>
     @stop
     @section('Player' . $i . 'Champion')
-        <img src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
+        <img class="playerImage" src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
     @stop
 <?php }; ?>
