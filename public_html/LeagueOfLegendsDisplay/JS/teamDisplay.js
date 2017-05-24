@@ -35,7 +35,6 @@ function showTeams(){
     });
 }
 showTeams();
-
 function teamView(){
     window.open('https://gigazonegaming.localhost/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }

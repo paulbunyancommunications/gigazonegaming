@@ -29,4 +29,6 @@
     @section('Player' . $i . 'Champion')
         <img class="playerImage" src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
     @stop
+
+
 <?php }; ?>

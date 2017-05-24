@@ -131,6 +131,7 @@ class Api{
                 #if player has solo rank
                 if($RankType->queueType == "RANKED_SOLO_5x5"){
                     $soloRankWinsLosses = $RankType->wins . " | " . $RankType->losses;
+                    break;
                 }
                 #not solo ranked
                 else{
@@ -154,6 +155,7 @@ class Api{
                 #if player has solo rank
                 if($RankType->queueType == "RANKED_SOLO_5x5"){
                     $soloRank = $RankType->tier . " " . $RankType->rank;
+                    break;
                 }
                 #not solo ranked
                 else{
@@ -179,6 +181,7 @@ class Api{
                 #if player has solo rank
                 if($RankType->queueType == "RANKED_FLEX_SR"){
                     $FLEXRankWinsLosses = $RankType->wins . " | " . $RankType->losses;
+                    break;
                 }
                 #not flex ranked
                 else{
@@ -203,6 +206,7 @@ class Api{
                 #if player has solo rank
                 if($RankType->queueType == "RANKED_FLEX_SR"){
                     $FLEXRank = $RankType->tier . " " . $RankType->rank;
+                    break;
                 }
                 #not flex ranked
                 else{
