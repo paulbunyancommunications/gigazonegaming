@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale')}}">
+<html lang="{{ config('app.locale')}}" style="@yield('Color')">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,38 +9,38 @@
     <Title>Tournament</Title>
 </head>
 <body>
-<div class="mainDiv" id="other" style=@yield('Color')>
+<div class="mainDiv" id="other">
     <h1>@yield('TeamName')</h1>
 
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player0Name')</b>@yield('Player0Icon')</div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player0SoloWinLoss')</b> <b class="rank">Rank:@yield('Player0SoloRank')</b></div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player0FlexWinLoss')</b> <b class="rank">Rank: @yield('Player0FlexRank')</b></div></div>
-        <div><div class="spinner">@yield('Player0Champion')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Solo:<br/> </b><b>Win/Loss:</b> @yield('Player0SoloWinLoss') <b>Rank:</b> @yield('Player0SoloRank')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player0FlexWinLoss') <b>Rank:</b> @yield('Player0FlexRank')</div></div>
+        <div>@yield('Player0Champion')<div style="display:none;" id="divB0" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player1Name')</b>@yield('Player1Icon')</div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player1SoloWinLoss')</b> <b class="rank">Rank:@yield('Player1SoloRank')</b></div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player1FlexWinLoss')</b> <b class="rank">Rank: @yield('Player1FlexRank')</b></div></div>
-        <div><div class="spinner">@yield('Player1Champion')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Solo:<br/> </b><b>Win/Loss:</b> @yield('Player1SoloWinLoss') <b>Rank:</b> @yield('Player1SoloRank')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player1FlexWinLoss') <b>Rank:</b> @yield('Player1FlexRank')</div></div>
+        <div>@yield('Player1Champion')<div style="display:none;" id="divB1" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player2Name')</b>@yield('Player2Icon')</div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player2SoloWinLoss')</b> <b class="rank">Rank:@yield('Player2SoloRank')</b></div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player2FlexWinLoss')</b> <b class="rank">Rank: @yield('Player2FlexRank')</b></div></div>
-        <div><div class="spinner">@yield('Player2Champion')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Solo:<br/> </b><b>Win/Loss:</b> @yield('Player2SoloWinLoss') <b>Rank:</b> @yield('Player2SoloRank')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player2FlexWinLoss') <b>Rank:</b> @yield('Player2FlexRank')</div></div>
+        <div>@yield('Player2Champion')<div style="display:none;" id="divB2" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player3Name')</b>@yield('Player3Icon')</div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player3SoloWinLoss')</b> <b class="rank">Rank:@yield('Player3SoloRank')</b></div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player3FlexWinLoss')</b> <b class="rank">Rank: @yield('Player3FlexRank')</b></div></div>
-        <div><div class="spinner">@yield('Player3Champion')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Solo:<br/> </b><b>Win/Loss:</b> @yield('Player3SoloWinLoss') <b>Rank:</b> @yield('Player3SoloRank')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player3FlexWinLoss') <b>Rank:</b> @yield('Player3FlexRank')</div></div>
+        <div>@yield('Player3Champion')<div style="display:none;" id="divB3" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player4Name')</b>@yield('Player4Icon')</div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Solo:</b><b class="WinLoss">Win/Loss:@yield('Player4SoloWinLoss')</b> <b class="rank">Rank:@yield('Player4SoloRank')</b></div></div>
-        <div><div class="playerInfo playerNameContainer"><b class="WinLoss">Flex:</b><b class="WinLoss">Win/Loss: @yield('Player4FlexWinLoss')</b> <b class="rank">Rank: @yield('Player4FlexRank')</b></div></div>
-        <div><div class="spinner">@yield('Player4Champion')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Solo:<br/> </b><b>Win/Loss:</b> @yield('Player4SoloWinLoss') <b>Rank:</b> @yield('Player4SoloRank')</div></div>
+        <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player4FlexWinLoss') <b>Rank:</b> @yield('Player4FlexRank')</div></div>
+        <div>@yield('Player4Champion')<div style="display:none;" id="divB4" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
 </div>
 
@@ -53,4 +53,5 @@
         src="https://code.jquery.com/jquery-3.2.1.js"
         integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
         crossorigin="anonymous"></script>
+<script src="/LeagueOfLegendsDisplay/JS/teamDisplay.js"></script>
 </html>

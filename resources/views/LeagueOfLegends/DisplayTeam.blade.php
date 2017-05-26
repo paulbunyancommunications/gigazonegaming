@@ -1,7 +1,7 @@
 @extends('LeagueOfLegends/Layout')
 
 @section('TeamName')
- <? echo $teamName; ?>
+ <? echo "Power Rangers"; ?>
 @stop
 @section('Color')
     <? echo $color; ?>
@@ -9,10 +9,10 @@
 
 <?php for($i = 0; $i < count($team); $i++){ ?>
     @section('Player' . $i . 'Name')
-        <? echo "spartan7Warrior" ?>
+        <? echo "Spartan7Warrior" ?>
     @stop
     @section('Player' . $i . 'Icon')
-        <img class="icon" src=""/>
+        <img class="icon" src="https://vignette2.wikia.nocookie.net/leagueoflegends/images/0/00/ProfileIcon0026.png/revision/latest/scale-to-width-down/64?cb=20170517191655"/>
     @stop
     @section('Player' . $i . 'SoloWinLoss')
         <? echo "12|12" ?>
@@ -27,6 +27,6 @@
         <? echo "SILVER III" ?>
     @stop
     @section('Player' . $i . 'Champion')
-        <img class="playerImage" src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
+        <?php echo '<div id="divA'. $i .'" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"></div></div>' ; ?>
     @stop
 <?php }; ?>

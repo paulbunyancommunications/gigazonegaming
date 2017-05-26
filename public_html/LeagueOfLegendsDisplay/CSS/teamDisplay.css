@@ -1,9 +1,14 @@
+html{
+    font-family: futura-pt,Lucida Sans,Lucida Grande,Lucida Sans Unicode,sans-serif;
+}
+
 body{
     background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');
 }
 .startImage{
     text-align:center;
-    padding: 50px 10px 10px 10px;
+    max-width:60%;
+    margin:auto;
 }
 .startForm{
     text-align:center;
@@ -18,7 +23,7 @@ select{
     background-color: transparent;
     font-size: 16px;
     font-weight: bold;
-    color: #FBB042;
+    color: white;
     border: none;
     margin: 5px 5px 5px 5px;
 
@@ -30,47 +35,38 @@ button{
     background-color: transparent;
     font-size: 16px;
     font-weight: bold;
-    color: #FBB042;
+    color: white;
     border: none;
     margin: 5px 5px 5px 5px;
 
 }
 h1{
     text-align:center;
-    color:#FBB042;
-    font-size:3vw;
+    color:white;
+    font-size:30pt;
 }
 .playerNameContainer{
     text-align:center;
 }
 .summonerName{
-    color:#FBB042;
+    color:white;
     vertical-align:7px;
-    font-size:1.5vw;
+    font-size:15pt;
 }
 .icon{
-    max-width:30px;
-    padding: 0px 0px 0px 10px;
+    width:20%;
+    height:auto;
+    padding: 0 0 0 10px;
 }
 .playerInfo{
-    color:#FBB042;
-}
-.WinLoss{
-    margin-left:10px;
-    margin-right:10px;
-}
-.rank{
-    margin-left:10px;
-    margin-right:10px;
+    color:white;
 }
 .playerImage{
     max-width:100%;
     height:auto;
     padding: 5px 5px 5px 5px;
 }
-.players{
 
-}
 .giga_teamImage{
     width:300px
 }
@@ -79,27 +75,29 @@ h1{
     bottom: 0;
     width: 100%;
     text-align:center;
+    z-index:12;
 }
-@media (min-width:1200px) {
+@media (min-width:1080px) {
     .col-lg {
-        width: 19%!important;
+        width: 17%!important;
         display:inline-block;
+        padding: 10px;
     }
 }
-@media (max-width:1199px) {
+@media (max-width:1079px) {
     .col-lg {
         width: 33%!important;
         display:inline-block;
     }
     .summonerName{
-        color:#FBB042;
+        color:white;
         vertical-align:7px;
         font-size:2vw;
     }
-    h1{
-        text-align:center;
-        color:#FBB042;
-        font-size:4vw;
+    .icon{
+        width:15%;
+        height:auto;
+        padding: 0 0 0 10px;
     }
 }
 @media (max-width:850px) {
@@ -108,42 +106,75 @@ h1{
         display:inline-block;
     }
     .summonerName{
-        color:#FBB042;
+        color:white;
         vertical-align:7px;
         font-size:3vw;
     }
-    h1{
-        text-align:center;
-        color:#FBB042;
-        font-size:5vw;
-    }
 }
-@media (max-width:492px) {
+@media (max-width:530px) {
     .col-lg {
         width: 100%!important;
         display:inline-block;
     }
     .summonerName{
-        color:#FBB042;
+        color:white;
         vertical-align:7px;
         font-size:4vw;
     }
     h1{
         text-align:center;
-        color:#FBB042;
-        font-size:6vw;
+        color:white;
+        font-size:20pt;
+    }
+    .icon{
+        width:15%;
+        height:auto;
+        padding: 0 0 0 10px;
     }
 }
 .mainDiv{
     text-align:center;
 }
-.spinner{
-    /*background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');*/
-    /*background-size: 300px 560px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: center;*/
-    /*height: 560px;*/
-    /*width: 300px;*/
-    overflow: hidden;
+
+.spinner-container {
+    height: 560px;
+    width: 100%;
+    max-width:300px;
+    position: relative;
     text-align:center;
+    margin:auto;
+}
+
+.spinner-overlay, .spinner-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.spinner-overlay {
+    background: transparent url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png') center center repeat;
+    z-index: 6;
+    opacity: .6;
+}
+
+.spinner-image {
+    z-index: 5;
+    background: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
+    opacity: .5;
+    transition: opacity 0.5s ease-in-out;
+}
+.championImage{
+    margin-top:10px;
+    width: 100%;
+    height: auto;
+}
+.imageContainer{
+    height: 560px;
+    width: 100%;
+    max-width:300px;
+    position: relative;
+    text-align:center;
+    margin:auto;
+}
+.spinner-container:hover > .spinner-image {
+    opacity: 1;
 }
