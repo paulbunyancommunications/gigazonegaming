@@ -129,3 +129,8 @@ server.crt
 server.key
 update_docker_assets_file.sh
 AdvancedEditorUserGuide_1010.pdf
+googlea13d41de2ed75e16.html
+.env.enc
+dock-helpers-jenkins.sh
+dock-helpers.sh
+stacks.sh
