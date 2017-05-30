@@ -1,4 +1,6 @@
 actor: Tester
+params:
+    - ".env"
 paths:
     tests: tests
     log: tests/_output
@@ -16,10 +18,10 @@ extensions:
 modules:
     config:
         Db:
-            dsn: 'mysql:host=db;dbname=gigazone_wp'
-            user: 'root'
-            password: 'root'
-            dump: 'database/dump/gigazone_wp.sql'
+            dsn: "mysql:host=%DB_HOST%;dbname=%DB_DATABASE%"
+            user: "%DB_USERNAME%"
+            password: "%DB_PASSWORD%"
+            dump: "database/dump/%DB_DATABASE%.sql"
         Codeception\Extension\Recorder:
             delete_successful: true
             module: WebDriver

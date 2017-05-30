@@ -1,18 +1,38 @@
 #!/usr/bin/env bash
-NC='\033[0m' # No Color
-TAB=' - '
+NC="\033[0m" # No Color
+TAB=" - "
 COLS=$(tput cols)
 #log file for output of tests
 log="codecept-result.log"
-finished=false
+FINISHED=false
+IN_CONTAINER=false
+
+#http://wiki.bash-hackers.org/snipplets/print_horizontal_line#a_line_across_the_entire_width_of_the_terminal
+TAB_FILL=$(printf '%*s\n' "${COLUMNS:-$(echo ${COLS})}" '' | tr ' ' -);
+
+# Start the loging
 touch ${log}
-echo -n "" >${log}
+echo -n "" > ${log}
 tail -f ${log} &
 
-# run migrations if artisan command exists
+# check if inside a docker container or not
+if [ -f /.dockerenv ]; then
+    IN_CONTAINER=true
+else
+    IN_CONTAINER=false
+fi
+if [ "$IN_CONTAINER" = false ]; then
+        echo ${TAB_FILL}
+        printf "\n${TAB}Tests should be run inside the Docker code container${NC}"
+        exit 1
+fi;
+
+
+# -------------------------------------------------------------------------------------
+# Run config migrations if artisan command exists
 if [ -f "artisan" ]
 then
-    vagrant ssh -c "cd /var/www; php artisan config:clear && php artisan migrate;" >/dev/null 2>&1
+    php artisan config:clear && php artisan migrate >/dev/null 2>&1
 fi
 # -------------------------------------------------------------------------------------
 # go though the ./tests folder and get all the yaml files.
@@ -41,10 +61,8 @@ done
 # read and explode the list by delimiter
 #now the testSuites variable has a list of all the suites by name
 IFS=' ' read -r -a testSuites <<< $(cat ./tests/test-suites)
-
 # do codeception cleanup
-wget -N -q http://codeception.com/codecept.phar >/dev/null 2>&1
-vagrant ssh -c "cd /var/www; php codecept.phar clean && php codecept.phar build" >/dev/null 2>&1
+codecept clean && codecept build
 
 errorKeys=("PHPUnit_Framework_Exception" "FATAL ERROR. TESTS NOT FINISHED" "FAILURES!" "ERRORS!" "TESTS EXECUTION TERMINATED")
 errorMessage="TESTS FAILED! See ${log} for output."
@@ -53,21 +71,16 @@ failedReAttempt="TESTS FAILED. Will retry failed tests."
 # loop though all the text suites, marking the time they started, ended and how long they took
 for ((i=0; i<${#testSuites[@]}; i++))
 do
+
     SECONDS=0;
     c=0
     # http://stackoverflow.com/questions/24367088/print-a-character-till-end-of-line
-    echo -e "\033[49m$(for ((i=0; i<($COLS - 2); i++));do printf ${TAB}; done; echo)${NC}"
-    echo -e "\033[30;48;5;200m${TAB}Now running ${testSuites[i]} test suite, started at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}"
+    printf "\n${TAB_FILL}\n"
+    printf "${TAB}Now running ${testSuites[i]} test suite, started at $(date +'%Y-%m-%d %H:%M:%S') ${TAB}${NC}\n"
 
-    # run tests outside if the suite name contains "static", otherwise run them in the vagrant box
-    if [[ "${whereToRun[i]}" == *"static"* ]]
-        then
-            # run tests in the suite
-            php codecept.phar run ${testSuites[i]} -v > ${log} 2>&1
-        else
-            # run tests in the suite
-            vagrant ssh -c "cd /var/www; php codecept.phar run ${testSuites[i]} -v;" > ${log} 2>&1
-    fi
+
+    # run tests
+    codecept run ${testSuites[i]} -v -f > ${log} 2>&1
 
     took=${SECONDS}
     ((sec=took%60, took/=60, min=took%60, hrs=took/60))
@@ -77,19 +90,11 @@ do
     # connection for instance in an acceptance test)
     if [ -f "tests/_output/failed" ]
         then
-            echo -e "\033[49m$(for ((i=0; i<($COLS - 2); i++));do printf ${TAB}; done; echo)${NC}"
-            echo -e "\033[30;48;5;200m${TAB}${failedReAttempt} Started at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}"
-            if [[ "${whereToRun[i]}" == *"static"* ]]
-            then
-                # run tests in the suite
-                php codecept.phar run -g failed > ${log} 2>&1
-            else
-                # run tests in the suite
-                vagrant ssh -c "cd /var/www; php codecept.phar run -g failed" > ${log} 2>&1
-            fi
+            printf "\n${TAB_FILL}\n"
+            printf "${TAB}${failedReAttempt} Started at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}\n"
+            # run tests in the suite
+            codecept run -g failed -v -f > ${log} 2>&1
     fi
-
-
     # check for errors
     # http://stackoverflow.com/a/2295565
     while read -r line
@@ -97,9 +102,8 @@ do
         for e in ${errorKeys[@]}
         do
             case "$line" in *"$e"*)
-                echo -e "\033[48;5;9m${TAB}${errorMessage}${TAB}${NC}"
-                echo -e "\033[48;5;6m${TAB}Test suite ${testSuites[i]} ran, took ${timestamp} to complete${TAB}${NC} "
-                printf "\n\n"
+                printf "\n${TAB}${errorMessage}${TAB}${NC}\n"
+                printf "${TAB}Test suite ${testSuites[i]} ran, took ${timestamp} to complete${TAB}${NC}\n"
                 # kill the tail
                 kill %tail >/dev/null 2>&1
                 exit 1;
@@ -107,9 +111,8 @@ do
         done
     done <${log}
 
-    echo -e "\033[30;48;5;82m${TAB}Completed ${testSuites[i]} test suite, ended at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}"
-    echo -e "\033[30;48;5;6m${TAB}Test suite ${testSuites[i]} complete, took ${timestamp} to complete${TAB}${NC}"
-    printf "\n"
+    printf "\n${TAB}Completed ${testSuites[i]} test suite, ended at $(date +'%Y-%m-%d %H:%M:%S')${TAB}${NC}\n"
+    printf "${TAB}Test suite ${testSuites[i]} complete, took ${timestamp} to complete${TAB}${NC}\n"
 done
 
 
