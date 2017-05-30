@@ -28,7 +28,7 @@
         {{$flexWinLossArray[$i]}}
     @stop
     @section('Player' . $i . 'Champion')
-        <img class="playerImage" src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
+        <?php echo '<div id="divA'. $i .'" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"></div></div>' ; ?>
     @stop
 @endfor
 
