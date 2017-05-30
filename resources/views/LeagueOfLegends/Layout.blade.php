@@ -9,13 +9,19 @@
 </head>
 <body>
 <div class="mainDiv" id="other">
-    <h1 id="teamName">@yield('TeamName')</h1>
-
+    <h1 class=teamName">@yield('TeamName')</h1>
+    <div class='borderTop'></div>
+    <div class='borderTop2'></div>
+    <div style="background: transparent url('/LeagueOfLegendsDisplay/Images/frame-center.png') left -148px;
+         background-size: 100% 100%;
+         padding-left: 10px;
+         margin-left: -10px;
+         background-repeat: repeat-y;">
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player0Name')</b>@yield('Player0Icon')</div></div>
         <div><div class="playerInfo playerNameContainer"><b>Solo:<br/> </b><b>Win/Loss:</b> @yield('Player0SoloWinLoss') <b>Rank:</b> @yield('Player0SoloRank')</div></div>
         <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player0FlexWinLoss') <b>Rank:</b> @yield('Player0FlexRank')</div></div>
-        <div>@yield('Player0Champion')<div style="display:none;" id="divB0" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
+        <div >@yield('Player0Champion')<div style="display:none; " id="divB0" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
     <div class='col-lg'>
         <div><div class="playerNameContainer"><b class="summonerName">@yield('Player1Name')</b>@yield('Player1Icon')</div></div>
@@ -41,9 +47,10 @@
         <div><div class="playerInfo playerNameContainer"><b>Flex:<br/> </b><b>Win/Loss:</b> @yield('Player4FlexWinLoss') <b>Rank:</b> @yield('Player4FlexRank')</div></div>
         <div>@yield('Player4Champion')<div style="display:none;" id="divB4" class="imageContainer"><img class="championImage" src="http://vignette4.wikia.nocookie.net/leagueoflegends/images/2/25/Azir_OriginalLoading.jpg/revision/latest?cb=20160516004231"/></div></div>
     </div>
-</div>
-<div>
-    <p id="something"></p>
+
+    </div>
+    <div class='borderBottom'></div>
+    <div class='borderBottom2'></div>
 </div>
 
     <footer class="teamFooter">

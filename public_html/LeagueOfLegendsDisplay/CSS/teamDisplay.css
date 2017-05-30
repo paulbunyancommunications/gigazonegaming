@@ -159,7 +159,7 @@ h1{
 .spinner-image {
     z-index: 5;
     background: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
-    opacity: .5;
+    opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
 .championImage{
@@ -175,6 +175,49 @@ h1{
     text-align:center;
     margin:auto;
 }
-.spinner-container:hover > .spinner-image {
-    opacity: 1;
+.borderTop {
+    width: 49%;
+    display:inline-block;
+    padding-left: 10px;
+    margin-left: -10px;
+    height: 50px;
+    top: -21px;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat left -148px;
+}
+.borderTop2 {
+    width: 49%;
+    display:inline-block;
+    padding-left: 10px;
+    margin-left: -10px;
+    height: 50px;
+    top: -21px;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat right -148px;
+}
+.borderBottom {
+    width: 49%;
+    display:inline-block;
+    padding-left: 10px;
+    margin-left: -10px;
+    height: 50px;
+    top: -21px;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat right -148px;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.borderBottom2 {
+    width: 49%;
+    display:inline-block;
+    padding-left: 10px;
+    margin-left: -10px;
+    height: 50px;
+    top: -21px;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat left -148px;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
