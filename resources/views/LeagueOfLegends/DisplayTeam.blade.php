@@ -1,34 +1,42 @@
 @extends('LeagueOfLegends/Layout')
 
 @section('TeamName')
- <? echo $teamName; ?>
+    {{$teamName}}
 @stop
 @section('Color')
-    <? echo $color; ?>
+    {{$color}}
+
 @stop
 
-<?php for($i = 0; $i < count($team); $i++){ ?>
+@for($i = 0; $i < count($summonerArray); $i++)
     @section('Player' . $i . 'Name')
-        <? echo $team[$i]->getSummonerName(); ?>
+        {{ $summonerArray[$i]}}
     @stop
     @section('Player' . $i . 'Icon')
-        <img class="icon" src="<? echo $team[$i]->getIcon(); ?>"/>
+        <img class="icon" src="{{ $iconArray[$i]}}"/>
     @stop
     @section('Player' . $i . 'SoloWinLoss')
-        <? echo $team[$i]->getSoloRankedWinLoss(); ?>
+        {{$soloRankArray[$i]}}
     @stop
     @section('Player' . $i . 'SoloRank')
-        <? echo $team[$i]->getSoloRank(); ?>
+        {{$soloWinLossArray[$i]}}
     @stop
     @section('Player' . $i . 'FlexWinLoss')
-        <? echo $team[$i]->getFLEXRankedWinLoss(); ?>
+        {{$flexRankArray[$i]}}
     @stop
     @section('Player' . $i . 'FlexRank')
-        <? echo $team[$i]->getFLEXRank(); ?>
+        {{$flexWinLossArray[$i]}}
     @stop
     @section('Player' . $i . 'Champion')
         <img class="playerImage" src="\LeagueOfLegendsDisplay\Images\GZG-Atom-to-Animate.gif"/>
     @stop
+@endfor
 
+{{--@section('js')--}}
+    {{--{{print_r($team)}}--}}
+    {{--foreach({!! json_encode($team) !!} as var player){--}}
+        {{--alert(player);--}}
+        {{--break();--}}
+    {{--}--}}
 
-<?php }; ?>
+{{--@stop--}}

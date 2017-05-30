@@ -43,7 +43,7 @@ class Summoner{
 //        $this->setChampion();
 //        $this->setSoloRank();
     }
-# Setters
+# Methods
 #----------------------------------------------------------------------
     public function checkCurrentGameStatus(){
         $status = $this->api->checkCurrentGameStatus();
@@ -104,8 +104,6 @@ class Summoner{
     {
         return $this->icon;
     }
-
-
 
     /**
      * @return mixed
