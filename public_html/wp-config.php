@@ -27,19 +27,19 @@ if(env('APP_ENV') === 'production') {
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', env('DB_DATABASE'));
+define('DB_NAME', env('DB_DATABASE', 'wp_database'));
 
 /** MySQL database username */
-define('DB_USER', env('DB_USERNAME'));
+define('DB_USER', env('DB_USERNAME', 'username'));
 
 /** MySQL database password */
-define('DB_PASSWORD', env('DB_PASSWORD'));
+define('DB_PASSWORD', env('DB_PASSWORD', 'password'));
 
 /** MySQL hostname */
-define('DB_HOST', env('DB_HOST'));
+define('DB_HOST', env('DB_HOST', 'db'));
 
 /** Database Charset to use in creating database tables. */
-define('DB_CHARSET', env('DB_CHARSET'));
+define('DB_CHARSET', env('DB_CHARSET', 'utf8'));
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
