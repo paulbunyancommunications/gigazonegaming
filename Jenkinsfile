@@ -1,315 +1,247 @@
-#!/usr/bin/env groovy
-retry(2) {
-
-    node {
-
-        currentBuild.result = "SUCCESS"
-
-        try {
-
-            /**
-             * Check out project from source control
-             */
-            stage('Info') {
-
-                echo "\u2605 BUILD_URL=${env.BUILD_URL} \u2605"
-                echo "\u2605 WORKSPACE=${env.WORKSPACE} \u2605"
-
+node {
+    String branch = "develop"
+    String emailMe = "castillo@paulbunyan.net"
+    String archive_name = "${env.JOB_NAME}-${env.BUILD_NUMBER}-${branch}"
+    /**
+    * String scm_url = 'https://github.com/paulbunyancommunications/gigazonegaming.git'
+    * String scm_url = 'https://github.com/castillo-n/gigazonegaming.git'
+    * String scm_url = 'https://github.com/natenolting/gigazonegaming.git'
+    * String scm_url = 'https://github.com/romanmartushev/gigazonegaming.git'
+    */
+    String scm_url = 'https://github.com/castillo-n/gigazonegaming.git'
+    timestamps {
+        /**
+        * Check out project from source control
+        */
+        stage('clean-directory') {
+            echo "WORKSPACE ${env.WORKSPACE}";
+            echo "JOB_URL ${env.JOB_URL}";
+            echo "BUILD_URL ${env.BUILD_URL}";
+            echo "JOB_NAME ${env.JOB_NAME}";
+            echo "JOB_BASE_NAME ${env.JOB_BASE_NAME}";
+            echo "BUILD_DISPLAY_NAME ${env.BUILD_DISPLAY_NAME}";
+            echo "BUILD_ID ${env.BUILD_ID}";
+            echo "BUILD_NUMBER ${env.BUILD_NUMBER}";
+            echo "CHANGE_AUTHOR_DISPLAY_NAME ${env.CHANGE_AUTHOR_DISPLAY_NAME}";
+            echo "CHANGE_AUTHOR ${env.CHANGE_AUTHOR}";
+            echo "CHANGE_TITLE ${env.CHANGE_TITLE}";
+            echo "BRANCH_NAME ${env.BRANCH_NAME}";
+            echo "currentBuild.currentResult ${currentBuild.currentResult}";
+            try {
+                sh "cd ${env.WORKSPACE}";
+                step([$class: 'WsCleanup']);
+            } catch(error) {
+                echo "directory couldn't be clean before build";
+                updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                error("Build failed because couldn't clean directory.")
             }
+        }
 
-            /**
-             * Check out project from source control
-             */
-            stage('Checkout') {
+        stage('git-pull') {
+            echo "\u2605 Checking out project from ${scm_url} \u2605"
+            try {
+                checkout([$class: 'GitSCM', branches: [[name: "*/${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: "${scm_url}"]]])
+            } catch(error) {
+                try {
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: "${scm_url}"]]])
+                } catch(error_b) {
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed on git pull.")
 
-                def scm_url = 'https://github.com/paulbunyannet/gigazonegaming.git'
-                echo "\u2605 Checking out project from ${scm_url} \u2605"
-                checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: "${scm_url}"]]])
-
-            }
-
-            /**
-             * Create the decrypt password file to decrypt encoded files in 'Install Assets' stage
-             */
-            stage('Decrypt Credential') {
-
-                echo "\u2605 Decrypting credential and config files from repository \u2605"
-                def latestBashPackageCommitHash = sh (
-
-                    script: "echo \$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print \$1}')",
-                    returnStdout: true
-                    ).trim()
-                sh "wget -N \"https://raw.githubusercontent.com/paulbunyannet/bash/${latestBashPackageCommitHash}/setup/files/decrypt-files.sh\" -O ${env.WORKSPACE}/decrypt-files.sh"
-
-                withCredentials([string(credentialsId: 'gigazone-gaming-decode-code', variable: 'decrypt_password')]) {
-                    //writeFile file: '.enc-pass', text: decrypt_password
-                    sh (
-                        script:"bash ${env.WORKSPACE}/decrypt-files.sh -w ${env.WORKSPACE} -p ${decrypt_password}"
-                        )
-                }
-
-            }
-
-            /**
-             * Fix phing config files
-             */
-           stage('Fix Phing Config Files') {
-                echo "\u2605 Fix phing config files \u2605"
-
-                def build_dir = "${env.WORKSPACE}/build/config"
-                List jenkins_phing_configs = ["${build_dir}/jenkins.config", "${build_dir}/hosts/jenkins.host"]
-                for (String jenkins_phing_config : jenkins_phing_configs) {
-                    sh "sed 's/production/jenkins/' ${jenkins_phing_config} >/dev/null"
-                }
-           }
-
-            /**
-            * Run Cleanup of Vagrant environment
-            */
-            stage('Vagrant Cleanup') {
-
-                def box_name = 'gigazonegaming.local'
-                echo "\u2605 Run Cleanup of Vagrant environment for ${box_name} \u2605"
-
-                sh "VBoxManage controlvm ${box_name} poweroff || echo '${box_name} was not powered off, it might not have existed.'"
-                sh "VBoxManage unregistervm ${box_name} --delete || echo '${box_name} was not deleted, it might not have existed.'"
-                sh "rm -rf '/var/lib/jenkins/VirtualBox VMs/${box_name}' || echo '/var/lib/jenkins/VirtualBox VMs/${box_name} was not deleted, it might not have existed.'"
-                sh "vagrant destroy"
-                sh "vagrant box update"
-
-
-           }
-
-           /**
-            * Fix vagrant file config path
-            */
-           stage('Fix Vagrantfile') {
-
-                echo "\u2605 Fix Vagrantfile so it will use the correct config file \u2605"
-                sh "sed 's/config-custom.yaml/config-jenkins.yaml/' ${env.WORKSPACE}/Vagrantfile >/dev/null"
-
-           }
-
-           /**
-            * Download tools
-            */
-
-           stage('Download Tools') {
-
-                echo "\u2605 Download tools needed for later \u2605"
-                // get composer.phar
-                sh "wget -q -N https://getcomposer.org/composer.phar -O ${env.WORKSPACE}/composer.phar"
-                // get c3.phar
-                sh "wget -q -N https://raw.github.com/Codeception/c3/2.0/c3.php -O ${env.WORKSPACE}/c3.php"
-                // get codecept.phar
-                sh "wget -q -N http://codeception.com/codecept.phar -O ${env.WORKSPACE}/codecept.phar"
-
-           }
-
-           /**
-            * Boot Up Vagrant box
-            */
-           stage('Boot Vagrant Box') {
-                echo "\u2605 Booting up Vagrant box \u2605"
-                sh "vagrant up"
-
-           }
-
-            /**
-             * Check Vagrant status
-             */
-           stage('Check Vagrant Status') {
-                def vagrant_status = sh (
-                    script: 'vagrant status',
-                    returnStdout: true
-                )
-                echo "\u2605 Vagrant status: ${vagrant_status} \u2605"
-           }
-
-            /**
-             * Install NPM modules though Yarn
-             */
-           stage('NPM') {
-                echo "\u2605 Installing NPM libraries through Yarn \u2605"
-                sh "vagrant ssh -c \"sudo npm install -g yarn; cd /var/www; yarn install\""
-
-           }
-
-            /**
-             * Install Composer modules
-             */
-           stage('Composer') {
-                echo "\u2605 Installing Composer dependencies \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php composer.phar install\""
-           }
-
-            /**
-             * Install Bower modules
-             */
-           stage('Bower') {
-                echo "\u2605 Installing Bower dependencies \u2605"
-                sh "vagrant ssh -c \"sudo npm install -g bower; cd /var/www; bower install\""
-           }
-
-            /**
-             * Copying script to required places
-             */
-           stage('Node Copy') {
-                echo "\u2605 Copying script to required places \u2605"
-                sh "vagrant ssh -c \"cd /var/www; npm run-script copy-libraries\""
-           }
-
-
-            /**
-             * Compile scripts with Gulp
-             */
-           stage('Gulp') {
-                echo "\u2605 Copying script to required places \u2605"
-                sh "vagrant ssh -c \"sudo npm install -g gulp; cd /var/www; gulp\""
-           }
-
-            /**
-             * Compile scripts with Gulp
-             */
-           stage('Clean Wordpress wp folder') {
-                def wp_folder = "${env.WORKSPACE}/public_html/wp"
-                echo "\u2605 Cleaning ${wp_folder} folder \u2605"
-                sh "rm -rf ${wp_folder}/wp-content"
-                sh "rm -f ${wp_folder}/wp-config-sample.php"
-                sh "rm -f ${wp_folder}/.htaccess"
-
-           }
-
-
-            /**
-             * create cache dir if not already existing
-             */
-           stage('Make Cache Directory') {
-                echo "\u2605 Create cache dir if not already existing \u2605"
-                sh "vagrant ssh -c \"cd /var/www; mkdir -m 0770 cache || echo ''\""
-           }
-
-
-            /**
-             * generate new Laravel app key
-             */
-           stage('Generate App Key') {
-                echo "\u2605 Generate new Laravel app key \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php artisan key:generate;\""
-           }
-
-            /**
-             * generate new Laravel app key
-             */
-           stage('Generate Wp Keys') {
-                echo "\u2605 Generate new Wordpress app keys \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php artisan wp:keys --file=.env;\""
-           }
-
-            /**
-             * Migrate dbs
-             */
-           stage('Run Migration') {
-                echo "\u2605 Run DB migrations \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php artisan migrate\""
-           }
-
-            /**
-             * Preping testing environment
-             */
-           stage('Prep testing environment') {
-                echo "\u2605 Prep testing environment \u2605"
-                sh "vagrant ssh -c \"cd /var/www; php codecept.phar clean && php codecept.phar build\" >/dev/null 2>&1"
-           }
-
-           /**
-            *   Execute Test Runner
-            */
-
-            stage('Run Tests') {
-                def test_started = sh (
-                    script: "date +'%Y-%m-%d %H:%M:%S'",
-                    returnStdout: true
-                )
-                echo "\u2605 Executing Test Runner, started at ${test_started} \u2605"
-                sh 'bash ${WORKSPACE}/testing.sh'
-            }
-
-
-            /**
-             * Build successful, send out an email to the one who prompted the job
-             */
-            stage('success') {
-
-                wrap([$class: 'BuildUser']) {
-                    def email = BUILD_USER_EMAIL
-                    def first_name = BUILD_USER_FIRST_NAME
-
-                    def groovyDomain = fileLoader.fromGit(
-                        'domain-name-from-url.groovy',
-                        'https://github.com/paulbunyannet/groovy-scripts.git',
-                        'master',
-                        null,
-                        ''
-                    )
-
-                    def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
-
-                    def groovyNiceDuration = fileLoader.fromGit(
-                        'nice-duration.groovy',
-                        'https://github.com/paulbunyannet/groovy-scripts.git',
-                        'master',
-                        null,
-                        ''
-                    )
-
-                    def duration = groovyNiceDuration.niceDuration("${currentBuild.timeInMillis}")
-
-                    mail body: "Hi ${first_name}, The project build was successful for job ${env.JOB_NAME} (build number ${currentBuild.number})!\n\rThe job took ${duration} to build.",
-                                from: "notify@${domain}",
-                                replyTo: "notify@${domain}",
-                                subject: "Project build successful for job ${env.JOB_NAME}",
-                                to: "${email}"
-                }
-
-            }
-
-        } catch(Exception e) {
-
-            /**
-             * Job failed, send out a message with the failure
-             */
-            wrap([$class: 'BuildUser']) {
-
-                def email = BUILD_USER_EMAIL
-                def first_name = BUILD_USER_FIRST_NAME
-                def user = BUILD_USER_ID
-                def groovyDomain = fileLoader.fromGit(
-                    'domain-name-from-url.groovy',
-                    'https://github.com/paulbunyannet/groovy-scripts.git',
-                    'master',
-                    null,
-                    ''
-                )
-
-                def domain = groovyDomain.domainNameFromUrl("${env.JENKINS_URL}")
-                withCredentials([usernamePassword(credentialsId: "${user}-api-access", passwordVariable: 'token', usernameVariable: 'username')]) {
-                    def result_cmd = "curl -u ${username}:${token} \"${env.JENKINS_URL}job/${env.JOB_NAME}/lastBuild/consoleText\""
-                    def result = sh (
-                        script: "${result_cmd}",
-                        returnStdout: true
-                    ).trim()
-
-
-                mail body: "Oh no ${first_name}, the project build for ${env.JOB_NAME} (build number ${currentBuild.number}) was unsuccessful. \n\rSee the output here: ${currentBuild.absoluteUrl}\n\rConsole Log Output:\n\r${result}" ,
-                     from: "notify@${domain}",
-                     replyTo: "notify@${domain}",
-                     subject: "Project build error for ${env.JOB_NAME}",
-                     to: "${email}"
                 }
             }
+        }
 
-            throw err
+        /**
+        * start docker
+        */
+        stage('build:env') {
+            echo "\u2605 Running DOCKER-START \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "cp .env.example .env";
+        }
+        /**
+        * start docker
+        */
+        stage('build:docker-assets') {
+            echo "\u2605 Running DOCKER-START \u2605"
+            try {
+                sh "cd ${env.WORKSPACE}";
+                sh "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/\$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print \$1}')/docker/update_docker_assets_file.sh > update_docker_assets_file.sh";
+                sh "chmod a+x update_docker_assets_file.sh";
+                sh "./update_docker_assets_file.sh";
+                sh "chmod a+x get_docker_assets.sh";
+                sh "./get_docker_assets.sh"
+            } catch(error) {
+                sh "docker-compose down -v";
+                sh "docker system prune -f"
+                updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                error("Build failed because couldn't get docker assets.")
+            }
+        }
+
+        /**
+        * start docker
+        */
+        stage('check:load-variables') {
+            echo "\u2605 checking variables were load \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+        }
+
+        /**
+        * start docker
+        */
+        stage('docker:up') {
+            echo "\u2605 Running DOCKER-START \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+            sh "./docker-jenkins-start.sh"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    sh "./docker-jenkins-start.sh"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because couldn't docker up.")
+                }
+            }
+        }
+
+
+        /**
+        * test docker app all
+        */
+        stage('file-permissions') {
+            echo "\u2605 Running Permissions \u2605";
+            sh "cd ${env.WORKSPACE}";
+            sh "ls";
+            try {
+                echo "\u2605 Fixing permissions \u2605"
+                sh "chmod -fR 777 ${env.WORKSPACE}/storage";
+                sh "chmod -fR 777 ${env.WORKSPACE}/public_html/wp-content/plugins/map-manager/js";
+                sh "chmod -f 777 ${env.WORKSPACE}/c3_error.log";
+            } catch(error_b) {
+                sh "docker-compose down -v";
+                sh "docker system prune -f"
+                updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                error("Build failed because couldn't get file permissions changed.")
+            }
+        }
+        /**
+        * unit test docker app
+        */
+        stage('test:unit') {
+            echo "\u2605 Running CODECEPT RUN UNIT \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+                sh "docker-compose exec -T code codecept run tests/unit"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
+                    sh "docker-compose exec -T code codecept run tests/unit"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because unit test didn't pass.")
+                }
+            }
+        }
+        /**
+        * integration test docker app
+        */
+        stage('test:integration') {
+            echo "\u2605 Running CODECEPT RUN INTEGRATION \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+                sh "docker-compose exec -T code codecept run tests/integration"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN INTEGRATION \u2605"
+                    sh "docker-compose exec -T code codecept run tests/integration"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because integration test didn't pass.")
+                }
+            }
+        }
+        /**
+        * functional test docker app
+        */
+        stage('test:functional') {
+            echo "\u2605 Running CODECEPT RUN FUNCTIONAL \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+                sh "docker-compose exec -T code codecept run tests/functional"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN FUNCTIONAL \u2605"
+                    sh "docker-compose exec -T code codecept run tests/functional"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because functional test didn't pass.")
+                }
+            }
+        }
+        /**
+        * acceptance test docker app
+        */
+        stage('test:acceptance') {
+            echo "\u2605 Running CODECEPT RUN ACCEPTANCE \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+                sh "docker-compose exec -T code codecept run tests/acceptance"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN ACCEPTANCE \u2605"
+                    sh "docker-compose exec -T code codecept run tests/acceptance"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because acceptance test didn't pass.")
+                }
+            }
+        }
+
+        stage('build:git_log') {
+            try {
+                echo "\u2605 Running git_log.sh to get current commit hash \u2605"
+                sh "cd ${env.WORKSPACE}";
+                sh "bash ${env.WORKSPACE}/git_log.sh"
+            } catch(error_b) {
+                echo "not git log was created"
+            }
+        }
+
+        stage('build:archive') {
+            echo "\u2605 Archiving artifacts \u2605"
+            archiveArtifacts artifacts: '**/*', onlyIfSuccessful: true
+        }
+        stage('docker:down') {
+            sh "docker-compose down -v";
+            sh "docker system prune -f"
+            updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+        }
+        stage('mattermost it'){
+            echo "currentBuild.result ${currentBuild.result}";
+            echo "currentBuild.currentResult ${currentBuild.currentResult}";
+            mattermostSend "![${currentBuild.currentResult}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.currentResult} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${emailMe}", sendToIndividuals: false])
         }
     }
 }
