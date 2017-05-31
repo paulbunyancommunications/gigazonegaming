@@ -1,5 +1,7 @@
 # Gigazone Gaming website
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f9734ad5fcb24faa943fc7633ca07ef3)](https://www.codacy.com/app/paulbunyannet/gigazonegaming?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=paulbunyancommunications/gigazonegaming&amp;utm_campaign=Badge_Grade)
+
 ## Frameworks Used
 * Wordpress 4.7.4
 * Laravel 5.2
