@@ -21,7 +21,7 @@ Get started with the development environment by running two commands:
 $ composer docker_assets
 ```
 ```
-# Spin up the the docker comtainers
+# Spin up the the docker containers
 $ ./dock.sh fup
 ```
 
