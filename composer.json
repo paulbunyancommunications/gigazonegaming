@@ -194,7 +194,8 @@
     "guzzlehttp/guzzle": "~5.3|~6.0",
     "brandonwamboldt/utilphp": "1.1.*",
     "league/commonmark": "^0.15.0",
-    "disqus/disqus-comment-system": "*"
+    "disqus/disqus-comment-system": "*",
+    "felixkiss/uniquewith-validator": "^3.1"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
