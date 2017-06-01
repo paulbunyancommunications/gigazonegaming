@@ -35,7 +35,7 @@ class FilldbWithTestData extends Command
      */
     public function handle()
     {
-       dd("Stoped for testing");
+
         $this->fillDB();
         dd("This is working");
     }
@@ -60,7 +60,7 @@ class FilldbWithTestData extends Command
             'game' => 2,
             'team' => $team,
         ]);
-        $playerUserNameArray = array('Juanpablomontoya', 'spartan7warrior', 'ReckonStuff', 'ThatBoy18');
+        $playerUserNameArray = array('manklar', 'spartan7warrior', 'ReckonStuff', 'ThatBoy18');
         $i = 0;
         #creat players for team
         foreach ($playerUserNameArray as $Player){

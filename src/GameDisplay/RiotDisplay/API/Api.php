@@ -20,6 +20,7 @@ class Api{
     protected $championName;
     protected $championImg;
     protected $currentGameStatus = false;
+    protected $counter = 0;
 
 
 
@@ -36,7 +37,6 @@ class Api{
 
         #intailize summoner info for requests
         $this->setSummonerID();
-
         #States of players rank.
         $this->setLeagueV3Json();
 
@@ -47,9 +47,14 @@ class Api{
     public function checkCurrentGameStatus(){
         $request = new Request('Get', 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey);
         $response = $this->client->send($request);
-//        dd($response->getStatusCode());
         if($response->getStatusCode() == '200'){
             $this->currentGameStatus = true;
+            $Info = json_decode($response->getBody());
+            $this->currentGameInfo = $Info;
+        }
+        if($response->getStatusCode() == '429'){
+            sleep(1);
+            $this->checkCurrentGameStatus();
         }
         return $this->currentGameStatus;
     }
@@ -69,31 +74,31 @@ class Api{
 
     public function setSummonerID()
     {
+
         $request = new Request('Get', 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey);
         $response = $this->client->send($request);
         $Info = json_decode($response->getBody());
         #sets summoner ID for further use with the api.
-        $this->summonerID = $Info->id;
-    }
-
-    public function setCurrentGameInfo(){
-        #Gets players states json
-        $request = new Request('Get', 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey);
-        $response = $this->client->send($request);
-        $Info = json_decode($response->getBody());
-        $this->currentGameInfo = $Info;
-
+        try{
+            $this->summonerID = $Info->id;
+        }catch( \Exception $e){
+            if($this->counter > 10){
+                $this->summonerID = null;
+            }
+            else{
+                $this->setSummonerID();
+            }
+            $this->counter++;
+        }
 
     }
 
     public function setChampionId(){
-
         foreach($this->currentGameInfo->participants as $player){
             if($player->summonerId == $this->summonerID){
                 $this->championId = $player->championId;
             }
         }
-
     }
 
     Public function setChampionName($ChampionId){
@@ -223,7 +228,6 @@ class Api{
 
 #These will be called every 2 seconds till this info has been grabbed successfully
     public function getChampion(){
-        $this->setCurrentGameInfo();
         $this->setChampionId();
         $this->setChampionName($this->championId);
         $this->setChampionIMG($this->championName);

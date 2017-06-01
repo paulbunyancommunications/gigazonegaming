@@ -42,16 +42,20 @@ class testGameDispalyController extends Command
         $controller->setTeam($TeamName, $TournamentName);
 
         $string ="";
+        $champion = "";
 
 
         foreach($controller->team as $player){
-//            if($player->checkCurrentGameStatus() != false){
-//                $player->setChampion();
-//            }
-//            else{
-//                dd("Not Ready");
-//            }
-            $string = "\nSummoner Name: " . $player->getSummonerName() ."\nSummonerId: " . $player->getSummonerID() .  "\nSummoner Icon: " . $player->getIcon() . "\nSolo Rank: " . $player->getSoloRank() . "\nSolo Win|Loss: " . $player->getSoloRankedWinLoss() . "\nFlex Rank:" . $player->getFLEXRank() . "\nFlex Win|Loss:" . $player->getFLEXRankedWinLoss() . "\nChampion: " . $string;
+            if($player->checkCurrentGameStatus() != false){
+                $statuse = "true";
+                $player->setChampion();
+                $champion = $player->getChampion();
+            }
+            else{
+                $statuse = "false";
+            }
+
+            $string = "\n\n Summoner Name: " . $player->getSummonerName() ."\nSummonerId: " . $player->getSummonerID() .  "\nSummoner Icon: " . $player->getIcon() . "\nSolo Rank: " . $player->getSoloRank() . "\nSolo Win|Loss: " . $player->getSoloRankedWinLoss() . "\n Statuse: " .  $statuse . "\nFlex Rank:" . $player->getFLEXRank() . "\nFlex Win|Loss:" . $player->getFLEXRankedWinLoss() . "Champion: " . $champion .  $string;
         }
 
         dd($string);

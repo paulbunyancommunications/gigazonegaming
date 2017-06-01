@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use GameDisplay\RiotDisplay\Summoner;
+use function MongoDB\BSON\toJSON;
+use PhpParser\Node\Stmt\Return_;
 
 class GameDisplayController extends Controller
 {
@@ -23,6 +25,7 @@ class GameDisplayController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
+    protected $championArray = array();
 
     #for testing purposes
     public function __construct()
@@ -43,22 +46,14 @@ class GameDisplayController extends Controller
 
     public function teamViewDisplay($tournament,$team,$color)
     {
-        $this->setTeam($team,$tournament);
-//        $this->serializeTeam($this->team);
-        $this->setLolArrays();
-
-        if($color == "Red"){
-            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
-        }
-        else{
-            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
-        }
-        $team = Team::where('name','=',$team)->first();
+        $this->buildTheTeams($tournament, $team);
+        $color = $this->setTeamColor($color);
 
         return view('/LeagueOfLegends/DisplayTeam', [
-            'tournamet' => $tournament,    #NEW
-            'teamName' => $team->name,
+            'tournament' => $tournament,    #NEW
+            'teamName' => $team,
             'color' => $color,
+            'teamColor' => $color,
             'summonerArray' => $this->summonerArray,
             'iconArray' => $this->iconArray,
             'soloRankArray' => $this->soloRankArray,
@@ -68,6 +63,64 @@ class GameDisplayController extends Controller
         ]);
     }
 
+    /**
+     * @param $tournament
+     * @param $team
+     * @param $color
+     * @return array
+     */
+    public function buildTheTeams($tournament, $team)
+    {
+        $this->setTeam($team, $tournament);
+        //$this->serializeTeam($team);
+        $this->setLolArrays();
+    }
+
+    public function setTeamColor($color){
+        if ($color == "Red") {
+            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
+        } else {
+            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
+        }
+
+        return $color;
+    }
+
+    public function ajaxCheckRequest(Request $req)
+    {
+        $tournament = $req->tournament;
+        $team =  $req->team;
+
+
+        $this->setTeam($team,$tournament);
+        $status = $this->team[0]->checkCurrentGameStatus();
+
+        foreach ($this->team as $player) {
+            $status = $player->checkCurrentGameStatus();
+            if ($status) {
+                    $player->setChampion();
+                    array_push($this->championArray, $player->getChampion());
+
+
+            }
+            else{
+//                $this->fetchChampions();
+//                return response()->json($this->championArray);
+            }
+        }
+        return response()->json($this->championArray);
+//        $this->fetchChampions();
+//        return response()->json($this->championArray);
+
+
+
+//        foreach ($this->team as $k => $player){
+//        dd("k = ", $k, "player = ", $player);
+//    }
+//        $x = json_decode(json_encode($this->team));
+//        return response()->json($x);
+
+    }
     public function setTeam($TeamName, $TournamentName)
     {
 
@@ -76,8 +129,9 @@ class GameDisplayController extends Controller
         $players = $team->players;
 
         #Loop through player of the chosen team and create an array of player objects
-        foreach($players as $player){
 
+        foreach($players as $player){
+            if(isset($player) and isset($player->username) and $player->username != null) {
             #Creat player object depending on which game is selected.
             switch ($TournamentName){
                 #LOL
@@ -92,6 +146,7 @@ class GameDisplayController extends Controller
                     break;
             }
         }
+      }
     }
 
     public function setLolArrays(){
@@ -107,17 +162,37 @@ class GameDisplayController extends Controller
 
     ####NEW
     #atore array of objects in Player object storage, so that .js can load objects and call getChampion.
-    public function serializeTeam($team, $tournament){
+    public function serializeTeam($team){
         #store player object array in file for javascript to latter read from
-        $s = serialize($this->team);
-        file_put_contents("PlayerObjectStorage/" . $tournament. $team . 'PlayerObject.bin', $s);
+        $teams = (array) $this->getTeam();
+
+        $s = serialize($teams);
+        file_put_contents(dirname(dirname(dirname(__DIR__)))."/storage/app/PlayerObjectStorage/" . str_replace(' ','',$team) . 'PlayerObject.bin', $s);
     }
 
-    public function championRequest(Request $request){
+    public function championRequest(Request $req){
+        $team = $req->team;
+        $array = array($team);
 
-        $team = $request->team;
-        return $team;
 
+
+        return response()->json($array);
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+
+    public function fetchChampions(){
+        foreach($this->team as $player){
+            $player->setChampion();
+            array_push($this->championArray, $player->getChampion());
+        }
     }
 
 }
