@@ -103,10 +103,7 @@ class GameDisplayController extends Controller
 
 
             }
-            else{
-//                $this->fetchChampions();
-//                return response()->json($this->championArray);
-            }
+
         }
         return response()->json($this->championArray);
 //        $this->fetchChampions();

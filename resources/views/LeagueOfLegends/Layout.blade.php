@@ -78,11 +78,18 @@
             },
             success: function(data){
                 console.log(data.length);
-                for(var i = 0; i < data.length; i++){
-                    document.getElementById("divB" + i).innerHTML = "";
-                    document.getElementById("divB" + i).innerHTML = '<img src="' + data[i] + '"/>';
-                    console.log(data[i]);
+                console.log(data);
+                if(data.length != 0){
+                    for(var i = 0; i < data.length; i++){
+                        document.getElementById("divB" + i).innerHTML = "";
+                        document.getElementById("divB" + i).innerHTML = '<img src="' + data[i] + '"/>';
+                        console.log(data[i]);
+                    }
                 }
+                else{
+                    checkAndGrabChampion(team);
+                }
+
 
 //                if(data != false){
 //
