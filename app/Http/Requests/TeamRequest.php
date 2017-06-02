@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Championship\Team;
+
 class TeamRequest extends Request
 {
 
@@ -35,9 +37,13 @@ class TeamRequest extends Request
             }
             case 'POST':
             {
+                $tournament_id = $this->tournament_id;
+                $name = $this->name;
+                $doesExist = Team::where('name','=',$name)->where('tournament_id','=', $tournament_id)->exists();
+
                 return [
-                    'name' => 'required|unique:mysql_champ.teams,name',
-                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
+                    'name' => 'uniqueWidth:mysql_champ.teams,tournament_id',
+                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id',
                 ];
             }
             case 'PUT':
@@ -46,8 +52,8 @@ class TeamRequest extends Request
                 $name = $this->route()->team_id->name;
                 $tournament_id = $this->route()->team_id->tournament_id;
                 return [
-                    'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
-                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id',
+                    'name' => 'required|uniqueWidth:mysql_champ.teams,tournament_id', //todo check for modifications if name was the same continue otherwise return false
+                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id'
                 ];
             }
             default:break;
@@ -62,6 +68,7 @@ class TeamRequest extends Request
     public function messages()
     {
         return [
+            "name.unique_width" => 'A team with the exact same name already exist for this tournament, please select a different name.',
             'name.required' => 'The Team Name Field is required.',
             'name.unique' => 'The Team Name is in use, pick a new one.',
             'tournament_id.required' => 'The Tournament field can not be empty.',
