@@ -14,7 +14,7 @@ class UniqueWithValidatorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('unique_with', 'App\Http\Controllers\Validator\UniqueWithValidatorController@validateUniqueWith');
+        Validator::extend('uniqueWidth', 'App\Http\Controllers\Validator\UniqueWithValidatorController@validateComposeKey');
     }
 
     /**
