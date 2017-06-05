@@ -14,6 +14,7 @@ class UniqueWithValidatorController extends Controller
      *              1_ connection.table or table",
      *              2_ column to look at in db for the passed attribute
      *              3_ 4_ 5_ and so on will be like such:
+     *                       'self_' if you don't want to pass the key again or if the value of the column is the same to the attribute passed,
      *                       '= tableColumnName' if the name of the key with the "unique with" constrain name is different to the table column name,
      *                       'key_passed = table_column' for all following request keys that also differ from the table column name
      *                       'key_passed' pass for all the request keys matching the table column
@@ -41,27 +42,31 @@ class UniqueWithValidatorController extends Controller
 //            'counter',
 //            $counter
 //        );
+
         if ($counter > 1) {
             $connectionDbTable = trim($parameters[0]);
             $dbColumn = trim($parameters[1]);
             $query = "";
             //create table where for each so we see through the elements if exist return false is not return true
             $theConnectionArray = explode('.',$connectionDbTable);
-//            dd($connectionDbTable, $dbColumn, $theConnectionArray);
             if ( count( $theConnectionArray ) == 1 ) {
                 $query = \DB::table($connectionDbTable[0]);
             }elseif ( count( $theConnectionArray ) == 2 ) {
                 $query = \DB::connection($theConnectionArray[0])->table($theConnectionArray[1]);
             }
-//            dd($query->toSql());
             $forQuery = [];
             for ($i=1; $i < $counter; $i++) {
-                //todo parse through this
                 $equal = strpos($parameters[$i], '=');
-                $col="";$val="";
+                $col="";
+                $val="";
                 if( $equal === false ){ // request key is same that column name
                     $col = trim($parameters[$i]);
-                    $val = trim($_REQUEST[$col]);
+                    if($col != 'self_') {
+                        $val = trim($_REQUEST[$col]);
+                    }else{
+                        $col = trim($attribute);
+                        $val = trim($value);
+                    }
                 }else{
                     $expression = explode('=', $parameters[$i]);
                     if($equal == 0 ){ // =column name
