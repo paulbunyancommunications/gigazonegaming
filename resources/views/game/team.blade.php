@@ -83,7 +83,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-6">
-                        {{ Html::link('/manage/player/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default btn-block btn-gz-default'))}}
+                        {{ Html::link('/manage/team/', 'Clear', array('id' => 'reset', 'class' => 'btn btn-default btn-block btn-gz-default'))}}
                     </div>
                     <div class="col-xs-6">
                         <input type="submit" name="submit" id="submit" class="btn btn-default btn-primary btn-block btn-gz" value="{{ isset($theTeam->name) ? "Update Team" : "Save Team" }}">
