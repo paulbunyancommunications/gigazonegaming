@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
 
 class TeamRequest extends Request
 {
