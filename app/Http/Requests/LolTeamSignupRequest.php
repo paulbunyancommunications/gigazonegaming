@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Championship\Tournament;
 use Illuminate\Http\Request as BaseRequest;
 use Pbc\Bandolier\Type\Numbers;
 
@@ -31,13 +32,16 @@ class LolTeamSignUpRequest extends BaseRequest
      */
     public function rules()
     {
+//        dd($_REQUEST);
+        $_REQUEST->merge(['New Key' => 'New Value']);
+        $tournament_id = Tournament::where( 'name', '=', $this->tournament )->first()->id;
         $rules = [
             'email' => 'required|email|unique:mysql_champ.players,email',
             'name' => 'required',
             'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
             'team-captain-phone' => 'required',
             'tournament' => 'required|exists:mysql_champ.tournaments,name',
-            'team-name' => 'required|unique_with:mysql_champ.teams,name'
+            'team-name' => 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id',
         ];
         for ($i = 1; $i <= 2; $i++) {
             if ($this->request->get('teammate-'.Numbers::toWord($i).'-lol-summoner-id')) {
