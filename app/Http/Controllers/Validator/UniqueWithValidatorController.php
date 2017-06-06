@@ -18,6 +18,7 @@ class UniqueWithValidatorController extends Controller
      *                       '= tableColumnName' if the name of the key with the "unique with" constrain name is different to the table column name,
      *                       'key_passed = table_column' for all following request keys that also differ from the table column name
      *                       'key_passed' pass for all the request keys matching the table column
+     *                       to any of them you can add > to add a value that you could get by the request and you want to add to ir as if you received a name but you want to pass the id of that object instead of the name
      *
      *                  !all spaces will be trimmed before and after so the "=" can or not have space before or after
      * @param $validator "we wont use this as all things inside it are protected",
@@ -57,9 +58,10 @@ class UniqueWithValidatorController extends Controller
             $forQuery = [];
             for ($i=1; $i < $counter; $i++) {
                 $equal = strpos($parameters[$i], '=');
+                $value_exists = strpos($parameters[$i], '>');
                 $col="";
                 $val="";
-                if( $equal === false ){ // request key is same that column name
+                if( $equal === false AND $value_exists === false ){ // request key is same that column name
                     $col = trim($parameters[$i]);
                     if($col != 'self_') {
                         $val = trim($_REQUEST[$col]);
@@ -67,14 +69,30 @@ class UniqueWithValidatorController extends Controller
                         $col = trim($attribute);
                         $val = trim($value);
                     }
+                }elseif( $equal === false AND $value_exists !== false ){ // request key is same that column name
+                        $expression2 = explode('>', $parameters[$i]); //there is no value required for the key passed we care about what row was selected and what value was passed
+                        $col = trim($expression2[0]);
+                        $val = trim($expression2[1]);
                 }else{
                     $expression = explode('=', $parameters[$i]);
                     if($equal == 0 ){ // =column name
-                        $col = trim($expression[0]);
-                        $val = trim($_REQUEST[$attribute]);
+                        if($value_exists === false ) {
+                            $col = trim($expression[0]);
+                            $val = trim($_REQUEST[$attribute]);
+                        }else{
+                            $expression2 = explode('>', $expression[0]); //there is no value required for the key passed we care about what row was selected and what value was passed
+                            $col = trim($expression2[0]);
+                            $val = trim($expression2[1]);
+                        }
                     }else{
-                        $col = trim($expression[1]);
-                        $val = trim($expression[0]);
+                        if($value_exists === false ){
+                            $col = trim($expression[1]);
+                            $val = $_REQUEST[trim($expression[0])];
+                        }else{
+                            $expression2 = explode('>', $expression[1]);// $expression 1 because 0 was the key and we wont use that one there is no value required for the key passed we care about what row was selected and what value was passed
+                            $col = trim($expression2[0]);
+                            $val = trim($expression2[1]);
+                        }
                     }
                 }
                 if( $col != "" and $val != "" ) {
