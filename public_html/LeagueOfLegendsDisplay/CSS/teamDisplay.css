@@ -73,9 +73,42 @@ h1{
     background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat right -148px;
     margin-bottom: 10px;
 }
+.collapse{
+    display:inline-block;
+    vertical-align:top;
+    color: white;
+    overflow: hidden;
+}
+.collapse-b{
+    border: 3px solid transparent;
+    border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
+    background-size: cover;
+    margin-left: 5px;
+    display:inline-block;
+    vertical-align:top;
+    color: white;
+}
+.collapse img{
+    margin-top: 0;
+}
+.collapse-M-heading{
+    text-decoration: underline;
+    font-size: 11pt;
+    color: #FBB042;
+}
+.collapse-heading{
+    color: #FBB042;
+    font-size: 9pt;
+}
+.rankV{
+    font-size: 9pt;
+}
+.rankV img{
+    width:35%
+}
 .playerNameContainer{
     text-align:center;
-    word-wrap: break-word;
     margin-bottom: 10px;
     border: 10px solid transparent;
     border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
@@ -86,8 +119,8 @@ h1{
 }
 .summonerName{
     color:white;
-    font-size:15pt;
-    vertical-align: 20px;
+    font-size:100%;
+    vertical-align: 18px;
 }
 .icon{
     border-radius: 50px;
@@ -121,9 +154,6 @@ h1{
 .rank{
     width:50%;
 }
-.rankV{
-    display: block;
-}
 .unranked{
     opacity:.4
 }
@@ -145,7 +175,6 @@ h1{
     opacity: 0.6;
 }
 .loadChampion{
-    margin-top:10px;
     width: 100%;
     height: auto;
     opacity:0;
@@ -160,6 +189,10 @@ h1{
     margin-top:10px;
     width: 100%;
     height: auto;
+    padding:1px;
+}
+.championImage:hover {
+    background-color: blue;
 }
 .teamFooter{
     position: fixed;
@@ -170,37 +203,56 @@ h1{
 .giga_teamImage{
     width:300px
 }
+.col-lg{
+    display:inline-block;
+    margin: 10px;
+    max-width:300px;
+}
+.v-align{
+    vertical-align: top;
+}
 
 @media (min-width:1080px) {
     .col-lg {
         width: 17%!important;
-        display:inline-block;
-        margin: 10px;
-        max-width:300px;
-
+    }
+    .collapse{
+        width:47%;
+    }
+    .collapse-b{
+        width:47%;
     }
 }
 @media (max-width:1079px) {
     .col-lg {
         width: 33%!important;
-        display:inline-block;
-        margin: 10px;
-        max-width:300px;
+    }
+    .collapse{
+        width:47%;
+    }
+    .collapse-b{
+        width:47%;
     }
 }
 @media (max-width:1030px) {
     .col-lg {
         width: 45%!important;
-        display:inline-block;
-        margin: 10px;
-        max-width:300px;
+    }
+    .collapse{
+        width:47%;
+    }
+    .collapse-b{
+        width:47%;
     }
 }
 @media (max-width:530px) {
     .col-lg {
         width: 100%!important;
-        display:inline-block;
-        margin: 10px;
-        max-width:300px;
+    }
+    .collapse{
+        width:47%;
+    }
+    .collapse-b{
+        width:47%;
     }
 }
