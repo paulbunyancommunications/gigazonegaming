@@ -5,11 +5,6 @@ html{
 body{
     background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');
 }
-.startImage{
-    text-align:center;
-    max-width:60%;
-    margin:auto;
-}
 .startForm{
     text-align:center;
 }
@@ -25,8 +20,7 @@ select{
     font-weight: bold;
     color: white;
     border: none;
-    margin: 5px 5px 5px 5px;
-
+    margin: 5px;
 }
 button{
     -webkit-border-radius: 5px;
@@ -37,144 +31,176 @@ button{
     font-weight: bold;
     color: white;
     border: none;
-    margin: 5px 5px 5px 5px;
-
+    margin: 5px;
 }
-h1{
+.startImage{
     text-align:center;
-    color:white;
-    font-size:30pt;
-}
-.playerNameContainer{
-    text-align:center;
-}
-.summonerName{
-    color:white;
-    vertical-align:7px;
-    font-size:15pt;
-}
-.icon{
-    width:20%;
-    height:auto;
-    padding: 0 0 0 10px;
-}
-.playerInfo{
-    color:white;
-}
-.playerImage{
-    max-width:100%;
-    height:auto;
-    padding: 5px 5px 5px 5px;
-}
-
-.giga_teamImage{
-    width:300px
-}
-.teamFooter{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align:center;
-    z-index:12;
-}
-@media (min-width:1080px) {
-    .col-lg {
-        width: 17%!important;
-        display:inline-block;
-        padding: 10px;
-    }
-}
-@media (max-width:1079px) {
-    .col-lg {
-        width: 33%!important;
-        display:inline-block;
-    }
-    .summonerName{
-        color:white;
-        vertical-align:7px;
-        font-size:2vw;
-    }
-    .icon{
-        width:15%;
-        height:auto;
-        padding: 0 0 0 10px;
-    }
-}
-@media (max-width:850px) {
-    .col-lg {
-        width: 45%!important;
-        display:inline-block;
-    }
-    .summonerName{
-        color:white;
-        vertical-align:7px;
-        font-size:3vw;
-    }
-}
-@media (max-width:530px) {
-    .col-lg {
-        width: 100%!important;
-        display:inline-block;
-    }
-    .summonerName{
-        color:white;
-        vertical-align:7px;
-        font-size:4vw;
-    }
-    h1{
-        text-align:center;
-        color:white;
-        font-size:20pt;
-    }
-    .icon{
-        width:15%;
-        height:auto;
-        padding: 0 0 0 10px;
-    }
+    max-width:60%;
+    margin:auto;
 }
 .mainDiv{
     text-align:center;
 }
-
+h1{
+    margin: 0;
+    text-align:center;
+    font-size:60pt;
+    text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
+    color: white;
+}
+.backgroundH1{
+    background-image: url('/LeagueOfLegendsDisplay/Images/bg-default.jpg');
+    border-radius: 10px;
+    padding:10px;
+}
+.borderTop {
+    width: 49%;
+    display:inline-block;
+    padding-left: 10px;
+    margin-left: -10px;
+    height: 26px;
+    top: -21px;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat left -148px;
+    margin-bottom: 10px;
+}
+.borderTop2 {
+    width: 49%;
+    display:inline-block;
+    padding-left: 10px;
+    margin-left: -10px;
+    height: 26px;
+    top: -21px;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat right -148px;
+    margin-bottom: 10px;
+}
+.playerNameContainer{
+    text-align:center;
+    word-wrap: break-word;
+    margin-bottom: 10px;
+    border: 10px solid transparent;
+    border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/blueFire.jpg') center center no-repeat;
+    background-size: cover;
+    text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
+    color: white;
+}
+.summonerName{
+    color:white;
+    font-size:15pt;
+    vertical-align: 20px;
+}
+.icon{
+    border-radius: 50px;
+    width:15%;
+    height:auto;
+    border-style: inset;
+    border-color: #FFD700;
+}
+.playerInfo{
+    color:white;
+}
+.playerBorder{
+    border: 10px solid transparent;
+    border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
+    background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
+    background-size: cover;
+}
+.playerStatsContainer{
+    width:50%;
+    display:inline-block;
+    white-space: nowrap;
+}
+.playerMainHeading{
+    text-decoration: underline;
+    font-size: 15pt;
+    color: #FBB042;
+}
+.playerHeading{
+    color: #FBB042;
+}
+.rank{
+    width:50%;
+}
+.rankV{
+    display: block;
+}
+.unranked{
+    opacity:.4
+}
 .spinner-container {
+    margin:auto;
+    padding-top: 10px;
+    max-width:300px;
+    position:relative;
+    text-align:center;
+}
+.spinner-overlay {
+    background:  url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png') center center repeat;
+    z-index: 4;
+    opacity: 0.6;
+}
+.spinner-image {
+    z-index: 5;
+    background:  #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
+    opacity: 0.6;
+}
+.loadChampion{
+    margin-top:10px;
+    width: 100%;
+    height: auto;
+    opacity:0;
+}
+.imageContainer{
     height: 560px;
     width: 100%;
     max-width:300px;
-    position: relative;
-    text-align:center;
     margin:auto;
-}
-
-.spinner-overlay, .spinner-image {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-}
-.spinner-overlay {
-    background: transparent url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png') center center repeat;
-    z-index: 6;
-    opacity: .6;
-}
-
-.spinner-image {
-    z-index: 5;
-    background: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
-    opacity: .5;
-    transition: opacity 0.5s ease-in-out;
 }
 .championImage{
     margin-top:10px;
     width: 100%;
     height: auto;
 }
-.imageContainer{
-    height: 560px;
+.teamFooter{
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    max-width:300px;
-    position: relative;
     text-align:center;
-    margin:auto;
 }
-.spinner-container:hover > .spinner-image {
-    opacity: 1;
+.giga_teamImage{
+    width:300px
+}
+
+@media (min-width:1080px) {
+    .col-lg {
+        width: 17%!important;
+        display:inline-block;
+        margin: 10px;
+        max-width:300px;
+
+    }
+}
+@media (max-width:1079px) {
+    .col-lg {
+        width: 33%!important;
+        display:inline-block;
+        margin: 10px;
+        max-width:300px;
+    }
+}
+@media (max-width:1030px) {
+    .col-lg {
+        width: 45%!important;
+        display:inline-block;
+        margin: 10px;
+        max-width:300px;
+    }
+}
+@media (max-width:530px) {
+    .col-lg {
+        width: 100%!important;
+        display:inline-block;
+        margin: 10px;
+        max-width:300px;
+    }
 }
