@@ -26,6 +26,7 @@ class GameDisplayController extends Controller
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
     protected $championArray = array();
+    protected $summonerName = array();
 
     #for testing purposes
     public function __construct()
@@ -95,17 +96,21 @@ class GameDisplayController extends Controller
         $this->setTeam($team,$tournament);
         $status = $this->team[0]->checkCurrentGameStatus();
 
+        $i=0;
         foreach ($this->team as $player) {
             $status = $player->checkCurrentGameStatus();
             if ($status) {
                     $player->setChampion();
                     array_push($this->championArray, $player->getChampion());
-
-
+                    array_push($this->summonerArray, $i);
             }
-
+          $i++;
         }
-        return response()->json($this->championArray);
+        $returnArray = array(
+            'Champions' => $this->championArray,
+            'Summoners' => $this->summonerArray
+        );
+        return response()->json($returnArray);
 //        $this->fetchChampions();
 //        return response()->json($this->championArray);
 

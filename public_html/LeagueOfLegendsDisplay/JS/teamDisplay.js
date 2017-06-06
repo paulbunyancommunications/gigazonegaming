@@ -66,27 +66,35 @@ function teamView(){
     window.open('https://gigazonegaming.localhost/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
 
+function setChampions() {
+    alert("Working");
+    checkAndGrabChampion();
+}
+
 /*This begins the js that is used on the team display page*/
-setTimeout(
-    function(){
-        $('#divA0').fadeOut(2000);
-        $('#divA1').fadeOut(2000);
-        $('#divA2').fadeOut(2000);
-        $('#divA3').fadeOut(2000);
-        $('#divA4').fadeOut(2000);
-    },
-    5000
-);
-setTimeout(
-    function() {
-        $('#divB0').fadeIn(3000);
-        $('#divB1').fadeIn(3000);
-        $('#divB2').fadeIn(3000);
-        $('#divB3').fadeIn(3000);
-        $('#divB4').fadeIn(3000);
-    },
-    7100
-);
+function fadInChampion() {
+    setTimeout(
+        function(){
+            $('#divA0').fadeOut(2000);
+            $('#divA1').fadeOut(2000);
+            $('#divA2').fadeOut(2000);
+            $('#divA3').fadeOut(2000);
+            $('#divA4').fadeOut(2000);
+        },
+        5000
+    );
+    setTimeout(
+        function() {
+            $('#divB0').fadeIn(3000);
+            $('#divB1').fadeIn(3000);
+            $('#divB2').fadeIn(3000);
+            $('#divB3').fadeIn(3000);
+            $('#divB4').fadeIn(3000);
+        },
+        7100
+    );
+}
+
 
 function showBackground(){
 
