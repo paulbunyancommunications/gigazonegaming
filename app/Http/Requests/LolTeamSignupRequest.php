@@ -32,17 +32,26 @@ class LolTeamSignUpRequest extends BaseRequest
      */
     public function rules()
     {
-//        dd($_REQUEST);
-        $_REQUEST->merge(['New Key' => 'New Value']);
-        $tournament_id = Tournament::where( 'name', '=', $this->tournament )->first()->id;
-        $rules = [
-            'email' => 'required|email|unique:mysql_champ.players,email',
-            'name' => 'required',
-            'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
-            'team-captain-phone' => 'required',
-            'tournament' => 'required|exists:mysql_champ.tournaments,name',
-            'team-name' => 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id',
-        ];
+        if(Tournament::where( 'name', '=', $this->tournament )->exists()) {
+            $tournament_id = Tournament::where('name', '=', $this->tournament)->first()->id;
+            $rules = [
+                'email' => 'required|email|unique:mysql_champ.players,email',
+                'name' => 'required',
+                'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
+                'team-captain-phone' => 'required',
+                'tournament' => 'required|exists:mysql_champ.tournaments,name',
+                'team-name' => 'required|uniqueWidth:mysql_champ.teams,=name,tournament_id>'.$tournament_id,
+            ];
+        }else{
+            $rules = [
+                'email' => 'required|email|unique:mysql_champ.players,email',
+                'name' => 'required',
+                'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
+                'team-captain-phone' => 'required',
+                'tournament' => 'required|exists:mysql_champ.tournaments,name',
+                'team-name' => 'required|unique:mysql_champ.teams',
+            ];
+        }
         for ($i = 1; $i <= 2; $i++) {
             if ($this->request->get('teammate-'.Numbers::toWord($i).'-lol-summoner-id')) {
                 $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-id'] = 'exists:mysql_champ.player,id';
@@ -62,6 +71,7 @@ class LolTeamSignUpRequest extends BaseRequest
     public function messages()
     {
         $messages = [
+            "name.unique_width" => 'A team with the exact same name already exist for this tournament, please select a different name.',
             'email.required' => 'The team captain email address is required.',
             'email.unique' => 'The team captain email address is already assigned to a different user.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
