@@ -80,8 +80,8 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th class="col-md-4">Game</th>
-                        <th class="col-md-4">Game's Tournament</th>
+                        <th class="col-md-4">Game's Title</th>
+                        <th class="col-md-4">Game's Name</th>
                         <th class="col-md-4"></th>
                     </tr>
                     </thead>
