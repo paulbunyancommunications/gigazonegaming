@@ -65,7 +65,7 @@ class UniqueWithValidatorController extends Controller
                     $col = trim($parameters[$i]);
                     if($col != 'self_') {
                         $val = trim($_REQUEST[$col]);
-                    }else{
+                    }else{ //self_ same attribute and val passed
                         $col = trim($attribute);
                         $val = trim($value);
                     }
