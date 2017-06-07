@@ -12,6 +12,8 @@ class ValidatorUniqueWidthBackEndCest extends \BaseAcceptance
      *
      */
     const DEFAULT_WAIT = 15;
+    const TEAM_A_NAME = "sdgkldR34 4fjglkjahL KDNFLKDFJG3245ERGRPIOS2JGLNSD23LKVNS KDJ0FN SK234D3JGNDFDFSFD23SD";
+    const TEAM_B_NAME = "FLKFJG245ERGRPIOkldR34 KDJ0NFLKD 4glkahL KD345NS2JGLD23LKVNS FJ3245ERPIO D3JGNFFSFD2SD";
 
     /**
      * @param AcceptanceTester $I
@@ -33,7 +35,8 @@ class ValidatorUniqueWidthBackEndCest extends \BaseAcceptance
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToTest(AcceptanceTester $I)
+    public function tryToCheckIfAfterCreatingATeamICanAssignItTheSameName(AcceptanceTester $I)
     {
+
     }
 }
