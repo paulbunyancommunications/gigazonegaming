@@ -8,9 +8,9 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            #url: 'http://gigazonegaming.local'
             url: 'http://web'
-            host: localhost
+            host: hub
+            wait: 0
             browser: firefox
             port: 4444
             window_size: 1366x768
