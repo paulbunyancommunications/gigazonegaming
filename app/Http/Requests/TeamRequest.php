@@ -60,7 +60,7 @@ class TeamRequest extends Request
                 }else{//something change, name or tournament updated
                     $exits = Team::where([['name','=',$requested_name],['tournament_id', '=', $original_tournament_id],['id', '<>', $team_id] ])->exists();
                     $return = 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id';
-                    if(!$exits){$return='required';}
+                    if(!$exits){$return='required|unique:mysql_champ.teams';}
                     return [
                         'name' => $return,
                         'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$original_tournament_id.',tournament_id'
