@@ -49,7 +49,7 @@ class LolTeamSignUpRequest extends BaseRequest
                 'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
                 'team-captain-phone' => 'required',
                 'tournament' => 'required|exists:mysql_champ.tournaments,name',
-                'team-name' => 'required|unique:mysql_champ.teams,=name',
+                'team-name' => 'required|unique:mysql_champ.teams,name',
             ];
         }
         for ($i = 1; $i <= 2; $i++) {
