@@ -75,16 +75,16 @@ class UniqueWithValidatorController extends Controller
                         $val = trim($expression2[1]);
                 }else{
                     $expression = explode('=', $parameters[$i]);
-                    if($equal == 0 ){ // =column name
-                        if($value_exists === false ) {
+                    if($equal == 0 ){ //=column
+                        if($value_exists === false ) {//=column
                             $col = trim($expression[0]);
-                            $val = trim($_REQUEST[$attribute]);
-                        }else{
+                            $val = trim($value);
+                        }else{//=column>value
                             $expression2 = explode('>', $expression[0]); //there is no value required for the key passed we care about what row was selected and what value was passed
                             $col = trim($expression2[0]);
                             $val = trim($expression2[1]);
                         }
-                    }else{
+                    }else{//key=column>value
                         if($value_exists === false ){
                             $col = trim($expression[1]);
                             $val = $_REQUEST[trim($expression[0])];
