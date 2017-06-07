@@ -2,11 +2,13 @@
 
 use Illuminate\Database\Seeder;
 
-class BackEndTesterSeeder extends Seeder
+class SignUpUniqueWithValidatorTesterSeeder extends Seeder
 {
     public $nelson_variables;
-    const TEAM_A_NAME = "sdgkldR34 4fjglkjahL KDNFLKDFJG3245ERGRPIOS2JGLNSD23LKVNS KDJ0FN SK234D3JGNDFDFSFD23SD";//same as in the test class for uniquewith validator
-    const TEAM_B_NAME = "FLKFJG245ERGRPIOkldR34 KDJ0NFLKD 4glkahL KD345NS2JGLD23LKVNS FJ3245ERPIO D3JGNFFSFD2SD";//same as in the test class for uniquewith validator
+    const TEAM_A_NAME = "Tester Team Unique Width A";//same as in the test class for uniquewith validator
+    const TEAM_B_NAME = "Tester Team Unique Width B";//same as in the test class for uniquewith validator
+    const TOURNAMENT_A_NAME = "Tester Tournament Unique Width A";//same as in the test class for uniquewith validator
+    const TOURNAMENT_B_NAME = "Tester Tournament Unique Width B";//same as in the test class for uniquewith validator
 
     /**
      * Run the database seeds.
@@ -25,152 +27,38 @@ class BackEndTesterSeeder extends Seeder
         $teams = [];
         $playerWithoutRelations = [];
         $playerWithRelations = [];
-        for($i=0; $i<10; $i++) {
-            $games[] = \App\Models\Championship\Game::create(
-                [
-                    'name' => implode('-', $faker->words()),
-                    'title' => $faker->sentence(),
-                    'description' => $faker->paragraph(),
-                    'uri' => $faker->url(),
-                ])->toArray();
-        }
         $sp_game =  \App\Models\Championship\Game::create(
         [
-            'name' => "Tester Game",
+            'name' => "Tester Game Unique Width",
             'title' => "The Tester Game",
             'description' => $faker->paragraph(),
             'uri' => $faker->url(),
         ])->toArray();
-        for($i=0; $i<14; $i++) {
-            $tournaments[] = \App\Models\Championship\Tournament::create(
-                [
-                    'name' => implode('-', $faker->words(4)),
-                    'game_id' => $games[array_rand($games)]['id'],
-                    'sign_up_open' => $faker->dateTimeBetween('+30 minutes', '+1 day'),
-                    'sign_up_close' => $faker->dateTimeBetween('+2 days', '+1 week'),
-                    'occurring' => $faker->dateTimeBetween('+1 month', '+2 months'),
-                    'max_players' => $faker->randomDigitNotNull,
-                ] );
-        }
-        $sp_tournament = \App\Models\Championship\Tournament::create(
+        $sp_tournamentA = \App\Models\Championship\Tournament::create(
             [
-                'name' => "Tester Tournament",
+                'name' => $this::TOURNAMENT_A_NAME,
                 'game_id' => $sp_game['id'],
                 'sign_up_open' => $faker->dateTimeBetween('+0 minutes', '+1 minute'),
                 'sign_up_close' => $faker->dateTimeBetween('+6 days', '+10 week'),
                 'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
                 'max_players' => 6,
             ] );
+        $sp_tournamentB = \App\Models\Championship\Tournament::create(
+            [
+                'name' => $this::TOURNAMENT_B_NAME,
+                'game_id' => $sp_game['id'],
+                'sign_up_open' => $faker->dateTimeBetween('+0 minutes', '+1 minute'),
+                'sign_up_close' => $faker->dateTimeBetween('+6 days', '+10 week'),
+                'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
+                'max_players' => 3,
+            ] );
         $sp_team = \App\Models\Championship\Team::create(
             [
-                'name' => "Tester Team",
+                'name' => $this::TEAM_A_NAME,
                 'emblem' => $faker->imageUrl(),
-                'tournament_id' => $sp_tournament['id'],
+                'tournament_id' => $sp_tournamentA['id'],
                 'captain' => 0
-            ])->toArray();
-        for($i=0; $i<14; $i++) {
-            $teams[] = \App\Models\Championship\Team::create(
-                [
-                    'name' => implode('-', $faker->words()),
-                    'emblem' => $faker->imageUrl(),
-                    'tournament_id' => $tournaments[array_rand($tournaments)]['id'],
-                    'captain' => 0
-                ])->toArray();
-        }
-        $first = true;
+            ]);
         // create the tester user if not already created
-        for($i=0; $i<5; $i++) {
-            $player = \App\Models\Championship\Player::create(
-                [
-                    'name' => "Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
-                    'username' => "The Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
-                    'email' => "player".str_pad($i, 3, '0', STR_PAD_LEFT)."@test.com",
-                    'phone' => "(218)-444-".str_pad($i, 3, '0', STR_PAD_LEFT),
-                    'user_id' => $faker->numberBetween(20, 2226000)
-                ])->toArray();
-            \App\Models\Championship\Relation\PlayerRelation::create([
-                'player_id' => $player['id'],
-                'relation_type' => \App\Models\Championship\Game::class,
-                'relation_id' => $sp_game['id'],
-            ]);
-            \App\Models\Championship\Relation\PlayerRelation::create([
-                'player_id' => $player['id'],
-                'relation_type' => \App\Models\Championship\Tournament::class,
-                'relation_id' => $sp_tournament['id'],
-            ]);
-            \App\Models\Championship\Relation\PlayerRelation::create([
-                'player_id' => $player['id'],
-                'relation_type' => \App\Models\Championship\Team::class,
-                'relation_id' => $sp_team['id'],
-            ]);
-            if($first){
-                $first=false;
-                \App\Models\Championship\Team::where('id', '=', $sp_team['id'])
-                    ->update(['captain'=>$player['id']]);
-            }
-
-        }
-        \App\Models\Championship\Player::create(
-            [
-                'name' => "Tester PlayerX",
-                'username' => "The Tester PlayerX",
-                'email' => "playerx@test.com",
-                'phone' => "(218)-444-9999",
-                'user_id' => 99999999999
-            ])->toArray();
-        for($i=0; $i<63; $i++) {
-            $playerWithRelations[] = \App\Models\Championship\Player::create(
-                [
-                    'name' => "Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
-                    'username' => "The Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
-                    'email' => "player".str_pad($i+5, 3, '0', STR_PAD_LEFT)."@test.com",
-                    'phone' => "(218)-444-".str_pad($i+5, 3, '0', STR_PAD_LEFT),
-                    'user_id' => $faker->numberBetween(20, 2226000)
-                ])->toArray();
-        }// create the tester user if not already created
-        foreach ($playerWithRelations as $k => $player){
-            if($k < 30){
-                \App\Models\Championship\Relation\PlayerRelation::create([
-                    'player_id' => $player['id'],
-                    'relation_type' => \App\Models\Championship\Tournament::class,
-                    'relation_id' => $sp_tournament['id'],
-                ]);
-                \App\Models\Championship\Relation\PlayerRelation::create([
-                    'player_id' => $player['id'],
-                    'relation_type' => \App\Models\Championship\Game::class,
-                    'relation_id' => $sp_game['id'],
-                ]);
-            } else {
-                $relation[] = \App\Models\Championship\Relation\PlayerRelation::create(
-                    [
-                        'player_id' => $player['id'],
-                        'relation_type' => \App\Models\Championship\Team::class,
-                        'relation_id' => $teams[array_rand($teams)]['id'],
-                    ])->toArray();
-            }
-        }
-        for($i=0; $i<60; $i++) {
-            $playerWithoutRelations[] = \App\Models\Championship\Player::create(
-                [
-                    'name' => $faker->name,
-                    'username' => $faker->userName,
-                    'email' => $faker->email,
-                    'user_id' => $faker->numberBetween(20, 2226000)
-                ])->toArray();
-        }
-        $this->nelson_variables = [
-            'players_s'=>$playerWithoutRelations,
-            'players_r'=>$playerWithRelations,
-            'teams'=>$teams,
-            'tournaments'=>$tournaments,
-            'games'=>$games
-
-        ];
-
-        // add scores to the db
-        factory(App\Models\Championship\Score::class, 50)->create([
-            'tournament' => factory(App\Models\Championship\Game::class)->create([])->id
-        ]);
-
     }
 }
