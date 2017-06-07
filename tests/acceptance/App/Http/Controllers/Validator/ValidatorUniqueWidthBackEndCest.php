@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Acceptance;
+namespace Tests\Acceptance\App\Http\Controllers\Validator;
 use \AcceptanceTester;
-
+use \BaseAcceptance;
 /**
  * Class ValidatorUniqueWidthBackEndCest
  * @package Tests\Acceptance
  */
-class ValidatorUniqueWidthBackEndCest extends \BaseAcceptance
+class ValidatorUniqueWidthBackEndCest extends BaseAcceptance
 {
     /**
      *
@@ -21,6 +21,15 @@ class ValidatorUniqueWidthBackEndCest extends \BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $this->populateDB($I);
+        $this->loginWithAdminUser($I);
+        $I->am("admin");
+        $I->wantTo("A Admin User and I will create a team");
+        $I->amOnPage('/app/manage/team');
+        $I->fillField("#name", $this::TEAM_A_NAME);
+        $I->selectOption("#tournament_id", "1");
+        $I->click(['id'=>"submit"]);
+        $this->logoutOfWp($I);
     }
 
     /**
