@@ -11,10 +11,13 @@ class ValidatorUniqueWidthBackEndCest extends BaseAcceptance
     /**
      *
      */
+    public $faker;
     const DEFAULT_WAIT = 15;
-    const TEAM_A_NAME = "sdgkldR34 4fjglkjahL KDNFLKDFJG3245ERGRPIOS2JGLNSD23LKVNS KDJ0FN SK234D3JGNDFDFSFD23SD";
-    const TEAM_B_NAME = "FLKFJG245ERGRPIOkldR34 KDJ0NFLKD 4glkahL KD345NS2JGLD23LKVNS FJ3245ERPIO D3JGNFFSFD2SD";
-
+    const TEAM_A_NAME = "Tester Team Unique Width A";//same as in the SignUpUniqueWithValidatorTesterSeeder
+    const TEAM_B_NAME = "Tester Team Unique Width B";//same as in the SignUpUniqueWithValidatorTesterSeeder
+    const TOURNAMENT_A_NAME = "Tester Tournament Unique Width A";//same as in the SignUpUniqueWithValidatorTesterSeeder
+    const TOURNAMENT_B_NAME = "Tester Tournament Unique Width B";//same as in the SignUpUniqueWithValidatorTesterSeeder
+    /**
     public $faker;
 
     /**
@@ -24,6 +27,7 @@ class ValidatorUniqueWidthBackEndCest extends BaseAcceptance
     {
 //        $I->runShellCommand('cd /var/www');
         exec('php artisan db:seed --class=DatabaseSeeder');
+        exec('php artisan db:seed --class=SignUpUniqueWithValidatorTesterSeeder');
         $this->faker = \Faker\Factory::create();
     }
     /**
