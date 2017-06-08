@@ -72,27 +72,32 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
      */
     public function tryToCreateATeam(AcceptanceTester $I)
     {
+        $idA = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
+        $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
+        $I->wantTo("check that team A is in the tournament A");
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
+        $I->wantTo("check that team A is not in the tournament B");
+        $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
+
         $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
 
-        $idA = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
-        $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
 
         for($i=0; $i < 8; $i++) {
             $I->fillField($this->names[$i], $this->faker->email());
             $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
         }
 
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
-        $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
         $I->click("#doFormSubmit");
 
         $I->wait(10);
 
+        $I->wantTo("check that team A is in the tournament A");
         $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
+        $I->wantTo("check that team A is in the tournament B");
         $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
     }
