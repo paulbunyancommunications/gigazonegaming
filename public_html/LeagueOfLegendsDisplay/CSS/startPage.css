@@ -1,0 +1,30 @@
+.startForm{
+    text-align:center;
+}
+select{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    margin: 5px;
+}
+.startButton{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    margin: 5px;
+}
+.startImage{
+    text-align:center;
+    max-width:60%;
+    margin:auto;
+}
