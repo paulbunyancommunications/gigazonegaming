@@ -17,10 +17,7 @@ class SignUpUniqueWithValidatorTesterSeeder extends Seeder
      */
     public function run()
     {
-//        factory(\App\Models\Championship\Team::class, 76)->create();
-//        factory(\App\Models\Championship\Player::class, 371)->create();
-//        $faker = \Faker\Factory::create();
-
+        $this->call(WpTestAdminUserSeed::class);
         $faker = \Faker\Factory::create();
         $games = [];
         $tournaments = [];
@@ -42,7 +39,7 @@ class SignUpUniqueWithValidatorTesterSeeder extends Seeder
                 'sign_up_close' => $faker->dateTimeBetween('+6 days', '+10 week'),
                 'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
                 'max_players' => 6,
-            ] );
+            ])->toArray();
         $sp_tournamentB = \App\Models\Championship\Tournament::create(
             [
                 'name' => $this::TOURNAMENT_B_NAME,
@@ -51,14 +48,14 @@ class SignUpUniqueWithValidatorTesterSeeder extends Seeder
                 'sign_up_close' => $faker->dateTimeBetween('+6 days', '+10 week'),
                 'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
                 'max_players' => 3,
-            ] );
+            ])->toArray();
         $sp_team = \App\Models\Championship\Team::create(
             [
                 'name' => $this::TEAM_A_NAME,
                 'emblem' => $faker->imageUrl(),
                 'tournament_id' => $sp_tournamentA['id'],
                 'captain' => 0
-            ]);
+            ])->toArray();
         // create the tester user if not already created
     }
 }
