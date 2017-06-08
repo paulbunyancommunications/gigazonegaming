@@ -39,8 +39,8 @@ class BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         // reset all the databases
-        //$this->resetDB($I);
-        //$I->runMigration($I);
+        $this->resetDB($I);
+        $I->runMigration($I);
     }
 
     /**
