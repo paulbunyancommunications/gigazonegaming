@@ -77,21 +77,23 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
 
-        $id = $I->grabFromDatabase("champ_teams", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
-        dd($id);
+        $idA = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
+        $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
+
         for($i=0; $i < 8; $i++) {
             $I->fillField($this->names[$i], $this->faker->email());
             $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
         }
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$id]);
-        $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_B_NAME,'tournament_id'=>$id]);
+
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
+        $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
         $I->click("#doFormSubmit");
 
-        $I->wait(2);
+        $I->wait(10);
 
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$id]);
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_B_NAME,'tournament_id'=>$id]);
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
     }
     /**
@@ -104,6 +106,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+
         for($i=0; $i < 8; $i++) {
             $I->fillField($this->names[$i], $this->faker->email());
             $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
