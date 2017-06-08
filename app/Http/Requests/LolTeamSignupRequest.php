@@ -71,7 +71,7 @@ class LolTeamSignUpRequest extends BaseRequest
     public function messages()
     {
         $messages = [
-            "name.unique_width" => 'A team with the exact same name already exist for this tournament, please select a different name.',
+            "name.unique_width" => 'A team with the exact same name already exists for this tournament, please select a different name.',
             'email.required' => 'The team captain email address is required.',
             'email.unique' => 'The team captain email address is already assigned to a different user.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
