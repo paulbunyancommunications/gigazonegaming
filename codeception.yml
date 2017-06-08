@@ -27,6 +27,12 @@ modules:
             module: WebDriver
 coverage:
     enabled: true
+    remote: true
+    remote_context_options:
+        http:
+            timeout: 60
+        ssl:
+            verify_peer: false
     whitelist:
         include:
             - app/*
