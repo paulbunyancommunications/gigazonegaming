@@ -60,6 +60,5 @@
         {{$flexWinLossArray[$i]}}
     @stop
     @section('Player' . $i . 'Champion')
-
     @stop
 @endfor

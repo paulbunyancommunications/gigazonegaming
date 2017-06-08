@@ -44,6 +44,14 @@ class GameDisplayController extends Controller
 
         return view('/LeagueOfLegends/startPage')->withTournaments($tournaments)->withTeams($teams);
     }
+    public function customerDisplay()
+    {
+        return view('/LeagueOfLegends/customerPage');
+    }
+    public function championOverride()
+    {
+        return view('/LeagueOfLegends/championOverride');
+    }
 
     public function teamViewDisplay($tournament,$team,$color)
     {
