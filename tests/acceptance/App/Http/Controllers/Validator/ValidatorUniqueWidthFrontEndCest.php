@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Acceptance\App\Http\Controllers\Validator;
 use \AcceptanceTester;
+use App\Models\Championship\Tournament;
 use \BaseAcceptance;
 
 /**
@@ -46,7 +47,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     {
         parent::_before($I);
         $this->populateDB($I);
-//        $this->loginWithAdminUser($I);
+        $this->loginWithAdminUser($I);
         $I->amOnPage('/tournament/lol-team-signup/');
     }
     /**
@@ -63,25 +64,35 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         parent::_after($I);
-//        $this->logoutOfWp($I);
+        $this->logoutOfWp($I);
     }
     /**
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToCreateATeamNormally(AcceptanceTester $I)
+    public function tryToCreateATeam(AcceptanceTester $I)
     {
         $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+
+        $id = $I->grabFromDatabase("champ_teams", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
+        dd($id);
         for($i=0; $i < 8; $i++) {
             $I->fillField($this->names[$i], $this->faker->email());
             $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
         }
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$id]);
+        $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_B_NAME,'tournament_id'=>$id]);
+
         $I->click("#doFormSubmit");
-        $I->wait(10);
-        $I->dontSee("The team-name has already been taken.");
+
+        $I->wait(2);
+
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$id]);
+        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_B_NAME,'tournament_id'=>$id]);
+
     }
     /**
      * Test the form with the participation flag
