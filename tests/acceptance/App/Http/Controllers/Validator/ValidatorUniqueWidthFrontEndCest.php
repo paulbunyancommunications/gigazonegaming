@@ -71,7 +71,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
      */
     public function tryToCreateATeamNormally(AcceptanceTester $I)
     {
-        $I->executeJS("$('hidden').val(".$this::TOURNAMENT_B_NAME.")");
+        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
@@ -80,7 +80,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
             $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
         }
         $I->click("#doFormSubmit");
-
+        $I->dontSee("The team captain email address is already assigned to a different user.");
     }
     /**
      * Test the form with the participation flag
@@ -88,6 +88,26 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
      */
     public function tryToCreateATeamWithTheSameNameAsAnotherOne(AcceptanceTester $I)
     {
+        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
+        $I->fillField("#team-name", $this::TEAM_A_NAME);
+        $I->fillField("#team-captain", $this->faker->name());
+        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+        for($i=0; $i < 8; $i++) {
+            $I->fillField($this->names[$i], $this->faker->email());
+            $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
+        }
+        $I->click("#doFormSubmit");
+        $I->dontSee("The team captain email address is already assigned to a different user.");
+        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
+        $I->fillField("#team-name", $this::TEAM_A_NAME);
+        $I->fillField("#team-captain", $this->faker->name());
+        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+        for($i=0; $i < 8; $i++) {
+            $I->fillField($this->names[$i], $this->faker->email());
+            $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
+        }
+        $I->click("#doFormSubmit");
+        $I->see("The team captain email address is already assigned to a different user.");
 
     }
 }
