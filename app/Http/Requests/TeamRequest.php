@@ -79,7 +79,7 @@ class TeamRequest extends Request
     public function messages()
     {
         return [
-            "name.unique_width" => 'A team with the exact same name already exist for this tournament, please select a different name.',
+            "name.unique_width" => 'A team with the exact same name already exists for this tournament, please select a different name.',
             'name.required' => 'The Team Name Field is required.',
             'name.unique' => 'The Team Name is in use, pick a new one.',
             'tournament_id.required' => 'The Tournament field can not be empty.',
