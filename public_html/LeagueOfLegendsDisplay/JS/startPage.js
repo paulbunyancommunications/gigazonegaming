@@ -109,24 +109,3 @@ $('#Tournament').change(function() {
 function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
-
-function move() {
-    $('#myProgress').removeClass('hidden');
-    $('#myBar').removeClass('hidden');
-    $('#submit').addClass('hidden');
-    var elem = document.getElementById("myBar");
-    var width = 1;
-    var id = setInterval(frame, 60);
-    function frame() {
-        if (width >= 100) {
-            clearInterval(id);
-            $('#myProgress').addClass('hidden');
-            $('#myBar').addClass('hidden');
-            $('#submit').removeClass('hidden');
-            alert("Successfully Cached")
-        } else {
-            width++;
-            elem.style.width = width + '%';
-        }
-    }
-}

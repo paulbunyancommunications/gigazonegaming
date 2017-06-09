@@ -55,7 +55,8 @@ class GameDisplayController extends Controller
 
     public function teamViewDisplay($tournament,$team,$color)
     {
-        if($this->buildTheTeams($tournament, $team) == null){
+        $this->buildTheTeams($tournament, $team);
+        if($this->summonerArray[0] == ""){
             $color = $this->setTeamColor($color);
             return view('/LeagueOfLegends/DisplayAltTeam', [
                 'tournament' => $tournament,    #NEW
@@ -64,8 +65,7 @@ class GameDisplayController extends Controller
             ]);
 
         }
-        else {
-            $this->buildTheTeams($tournament, $team);
+    else {
             $color = $this->setTeamColor($color);
             return view('/LeagueOfLegends/DisplayTeam', [
                 'tournament' => $tournament,    #NEW
