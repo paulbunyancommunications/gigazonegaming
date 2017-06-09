@@ -7,8 +7,8 @@ class SignUpUniqueWithValidatorTesterSeeder extends Seeder
     public $nelson_variables;
     const TEAM_A_NAME = "Tester Team Unique Width A";//same as in the test class for uniquewith validator
     const TEAM_B_NAME = "Tester Team Unique Width B";//same as in the test class for uniquewith validator
-    const TOURNAMENT_A_NAME = "Tester Tournament Unique Width A";//same as in the test class for uniquewith validator
-    const TOURNAMENT_B_NAME = "Tester Tournament Unique Width B";//same as in the test class for uniquewith validator
+    const TOURNAMENT_A_NAME = "Tester_Tournament_Unique_Width_A";//same as in the test class for uniquewith validator
+    const TOURNAMENT_B_NAME = "Tester_Tournament_Unique_Width_B";//same as in the test class for uniquewith validator
 
     /**
      * Run the database seeds.
