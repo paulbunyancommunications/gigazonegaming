@@ -40,6 +40,7 @@ class FilldbWithTestData extends Command
         dd("This is working");
     }
     public function fillDB(){
+
         #Captian
         $Captian = new Player();
         $Captian->setAttribute('username', "KingMorpheus2131");
@@ -47,13 +48,16 @@ class FilldbWithTestData extends Command
         $Captian->setAttribute('name', "Simon");
         $Captian->setAttribute('phone', "6125596450");
         $Captian->save();
+
         #Team
         $team = new Team();
         $team->tournament_id = 1;
         $team->name =  "Power Rangers";
+
         #add captain and save the team
         $team->captain = $Captian->id;
         $team->save();
+
         #relations
         $Captian::createRelation([
             'player' => $Captian,
@@ -62,6 +66,7 @@ class FilldbWithTestData extends Command
         ]);
         $playerUserNameArray = array('manklar', 'spartan7warrior', 'ReckonStuff', 'ThatBoy18');
         $i = 0;
+
         #creat players for team
         foreach ($playerUserNameArray as $Player){
             $player = new Player();

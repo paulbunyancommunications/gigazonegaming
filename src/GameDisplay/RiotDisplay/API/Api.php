@@ -20,6 +20,8 @@ class Api{
     protected $championName;
     protected $championImg;
     protected $currentGameStatus = false;
+
+    #Request Counter
     protected $counter = 0;
 
 
@@ -42,20 +44,47 @@ class Api{
 
     }
 
+
 # Methods
 #----------------------------------------------------------------------
-    public function checkCurrentGameStatus(){
-        $request = new Request('Get', 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey);
+    public function ApiRequest($Url){
+        #Request Info From Api
+        $request = new Request('Get', $Url);
         $response = $this->client->send($request);
-        if($response->getStatusCode() == '200'){
+
+        #If Request Goes Through Return Json Response, Else Try 10 Times then through exception.
+        switch ($response->getStatusCode()){
+            case '200':
+                $Info = json_decode($response->getBody());
+                break;
+            case '404':
+                $Info = false;
+            case '429':
+                sleep(1);
+                $this->counter++;
+                if($this->counter > 10){
+                    throw new Exception("Calling Api Key Too Soon");
+                }
+                $this->ApiRequest($Url);
+            case '503':
+                throw new Exception("Riot's Api is Down");
+
+            default:
+                throw new Exception("Unknown Riot Api Error code:" . $response->getStatusCode());
+        }
+
+        return $Info;
+    }
+
+    public function checkCurrentGameStatus(){
+        $Url = 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey;
+        $Info = $this->ApiRequest($Url);
+
+        if($Info){
             $this->currentGameStatus = true;
-            $Info = json_decode($response->getBody());
             $this->currentGameInfo = $Info;
         }
-        if($response->getStatusCode() == '429'){
-            sleep(1);
-            $this->checkCurrentGameStatus();
-        }
+
         return $this->currentGameStatus;
     }
 
@@ -66,18 +95,16 @@ class Api{
     public function setLeagueV3Json()
     {
         #Gets players states json
-        $request = new Request('Get', 'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey);
-        $response = $this->client->send($request);
-        $Info = json_decode($response->getBody());
+        $Url = 'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
+        $Info = $this->ApiRequest($Url);
+
         $this->LeagueV3Json = $Info;
     }
 
     public function setSummonerID()
     {
-
-        $request = new Request('Get', 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey);
-        $response = $this->client->send($request);
-        $Info = json_decode($response->getBody());
+        $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
+        $Info = $this->ApiRequest($Url);
         #sets summoner ID for further use with the api.
         try{
             $this->summonerID = $Info->id;
@@ -103,11 +130,8 @@ class Api{
     }
 
     Public function setChampionName($ChampionId){
-        $apiKey = $_ENV['RIOT_API_KEY'];
-
-        $request = new Request('GET', "https://na.api.riotgames.com/api/lol/static-data/na/v1.2/champion/". $ChampionId ."?api_key=" . $apiKey);
-        $response = $this->client->send($request);
-        $Info = json_decode($response->getBody());
+        $Url = "https://na.api.riotgames.com/api/lol/static-data/na/v1.2/champion/". $ChampionId ."?api_key=" . $this->apiKey;
+        $Info = $this->ApiRequest($Url);
         $this->championName = $Info->key;
 
     }
@@ -227,7 +251,6 @@ class Api{
         return $FLEXRank;
     }
 
-#These will be called every 2 seconds till this info has been grabbed successfully
     public function getChampion(){
         $this->setChampionId();
         $this->setChampionName($this->championId);

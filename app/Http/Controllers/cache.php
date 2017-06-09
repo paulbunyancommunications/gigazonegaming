@@ -136,9 +136,9 @@ class cache extends Controller
         }
     }
     public function cacheContent($teamInfoArrays,$colorArray){
-        Cache::put('Team1Info', $teamInfoArrays[1], 70);
-        Cache::put('Team1color', $colorArray[1], 70);
-        Cache::put('Team2Info', $teamInfoArrays[2], 70);
-        Cache::put('Team2color', $colorArray[2], 70);
+//        Cache::put('Team1Info', $teamInfoArrays[1], 70);
+//        Cache::put('Team1color', $colorArray[1], 70);
+//        Cache::put('Team2Info', $teamInfoArrays[2], 70);
+//        Cache::put('Team2color', $colorArray[2], 70);
     }
 }
