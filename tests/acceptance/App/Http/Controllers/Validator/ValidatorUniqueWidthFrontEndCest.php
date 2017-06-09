@@ -17,9 +17,11 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     const DEFAULT_WAIT = 60;
     const TEAM_A_NAME = "Tester Team Unique Width A";//same as in the SignUpUniqueWithValidatorTesterSeeder
     const TEAM_B_NAME = "Tester Team Unique Width B";//same as in the SignUpUniqueWithValidatorTesterSeeder
-    const TOURNAMENT_A_NAME = "Tester Tournament Unique Width A";//same as in the SignUpUniqueWithValidatorTesterSeeder
-    const TOURNAMENT_B_NAME = "Tester Tournament Unique Width B";//same as in the SignUpUniqueWithValidatorTesterSeeder
+    const TOURNAMENT_A_NAME = "Tester_Tournament_Unique_Width_A";//same as in the SignUpUniqueWithValidatorTesterSeeder
+    const TOURNAMENT_B_NAME = "Tester_Tournament_Unique_Width_B";//same as in the SignUpUniqueWithValidatorTesterSeeder
 
+    public $nameList = [];
+    public $emailList = [];
     public $names = [
     "#team-captain-email-address",
     '#teammate-one-lol-summoner-name',
@@ -47,7 +49,11 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     {
         parent::_before($I);
         $this->populateDB($I);
-        $this->loginWithAdminUser($I);
+        $this->faker = \Faker\Factory::create();
+        for($i=0; $i < 8; $i++) {
+            $this->nameList[] = "xyz".$this->faker->name()."stu";
+            $this->emailList[] = "xyz".$this->faker->email()."stu";
+        }
         $I->amOnPage('/tournament/lol-team-signup/');
     }
     /**
@@ -56,7 +62,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     protected function populateDB(AcceptanceTester $I)
     {
         exec('php artisan db:seed --class=SignUpUniqueWithValidatorTesterSeeder');
-        $this->faker = \Faker\Factory::create();
     }
     /**
      * @param AcceptanceTester $I
@@ -64,7 +69,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         parent::_after($I);
-        $this->logoutOfWp($I);
     }
     /**
      * Test the form with the participation flag
@@ -74,31 +78,29 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     {
         $idA = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
         $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
-        $I->wantTo("check that team A is in the tournament A");
+
         $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
-        $I->wantTo("check that team A is not in the tournament B");
+
         $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
+        $I->amOnPage('/tournament/lol-team-signup/');
         $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
-        $I->fillField("#team-captain", $this->faker->name());
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+        $I->fillField("#team-captain", $this->faker->name()."asdasd");
+        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name()."ergdfg");
 
 
         for($i=0; $i < 8; $i++) {
-            $I->fillField($this->names[$i], $this->faker->email());
-            $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
+            $I->fillField( $this->names[$i], $this->nameList[$i] );
+            $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
 
 
-        $I->click("#doFormSubmit");
+        $I->click("Submit");
 
-        $I->wait(10);
-
-        $I->wantTo("check that team A is in the tournament A");
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
-        $I->wantTo("check that team A is in the tournament B");
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
+        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
+        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->dontSee("The team-name has already been taken.");
 
     }
     /**
@@ -113,10 +115,55 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
 
         for($i=0; $i < 8; $i++) {
-            $I->fillField($this->names[$i], $this->faker->email());
-            $I->fillField($this->emails[$i], "(218)-444-".$i."9".$i."0");
+            $I->fillField( $this->names[$i], $this->nameList[$i] );
+            $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
+
         $I->click("#doFormSubmit");
         $I->waitForText("The team-name has already been taken.", $this::DEFAULT_WAIT);
+    }
+    /**
+     * Test the form with the participation flag
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateATeamWithTheSamePlayersInDifferentTournaments(AcceptanceTester $I)
+    {
+        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_A_NAME."');");
+        $I->fillField("#team-name", $this::TEAM_B_NAME);
+        $I->fillField("#team-captain", $this->faker->name());
+        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+
+        for($i=0; $i < 8; $i++) {
+            $I->fillField( $this->names[$i], $this->nameList[$i] );
+            $I->fillField( $this->emails[$i], $this->emailList[$i] );
+        }
+        $I->click("#doFormSubmit");
+
+        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
+        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->dontSee("The team-name has already been taken.", $this::DEFAULT_WAIT);
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
+        $I->fillField("#team-name", $this::TEAM_B_NAME);
+        $I->fillField("#team-captain", $this->faker->name());
+        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
+
+        for($i=0; $i < 8; $i++) {
+            $I->fillField( $this->names[$i], $this->nameList[$i] );
+            $I->fillField( $this->emails[$i], $this->emailList[$i] );
+        }
+
+        $I->click("#doFormSubmit");
+
+        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
+        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->dontSee("The team-name has already been taken.", $this::DEFAULT_WAIT);
+
     }
 }
