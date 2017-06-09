@@ -111,3 +111,27 @@ $('#Tournament').change(function() {
 function teamView(){
     window.open('https://gigazonegaming.localhost/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
+
+function submitCache(){
+    ///Set up cache arrays for team and color
+    var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
+    var color = [$( '#Color option:selected').text(), $( '#Color-1 option:selected').text()];
+
+    ///Execute cache controller with ajax
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "https://gigazonegaming.localhost/app/GameDisplay/cache",
+        data: {
+            '_token': "{{ csrf_token() }}",
+            tournament: $('#Tournament option:selected').text(),
+            team: team,
+            color: color
+        },
+        success: function(data){
+            console.log(data);
+            //Alert Data that has been updated in the cache
+        }
+
+    });
+}

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Http\Controllers\GameDisplayController;
+use GameDisplay\RiotDisplay\Summoner;
 
 class testGameDispalyController extends Command
 {
@@ -35,30 +36,10 @@ class testGameDispalyController extends Command
      */
     public function handle()
     {
-
-        $controller = new GameDisplayController();
-        $TeamName = "Power Rangers";
-        $TournamentName = "gigazone-gaming-2016-league-of-legends";
-        $controller->setTeam($TeamName, $TournamentName);
-
-        $string ="";
-        $champion = "";
-
-
-        foreach($controller->team as $player){
-            if($player->checkCurrentGameStatus() != false){
-                $statuse = "true";
-                $player->setChampion();
-                $champion = $player->getChampion();
-            }
-            else{
-                $statuse = "false";
-            }
-
-            $string = "\n\n Summoner Name: " . $player->getSummonerName() ."\nSummonerId: " . $player->getSummonerID() .  "\nSummoner Icon: " . $player->getIcon() . "\nSolo Rank: " . $player->getSoloRank() . "\nSolo Win|Loss: " . $player->getSoloRankedWinLoss() . "\n Statuse: " .  $statuse . "\nFlex Rank:" . $player->getFLEXRank() . "\nFlex Win|Loss:" . $player->getFLEXRankedWinLoss() . "Champion: " . $champion .  $string;
-        }
-
-        dd($string);
+        $time_start = microtime(true);
+        $summoner = new Summoner('KingMorpheus2131', 1);
+        $time_end = microtime(true);
+        dd($time_end - $time_start, $summoner->getIcon(), $summoner->getSummonerName());
 
     }
 }

@@ -26,13 +26,13 @@ class Api{
 
 # Constructor
 #----------------------------------------------------------------------
-    function __construct($SummonerName)
+    function __construct($SummonerName, $ApiKey)
     {
 
         $this->Summoner = $SummonerName;
 
         #set up api client ready for requests
-        $this->apiKey = $_ENV['RIOT_API_KEY'];
+        $this->apiKey = $ApiKey;
         $this->client = new Client();
 
         #intailize summoner info for requests
@@ -87,6 +87,7 @@ class Api{
             }
             else{
                 $this->setSummonerID();
+                echo "ERRORRRRRRRRR";
             }
             $this->counter++;
         }
