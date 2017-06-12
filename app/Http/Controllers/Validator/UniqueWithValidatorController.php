@@ -56,6 +56,7 @@ class UniqueWithValidatorController extends Controller
                 $query = \DB::connection($theConnectionArray[0])->table($theConnectionArray[1]);
             }
             $forQuery = [];
+            //niqueWidth:mysql_champ.teams,=name,tournament_id>'.$tournament_id
             for ($i=1; $i < $counter; $i++) {
                 $equal = strpos($parameters[$i], '=');
                 $value_exists = strpos($parameters[$i], '>');
@@ -77,10 +78,22 @@ class UniqueWithValidatorController extends Controller
                     $expression = explode('=', $parameters[$i]);
                     if($equal == 0 ){ //=column
                         if($value_exists === false ) {//=column
-                            $col = trim($expression[0]);
+                            if($expression[0] != '') {
+                                $col = trim($expression[0]);
+                            }elseif($expression[1] != '') {
+                                $col = trim($expression[1]);
+                            }elseif($expression[2] != '') {
+                                $col = trim($expression[2]);
+                            }else{ $col = '';}
                             $val = trim($value);
                         }else{//=column>value
-                            $expression2 = explode('>', $expression[0]); //there is no value required for the key passed we care about what row was selected and what value was passed
+                            if($expression[0] != '') {
+                                $expression2 = explode('>', $expression[0]);
+                            }elseif($expression[1] != '') {
+                                $expression2 = explode('>', $expression[1]);
+                            }elseif($expression[2] != '') {
+                                $expression2 = explode('>', $expression[2]);
+                            } //there is no value required for the key passed we care about what row was selected and what value was passed
                             $col = trim($expression2[0]);
                             $val = trim($expression2[1]);
                         }
@@ -106,3 +119,8 @@ class UniqueWithValidatorController extends Controller
         return false;
     }
 }
+/**
+
+https://gigazonegaming.localhost/app/lol-team-sign-up?tournament=Tester_Tournament_Unique_Width_A&fields%5B%5D=team-name&team-name-label=Team+Name&team-name=team_selected&update-recipient=yes&participate=yes&fields%5B%5D=name&name-label=Team+Captain&name=ftergs&fields%5B%5D=team-captain-lol-summoner-name&team-captain-lol-summoner-name-label=Team+Captain+LOL+Summoner+Name&team-captain-lol-summoner-name=asdfsda&fields%5B%5D=email&email-label=Team+Captain+Email+Address&email=asdwv%40hotmail.com&fields%5B%5D=team-captain-phone&team-captain-phone-label=Team+Captain+Phone&team-captain-phone=nasljkasdl&fields%5B%5D=teammate-one-lol-summoner-name&teammate-one-lol-summoner-name-label=Teammate+One+LOL+Summoner+Name&teammate-one-lol-summoner-name=lk&fields%5B%5D=teammate-one-email-address&teammate-one-email-address-label=Teammate+One+Email+Address&teammate-one-email-address=qlk%40hotmail.com&fields%5B%5D=teammate-two-lol-summoner-name&teammate-two-lol-summoner-name-label=Teammate+Two+LOL+Summoner+Name&teammate-two-lol-summoner-name=wlk&fields%5B%5D=teammate-two-email-address&teammate-two-email-address-label=Teammate+Two+Email+Address&teammate-two-email-address=lksdflksdlk%40hotmail.com&fields%5B%5D=teammate-three-lol-summoner-name&teammate-three-lol-summoner-name-label=Teammate+Three+LOL+Summoner+Name&teammate-three-lol-summoner-name=lklkn&fields%5B%5D=teammate-three-email-address&teammate-three-email-address-label=Teammate+Three+Email+Address&teammate-three-email-address=ljh%40hotmail.com&fields%5B%5D=teammate-four-lol-summoner-name&teammate-four-lol-summoner-name-label=Teammate+Four+LOL+Summoner+Name&teammate-four-lol-summoner-name=ljh&fields%5B%5D=teammate-four-email-address&teammate-four-email-address-label=Teammate+Four+Email+Address&teammate-four-email-address=ljkh%40hotmail.com&fields%5B%5D=alternate-one-summoner-name&alternate-one-summoner-name-label=Alternate+One+Summoner+Name&alternate-one-summoner-name=l%3Bjkh&fields%5B%5D=alternate-one-email-address&alternate-one-email-address-label=Alternate+One+Email+Address&alternate-one-email-address=ljh%40hotmail.com&fields%5B%5D=alternate-two-summoner-name&alternate-two-summoner-name-label=Alternate+Two+Summoner+Name&alternate-two-summoner-name=l%3Bjkh&fields%5B%5D=alternate-two-email-address&alternate-two-email-address-label=Alternate+Two+Email+Address&alternate-two-email-address=lkn%40hotmail.com&fields%5B%5D=alternate-three-summoner-name&alternate-three-summoner-name-label=Alternate+Three+Summoner+Name&alternate-three-summoner-name=.%2Cmn&fields%5B%5D=alternate-three-email-address&alternate-three-email-address-label=Alternate+Three+Email+Address&alternate-three-email-address=ou%40hotmail.com
+ *
+ */
