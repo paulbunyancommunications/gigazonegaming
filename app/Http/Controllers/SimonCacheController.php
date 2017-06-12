@@ -15,7 +15,7 @@ use Mockery\Exception;
 use function MongoDB\BSON\toJSON;
 use PhpParser\Node\Stmt\Return_;
 
-class cacheController extends Controller
+class SimonCacheController extends Controller
 {
 
     protected $players = array();

@@ -129,6 +129,14 @@ function submitCache(){
             color: color
         },
         success: function(data){
+            document.getElementById('info').innerHTML = "";
+            if(data.ErrorCode){
+                document.getElementById('info').innerHTML = data.ErrorMessage;
+            }else{
+                document.getElementById('info').innerHTML = "UPDATED \nTeam 1: " + data.teamName[0] + "\nColor: " + data.colors[0] + " Players Array: " + data.teamInfo[0].summonerArray + " Icons: " + data.teamInfo[0].iconArray + " Solo Ranks: " + data.teamInfo[0].soloRankArray + " Solo Win Losses: " + data.teamInfo[0].summonerArray + " Flex Ranks: " + data.teamInfo[0].flexRankArray + " Flex Rank Win Losses: " + data.teamInfo[0].flexWinLossArray + "UPDATED \nTeam 2: " + data.teamName[1] + "\nColor: " + data.colors[1] + " Players Array: " + data.teamInfo[1].summonerArray + " Icons: " + data.teamInfo[1].iconArray + " Solo Ranks: " + data.teamInfo[1].soloRankArray + " Solo Win Losses: " + data.teamInfo[1].summonerArray + " Flex Ranks: " + data.teamInfo[1].flexRankArray + " Flex Rank Win Losses: " + data.teamInfo[1].flexWinLossArray;
+
+            }
+
             console.log(data);
             //Alert Data that has been updated in the cache
         }

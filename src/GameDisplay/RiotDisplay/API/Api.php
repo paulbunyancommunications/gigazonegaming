@@ -70,7 +70,7 @@ class Api{
                 throw new Exception("Riot's Api is Down");
 
             default:
-                throw new Exception("Unknown Riot Api Error code:" . $response->getStatusCode());
+                throw new Exception("Unknown Riot Api Error code:" . $response->getStatusCode() . " ApiKey: " . $this->apiKey);
         }
 
         return $Info;

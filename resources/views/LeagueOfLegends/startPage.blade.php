@@ -59,5 +59,6 @@
     });
 </script>
 <script src="/LeagueOfLegendsDisplay/JS/startPage.js"></script>
+
 </body>
 </html>

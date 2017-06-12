@@ -122,7 +122,7 @@ Route::get('/GameDisplay/customer','GameDisplayController@customerDisplay');
 Route::get('/GameDisplay/override','GameDisplayController@championOverride');
 Route::get('/GameDisplay/{tournament}/{team}/{color}','GameDisplayController@teamViewDisplay');
 Route::get('/GameDisplay/ajax','GameDisplayController@ajaxCheckRequest');
-Route::get('/GameDisplay/cache','cache@teamViewDisplay');
+Route::get('/GameDisplay/cache','SimonCacheController@teamViewDisplay');
 
 
 
