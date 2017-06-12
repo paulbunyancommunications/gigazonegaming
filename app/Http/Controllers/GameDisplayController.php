@@ -56,20 +56,30 @@ class GameDisplayController extends Controller
     public function teamViewDisplay($tournament,$team,$color)
     {
         $this->buildTheTeams($tournament, $team);
-        $color = $this->setTeamColor($color);
+        if($this->summonerArray[0] == ""){
+            $color = $this->setTeamColor($color);
+            return view('/LeagueOfLegends/DisplayAltTeam', [
+                'tournament' => $tournament,    #NEW
+                'teamName' => $team,
+                'color' => $color,
+            ]);
 
-        return view('/LeagueOfLegends/DisplayTeam', [
-            'tournament' => $tournament,    #NEW
-            'teamName' => $team,
-            'color' => $color,
-            'teamColor' => $color,
-            'summonerArray' => $this->summonerArray,
-            'iconArray' => $this->iconArray,
-            'soloRankArray' => $this->soloRankArray,
-            'soloWinLossArray' => $this->soloWinLossArray,
-            'flexRankArray' => $this->flexRankArray,
-            'flexWinLossArray' => $this->flexWinLossArray
-        ]);
+        }
+    else {
+            $color = $this->setTeamColor($color);
+            return view('/LeagueOfLegends/DisplayTeam', [
+                'tournament' => $tournament,    #NEW
+                'teamName' => $team,
+                'color' => $color,
+                'teamColor' => $color,
+                'summonerArray' => $this->summonerArray,
+                'iconArray' => $this->iconArray,
+                'soloRankArray' => $this->soloRankArray,
+                'soloWinLossArray' => $this->soloWinLossArray,
+                'flexRankArray' => $this->flexRankArray,
+                'flexWinLossArray' => $this->flexWinLossArray
+            ]);
+        }
     }
 
     /**

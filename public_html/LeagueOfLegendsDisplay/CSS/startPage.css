@@ -5,26 +5,64 @@ select{
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color: transparent;
-    font-size: 16px;
+    background-color: rgba(100, 100, 100, 0.7);
+    font-size: 25px;
     font-weight: bold;
     color: white;
     border: none;
-    margin: 5px;
+    margin: 15px;
 }
 .startButton{
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color: transparent;
-    font-size: 16px;
+    background-color: rgba(100, 100, 100, 0.5);
+    font-size: 25px;
     font-weight: bold;
     color: white;
     border: none;
     margin: 5px;
 }
-.startImage{
+.startFooter{
+    position: absolute;
+    top: 30%;
+    width: 75%;
     text-align:center;
-    max-width:60%;
-    margin:auto;
+    opacity: 0.6;
+    left:10%;
+}
+#loader {
+    border:10px solid #f3f3f3;
+    border-radius: 50%;
+    position: absolute;
+    left: 48%;
+    border-top: 10px solid #3498db;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+#info{
+    position: absolute;
+    top:27%;
+    left:9%;
+    width:81%;
+    height:69%;
+    background-color: rgba(255, 255, 255, .4);
+    word-wrap: break-word;
+    border: 5px inset white;
+    overflow-y:auto;
+    font-weight:bold;
+    line-height: 150%;
 }

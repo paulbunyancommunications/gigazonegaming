@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
+
 use Illuminate\Http\Request;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
@@ -9,10 +11,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use GameDisplay\RiotDisplay\Summoner;
+use Mockery\Exception;
 use function MongoDB\BSON\toJSON;
 use PhpParser\Node\Stmt\Return_;
 
-class cache extends Controller
+class cacheController extends Controller
 {
 
     protected $players = array();
@@ -34,22 +37,28 @@ class cache extends Controller
         $teamInfoArrays = array();
         $colorArray = array();
 
+        try{
+            for($i = 0; $i < count($team); $i++){
+                $this->buildTheTeams($tournament, $team[$i]);
+                $color = $this->setTeamColor($color[$i]);
+                array_push($teamInfoArrays,$this->makeTeam());
+                array_push($colorArray,$color);
+                $this->resetArrays();
+            }
 
-        for($i = 0; $i < count($team); $i++){
-            $this->buildTheTeams($tournament, $team[$i]);
-            $color = $this->setTeamColor($color[$i]);
-            array_push($teamInfoArrays,$this->makeTeam());
-            array_push($colorArray,$color);
-            $this->resetArrays();
+            $this->cacheContent($teamInfoArrays,$colorArray);
+            $returnArray = array(
+                'teamName' => $team,
+                'teamInfo' => $teamInfoArrays,
+                'colors' => $colorArray,
+                'ErrorCode' => false
+            );
+        }catch(Exception $e){
+            $returnArray = array(
+                'ErrorCode' => true,
+                'ErrorMessage' => $e->getMessage()
+            );
         }
-
-        $this->cacheContent($teamInfoArrays,$colorArray);
-        $returnArray = array(
-          'teamName' => $team,
-          'teamInfo' => $teamInfoArrays,
-          'colors' => $colorArray
-        );
-
 
         return $returnArray;
     }
@@ -136,9 +145,10 @@ class cache extends Controller
         }
     }
     public function cacheContent($teamInfoArrays,$colorArray){
-//        Cache::put('Team1Info', $teamInfoArrays[1], 70);
-//        Cache::put('Team1color', $colorArray[1], 70);
-//        Cache::put('Team2Info', $teamInfoArrays[2], 70);
-//        Cache::put('Team2color', $colorArray[2], 70);
+//        $cache = new Cache();
+//        $cache->put('Team1Info', $teamInfoArrays[1], 70);
+//        $cache->put('Team1Color', $colorArray[1], 70);
+//        $cache->put('Team2Info', $teamInfoArrays[2], 70);
+//        $cache->put('Team2Color', $colorArray[2], 70);
     }
 }
