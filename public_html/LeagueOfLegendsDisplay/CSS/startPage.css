@@ -23,6 +23,9 @@ select{
     border: none;
     margin: 5px;
 }
+.startButtonDisabled{
+    opacity: 0.3;
+}
 .startFooter{
     position: absolute;
     top: 30%;

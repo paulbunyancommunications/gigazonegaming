@@ -4,12 +4,11 @@
 /*This allows the display of teams and colors after a valid tournament is selected*/
 function showTeams(){
     $("#Team").children('option').each(function(i) {
-        $('#submit').addClass('hidden');
         var id = $("#Tournament  option:selected").val();
         var counter = 0;
         if($(this).attr('t_id') == id){
-            $(this).removeClass('hidden');
-            $('#Color').removeClass('hidden');
+            $(this).removeClass('startButtonDisabled').prop('disabled', false);
+            $('#Color').removeClass('startButtonDisabled').prop('disabled', false);
             counter++;
         }else{
             $("#Team").val('default');
@@ -18,16 +17,16 @@ function showTeams(){
                 $("#defaultTeam").attr('selected','selected');
                 $("#defaultColor").attr('selected','selected');
             }else {
-                $(this).addClass('hidden');
-                $('#Color').addClass('hidden');
+                $(this).addClass('startButtonDisabled').prop('disabled', true);
+                $('#Color').addClass('startButtonDisabled').prop('disabled', true);
             }
         }
         if(counter == 0){
-            $("#Team").addClass("hidden");
-            $('#Color').addClass('hidden');
+            $("#Team").addClass('startButtonDisabled').prop('disabled', true);
+            $('#Color').addClass('startButtonDisabled').prop('disabled', true);
         }else{
-            $("#Team").removeClass("hidden");
-            $('#Color').removeClass('hidden');
+            $("#Team").removeClass('startButtonDisabled').prop('disabled', false);
+            $('#Color').removeClass('startButtonDisabled').prop('disabled', false);
         }
     });
 
@@ -35,12 +34,11 @@ function showTeams(){
 /*This allows the display of teams and colors after a valid tournament is selected*/
 function showTeams2(){
     $("#Team-1").children('option').each(function(i) {
-        $('#submit').addClass('hidden');
         var id = $("#Tournament  option:selected").val();
         var counter = 0;
         if($(this).attr('t_id') == id){
-            $(this).removeClass('hidden');
-            $('#Color-1').removeClass('hidden');
+            $(this).removeClass('startButtonDisabled').prop('disabled', false);
+            $('#Color-1').removeClass('startButtonDisabled').prop('disabled', false);
             counter++;
         }else{
             $("#Color-1").val('default');
@@ -49,16 +47,16 @@ function showTeams2(){
                 $("#defaultTeam-1").attr('selected','selected');
                 $("#defaultColor-1").attr('selected','selected');
             }else {
-                $(this).addClass('hidden');
-                $('#Color-1').addClass('hidden');
+                $(this).addClass('startButtonDisabled').prop('disabled', true);
+                $('#Color-1').addClass('startButtonDisabled').prop('disabled', true);
             }
         }
         if(counter == 0){
-            $("#Team-1").addClass("hidden");
-            $('#Color-1').addClass('hidden');
+            $("#Team-1").addClass('startButtonDisabled').prop('disabled', true);
+            $('#Color-1').addClass('startButtonDisabled').prop('disabled', true);
         }else{
-            $("#Team-1").removeClass("hidden");
-            $('#Color-1').removeClass('hidden');
+            $("#Team-1").removeClass('startButtonDisabled').prop('disabled', false);
+            $('#Color-1').removeClass('startButtonDisabled').prop('disabled', false);
         }
     });
 }
@@ -67,43 +65,43 @@ showTeams2();
 
 /* These three blocks make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
 $('#Color').change(function() {
-    if($("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('hidden');
+    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
+        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
     }
     else{
-        $('#submit').addClass('hidden');
+        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
     }
 });
 $('#Team').change(function() {
-    if($("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('hidden');
+    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
+        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
     }
     else{
-        $('#submit').addClass('hidden');
+        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
     }
 });
 $('#Color-1').change(function() {
-    if($("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('hidden');
+    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
+        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
     }
     else{
-        $('#submit').addClass('hidden');
+        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
     }
 });
 $('#Team-1').change(function() {
-    if($("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('hidden');
+    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
+        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
     }
     else{
-        $('#submit').addClass('hidden');
+        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
     }
 });
 $('#Tournament').change(function() {
-    if($("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('hidden');
+    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
+        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
     }
     else{
-        $('#submit').addClass('hidden');
+        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
     }
 });
 function teamView(){

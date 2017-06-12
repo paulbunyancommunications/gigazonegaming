@@ -30,7 +30,7 @@
             <option id="defaultColor-1" value="default">Select a Color</option>
             <option  v-for="color in colors" v-model="selected">@{{ color }}</option>
         </select><br/>
-        <button class="startButton" id="submit"  onclick="checkAndGrabInfo()">Submit</button>
+        <button class="startButton startButtonDisabled" id="submit"  disabled onclick="teamView()">Submit</button>
         <div id="loader" class="hidden"></div>
 </div>
 <div class="startFooter">
@@ -78,7 +78,7 @@
                 if(data.Champions.length != 0){
                     $('#loader').addClass('hidden');
                     $('#submit').removeClass('hidden');
-                    document.getElementById("info").innerHTML = data.Champions;
+                    document.getElementById("info").innerHTML = data.Champions + '<br/>';
                     }
                 else{
                     window.setTimeout(checkAndGrabInfo, 10000);
