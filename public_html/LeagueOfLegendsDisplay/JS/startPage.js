@@ -86,3 +86,10 @@ $('#Tournament').change(function() {
 function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
+
+function loadingMessage(){
+    document.getElementById('info').innerHTML="PleaseWait.";
+    setTimeout(document.getElementById('info').innerHTML="PleaseWait..",1000);
+    setTimeout(document.getElementById('info').innerHTML="PleaseWait..",2000);
+    loadingMessage();
+}
