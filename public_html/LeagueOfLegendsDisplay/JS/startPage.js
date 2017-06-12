@@ -7,26 +7,15 @@ function showTeams(){
         var id = $("#Tournament  option:selected").val();
         var counter = 0;
         if($(this).attr('t_id') == id){
-            $(this).removeClass('startButtonDisabled').prop('disabled', false);
-            $('#Color').removeClass('startButtonDisabled').prop('disabled', false);
-            counter++;
+            $(this).show();
         }else{
+            $(this).hide();
             $("#Team").val('default');
             $("#Color").val('default');
             if($(this).val() == "default"){
                 $("#defaultTeam").attr('selected','selected');
                 $("#defaultColor").attr('selected','selected');
-            }else {
-                $(this).addClass('startButtonDisabled').prop('disabled', true);
-                $('#Color').addClass('startButtonDisabled').prop('disabled', true);
             }
-        }
-        if(counter == 0){
-            $("#Team").addClass('startButtonDisabled').prop('disabled', true);
-            $('#Color').addClass('startButtonDisabled').prop('disabled', true);
-        }else{
-            $("#Team").removeClass('startButtonDisabled').prop('disabled', false);
-            $('#Color').removeClass('startButtonDisabled').prop('disabled', false);
         }
     });
 
@@ -37,28 +26,18 @@ function showTeams2(){
         var id = $("#Tournament  option:selected").val();
         var counter = 0;
         if($(this).attr('t_id') == id){
-            $(this).removeClass('startButtonDisabled').prop('disabled', false);
-            $('#Color-1').removeClass('startButtonDisabled').prop('disabled', false);
-            counter++;
+            $(this).show();
         }else{
-            $("#Color-1").val('default');
+            $(this).hide();
             $("#Team-1").val('default');
+            $("#Color-1").val('default');
             if($(this).val() == "default"){
                 $("#defaultTeam-1").attr('selected','selected');
                 $("#defaultColor-1").attr('selected','selected');
-            }else {
-                $(this).addClass('startButtonDisabled').prop('disabled', true);
-                $('#Color-1').addClass('startButtonDisabled').prop('disabled', true);
             }
         }
-        if(counter == 0){
-            $("#Team-1").addClass('startButtonDisabled').prop('disabled', true);
-            $('#Color-1').addClass('startButtonDisabled').prop('disabled', true);
-        }else{
-            $("#Team-1").removeClass('startButtonDisabled').prop('disabled', false);
-            $('#Color-1').removeClass('startButtonDisabled').prop('disabled', false);
-        }
     });
+
 }
 showTeams();
 showTeams2();

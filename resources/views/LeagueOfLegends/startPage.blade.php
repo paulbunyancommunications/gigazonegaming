@@ -14,10 +14,12 @@
             <option id="defaultTournament"  value="default">Select a Tournament</option>
             <option v-for="tournament in tournaments" v-bind:value="tournament.id">@{{tournament['name']}}</option>
         </select><br/>
+        <label id="label1" for="Team">Team 1:</label><label id="label2" for="Team-1">Team 2:</label><br/>
         <select id="Team">
             <option id="defaultTeam" value="default">Select a Team</option>
             <option  v-for="team in teams" v-model="selected" v-bind:t_id="team.tournament_id" v-bind:value="team.id">@{{team['name']}}</option>
         </select>
+
         <select id="Team-1">
             <option id="defaultTeam-1" value="default">Select a Team</option>
             <option  v-for="team in teams" v-model="selected" v-bind:t_id="team.tournament_id" v-bind:value="team.id">@{{team['name']}}</option>
@@ -30,7 +32,7 @@
             <option id="defaultColor-1" value="default">Select a Color</option>
             <option  v-for="color in colors" v-model="selected">@{{ color }}</option>
         </select><br/>
-        <button class="startButton startButtonDisabled" id="submit"  disabled onclick="teamView()">Submit</button>
+        <button class="startButton startButtonDisabled" id="submit" disabled onclick="teamView();">Submit</button>
         <div id="loader" class="hidden"></div>
 </div>
 <div class="startFooter">
@@ -57,37 +59,5 @@
     });
 </script>
 <script src="/LeagueOfLegendsDisplay/JS/startPage.js"></script>
-<script>
-    function checkAndGrabInfo() {
-        $('#submit').addClass('hidden');
-        $('#loader').removeClass('hidden');
-        document.getElementById("info").innerHTML = "Please Wait...";
-        $.ajax({
-            method: "GET",
-            type: "GET",
-            url: "https://gigazonegaming.localhost/app/GameDisplay/ajax",
-            data: {
-                '_token': "{{ csrf_token() }}",
-                tournament: $("#Tournament  option:selected").text(),
-                team: $("#Team  option:selected").text(),
-                color: $("#Color  option:selected").text()
-            },
-            success: function(data){
-                console.log(data.length);
-                console.log(data);
-                if(data.Champions.length != 0){
-                    $('#loader').addClass('hidden');
-                    $('#submit').removeClass('hidden');
-                    document.getElementById("info").innerHTML = data.Champions + '<br/>';
-                    }
-                else{
-                    window.setTimeout(checkAndGrabInfo, 10000);
-                }
-
-            }
-
-        });
-    }
-</script>
 </body>
 </html>
