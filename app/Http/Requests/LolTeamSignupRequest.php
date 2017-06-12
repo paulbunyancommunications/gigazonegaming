@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Championship\Player;
 use App\Models\Championship\Tournament;
 use Illuminate\Http\Request as BaseRequest;
 use Pbc\Bandolier\Type\Numbers;
+use Psy\Util\Json;
 
 /**
  * Class LolTeamSignUpRequest
@@ -32,32 +34,40 @@ class LolTeamSignUpRequest extends BaseRequest
      */
     public function rules()
     {
-        if(Tournament::where( 'name', '=', $this->tournament )->exists()) {
-            $tournament_id = Tournament::where('name', '=', $this->tournament)->first()->id;
+        if(isset($_REQUEST['tournament']) AND $_REQUEST['tournament']!='' AND Tournament::where('name', '=', $_REQUEST['tournament'])->exists()) {
+            $tournament_id = Tournament::where('name', '=', $_REQUEST['tournament'])->first()->id;
             $rules = [
-                'email' => 'required|email|unique:mysql_champ.players,email',
+                'email' => 'required|email',
                 'name' => 'required',
-                'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
+                'team-captain-lol-summoner-name' => 'required',
                 'team-captain-phone' => 'required',
                 'tournament' => 'required|exists:mysql_champ.tournaments,name',
                 'team-name' => 'required|uniqueWidth:mysql_champ.teams,=name,tournament_id>'.$tournament_id,
             ];
         }else{
             $rules = [
-                'email' => 'required|email|unique:mysql_champ.players,email',
+                'email' => 'required|email',
                 'name' => 'required',
-                'team-captain-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
+                'team-captain-lol-summoner-name' => 'required',
                 'team-captain-phone' => 'required',
                 'tournament' => 'required|exists:mysql_champ.tournaments,name',
                 'team-name' => 'required|unique:mysql_champ.teams,name',
             ];
         }
-        for ($i = 1; $i <= 2; $i++) {
-            if ($this->request->get('teammate-'.Numbers::toWord($i).'-lol-summoner-id')) {
+        for ($i = 1; $i <= 3; $i++) {
+            if (isset($_REQUEST['teammate-'.Numbers::toWord($i).'-lol-summoner-id'])) {
                 $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-id'] = 'exists:mysql_champ.player,id';
             } else {
-                $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = 'required|unique:mysql_champ.players,username';
-                $rules['teammate-' . Numbers::toWord($i) . '-email-address'] = 'required|email|unique:mysql_champ.players,email';
+                $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = 'required';
+                $rules['teammate-' . Numbers::toWord($i) . '-email-address'] = 'required|email';
+            }
+            if($i<3) {
+                if (isset($_REQUEST['alternate-' . Numbers::toWord($i) . '-summoner-id'])) {
+                    $rules['alternate-' . Numbers::toWord($i) . '-summoner-id'] = 'exists:mysql_champ.player,id';
+                } else {
+                    $rules['alternate-' . Numbers::toWord($i) . '-summoner-name'] = 'required';
+                    $rules['alternate-' . Numbers::toWord($i) . '-email-address'] = 'required|email';
+                }
             }
         }
 
@@ -73,11 +83,9 @@ class LolTeamSignUpRequest extends BaseRequest
         $messages = [
             "name.unique_width" => 'A team with the exact same name already exists for this tournament, please select a different name.',
             'email.required' => 'The team captain email address is required.',
-            'email.unique' => 'The team captain email address is already assigned to a different user.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
             'name.required' => 'The name of the team captain is required.',
             'team-captain-lol-summoner-name.required' => 'The team captain LOL summoner name is required.',
-            'team-captain-lol-summoner-name.unique' => 'The team captain LOL summoner name is already assigned to a different user.',
             'team-captain-phone.required' => 'The team captain phone number is required.',
             'team-name.required' => 'The team name is required.',
         ];
