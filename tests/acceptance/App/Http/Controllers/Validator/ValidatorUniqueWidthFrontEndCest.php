@@ -48,7 +48,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
-        $this->populateDB($I);
+        $this->populateDBSignUp($I);
         $this->faker = \Faker\Factory::create();
         for($i=0; $i < 8; $i++) {
             $this->nameList[] = "xyz".$this->faker->name()."stu";
@@ -59,16 +59,23 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     /**
     * Create the test admin user
     */
-    protected function populateDB(AcceptanceTester $I)
+    protected function populateDBSignUp(AcceptanceTester $I)
     {
         exec('php artisan db:seed --class=SignUpUniqueWithValidatorTesterSeeder');
+    }
+    /**
+    * ResetDb
+    */
+    protected function resetDBSignUp(AcceptanceTester $I)
+    {
+        exec('php artisan migrate:refresh');
     }
     /**
      * @param AcceptanceTester $I
      */
     public function _after(AcceptanceTester $I)
     {
-        parent::_after($I);
+        $this->resetDBSignUp($I);
     }
     /**
      * Test the form with the participation flag
@@ -80,21 +87,27 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
 
         $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
-
         $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
         $I->amOnPage('/tournament/lol-team-signup/');
-        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
+        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
+            .css({ 
+                'display': 'block',
+                'color':'#ff0000',
+                'font-size':'20px',
+                'width':'500px',
+                'height':'40px'
+                }).prop(
+                'type', 'text'
+                )");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name()."asdasd");
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name()."ergdfg");
-
 
         for($i=0; $i < 8; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
-
 
         $I->click("Submit");
 
@@ -109,7 +122,16 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
      */
     public function tryToCreateATeamWithTheSameNameAsAnotherOne(AcceptanceTester $I)
     {
-        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_A_NAME."');");
+        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
+            .css({ 
+                'display': 'block',
+                'color':'#ff0000',
+                'font-size':'20px',
+                'width':'500px',
+                'height':'40px'
+                }).prop(
+                'type', 'text'
+                )");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
@@ -126,9 +148,18 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToCreateATeamWithTheSamePlayersInDifferentTournaments(AcceptanceTester $I)
+    public function tryToCreateATeamWithTheSamePlayersInDifferentTournamentsWithTheSameTeamName(AcceptanceTester $I)
     {
-        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_A_NAME."');");
+        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_A_NAME."')
+            .css({ 
+                'display': 'block',
+                'color':'#ff0000',
+                'font-size':'20px',
+                'width':'500px',
+                'height':'40px'
+                }).prop(
+                'type', 'text'
+                )");
         $I->fillField("#team-name", $this::TEAM_B_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
@@ -137,6 +168,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
             $I->fillField( $this->names[$i], $this->nameList[$i] );
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
+
         $I->click("#doFormSubmit");
 
         $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
@@ -149,7 +181,16 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        $I->executeJS("$('hidden').val('".$this::TOURNAMENT_B_NAME."');");
+        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
+            .css({ 
+                'display': 'block',
+                'color':'#ff0000',
+                'font-size':'20px',
+                'width':'500px',
+                'height':'40px'
+                }).prop(
+                'type', 'text'
+                )");
         $I->fillField("#team-name", $this::TEAM_B_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
