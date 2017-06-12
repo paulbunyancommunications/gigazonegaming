@@ -17,16 +17,18 @@ class Summoner{
     protected $FLEXRank;
     protected $FLEXRankedWinLoss;
     protected $api;
+    public $ApiKey;
 
 # Constructor
 #----------------------------------------------------------------------
-    function __construct($summonerName)
+    function __construct($summonerName, $ApiKeyNumber)
     {
 
         #Initailize the name of the summoner
         $this->setSummonerName($summonerName);
 
         #Sets up api so that its ready for requests
+        $this->setApiKey($ApiKeyNumber);
         $this->setApi();
 
         #set Summoner properties
@@ -58,7 +60,7 @@ class Summoner{
 
     public function setApi(){
         #creats a new api object
-        $this->api = new Api($this->summonerName);
+        $this->api = new Api($this->summonerName, $this->ApiKey);
     }
 
     public function setSummonerID(){
@@ -93,6 +95,44 @@ class Summoner{
         $this->champion = $this->api->getChampion();
     }
 
+    /**
+     * @param mixed $ApiKey
+     */
+    public function setApiKey($ApiKey)
+    {
+        switch($ApiKey){
+            case 0:
+                $this->ApiKey = $_ENV['RIOT_API_KEY1'];
+                break;
+            case 1:
+                $this->ApiKey = $_ENV['RIOT_API_KEY2'];
+                break;
+            case 2:
+                $this->ApiKey = $_ENV['RIOT_API_KEY3'];
+                break;
+            case 3:
+                $this->ApiKey = $_ENV['RIOT_API_KEY4'];
+                break;
+            case 4:
+                $this->ApiKey = $_ENV['RIOT_API_KEY5'];
+                break;
+            case 5:
+                $this->ApiKey = $_ENV['RIOT_API_KEY6'];
+                break;
+            case 6:
+                $this->ApiKey = $_ENV['RIOT_API_KEY7'];
+                break;
+            case 7:
+                $this->ApiKey = $_ENV['RIOT_API_KEY8'];
+                break;
+            case 8:
+                $this->ApiKey = $_ENV['RIOT_API_KEY9'];
+                break;
+            case 9:
+                $this->ApiKey = $_ENV['RIOT_API_KEY10'];
+                break;
+        }
+    }
 
 
 # Getters

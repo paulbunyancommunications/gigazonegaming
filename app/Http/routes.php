@@ -117,11 +117,12 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  *
  */
 
-Route::get('/GameDisplay/start','GameDisplayController@startGameDisplay');
+Route::get('/GameDisplay/Admin','GameDisplayController@startGameDisplay');
 Route::get('/GameDisplay/customer','GameDisplayController@customerDisplay');
 Route::get('/GameDisplay/override','GameDisplayController@championOverride');
 Route::get('/GameDisplay/{tournament}/{team}/{color}','GameDisplayController@teamViewDisplay');
 Route::get('/GameDisplay/ajax','GameDisplayController@ajaxCheckRequest');
+Route::get('/GameDisplay/cache','cache@teamViewDisplay');
 
 
 
