@@ -49,6 +49,7 @@ class BaseAcceptance
     protected function resetDB(AcceptanceTester $I)
     {
         // reset all the databases
+        $I->runShellCommand('php artisan migrate:refresh');
         $I->populateDatabase($I, [
             'server' => env('DB_HOST'),
             'user' => env('DB_USERNAME'),
