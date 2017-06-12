@@ -55,7 +55,6 @@
             teams: {!!$teams!!},
             colors: ["Red","Blue"],
         }
-
     });
 </script>
 <script src="/LeagueOfLegendsDisplay/JS/startPage.js"></script>

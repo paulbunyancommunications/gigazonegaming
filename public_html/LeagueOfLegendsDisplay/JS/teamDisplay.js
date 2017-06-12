@@ -46,14 +46,12 @@ showBackground();
 
 /*This is used to collapse the columns so that they are smaller allowing for more info on the page if wanted*/
 $(document ).on('click', '.championImage', function(){
-    console.log("here");
-    console.log($(this).id);
-    console.log(this.id);
     $('#' + this.id+ '-0').addClass('hidden');
     $('#' + this.id+ '-1').addClass('hidden');
     $('#' + this.id+ '-2').addClass('hidden');
     $('#' + this.id+ '-3').removeClass('hidden');
     $('#' + this.id+ '-4').addClass('v-align');
+    setboxHeight();
 });
 $('#0-3').click( function(){
     $('#0-0').removeClass('hidden');
@@ -89,4 +87,11 @@ $('#4-3').click( function(){
     $('#4-2').removeClass('hidden');
     $('#4-4').removeClass('v-align');
     $('#'+this.id).addClass('hidden');
+});
+
+function setboxHeight(){
+    $('.collapse-b').height($('.collapse').height()-9);
+}
+$(window).resize(function(){
+    setboxHeight();
 });
