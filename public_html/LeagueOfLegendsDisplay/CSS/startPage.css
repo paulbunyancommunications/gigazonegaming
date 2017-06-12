@@ -10,8 +10,22 @@ select{
     font-weight: bold;
     color: white;
     border: none;
-    margin: 15px;
+    margin: 10px;
 }
+label{
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    text-decoration: underline;
+}
+#label1{
+    margin-right:60px;
+}
+#label2{
+    margin-left:60px;
+
+}
+
 .startButton{
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -22,6 +36,9 @@ select{
     color: white;
     border: none;
     margin: 5px;
+}
+.startButtonDisabled{
+    opacity: 0.3;
 }
 .startFooter{
     position: absolute;

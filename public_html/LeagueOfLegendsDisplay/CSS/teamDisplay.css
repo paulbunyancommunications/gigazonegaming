@@ -62,14 +62,21 @@ h1{
     overflow: hidden;
 }
 .collapse-b{
-    border: 3px solid transparent;
-    border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
     background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
     background-size: cover;
     margin-left: 5px;
     display:inline-block;
     vertical-align:top;
     color: white;
+    overflow-y:auto;
+    border: 3px solid transparent;
+    border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
+}
+.collapse-b::-webkit-scrollbar {
+    background-color: rgba(0,0,0,0);
+}
+.collapse-b::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.3);
 }
 .collapse img{
     margin-top: 0;
