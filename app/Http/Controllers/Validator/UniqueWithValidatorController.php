@@ -29,21 +29,6 @@ class UniqueWithValidatorController extends Controller
     {
         $counter = count($parameters); // this should be quick, there should be less than 3 parameters and no more than 3 constraints in the unique compose key, either way less than 20 will still be pretty fast counting
 
-//        dd(
-//            "selected attribute",
-//            $attribute,
-//            "value passed",
-//            $value,
-//            "parameters passed along",
-//            $parameters,
-//            "validator",
-//            $validator,
-//            'request',
-//            $_REQUEST,
-//            'counter',
-//            $counter
-//        );
-
         if ($counter > 1) {
             $connectionDbTable = trim($parameters[0]);
             $dbColumn = trim($parameters[1]);
@@ -56,7 +41,7 @@ class UniqueWithValidatorController extends Controller
                 $query = \DB::connection($theConnectionArray[0])->table($theConnectionArray[1]);
             }
             $forQuery = [];
-            //niqueWidth:mysql_champ.teams,=name,tournament_id>'.$tournament_id
+
             for ($i=1; $i < $counter; $i++) {
                 $equal = strpos($parameters[$i], '=');
                 $value_exists = strpos($parameters[$i], '>');
