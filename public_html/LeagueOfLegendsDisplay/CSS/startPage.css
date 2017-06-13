@@ -1,5 +1,15 @@
+html{
+    font-family: futura-pt,Lucida Sans,Lucida Grande,Lucida Sans Unicode,sans-serif;
+}
+
+body{
+    background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');
+}
 .startForm{
     text-align:center;
+}
+.hidden{
+    display: none;
 }
 select{
     -webkit-border-radius: 5px;
@@ -45,7 +55,7 @@ label{
     top: 30%;
     width: 75%;
     text-align:center;
-    opacity: 0.6;
+    opacity: 0.3;
     left:10%;
 }
 #loader {
@@ -76,10 +86,26 @@ label{
     left:9%;
     width:81%;
     height:69%;
-    background-color: rgba(255, 255, 255, .4);
+    background-color: rgba(255, 255, 255, .5);
     word-wrap: break-word;
     border: 5px inset white;
     overflow-y:auto;
     font-weight:bold;
     line-height: 150%;
+}
+.console-header{
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 5px;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
+}
+.console-sub-header{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-decoration: underline;
 }

@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/LeagueOfLegendsDisplay/CSS/startPage.css">
-    <link rel="stylesheet" type="text/css" href="/LeagueOfLegendsDisplay/CSS/teamDisplay.css">
     <Title>Tournament</Title>
 </head>
 <body>
@@ -55,6 +54,7 @@
             teams: {!!$teams!!},
             colors: ["Red","Blue"],
         }
+
     });
 </script>
 <script src="/LeagueOfLegendsDisplay/JS/startPage.js"></script>

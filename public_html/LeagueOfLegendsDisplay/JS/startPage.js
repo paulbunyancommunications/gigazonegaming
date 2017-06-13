@@ -83,11 +83,24 @@ $('#Tournament').change(function() {
         $('#submit').addClass('startButtonDisabled').prop('disabled', true);
     }
 });
+
 function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
 
+function loadingAnimation($Bool) {
+
+    document.getElementById('Info').innerHTML = "Loading.";
+    document.getElementById('Info').innerHTML = "Loading..";
+    document.getElementById('Info').innerHTML = "Loading...";
+
+}
+
 function submitCache(){
+
+    $('#loader').removeClass('hidden');
+    $('#submit').addClass('hidden');
+    document.getElementById('info').innerHTML = 'Please Wait...';
     ///Set up cache arrays for team and color
     var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
     var color = [$( '#Color option:selected').text(), $( '#Color-1 option:selected').text()];
@@ -104,8 +117,16 @@ function submitCache(){
             color: color
         },
         success: function(data){
+            document.getElementById('info').innerHTML = "";
+            if(data.ErrorCode){
+                document.getElementById('info').innerHTML = data.ErrorMessage;
+            }else{
+                document.getElementById('info').innerHTML = "<h3 class='console-header'>UPDATED</h3><br/><span class='console-sub-header'>Team 1:</span> " + data.teamName[0] + "<br/><span class='console-sub-header'>Color:</span> " + data.colors[0] + "<br/><span class='console-sub-header'>Players Array:</span> " + data.teamInfo[0].summonerArray + "<br/><span class='console-sub-header'>Icons:</span> " + data.teamInfo[0].iconArray + "<br/><span class='console-sub-header'>Solo Ranks:</span> " + data.teamInfo[0].soloRankArray + "<br/><span class='console-sub-header'>Solo Win Losses:</span> " + data.teamInfo[0].summonerArray + "<br/><span class='console-sub-header'>Flex Ranks:</span> " + data.teamInfo[0].flexRankArray + "<br/><span class='console-sub-header'>Flex Rank Win Losses:</span> " + data.teamInfo[0].flexWinLossArray + "<br/><h3 class='console-header'>UPDATED</h3><br/><span class='console-sub-header'>Team 2:</span> " + data.teamName[1] + "<br/><span class='console-sub-header'>Color:</span> " + data.colors[1] + "<br/><span class='console-sub-header'>Players Array:</span> " + data.teamInfo[1].summonerArray + "<br/><span class='console-sub-header'>Icons:</span> " + data.teamInfo[1].iconArray + "<br/><span class='console-sub-header'>Solo Ranks:</span> " + data.teamInfo[1].soloRankArray + "<br/><span class='console-sub-header'>Solo Win Losses:</span> " + data.teamInfo[1].summonerArray + "<br/><span class='console-sub-header'>Flex Ranks:</span> " + data.teamInfo[1].flexRankArray + "<br/><span class='console-sub-header'>Flex Rank Win Losses:</span> " + data.teamInfo[1].flexWinLossArray;
+            }
             console.log(data);
             //Alert Data that has been updated in the cache
+            $('#loader').addClass('hidden');
+            $('#submit').removeClass('hidden');
         }
 
     });
