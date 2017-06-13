@@ -51,7 +51,7 @@ $(document ).on('click', '.championImage', function(){
     $('#' + this.id+ '-2').addClass('hidden');
     $('#' + this.id+ '-3').removeClass('hidden');
     $('#' + this.id+ '-4').addClass('v-align');
-    setboxHeight();
+    setBoxHeight();
 });
 $('#0-3').click( function(){
     $('#0-0').removeClass('hidden');
@@ -89,9 +89,10 @@ $('#4-3').click( function(){
     $('#'+this.id).addClass('hidden');
 });
 
-function setboxHeight(){
-    $('.collapse-b').height($('.collapse').height()-9);
+function setBoxHeight(){
+    $('#D4').height($('#C4').height() - 9);
 }
+
 $(window).resize(function(){
-    setboxHeight();
+    setBoxHeight();
 });

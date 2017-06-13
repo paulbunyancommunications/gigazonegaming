@@ -149,14 +149,18 @@ class GameDisplayController extends Controller
         $players = $team->players;
 
         #Loop through player of the chosen team and create an array of player objects
-
+        $i =0;
         foreach($players as $player){
             if(isset($player) and isset($player->username) and $player->username != null) {
             #Creat player object depending on which game is selected.
             switch ($TournamentName){
                 #LOL
                 case str_contains($TournamentName, "league-of-legends"):
-                    $summoner = new Summoner($player->username);
+                    $summoner = new Summoner($player->username, $i);
+                    $i++;
+                    if($i > 10){
+                        $i=0;
+                    }
                     array_push($this->team, $summoner);
                     break;
                 #Overwatch

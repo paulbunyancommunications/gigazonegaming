@@ -15,7 +15,7 @@
     <label class="playerHeading" for="player3">Player3:</label><br/><input list="champions" id="player3"><br/>
     <label class="playerHeading" for="player4">Player4:</label><br/><input list="champions" id="player4"><br/>
     <label class="playerHeading" for="player5">Player5:</label><br/><input list="champions" id="player5"><br/>
-    <button onclick="findChampion();">Submit</button><br/>
+    <button onclick="findChampion();">Team 1</button><button onclick="findChampion();">Team 2</button><br/>
 
     <div style="display: inline-block;" id="demo1"></div>
     <div style="display: inline-block;" id="demo2"></div>
