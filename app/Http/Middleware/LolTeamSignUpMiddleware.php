@@ -88,17 +88,24 @@ class LolTeamSignUpMiddleware
             }//if not dont even push it to the array so we run faster through each
         }
         $repeatedPlayers = [];
+        $teamExist = false; //this is because players could be also players in other tournanents or games but if there are  no teams in this tournament to go through, same players will generate an error, in this way it wont
         if(count($playerExist) > 0) { //here we will check if the player already has a team in the same tournament in which they are signing in.
-            foreach ($teams as $team) {
-                foreach ($playerExist as $email => $p_id) {
+            foreach ($playerExist as $email => $p_id) {
+                foreach ($teams as $team) {
+                    $teamExist = true;
                     $relation = PlayerRelation::where([
                         ['relation_type', "=", Team::class],
                         ['relation_id', "=", $team->id],
                         ['player_id', '=', $p_id]
                     ])->exists();
-                    if($relation){
+                    if ($relation) {
                         $repeatedPlayers[] = $email;
+                    } elseif (isset($usernameExists[$email])) {
+                        unset($usernameExists[$email]);
                     }
+                }
+                if(!$teamExist and isset($usernameExists[$email])){
+                    unset($usernameExists[$email]);
                 }
             }
         }
@@ -108,9 +115,15 @@ class LolTeamSignUpMiddleware
         }
         if (count($repeatedPlayers)>0 ){
             $error[]= trans('email.unique', $repeatedPlayers);
+            foreach ($repeatedPlayers as $k => $v){
+                $error[]= trans('-- '. $v, $repeatedPlayers);
+            }
         }
         if( count($usernameExists)>0 ) {
-            $error[]= trans('your-lol-summoner-name.unique', $usernameExists);
+            $error[]= trans('Your summoner name already exists in the database', $usernameExists);
+            foreach ($usernameExists as $k => $v){
+                $error[]= trans('-- '. $v, $usernameExists);
+            }
         }
         if (count($error)!=0) {
             return Response::json([
