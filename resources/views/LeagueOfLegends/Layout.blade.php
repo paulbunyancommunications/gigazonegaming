@@ -56,39 +56,39 @@
         crossorigin="anonymous"></script>
 <script src="/LeagueOfLegendsDisplay/JS/teamDisplay.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        window.setTimeout(checkAndGrabChampion, 11000);
-    });
-    function checkAndGrabChampion() {
-        $.ajax({
-            method: "GET",
-            type: "GET",
-            url: "https://gigazonegaming.localhost/app/GameDisplay/ajax",
-            data: {
-                '_token': "{{ csrf_token() }}",
-                tournament: "{{$tournament}}",
-                team: "{{$teamName}}",
-                color: "{{$teamColor}}"
-            },
-            success: function(data){
-                console.log(data.length);
-                console.log(data);
-                 if(data.Champions.length != 0){
-                     for(var i = 0; i < data.Champions.length; i++){
-                         champName = data.Champions[i].split("/");
-                         champName = champName[champName.length -1].split("_");
-                         document.getElementById('divB' + data.Summoners[i]).innerHTML = '<img id="' + data.Summoners[i] +'" class="championImage" src="' + data.Champions[i] + '"/><div class="championName"><h3>'+champName[0]+'</h3></div>';
-                         document.getElementById('C' +  data.Summoners[i]).innerHTML = '<img class="championImage" src="' + data.Champions[i] + '"/>';
+    {{--$(document).ready(function () {--}}
+        {{--window.setTimeout(checkAndGrabChampion, 11000);--}}
+    {{--});--}}
+    {{--function checkAndGrabChampion() {--}}
+        {{--$.ajax({--}}
+            {{--method: "GET",--}}
+            {{--type: "GET",--}}
+            {{--url: "https://gigazonegaming.localhost/app/GameDisplay/ajax",--}}
+            {{--data: {--}}
+                {{--'_token': "{{ csrf_token() }}",--}}
+                {{--tournament: "{{$tournament}}",--}}
+                {{--team: "{{$teamName}}",--}}
+                {{--color: "{{$teamColor}}"--}}
+            {{--},--}}
+            {{--success: function(data){--}}
+                {{--console.log(data.length);--}}
+                {{--console.log(data);--}}
+                 {{--if(data.Champions.length != 0){--}}
+                     {{--for(var i = 0; i < data.Champions.length; i++){--}}
+                         {{--champName = data.Champions[i].split("/");--}}
+                         {{--champName = champName[champName.length -1].split("_");--}}
+                         {{--document.getElementById('divB' + data.Summoners[i]).innerHTML = '<img id="' + data.Summoners[i] +'" class="championImage" src="' + data.Champions[i] + '"/><div class="championName"><h3>'+champName[0]+'</h3></div>';--}}
+                         {{--document.getElementById('C' +  data.Summoners[i]).innerHTML = '<img class="championImage" src="' + data.Champions[i] + '"/>';--}}
 
-                     }
-                     fadInChampion();
-                 }else{
-                     window.setTimeout(checkAndGrabChampion, 10000);
-                 }
+                     {{--}--}}
+                     {{--fadInChampion();--}}
+                 {{--}else{--}}
+                     {{--window.setTimeout(checkAndGrabChampion, 10000);--}}
+                 {{--}--}}
 
-            }
+            {{--}--}}
 
-        });
-    }
+        {{--});--}}
+    {{--}--}}
 </script>
 </html>
