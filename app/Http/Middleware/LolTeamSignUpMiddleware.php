@@ -34,6 +34,17 @@ class LolTeamSignUpMiddleware
         if ($validator->fails()) {
             return Response::json(['error' => $validator->errors()->all()]);
         }
+        $checkEmails = [];
+        foreach ($theRequests as $k => $val){
+//            if()
+            if ((strpos($k, 'email') !== false) AND strpos($val, '@') !== false) {
+                if(isset($checkEmails[$val])){
+                    return Response::json(['error' => ["You have a repeated email"]]);
+                }else{
+                    $checkEmails[$val] = true;
+                }
+            }
+        }
         // set tournament from request
         if (!$this->getTournament()) {
             $this->setTournament($request->input('tournament'));
@@ -95,9 +106,11 @@ class LolTeamSignUpMiddleware
         if ($tournament === null) {
             $error[]= trans('tournament.not_found', ['tournament' => $this->getTournament()]);
         }
-        if (count($repeatedPlayers)>0) {
+        if (count($repeatedPlayers)>0 ){
             $error[]= trans('email.unique', $repeatedPlayers);
-            $error[]= trans('your-lol-summoner-name.unique', $repeatedPlayers);
+        }
+        if( count($usernameExists)>0 ) {
+            $error[]= trans('your-lol-summoner-name.unique', $usernameExists);
         }
         if (count($error)!=0) {
             return Response::json([
