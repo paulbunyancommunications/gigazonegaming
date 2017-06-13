@@ -46,7 +46,7 @@ class SimonCacheController extends Controller
                 $this->resetArrays();
             }
 
-            $this->cacheContent($teamInfoArrays,$colorArray);
+            $this->cacheContent($teamInfoArrays,$colorArray,$team);
             $returnArray = array(
                 'teamName' => $team,
                 'teamInfo' => $teamInfoArrays,
@@ -144,11 +144,12 @@ class SimonCacheController extends Controller
             $this->$key = array();
         }
     }
-    public function cacheContent($teamInfoArrays,$colorArray){
-//        $cache = new Cache();
-//        $cache->put('Team1Info', $teamInfoArrays[1], 70);
-//        $cache->put('Team1Color', $colorArray[1], 70);
-//        $cache->put('Team2Info', $teamInfoArrays[2], 70);
-//        $cache->put('Team2Color', $colorArray[2], 70);
+    public function cacheContent($teamInfoArrays,$colorArray,$team){
+        Cache::put('Team1Name', $team[0], 70);
+        Cache::put('Team1Info', $teamInfoArrays[0], 70);
+        Cache::put('Team1Color', $colorArray[0], 70);
+        Cache::put('Team2Name', $team[1], 70);
+        Cache::put('Team2Info', $teamInfoArrays[1], 70);
+        Cache::put('Team2Color', $colorArray[1], 70);
     }
 }

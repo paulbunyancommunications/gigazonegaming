@@ -96,3 +96,25 @@ function setBoxHeight(){
 $(window).resize(function(){
     setBoxHeight();
 });
+//
+$(document).ready(GetData());
+function GetData(){
+    if(!document.getElementById('other')){
+          ///Execute cache controller with ajax
+        $.ajax({
+            method: "GET",
+            type: "GET",
+            url: "/app/GameDisplay/getData",
+            success: function(data){
+                if(data){
+                    location.reload();
+
+                }else{
+                    GetData();
+                }
+
+            }
+
+        });
+    }
+}

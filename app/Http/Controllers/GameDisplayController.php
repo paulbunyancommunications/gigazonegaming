@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
@@ -52,6 +53,95 @@ class GameDisplayController extends Controller
     {
         return view('/LeagueOfLegends/championOverride');
     }
+
+    public function team1ViewDisplay(){
+        #Cache Set
+        if(Cache::has('Team1Name') && Cache::has('Team1Info') && Cache::has('Team1Color')){
+            $teamName = Cache::get('Team1Name');
+            $teamInfo = Cache::get('Team1Info');
+            $teamColor = Cache::get('Team1Color');
+
+            return view('/LeagueOfLegends/DisplayTeam', [
+                'teamName' => $teamName,
+                'color' => $teamColor,
+                'teamColor' => $teamColor,
+                'summonerArray' => $teamInfo['summonerArray'],
+                'iconArray' => $teamInfo['iconArray'],
+                'soloRankArray' => $teamInfo['soloRankArray'],
+                'soloWinLossArray' => $teamInfo['soloWinLossArray'],
+                'flexRankArray' => $teamInfo['flexRankArray'],
+                'flexWinLossArray' => $teamInfo['flexWinLossArray']
+            ]);
+        }
+        else{
+            #Data Default data
+            return view('/LeagueOfLegends/DisplayAltTeam');
+        }
+    }
+    public function team2ViewDisplay(){
+#Cache Set
+        if(Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')){
+            $teamName = Cache::get('Team2Name');
+            $teamInfo = Cache::get('Team2Info');
+            $teamColor = Cache::get('Team2Color');
+
+            return view('/LeagueOfLegends/DisplayTeam', [
+                'teamName' => $teamName,
+                'color' => $teamColor,
+                'teamColor' => $teamColor,
+                'summonerArray' => $teamInfo['summonerArray'],
+                'iconArray' => $teamInfo['iconArray'],
+                'soloRankArray' => $teamInfo['soloRankArray'],
+                'soloWinLossArray' => $teamInfo['soloWinLossArray'],
+                'flexRankArray' => $teamInfo['flexRankArray'],
+                'flexWinLossArray' => $teamInfo['flexWinLossArray']
+            ]);
+        }
+        else{
+            #Data Default data
+            return view('/LeagueOfLegends/DisplayAltTeam');
+        }
+    }
+
+    protected function returnView($TeamName, $TeamInfo, $TeamColor){
+        return view('/LeagueOfLegends/DisplayTeam', [
+            'teamName' => $TeamName,
+            'color' => $TeamColor,
+            'teamColor' => $TeamColor,
+            'summonerArray' => $TeamInfo['summonerArray'],
+            'iconArray' => $TeamInfo['iconArray'],
+            'soloRankArray' => $TeamInfo['soloRankArray'],
+            'soloWinLossArray' => $TeamInfo['soloWinLossArray'],
+            'flexRankArray' => $TeamInfo['flexRankArray'],
+            'flexWinLossArray' => $TeamInfo['flexWinLossArray']
+        ]);
+
+    }
+
+    public function getData(){
+        if(Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')){
+            return 'true';
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function teamViewDisplay($tournament,$team,$color)
     {
