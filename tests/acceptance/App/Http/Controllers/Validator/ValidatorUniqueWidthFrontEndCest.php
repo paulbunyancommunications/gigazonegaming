@@ -144,7 +144,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
 
-        $I->click("#doFormSubmit");
+        $I->click("Submit");
         $I->wait(10);
         $I->canSee("A team with the exact same name already exists for this tournament, please select a different name.");
 
@@ -169,21 +169,20 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-phone", "2184443133");
         $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
-
         for($i=0; $i < 8; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
 
-        $I->click("#doFormSubmit");
+        $I->click("Submit");
 
         $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
         $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
-        $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.", $this::DEFAULT_WAIT);
+        $I->cantSee("A team with the exact same name already exists for this tournament, please select a different name.");
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+        $I->wantToTest("if it is now giving an error");
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -197,7 +196,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
                 }).prop(
                 'type', 'text'
                 )");
-        
+
         $I->fillField("#team-name", $this::TEAM_B_NAME."ll");
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-phone", "2184443135");
@@ -208,11 +207,10 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
 
-        $I->click("#doFormSubmit");
+        $I->click("Submit");
+        $I->wait(10);
 
-        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
-        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
-        $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.", $this::DEFAULT_WAIT);
+        $I->cantSee("A team with the exact same name already exists for this tournament, please select a different name.");
 
     }
 }
