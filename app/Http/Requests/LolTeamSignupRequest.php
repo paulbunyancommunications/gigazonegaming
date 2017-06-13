@@ -68,7 +68,7 @@ class LolTeamSignUpRequest extends BaseRequest
             if($i<3) {
                 if (isset($_REQUEST['alternate-' . Numbers::toWord($i) . '-summoner-id'])) {
                     $rules['alternate-' . Numbers::toWord($i) . '-summoner-id'] = 'exists:mysql_champ.player,id';
-                } else {
+                } elseif(isset($rules['alternate-' . Numbers::toWord($i) . '-email-address'])) {
                     $rules['alternate-' . Numbers::toWord($i) . '-summoner-name'] = 'required';
                     $rules['alternate-' . Numbers::toWord($i) . '-email-address'] = 'required|email';
                 }
