@@ -54,8 +54,12 @@ class LolTeamSignUpRequest extends BaseRequest
                 'team-name' => 'required|unique:mysql_champ.teams,name',
             ];
         }
+
         for ($i = 1; $i <= 3; $i++) {
-            if (isset($_REQUEST['teammate-'.Numbers::toWord($i).'-lol-summoner-id'])) {
+            if (isset($_REQUEST['teammate-'.Numbers::toWord($i).'-lol-summoner-id']) AND Player::where("email", '=', $_REQUEST['teammate-'.Numbers::toWord($i).'-email-address'])->exists()) {
+                $id = Player::where("email", '=', $_REQUEST['teammate-'.Numbers::toWord($i).'-email-address'])->first()->id;
+                $_REQUEST['teammate-'.Numbers::toWord($i).'-lol-summoner-id'] = $id;
+            } elseif (isset($_REQUEST['teammate-'.Numbers::toWord($i).'-lol-summoner-id'])) {
                 $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-id'] = 'exists:mysql_champ.player,id';
             } else {
                 $rules['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = 'required';
@@ -81,7 +85,8 @@ class LolTeamSignUpRequest extends BaseRequest
     public function messages()
     {
         $messages = [
-            "name.unique_width" => 'A team with the exact same name already exists for this tournament, please select a different name.',
+            "team-name.uniqueWidth" => 'A team with the exact same name already exists for this tournament, please select a different name.',
+            "team-name.unique_width" => 'A team with the exact same name already exists for this tournament, please select a different name.',
             'email.required' => 'The team captain email address is required.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
             'name.required' => 'The name of the team captain is required.',
