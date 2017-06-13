@@ -31,7 +31,7 @@
             <option id="defaultColor-1" value="default">Select a Color</option>
             <option  v-for="color in colors" v-model="selected">@{{ color }}</option>
         </select><br/>
-        <button class="startButton startButtonDisabled" id="submit" disabled onclick="teamView();">Submit</button>
+        <button class="startButton startButtonDisabled" id="submit" disabled onclick="submitCache();">Submit</button>
         <div id="loader" class="hidden"></div>
 </div>
 <div class="startFooter">
