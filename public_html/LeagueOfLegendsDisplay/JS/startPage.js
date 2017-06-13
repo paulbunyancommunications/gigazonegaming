@@ -88,14 +88,6 @@ function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
 
-function loadingAnimation($Bool) {
-
-    document.getElementById('Info').innerHTML = "Loading.";
-    document.getElementById('Info').innerHTML = "Loading..";
-    document.getElementById('Info').innerHTML = "Loading...";
-
-}
-
 function submitCache(){
 
     $('#loader').removeClass('hidden');
