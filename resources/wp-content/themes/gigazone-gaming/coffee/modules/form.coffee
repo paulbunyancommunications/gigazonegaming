@@ -22,6 +22,18 @@ define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
       return
     )
 
+  if($('meta[name=env]').attr("content") == "local")
+    $('#hidden')
+      .css({
+          'display': 'block',
+          'color':'#ff0000',
+          'font-size':'20px',
+          'width':'500px',
+          'height':'40px'
+          })
+      .prop(
+          'type', 'text'
+          )
   form.csrfToken = ->
     return form.metaRequestToken.attr('content');
 
@@ -99,9 +111,8 @@ define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
           message.show()
         catch e
           message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p></div>').show()
-
-
-#message.html('<div class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
+        if($('meta[name=env]').attr("content") == "local")
+          message.html('<div id="errorChecker" class="alert alert-danger"><p>Request failed: ' + textStatus + '</p><p>' + jqXHR.responseText + '</p></div>').show()
     })
     return true
   )

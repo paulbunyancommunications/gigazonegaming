@@ -2,6 +2,7 @@
   "name" : "paulbunyannet.gigazone-gaming",
   "directory": "public_html/bower_components",
   "json": "bower.json",
+  "allow_root": true,
   "searchpath": [
     "https://bower.herokuapp.com"
   ]
