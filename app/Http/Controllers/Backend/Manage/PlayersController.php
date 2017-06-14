@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Manage;
 
+use App\Http\Controllers\Validator\VerifySummonerName;
 use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
@@ -115,9 +116,18 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
+        $verify = new VerifySummonerName();
+        if(!$verify->VerifySummonerName($request["username"])){
+            return Redirect::back()
+                ->withInput()
+                ->with('error', trans('Summoner Name Error'.$request["username"]))
+                ->with("thePlayer", $player);
+        }
         list($request, $theAssociation) = $this->UserCleanUp($request);
 
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation);
+
+
         if($success!='' and $errors!=''){
             return Redirect::back()
                 ->withInput()
