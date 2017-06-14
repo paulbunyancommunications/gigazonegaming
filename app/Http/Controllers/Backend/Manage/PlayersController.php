@@ -120,7 +120,7 @@ class PlayersController extends Controller
         if(!$verify->VerifySummonerName($request["username"])){
             return Redirect::back()
                 ->withInput()
-                ->with('error', trans('Summoner Name Error'.$request["username"]))
+                ->with('error', trans('Summoner Name Error - '.$request["username"].' - is not a real summoner name'))
                 ->with("thePlayer", $player);
         }
         list($request, $theAssociation) = $this->UserCleanUp($request);
