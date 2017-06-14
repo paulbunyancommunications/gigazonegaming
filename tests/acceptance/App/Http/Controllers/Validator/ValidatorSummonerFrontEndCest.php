@@ -20,7 +20,7 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
     const TOURNAMENT_A_NAME = "Tester_Tournament_Unique_Width_A";//same as in the SignUpUniqueWithValidatorTesterSeeder
     const TOURNAMENT_B_NAME = "Tester_Tournament_Unique_Width_B";//same as in the SignUpUniqueWithValidatorTesterSeeder
 
-    public $nameList = [];
+    public $nameList = ["ChaChing77", "SlySkeever", "DragonDefeater", "CacheMeOuside", "CrackAColdOne", "YouBetterNotComeAtMe"];
     public $emailList = [];
     public $names = [
         "#team-captain-lol-summoner-name",
@@ -28,9 +28,6 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
         '#teammate-two-lol-summoner-name',
         '#teammate-three-lol-summoner-name',
         '#teammate-four-lol-summoner-name',
-        '#alternate-one-summoner-name',
-        '#alternate-two-summoner-name',
-        '#alternate-three-summoner-name'
     ];
     public $emails = [
         "#team-captain-email-address",
@@ -38,9 +35,6 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
         '#teammate-two-email-address',
         '#teammate-three-email-address',
         '#teammate-four-email-address',
-        '#alternate-one-email-address',
-        '#alternate-two-email-address',
-        '#alternate-three-email-address'
     ];
     /**
      * @param AcceptanceTester $I
@@ -50,8 +44,7 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDBSignUp($I);
         $this->faker = \Faker\Factory::create();
-        for($i=0; $i < 8; $i++) {
-            $this->nameList[] = "xyz".$this->faker->name()."stu";
+        for($i=0; $i < 6; $i++) {
             $this->emailList[] = "xyz".$this->faker->email();
         }
         $I->amOnPage('/tournament/lol-team-signup/');
@@ -81,10 +74,42 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToCreateATeam(AcceptanceTester $I)
+    public function tryToCreateATeamIShouldntSeeAnyError(AcceptanceTester $I)
     {
-        $idA = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
-        $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
+        $I->amOnPage('/tournament/lol-team-signup/');
+        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
+            .css({ 
+                'display': 'block',
+                'color':'#ff0000',
+                'font-size':'20px',
+                'width':'500px',
+                'height':'40px'
+                }).prop(
+                'type', 'text'
+                )");
+        $I->fillField("#team-name", $this::TEAM_A_NAME);
+        $I->fillField("#team-captain", $this->nameList[0]);
+        $I->fillField("#team-captain-phone", "2184443131");
+
+        for($i=0; $i < 5; $i++) {
+            $I->fillField( $this->names[$i], $this->nameList[$i] );
+            $I->fillField( $this->emails[$i], $this->emailList[$i] );
+        }
+
+        $I->click("Submit");
+
+        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
+        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->dontSee("not a valid summoner name");
+        $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.");
+
+    }
+    /**
+     * Test the form with the participation flag
+     * @param AcceptanceTester $I
+     */
+    public function tryToCreateATeamIShouldSeeAnError(AcceptanceTester $I)
+    {
 
         $I->amOnPage('/tournament/lol-team-signup/');
         $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
@@ -98,116 +123,21 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
                 'type', 'text'
                 )");
         $I->fillField("#team-name", $this::TEAM_A_NAME);
-        $I->fillField("#team-captain", $this->faker->name()."asdasd");
+        $I->fillField("#team-captain", "ThisNickNameShouldNotExist");
         $I->fillField("#team-captain-phone", "2184443131");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name()."ergdfg");
 
-        for($i=0; $i < 8; $i++) {
+        for($i=1; $i < 5; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
+        $I->fillField("#team-captain-lol-summoner-name", "ThisNickNameShouldNotExist");
 
         $I->click("Submit");
 
         $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
         $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->canSee("not a valid summoner name");
         $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.");
-
-    }
-    /**
-     * Test the form with the participation flag
-     * @param AcceptanceTester $I
-     */
-    public function tryToCreateATeamWithTheSameNameAsAnotherOneInTheSameTournanent(AcceptanceTester $I)
-    {
-        ///todo for some reason even when I can manually check that the tournanent isnt the same and that the code works, tests continues to fail
-        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_A_NAME."')
-            .css({ 
-                'display': 'block',
-                'color':'#ff0000',
-                'font-size':'20px',
-                'width':'500px',
-                'height':'40px'
-                }).prop(
-                'type', 'text'
-                )");
-        $I->fillField("#team-name", $this::TEAM_A_NAME);
-        $I->fillField("#team-captain", $this->faker->name());
-        $I->fillField("#team-captain-phone", "2184443132");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
-
-        for($i=0; $i < 8; $i++) {
-            $I->fillField( $this->names[$i], $this->nameList[$i] );
-            $I->fillField( $this->emails[$i], $this->emailList[$i] );
-        }
-
-        $I->click("Submit");
-        $I->wait(10);
-        $I->canSee("A team with the exact same name already exists for this tournament, please select a different name.");
-
-    }
-    /**
-     * Test the form with the participation flag
-     * @param AcceptanceTester $I
-     */
-    public function tryToCreateATeamWithTheSamePlayersInDifferentTournamentsWithTheSameTeamName(AcceptanceTester $I)
-    {
-        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_A_NAME."')
-            .css({ 
-                'display': 'block',
-                'color':'#ff0000',
-                'font-size':'20px',
-                'width':'500px',
-                'height':'40px'
-                }).prop(
-                'type', 'text'
-                )");
-        $I->fillField("#team-name", $this::TEAM_B_NAME."ll");
-        $I->fillField("#team-captain", $this->faker->name());
-        $I->fillField("#team-captain-phone", "2184443133");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
-        for($i=0; $i < 8; $i++) {
-            $I->fillField( $this->names[$i], $this->nameList[$i] );
-            $I->fillField( $this->emails[$i], $this->emailList[$i] );
-        }
-
-        $I->click("Submit");
-
-        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
-        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
-        $I->cantSee("A team with the exact same name already exists for this tournament, please select a different name.");
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-        $I->wantToTest("if it is now giving an error");
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
-            .css({ 
-                'display': 'block',
-                'color':'#ff0000',
-                'font-size':'20px',
-                'width':'500px',
-                'height':'40px'
-                }).prop(
-                'type', 'text'
-                )");
-
-        $I->fillField("#team-name", $this::TEAM_B_NAME."ll");
-        $I->fillField("#team-captain", $this->faker->name());
-        $I->fillField("#team-captain-phone", "2184443135");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
-
-        for($i=0; $i < 8; $i++) {
-            $I->fillField( $this->names[$i], $this->nameList[$i] );
-            $I->fillField( $this->emails[$i], $this->emailList[$i] );
-        }
-
-        $I->click("Submit");
-        $I->wait(10);
-
-        $I->cantSee("A team with the exact same name already exists for this tournament, please select a different name.");
 
     }
 }
