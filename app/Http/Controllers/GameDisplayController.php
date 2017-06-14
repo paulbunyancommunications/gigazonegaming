@@ -307,5 +307,9 @@ class GameDisplayController extends Controller
         else
             Cache::put('Team2Champions', $championArray, 70);
     }
+    public function clearCache(){
+        Cache::flush();
+        return "Cache Successfully Cleared";
+    }
 
 }

@@ -123,3 +123,17 @@ function submitCache(){
 
     });
 }
+function clearCache(){
+    document.getElementById('info').innerHTML = 'Please Wait...';
+    ///Set up cache arrays for team and color
+    ///Execute cache controller with ajax
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "/app/GameDisplay/clear",
+        success: function(data){
+            document.getElementById('info').innerHTML = data;
+        }
+
+    });
+}

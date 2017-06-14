@@ -39,6 +39,7 @@
 </div>
 <div id="info"></div>
 <button onclick="window.open('/app/GameDisplay/customer');" style="bottom: 0; left: 0; position: fixed; z-index: 300;">Customer Startpage</button>
+<button onclick="clearCache();" style="bottom: 0; left: 50%; position: fixed; z-index: 300;">Clear Cache</button>
 <button onclick="window.open('/app/GameDisplay/override')" style="bottom: 0; right: 0; position: fixed; z-index: 300;">Champion Override</button>
 
 <script src="https://unpkg.com/vue@2.1.3/dist/vue.js"></script>
