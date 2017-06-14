@@ -39,7 +39,6 @@ class LolTeamSignUpMiddleware
         }
         $checkEmails = [];
         foreach ($theRequests as $k => $val){
-//            if()
             if ((strpos($k, 'email') !== false) AND strpos($val, '@') !== false) {
                 if(isset($checkEmails[$val])){
                     return Response::json(['error' => ["You have a repeated email"]]);
@@ -58,7 +57,7 @@ class LolTeamSignUpMiddleware
         $playerExist = [];
         $usernameExists = [];
         $j = 10;
-        $VerifiedSummonerName = [];
+        $verifiedSummonerName = [];
 
         if (isset($theRequests['email']) AND Player::where('email', '=', $theRequests['email'])->exists()) {
             $id = Player::where('email', '=', $theRequests['email'])->first()->id;
@@ -69,8 +68,11 @@ class LolTeamSignUpMiddleware
             $email = Player::where('username', '=', $theRequests['team-captain-lol-summoner-name'])->first()->email;
             $username =  $theRequests['team-captain-lol-summoner-name'];
             $usernameExists[$email] =  $username;
-            $VerifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
+            $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
         } //if not don't even push it to the array so we run faster through each.
+        elseif(isset($theRequests['team-captain-lol-summoner-name']) and $theRequests['team-captain-lol-summoner-name']!=''){
+            $verifiedSummonerName[$theRequests['team-captain-lol-summoner-name']] = $verifier->VerifySummonerName($theRequests['team-captain-lol-summoner-name']);
+        }
         for ($i = 0; $i <= $j; $i++) {
             if (isset($theRequests['teammate-'.Numbers::toWord($i).'-email-address']) AND Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->exists()) {
                 $id = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->first()->id;
@@ -86,14 +88,20 @@ class LolTeamSignUpMiddleware
                 $email = Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'])->first()->email;
                 $username = $theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name'];
                 $usernameExists[$email] = $username;
-                $VerifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
+                $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
             }//if not dont even push it to the array so we run faster through each
+            elseif(isset($theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']) AND $theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] != '' ){
+                $verifiedSummonerName[$theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']] = $verifier->VerifySummonerName($theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']);
+            }
             if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']) AND Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->exists()) {
                 $email =  Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->first()->email;
                 $username =  $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'];
                 $usernameExists[$email] =  $username;
-                $VerifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
+                $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
             }//if not dont even push it to the array so we run faster through each
+            elseif(isset($theRequests['alternate-'.Numbers::toWord($i).'-summoner-name']) AND $theRequests['alternate-'.Numbers::toWord($i).'-summoner-name'] != '' ){
+                $verifiedSummonerName[$theRequests['alternate-'.Numbers::toWord($i).'-summoner-name']] = $verifier->VerifySummonerName($theRequests['alternate-'.Numbers::toWord($i).'-summoner-name']);
+            }
         }
         $repeatedPlayers = [];
         $teamExist = false; //this is because players could be also players in other tournanents or games but if there are  no teams in this tournament to go through, same players will generate an error, in this way it wont
@@ -127,10 +135,10 @@ class LolTeamSignUpMiddleware
                 $error[]= trans('-- '. $v, $repeatedPlayers);
             }
         }
-        if (count($VerifiedSummonerName)>0 ){
-            foreach ($VerifiedSummonerName as $username => $bool){
+        if (count($verifiedSummonerName)>0 ){
+            foreach ($verifiedSummonerName as $username => $bool){
                 if(!$bool){
-                    $error[]= trans('not a valid summoner name '. $username, $VerifiedSummonerName);
+                    $error[]= trans('not a valid summoner name '. $username, $verifiedSummonerName);
                 }
             }
         }
