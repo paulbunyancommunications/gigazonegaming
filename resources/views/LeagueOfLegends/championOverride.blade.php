@@ -10,19 +10,17 @@
 </head>
 <body class="mainDiv">
 <h1>Champion Override</h1>
+<select  id="Team">
+    <option>Team 1</option>
+    <option>Team 2</option>
+</select><br/>
     <label class="playerHeading" for="player1">Player1:</label><br/><input list="champions" id="player1"><br/>
     <label class="playerHeading" for="player2">Player2:</label><br/><input list="champions" id="player2"><br/>
     <label class="playerHeading" for="player3">Player3:</label><br/><input list="champions" id="player3"><br/>
     <label class="playerHeading" for="player4">Player4:</label><br/><input list="champions" id="player4"><br/>
     <label class="playerHeading" for="player5">Player5:</label><br/><input list="champions" id="player5"><br/>
-    <button onclick="findChampion();">Team 1</button><button onclick="findChampion();">Team 2</button><br/>
-
-    <div style="display: inline-block;" id="demo1"></div>
-    <div style="display: inline-block;" id="demo2"></div>
-    <div style="display: inline-block;" id="demo3"></div>
-    <div style="display: inline-block;" id="demo4"></div>
-    <div style="display: inline-block;" id="demo5"></div>
-
+    <button onclick="findChampion();">Submit</button>
+<div id="info"></div>
     <datalist id="champions">
         <option value="Aatrox">
         <option value="Ahri">

@@ -108,7 +108,6 @@ function GetData(){
             success: function(data){
                 if(data){
                     location.reload();
-
                 }else{
                     GetData();
                 }

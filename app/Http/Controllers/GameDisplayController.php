@@ -124,24 +124,14 @@ class GameDisplayController extends Controller
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public function getTeamName(){
+        $teamNames= array();
+        if(Cache::has('Team1Name') && Cache::has('Team2Name')){
+            array_push($teamNames,Cache::get('Team1Name'));
+            array_push($teamNames,Cache::get('Team2Name'));
+            return $teamNames;
+        }
+    }
 
     public function teamViewDisplay($tournament,$team,$color)
     {
@@ -307,6 +297,15 @@ class GameDisplayController extends Controller
             $player->setChampion();
             array_push($this->championArray, $player->getChampion());
         }
+    }
+
+    public function cacheChampions(Request $req){
+        $championArray = $req->championArray;
+        $team = $req->team;
+        if($team == 'Team 1')
+            Cache::put('Team1Champions', $championArray, 70);
+        else
+            Cache::put('Team2Champions', $championArray, 70);
     }
 
 }

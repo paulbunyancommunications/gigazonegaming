@@ -3,37 +3,21 @@
     background-image: url('/LeagueOfLegendsDisplay/Images/bg-default.jpg');
     background-size: cover;
 }
-.redButton{
+.teamButton{
     background-color: transparent;
-    margin-bottom:50px;
-    margin-top: 20%;
+    margin-bottom:10px;
+    margin-top: 30px;
     font-size: 50px;
     color:white;
     outline: none;
     border: 10px solid transparent;
     border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
-    text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
+    text-shadow: 1px 1px 2px black, 0 0 25px white, 0 0 5px black;
 }
-.blueButton{
-    background-color: transparent;
-    font-size: 50px;
-    color:white;
-    outline: none;
-    border: 10px solid transparent;
-    border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
-    text-shadow: 1px 1px 2px black, 0 0 25px darkblue, 0 0 5px red;
+.teamButton:hover{
+    box-shadow: 0 12px 16px 0 rgb(255,255,255), 0 17px 50px 0 rgba(0,0,0,1);
 }
-.blueButton:hover{
-    box-shadow: 0 12px 16px 0 rgb(0,0,255), 0 17px 50px 0 rgba(0,0,0,1);
-}
-.redButton:hover{
-    box-shadow: 0 12px 16px 0 rgb(255,0,0), 0 17px 50px 0 rgba(0,0,0,1);
-}
-.blueButton:active {
-    box-shadow: 0 5px blue;
-    transform: translateY(4px);
-}
-.redButton:active {
-    box-shadow: 0 5px red;
+.teamButton:active {
+    box-shadow: 0 5px gray;
     transform: translateY(4px);
 }
