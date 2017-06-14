@@ -8,7 +8,7 @@ use \BaseAcceptance;
  * Class ValidatorUniqueWidthFrontEndCest
  * @package Tests\Acceptance
  */
-class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
+class ValidatorSummonerFrontEndCest extends BaseAcceptance
 {
     /**
      *
@@ -85,9 +85,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     {
         $idA = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_A_NAME]);
         $idB = $I->grabFromDatabase("champ_tournaments", "id", ['name'=>$this::TOURNAMENT_B_NAME]);
-
-        $I->canSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idA]);
-        $I->cantSeeInDatabase("champ_teams", ['name'=>$this::TEAM_A_NAME,'tournament_id'=>$idB]);
 
         $I->amOnPage('/tournament/lol-team-signup/');
         $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
