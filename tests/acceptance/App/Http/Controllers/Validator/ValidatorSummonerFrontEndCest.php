@@ -125,19 +125,19 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", "ThisNickNameShouldNotExist");
         $I->fillField("#team-captain-phone", "2184443131");
+        $I->fillField("#team-captain-email-address", "captain@team.com");
+        $I->fillField("#team-captain-lol-summoner-name", "ThisNickNameShouldNotExist");
 
         for($i=1; $i < 5; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
         }
-        $I->fillField("#team-captain-lol-summoner-name", "ThisNickNameShouldNotExist");
 
         $I->click("Submit");
 
         $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
         $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
-        $I->canSee("not a valid summoner name");
+        $I->waitForText("not a valid summoner name", $this::DEFAULT_WAIT);
         $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.");
-
     }
 }
