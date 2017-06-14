@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Validator\UniqueWithValidatorController;
+use App\Http\Controllers\Validator\VerifySummonerName;
 use App\Http\Requests\Request;
 use App\Models\Championship\Relation\PlayerRelation;
 use Closure;
@@ -31,6 +33,7 @@ class LolTeamSignUpMiddleware
         $rules = new LolTeamSignUpRequest;
         $theRequests = $request->all();
         $validator = Validator::make($theRequests, $rules->rules(), $rules->messages());
+        $verifier = new VerifySummonerName();
         if ($validator->fails()) {
             return Response::json(['error' => $validator->errors()->all()]);
         }
@@ -55,6 +58,8 @@ class LolTeamSignUpMiddleware
         $playerExist = [];
         $usernameExists = [];
         $j = 10;
+        $VerifiedSummonerName = [];
+
         if (isset($theRequests['email']) AND Player::where('email', '=', $theRequests['email'])->exists()) {
             $id = Player::where('email', '=', $theRequests['email'])->first()->id;
             $email =  $theRequests['email'];
@@ -64,6 +69,7 @@ class LolTeamSignUpMiddleware
             $email = Player::where('username', '=', $theRequests['team-captain-lol-summoner-name'])->first()->email;
             $username =  $theRequests['team-captain-lol-summoner-name'];
             $usernameExists[$email] =  $username;
+            $VerifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
         } //if not don't even push it to the array so we run faster through each.
         for ($i = 0; $i <= $j; $i++) {
             if (isset($theRequests['teammate-'.Numbers::toWord($i).'-email-address']) AND Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->exists()) {
@@ -80,11 +86,13 @@ class LolTeamSignUpMiddleware
                 $email = Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'])->first()->email;
                 $username = $theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name'];
                 $usernameExists[$email] = $username;
+                $VerifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
             }//if not dont even push it to the array so we run faster through each
             if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']) AND Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->exists()) {
                 $email =  Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->first()->email;
                 $username =  $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'];
                 $usernameExists[$email] =  $username;
+                $VerifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
             }//if not dont even push it to the array so we run faster through each
         }
         $repeatedPlayers = [];
@@ -117,6 +125,13 @@ class LolTeamSignUpMiddleware
             $error[]= trans('email.unique', $repeatedPlayers);
             foreach ($repeatedPlayers as $k => $v){
                 $error[]= trans('-- '. $v, $repeatedPlayers);
+            }
+        }
+        if (count($VerifiedSummonerName)>0 ){
+            foreach ($VerifiedSummonerName as $username => $bool){
+                if(!$bool){
+                    $error[]= trans('not a valid summoner name '. $username, $VerifiedSummonerName);
+                }
             }
         }
         if( count($usernameExists)>0 ) {
