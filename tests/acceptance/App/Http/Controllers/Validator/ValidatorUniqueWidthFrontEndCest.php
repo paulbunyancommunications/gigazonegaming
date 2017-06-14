@@ -103,7 +103,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name()."asdasd");
         $I->fillField("#team-captain-phone", "2184443131");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name()."ergdfg");
 
         for($i=0; $i < 8; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
@@ -137,7 +136,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-name", $this::TEAM_A_NAME);
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-phone", "2184443132");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
 
         for($i=0; $i < 8; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
@@ -168,7 +166,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-name", $this::TEAM_B_NAME."ll");
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-phone", "2184443133");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
         for($i=0; $i < 8; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
             $I->fillField( $this->emails[$i], $this->emailList[$i] );
@@ -200,7 +197,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
         $I->fillField("#team-name", $this::TEAM_B_NAME."ll");
         $I->fillField("#team-captain", $this->faker->name());
         $I->fillField("#team-captain-phone", "2184443135");
-        $I->fillField("#team-captain-lol-summoner-name", $this->faker->name());
 
         for($i=0; $i < 8; $i++) {
             $I->fillField( $this->names[$i], $this->nameList[$i] );
