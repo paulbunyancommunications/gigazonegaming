@@ -199,9 +199,9 @@ return [
         App\Providers\Backend\Manage\ChampionshipSearchServiceProvider::class,
 
         // and provider for championship search
-        App\Providers\Backend\Manage\RequireJsRouteProvider::class
+        App\Providers\Backend\Manage\RequireJsRouteProvider::class,
 
-
+        \App\Providers\UniqueWithValidatorServiceProvider::class,
 
 
     ],

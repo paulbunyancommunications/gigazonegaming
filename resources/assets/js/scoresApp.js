@@ -112,7 +112,7 @@ require(['vue', 'axios', 'jquery', 'underscore', 'Utility'], function (Vue, axio
             // Get tournaments from api
             axios.get('/app/api/manage/tournament/all')
                 .then(function (response) {
-                    vm.tournaments = response.data
+                    vm.tournaments = response.data;
                     vm.loadingTournaments = false;
                     vm.tournament = $('#oldTournament').val()
                 })
@@ -124,7 +124,7 @@ require(['vue', 'axios', 'jquery', 'underscore', 'Utility'], function (Vue, axio
             // Get scores from api
             axios.get('/app/api/manage/score/all')
                 .then(function (response) {
-                    vm.scores = response.data
+                    vm.scores = response.data;
                     vm.loadingScores = false;
                 })
                 .catch(function (error) {
@@ -263,13 +263,13 @@ require(['vue', 'axios', 'jquery', 'underscore', 'Utility'], function (Vue, axio
                 })
                     .then(function (response) {
                         vm.loadingNewScoreForm = false;
-                        vm.success = flattenMessages(response.data, ['id', 'redirect'])
+                        vm.success = flattenMessages(response.data, ['id', 'redirect']);
                         vm.loadingNewScoreForm = false;
 
                     })
                     .catch(function (error) {
                         console.log(error);
-                        vm.error = flattenMessages(error.response.data)
+                        vm.error = flattenMessages(error.response.data);
                         vm.loadingNewScoreForm = false;
                     });
             }

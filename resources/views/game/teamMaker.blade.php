@@ -77,8 +77,8 @@
             <div id="team_selected">
                 {{ Form::open(array('id' => "teamFiller", 'action' => array('Backend\Manage\IndividualPlayersController@teamFill'))) }}
                 <input name="_method" type="hidden" value="PUT">
-                <h1 id="title_f" class='col-xs-12 hidden'>Add These Players To The Selected Team</h1>
-                <div id="teamFilling"></div>
+                <h1 id="title_f" class='hidden'>Add These Players To The Selected Team</h1>
+                <div id="teamFilling"></div><br/>
                 <div id='submit_fill_team' class='btn btn-danger col-xs-12 hidden'>Save Team</div>
                 {{ Form::close() }}
                 {{ Form::open(array('id' => "teamCreator", 'action' => array('Backend\Manage\IndividualPlayersController@teamCreate'))) }}
