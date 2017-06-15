@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale')}}" style="@yield('Color')">
+<html lang="{{ config('app.locale')}}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,8 +8,6 @@
     <Title>Team Display</Title>
 </head>
 <body class="altBodyBackground">
-<div class="teamName">@yield('TeamName')</div>
-<button onclick="window.open('/app/GameDisplay/override');" style="bottom: 0; right: 0; position: fixed; z-index: 300;">Champion Override</button>
 </body>
 
 <script

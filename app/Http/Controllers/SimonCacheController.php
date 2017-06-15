@@ -29,7 +29,6 @@ class SimonCacheController extends Controller
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
 
-    //This is an awesom function
     public function teamViewDisplay(Request $req)
     {
         $tournament = $req->tournament;
@@ -151,11 +150,9 @@ class SimonCacheController extends Controller
         Cache::put('Team1Info', $teamInfoArrays[0], 70);
         Cache::put('Team1Color', $colorArray[0], 70);
         Cache::put('Team1TimeStamp', Carbon::now(), 70);
-        Cache::put('Team1ChampionsCheck', true, 70);
         Cache::put('Team2Name', $team[1], 70);
         Cache::put('Team2Info', $teamInfoArrays[1], 70);
         Cache::put('Team2Color', $colorArray[1], 70);
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
-        Cache::put('Team12ChampionsCheck', true, 70);
     }
 }

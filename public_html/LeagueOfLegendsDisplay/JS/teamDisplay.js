@@ -4,7 +4,7 @@
 function setChampions() {
     checkAndGrabChampion();
 }
-
+/* This function is set up for testing purposes only, needs to be changed for production */
 function fadInChampion() {
     setTimeout(
         function(){
@@ -14,7 +14,7 @@ function fadInChampion() {
             $('#divA3').fadeOut(2000);
             $('#divA4').fadeOut(2000);
         },
-        0
+        2000
     );
     setTimeout(
         function() {
@@ -24,8 +24,15 @@ function fadInChampion() {
             $('#divB3').fadeIn(3000);
             $('#divB4').fadeIn(3000);
         },
-        2100
+        4100
     );
+}
+function showExtraStats(id){
+    setTimeout(function(){
+        $('#extra'+id).animate({
+            'height': '300px'
+        }, 200, 'linear');
+    },100);
 }
 
 function showBackground(){
@@ -51,7 +58,8 @@ $(document ).on('click', '.championImage', function(){
     $('#' + this.id+ '-2').addClass('hidden');
     $('#' + this.id+ '-3').removeClass('hidden');
     $('#' + this.id+ '-4').addClass('v-align');
-    setboxHeight();
+    setBoxHeight();
+    showExtraStats(this.id);
 });
 $('#0-3').click( function(){
     $('#0-0').removeClass('hidden');
@@ -59,6 +67,7 @@ $('#0-3').click( function(){
     $('#0-2').removeClass('hidden');
     $('#0-4').removeClass('v-align');
     $('#'+this.id).addClass('hidden');
+    $('#extra0').height(0);
 });
 $('#1-3').click( function(){
     $('#1-0').removeClass('hidden');
@@ -66,6 +75,7 @@ $('#1-3').click( function(){
     $('#1-2').removeClass('hidden');
     $('#1-4').removeClass('v-align');
     $('#'+this.id).addClass('hidden');
+    $('#extra1').height(0);
 });
 $('#2-3').click( function(){
     $('#2-0').removeClass('hidden');
@@ -73,6 +83,7 @@ $('#2-3').click( function(){
     $('#2-2').removeClass('hidden');
     $('#2-4').removeClass('v-align');
     $('#'+this.id).addClass('hidden');
+    $('#extra2').height(0);
 });
 $('#3-3').click( function(){
     $('#3-0').removeClass('hidden');
@@ -80,6 +91,7 @@ $('#3-3').click( function(){
     $('#3-2').removeClass('hidden');
     $('#3-4').removeClass('v-align');
     $('#'+this.id).addClass('hidden');
+    $('#extra3').height(0);
 });
 $('#4-3').click( function(){
     $('#4-0').removeClass('hidden');
@@ -87,13 +99,19 @@ $('#4-3').click( function(){
     $('#4-2').removeClass('hidden');
     $('#4-4').removeClass('v-align');
     $('#'+this.id).addClass('hidden');
+    $('#extra4').height(0);
 });
 
-function setboxHeight(){
-    $('.collapse-b').height($('.collapse').height()-9);
+function setBoxHeight(){
+    $('#D0').height($('#C0').height() - 9);
+    $('#D1').height($('#C1').height() - 9);
+    $('#D2').height($('#C2').height() - 9);
+    $('#D3').height($('#C3').height() - 9);
+    $('#D4').height($('#C4').height() - 9);
 }
+
 $(window).resize(function(){
-    setboxHeight();
+    setBoxHeight();
 });
 //
 $(document).ready(GetData());
@@ -113,10 +131,10 @@ function GetData() {
                 team: team
             },
             success: function (data) {
-                if (data) {
+                if (data === 'true') {
                     location.reload();
 
-                } else {
+                } else{
                     GetData();
                 }
             }
@@ -127,26 +145,41 @@ function GetData() {
     }
 }
 function UpdateData() {
+    var checkChamp = false;
+    if(!document.getElementsByClassName('championImage')){
+        checkChamp = true;
+    }
+
     var team = window.location.href;
     team = team.split('/');
     team = team[5];
-    var cheackChampions;
-            ///Execute cache controller with ajax
-            $.ajax({
-                method: "GET",
-                type: "GET",
-                url: "/app/GameDisplay/Update",
-                data: {
-                    '_token': "{{ csrf_token() }}",
-                    team: team
-                },
-                success: function (data) {
-                    if(data[0]){
-                        location.reload();
-                    }
-                    if(data[1]){
-                        // #loadChampion
-                    }
+    ///Execute cache controller with ajax
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "/app/GameDisplay/Update",
+        data: {
+            '_token': "{{ csrf_token() }}",
+            team: team,
+            checkChamp: checkChamp
+        },
+        success: function (data) {
+            if (data[0] === 'true') {
+                location.reload();
+            }
+            else if (data[1] !== 'false') {
+                for (var i = 0; i < data[1].length; i++) {
+                    champName = data[1][i].split("/");
+                    champName = champName[champName.length - 1].split("_");
+                    document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
+                    document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/>';
+
                 }
-            });
-    }
+                fadInChampion();
+            }else{
+                setTimeout(UpdateData(),10000);
+            }
+
+        }
+    });
+}
