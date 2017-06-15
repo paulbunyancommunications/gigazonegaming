@@ -181,7 +181,6 @@ class GameDisplayController extends Controller
         } else {
             $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
         }
-
         return $color;
     }
 
