@@ -52,8 +52,8 @@ label{
 }
 .startFooter{
     position: absolute;
-    top: 30%;
-    width: 75%;
+    top: 36%;
+    width: 70%;
     text-align:center;
     opacity: 0.3;
     left:10%;
@@ -61,8 +61,6 @@ label{
 #loader {
     border:10px solid #f3f3f3;
     border-radius: 50%;
-    /*position: absolute;*/
-    /*left: 48%;*/
     border-top: 10px solid #3498db;
     margin-right: auto;
     margin-left: auto;
@@ -83,10 +81,10 @@ label{
 }
 #info{
     position: absolute;
-    top:27%;
+    top:33%;
     left:9%;
     width:81%;
-    height:69%;
+    height:65%;
     background-color: rgba(255, 255, 255, .5);
     word-wrap: break-word;
     border: 5px inset white;
@@ -109,4 +107,24 @@ label{
     font-weight: bold;
     color: white;
     text-decoration: underline;
+}
+#getChampions,#clearCache,#championOverride{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: rgba(100, 100, 100, 0.5);
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    margin: 5px;
+}
+#clearCache{
+}
+#getChampions{
+    margin-right: 50px;
+    margin-left: 50px;
+}
+#championOverride{
+
 }

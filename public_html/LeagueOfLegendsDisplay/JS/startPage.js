@@ -95,8 +95,7 @@ function submitCache(){
     document.getElementById('info').innerHTML = 'Please Wait...';
     ///Set up cache arrays for team and color
     var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
-    var color = [$( '#Color option:selected').text(), $( '#Color-1 option:selected').text()];
-
+    var color = [$('#Color option:selected').text(), $('#Color-1 option:selected').text()];
     ///Execute cache controller with ajax
     $.ajax({
         method: "GET",

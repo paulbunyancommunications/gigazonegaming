@@ -198,6 +198,7 @@ class GameDisplayController extends Controller
             Cache::put('Team2Champions', $championArray, 70);
             Cache::put('Team2ChampionsPlayerId', $championPlayerIdArray, 70);
         }
+        return $team." Champions Successfully Updated!!";
     }
 
     public function clearCache()
@@ -205,25 +206,6 @@ class GameDisplayController extends Controller
         Cache::flush();
         return "Cache Successfully Cleared";
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function getTeamName()
     {
@@ -234,6 +216,18 @@ class GameDisplayController extends Controller
             return $teamNames;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function teamViewDisplay($tournament, $team, $color)
     {

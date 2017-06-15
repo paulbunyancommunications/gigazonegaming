@@ -10,6 +10,7 @@ function findChampion() {
         championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/' + document.getElementById("player3").value + '_0.jpg');
         championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/' + document.getElementById("player4").value + '_0.jpg');
         championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/' + document.getElementById("player5").value + '_0.jpg');
+        document.getElementById('info').innerHTML = 'Please Wait...';
         $.ajax({
             method: "GET",
             type: "GET",
@@ -19,8 +20,10 @@ function findChampion() {
                 championArray: championArray,
                 team: $('#Team option:selected').text(),
             },
+            success: function(data){
+                document.getElementById('info').innerHTML = '<h3>'+data+'</h3>';
+            }
         });
-        document.getElementById("info").innerHTML='<h3>'+ $('#Team option:selected').text() + ' Champions Updated</h3>';
     }else{
         document.getElementById("info").innerHTML='<h3>All Fields Must Be Filled</h3>';
     }
