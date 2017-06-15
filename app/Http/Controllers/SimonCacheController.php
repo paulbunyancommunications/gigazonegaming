@@ -36,6 +36,7 @@ class SimonCacheController extends Controller
         $color = $req->color;
         $teamInfoArrays = array();
         $colorArray = array();
+        $playersArray = array();
 
         try{
             for($i = 0; $i < 2; $i++){
@@ -43,14 +44,13 @@ class SimonCacheController extends Controller
                 $colorResult = $this->setTeamColor($color[$i]);
                 array_push($teamInfoArrays,$this->makeTeam());
                 array_push($colorArray,$colorResult);
-//                if($color[$i] != 'Red'){
-//                    dd($i,$color[$i],dd($color));
-//                }
+                array_push($playersArray, $this->players);
+
                 $this->resetArrays();
             }
 
 
-            $this->cacheContent($teamInfoArrays,$colorArray,$team);
+            $this->cacheContent($teamInfoArrays,$colorArray,$team,$playersArray);
             $returnArray = array(
                 'teamName' => $team,
                 'teamInfo' => $teamInfoArrays,
@@ -147,7 +147,8 @@ class SimonCacheController extends Controller
             $this->$key = array();
         }
     }
-    public function cacheContent($teamInfoArrays,$colorArray,$team){
+    public function cacheContent($teamInfoArrays,$colorArray,$team,$players){
+        Cache::put('Players', $players, 70);
         Cache::put('Team1Name', $team[0], 70);
         Cache::put('Team1Info', $teamInfoArrays[0], 70);
         Cache::put('Team1Color', $colorArray[0], 70);
@@ -156,5 +157,33 @@ class SimonCacheController extends Controller
         Cache::put('Team2Info', $teamInfoArrays[1], 70);
         Cache::put('Team2Color', $colorArray[1], 70);
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
+    }
+
+    public function getChampions(Request $req){
+        if(Cache::has('Players')){
+            try{
+            $players = Cache::get('Players');
+            $championArray=array();
+            $j = 0;
+            for($i = 0; $i < count($players[0])-1; $i++){
+                $status = $players[$j][$i]->checkCurrentGameStatus();
+                if($status){
+                    $players[$j][$i]->setChampion();
+                    array_push($championArray[$j], $players[$j][$i]->getChampion());
+                }
+                if($i=4 && $j<1){
+                    $i = 0;
+                    $j++;
+                }
+            }
+            return array('Champions' => $championArray, 'ErrorCode' => 'false');
+            }catch(Exception $e){
+                return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage());
+            }
+
+        }
+        else{
+            return array('ErrorCode' => 'true', 'ErrorMessage' => 'Please Select a team and a color before getting champions.');
+        }
     }
 }

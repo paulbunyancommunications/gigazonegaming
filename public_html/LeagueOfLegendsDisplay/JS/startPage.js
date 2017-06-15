@@ -123,6 +123,22 @@ function submitCache(){
 
     });
 }
+function GetChampions() {
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "/app/GameDisplay/cache",
+        data: {
+            '_token': "{{ csrf_token() }}",
+            tournament: $('#Tournament option:selected').text(),
+            team: team,
+            color: color
+        },success: function(data){
+
+        }
+
+    });
+}
 function clearCache(){
     document.getElementById('info').innerHTML = 'Please Wait...';
     ///Set up cache arrays for team and color
