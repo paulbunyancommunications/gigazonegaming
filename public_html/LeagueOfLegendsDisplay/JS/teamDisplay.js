@@ -97,23 +97,56 @@ $(window).resize(function(){
 });
 //
 $(document).ready(GetData());
-function GetData(){
-    if(!document.getElementById('other')){
-          ///Execute cache controller with ajax
+
+function GetData() {
+    if (!document.getElementById('other')) {
+        var team = window.location.href;
+        team = team.split('/');
+        team = team[5];
+        ///Execute cache controller with ajax
         $.ajax({
             method: "GET",
             type: "GET",
             url: "/app/GameDisplay/getData",
-            success: function(data){
-                if(data){
+            data: {
+                '_token': "{{ csrf_token() }}",
+                team: team
+            },
+            success: function (data) {
+                if (data) {
                     location.reload();
 
-                }else{
+                } else {
                     GetData();
                 }
-
             }
 
         });
+    }else{
+        UpdateData();
     }
 }
+function UpdateData() {
+    var team = window.location.href;
+    team = team.split('/');
+    team = team[5];
+    var cheackChampions;
+            ///Execute cache controller with ajax
+            $.ajax({
+                method: "GET",
+                type: "GET",
+                url: "/app/GameDisplay/Update",
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    team: team
+                },
+                success: function (data) {
+                    if(data[0]){
+                        location.reload();
+                    }
+                    if(data[1]){
+                        // #loadChampion
+                    }
+                }
+            });
+    }
