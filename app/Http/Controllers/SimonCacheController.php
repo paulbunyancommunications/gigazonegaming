@@ -29,6 +29,7 @@ class SimonCacheController extends Controller
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
 
+    //This is an awesom function
     public function teamViewDisplay(Request $req)
     {
         $tournament = $req->tournament;
