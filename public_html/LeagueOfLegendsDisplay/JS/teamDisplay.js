@@ -177,7 +177,7 @@ function UpdateData() {
                 }
                 fadInChampion();
             }else{
-                setTimeout(UpdateData(),10000);
+                setTimeout(UpdateData,5000);
             }
 
         }

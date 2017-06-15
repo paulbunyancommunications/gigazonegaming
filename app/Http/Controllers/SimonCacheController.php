@@ -41,9 +41,9 @@ class SimonCacheController extends Controller
         try{
             for($i = 0; $i < count($team); $i++){
                 $this->buildTheTeams($tournament, $team[$i]);
-                $color = $this->setTeamColor($color[$i]);
+                $colorResult = $this->setTeamColor($color[$i]);
                 array_push($teamInfoArrays,$this->makeTeam());
-                array_push($colorArray,$color);
+                array_push($colorArray,$colorResult);
                 $this->resetArrays();
             }
 
