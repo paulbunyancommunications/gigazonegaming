@@ -34,18 +34,21 @@ class SimonCacheController extends Controller
         $tournament = $req->tournament;
         $team = $req->team;
         $color = $req->color;
-
         $teamInfoArrays = array();
         $colorArray = array();
 
         try{
-            for($i = 0; $i < count($team); $i++){
+            for($i = 0; $i < 2; $i++){
                 $this->buildTheTeams($tournament, $team[$i]);
-                $color = $this->setTeamColor($color[$i]);
+                $colorResult = $this->setTeamColor($color[$i]);
                 array_push($teamInfoArrays,$this->makeTeam());
-                array_push($colorArray,$color);
+                array_push($colorArray,$colorResult);
+//                if($color[$i] != 'Red'){
+//                    dd($i,$color[$i],dd($color));
+//                }
                 $this->resetArrays();
             }
+
 
             $this->cacheContent($teamInfoArrays,$colorArray,$team);
             $returnArray = array(
@@ -120,14 +123,13 @@ class SimonCacheController extends Controller
             array_push($this->flexWinLossArray, $player->getFLEXRankedWinLoss());
         }
     }
-    public function setTeamColor($color){
-        if ($color == "Red") {
-            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
-        } else {
-            $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
+    public function setTeamColor($color1){
+        if ($color1 == "Red") {
+            return "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
         }
-
-        return $color;
+        else {
+            return "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
+        }
     }
     public function makeTeam(){
         $team = array(
