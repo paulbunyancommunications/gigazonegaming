@@ -4,46 +4,28 @@
 function setChampions() {
     checkAndGrabChampion();
 }
-/* This function is set up for testing purposes only, needs to be changed for production */
-// fadInChampion();
-// function fadInChampion() {
-//     setTimeout(
-//         function(){
-//             $('#divA0').fadeOut(2000);
-//             $('#divA1').fadeOut(2000);
-//             $('#divA2').fadeOut(2000);
-//             $('#divA3').fadeOut(2000);
-//             $('#divA4').fadeOut(2000);
-//         },
-//         0
-//     );
-//     setTimeout(
-//         function() {
-//             $('#divB0').fadeIn(3000);
-//             $('#divB1').fadeIn(3000);
-//             $('#divB2').fadeIn(3000);
-//             $('#divB3').fadeIn(3000);
-//             $('#divB4').fadeIn(3000);
-//             document.getElementById('divB0').innerHTML= '<img id="0" class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/><div class="championName"><h3>Azir</h3></div>';
-//             document.getElementById('divB1').innerHTML= '<img id="1" class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/><div class="championName"><h3>Azir</h3></div>';
-//             document.getElementById('divB2').innerHTML= '<img id="2" class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/><div class="championName"><h3>Azir</h3></div>';
-//             document.getElementById('divB3').innerHTML= '<img id="3" class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/><div class="championName"><h3>Azir</h3></div>';
-//             document.getElementById('divB4').innerHTML= '<img id="4" class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/><div class="championName"><h3>Azir</h3></div>';
-//             document.getElementById('C0').innerHTML= '<img class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>';
-//             document.getElementById('C1').innerHTML= '<img class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>';
-//             document.getElementById('C2').innerHTML= '<img class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>';
-//             document.getElementById('C3').innerHTML= '<img class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>';
-//             document.getElementById('C4').innerHTML= '<img class="championImage" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>';
-//             },
-//         2100
-//     );
-// }
-function showExtraStats(id){
-setTimeout(function(){
-    $('#extra'+id).animate({
-        'height': '300px'
-    }, 200, 'linear');
-},100);
+
+function fadInChampion() {
+    setTimeout(
+        function(){
+            $('#divA0').fadeOut(2000);
+            $('#divA1').fadeOut(2000);
+            $('#divA2').fadeOut(2000);
+            $('#divA3').fadeOut(2000);
+            $('#divA4').fadeOut(2000);
+        },
+        0
+    );
+    setTimeout(
+        function() {
+            $('#divB0').fadeIn(3000);
+            $('#divB1').fadeIn(3000);
+            $('#divB2').fadeIn(3000);
+            $('#divB3').fadeIn(3000);
+            $('#divB4').fadeIn(3000);
+        },
+        2100
+    );
 }
 
 function showBackground(){
@@ -126,22 +108,61 @@ $(window).resize(function(){
 });
 //
 $(document).ready(GetData());
-function GetData(){
-    if(!document.getElementById('other')){
-          ///Execute cache controller with ajax
+
+function GetData() {
+    if (!document.getElementById('other')) {
+        var team = window.location.href;
+        team = team.split('/');
+        team = team[5];
+        ///Execute cache controller with ajax
         $.ajax({
             method: "GET",
             type: "GET",
             url: "/app/GameDisplay/getData",
-            success: function(data){
-                if(data){
+            data: {
+                '_token': "{{ csrf_token() }}",
+                team: team
+            },
+            success: function (data) {
+                if (data === 'true') {
                     location.reload();
-                }else{
+
+                } else {
                     GetData();
                 }
-
             }
 
         });
+    }else{
+        UpdateData();
     }
 }
+function UpdateData() {
+    var team = window.location.href;
+    team = team.split('/');
+    team = team[5];
+    var cheackChampions;
+            ///Execute cache controller with ajax
+            $.ajax({
+                method: "GET",
+                type: "GET",
+                url: "/app/GameDisplay/Update",
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    team: team
+                },
+                success: function (data) {
+                    if(data[0] === 'true'){
+                    for(var i = 0; i < data.Champions.length; i++) {
+                        champName = data.Champions[i].split("/");
+                        champName = champName[champName.length - 1].split("_");
+                        document.getElementById('divB' + data.Summoners[i]).innerHTML = '<img id="' + data.Summoners[i] + '" class="championImage" src="' + data.Champions[i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
+                        document.getElementById('C' + data.Summoners[i]).innerHTML = '<img class="championImage" src="' + data.Champions[i] + '"/>';
+                    }
+                        fadInChampion();
+                    }else{
+                        UpdateData();
+                    }
+                }
+            });
+    }
