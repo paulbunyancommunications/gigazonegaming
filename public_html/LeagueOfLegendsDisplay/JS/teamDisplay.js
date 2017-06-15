@@ -135,7 +135,7 @@ function GetData() {
                     location.reload();
 
                 } else{
-                    GetData();
+                    setTimeout(GetData,2000);
                 }
             }
 
@@ -173,11 +173,11 @@ function UpdateData() {
                     champName = champName[champName.length - 1].split("_");
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
                     document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/>';
-
                 }
                 fadInChampion();
+                setTimeout(UpdateData,2000);
             }else{
-                setTimeout(UpdateData,5000);
+                setTimeout(UpdateData,2000);
             }
 
         }
