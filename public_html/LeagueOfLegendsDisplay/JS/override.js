@@ -13,7 +13,7 @@ function findChampion() {
         $.ajax({
             method: "GET",
             type: "GET",
-            url: "/app/GameDisplay/champions",
+            url: "/app/GameDisplay/championsOverride",
             data: {
                 '_token': "{{ csrf_token() }}",
                 championArray: championArray,

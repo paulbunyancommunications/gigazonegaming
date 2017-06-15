@@ -4,7 +4,7 @@
 function setChampions() {
     checkAndGrabChampion();
 }
-
+/* This function is set up for testing purposes only, needs to be changed for production */
 function fadInChampion() {
     setTimeout(
         function(){
@@ -14,7 +14,7 @@ function fadInChampion() {
             $('#divA3').fadeOut(2000);
             $('#divA4').fadeOut(2000);
         },
-        0
+        2000
     );
     setTimeout(
         function() {
@@ -24,8 +24,15 @@ function fadInChampion() {
             $('#divB3').fadeIn(3000);
             $('#divB4').fadeIn(3000);
         },
-        2100
+        4100
     );
+}
+function showExtraStats(id){
+    setTimeout(function(){
+        $('#extra'+id).animate({
+            'height': '300px'
+        }, 200, 'linear');
+    },100);
 }
 
 function showBackground(){
@@ -127,7 +134,7 @@ function GetData() {
                 if (data === 'true') {
                     location.reload();
 
-                } else {
+                } else{
                     GetData();
                 }
             }
@@ -138,31 +145,41 @@ function GetData() {
     }
 }
 function UpdateData() {
+    var checkChamp = false;
+    if(!document.getElementsByClassName('championImage')){
+        checkChamp = true;
+    }
+
     var team = window.location.href;
     team = team.split('/');
     team = team[5];
-    var cheackChampions;
-            ///Execute cache controller with ajax
-            $.ajax({
-                method: "GET",
-                type: "GET",
-                url: "/app/GameDisplay/Update",
-                data: {
-                    '_token': "{{ csrf_token() }}",
-                    team: team
-                },
-                success: function (data) {
-                    if(data[0] === 'true'){
-                    for(var i = 0; i < data.Champions.length; i++) {
-                        champName = data.Champions[i].split("/");
-                        champName = champName[champName.length - 1].split("_");
-                        document.getElementById('divB' + data.Summoners[i]).innerHTML = '<img id="' + data.Summoners[i] + '" class="championImage" src="' + data.Champions[i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                        document.getElementById('C' + data.Summoners[i]).innerHTML = '<img class="championImage" src="' + data.Champions[i] + '"/>';
-                    }
-                        fadInChampion();
-                    }else{
-                        UpdateData();
-                    }
+    ///Execute cache controller with ajax
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "/app/GameDisplay/Update",
+        data: {
+            '_token': "{{ csrf_token() }}",
+            team: team,
+            checkChamp: checkChamp
+        },
+        success: function (data) {
+            if (data[0] === 'true') {
+                location.reload();
+            }
+            else if (data[1] !== 'false') {
+                for (var i = 0; i < data[1].length; i++) {
+                    champName = data[1][i].split("/");
+                    champName = champName[champName.length - 1].split("_");
+                    document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
+                    document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/>';
+
                 }
-            });
-    }
+                fadInChampion();
+            }else{
+                setTimeout(UpdateData(),10000);
+            }
+
+        }
+    });
+}

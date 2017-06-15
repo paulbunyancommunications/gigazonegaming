@@ -19,7 +19,6 @@ class GameDisplayController extends Controller
     protected $tournaments = array();
     protected $teams = array();
     public $team = array();
-
     #lol arrays
     protected $summonerArray = array();
     protected $iconArray = array();
@@ -30,6 +29,8 @@ class GameDisplayController extends Controller
     protected $championArray = array();
     protected $summonerName = array();
 
+
+
     public function startGameDisplay()
     {
         $tournaments = Tournament::select('id', 'name')->get()->toArray();
@@ -39,18 +40,21 @@ class GameDisplayController extends Controller
 
         return view('/LeagueOfLegends/startPage')->withTournaments($tournaments)->withTeams($teams);
     }
+
     public function customerDisplay()
     {
         return view('/LeagueOfLegends/customerPage');
     }
+
     public function championOverride()
     {
         return view('/LeagueOfLegends/championOverride');
     }
 
-    public function team1ViewDisplay(){
+    public function team1ViewDisplay()
+    {
         #Cache Set
-        if(Cache::has('Team1Name') && Cache::has('Team1Info') && Cache::has('Team1Color')){
+        if (Cache::has('Team1Name') && Cache::has('Team1Info') && Cache::has('Team1Color')) {
             $teamName = Cache::get('Team1Name');
             $teamInfo = Cache::get('Team1Info');
             $teamColor = Cache::get('Team1Color');
@@ -67,15 +71,16 @@ class GameDisplayController extends Controller
                 'flexRankArray' => $teamInfo['flexRankArray'],
                 'flexWinLossArray' => $teamInfo['flexWinLossArray']
             ]);
-        }
-        else{
+        } else {
             #Data Default data
             return view('/LeagueOfLegends/DisplayAltTeam');
         }
     }
-    public function team2ViewDisplay(){
+
+    public function team2ViewDisplay()
+    {
 #Cache Set
-        if(Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')){
+        if (Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')) {
             $teamName = Cache::get('Team2Name');
             $teamInfo = Cache::get('Team2Info');
             $teamColor = Cache::get('Team2Color');
@@ -92,14 +97,14 @@ class GameDisplayController extends Controller
                 'flexRankArray' => $teamInfo['flexRankArray'],
                 'flexWinLossArray' => $teamInfo['flexWinLossArray']
             ]);
-        }
-        else{
+        } else {
             #Data Default data
             return view('/LeagueOfLegends/DisplayAltTeam');
         }
     }
 
-    protected function returnView($TeamName, $TeamInfo, $TeamColor){
+    protected function returnView($TeamName, $TeamInfo, $TeamColor)
+    {
         return view('/LeagueOfLegends/DisplayTeam', [
             'teamName' => $TeamName,
             'color' => $TeamColor,
@@ -114,77 +119,126 @@ class GameDisplayController extends Controller
 
     }
 
-    public function getData(Request $req){
+    public function getData(Request $req)
+    {
         $team = $req->team;
-        switch ($team){
+        switch ($team) {
             case 'team1':
-                if(Cache::has('Team1Name') && Cache::has('Team1Info') && Cache::has('Team1Color')){
+                if (Cache::has('Team1Name') && Cache::has('Team1Info') && Cache::has('Team1Color')) {
                     return 'true';
                 }
             case 'team2':
-                if(Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')){
+                if (Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')) {
                     return 'true';
                 }
             default:
                 return 'false';
         }
     }
-    public function updateData(Request $req){
+
+    public function updateData(Request $req)
+    {
         $team = $req->team;
+        $checkChamp = $req->checkChamp;
+
         $returnArray = array();
-        $returnArray[0] = false;
-        $returnArray[1] = false;
+        $returnArray[0] = 'false';
+        $returnArray[1] = 'false';
+        $returnArray[2] = 'false';
         switch ($team) {
             case 'team1':
                 if (Cache::has('Team1CacheLoadedTimeStamp') and Cache::has('Team1TimeStamp')) {
-                    if (Cache::get('Team1CacheLoadedTimeStamp') < Cache::get('Team1TimeStamp')){
+                    if (Cache::get('Team1CacheLoadedTimeStamp') < Cache::get('Team1TimeStamp')) {
                         $returnArray[0] = 'true';
                     }
-                }
-                else{
+                } else {
                     $returnArray[0] = 'true';
+                    return $returnArray;
                 }
-                if(Cache::get('Team1ChampionsCheck')){
-                    if(Cache::has('Team1Champions')){
-                        $returnArray[1] = Cache::get('Team1ChampionsCheck');
-                        Cache::put('Team1ChampionsCheck',false,70);
+                if ($checkChamp) {
+                    if (Cache::has('Team1Champions')) {
+                        $returnArray[1] = Cache::get('Team1Champions');
+                        $returnArray[2] = Cache::get('Team1ChampionsPlayerId');
+                        Cache::put('Team1ChampionsCheck', false, 70);
                     }
                 }
                 break;
             case 'team2':
                 if (Cache::has('Team2CacheLoadedTimeStamp') and Cache::has('Team2TimeStamp')) {
-                    if (Cache::get('Team2CacheLoadedTimeStamp') < Cache::get('Team2TimeStamp')){
+                    if (Cache::get('Team2CacheLoadedTimeStamp') < Cache::get('Team2TimeStamp')) {
                         $returnArray[0] = 'true';
                     }
-                }
-                else{
+                } else {
                     $returnArray[0] = 'true';
+                    return $returnArray;
                 }
-                if(Cache::get('Team2ChampionsCheck')){
-                    if(Cache::has('Team2Champions')){
-                        $returnArray[1] = Cache::get('Team2ChampionsCheck');
-                        Cache::put('Team2ChampionsCheck',false,70);
+                if ($checkChamp) {
+                    if (Cache::has('Team2Champions')) {
+                        $returnArray[1] = Cache::get('Team2Champions');
+                        $returnArray[2] = Cache::get('Team2ChampionsPlayerId');
+                        Cache::put('Team2ChampionsCheck', false, 70);
                     }
                 }
                 break;
         }
 
-                 return $returnArray;
-        }
+        return $returnArray;
+    }
 
-    public function getTeamName(){
-        $teamNames= array();
-        if(Cache::has('Team1Name') && Cache::has('Team2Name')){
-            array_push($teamNames,Cache::get('Team1Name'));
-            array_push($teamNames,Cache::get('Team2Name'));
+    public function cacheChampionOverride(Request $req)
+    {
+        $championArray = $req->championArray;
+
+        $team = $req->team;
+        $championPlayerIdArray = [0, 1, 2, 3, 4];
+        if ($team == 'Team 1') {
+            Cache::put('Team1Champions', $championArray, 70);
+            Cache::put('Team1ChampionsPlayerId', $championPlayerIdArray, 70);
+        } else {
+            Cache::put('Team2Champions', $championArray, 70);
+            Cache::put('Team2ChampionsPlayerId', $championPlayerIdArray, 70);
+        }
+    }
+
+    public function clearCache()
+    {
+        Cache::flush();
+        return "Cache Successfully Cleared";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function getTeamName()
+    {
+        $teamNames = array();
+        if (Cache::has('Team1Name') && Cache::has('Team2Name')) {
+            array_push($teamNames, Cache::get('Team1Name'));
+            array_push($teamNames, Cache::get('Team2Name'));
             return $teamNames;
         }
     }
 
-    public function teamViewDisplay($tournament,$team,$color)
+    public function teamViewDisplay($tournament, $team, $color)
     {
         $this->buildTheTeams($tournament, $team);
-        if($this->summonerArray[0] == ""){
+        if ($this->summonerArray[0] == "") {
             $color = $this->setTeamColor($color);
             return view('/LeagueOfLegends/DisplayAltTeam', [
                 'tournament' => $tournament,    #NEW
@@ -192,8 +246,7 @@ class GameDisplayController extends Controller
                 'color' => $color,
             ]);
 
-        }
-    else {
+        } else {
             $color = $this->setTeamColor($color);
             return view('/LeagueOfLegends/DisplayTeam', [
                 'tournament' => $tournament,    #NEW
@@ -209,24 +262,6 @@ class GameDisplayController extends Controller
             ]);
         }
     }
-    public function cacheChampions(Request $req){
-        $championArray = $req->championArray;
-        $team = $req->team;
-        $championId = [0,1,2,3,4];
-        if($team == 'Team 1') {
-            Cache::put('Team1Champions', $championArray, 70);
-            Cache::put('Team1ChampionPlayerId', $championId, 70);
-        }
-        else {
-            Cache::put('Team2Champions', $championArray, 70);
-            Cache::put('Team2ChampionPlayerId', $championId, 70);
-        }
-    }
-
-    public function clearCache(){
-        Cache::flush();
-        return "Cache Successfully Cleared";
-    }
 
     /**
      * @param $tournament
@@ -241,33 +276,35 @@ class GameDisplayController extends Controller
         $this->setLolArrays();
     }
 
-    public function setTeamColor($color){
+    public function setTeamColor($color)
+    {
         if ($color == "Red") {
             $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
         } else {
             $color = "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
         }
+
         return $color;
     }
 
     public function ajaxCheckRequest(Request $req)
     {
         $tournament = $req->tournament;
-        $team =  $req->team;
+        $team = $req->team;
 
 
-        $this->setTeam($team,$tournament);
+        $this->setTeam($team, $tournament);
         $status = $this->team[0]->checkCurrentGameStatus();
 
-        $i=0;
+        $i = 0;
         foreach ($this->team as $player) {
             $status = $player->checkCurrentGameStatus();
             if ($status) {
-                    $player->setChampion();
-                    array_push($this->championArray, $player->getChampion());
-                    array_push($this->summonerArray, $i);
+                $player->setChampion();
+                array_push($this->championArray, $player->getChampion());
+                array_push($this->summonerArray, $i);
             }
-          $i++;
+            $i++;
         }
         $returnArray = array(
             'Champions' => $this->championArray,
@@ -278,7 +315,6 @@ class GameDisplayController extends Controller
 //        return response()->json($this->championArray);
 
 
-
 //        foreach ($this->team as $k => $player){
 //        dd("k = ", $k, "player = ", $player);
 //    }
@@ -286,6 +322,7 @@ class GameDisplayController extends Controller
 //        return response()->json($x);
 
     }
+
     public function setTeam($TeamName, $TournamentName)
     {
 
@@ -294,32 +331,33 @@ class GameDisplayController extends Controller
         $players = $team->players;
 
         #Loop through player of the chosen team and create an array of player objects
-        $i =0;
-        foreach($players as $player){
-            if(isset($player) and isset($player->username) and $player->username != null) {
-            #Creat player object depending on which game is selected.
-            switch ($TournamentName){
-                #LOL
-                case str_contains($TournamentName, "league-of-legends"):
-                    $summoner = new Summoner($player->username, $i);
-                    $i++;
-                    if($i > 10){
-                        $i=0;
-                    }
-                    array_push($this->team, $summoner);
-                    break;
-                #Overwatch
+        $i = 0;
+        foreach ($players as $player) {
+            if (isset($player) and isset($player->username) and $player->username != null) {
+                #Creat player object depending on which game is selected.
+                switch ($TournamentName) {
+                    #LOL
+                    case str_contains($TournamentName, "league-of-legends"):
+                        $summoner = new Summoner($player->username, $i);
+                        $i++;
+                        if ($i > 10) {
+                            $i = 0;
+                        }
+                        array_push($this->team, $summoner);
+                        break;
+                    #Overwatch
 
-                #Default
-                default:
-                    break;
+                    #Default
+                    default:
+                        break;
+                }
             }
         }
-      }
     }
 
-    public function setLolArrays(){
-        foreach($this->team as $player){
+    public function setLolArrays()
+    {
+        foreach ($this->team as $player) {
             array_push($this->summonerArray, $player->getSummonerName());
             array_push($this->iconArray, $player->getIcon());
             array_push($this->soloRankArray, $player->getSoloRank());
@@ -331,37 +369,21 @@ class GameDisplayController extends Controller
 
     ####NEW
     #atore array of objects in Player object storage, so that .js can load objects and call getChampion.
-    public function serializeTeam($team){
+    public function serializeTeam($team)
+    {
         #store player object array in file for javascript to latter read from
-        $teams = (array) $this->getTeam();
+        $teams = (array)$this->getTeam();
 
         $s = serialize($teams);
-        file_put_contents(dirname(dirname(dirname(__DIR__)))."/storage/app/PlayerObjectStorage/" . str_replace(' ','',$team) . 'PlayerObject.bin', $s);
+        file_put_contents(dirname(dirname(dirname(__DIR__))) . "/storage/app/PlayerObjectStorage/" . str_replace(' ', '', $team) . 'PlayerObject.bin', $s);
     }
 
-    public function championRequest(Request $req){
+    public function championRequest(Request $req)
+    {
         $team = $req->team;
         $array = array($team);
 
 
-
         return response()->json($array);
     }
-
-    /**
-     * @return array
-     */
-    public function getTeam()
-    {
-        return $this->team;
-    }
-
-
-    public function fetchChampions(){
-        foreach($this->team as $player){
-            $player->setChampion();
-            array_push($this->championArray, $player->getChampion());
-        }
-    }
-
 }

@@ -43,9 +43,9 @@ Route::post('/updates/signup', [
 
 // Update route can come from /update-sign-up also
 Route::post('/update-sign-up', [
-        'uses' => 'Frontend\Updates\UpdatesController@store',
-        'as' => 'update-sign-up',
-        'middleware' => ['CCAddRecipient']
+    'uses' => 'Frontend\Updates\UpdatesController@store',
+    'as' => 'update-sign-up',
+    'middleware' => ['CCAddRecipient']
 ]);
 
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
@@ -95,7 +95,7 @@ Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function (
  */
 // @codeCoverageIgnoreStart
 Route::get('/report/{extra}', function () {
-    
+
 })->where('extra', '.*');
 
 Route::get('/c3/{extra}', function () {
@@ -127,7 +127,7 @@ Route::get('/GameDisplay/cache','SimonCacheController@teamViewDisplay');
 Route::get('/GameDisplay/getData','GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplayController@updateData');
 Route::get('/GameDisplay/getTeamName','GameDisplayController@getTeamName');
-Route::get('/GameDisplay/champions','GameDisplayController@cacheChampions');
+Route::get('/GameDisplay/championsOverride','GameDisplayController@cacheChampionOverride');
 Route::get('/GameDisplay/clear','GameDisplayController@clearCache');
 
 
