@@ -5,7 +5,8 @@
 $(document).ready(GetTeamNames());
 
 function GetTeamNames(){
-    setInterval(function(){
+    document.getElementById("info").innerHTML="Getting Team Names...";
+    x = setInterval(function(){
         ///Execute cache controller with ajax
         $.ajax({
             method: "GET",
@@ -16,9 +17,11 @@ function GetTeamNames(){
                     console.log(data);
                     document.getElementById('team1').innerHTML= data[0];
                     document.getElementById('team2').innerHTML= data[1];
+                    clearInterval(x);
+                    $('#info').addClass("hidden");
                 }
             }
 
         })
-    }, 10000);
+    }, 5000);
 }

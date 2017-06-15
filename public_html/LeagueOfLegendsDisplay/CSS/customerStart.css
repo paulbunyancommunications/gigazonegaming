@@ -21,3 +21,16 @@
     box-shadow: 0 5px gray;
     transform: translateY(4px);
 }
+#info{
+    position: absolute;
+    top:50%;
+    left:24%;
+    width:50%;
+    height:10%;
+    background-color: rgba(255, 255, 255, .5);
+    word-wrap: break-word;
+    border: 5px inset white;
+    overflow-y:auto;
+    font-weight:bold;
+    line-height: 150%;
+}

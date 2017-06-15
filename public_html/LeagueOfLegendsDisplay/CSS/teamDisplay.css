@@ -65,13 +65,21 @@ h1{
 .collapse-b{
     background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
     background-size: cover;
-    margin-left: 5px;
+    margin-left: 6px;
     display:inline-block;
     vertical-align:top;
     color: white;
     overflow-y:auto;
     border: 3px solid transparent;
     border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
+}
+.extra-stats{
+    margin-right: auto;
+    margin-left: auto;
+    width:97%;
+    background-color: rgba(0,0,0,.5);
+    border: 2px inset;
+    height:0;
 }
 .collapse-b::-webkit-scrollbar {
     background-color: rgba(0,0,0,0);
