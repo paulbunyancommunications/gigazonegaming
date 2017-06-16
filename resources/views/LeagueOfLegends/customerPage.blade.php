@@ -3,13 +3,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/LeagueOfLegendsDisplay/CSS/customerStart.css">
-    <link rel="stylesheet" type="text/css" href="/LeagueOfLegendsDisplay/CSS/teamDisplay.css">
+    <link rel="stylesheet" type="text/css" href="/app/content/css/customerStart.css">
+    <link rel="stylesheet" type="text/css" href="/app/content/css/teamDisplay.css">
     <Title>Team Select</Title>
 </head>
 <body class="cMainDiv">
 <h1>Choose A Team:</h1>
-<div>
+<div id="buttonDiv">
     <button id="team1" class="teamButton" onclick="window.open('/app/GameDisplay/team1')">Team 1</button><br/>
     <button id ="team2" class="teamButton" onclick="window.open('/app/GameDisplay/team2')">Team 2</button>
 </div>

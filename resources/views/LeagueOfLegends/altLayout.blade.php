@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" type="text/css" href='/LeagueOfLegendsDisplay/CSS/teamDisplay.css'/>
+    <link rel="stylesheet" type="text/css" href="/app/content/css/teamDisplay.css">
     <Title>Team Display</Title>
 </head>
 <body class="altBodyBackground">
+<h1>Please Wait For Game To Begin</h1>
 </body>
 
 <script

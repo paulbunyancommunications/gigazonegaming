@@ -1,0 +1,148 @@
+@import 'teamVariables';
+
+html{
+  font-family: $main-font;
+}
+body{
+  background-image: $body-background;
+}
+.startForm{
+  text-align:center;
+}
+.hidden{
+  display: $hidden;
+}
+select{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  background-color: $blackFade;
+  font-size: $font-size-md + 9px;
+  font-weight: bold;
+  color: white;
+  border: $hidden;
+  margin: $min-space + 5px;
+}
+.tournamentSelect{
+  width: $width - 40%;
+  max-width: $max-width + 235px;
+}
+label{
+  font-size: $font-size-md + 9px;
+  font-weight: bold;
+  color: white;
+  text-decoration: $u;
+}
+#label1{
+  margin-right:$champNameBottom * 2;
+}
+#label2{
+  margin-left:$champNameBottom * 2;
+}
+.startButton{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  background-color: $blackFade-1;
+  font-size: $font-size-md + 9px;
+  font-weight: bold;
+  color: white;
+  border: $hidden;
+  margin: $min-space + 12px;
+}
+.startImage{
+  text-align: center;
+  max-width: $width - 40%;
+  margin: auto;
+}
+.startButtonDisabled{
+  opacity: $opacity-md - .1;
+}
+.startFooter{
+  position: fixed;
+  width: $width - 27%;
+  text-align:center;
+  opacity: $opacity-md - .1;
+  left:$width - 89%;
+  overflow: hidden;
+  z-index: $z-1 - 2;
+}
+#loader {
+  border: $loader-border;
+  border-radius: $loader-border-radius;
+  border-top: $loader-border-top;
+  margin-right: auto;
+  margin-left: auto;
+  width: $min-space * 6;
+  height: $min-space * 6;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#info{
+  width:$width - 19%;
+  height:$max-height + 40px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: $whiteFade;
+  word-wrap: $wrap;
+  border: $info-border;
+  overflow-y:auto;
+  font-weight:bold;
+  line-height: $line-height;
+}
+.console-header{
+  font-size: $font-size-md + 14px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  text-decoration: $u;
+  margin-top: $min-space;
+  margin-bottom: 0;
+  text-shadow: $text-shadow;
+}
+.console-sub-header{
+  font-size: $font-size-md + 4px;
+  font-weight: bold;
+  color: white;
+  text-decoration: $u;
+}
+#getChampions,#clearCache,#championOverride{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  background-color: $blackFade-1;
+  font-size: $font-size-md + 9px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  margin-bottom: $min-space;
+  margin-left: auto;
+  margin-right: auto;
+}
+#buttonContainer{
+  width:$width - 19%;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width:1260px) {
+  .button-Sub-Container{
+    display: $inline;
+    width:$width - 67%;
+  }
+}
+@media (min-width:1000px) {
+  .button-Sub-Container{
+    display: $inline;
+    width:$width - 70%;
+  }
+
+}

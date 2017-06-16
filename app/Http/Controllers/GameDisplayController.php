@@ -210,9 +210,11 @@ class GameDisplayController extends Controller
     public function getTeamName()
     {
         $teamNames = array();
-        if (Cache::has('Team1Name') && Cache::has('Team2Name')) {
+        if (Cache::has('Team1Name') && Cache::has('Team2Name') && Cache::has('Team1Color') && Cache::has('Team2Color')) {
             array_push($teamNames, Cache::get('Team1Name'));
             array_push($teamNames, Cache::get('Team2Name'));
+            array_push($teamNames, Cache::get('Team1Color'));
+            array_push($teamNames, Cache::get('Team2Color'));
             return $teamNames;
         }
     }

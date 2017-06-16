@@ -171,8 +171,11 @@ function UpdateData() {
                 for (var i = 0; i < data[1].length; i++) {
                     champName = data[1][i].split("/");
                     champName = champName[champName.length - 1].split("_");
+                    if(champName[0] === "MonkeyKing"){
+                        champName[0] = "Wukong";
+                    }
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                    document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/>';
+                    document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/><div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><b class="summonerName">' + champName[0] + '</b></div>';
                 }
                 fadInChampion();
                 setTimeout(UpdateData,2000);

@@ -7,38 +7,12 @@ html{
 body{
   background-image: $body-background;
 }
-.startForm{
-  text-align: center;
+.altBodyBackground{
+  background: $alt-body-background;
+  background-size: contain;
 }
 .hidden{
   display: $hidden;
-}
-select{
-  -webkit-border-radius: $min-space;
-  -moz-border-radius: $min-space;
-  border-radius: $min-space;
-  background-color: $trans;
-  font-size: $font-size-md;
-  font-weight: bold;
-  color: $main-font-color;
-  border: $hidden;
-  margin: $min-space;
-}
-button{
-  -webkit-border-radius: $min-space;
-  -moz-border-radius: $min-space;
-  border-radius: $min-space;
-  background-color: $trans;
-  font-size: $font-size-md;
-  font-weight: bold;
-  color: $main-font-color;
-  border: $hidden;
-  margin: $min-space;
-}
-.startImage{
-  text-align: center;
-  max-width: $width - 40%;
-  margin: auto;
 }
 .mainDiv{
   text-align: center;
@@ -48,12 +22,21 @@ h1{
   text-align: center;
   font-size: $font-size-lg;
   text-shadow: $text-shadow;
-  color: $main-font-color;
+  color: white;
 }
 .backgroundH1{
   background-image: $header-background;
   border-radius: $min-space + 5px;
   padding: $min-space + 5px;
+}
+.teamName{
+  width: $width;
+  text-align: center;
+  font-size:$font-size-lg + 40pt;
+  text-shadow: $text-shadow;
+  color: white;
+  background-color: $faded;
+  padding-bottom: $min-space + 15px;
 }
 .borderTop {
   width: $width - 51%;
@@ -75,6 +58,56 @@ h1{
   background: $border-background;
   margin-bottom: $min-space + 5px;
 }
+.collapse{
+  display:$inline;
+  vertical-align:top;
+  color: white;
+  width:$width - 55%;
+}
+.collapse-b{
+  background: $player-stats-background;
+  background-size: cover;
+  margin-left: $min-space + 1px;
+  width:$width - 55%;
+  display:$inline;
+  vertical-align:top;
+  color: white;
+  overflow-y:auto;
+  border: $border-sm;
+  border-image: $main-border-image;
+}
+.extra-stats{
+  margin-right: auto;
+  margin-left: auto;
+  width:$width - 7%;
+  background-color: $faded;
+  border: $extraStatsBorder;
+  height:0;
+}
+.collapse-b::-webkit-scrollbar {
+  background-color: $noFade;
+}
+.collapse-b::-webkit-scrollbar-thumb {
+  background-color: $smallFade;
+}
+.collapse img{
+  margin-top: 0;
+}
+.collapse-M-heading{
+  text-decoration: $u;
+  font-size: $name-font-size - 4pt;
+  color: $minor-heading-color;
+}
+.collapse-heading{
+  color: $minor-heading-color;
+  font-size: $name-font-size - 6pt;
+}
+.rankV{
+  font-size: $name-font-size - 6pt;
+}
+.rankV img{
+  width:$width - 65%;
+}
 .playerNameContainer{
   text-align: center;
   margin-bottom: $min-space + 5px;
@@ -83,12 +116,13 @@ h1{
   background: $name-background;
   background-size: cover;
   text-shadow: $text-shadow;
-  color: $main-font-color;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: $no-wrap;
 }
 .summonerName{
-  color: $main-font-color;
-  font-size: $width;
-  vertical-align: $v-align;
+  color: white;
 }
 .icon{
   border-radius: $icon-radius;
@@ -97,7 +131,7 @@ h1{
   border: $gold inset;
 }
 .playerInfo{
-  color: $main-font-color;
+  color: white;
 }
 .playerBorder{
   border: $main-border-size;
@@ -121,9 +155,6 @@ h1{
 .rank{
   width: $width - 50%;
 }
-.rankV{
-  display: block;
-}
 .unranked{
   opacity: $opacity-md;
 }
@@ -145,21 +176,40 @@ h1{
   opacity: $opacity-sm;
 }
 .loadChampion{
-  margin-top: $min-space + 5px;
   width: $width;
   height: auto;
-  opacity: 0;
+  opacity:0;
+  padding: $min-space - 4px;
 }
 .imageContainer{
-  height: $max-height;
+  height: auto;
   width: $width;
   max-width: $max-width;
   margin: auto;
+  position:$rel;
+}
+.championName{
+  position:absolute;
+  bottom:$champNameBottom;
+  color:white;
+  width:$width;
+  text-align: center;
+  background-color: $faded;
 }
 .championImage{
   margin-top: $min-space + 5px;
   width: $width;
   height: auto;
+  padding:$min-space - 4px;
+}
+h3{
+  margin: 0;
+  text-align:center;
+  text-shadow: $text-shadow;
+  color: white;
+}
+.championImage:hover {
+  background-color: blue;
 }
 .teamFooter{
   position: fixed;
@@ -174,16 +224,26 @@ h1{
   display:inline-block;
   margin: $min-space + 5px;
   max-width: $max-width;
-
+}
+.v-align{
+  vertical-align: top;
 }
 @media (min-width:1080px) {
   .col-lg {
     width: $sz-xs;
   }
+  .summonerName{
+    font-size:$name-font-size - 3pt;
+    vertical-align: $v-align - 8px;
+  }
 }
 @media (max-width:1079px) {
   .col-lg {
     width: $sz-sm;
+  }
+  .summonerName{
+    font-size:$name-font-size - 3pt;
+    vertical-align: $v-align - 2px;
   }
 }
 @media (max-width:1030px) {
