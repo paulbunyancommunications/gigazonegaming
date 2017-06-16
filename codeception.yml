@@ -18,15 +18,25 @@ extensions:
 modules:
     config:
         Db:
-            dsn: "mysql:host=%DB_HOST%;dbname=%DB_DATABASE%"
+            dsn: "%DB_CONNECTION%:host=%DB_HOST%;dbname=%DB_DATABASE%"
             user: "%DB_USERNAME%"
             password: "%DB_PASSWORD%"
             dump: "database/dump/%DB_DATABASE%.sql"
+            populate: true
+            cleanup: true
+            reconnect: false
+            populator: '%DB_CONNECTION% -u %DB_USERNAME% -p"%DB_PASSWORD%" -h %DB_HOST% %DB_DATABASE% < database/dump/%DB_DATABASE%.sql'
         Codeception\Extension\Recorder:
             delete_successful: true
             module: WebDriver
 coverage:
     enabled: true
+    remote: true
+    remote_context_options:
+        http:
+            timeout: 60
+        ssl:
+            verify_peer: false
     whitelist:
         include:
             - app/*

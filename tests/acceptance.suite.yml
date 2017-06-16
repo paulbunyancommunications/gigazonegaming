@@ -8,9 +8,8 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            #url: 'http://gigazonegaming.local'
-            url: 'http://web'
-            host: localhost
+            url: 'https://web'
+            host: hub
             browser: firefox
             port: 4444
             window_size: 1366x768
@@ -27,7 +26,4 @@ modules:
         - Asserts
         - Cli
         - Filesystem
-        - Db:
-           populate: true
-           cleanup: true
-           reconnect: true
+        - Db
