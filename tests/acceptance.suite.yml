@@ -27,7 +27,4 @@ modules:
         - Asserts
         - Cli
         - Filesystem
-        - Db:
-           populate: true
-           cleanup: true
-           reconnect: true
+        - Db
