@@ -45,19 +45,12 @@ return [
     */
 
     'connections' => [
-
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-        ],
-
         'mysql' => [
             'dump_command_path' =>  env('BACKUP_MYSQLDUMP_PATH', '/usr/bin'),
             'dump_command_timeout' => env('BACKUP_MYSQLDUMP_TIMEOUT', 300),
             'dump_using_single_transaction' => env('BACKUP_MYSQLDUMP_SINGLE_TRANSACTION', true),
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
+            'host' => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -68,12 +61,17 @@ return [
             'strict' => false,
             'engine' => null,
         ],
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+        ],
         'mysql_champ' => [
             'dump_command_path' =>  env('BACKUP_MYSQLDUMP_PATH', '/usr/bin'),
             'dump_command_timeout' => env('BACKUP_MYSQLDUMP_TIMEOUT', 300),
             'dump_using_single_transaction' => env('BACKUP_MYSQLDUMP_SINGLE_TRANSACTION', true),
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
+            'host' => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -89,7 +87,7 @@ return [
             'dump_command_timeout' => env('BACKUP_MYSQLDUMP_TIMEOUT', 300),
             'dump_using_single_transaction' => env('BACKUP_MYSQLDUMP_SINGLE_TRANSACTION', true),
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
+            'host' => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),

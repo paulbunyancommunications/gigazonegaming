@@ -8,8 +8,9 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: 'https://web'
+            url: 'http://web'
             host: hub
+            wait: 0
             browser: firefox
             port: 4444
             window_size: 1366x768

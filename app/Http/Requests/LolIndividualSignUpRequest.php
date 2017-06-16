@@ -25,8 +25,8 @@ class LolIndividualSignUpRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'your-lol-summoner-name' => 'required|unique:mysql_champ.players,username',
-            'email' => 'required|email|unique:mysql_champ.players,email',
+            'your-lol-summoner-name' => 'required',
+            'email' => 'required|email',
             'your-phone' => 'required',
         ];
     }

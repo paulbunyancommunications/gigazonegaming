@@ -10,10 +10,6 @@ use \BaseAcceptance;
  */
 class PlayersControllerCest extends BaseAcceptance
 {
-
-    /**
-     * @param AcceptanceTester $I
-     */
     public $faker;
 
     /**

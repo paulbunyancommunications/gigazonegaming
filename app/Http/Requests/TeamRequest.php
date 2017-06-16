@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Championship\Team;
+use App\Models\Championship\Tournament;
+
 class TeamRequest extends Request
 {
 
@@ -21,7 +24,6 @@ class TeamRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     * @todo Nelson, please fix switch statement, only use colons and breaks between conditions http://php.net/manual/en/control-structures.switch.php
      * @return array
      */
     public function rules()
@@ -35,20 +37,35 @@ class TeamRequest extends Request
             }
             case 'POST':
             {
+                $tournament_id = $this->tournament_id;
                 return [
-                    'name' => 'required|unique:mysql_champ.teams,name',
-                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
+                    'name' => 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id',
+                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id'
                 ];
             }
             case 'PUT':
             case 'PATCH':
             {
-                $name = $this->route()->team_id->name;
-                $tournament_id = $this->route()->team_id->tournament_id;
-                return [
-                    'name' => 'required|unique:mysql_champ.teams,name,'.$name.',name',
-                    'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id',
-                ];
+                $original_name = $this->route()->team_id->name;
+                $requested_name = $this->name;
+                $original_tournament_id = $this->route()->team_id->tournament_id;
+                $requested_tournament_id = (int)$this->tournament_id;
+                $team_id = $this->route()->team_id->id;
+
+                if($original_name === $requested_name and $original_tournament_id === $requested_tournament_id){ //same name, same tournament
+                    return [
+                        'name' => 'required|uniqueWidth:mysql_champ.teams,self,tournament_id',
+                        'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$requested_tournament_id.',tournament_id'
+                    ];
+                }else{//something change, name or tournament updated
+                    $exits = Team::where([['name','=',$requested_name],['tournament_id', '=', $original_tournament_id],['id', '<>', $team_id] ])->exists();
+                    $return = 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id';
+                    if(!$exits){$return='required|unique:mysql_champ.teams';}
+                    return [
+                        'name' => $return,
+                        'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$original_tournament_id.',tournament_id'
+                    ];
+                }
             }
             default:break;
         }
@@ -62,6 +79,7 @@ class TeamRequest extends Request
     public function messages()
     {
         return [
+            "name.unique_width" => 'A team with the exact same name already exists for this tournament, please select a different name.',
             'name.required' => 'The Team Name Field is required.',
             'name.unique' => 'The Team Name is in use, pick a new one.',
             'tournament_id.required' => 'The Tournament field can not be empty.',
