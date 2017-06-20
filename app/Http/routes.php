@@ -124,6 +124,7 @@ Route::get('/GameDisplay/team1','GameDisplayController@team1ViewDisplay');
 Route::get('/GameDisplay/team2','GameDisplayController@team2ViewDisplay');
 Route::get('/GameDisplay/ajax','GameDisplayController@ajaxCheckRequest');
 Route::get('/GameDisplay/cache','SimonCacheController@teamViewDisplay');
+Route::get('/GameDisplay/cacheChampions','SimonCacheController@getChampions');
 Route::get('/GameDisplay/getData','GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplayController@updateData');
 Route::get('/GameDisplay/getTeamName','GameDisplayController@getTeamName');

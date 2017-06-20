@@ -41,6 +41,11 @@ function showTeams2(){
 }
 showTeams();
 showTeams2();
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $("#hiddenToken").text()
+    }
+});
 
 /* These three blocks make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
 $('#Color').change(function() {
@@ -102,7 +107,6 @@ function submitCache(){
         type: "GET",
         url: "/app/GameDisplay/cache",
         data: {
-            '_token': "{{ csrf_token() }}",
             tournament: $('#Tournament option:selected').text(),
             team: team,
             color: color
@@ -123,17 +127,20 @@ function submitCache(){
     });
 }
 function GetChampions() {
+    var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
     $.ajax({
         method: "GET",
         type: "GET",
-        url: "/app/GameDisplay/cache",
+        url: "/app/GameDisplay/cacheChampions",
         data: {
             '_token': "{{ csrf_token() }}",
-            tournament: $('#Tournament option:selected').text(),
-            team: team,
-            color: color
+            team: team
         },success: function(data){
-
+            if(data.ErrorCode){
+                document.getElementById('info').innerHTML = data.ErrorMessage;
+            }else{
+                document.getElementById('info').innerHTML = data.Champions;
+            }
         }
 
     });

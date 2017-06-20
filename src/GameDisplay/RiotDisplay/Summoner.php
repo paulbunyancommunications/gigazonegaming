@@ -3,6 +3,7 @@ namespace GameDisplay\RiotDisplay;
 
 
 use GameDisplay\RiotDisplay\API\Api;
+use Mockery\Exception;
 
 class Summoner{
 
@@ -23,7 +24,6 @@ class Summoner{
 #----------------------------------------------------------------------
     function __construct($summonerName, $ApiKeyNumber)
     {
-
         #Initailize the name of the summoner
         $this->setSummonerName($summonerName);
 
@@ -32,7 +32,7 @@ class Summoner{
         $this->setApi();
 
         #set Summoner properties
-        $this->setSummonerID();
+        $this->setSummonerID($this->api->getSummonerId());
         $this->setIcon();
         $this->setSoloRankedWinLoss();
         $this->setSoloRank();
@@ -41,9 +41,8 @@ class Summoner{
 
 
 
-//        dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
-//        $this->setChampion();
-//        $this->setSoloRank();
+        #dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
+//
     }
 # Methods
 #----------------------------------------------------------------------
@@ -51,6 +50,7 @@ class Summoner{
         $status = $this->api->checkCurrentGameStatus();
         return $status;
     }
+
 
 # Setters
 #----------------------------------------------------------------------
@@ -63,8 +63,8 @@ class Summoner{
         $this->api = new Api($this->summonerName, $this->ApiKey);
     }
 
-    public function setSummonerID(){
-        $this->summonerID = $this->api->getSummonerId();
+    public function setSummonerID($value){
+        $this->summonerID = $value;
     }
 
     public function  setIcon(){
@@ -102,35 +102,37 @@ class Summoner{
     {
         switch($ApiKey){
             case 0:
-                $this->ApiKey = $_ENV['RIOT_API_KEY1'];
+                $this->ApiKey = env('RIOT_API_KEY1');
                 break;
             case 1:
-                $this->ApiKey = $_ENV['RIOT_API_KEY2'];
+                $this->ApiKey = env('RIOT_API_KEY2');
                 break;
             case 2:
-                $this->ApiKey = $_ENV['RIOT_API_KEY3'];
+                $this->ApiKey = env('RIOT_API_KEY3');
                 break;
             case 3:
-                $this->ApiKey = $_ENV['RIOT_API_KEY4'];
+                $this->ApiKey = env('RIOT_API_KEY4');
                 break;
             case 4:
-                $this->ApiKey = $_ENV['RIOT_API_KEY5'];
+                $this->ApiKey = env('RIOT_API_KEY5');
                 break;
             case 5:
-                $this->ApiKey = $_ENV['RIOT_API_KEY6'];
+                $this->ApiKey = env('RIOT_API_KEY6');
                 break;
             case 6:
-                $this->ApiKey = $_ENV['RIOT_API_KEY7'];
+                $this->ApiKey = env('RIOT_API_KEY7');
                 break;
             case 7:
-                $this->ApiKey = $_ENV['RIOT_API_KEY8'];
+                $this->ApiKey = env('RIOT_API_KEY8');
                 break;
             case 8:
-                $this->ApiKey = $_ENV['RIOT_API_KEY9'];
+                $this->ApiKey = env('RIOT_API_KEY9');
                 break;
             case 9:
-                $this->ApiKey = $_ENV['RIOT_API_KEY10'];
+                $this->ApiKey = env('RIOT_API_KEY10');
                 break;
+            default:
+                throw new Exception("Api id not set for $this->summonerName");
         }
     }
 

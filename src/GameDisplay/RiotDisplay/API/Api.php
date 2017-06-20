@@ -10,7 +10,7 @@ class Api{
 
 # Variables
 #----------------------------------------------------------------------
-    protected $client;
+    protected $apiKey;
     protected $Summoner;
     protected $summonerID;
     protected $Icon;
@@ -35,7 +35,6 @@ class Api{
 
         #set up api client ready for requests
         $this->apiKey = $ApiKey;
-        $this->client = new Client();
 
         #intailize summoner info for requests
         $this->setSummonerID();
@@ -47,34 +46,35 @@ class Api{
 
 # Methods
 #----------------------------------------------------------------------
-    public function ApiRequest($Url){
+    public function ApiRequest($Url, $counter = 0){
+        #Set up client
+        $client = new Client();
+
         #Request Info From Api
         $request = new Request('Get', $Url);
-        $response = $this->client->send($request);
-
+        $response = $client->send($request);
         #If Request Goes Through Return Json Response, Else Try 10 Times then through exception.
-        switch ($response->getStatusCode()){
-            case '200':
-                $Info = json_decode($response->getBody());
+        switch ((int)$response->getStatusCode()){
+            case 200:
+                return json_decode($response->getBody());
                 break;
-            case '404':
-                $Info = false;
+            case 404:
+                return false;
                 break;
-            case '429':
-                sleep(1);
-                $this->counter++;
-                if($this->counter > 10){
-                    throw new Exception("Calling Api Key Too Soon");
+            case 429:
+                if($counter > 2){
+                    throw new Exception("Calling Api Key Too Soon $this->apiKey");
                 }
-                $this->ApiRequest($Url);
-            case '503':
-                throw new Exception("Riot's Api is Down");
-
+                $counter++;
+                sleep(1);
+                return $this->ApiRequest($Url, $counter);
+            case 503:
+                throw new Exception("Riot's Api is Down" . $this->apiKey . "ID:" . $this->summonerID . " The Code:" . $response->getStatusCode() . ' Counter: ' . $this->counter);
+                break;
             default:
                 throw new Exception("Unknown Riot Api Error code:" . $response->getStatusCode() . " ApiKey: " . $this->apiKey);
+                break;
         }
-
-        return $Info;
     }
 
     public function checkCurrentGameStatus(){
@@ -87,6 +87,10 @@ class Api{
         }
 
         return $this->currentGameStatus;
+    }
+    public function __sleep()
+    {
+        return array('Summoner', 'summonerID', 'apiKey', 'counter');
     }
 
 
@@ -105,10 +109,10 @@ class Api{
     public function setSummonerID()
     {
         $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
-        $Info = $this->ApiRequest($Url);
+        $info = $this->ApiRequest($Url);
         #sets summoner ID for further use with the api.
         try{
-            $this->summonerID = $Info->id;
+            $this->summonerID = $info->id;
         }catch( \Exception $e){
             if($this->counter > 10){
                 $this->summonerID = null;

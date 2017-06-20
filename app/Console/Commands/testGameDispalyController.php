@@ -36,10 +36,13 @@ class testGameDispalyController extends Command
      */
     public function handle()
     {
+
         $time_start = microtime(true);
-        $summoner = new Summoner('KingMorpheus2131', 1);
-        $time_end = microtime(true);
-        dd($time_end - $time_start, $summoner->getIcon(), $summoner->getSummonerName());
+        $summoner = new Summoner('KingMorpheus2131',1);
+        serialize($summoner);
+
+//        $time_end = microtime(true);
+//        dd($time_end - $time_start, $summoner->getIcon(), $summoner->getSummonerName());
 
     }
 }
