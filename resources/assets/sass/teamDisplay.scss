@@ -26,49 +26,49 @@ h1{
 }
 .backgroundH1{
   background-image: $header-background;
-  border-radius: $min-space + 5px;
-  padding: $min-space + 5px;
+  border-radius: $min-space + 5;
+  padding: $min-space + 5;
 }
 .teamName{
   width: $width;
   text-align: center;
-  font-size:$font-size-lg + 40pt;
+  font-size:$font-size-lg + 40;
   text-shadow: $text-shadow;
   color: white;
   background-color: $faded;
-  padding-bottom: $min-space + 15px;
+  padding-bottom: $min-space + 15;
 }
 .borderTop {
-  width: $width - 51%;
+  width: $width - 51;
   display: $inline;
-  padding-left: $min-space + 5px;
-  margin-left:  $min-space - 15px;
+  padding-left: $min-space + 5;
+  margin-left:  $min-space - 15;
   height: $border-height;
   top: $border-top;
   background: $border-background2;
-  margin-bottom: $min-space + 5px;
+  margin-bottom: $min-space + 5;
 }
 .borderTop2 {
-  width: $width - 51%;
+  width: $width - 51;
   display:$inline;
-  padding-left: $min-space + 5px;
-  margin-left: $min-space - 15px;
+  padding-left: $min-space + 5;
+  margin-left: $min-space - 15;
   height: $border-height;
   top: $border-top;
   background: $border-background;
-  margin-bottom: $min-space + 5px;
+  margin-bottom: $min-space + 5;
 }
 .collapse{
   display:$inline;
   vertical-align:top;
   color: white;
-  width:$width - 55%;
+  width:$width - 55;
 }
 .collapse-b{
   background: $player-stats-background;
   background-size: cover;
-  margin-left: $min-space + 1px;
-  width:$width - 55%;
+  margin-left: $min-space + 1;
+  width:$width - 55;
   display:$inline;
   vertical-align:top;
   color: white;
@@ -79,7 +79,7 @@ h1{
 .extra-stats{
   margin-right: auto;
   margin-left: auto;
-  width:$width - 7%;
+  width:$width - 7;
   background-color: $faded;
   border: $extraStatsBorder;
   height:0;
@@ -95,22 +95,22 @@ h1{
 }
 .collapse-M-heading{
   text-decoration: $u;
-  font-size: $name-font-size - 4pt;
+  font-size: $name-font-size - 4;
   color: $minor-heading-color;
 }
 .collapse-heading{
   color: $minor-heading-color;
-  font-size: $name-font-size - 6pt;
+  font-size: $name-font-size - 6;
 }
 .rankV{
-  font-size: $name-font-size - 6pt;
+  font-size: $name-font-size - 6;
 }
 .rankV img{
-  width:$width - 65%;
+  width:$width - 65;
 }
 .playerNameContainer{
   text-align: center;
-  margin-bottom: $min-space + 5px;
+  margin-bottom: $min-space + 5;
   border: $main-border-size;
   border-image: $main-border-image;
   background: $name-background;
@@ -126,7 +126,7 @@ h1{
 }
 .icon{
   border-radius: $icon-radius;
-  width: $width - 85%;
+  width: $width - 85;
   height: auto;
   border: $gold inset;
 }
@@ -140,7 +140,7 @@ h1{
   background-size: cover;
 }
 .playerStatsContainer{
-  width: $width - 50%;
+  width: $width - 50;
   display: $inline;
   white-space: $no-wrap;
 }
@@ -153,14 +153,14 @@ h1{
   color: $minor-heading-color;
 }
 .rank{
-  width: $width - 50%;
+  width: $width - 50;
 }
 .unranked{
   opacity: $opacity-md;
 }
 .spinner-container {
   margin: auto;
-  padding-top: $min-space + 5px;
+  padding-top: $min-space + 5;
   max-width: $max-width;
   position: $rel;
   text-align: center;
@@ -179,7 +179,7 @@ h1{
   width: $width;
   height: auto;
   opacity:0;
-  padding: $min-space - 4px;
+  padding: $min-space - 4;
 }
 .imageContainer{
   height: auto;
@@ -197,10 +197,10 @@ h1{
   background-color: $faded;
 }
 .championImage{
-  margin-top: $min-space + 5px;
+  margin-top: $min-space + 5;
   width: $width;
   height: auto;
-  padding:$min-space - 4px;
+  padding:$min-space - 4;
 }
 h3{
   margin: 0;
@@ -222,7 +222,7 @@ h3{
 }
 .col-lg{
   display:inline-block;
-  margin: $min-space + 5px;
+  margin: $min-space + 5;
   max-width: $max-width;
 }
 .v-align{
@@ -233,8 +233,8 @@ h3{
     width: $sz-xs;
   }
   .summonerName{
-    font-size:$name-font-size - 3pt;
-    vertical-align: $v-align - 8px;
+    font-size:$name-font-size - 3;
+    vertical-align: $v-align - 8;
   }
 }
 @media (max-width:1079px) {
@@ -242,8 +242,8 @@ h3{
     width: $sz-sm;
   }
   .summonerName{
-    font-size:$name-font-size - 3pt;
-    vertical-align: $v-align - 2px;
+    font-size:$name-font-size - 3;
+    vertical-align: $v-align - 2;
   }
 }
 @media (max-width:1030px) {

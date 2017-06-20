@@ -28,6 +28,7 @@ class SimonCacheController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
+    protected $apiIterator = 0;
 
     public function teamViewDisplay(Request $req)
     {
@@ -43,9 +44,6 @@ class SimonCacheController extends Controller
                 $colorResult = $this->setTeamColor($color[$i]);
                 array_push($teamInfoArrays,$this->makeTeam());
                 array_push($colorArray,$colorResult);
-//                if($color[$i] != 'Red'){
-//                    dd($i,$color[$i],dd($color));
-//                }
                 $this->resetArrays();
             }
 
@@ -88,20 +86,19 @@ class SimonCacheController extends Controller
         $players = $team->players;
 
         #Loop through player of the chosen team and create an array of player objects
-        $i = 0;
         foreach($players as $player){
             if(isset($player) and isset($player->username) and $player->username != null) {
                 #Creat player object depending on which game is selected.
                 switch ($TournamentName){
                     #LOL
                     case str_contains($TournamentName, "league-of-legends"):
-                        $summoner = new Summoner($player->username, $i);
+                        $summoner = new Summoner($player->username, $this->apiIterator);
                         array_push($this->players, $summoner);
-                        $i++;
+                        $this->apiIterator++;
 
                         //Reset Api Key Counter
-                        if($i == 10){
-                            $i = 0;
+                        if($this->apiIterator == 10){
+                            $this->apiIterator = 0;
                         }
                         break;
                     #Overwatch
@@ -143,8 +140,10 @@ class SimonCacheController extends Controller
         return $team;
     }
     public function resetArrays(){
-        foreach ($this as $key => $value) {
-            $this->$key = array();
+            foreach ($this as $key => $value) {
+                if($this->$key != $this->apiIterator) {
+                    $this->$key = array();
+            }
         }
     }
     public function cacheContent($teamInfoArrays,$colorArray,$team){

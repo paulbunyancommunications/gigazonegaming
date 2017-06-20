@@ -3,6 +3,7 @@ namespace GameDisplay\RiotDisplay;
 
 
 use GameDisplay\RiotDisplay\API\Api;
+use Mockery\Exception;
 
 class Summoner{
 
@@ -131,6 +132,8 @@ class Summoner{
             case 9:
                 $this->ApiKey = $_ENV['RIOT_API_KEY10'];
                 break;
+            default:
+                throw new Exception("Api Id Not Defined For: $this->summonerName");
         }
     }
 

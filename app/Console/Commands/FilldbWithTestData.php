@@ -50,7 +50,7 @@ class FilldbWithTestData extends Command
         #Team
         $team = new Team();
         $team->tournament_id = 1;
-        $team->name =  "Power Rangers";
+        $team->name =  "Spartans";
         #add captain and save the team
         $team->captain = $Captian->id;
         $team->save();
@@ -60,7 +60,7 @@ class FilldbWithTestData extends Command
             'game' => 2,
             'team' => $team,
         ]);
-        $playerUserNameArray = array('CacheMeOuside', 'SlySkeever', 'ChaChing77', 'NotAGoodOne3');
+        $playerUserNameArray = array('ChaChing77', 'SlySkeever', 'CacheMeOuside', 'NotAGoodOne3');
         $i = 0;
         #creat players for team
         foreach ($playerUserNameArray as $Player){

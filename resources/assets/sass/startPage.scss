@@ -88,8 +88,8 @@ label{
   100% { transform: rotate(360deg); }
 }
 #info{
-  width:$width - 19%;
-  height:$max-height + 40px;
+  width:$width - 19;
+  height:$max-height + 40;
   margin-left: auto;
   margin-right: auto;
   background-color: $whiteFade;
@@ -100,7 +100,7 @@ label{
   line-height: $line-height;
 }
 .console-header{
-  font-size: $font-size-md + 14px;
+  font-size: $font-size-md + 14;
   font-weight: bold;
   color: white;
   text-align: center;
@@ -110,7 +110,7 @@ label{
   text-shadow: $text-shadow;
 }
 .console-sub-header{
-  font-size: $font-size-md + 4px;
+  font-size: $font-size-md + 4;
   font-weight: bold;
   color: white;
   text-decoration: $u;
@@ -120,7 +120,7 @@ label{
   -moz-border-radius: $min-space;
   border-radius: $min-space;
   background-color: $blackFade-1;
-  font-size: $font-size-md + 9px;
+  font-size: $font-size-md + 9;
   font-weight: bold;
   color: white;
   border: none;
@@ -129,20 +129,20 @@ label{
   margin-right: auto;
 }
 #buttonContainer{
-  width:$width - 19%;
+  width:$width - 19;
   margin-left: auto;
   margin-right: auto;
 }
 @media (min-width:1260px) {
   .button-Sub-Container{
     display: $inline;
-    width:$width - 67%;
+    width:$width - 67;
   }
 }
 @media (min-width:1000px) {
   .button-Sub-Container{
     display: $inline;
-    width:$width - 70%;
+    width:$width - 70;
   }
 
 }

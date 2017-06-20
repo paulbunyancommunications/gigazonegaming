@@ -7,9 +7,9 @@
 }
 .teamButton{
   background-color: $trans;
-  margin-bottom:$min-space + 5px;
+  margin-bottom:$min-space + 5;
   margin-top: $min-space * 6;
-  font-size: $font-size-md + 34px;
+  font-size: $font-size-md + 34;
   color:white;
   outline: none;
   border: $main-border-size;
@@ -24,8 +24,8 @@
   transform: translateY(4px);
 }
 #info{
-  width:$width - 60%;
-  height:$max-height - 410px;
+  width:$width - 60;
+  height:$max-height - 410;
   margin-left: auto;
   margin-right: auto;
   background-color: $whiteFade;
