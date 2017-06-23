@@ -63,7 +63,7 @@ class Api{
             case '429':
                 sleep(1);
                 $this->counter++;
-                if($this->counter > 10){
+                if($this->counter > 2){
                     throw new Exception("Calling Api Key Too Soon");
                 }
                 $this->ApiRequest($Url);

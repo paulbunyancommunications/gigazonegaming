@@ -4,7 +4,7 @@
 function setChampions() {
     checkAndGrabChampion();
 }
-/* This function is set up for testing purposes only, needs to be changed for production */
+/* This function is used to control the fading of the loading "cards" and the champion images once received */
 function fadInChampion() {
     setTimeout(
         function(){
@@ -27,14 +27,36 @@ function fadInChampion() {
         4100
     );
 }
+
+/*This function allows the display of victory or defeat*/
+function displayWinLoss(){
+    team = window.location.href;
+    team = team.split('/');
+    team = team[5];
+    if(team === 'team1') {
+        document.getElementById('endResult').innerHTML = '<img  id="victory" src="/LeagueOfLegendsDisplay/Images/victory.png "/>';
+    }else{
+        document.getElementById('endResult').innerHTML = '<img id="defeat" src="/LeagueOfLegendsDisplay/Images/defeat.png "/>';
+    }
+    setTimeout(function(){ $('#endResult').fadeIn(3000); $('.mainDiv').css({
+        '-webkit-filter': 'blur(5px)',
+        '-moz-filter': 'blur(5px)',
+        '-o-filter': 'blur(5px)',
+        '-ms-filter': 'blur(5px)',
+        'filter': 'blur(5px)'
+    })},2000);
+}
+/*This function creates the drop down effect for the extra stats container  */
 function showExtraStats(id){
     setTimeout(function(){
         $('#extra'+id).animate({
+
             'height': '300px'
         }, 200, 'linear');
     },100);
 }
 
+/*These functions create the constantly moving header image behind the team name */
 function showBackground(){
 
     $('.backgroundH1').animate({
@@ -102,6 +124,7 @@ $('#4-3').click( function(){
     $('#extra4').height(0);
 });
 
+/*This makes sure that when collapsed the champion image and the player stats containers are the same size*/
 function setBoxHeight(){
     $('#D0').height($('#C0').height() - 9);
     $('#D1').height($('#C1').height() - 9);
@@ -109,11 +132,12 @@ function setBoxHeight(){
     $('#D3').height($('#C3').height() - 9);
     $('#D4').height($('#C4').height() - 9);
 }
-
 $(window).resize(function(){
     setBoxHeight();
 });
-//
+
+
+/*This function gets the data needed for loading the page*/
 $(document).ready(GetData());
 
 function GetData() {
@@ -133,24 +157,24 @@ function GetData() {
             success: function (data) {
                 if (data === 'true') {
                     location.reload();
-
                 } else{
                     setTimeout(GetData,2000);
                 }
-            }
-
-        });
+            },
+        })
     }else{
         UpdateData();
     }
 }
+
+/*This function gets the champions, as well as checking the cache for any updated data*/
 function UpdateData() {
-    var checkChamp = false;
+    checkChamp = false;
     if(!document.getElementsByClassName('championImage')){
         checkChamp = true;
     }
 
-    var team = window.location.href;
+    team = window.location.href;
     team = team.split('/');
     team = team[5];
     ///Execute cache controller with ajax
@@ -175,7 +199,7 @@ function UpdateData() {
                         champName[0] = "Wukong";
                     }
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                    document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/><div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><b class="summonerName">' + champName[0] + '</b></div>';
+                    document.getElementById('C' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/><div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' + champName[0] + '</div>';
                 }
                 fadInChampion();
                 setTimeout(UpdateData,2000);

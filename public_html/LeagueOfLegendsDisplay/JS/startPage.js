@@ -42,7 +42,7 @@ function showTeams2(){
 showTeams();
 showTeams2();
 
-/* These three blocks make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
+/* These functions make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
 $('#Color').change(function() {
     if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
         $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
@@ -88,6 +88,7 @@ function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
 
+/*This function submits all data selected in the drop downs to the cache*/
 function submitCache(){
 
     $('#loader').removeClass('hidden');
@@ -122,6 +123,8 @@ function submitCache(){
 
     });
 }
+
+/*THis function allows us to clear the cache if ever needed*/
 function clearCache(){
     document.getElementById('info').innerHTML = 'Please Wait...';
     ///Set up cache arrays for team and color

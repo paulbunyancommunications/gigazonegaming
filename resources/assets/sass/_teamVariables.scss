@@ -1,14 +1,5 @@
 // assign values to all variables used
 
-// simple commands
-$hidden: none;
-$trans: transparent;
-$inline: inline-block;
-$wrap: break-word;
-$no-wrap: nowrap;
-$rel: relative;
-$u: underline;
-
 // backgrounds
 $body-background: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');
 $alt-body-background: url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center;
@@ -27,11 +18,13 @@ $border-sm: 3px solid transparent;
 $border-height: 26px;
 $border-top: -21px;
 $icon-radius: 50px;
-$extraStatsBorder: 2px inset;
+$extra-stats-border: 2px inset;
 $loader-border: 10px solid #f3f3f3;
 $loader-border-radius: 50%;
 $loader-border-top: 10px solid #3498db;
 $info-border: 5px inset white;
+$loader-border-sm: 2px solid #f3f3f3;
+$loader-border-top: 2px solid #3498db;
 
 
 //font
@@ -53,17 +46,10 @@ $champNameBottom:30px;
 $text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
 $text-shadow-plain:1px 1px 2px black, 0 0 25px white, 0 0 5px black;
 $box-shadow: 0 5px gray;
-$complex-box-shadow: 0 12px 16px 0 rgb(255,255,255), 0 17px 50px 0 rgba(0,0,0,1);
 $gold: #FFD700;
 $opacity-md: .4;
 $opacity-sm: .6;
 $z-1: 1;
-$faded: rgba(0, 0, 0, 0.7);
-$smallFade: rgba(0,0,0,.3);
-$noFade:rgba(0,0,0,0);
-$blackFade: rgba(100, 100, 100, 0.7);
-$blackFade-1: rgba(100, 100, 100, 0.5);
-$whiteFade: rgba(255, 255, 255, .5);
 $line-height: 150%;
 
 
@@ -72,3 +58,8 @@ $sz-xs: 17%!important;
 $sz-sm: 33%!important;
 $sz-md: 45%!important;
 $sz-lg: 100%!important;
+
+// Mixins
+@mixin faded-background($color,$fade){
+  background-color: rgba($color, $color, $color,$fade);
+}

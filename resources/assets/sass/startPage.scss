@@ -10,28 +10,28 @@ body{
   text-align:center;
 }
 .hidden{
-  display: $hidden;
+  display: none;
 }
 select{
   -webkit-border-radius: $min-space;
   -moz-border-radius: $min-space;
   border-radius: $min-space;
-  background-color: $blackFade;
-  font-size: $font-size-md + 9px;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 9;
   font-weight: bold;
   color: white;
-  border: $hidden;
-  margin: $min-space + 5px;
+  border: none;
+  margin: $min-space + 5;
 }
 .tournamentSelect{
-  width: $width - 40%;
-  max-width: $max-width + 235px;
+  width: $width - 40;
+  max-width: $max-width + 235;
 }
 label{
-  font-size: $font-size-md + 9px;
+  font-size: $font-size-md + 9;
   font-weight: bold;
   color: white;
-  text-decoration: $u;
+  text-decoration: underline;
 }
 #label1{
   margin-right:$champNameBottom * 2;
@@ -43,16 +43,16 @@ label{
   -webkit-border-radius: $min-space;
   -moz-border-radius: $min-space;
   border-radius: $min-space;
-  background-color: $blackFade-1;
-  font-size: $font-size-md + 9px;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 9;
   font-weight: bold;
   color: white;
-  border: $hidden;
-  margin: $min-space + 12px;
+  border: none;
+  margin: $min-space + 12;
 }
 .startImage{
   text-align: center;
-  max-width: $width - 40%;
+  max-width: $width - 40;
   margin: auto;
 }
 .startButtonDisabled{
@@ -60,10 +60,10 @@ label{
 }
 .startFooter{
   position: fixed;
-  width: $width - 27%;
+  width: $width - 27;
   text-align:center;
   opacity: $opacity-md - .1;
-  left:$width - 89%;
+  left:$width - 89;
   overflow: hidden;
   z-index: $z-1 - 2;
 }
@@ -92,8 +92,8 @@ label{
   height:$max-height + 40;
   margin-left: auto;
   margin-right: auto;
-  background-color: $whiteFade;
-  word-wrap: $wrap;
+  @include faded-background(255,.5);
+  word-wrap: break-word;
   border: $info-border;
   overflow-y:auto;
   font-weight:bold;
@@ -104,7 +104,7 @@ label{
   font-weight: bold;
   color: white;
   text-align: center;
-  text-decoration: $u;
+  text-decoration: underline;
   margin-top: $min-space;
   margin-bottom: 0;
   text-shadow: $text-shadow;
@@ -113,13 +113,14 @@ label{
   font-size: $font-size-md + 4;
   font-weight: bold;
   color: white;
-  text-decoration: $u;
+  text-decoration: underline;
+  text-shadow: $text-shadow-plain;
 }
 #getChampions,#clearCache,#championOverride{
   -webkit-border-radius: $min-space;
   -moz-border-radius: $min-space;
   border-radius: $min-space;
-  background-color: $blackFade-1;
+  @include faded-background(100,.5);
   font-size: $font-size-md + 9;
   font-weight: bold;
   color: white;
@@ -127,6 +128,7 @@ label{
   margin-bottom: $min-space;
   margin-left: auto;
   margin-right: auto;
+  white-space: nowrap;
 }
 #buttonContainer{
   width:$width - 19;
@@ -135,14 +137,43 @@ label{
 }
 @media (min-width:1260px) {
   .button-Sub-Container{
-    display: $inline;
+    display: inline-block;
     width:$width - 67;
   }
 }
 @media (min-width:1000px) {
   .button-Sub-Container{
-    display: $inline;
+    display: inline-block;
     width:$width - 70;
   }
 
+}
+@media (max-width:530px) {
+  select{
+    font-size: $font-size-md;
+  }
+  label{
+    font-size: $font-size-md;
+  }
+  #getChampions,#clearCache,#championOverride{
+    font-size: $font-size-md;
+    margin-bottom: $min-space * 2;
+  }
+  .startButton{
+    font-size: $font-size-md;
+    margin: $min-space;
+    margin-bottom: $min-space * 2;
+  }
+  #label1{
+    margin-right:$champNameBottom + 10;
+  }
+  #label2{
+    margin-left:$champNameBottom + 10;
+  }
+  #loader {
+    width: $min-space * 3;
+    height: $min-space * 3;
+    border: $loader-border-sm;
+    border-top: $loader-border-top;
+  }
 }

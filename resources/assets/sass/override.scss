@@ -3,11 +3,11 @@ select{
   -webkit-border-radius: $min-space;
   -moz-border-radius: $min-space;
   border-radius: $min-space;
-  background-color: $blackFade;
+  @include faded-background(100,.5);
   font-size: $font-size-md + 4;
   font-weight: bold;
   color: white;
-  border: $hidden;
+  border: none;
   margin: $min-space + 5;
 }
 #info{
@@ -16,8 +16,8 @@ select{
   height:$max-height - 360;
   margin-left: auto;
   margin-right: auto;
-  background-color: $whiteFade;
-  word-wrap: $wrap;
+  @include faded-background(255,.5);
+  word-wrap: break-word;
   border: $info-border;
   overflow-y:auto;
   font-weight:bold;
@@ -27,10 +27,10 @@ select{
   -webkit-border-radius: $min-space;
   -moz-border-radius: $min-space;
   border-radius: $min-space;
-  background-color: $blackFade-1;
+  @include faded-background(100,.5);
   font-size: $font-size-md + 4;
   font-weight: bold;
   color: white;
-  border: $hidden;
+  border: none;
   margin: $min-space + 12;
 }

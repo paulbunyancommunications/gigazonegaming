@@ -60,7 +60,7 @@ class FilldbWithTestData extends Command
             'game' => 2,
             'team' => $team,
         ]);
-        $playerUserNameArray = array('ChaChing77', 'SlySkeever', 'CacheMeOuside', 'NotAGoodOne3');
+        $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
         $i = 0;
         #creat players for team
         foreach ($playerUserNameArray as $Player){

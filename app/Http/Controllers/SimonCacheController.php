@@ -140,9 +140,9 @@ class SimonCacheController extends Controller
         return $team;
     }
     public function resetArrays(){
-            foreach ($this as $key => $value) {
-                if($this->$key != $this->apiIterator) {
-                    $this->$key = array();
+        foreach ($this as $key => $value) {
+            if($this->$key != $this->apiIterator) {
+                $this->$key = array();
             }
         }
     }
