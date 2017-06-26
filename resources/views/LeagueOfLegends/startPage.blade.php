@@ -32,7 +32,7 @@
             <option  v-for="color in colors" v-model="selected">@{{ color }}</option>
         </select><br/>
         <button class="startButton startButtonDisabled" id="submit" disabled onclick="submitCache();">Submit</button>
-        <div id="loader" class="hidden"></div><br/>
+        <div id="loader" class="hidden"></div>
     <div id="buttonContainer">
         <div class="button-Sub-Container"><button id="championOverride" onclick="window.open('/app/GameDisplay/override')">Champion Override</button></div>
         <div class="button-Sub-Container"><button id="getChampions" onclick="window.open('/app/GameDisplay/customer');">Get Champions</button></div>

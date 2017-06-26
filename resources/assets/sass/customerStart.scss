@@ -36,3 +36,21 @@
   font-weight:bold;
   line-height: $line-height;
 }
+@media (max-width:530px) {
+  h1{
+    font-size: $font-size-lg - 30;
+  }
+  .teamButton{
+    font-size: $font-size-md + 10;
+    border: $border-sm;
+    border-image: $main-border-image;
+    text-shadow: $text-shadow-plain;
+  }
+  #team1{
+    margin-top:$min-space * 10;
+  }
+  #info{
+    height:$min-space * 10;
+  }
+
+}

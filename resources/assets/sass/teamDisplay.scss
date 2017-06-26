@@ -62,13 +62,14 @@ h1{
   display:inline-block;
   vertical-align:top;
   color: white;
-  width:$width - 55;
+  width:$width - 50;
+  position:relative;
 }
 .collapse-b{
   background: $player-stats-background;
   background-size: cover;
   margin-left: $min-space + 1;
-  width:$width - 55;
+  width:$width - 60;
   display:inline-block;
   vertical-align:top;
   color: white;
@@ -79,10 +80,25 @@ h1{
 .extra-stats{
   margin-right: auto;
   margin-left: auto;
-  width:$width - 7;
+  width:$width - 6;
   @include faded-background(0,.7);
   border: $extra-stats-border;
-  height:0;
+  overflow: hidden;
+  height:32px;
+  button{
+    -webkit-border-radius: $min-space;
+    -moz-border-radius: $min-space;
+    border-radius: $min-space;
+    @include faded-background(100,.5);
+    font-size: $font-size-md;
+    font-weight: bold;
+    color: white;
+    border: none;
+    margin: $min-space;
+    margin-right: auto;
+    margin-left: auto;
+    display:block;
+  }
 }
 .collapse-b::-webkit-scrollbar {
   @include faded-background(0,0);
@@ -214,8 +230,7 @@ h3{
 .teamFooter{
   position: fixed;
   bottom: 0;
-  width: $width;
-  text-align: center;
+  text-align: left;
 }
 .giga_teamImage{
   width: $max-width;
@@ -295,4 +310,15 @@ h3{
     margin-top:350px;
     width: $width - 30;
   }
+  .spinner-container {
+    padding: 0;
+  }
+  .spinner-image {
+    background: $spinner-img-mobile;
+    background-size: 100%;
+  }
+  .giga_teamImage{
+    width: $max-width - 100;
+  }
+
 }

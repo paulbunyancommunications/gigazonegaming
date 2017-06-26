@@ -10,6 +10,7 @@ $name-background: transparent url('/LeagueOfLegendsDisplay/Images/blueFire.jpg')
 $player-stats-background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
 $overlay: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png') center center repeat;
 $spinner-img: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
+$spinner-img-mobile: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
 
 //borders
 $main-border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
@@ -24,7 +25,7 @@ $loader-border-radius: 50%;
 $loader-border-top: 10px solid #3498db;
 $info-border: 5px inset white;
 $loader-border-sm: 2px solid #f3f3f3;
-$loader-border-top: 2px solid #3498db;
+$loader-border-top-sm: 2px solid #3498db;
 
 
 //font
