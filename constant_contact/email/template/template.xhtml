@@ -3,457 +3,548 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-        <style type="text/css">
-            /* -------------------------------------
-                GLOBAL
-            ------------------------------------- */
-            * {
-                font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-                font-size: 100%;
-                line-height: 1.6em;
-                margin: 0;
-                padding: 0;
-            }
-
-            img {
-                max-width: 600px;
-                width: auto;
-            }
-
-            body {
-                -webkit-font-smoothing: antialiased;
-                height: 100%;
-                -webkit-text-size-adjust: none;
-                width: 100% !important;
-            }
-
-            /* -------------------------------------
-                ELEMENTS
-            ------------------------------------- */
-            a {
-                color: #348eda;
-            }
-
-            .btn-primary {
-                Margin-bottom: 10px;
-                width: auto !important;
-            }
-
-            .btn-primary td {
-                background-color: #fbb040;
-                border-radius: 25px;
-                font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-                font-size: 14px;
-                text-align: center;
-                vertical-align: top;
-            }
-
-            .btn-primary td a, .btn-primary td .href {
-                background-color: #fbb040;
-                border: solid 1px #fbb040;
-                border-radius: 25px;
-                border-width: 10px 20px;
-                display: inline-block;
-                color: #585858;
-                cursor: pointer;
-                font-weight: bold;
-                line-height: 1.3em;
-                text-decoration: none;
-            }
-
-            .last {
-                margin-bottom: 0;
-            }
-
-            .first {
-                margin-top: 0;
-            }
-
-            .padding {
-                padding: 10px 0;
-            }
-
-            /* -------------------------------------
-                BODY
-            ------------------------------------- */
-            table.body-wrap {
-                padding: 20px;
-                width: 100%;
-            }
-
-            table.body-wrap .container {
-                border: 1px solid #f0f0f0;
-            }
-
-            /* -------------------------------------
-                FOOTER
-            ------------------------------------- */
-            table.footer-wrap {
-                clear: both !important;
-                width: 100%;
-            }
-
-            .footer-wrap .container p {
-                color: #666666;
-                font-size: 12px;
-
-            }
-
-            table.footer-wrap a {
-                color: #999999;
-            }
-
-            /* -------------------------------------
-                TYPOGRAPHY
-            ------------------------------------- */
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6 {
-                color: #040303;
-                font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-                font-weight: 200;
-                line-height: 1.2em;
-                margin: 40px 0 10px;
-                clear: both;
-            }
-
-            h2, h3, h4, h5, h6 {
-                color: #585858;
-            }
-
-            h1 {
-                font-size: 36px;
-            }
-
-            h2 {
-                font-size: 28px;
-            }
-
-            h3 {
-                font-size: 22px;
-                font-weight: 400;
-            }
-
-            h4 {
-                font-size: 18px;
-                margin-bottom: 10px;
-                font-weight: 400;
-
-            }
-
-            h5 {
-                font-size: 16px;
-                margin-bottom: 10px;
-                font-weight: 400;
-
-            }
-
-            h6 {
-                font-size: 16px;
-                font-weight: 400;
-                margin-bottom: 10px;
-            }
-
-            a {
-                color: #D39037;
-            }
-
-            a:visited {
-                color: #59585B;
-            }
-
-            a:hover, a:active {
-                color: #59585B;
-            }
-            p,
-            ul,
-            ol {
-                font-size: 16px;
-                font-weight: normal;
-                margin-bottom: 20px;
-                color: #040303;
-            }
-
-            p {
-                margin-left: 10px;
-                margin-right: 10px;
-                line-height: 30px;
-            }
-
-            p ol, p ul {
-                margin-top: 20px;
-            }
-
-            ul li,
-            ol li {
-                margin-left: 5px;
-                list-style-position: inside;
-                margin-bottom: 5px;
-                line-height: 30px;
-            }
-
-            /* ---------------------------------------------------
-                RESPONSIVENESS
-            ------------------------------------------------------ */
-
-            /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
-            .container {
-                clear: both !important;
-                display: block !important;
-                Margin: 0 auto !important;
-                max-width: 600px !important;
-            }
-
-            /* Set the padding on the td rather than the div for Outlook compatibility */
-            .body-wrap .container {
-                padding: 20px;
-            }
-
-            /* This should also be a block element, so that it will fill 100% of the .container */
-            .content {
-                display: block;
-                margin: 0 auto;
-                max-width: 600px;
-            }
-
-            /* Let's make sure tables in the content area are 100% wide */
-            .content table {
-                width: 100%;
-            }
-
-            /* ---------------------------------------------------
-                Gigazone Gaming
-            ------------------------------------------------------ */
-
-            .logo {
-                /**
-                max-width: 100%;
-                height: auto;
-                */
-            }
-
-            .social-media-icon {
-                max-height: 45px;
-                width: auto;
-            }
-
-            .social-media-container {
-                margin: 15px 0;
-                height: 45px;
-            }
-
-            .embeded {
-                max-width: 250px;
-                height: auto;
-            }
-
-            .embeded.left {
-                margin-right: 15px;
-                margin-bottom: 15px;
-            }
-
-            .embeded.right {
-                margin-left: 15px;
-                margin-bottom: 15px;
-            }
-
-            .text-center {
-                text-align: center;
-            }
-
-            .block-center {
-                width: auto !important;
-                margin-left: auto;
-                margin-right: auto;
-                display: table;
-            }
-
-
-
-        </style>
-    </head>
-    <body bgcolor="#f6f6f6">
-    <OpenTracking />
-
-
-        <!-- body -->
-        <table class="body-wrap" bgcolor="#f6f6f6">
-            <tr>
-                <td></td>
-                <td class="container" bgcolor="#FFFFFF">
-
-                    <!-- content -->
-                    <div class="content">
-                        <table>
-                            <tr>
-                                <td>
-                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                        <tr>
-                                            <td></td>
-                                            <td class="content text-center">
-                                                <SimpleURLProperty name="gigazonegaming.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/bower_components/image.php/image.php/email-header-600.jpg?width=600&image=/wp-content/uploads/2016/07/gzg-email-header.png"
-                                                                   href="https://gigazonegaming.com">
-                                                    <a href="https://gigazonegaming.com"><img
-                                                            src="https://gigazonegaming.com/bower_components/image.php/image.php/email-header-600.jpg?width=600&image=/wp-content/uploads/2016/07/gzg-email-header.png"
-                                                            alt="Gigazone Gaming" class="img"/></a>
-                                                </SimpleURLProperty>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    </table>
-                                    <table width="100%" cellspacing="0" cellpadding="0" class="content">
-                                        <tr>
-                                            <td>
-                                                <div class="start-content-here"></div>
-
-                                                <h1>Header 1</h1>
-                                                <img src="http://placehold.it/300x300" align="right" class="embeded right" />
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                                                <h2>Header 2</h2>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                                                <h3>Header 3</h3>
-                                                <img src="http://placehold.it/300x300" align="left" class="embeded left" />
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                                                <h4>Header 4</h4>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                                                <h5>Header 5</h5>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                                                <h6>Header 6</h6>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                                <ul>
-                                                    <li>Lorem ipsum dolor sit amet</li>
-                                                    <li>consectetur adipiscing elit</li>
-                                                    <li>sed do eiusmod tempor incididunt ut</li>
-                                                </ul>
-                                                <ol>
-                                                    <li>Lorem ipsum dolor sit amet</li>
-                                                    <li>consectetur adipiscing elit</li>
-                                                    <li>sed do eiusmod tempor incididunt ut</li>
-                                                </ol>
-                                                <table class="content">
-                                                    <tr>
-                                                        <td align="center"><!-- button -->
-                                                            <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">
-                                                                <tr>
-                                                                    <td>
-                                                                        <a href="https://github.com/leemunroe/html-email-template">Here's a button example</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td align="center"><!-- button -->
-                                                            <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">
-                                                                <tr>
-                                                                    <td>
-                                                                        <a href="https://github.com/leemunroe/html-email-template">View the source and instructions on GitHub</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-
-                                                <div class="end-content-here"></div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" class="content">
-                                        <tr>
-                                            <td>
-                                                <SimpleURLProperty name="gigazone.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-7-600.jpg?width=600&image=/wp-content/uploads/2016/10/GigaZone.png"
-                                                                   href="http://www.paulbunyan.net/gigazone/index.html">
-                                                    <a href="http://www.paulbunyan.net/gigazone/index.html">
-                                                        <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-7-600.jpg?width=600&image=/wp-content/uploads/2016/10/GigaZone.png"
-                                                             alt="Gigazone Service"
-                                                             class="img"/></a>
-                                                </SimpleURLProperty>
-                                            </td>
-
-                                        </tr>
-                                    </table>
-                                    <table cellpadding="0" cellspacing="0" border="0" width="100%"
-                                           class="social-media-container">
-                                        <tr>
-                                            <td align="center" width="20%">
-                                                <SimpleURLProperty name="gigazonegaming.facebook.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/wp-content/uploads/2016/06/facebook.png"
-                                                                   href="https://www.facebook.com/gigazonegaming/"/>
-                                            </td>
-                                            <td align="center" width="20%">
-                                                <SimpleURLProperty name="gigazonegaming.twitter.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/wp-content/uploads/2016/06/twitter.png"
-                                                                   href="https://twitter.com/GigazoneGaming"/>
-                                            </td>
-                                            <td align="center" width="20%">
-                                                <SimpleURLProperty name="gigazonegaming.instagram.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/wp-content/uploads/2016/06/instagram.png"
-                                                                   href="https://www.instagram.com/gigazonegaming/"/>
-                                            </td>
-                                            <td align="center" width="20%">
-                                                <SimpleURLProperty name="gigazonegaming.youtube.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/wp-content/uploads/2016/06/youtube.png"
-                                                                   href="https://www.youtube.com/channel/UCo7den73ECxyP-l55STBj0w"/>
-                                            </td>
-                                            <td align="center" width="20%">
-                                                <SimpleURLProperty name="gigazonegaming.youtube.url"
-                                                                   track="true"
-                                                                   type="plain"
-                                                                   img="https://gigazonegaming.com/wp-content/uploads/2016/06/twitch.png"
-                                                                   href="https://www.twitch.tv/gigazonegaming"/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- /content -->
-
-                </td>
-                <td></td>
-            </tr>
-        </table>
-        <!-- /body -->
-
-        <!-- footer -->
-        <table class="footer-wrap">
-            <tr>
-                <td></td>
-                <td class="container">
-
-                <!-- content -->
-
-                <!-- /content -->
-
-            </td>
-                <td></td>
-            </tr>
-        </table>
-        <!-- /footer -->
-
-    </body>
+<head>
+    <style type="text/css">
+        /* -------------------------------------
+            GLOBAL
+        ------------------------------------- */
+        * {
+            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+            font-size: 100%;
+            line-height: 1.6em;
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            max-width: 600px;
+            width: auto;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            height: 100%;
+            -webkit-text-size-adjust: none;
+            width: 100% !important;
+        }
+
+        /* -------------------------------------
+            ELEMENTS
+        ------------------------------------- */
+        a {
+            color: #348eda;
+        }
+
+        .btn-primary {
+            Margin-bottom: 10px;
+            width: auto !important;
+        }
+
+        .btn-primary td {
+            background-color: #fbb040;
+            border-radius: 25px;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .btn-primary td a, .btn-primary td .href {
+            background-color: #fbb040;
+            border: solid 1px #fbb040;
+            border-radius: 25px;
+            border-width: 10px 20px;
+            display: inline-block;
+            color: #585858;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1.3em;
+            text-decoration: none;
+        }
+
+        .last {
+            margin-bottom: 0;
+        }
+
+        .first {
+            margin-top: 0;
+        }
+
+        .padding {
+            padding: 10px 0;
+        }
+
+        /* -------------------------------------
+            BODY
+        ------------------------------------- */
+        table.body-wrap {
+            padding: 20px;
+            width: 100%;
+        }
+
+        table.body-wrap .container {
+            border: 1px solid #f0f0f0;
+        }
+
+        /* -------------------------------------
+            FOOTER
+        ------------------------------------- */
+        table.footer-wrap {
+            clear: both !important;
+            width: 100%;
+        }
+
+        .footer-wrap .container p {
+            color: #666666;
+            font-size: 12px;
+
+        }
+
+        table.footer-wrap a {
+            color: #999999;
+        }
+
+        /* -------------------------------------
+            TYPOGRAPHY
+        ------------------------------------- */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #040303;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-weight: 200;
+            line-height: 1.2em;
+            margin: 40px 0 10px;
+            clear: both;
+        }
+
+        h2, h3, h4, h5, h6 {
+            color: #585858;
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 400;
+
+        }
+
+        h5 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 400;
+
+        }
+
+        h6 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #D39037;
+        }
+
+        a:visited {
+            color: #59585B;
+        }
+
+        a:hover, a:active {
+            color: #59585B;
+        }
+
+        p,
+        ul,
+        ol {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            color: #040303;
+        }
+
+        p {
+            margin-left: 10px;
+            margin-right: 10px;
+            line-height: 30px;
+        }
+
+        p ol, p ul {
+            margin-top: 20px;
+        }
+
+        ul li,
+        ol li {
+            margin-left: 5px;
+            list-style-position: inside;
+            margin-bottom: 5px;
+            line-height: 30px;
+        }
+
+        /* ---------------------------------------------------
+            RESPONSIVENESS
+        ------------------------------------------------------ */
+
+        /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+        .container {
+            clear: both !important;
+            display: block !important;
+            Margin: 0 auto !important;
+            max-width: 600px !important;
+        }
+
+        /* Set the padding on the td rather than the div for Outlook compatibility */
+        .body-wrap .container {
+            padding: 20px;
+        }
+
+        /* This should also be a block element, so that it will fill 100% of the .container */
+        .content {
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        /* Let's make sure tables in the content area are 100% wide */
+        .content table {
+            width: 100%;
+        }
+
+        /* ---------------------------------------------------
+            Gigazone Gaming
+        ------------------------------------------------------ */
+
+        .logo {
+            /**
+            max-width: 100%;
+            height: auto;
+            */
+        }
+
+        .social-media-icon {
+            max-height: 45px;
+            width: auto;
+        }
+
+        .social-media-container {
+            margin: 15px 0;
+            height: 45px;
+        }
+
+        .embeded {
+            max-width: 250px;
+            height: auto;
+        }
+
+        .embeded.left {
+            margin-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        .embeded.right {
+            margin-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .block-center {
+            width: auto !important;
+            margin-left: auto;
+            margin-right: auto;
+            display: table;
+        }
+
+        .reset {
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+        }
+
+        .margin-after {
+            margin-bottom: 20px;
+        }
+
+        .margin-before {
+            margin-bottom: 20px;
+        }
+
+        .small {
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            font-size: 8px;
+            line-height: 10px;
+            font-weight: normal;
+            color: #999;
+            margin: 0 10px 20px;
+            padding: 0;
+        }
+
+
+    </style>
+</head>
+<body bgcolor="#f6f6f6">
+<OpenTracking/>
+
+
+<!-- body -->
+<table class="body-wrap" bgcolor="#f6f6f6">
+    <tr>
+        <td></td>
+        <td class="container" bgcolor="#FFFFFF">
+
+            <!-- content -->
+            <div class="content">
+                <table>
+                    <tr>
+                        <td>
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td></td>
+                                    <td class="content text-center">
+                                        <SimpleURLProperty name="gigazonegaming.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/bower_components/image.php/image.php/email-header-600.jpg?width=600&image=/wp-content/uploads/2016/07/gzg-email-header.png"
+                                                           href="https://gigazonegaming.com">
+                                            <a href="https://gigazonegaming.com"><img
+                                                    src="https://gigazonegaming.com/bower_components/image.php/image.php/email-header-600.jpg?width=600&image=/wp-content/uploads/2016/07/gzg-email-header.png"
+                                                    alt="Gigazone Gaming" class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <table width="100%" cellspacing="0" cellpadding="0" class="content">
+                                <tr>
+                                    <td>
+                                        <div class="start-content-here"></div>
+
+                                        <h1>Header 1</h1>
+                                        <img src="http://placehold.it/300x300" align="right" class="embeded right"/>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+
+                                        <h2>Header 2</h2>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+
+                                        <h3>Header 3</h3>
+                                        <img src="http://placehold.it/300x300" align="left" class="embeded left"/>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+
+                                        <h4>Header 4</h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+
+                                        <h5>Header 5</h5>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+
+                                        <h6>Header 6</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                            non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                            laborum.</p>
+                                        <ul>
+                                            <li>Lorem ipsum dolor sit amet</li>
+                                            <li>consectetur adipiscing elit</li>
+                                            <li>sed do eiusmod tempor incididunt ut</li>
+                                        </ul>
+                                        <ol>
+                                            <li>Lorem ipsum dolor sit amet</li>
+                                            <li>consectetur adipiscing elit</li>
+                                            <li>sed do eiusmod tempor incididunt ut</li>
+                                        </ol>
+                                        <table class="content">
+                                            <tr>
+                                                <td align="center"><!-- button -->
+                                                    <table class="btn-primary" cellpadding="0" cellspacing="0"
+                                                           border="0">
+                                                        <tr>
+                                                            <td>
+                                                                <a href="https://github.com/leemunroe/html-email-template">Here's
+                                                                    a button example</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td align="center"><!-- button -->
+                                                    <table class="btn-primary" cellpadding="0" cellspacing="0"
+                                                           border="0">
+                                                        <tr>
+                                                            <td>
+                                                                <a href="https://github.com/leemunroe/html-email-template">View
+                                                                    the source and instructions on GitHub</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="end-content-here"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                                   class="social-media-container">
+                                <tr>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.facebook.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/facebook.png"
+                                                           href="https://www.facebook.com/gigazonegaming/">
+                                            <a href="https://www.facebook.com/gigazonegaming/"><img
+                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/facebook.png"
+                                                    alt="Gigazone Gaming on Facebook" class="img"/></a>
+                                        </SimpleURLProperty>
+
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.twitter.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/twitter.png"
+                                                           href="https://twitter.com/GigazoneGaming">
+                                            <a href="https://twitter.com/GigazoneGaming"><img
+                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/twitter.png"
+                                                    alt="Gigazone Gaming on Twitter" class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.instagram.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/instagram.png"
+                                                           href="https://www.instagram.com/gigazonegaming/">
+                                            <a href="https://www.instagram.com/gigazonegaming/"><img
+                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/instagram.png"
+                                                    alt="Gigazone Gaming on Instagram" class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.youtube.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/youtube.png"
+                                                           href="https://www.youtube.com/channel/UCo7den73ECxyP-l55STBj0w">
+                                            <a href="https://www.youtube.com/channel/UCo7den73ECxyP-l55STBj0w"><img
+                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/youtube.png"
+                                                    alt="Gigazone Gaming on YouTube" class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                    <td align="center" width="20%">
+                                        <SimpleURLProperty name="gigazonegaming.youtube.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/wp-content/uploads/2016/06/twitch.png"
+                                                           href="https://www.twitch.tv/gigazonegaming">
+                                            <a href="https://www.twitch.tv/gigazonegaming"><img
+                                                    src="https://gigazonegaming.com/wp-content/uploads/2016/06/twitch.png"
+                                                    alt="Gigazone Gaming on Twitch" class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0"
+                                   class="social-media-container">
+                                <tr>
+                                    <td>
+                                        <SimpleURLProperty name="gigazone.url"
+                                                           track="true"
+                                                           type="plain"
+                                                           img="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-7-600.jpg?width=600&amp;image=/wp-content/uploads/2016/10/GigaZone.png"
+                                                           href="http://www.paulbunyan.net/gigazone/index.html">
+                                            <a href="http://www.paulbunyan.net/gigazone/index.html">
+                                                <img src="https://gigazonegaming.com/bower_components/image.php/image.php/20161029-7-600.jpg?width=600&amp;image=/wp-content/uploads/2016/10/GigaZone.png"
+                                                     alt="Gigazone Service"
+                                                     class="img"/></a>
+                                        </SimpleURLProperty>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /content -->
+
+        </td>
+        <td></td>
+    </tr>
+</table>
+<!-- /body -->
+
+<!-- footer -->
+<table class="footer-wrap">
+    <tr>
+        <td></td>
+        <td class="container">
+
+            <!-- content -->
+
+            <!-- /content -->
+
+        </td>
+        <td></td>
+    </tr>
+</table>
+<!-- /footer -->
+
+</body>
 </html>
