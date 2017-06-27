@@ -58,6 +58,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->click(".filter-TesterTournament");
 //        $I->waitForJS("return $('.filter-TesterTournament').click();", $this::TEXT_WAIT_TIMEOUT);
 //        $I->see('Create a new Team');
+        $I->waitForText('Create a new Team', $this::TEXT_WAIT_TIMEOUT);
         $I->seeOptionIsSelected('#tournament_sort', 'Tester Tournament');
         $I->wantTo('click on a team and land on player page with an applied filter');
 //        $I->waitForJS("return $('.filter-TesterTeam').click();", $this::TEXT_WAIT_TIMEOUT);
