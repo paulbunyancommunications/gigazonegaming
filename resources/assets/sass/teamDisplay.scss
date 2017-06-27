@@ -1,0 +1,258 @@
+@import 'teamVariables';
+
+html{
+  font-family: $main-font;
+}
+
+body{
+  background-image: $body-background;
+}
+.altBodyBackground{
+  background: $alt-body-background;
+  background-size: contain;
+}
+.hidden{
+  display: $hidden;
+}
+.mainDiv{
+  text-align: center;
+}
+h1{
+  margin: 0;
+  text-align: center;
+  font-size: $font-size-lg;
+  text-shadow: $text-shadow;
+  color: white;
+}
+.backgroundH1{
+  background-image: $header-background;
+  border-radius: $min-space + 5;
+  padding: $min-space + 5;
+}
+.teamName{
+  width: $width;
+  text-align: center;
+  font-size:$font-size-lg + 40;
+  text-shadow: $text-shadow;
+  color: white;
+  background-color: $faded;
+  padding-bottom: $min-space + 15;
+}
+.borderTop {
+  width: $width - 51;
+  display: $inline;
+  padding-left: $min-space + 5;
+  margin-left:  $min-space - 15;
+  height: $border-height;
+  top: $border-top;
+  background: $border-background2;
+  margin-bottom: $min-space + 5;
+}
+.borderTop2 {
+  width: $width - 51;
+  display:$inline;
+  padding-left: $min-space + 5;
+  margin-left: $min-space - 15;
+  height: $border-height;
+  top: $border-top;
+  background: $border-background;
+  margin-bottom: $min-space + 5;
+}
+.collapse{
+  display:$inline;
+  vertical-align:top;
+  color: white;
+  width:$width - 55;
+}
+.collapse-b{
+  background: $player-stats-background;
+  background-size: cover;
+  margin-left: $min-space + 1;
+  width:$width - 55;
+  display:$inline;
+  vertical-align:top;
+  color: white;
+  overflow-y:auto;
+  border: $border-sm;
+  border-image: $main-border-image;
+}
+.extra-stats{
+  margin-right: auto;
+  margin-left: auto;
+  width:$width - 7;
+  background-color: $faded;
+  border: $extraStatsBorder;
+  height:0;
+}
+.collapse-b::-webkit-scrollbar {
+  background-color: $noFade;
+}
+.collapse-b::-webkit-scrollbar-thumb {
+  background-color: $smallFade;
+}
+.collapse img{
+  margin-top: 0;
+}
+.collapse-M-heading{
+  text-decoration: $u;
+  font-size: $name-font-size - 4;
+  color: $minor-heading-color;
+}
+.collapse-heading{
+  color: $minor-heading-color;
+  font-size: $name-font-size - 6;
+}
+.rankV{
+  font-size: $name-font-size - 6;
+}
+.rankV img{
+  width:$width - 65;
+}
+.playerNameContainer{
+  text-align: center;
+  margin-bottom: $min-space + 5;
+  border: $main-border-size;
+  border-image: $main-border-image;
+  background: $name-background;
+  background-size: cover;
+  text-shadow: $text-shadow;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: $no-wrap;
+}
+.summonerName{
+  color: white;
+}
+.icon{
+  border-radius: $icon-radius;
+  width: $width - 85;
+  height: auto;
+  border: $gold inset;
+}
+.playerInfo{
+  color: white;
+}
+.playerBorder{
+  border: $main-border-size;
+  border-image: $main-border-image;
+  background: $player-stats-background;
+  background-size: cover;
+}
+.playerStatsContainer{
+  width: $width - 50;
+  display: $inline;
+  white-space: $no-wrap;
+}
+.playerMainHeading{
+  text-decoration: $u;
+  font-size: $name-font-size;
+  color: $minor-heading-color;
+}
+.playerHeading{
+  color: $minor-heading-color;
+}
+.rank{
+  width: $width - 50;
+}
+.unranked{
+  opacity: $opacity-md;
+}
+.spinner-container {
+  margin: auto;
+  padding-top: $min-space + 5;
+  max-width: $max-width;
+  position: $rel;
+  text-align: center;
+}
+.spinner-overlay {
+  background: $overlay;
+  z-index: $z-1 + 3;
+  opacity: $opacity-sm;
+}
+.spinner-image {
+  z-index: $z-1 + 4;
+  background: $spinner-img;
+  opacity: $opacity-sm;
+}
+.loadChampion{
+  width: $width;
+  height: auto;
+  opacity:0;
+  padding: $min-space - 4;
+}
+.imageContainer{
+  height: auto;
+  width: $width;
+  max-width: $max-width;
+  margin: auto;
+  position:$rel;
+}
+.championName{
+  position:absolute;
+  bottom:$champNameBottom;
+  color:white;
+  width:$width;
+  text-align: center;
+  background-color: $faded;
+}
+.championImage{
+  margin-top: $min-space + 5;
+  width: $width;
+  height: auto;
+  padding:$min-space - 4;
+}
+h3{
+  margin: 0;
+  text-align:center;
+  text-shadow: $text-shadow;
+  color: white;
+}
+.championImage:hover {
+  background-color: blue;
+}
+.teamFooter{
+  position: fixed;
+  bottom: 0;
+  width: $width;
+  text-align: center;
+}
+.giga_teamImage{
+  width: $max-width;
+}
+.col-lg{
+  display:inline-block;
+  margin: $min-space + 5;
+  max-width: $max-width;
+}
+.v-align{
+  vertical-align: top;
+}
+@media (min-width:1080px) {
+  .col-lg {
+    width: $sz-xs;
+  }
+  .summonerName{
+    font-size:$name-font-size - 3;
+    vertical-align: $v-align - 8;
+  }
+}
+@media (max-width:1079px) {
+  .col-lg {
+    width: $sz-sm;
+  }
+  .summonerName{
+    font-size:$name-font-size - 3;
+    vertical-align: $v-align - 2;
+  }
+}
+@media (max-width:1030px) {
+  .col-lg {
+    width: $sz-md;
+  }
+}
+@media (max-width:530px) {
+  .col-lg {
+    width: $sz-lg;
+  }
+}

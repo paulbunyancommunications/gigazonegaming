@@ -1,14 +1,14 @@
 Arguments: 
-  /usr/bin/nodejs /usr/share/yarn/bin/yarn.js add jscs
+  /usr/bin/nodejs /usr/share/yarn/bin/yarn.js install
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 Yarn version: 
-  0.23.2
+  0.24.5
 
 Node version: 
-  7.9.0
+  7.10.0
 
 Platform: 
   linux x64
@@ -4159,4 +4159,4 @@ Lockfile:
       wordwrap "0.0.2"
 
 Trace: 
-  Error: EINVAL: invalid argument, symlink '../../../acorn/bin/acorn' -> '/var/www/html/node_modules/astw/node_modules/.bin/acorn'
+  Error: EINVAL: invalid argument, symlink '../../../browser-pack/bin/cmd.js' -> '/var/www/html/node_modules/browserify/node_modules/.bin/browser-pack'

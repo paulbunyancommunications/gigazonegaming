@@ -41,11 +41,6 @@ function showTeams2(){
 }
 showTeams();
 showTeams2();
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $("#hiddenToken").text()
-    }
-});
 
 /* These three blocks make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
 $('#Color').change(function() {
@@ -93,14 +88,29 @@ function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
 
+
+/**
+ * Initialize Ajax with a token
+ */
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $("#hiddenToken").text()
+    }
+});
+
+/**
+* Caches Champions for team 1 and 2
+*/
 function submitCache(){
 
     $('#loader').removeClass('hidden');
     $('#submit').addClass('hidden');
     document.getElementById('info').innerHTML = 'Please Wait...';
+
     ///Set up cache arrays for team and color
     var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
     var color = [$('#Color option:selected').text(), $('#Color-1 option:selected').text()];
+
     ///Execute cache controller with ajax
     $.ajax({
         method: "GET",
@@ -112,31 +122,40 @@ function submitCache(){
             color: color
         },
         success: function(data){
+            //Reset Info Box
             document.getElementById('info').innerHTML = "";
+
+            //If there is an error display it in the info box else display the results.
             if(data.ErrorCode){
                 document.getElementById('info').innerHTML = data.ErrorMessage;
             }else{
-                document.getElementById('info').innerHTML = "<h3 class='console-header'>UPDATED</h3><br/><span class='console-sub-header'>Team 1:</span> " + data.teamName[0] + "<br/><span class='console-sub-header'>Color:</span> " + data.colors[0] + "<br/><span class='console-sub-header'>Players Array:</span> [" + data.teamInfo[0].summonerArray + "]<br/><span class='console-sub-header'>Icons:</span> [" + data.teamInfo[0].iconArray + "]<br/><span class='console-sub-header'>Solo Ranks:</span> [" + data.teamInfo[0].soloRankArray + "]<br/><span class='console-sub-header'>Solo Win Losses:</span> [" + data.teamInfo[0].summonerArray + "]<br/><span class='console-sub-header'>Flex Ranks:</span> [" + data.teamInfo[0].flexRankArray + "]<br/><span class='console-sub-header'>Flex Rank Win Losses:</span> [" + data.teamInfo[0].flexWinLossArray + "]<br/><h3 class='console-header'>UPDATED</h3><br/><span class='console-sub-header'>Team 2:</span> " + data.teamName[1] + "<br/><span class='console-sub-header'>Color:</span> " + data.colors[1] + "<br/><span class='console-sub-header'>Players Array:</span> [" + data.teamInfo[1].summonerArray + "]<br/><span class='console-sub-header'>Icons:</span> [" + data.teamInfo[1].iconArray + "]<br/><span class='console-sub-header'>Solo Ranks:</span> [" + data.teamInfo[1].soloRankArray + "]<br/><span class='console-sub-header'>Solo Win Losses:</span> [" + data.teamInfo[1].summonerArray + "]<br/><span class='console-sub-header'>Flex Ranks:</span> [" + data.teamInfo[1].flexRankArray + "]<br/><span class='console-sub-header'>Flex Rank Win Losses:</span> [" + data.teamInfo[1].flexWinLossArray+"]<br/>";
+                document.getElementById('info').innerHTML = "<h3 class='console-header'>UPDATED</h3><br/><span class='console-sub-header'>Team 1:</span> " + data.teamName[0] + "<br/><span class='console-sub-header'>Color:</span> " + data.colors[0] + "<br/><span class='console-sub-header'>Players Array:</span> [" + data.teamInfo[0].summonerArray + "]<br/><span class='console-sub-header'>Icons:</span> [" + data.teamInfo[0].iconArray + "]<br/><span class='console-sub-header'>Solo Ranks:</span> [" + data.teamInfo[0].soloRankArray + "]<br/><span class='console-sub-header'>Solo Win Losses:</span> [" + data.teamInfo[0].soloWinLossArray + "]<br/><span class='console-sub-header'>Flex Ranks:</span> [" + data.teamInfo[0].flexRankArray + "]<br/><span class='console-sub-header'>Flex Rank Win Losses:</span> [" + data.teamInfo[0].flexWinLossArray + "]<br/><h3 class='console-header'>UPDATED</h3><br/><span class='console-sub-header'>Team 2:</span> " + data.teamName[1] + "<br/><span class='console-sub-header'>Color:</span> " + data.colors[1] + "<br/><span class='console-sub-header'>Players Array:</span> [" + data.teamInfo[1].summonerArray + "]<br/><span class='console-sub-header'>Icons:</span> [" + data.teamInfo[1].iconArray + "]<br/><span class='console-sub-header'>Solo Ranks:</span> [" + data.teamInfo[1].soloRankArray + "]<br/><span class='console-sub-header'>Solo Win Losses:</span> [" + data.teamInfo[1].soloWinLossArray + "]<br/><span class='console-sub-header'>Flex Ranks:</span> [" + data.teamInfo[1].flexRankArray + "]<br/><span class='console-sub-header'>Flex Rank Win Losses:</span> [" + data.teamInfo[1].flexWinLossArray+"]<br/>";
             }
             console.log(data);
-            //Alert Data that has been updated in the cache
+
+            //Remove loading animation and restore the submit button.
             $('#loader').addClass('hidden');
             $('#submit').removeClass('hidden');
         }
 
     });
 }
-function GetChampions() {
+
+/**
+ * Loads the cache player objects and then checks to see if their champion is ready. If so it caches the champions
+ */
+function getChampions() {
+    document.getElementById('info').innerHTML = "Please Wait...";
     var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
     $.ajax({
         method: "GET",
         type: "GET",
         url: "/app/GameDisplay/cacheChampions",
         data: {
-            '_token': "{{ csrf_token() }}",
             team: team
         },success: function(data){
-            if(data.ErrorCode){
+            console.log(data);
+            if(data.ErrorCode === 'true'){
                 document.getElementById('info').innerHTML = data.ErrorMessage;
             }else{
                 document.getElementById('info').innerHTML = data.Champions;
@@ -145,10 +164,12 @@ function GetChampions() {
 
     });
 }
+
+/**
+ * Clears all the cache.
+*/
 function clearCache(){
     document.getElementById('info').innerHTML = 'Please Wait...';
-    ///Set up cache arrays for team and color
-    ///Execute cache controller with ajax
     $.ajax({
         method: "GET",
         type: "GET",
@@ -156,6 +177,5 @@ function clearCache(){
         success: function(data){
             document.getElementById('info').innerHTML = data;
         }
-
     });
 }

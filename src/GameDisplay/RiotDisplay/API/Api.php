@@ -10,19 +10,19 @@ class Api{
 
 # Variables
 #----------------------------------------------------------------------
-    protected $apiKey;
-    protected $Summoner;
-    protected $summonerID;
-    protected $Icon;
-    protected $LeagueV3Json;
-    protected $currentGameInfo;
-    protected $championId;
-    protected $championName;
-    protected $championImg;
-    protected $currentGameStatus = false;
+    private $apiKey;
+    private $Summoner;
+    private $summonerID;
+    private $Icon;
+    private $LeagueV3Json;
+    private $currentGameInfo;
+    private $championId;
+    private $championName;
+    private $championImg;
+    private $currentGameStatus = false;
 
     #Request Counter
-    protected $counter = 0;
+    private $counter = 0;
 
 
 
@@ -49,12 +49,12 @@ class Api{
     public function ApiRequest($Url, $counter = 0){
         #Set up client
         $client = new Client();
-
+        $string = "";
         #Request Info From Api
         $request = new Request('Get', $Url);
         $response = $client->send($request);
         #If Request Goes Through Return Json Response, Else Try 10 Times then through exception.
-        switch ((int)$response->getStatusCode()){
+        switch ((int)$response->getStatusCode()) {
             case 200:
                 return json_decode($response->getBody());
                 break;
@@ -62,8 +62,8 @@ class Api{
                 return false;
                 break;
             case 429:
-                if($counter > 2){
-                    throw new Exception("Calling Api Key Too Soon $this->apiKey");
+                if ($counter > 2) {
+                    throw new Exception("Calling Api Key Too Soon $this->apiKey summoner: $this->Summoner");
                 }
                 $counter++;
                 sleep(1);
@@ -110,19 +110,26 @@ class Api{
     {
         $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
         $info = $this->ApiRequest($Url);
-        #sets summoner ID for further use with the api.
-        try{
-            $this->summonerID = $info->id;
-        }catch( \Exception $e){
-            if($this->counter > 10){
-                $this->summonerID = null;
+        if($info){
+            try{
+                $this->summonerID = $info->id;
+            }catch( \Exception $e){
+                if($this->counter > 10){
+                    $this->summonerID = null;
+                }
+                else{
+                    $this->setSummonerID();
+                    throw new Exception("Summoner ID not found in json response for: $this->Summoner");
+                }
+                $this->counter++;
             }
-            else{
-                $this->setSummonerID();
-                echo "ERRORRRRRRRRR";
-            }
-            $this->counter++;
         }
+        else{
+            throw new Exception("Summoner '$this->Summoner' is not a valid name in North America");
+        }
+
+        #sets summoner ID for further use with the api.
+
 
     }
 
@@ -263,6 +270,13 @@ class Api{
         return $this->championImg;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
 
 
 }

@@ -6,8 +6,8 @@ body{
     background-image: url('https://raw.githubusercontent.com/paulbunyannet/gigazonegaming-press-kit/master/backgrounds/gigazone-pattern-background-dark.png');
 }
 .altBodyBackground{
-    background: url('/LeagueOfLegendsDisplay/Images/lock-screen-2016.jpg');
-    background-size: cover;
+    background: url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif');
+    background-size: contain;
 }
 .hidden{
     display: none;
@@ -60,12 +60,13 @@ h1{
     display:inline-block;
     vertical-align:top;
     color: white;
-    overflow: hidden;
+    width:45%;
 }
 .collapse-b{
     background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
     background-size: cover;
     margin-left: 6px;
+    width:45%;
     display:inline-block;
     vertical-align:top;
     color: white;
@@ -76,7 +77,7 @@ h1{
 .extra-stats{
     margin-right: auto;
     margin-left: auto;
-    width:97%;
+    width:93%;
     background-color: rgba(0,0,0,.5);
     border: 2px inset;
     height:0;
@@ -103,7 +104,7 @@ h1{
     font-size: 9pt;
 }
 .rankV img{
-    width:35%
+    width:35%;
 }
 .playerNameContainer{
     text-align:center;
@@ -216,7 +217,7 @@ h3{
     text-align:center;
 }
 .giga_teamImage{
-    width:300px
+    width:300px;
 }
 .col-lg{
     display:inline-block;
@@ -230,12 +231,6 @@ h3{
     .col-lg {
         width: 17%!important;
     }
-    .collapse{
-        width:47%;
-    }
-    .collapse-b{
-        width:47%;
-    }
     .summonerName{
         font-size:12pt;
         vertical-align: 12px;
@@ -244,12 +239,6 @@ h3{
 @media (max-width:1079px) {
     .col-lg {
         width: 33%!important;
-    }
-    .collapse{
-        width:47%;
-    }
-    .collapse-b{
-        width:47%;
     }
     .summonerName{
         font-size:12pt;
@@ -260,21 +249,9 @@ h3{
     .col-lg {
         width: 45%!important;
     }
-    .collapse{
-        width:47%;
-    }
-    .collapse-b{
-        width:47%;
-    }
 }
 @media (max-width:530px) {
     .col-lg {
         width: 100%!important;
-    }
-    .collapse{
-        width:47%;
-    }
-    .collapse-b{
-        width:47%;
     }
 }

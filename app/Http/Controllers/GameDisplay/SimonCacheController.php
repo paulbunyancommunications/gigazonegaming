@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\GameDisplay;
 
 use Illuminate\Support\Facades\Cache;
 
@@ -15,6 +15,7 @@ use GameDisplay\RiotDisplay\Summoner;
 use Mockery\Exception;
 use function MongoDB\BSON\toJSON;
 use PhpParser\Node\Stmt\Return_;
+use App\Http\Controllers\Controller;
 
 class SimonCacheController extends Controller
 {
@@ -28,9 +29,9 @@ class SimonCacheController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
-    protected $ApiIterator = 0;
+    protected $apiIterator = 0;
 
-    public function teamViewDisplay(Request $req)
+    public function SubmitCache(Requests\SimonCacheSubmitCache $req)
     {
         $tournament = $req->tournament;
         $team = $req->team;
@@ -46,10 +47,8 @@ class SimonCacheController extends Controller
                 array_push($teamInfoArrays,$this->makeTeam());
                 array_push($colorArray,$colorResult);
                 array_push($playersArray, $this->players);
-
                 $this->resetArrays();
             }
-
 
             $this->cacheContent($teamInfoArrays,$colorArray,$team,$playersArray);
             $returnArray = array(
@@ -57,12 +56,12 @@ class SimonCacheController extends Controller
                 'teamInfo' => $teamInfoArrays,
                 'colors' => $colorArray,
                 'ErrorCode' => false,
-                'players' => Cache::get('Players')
+                'players' => $playersArray
             );
         }catch(Exception $e){
             $returnArray = array(
                 'ErrorCode' => true,
-                'ErrorMessage' => $e->getMessage()
+                'ErrorMessage' => $e->getMessage(),
             );
         }
 
@@ -96,12 +95,13 @@ class SimonCacheController extends Controller
                 switch ($TournamentName){
                     #LOL
                     case str_contains($TournamentName, "league-of-legends"):
-                        $summoner = new Summoner($player->username, $this->ApiIterator);
+                        $summoner = new Summoner($player->username, $this->apiIterator);
                         array_push($this->players, $summoner);
-                        $this->ApiIterator++;
+                        $this->apiIterator++;
+
                         //Reset Api Key Counter
-                        if($this->ApiIterator == 10){
-                            $this->ApiIterator = 0;
+                        if($this->apiIterator == 10){
+                            $this->apiIterator = 0;
                         }
                         break;
                     #Overwatch
@@ -143,9 +143,11 @@ class SimonCacheController extends Controller
         return $team;
     }
     public function resetArrays(){
-        foreach ($this as $key => $value) {
-                $this->$key = array();
-        }
+            foreach ($this as $key => $value) {
+                if($this->$key != $this->apiIterator) {
+                    $this->$key = array();
+                }
+            }
     }
     public function cacheContent($teamInfoArrays,$colorArray,$team,$players){
         Cache::put('Players', $players, 70);
@@ -161,43 +163,43 @@ class SimonCacheController extends Controller
 
     public function getChampions(Request $req){
         $team = $req->team;
-
+        $apiKeyArray=array();
 
         if(Cache::has('Players')){
             try{
             $players = Cache::get('Players');
-            $championArray=array();
-            $championPlayerId = array();
-            $j = 0;
-            for($i = 0; $i < count($players[0])-1; $i++){
-                $status = $players[$j][$i]->checkCurrentGameStatus();
-                if($status){
-                    $players[$j][$i]->setChampion();
-                    array_push($championArray[$j], $players[$j][$i]->getChampion());
-                    array_push($championPlayerId[$j], $i);
-                }
-                if($i=4 && $j<1){
-                    $i = 0;
-                    $j++;
+            $championArray = [[],[]];
+            $championPlayerId = [[],[]];
+            #t for team
+            for($t = 0; $t < count($players); $t++){
+                for($p = 0; $p < count($players[$t]); $p++){
+                    $status = $players[$t][$p]->checkCurrentGameStatus();
+                    if($status) {
+                        $players[$t][$p]->setChampion();
+                        array_push($championArray[$t], $players[$t][$p]->getChampion());
+                        array_push($championPlayerId[$t], $p);
+                    }
                 }
             }
-            if($championArray[0] != []){
-                Cache::put('Team1Champions', $championArray[0], 70);
-            }if($championArray[1] != []){
-                Cache::put('Team2Champions', $championArray[1], 70);
-            }
-            if($championArray[0] != [] || $championArray[1] != []){
-                return array('Champions' => $championArray, 'ChampionsPlayersId'=>$championPlayerId, 'ErrorCode' => 'false');
+            if($championArray != [[],[]]){
+                if($championArray[0] != []){
+                    Cache::put('Team1Champions', $championArray[0], 70);
+                    Cache::put('Team1ChampionsPlayerId', $championPlayerId[0], 70);
+                }if($championArray[1] != []){
+                    Cache::put('Team2Champions', $championArray[1], 70);
+                    Cache::put('Team2ChampionsPlayerId', $championPlayerId[1], 70);
+                }
+                $returnArray = array('Champions' => $championArray, 'ChampionsPlayersId'=>$championPlayerId, 'ErrorCode' => 'false');
+                return $returnArray;
             }
             else{
                 return array('ErrorCode' => 'true', 'ErrorMessage' => 'Champions are not ready.');
             }
-            }catch(Exception $e){
-                return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage());
+            }catch(\Exception $e){
+                return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage() , 'ApiArray' => $apiKeyArray);
             }
 
-        }
-        else{
+        }else{
             return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please Select a team and a color before getting champions.');
         }
     }
