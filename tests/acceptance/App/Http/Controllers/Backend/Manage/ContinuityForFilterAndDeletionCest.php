@@ -180,12 +180,12 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->click(".delete-TesterTournament");
         $I->wait(10);
 //        $I->waitForText('Create a new Tournament', $this::TEXT_WAIT_TIMEOUT);
-        $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
+        $I->dontSeeLink('Tester Tournament');
 
         $I->amOnPage('/app/manage/team');
         
         $I->see('Create a new Team');
-        $I->dontSeeElement('input', ['value' => 'Tester Team']);
+        $I->dontSeeLink('Tester Team');
 
         $I->amOnPage('/app/manage/game');
         
@@ -196,7 +196,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->click(".delete-tester-game");
         $I->wait(10);
         $I->waitForText('Create a new Game', $this::TEXT_WAIT_TIMEOUT);
-        $I->dontSeeElement('input', ['value' => 'tester-game']);
+        $I->dontSeeLink('tester-game');
 
     }
     /**
@@ -215,15 +215,15 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->click(".delete-tester-game");
         $I->wait(10);
         $I->waitForText('Create a new Game', $this::TEXT_WAIT_TIMEOUT);
-        $I->dontSeeElement('input', ['value' => 'tester-game']);
+        $I->dontSeeLink('tester-game');
 
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
-        $I->dontSeeElement('input', ['value' => 'Tester Tournament']);
+        $I->dontSeeLink('Tester Tournament');
 
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
-        $I->dontSeeElement('input', ['value' => 'Tester Team']);
+        $I->dontSeeLink('Tester Team');
 
 
     }
