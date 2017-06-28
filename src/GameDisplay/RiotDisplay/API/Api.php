@@ -150,7 +150,7 @@ class Api{
     }
 
     public function getSummonerIcon(){
-        return "https://avatar.leagueoflegends.com/NA1/".$this->Summoner.".png";
+        return "https://avatar.leagueoflegends.com/na/".$this->Summoner.".png";
     }
 
     public function getSoloRankedWinLoss(){

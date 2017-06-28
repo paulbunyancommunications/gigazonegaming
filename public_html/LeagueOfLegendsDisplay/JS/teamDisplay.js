@@ -13,18 +13,29 @@ function fadInChampion() {
             $('#divA2').fadeOut(2000);
             $('#divA3').fadeOut(2000);
             $('#divA4').fadeOut(2000);
+            $('#divD0').fadeOut(2000);
+            $('#divD1').fadeOut(2000);
+            $('#divD2').fadeOut(2000);
+            $('#divD3').fadeOut(2000);
+            $('#divD4').fadeOut(2000);
+
         },
         2000
     );
     setTimeout(
         function() {
-            $('#divB0').fadeIn(3000);
-            $('#divB1').fadeIn(3000);
-            $('#divB2').fadeIn(3000);
-            $('#divB3').fadeIn(3000);
-            $('#divB4').fadeIn(3000);
+            $('#divB0').fadeIn(2000);
+            $('#divB1').fadeIn(2000);
+            $('#divB2').fadeIn(2000);
+            $('#divB3').fadeIn(2000);
+            $('#divB4').fadeIn(2000);
+            $('#divE0').fadeIn(2000);
+            $('#divE1').fadeIn(2000);
+            $('#divE2').fadeIn(2000);
+            $('#divE3').fadeIn(2000);
+            $('#divE4').fadeIn(2000);
         },
-        4100
+        4000
     );
 }
 
@@ -54,6 +65,10 @@ function showExtraStats(id) {
     id = id.split('');
     $('#S'+id[5]).hide();
 }
+
+$(window).resize(function(){for(i=0;i<5;i++){$('#extra'+ i).css({'height': '32px'});setTimeout(function(){$('#S'+i).show();},200);}});
+
+/*This function resets the drop down effect for the extra stats container*/
 function removeExtraStats(id){
         $('#'+ id).animate({
             'height': '32px'
@@ -122,7 +137,7 @@ $(document).on('click', '#M4', function(){
     $('#4-4').removeClass('v-align');
     $('#4-3').addClass('hidden');
 });
-/*This sets the defauly view for a mobile layout*/
+/*This sets the default view for a mobile layout*/
 function mobileDisplay(){
     if(document.getElementById('other')) {
         if ($(window).width() <= 530) {
@@ -132,8 +147,8 @@ function mobileDisplay(){
                 $('#' + i + '-2').addClass('hidden');
                 $('#' + i + '-3').removeClass('hidden');
                 $('#' + i + '-4').addClass('v-align');
-                setBoxHeight();
-                document.getElementById('extra' + i).innerHTML = '<button id="' + "S" + i + '" onclick=showExtraStats($(this).parent().attr("id"))>Expand</button><b class="collapse-M-heading">&nbsp;&nbsp;Spells&nbsp;&nbsp;</b><br/><b class="collapse-M-heading">&nbsp;&nbsp;Runes&nbsp;&nbsp;</b><br/><button onclick=removeExtraStats($(this).parent().attr("id"))>Collapse</button>';
+                $(document).ready(setBoxHeight());
+                document.getElementById('extra' + i).innerHTML = '<button id="' + "S" + i + '" onclick=showExtraStats($(this).parent().attr("id"))>Expand</button><div class="carousel" id="' + "carousel" + i + '"><figure class="spinner" id="' + "spinner" + i + '"><img class="minimize" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1"><img class="explode" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I2"><img class="explode" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I3"></figure><figure class="spinnerRank" id="' + "championRank" + i + '"><div>Rank 1</div><div>Rank 2</div><div>Rank 3</div></figure></div><span style="float:left" class="ss-icon" onclick=galleryspin("-","' + "spinner" + i + '","' + "championRank" + i + '")>&lt;</span><span style="float:right" class="ss-icon" onclick=galleryspin("","' + "spinner" + i + '","' + "championRank" + i + '")>&gt;</span><br/><div id="image1Infospinner'+ i +'" class="playerInfo">Image 1</div><div id="image2Infospinner'+ i +'" class="hidden playerInfo">Image 2</div><div id="image3Infospinner'+ i +'" class="hidden playerInfo">Image 3</div><button onclick=removeExtraStats($(this).parent().attr("id"))>Collapse</button>';
             }
         } else {
             for (i = 0; i < 5; i++) {
@@ -142,7 +157,7 @@ function mobileDisplay(){
                 $('#' + i + '-2').removeClass('hidden');
                 $('#' + i + '-3').addClass('hidden');
                 $('#' + i + '-4').removeClass('v-align');
-                setBoxHeight();
+                $(document).ready(setBoxHeight());
                 document.getElementById('extra' + i).innerHTML = '<button id="' + "S" + i + '" onclick=showExtraStats($(this).parent().attr("id"))>Expand</button><b class="collapse-M-heading">&nbsp;&nbsp;Spells&nbsp;&nbsp;</b><br/><b class="collapse-M-heading">&nbsp;&nbsp;Runes&nbsp;&nbsp;</b><br/><button onclick=removeExtraStats($(this).parent().attr("id"))>Collapse</button>';
             }
         }
@@ -158,10 +173,9 @@ function setBoxHeight(){
     $('#D3').height($('#C3').height() - 9);
     $('#D4').height($('#C4').height() - 9);
 }
-$(document).ready($(window).resize(function(){
-    setBoxHeight();
-}));
+$(document).ready(function(){setBoxHeight();});
 
+$(window).resize(function(){setBoxHeight();});
 /*This function gets the data needed for loading the page*/
 $(document).ready(GetData());
 
@@ -224,7 +238,7 @@ function UpdateData() {
                         champName[0] = "Wukong";
                     }
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                    document.getElementById('C' + data[2][i]).innerHTML = '<img id="'+ "M"+ data[2][i]+'" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
+                    document.getElementById('divE' + data[2][i]).innerHTML = '<i id="'+ "M"+ data[2][i]+'" style="position: absolute;bottom:5px;right:0;" class="fa fa-plus-square" aria-hidden="true"></i><img class="championImage" src="' + data[1][i] + '"/><div id="'+ "N"+ data[2][i]+'" class="championName"><h3>' + champName[0] + '</h3></div>';
                 }
                 fadInChampion();
                 setTimeout(UpdateData,2000);
@@ -235,3 +249,143 @@ function UpdateData() {
         }
     });
 }
+/*Testing a carousel*/
+angle = 0;
+angle0 = 0;
+angle1 = 0;
+angle2 = 0;
+angle3 = 0;
+angle4 = 0;
+counterVar = 0;
+counterVar0 = 0;
+counterVar1 = 0;
+counterVar2 = 0;
+counterVar3 = 0;
+counterVar4 = 0;
+prevAngle = 0;
+prevAngle0 = 0;
+prevAngle1 = 0;
+prevAngle2= 0;
+prevAngle3 = 0;
+prevAngle4 = 0;
+function galleryspin(sign,id,rank) {
+    if (id === "spinner0"){
+        angle = angle0;
+        counterVar = counterVar0;
+        prevAngle = prevAngle0;
+
+    }else if (id === "spinner1"){
+        angle = angle1;
+        counterVar = counterVar1;
+        prevAngle = prevAngle1;
+    }else if (id === "spinner2"){
+        angle = angle2;
+        counterVar = counterVar2;
+        prevAngle = prevAngle2;
+    }else if (id === "spinner3"){
+        angle = angle3;
+        counterVar = counterVar3;
+        prevAngle = prevAngle3;
+    }else{
+        angle = angle4;
+        counterVar = counterVar4;
+        prevAngle = prevAngle4;
+    }
+    spinner = document.querySelector("#"+id);
+    rankSpinner = document.querySelector("#"+rank);
+    prevAngle = angle;
+    if (!sign) { angle = angle + 120; } else { angle = angle - 120; }
+    spinner.setAttribute("style","-webkit-transform: rotateY("+ angle +"deg); -moz-transform: rotateY("+ angle +"deg); transform: rotateY("+ angle +"deg);");
+    rankSpinner.setAttribute("style","-webkit-transform: rotateY("+ angle +"deg); -moz-transform: rotateY("+ angle +"deg); transform: rotateY("+ angle +"deg);");
+    if(prevAngle === angle){
+        counterVar = 0;
+    }
+    else if(prevAngle < angle){
+        counterVar++;
+        if(counterVar === 3){
+            counterVar = 0;
+        }
+    }else{
+        counterVar--;
+        if(counterVar === -1) {
+            counterVar = 2;
+        }
+    }
+    if(counterVar === 0){
+        $("#"+id).children("#I1").addClass("minimize").removeClass("explode");
+        $("#"+id).children("#I2").addClass("explode").removeClass("minimize");
+        $("#"+id).children("#I3").addClass("explode").removeClass("minimize");
+
+        $('#image3Info'+id).addClass("hidden");
+        $('#image2Info'+id).addClass("hidden");
+        $('#image1Info'+id).removeClass("hidden");
+    }else if(counterVar === 1){
+        $("#"+id).children("#I1").addClass("explode").removeClass("minimize");
+        $("#"+id).children("#I2").addClass("minimize").removeClass("explode");
+        $("#"+id).children("#I3").addClass("explode").removeClass("minimize");
+
+        $('#image3Info' + id).addClass("hidden");
+        $('#image2Info' + id).removeClass("hidden");
+        $('#image1Info' + id).addClass("hidden");
+    }else{
+        $("#"+id).children("#I1").addClass("explode").removeClass("minimize");
+        $("#"+id).children("#I2").addClass("explode").removeClass("minimize");
+        $("#"+id).children("#I3").addClass("minimize").removeClass("explode");
+
+        $('#image3Info'+id).removeClass("hidden");
+        $('#image2Info'+id).addClass("hidden");
+        $('#image1Info'+id).addClass("hidden");
+    }
+    if (id === "spinner0"){
+        angle0 = angle;
+        counterVar0 = counterVar;
+        prevAngle0 = prevAngle;
+
+    }else if (id === "spinner1"){
+        angle1 = angle;
+        counterVar1 = counterVar;
+        prevAngle1 = prevAngle;
+    }else if (id === "spinner2"){
+        angle2 = angle;
+        counterVar2 = counterVar;
+        prevAngle2 = prevAngle;
+    }else if (id === "spinner3"){
+        angle3 = angle;
+        counterVar3 = counterVar;
+        prevAngle3 = prevAngle;
+    }else{
+        angle4 = angle;
+        counterVar4 = counterVar;
+        prevAngle4 = prevAngle;
+    }
+}
+$("#carousel0").on("swipeleft",function(){
+    galleryspin("-","spinner0");
+});
+$("#carousel1").on("swipeleft",function(){
+    galleryspin("-","spinner1");
+});
+$("#carousel2").on("swipeleft",function(){
+    galleryspin("-","spinner2");
+});
+$("#carousel3").on("swipeleft",function(){
+    galleryspin("-","spinner3");
+});
+$("#carousel4").on("swipeleft",function(){
+    galleryspin("-","spinner4");
+});
+$("#carousel0").on("swiperight",function(){
+    galleryspin("","spinner0");
+});
+$("#carousel1").on("swiperight",function(){
+    galleryspin("","spinner1");
+});
+$("#carousel2").on("swiperight",function(){
+    galleryspin("","spinner2");
+});
+$("#carousel3").on("swiperight",function(){
+    galleryspin("","spinner3");
+});
+$("#carousel4").on("swiperight",function(){
+    galleryspin("","spinner4");
+});
