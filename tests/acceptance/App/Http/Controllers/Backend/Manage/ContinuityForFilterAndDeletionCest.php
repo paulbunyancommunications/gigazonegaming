@@ -83,8 +83,8 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->see('Team List');
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete_soft-form-TesterTeam");
+        $I->waitForElementNotVisible(".delete_soft-form-TesterTeam", $this::TEXT_WAIT_TIMEOUT);
 //        $I->waitForJS("return $('.delete_soft-form-TesterTeam').click();", $this::TEXT_WAIT_TIMEOUT);
-        $I->wait(10);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
         
@@ -110,7 +110,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
 //        $I->waitForJS("return $('.delete_hard-form-TesterTeam').click();", $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete_hard-form-TesterTeam");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete_hard-form-TesterTeam", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Team', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSee('Tester Team');
         $I->amOnPage('/app/manage/player');
@@ -136,7 +136,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->see( 'Tester Team');
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");', $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete_soft-form-TesterTeam");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete_soft-form-TesterTeam", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Team', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('Tester Team');
 
@@ -147,7 +147,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
 //        $I->waitForJS("return $('.delete-TesterTournament').click();", $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete-TesterTournament");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete-TesterTournament", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Tournament', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('Tester Tournament');
 
@@ -158,7 +158,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
 //        $I->waitForJS("return $('.delete-tester-game').click();", $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete-tester-game");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete-tester-game", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Game', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('tester-game');
 
@@ -178,7 +178,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
 //        $I->waitForJS("return $('.delete-TesterTournament').click();", $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete-TesterTournament");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete-TesterTournament", $this::TEXT_WAIT_TIMEOUT);
 //        $I->waitForText('Create a new Tournament', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('Tester Tournament');
 
@@ -194,7 +194,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
 //        $I->waitForJS("return $('.delete-tester-game').click();", $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete-tester-game");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete-tester-game", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Game', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('tester-game');
 
@@ -213,7 +213,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
 //        $I->waitForJS("return $('.delete-tester-game').click();", $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete-tester-game");
-        $I->wait(10);
+        $I->waitForElementNotVisible(".delete-tester-game", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Game', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('tester-game');
 
