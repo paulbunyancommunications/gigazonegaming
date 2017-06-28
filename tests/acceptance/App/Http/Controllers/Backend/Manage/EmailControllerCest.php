@@ -49,10 +49,10 @@ class EmailControllerCest extends BaseAcceptance
         $I->wantTo('Check that when sending to a game list we get back the correct message');
         $I->amOnPage('app/manage/email');
         
-        $I->see('Email Filter');
+        $I->waitForText('Email Filter', $this::TEXT_WAIT_TIMEOUT);
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
         $I->click(['id' => 'get_game']);
-        $I->see('email sender');
+        $I->waitForText('email sender', $this::TEXT_WAIT_TIMEOUT);
         $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
@@ -70,11 +70,11 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a tournament list we get back the correct message');
         $I->amOnPage('app/manage/email');
-        
-        $I->see('Email Filter');
+
+        $I->waitForText('Email Filter', $this::TEXT_WAIT_TIMEOUT);
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
         $I->click(['id' => 'get_tournament']);
-        $I->see('email sender');
+        $I->waitForText('email sender', $this::TEXT_WAIT_TIMEOUT);
         $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
@@ -92,11 +92,11 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a team list we get back the correct message');
         $I->amOnPage('app/manage/email');
-        
-        $I->see('Email Filter');
+
+        $I->waitForText('Email Filter', $this::TEXT_WAIT_TIMEOUT);
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
         $I->click(['id' => 'get_team']);
-        $I->see('email sender');
+        $I->waitForText('email sender', $this::TEXT_WAIT_TIMEOUT);
         $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
@@ -113,11 +113,11 @@ class EmailControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that when sending to a player we get back the correct message');
         $I->amOnPage('app/manage/email');
-        
-        $I->see('Email Filter');
+
+        $I->waitForText('Email Filter', $this::TEXT_WAIT_TIMEOUT);
         $I->selectOption(['id' => 'player_sort'], 'Tester Player000');
         $I->click(['id' => 'get_player']);
-        $I->see('email sender');
+        $I->waitForText('email sender', $this::TEXT_WAIT_TIMEOUT);
         $count = $I->executeJS('return document.getElementById("emailList").value.split(",").length;');
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
