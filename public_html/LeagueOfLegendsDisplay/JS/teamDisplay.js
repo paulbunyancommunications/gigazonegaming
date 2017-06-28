@@ -360,32 +360,32 @@ function galleryspin(sign,id,rank) {
     }
 }
 $("#carousel0").on("swipeleft",function(){
-    galleryspin("-","spinner0");
+    galleryspin("-","spinner0","championRank0");
 });
 $("#carousel1").on("swipeleft",function(){
-    galleryspin("-","spinner1");
+    galleryspin("-","spinner1","championRank1");
 });
 $("#carousel2").on("swipeleft",function(){
-    galleryspin("-","spinner2");
+    galleryspin("-","spinner2","championRank2");
 });
 $("#carousel3").on("swipeleft",function(){
-    galleryspin("-","spinner3");
+    galleryspin("-","spinner3","championRank3");
 });
 $("#carousel4").on("swipeleft",function(){
-    galleryspin("-","spinner4");
+    galleryspin("-","spinner4","championRank4");
 });
 $("#carousel0").on("swiperight",function(){
-    galleryspin("","spinner0");
+    galleryspin("","spinner0","championRank0");
 });
 $("#carousel1").on("swiperight",function(){
-    galleryspin("","spinner1");
+    galleryspin("","spinner1","championRank2");
 });
 $("#carousel2").on("swiperight",function(){
-    galleryspin("","spinner2");
+    galleryspin("","spinner2","championRank2");
 });
 $("#carousel3").on("swiperight",function(){
-    galleryspin("","spinner3");
+    galleryspin("","spinner3","championRank3");
 });
 $("#carousel4").on("swiperight",function(){
-    galleryspin("","spinner4");
+    galleryspin("","spinner4","championRank4");
 });
