@@ -378,7 +378,7 @@ $("#carousel0").on("swiperight",function(){
     galleryspin("","spinner0","championRank0");
 });
 $("#carousel1").on("swiperight",function(){
-    galleryspin("","spinner1","championRank2");
+    galleryspin("","spinner1","championRank1");
 });
 $("#carousel2").on("swiperight",function(){
     galleryspin("","spinner2","championRank2");
