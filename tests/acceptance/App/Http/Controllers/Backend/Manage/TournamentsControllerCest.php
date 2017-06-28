@@ -25,6 +25,7 @@ class TournamentsControllerCest extends BaseAcceptance
     }
 
     /**
+    /**
      * Create the test admin user
      */
     protected function populateDB(AcceptanceTester $I)
@@ -91,6 +92,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
 
         // check that the fields are now all updated
+        $I->waitForText('The tournament '. $name2.' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The tournament '. $name2.' was updated');
         $I->seeInField(['id' => 'name'], $name2);
         $I->seeInField(['id' => 'max_players'], $max_players2);
@@ -120,6 +122,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
 
         // check that the fields are now all updated
+        $I->waitForText('The tournament '. $name.' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The tournament '. $name.' was updated');
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
@@ -135,6 +138,7 @@ class TournamentsControllerCest extends BaseAcceptance
     public function seeErrorWhenNameIsMissing(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
+        $I->waitForText('The Tournament Name is required.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Tournament Name is required.');
     }
     /**
@@ -145,6 +149,7 @@ class TournamentsControllerCest extends BaseAcceptance
     public function seeErrorWhenGameIsntSelected(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
+        $I->waitForText('A Game must be selected', $this::TEXT_WAIT_TIMEOUT);
         $I->see('A Game must be selected');
     }
     /**
@@ -155,6 +160,7 @@ class TournamentsControllerCest extends BaseAcceptance
     public function seeErrorWhenMaxPlayersIsntInput(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
+        $I->waitForText('The number of players is a required field', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The number of players is a required field');
     }
     /**
@@ -170,6 +176,7 @@ class TournamentsControllerCest extends BaseAcceptance
         );
         $I->fillField(['id' => 'max_players'], "Not A Number");
         $I->click(['id' => 'submit']);
+        $I->waitForText('The NUMBER of players needs to be ... a number, LOL.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The NUMBER of players needs to be ... a number, LOL.');
 
     }
@@ -187,7 +194,8 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-        $I->waitForJS('return $("#submit").click();', 10);
+        $I->click("#submit");
+        $I->waitForText('The name has already been taken', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The name has already been taken');
     }
 
