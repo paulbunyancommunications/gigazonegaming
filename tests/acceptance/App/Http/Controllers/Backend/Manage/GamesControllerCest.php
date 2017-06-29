@@ -226,6 +226,7 @@ class GamesControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'uri'], $uri);
         $I->fillField(['id' => 'description'], $desc);
         $I->click(['id' => 'submit']);
+        $I->waitForText('The game '.$title." was added!", $this::TEXT_WAIT_TIMEOUT);
         return array($name, $title, $uri, $desc);
     }
 }
