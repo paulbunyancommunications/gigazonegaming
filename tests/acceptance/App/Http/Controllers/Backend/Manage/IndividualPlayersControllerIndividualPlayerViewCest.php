@@ -101,12 +101,14 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->amOnPage('/app/manage/individualPlayer');
         
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
+        $I->wait(3);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame('disabled', $tournament, "Tournament Sort should be disabled");
         $I->assertSame('disabled', $team, "Team Sort should be disabled");
         $I->assertSame('disabled', $submit, "Submit Button should be disabled");
 
         $I->selectOption(['id' => 'game_sort'], "tester-game");
+        $I->wait(3);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
@@ -114,6 +116,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->assertSame('disabled', $submit, "Submit Button should be disabled");
 
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
+        $I->wait(3);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
@@ -121,6 +124,7 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->assertSame('disabled', $submit, "Submit Button should be disabled");
 
         $I->selectOption(['id' => 'team_sort'], "Tester Team");
+        $I->wait(3);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
@@ -140,8 +144,11 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->amOnPage('/app/manage/individualPlayer');
         
         $I->selectOption(['id' => 'game_sort'], 'tester-game');//this will enable users under this game and the tournament select
+        $I->wait(3);
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');//this will enable the team select
+        $I->wait(3);
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');//this will pre-select the team
+        $I->wait(3);
         $id = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("id")');
         $name = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_name")');
         $user = $I->executeJS('return $(".btn.btn-default.aPlayer.playerName.list").first().attr("player_user")');
