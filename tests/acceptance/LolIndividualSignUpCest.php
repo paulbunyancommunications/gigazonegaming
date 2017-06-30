@@ -14,7 +14,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
-        $I->amOnPage('/sign-up/lol-individual-signup/');
+        $I->amOnPage('/tournament/lol-team-signup/');
         $I->waitForJs('return jQuery.active == 0', 10);
     }
 
