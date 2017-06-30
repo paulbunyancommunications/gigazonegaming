@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="@autoVersion('/bower_components/select2/dist/css/select2.min.css')">
     <link rel="stylesheet" href="@autoVersion('/bower_components/font-awesome/css/font-awesome.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/app.css')">
-    @yield('js-sheet')
     <style type="text/css" href="">
         @yield('css')
         body{
@@ -63,6 +62,7 @@
             <script src="@autoVersion('/app/content/js/main-require.js')"></script>
         @endif
 
+        @yield('js-sheet')
         <script type="text/javascript">
             @yield('js')
         </script>
