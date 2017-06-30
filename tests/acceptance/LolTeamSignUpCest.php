@@ -7,6 +7,8 @@ class LolTeamSignUpCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;
 
+    public $nameList = ["ChaChing77", "SlySkeever", "DragonDefeater", "CacheMeOuside", "CrackAColdOne", "YouBetterNotComeAtMe"];
+
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
@@ -30,7 +32,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'team-name'], $teamName);
         $teamCaptain = $faker->name;
         $I->fillField(['name' => 'name'], $teamCaptain);
-        $teamCaptainLol = $faker->userName;
+        $teamCaptainLol = $this->nameList[0];
         $I->fillField(['name' => 'team-captain-lol-summoner-name'], $teamCaptainLol);
         $teamCaptainEmail = $faker->email;
         $I->fillField(['name' => 'email'], $teamCaptainEmail);
@@ -40,7 +42,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
 
         for ($i = 1; $i <= 4; $i++) {
             $teamMembers[$i] = [
-                'username' => $faker->userName,
+                'username' => $this->nameList[$i],
                 'email' => $faker->email,
             ];
             $I->fillField(
@@ -54,7 +56,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         }
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElement(['id' => 'team-name-response-value']);
+        $I->waitForElement(['id' => 'team-name-response-value'], $this::TEXT_WAIT_TIMEOUT);
 
         $I->see('Thanks for signing up your team to play League of Legends!');
         $I->see($teamName, ['id' => 'team-name-response-value']);
