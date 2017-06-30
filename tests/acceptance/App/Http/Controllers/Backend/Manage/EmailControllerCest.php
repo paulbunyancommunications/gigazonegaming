@@ -57,7 +57,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
-        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT * 3);
+        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT);
 
     }
 
@@ -79,7 +79,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
-        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT * 3);
+        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT);
 
     }
 
@@ -101,7 +101,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
-        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT * 3);
+        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT);
     }
 
     /**
@@ -122,7 +122,7 @@ class EmailControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'subject'], 'This is the subject');
         $I->fillField(['id' => 'message'], 'This is the body');
         $I->click(['id' => 'send']);
-        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT * 3);
+        $I->waitForText('The email has being sent to '. $count .' recipient'. ($count > 1 ? 's' : null) .'!', $this::TEXT_WAIT_TIMEOUT);
 
     }
 
