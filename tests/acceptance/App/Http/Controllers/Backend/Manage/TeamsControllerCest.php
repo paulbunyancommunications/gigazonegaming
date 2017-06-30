@@ -68,6 +68,7 @@ class TeamsControllerCest extends BaseAcceptance
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
 
         // check return, we should have a message and all the fields filled
+        $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
 
     }
@@ -81,12 +82,15 @@ class TeamsControllerCest extends BaseAcceptance
         //create a team
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
         //wait to see that it is there
+        $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
 
         $I->click(['id' => 'edit-' . $name]);
+        $I->waitForText("Update Team", $this::TEXT_WAIT_TIMEOUT);
         $I->see("Update Team");
         $I->fillField(['id' => 'name'], $name . "-edited");
         $I->click(['id' => 'submit']);
+        $I->waitForText("The team " . $name . "-edited was updated", $this::TEXT_WAIT_TIMEOUT);
         $I->see("The team " . $name . "-edited was updated");
 
     }
@@ -100,8 +104,10 @@ class TeamsControllerCest extends BaseAcceptance
 
         // make a team, then update
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
+        $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
         $I->click(['id' => 'edit-' . $name]);
+        $I->waitForText("Update Team:", $this::TEXT_WAIT_TIMEOUT);
         $I->see("Update Team:");
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'emblem'], $emblem);
@@ -115,6 +121,7 @@ class TeamsControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
 
         // check that the fields are now all updated
+        $I->waitForText('The team ' . $name . ' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was updated');
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'emblem'], $emblem);
@@ -130,6 +137,7 @@ class TeamsControllerCest extends BaseAcceptance
     public function seeErrorWhenNameIsMissing(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
+        $I->waitForText('The Team Name Field is required.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Team Name Field is required.');
     }
 
@@ -142,6 +150,7 @@ class TeamsControllerCest extends BaseAcceptance
 
         // make a team, then update
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
+        $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
 
         $I->amOnPage('/app/manage/team');
@@ -152,6 +161,7 @@ class TeamsControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
 
         // check that the fields are now all updated
+        $I->waitForText('The Team Name is in use, pick a new one.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Team Name is in use, pick a new one.');
 
     }
@@ -166,6 +176,7 @@ class TeamsControllerCest extends BaseAcceptance
         
         $I->executeJS('$("#tournament_id").remove();');
         $I->click(['id' => 'submit']);
+        $I->waitForText('The Tournament field can not be empty.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Tournament field can not be empty.');
     }
 
@@ -186,6 +197,7 @@ class TeamsControllerCest extends BaseAcceptance
                 ");
         $I->selectOption(['id' => 'tournament_id'], "myFakeHackyOption");
         $I->click(['id' => 'submit']);
+        $I->waitForText('The Tournament field must be an tournament ID.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Tournament field must be an tournament ID.');
     }
 
