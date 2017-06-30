@@ -72,7 +72,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone);
         $I->click("Save");
 
-        $I->see('Update Player: “' . $name . '”');
+        $I->waitForText('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
@@ -85,8 +85,9 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a player with no team, no tournament but a game attached');
 
-        $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
+        $I->click(".edit-form-TheTesterPlayerX");
+        $I->waitForText($name, $this::TEXT_WAIT_TIMEOUT, "#name");
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({
                 allowClear: true
@@ -106,6 +107,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
         $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
+        $I->waitForText($name, $this::TEXT_WAIT_TIMEOUT, "#name");
         $I->selectOption(["id" => "tournament_id"], 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
                 allowClear: true
@@ -125,6 +127,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player with a team attached which will automatically attach a tournament and a game');
         $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
+        $I->waitForText($name, $this::TEXT_WAIT_TIMEOUT, "#name");
         $I->selectOption(array("id" => "team_id"), 'Tester Team');
         $I->executeJS("$('#team_id').select2({
                 allowClear: true
@@ -156,6 +159,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'username'], $username);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click(['id' => 'submit']);
+        $I->waitForText("A email address is required", $this::TEXT_WAIT_TIMEOUT);
         $I->see("A email address is required");
     }
 
@@ -176,6 +180,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page with an email that is not valid');
         $I->fillField(['id' => 'email'], implode(' ', $faker->words(3)));
         $I->click(['id' => 'submit']);
+        $I->waitForText("That doesn't look like an email, try again", $this::TEXT_WAIT_TIMEOUT);
         $I->see("That doesn't look like an email, try again");
     }
 
@@ -195,6 +200,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page with an email that is already in the db');
         $I->fillField(['id' => 'email'], $email);
         $I->click(['id' => 'submit']);
+        $I->waitForText("A email address is already been used, use your previously created account or create a new one", $this::TEXT_WAIT_TIMEOUT);
         $I->see("A email address is already been used, use your previously created account or create a new one");
     }
 
@@ -217,6 +223,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'username'], $username2);
         $I->fillField(['id' => 'email'], $email2);
         $I->click(['id' => 'submit']);
+        $I->waitForText('Update Player: “' . $name . '”');
         $I->see('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
@@ -239,6 +246,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'email'], $email2);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click("Save");
+        $I->waitForText("A Username is required",$this::TEXT_WAIT_TIMEOUT);
         $I->see("A Username is required");
 
     }
@@ -259,6 +267,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page with a username that is already in the db');
         $I->fillField(['id' => 'username'], $username);
         $I->click("Save");
+        $I->waitForText("The Username is already in use, please select a new one",$this::TEXT_WAIT_TIMEOUT);
         $I->see("The Username is already in use, please select a new one");
 
     }
@@ -281,6 +290,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'email'], $email2);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Save");
+        $I->waitForText('Update Player: “' . $name . '”', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
