@@ -6,6 +6,7 @@ use AcceptanceTester;
 class LolIndividualSignUpCest extends \BaseAcceptance
 {
 
+    public $messageContainerId = "lol-team-sign-up-message-container";
     public function __construct()
     {
         $this->faker = \Faker\Factory::create();
@@ -44,7 +45,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'your-phone'], $phone);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+        $I->waitForElementVisible(['id' => $this->messageContainerId]);
 
         $I->see('Thanks for signing up to play League of Legends!');
         $I->see($name, ['id' => 'name-response-value']);
@@ -61,7 +62,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'email'], $email);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+        $I->waitForElementVisible(['id' => $this->messageContainerId]);
 
         $I->see('Your email address must be a valid address');
     }
@@ -73,7 +74,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'name'], $this->faker->name);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+        $I->waitForElementVisible(['id' => $this->messageContainerId]);
 
         $I->see('Your email address is required');
     }
@@ -85,7 +86,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'name'], $this->faker->name);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+        $I->waitForElementVisible(['id' => $this->messageContainerId]);
 
         $I->see('Your League of Legends summoner name is required');
     }
@@ -97,7 +98,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'email'], $this->faker->email);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+        $I->waitForElementVisible(['id' => $this->messageContainerId]);
 
         $I->see('Your name is required');
     }
@@ -109,7 +110,7 @@ class LolIndividualSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'email'], $this->faker->email);
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElementVisible(['id' => 'lol-individual-sign-up-message-container']);
+        $I->waitForElementVisible(['id' => $this->messageContainerId]);
 
         $I->see('Your phone number is required');
     }
