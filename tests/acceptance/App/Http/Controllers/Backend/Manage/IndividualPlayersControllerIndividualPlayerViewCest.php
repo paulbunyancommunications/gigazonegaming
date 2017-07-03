@@ -67,7 +67,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
 
         $I->wantTo('check enable and disable inputs');
         $I->amOnPage('/app/manage/individualPlayer');
-        
         $name = $I->executeJS("return $('#name').attr('disabled');");
         $username = $I->executeJS("return $('#username').attr('disabled');");
         $email = $I->executeJS("return $('#email').attr('disabled');");
@@ -99,14 +98,12 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $i = 0;
         $I->wantTo('check enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
-        
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
         $I->wait(3);
         $I->assertSame(null, $game, "Game Sort should be enabled");
         $I->assertSame('disabled', $tournament, "Tournament Sort should be disabled");
         $I->assertSame('disabled', $team, "Team Sort should be disabled");
         $I->assertSame('disabled', $submit, "Submit Button should be disabled");
-
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->wait(3);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
@@ -114,7 +111,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
         $I->assertSame('disabled', $team, "Team Sort should be disabled");
         $I->assertSame('disabled', $submit, "Submit Button should be disabled");
-
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->wait(3);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
@@ -122,7 +118,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->assertSame(null, $tournament, "Tournament Sort should be enabled");
         $I->assertSame(null, $team, "Team Sort should be enabled");
         $I->assertSame('disabled', $submit, "Submit Button should be disabled");
-
         $I->selectOption(['id' => 'team_sort'], "Tester Team");
         $I->wait(3);
         list($game, $tournament, $team, $submit) = $this->ICheckFor_EnablesTrue_Or_DisablesFalse($I);
@@ -142,7 +137,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
     {
         $I->wantTo('check if enable and disable selects');
         $I->amOnPage('/app/manage/individualPlayer');
-        
         $I->selectOption(['id' => 'game_sort'], 'tester-game');//this will enable users under this game and the tournament select
         $I->wait(3);
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');//this will enable the team select
@@ -161,8 +155,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $I->seeInField(['id' => 'username'], $user);
         $I->seeInField(['id' => 'email'], $email);
         $I->seeInField(['id' => 'phone'], $phone);
-
-
     }
 
     /**
@@ -189,7 +181,6 @@ class IndividualPlayersControllerIndividualPlayerViewCest extends BaseAcceptance
         $team = $I->executeJS("return $('#team_sort').attr('disabled');");
         $submit = $I->executeJS("return $('#submit_button').attr('disabled');");
         $I->wait(3);
-//        var_dump($game)
         return array($game, $tournament, $team, $submit);
     }
 

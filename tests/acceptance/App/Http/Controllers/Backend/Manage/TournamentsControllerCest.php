@@ -10,18 +10,16 @@ use \BaseAcceptance;
  */
 class TournamentsControllerCest extends BaseAcceptance
 {
-
+    public $faker;
     /**
      * @param AcceptanceTester $I
      */
-    public $faker;
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/tournament');
-
     }
 
     /**
@@ -76,9 +74,7 @@ class TournamentsControllerCest extends BaseAcceptance
     public function tryToUpdateATournament(AcceptanceTester $I)
     {
         $I->wantTo('update a tournament on the management page');
-
         list($name, $max_players, $game_id) = $this->createATournament($I);
-
         $name2 = implode('-', $this->faker->words(3));
         $max_players2 = $this->faker->numberBetween(1, 10);
         $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
@@ -90,17 +86,13 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name2);
         $I->fillField(['id' => 'max_players'], $max_players2);
         $I->selectOption(['id' => 'game_id'], $game_id);
-
         $I->click(['id' => 'submit']);
-
         // check that the fields are now all updated
         $I->waitForText('The tournament '. $name2.' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The tournament '. $name2.' was updated');
         $I->seeInField(['id' => 'name'], $name2);
         $I->seeInField(['id' => 'max_players'], $max_players2);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
-
-
     }
 
     /**
@@ -109,7 +101,6 @@ class TournamentsControllerCest extends BaseAcceptance
     public function tryAndUpdateATournamentKeepingEverythingTheSame(AcceptanceTester $I)
     {
         $I->wantTo('update a tournament, keeping the everything the same.');
-
         // make a tournament, then update
         list($name, $max_players, $game_id) = $this->createATournament($I);
         $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
@@ -121,16 +112,13 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
         $I->selectOption(['id' => 'game_id'], $game_id);
-
         $I->click(['id' => 'submit']);
-
         // check that the fields are now all updated
         $I->waitForText('The tournament '. $name.' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The tournament '. $name.' was updated');
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
-
     }
 
     /**
@@ -173,7 +161,6 @@ class TournamentsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenMaxPlayersIsntANumber(AcceptanceTester $I)
     {
-        
         $I->executeJS(
             'document.getElementsByName("max_players")[0].type="text";'
         );
@@ -181,7 +168,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
         $I->waitForText('The NUMBER of players needs to be ... a number, LOL.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The NUMBER of players needs to be ... a number, LOL.');
-
     }
 
     /**
@@ -192,7 +178,6 @@ class TournamentsControllerCest extends BaseAcceptance
     public function seeErrorWhenNameIsAlreadyUsed(AcceptanceTester $I)
     {
         list($name, $max_players, $game_id) = $this->createATournament($I);
-
         $I->amOnPage('/app/manage/tournament');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'max_players'], $max_players);
@@ -212,7 +197,6 @@ class TournamentsControllerCest extends BaseAcceptance
         $name = "Tester Tournament";
         $max_players = 6;
         $game_id = "tester-game";
-
         return array($name, $max_players, $game_id);
     }
 

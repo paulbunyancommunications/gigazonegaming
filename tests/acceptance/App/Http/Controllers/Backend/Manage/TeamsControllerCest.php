@@ -25,7 +25,6 @@ class TeamsControllerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/team');
-
     }
 
     /**
@@ -66,7 +65,6 @@ class TeamsControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a team on the management page');
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
-
         // check return, we should have a message and all the fields filled
         $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
@@ -84,7 +82,6 @@ class TeamsControllerCest extends BaseAcceptance
         //wait to see that it is there
         $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
-
         $I->click(['id' => 'edit-' . $name]);
         $I->waitForText("Update Team", $this::TEXT_WAIT_TIMEOUT);
         $I->see("Update Team");
@@ -92,7 +89,6 @@ class TeamsControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
         $I->waitForText("The team " . $name . "-edited was updated", $this::TEXT_WAIT_TIMEOUT);
         $I->see("The team " . $name . "-edited was updated");
-
     }
 
     /**
@@ -101,7 +97,6 @@ class TeamsControllerCest extends BaseAcceptance
     public function tryAndUpdateATeamKeepingEverythingTheSame(AcceptanceTester $I)
     {
         $I->wantTo('update a team, keeping the everything the same.');
-
         // make a team, then update
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
         $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
@@ -117,16 +112,13 @@ class TeamsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'emblem'], $emblem);
         $I->selectOption(['id' => 'tournament_id'], $tournament_id);
-
         $I->click(['id' => 'submit']);
-
         // check that the fields are now all updated
         $I->waitForText('The team ' . $name . ' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was updated');
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'emblem'], $emblem);
         $I->seeOptionIsSelected(['id' => 'tournament_id'], $tournament_id);
-
     }
 
     /**
@@ -147,23 +139,18 @@ class TeamsControllerCest extends BaseAcceptance
     public function seeErrorWhenNameIsAlreadyUsed(AcceptanceTester $I)
     {
         $I->wantTo('update a team, keeping the everything the same.');
-
         // make a team, then update
         list($name, $emblem, $tournament_id) = $this->createATeam($I);
         $I->waitForText('The team ' . $name . ' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The team ' . $name . ' was added');
-
         $I->amOnPage('/app/manage/team');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'emblem'], $emblem);
         $I->selectOption(['id' => 'tournament_id'], $tournament_id);
-
         $I->click(['id' => 'submit']);
-
         // check that the fields are now all updated
         $I->waitForText('The Team Name is in use, pick a new one.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Team Name is in use, pick a new one.');
-
     }
 
     /**
@@ -173,7 +160,6 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntSelected(AcceptanceTester $I)
     {
-        
         $I->executeJS('$("#tournament_id").remove();');
         $I->click(['id' => 'submit']);
         $I->waitForText('The Tournament field can not be empty.', $this::TEXT_WAIT_TIMEOUT);
@@ -187,7 +173,6 @@ class TeamsControllerCest extends BaseAcceptance
      */
     public function seeErrorWhenTheTournamentIsntAnInteger(AcceptanceTester $I)
     {
-        
         $I->executeJS("
             select = document.getElementById('tournament_id');
             var option = document.createElement('option');
@@ -207,7 +192,6 @@ class TeamsControllerCest extends BaseAcceptance
      */
     private function createATeam(AcceptanceTester $I, $attributes = [])
     {
-
         $name = array_key_exists('name', $attributes) ? $attributes['name'] : implode('-', $this->faker->words(3));
         $emblem = array_key_exists('emblem', $attributes) ? $attributes['emblem'] : $this->faker->url;
         $tournament = "Tester Tournament";
@@ -216,7 +200,6 @@ class TeamsControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'emblem'], $emblem);
         $I->selectOption(['id' => 'tournament_id'], $tournament);
         $I->click(['id' => 'submit']);
-
         return array($name, $emblem, $tournament);
     }
 }

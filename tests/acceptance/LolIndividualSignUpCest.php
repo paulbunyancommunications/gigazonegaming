@@ -25,7 +25,6 @@ class LolIndividualSignUpCest extends \BaseAcceptance
     }
 
     // tests
-
     public function seeTitleOnIndividualSignUpPage(AcceptanceTester $I)
     {
         $I->see('League of Legends Individual SignUp');

@@ -9,9 +9,8 @@
 Plugin Name: Gigazone Gaming Manager
 Plugin URI: http://www.paulbunyan.net
 Description:  Loader for Gigazone Gaming Championship games manager app
-Author: Nate Nolting
+Author: Nelson Castillo
 Version: 0.01
-Author URI: http://www.natenolting.com
 */
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';

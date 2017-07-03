@@ -21,7 +21,6 @@ class PlayersControllerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-
     }
 
     /**
@@ -29,7 +28,6 @@ class PlayersControllerCest extends BaseAcceptance
      */
     protected function populateDB(AcceptanceTester $I)
     {
-//        $I->runShellCommand('cd /var/www');
         exec('php artisan db:seed --class=DatabaseSeeder');
         $this->faker = \Faker\Factory::create();
     }
@@ -71,12 +69,10 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'email'], $email);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click("Save");
-
         $I->waitForText('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -84,7 +80,6 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAndEditAPlayerByAddingAGame(AcceptanceTester $I)
     {
         $I->wantTo('create a player with no team, no tournament but a game attached');
-
         $name = "Tester PlayerX";
         $I->click(".edit-form-TheTesterPlayerX");
         $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT );
@@ -98,7 +93,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -119,7 +113,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->seeOptionIsSelected(['id' => 'game_id'], 'tester-game');
         $I->seeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
         $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
-
     }
     /**
      * @param AcceptanceTester $I
@@ -140,7 +133,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
         $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
         $I->seeOptionIsSelected('select#team_id', 'Tester Team');
-
     }
 
     /**
@@ -179,7 +171,6 @@ class PlayersControllerCest extends BaseAcceptance
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
-
         $I->wantTo('create a player on the management page with an email that is not valid');
         $I->fillField(['id' => 'email'], implode(' ', $faker->words(3)));
         $I->click(['id' => 'submit']);
@@ -199,7 +190,6 @@ class PlayersControllerCest extends BaseAcceptance
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
-
         $I->wantTo('create a player on the management page with an email that is already in the db');
         $I->fillField(['id' => 'email'], $email);
         $I->click(['id' => 'submit']);
@@ -220,7 +210,6 @@ class PlayersControllerCest extends BaseAcceptance
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
-
         $I->wantTo('create a player on the management page with an email that is not in the db (correct)');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'username'], $username2);
@@ -251,7 +240,6 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click("Save");
         $I->waitForText("A Username is required",$this::TEXT_WAIT_TIMEOUT);
         $I->see("A Username is required");
-
     }
 
     /**
@@ -265,14 +253,11 @@ class PlayersControllerCest extends BaseAcceptance
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
-
-
         $I->wantTo('create a player on the management page with a username that is already in the db');
         $I->fillField(['id' => 'username'], $username);
         $I->click("Save");
         $I->waitForText("The Username is already in use, please select a new one",$this::TEXT_WAIT_TIMEOUT);
         $I->see("The Username is already in use, please select a new one");
-
     }
 
     /**
@@ -287,7 +272,6 @@ class PlayersControllerCest extends BaseAcceptance
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
-
         $I->wantTo('create a player on the management page with a username that is not in the db (correct)');
         $I->fillField(['id' => 'username'], $username2);
         $I->fillField(['id' => 'email'], $email2);

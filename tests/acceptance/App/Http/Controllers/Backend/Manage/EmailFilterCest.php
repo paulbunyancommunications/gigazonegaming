@@ -48,7 +48,6 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForGameWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
-        
         $I->see('Email Filter');
         $I->wantTo('click on a game and see all the email addresses attached');
         $I->selectOption(['id' => 'game_sort'], 'tester-game');
@@ -64,7 +63,6 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForTournamentWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
-        
         $I->see('Email Filter');
         $I->wantTo('click on a tournament and see all the email addresses attached');
         $I->selectOption(['id' => 'tournament_sort'], 'Tester Tournament');
@@ -80,7 +78,6 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForTeamWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
-        
         $I->see('Email Filter');
         $I->wantTo('click on a team and see all the email addresses attached');
         $I->selectOption(['id' => 'team_sort'], 'Tester Team');
@@ -96,7 +93,6 @@ class EmailFilterCest extends BaseAcceptance
     public function tryToCheckFilterForPlayerWorks(AcceptanceTester $I)
     {
         $I->amOnPage('/app/manage/email');
-        
         $I->see('Email Filter');
         $I->wantTo('click on a player and see the email addresses attached');
         $I->selectOption(['id' => 'player_sort'],  'Tester Player000');
