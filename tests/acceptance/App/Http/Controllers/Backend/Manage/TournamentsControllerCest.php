@@ -63,7 +63,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $I->wantTo('create a tournament on the management page');
         list($name, $max_players, $game_id) = $this->createATournament($I);
         $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
-        $I->waitForText($name , $this::TEXT_WAIT_TIMEOUT, '#name');
+        $I->waitForText('"'.$name.'"' , $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
@@ -82,7 +82,7 @@ class TournamentsControllerCest extends BaseAcceptance
         $name2 = implode('-', $this->faker->words(3));
         $max_players2 = $this->faker->numberBetween(1, 10);
         $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
-        $I->waitForText($name , $this::TEXT_WAIT_TIMEOUT, '#name');
+        $I->waitForText('"'.$name.'"' , $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
@@ -113,7 +113,7 @@ class TournamentsControllerCest extends BaseAcceptance
         // make a tournament, then update
         list($name, $max_players, $game_id) = $this->createATournament($I);
         $I->click(['id'=>'edit-'.str_replace(' ', '', $name)]);
-        $I->waitForText($name , $this::TEXT_WAIT_TIMEOUT, '#name');
+         $I->waitForText('"'.$name.'"' , $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'max_players'], $max_players);
         $I->seeOptionIsSelected(['id' => 'game_id'], $game_id);
