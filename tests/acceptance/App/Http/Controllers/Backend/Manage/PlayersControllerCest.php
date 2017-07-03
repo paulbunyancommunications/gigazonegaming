@@ -392,6 +392,6 @@ class PlayersControllerCest extends BaseAcceptance
     private function playerCreation(AcceptanceTester $I)
     {
         $I->click(".edit-form-TheTesterPlayerX");
-        $I->waitForText("Tester PlayerX",$this::TEXT_WAIT_TIMEOUT, "#name" );
+        $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT, "#name" );
     }
 }
