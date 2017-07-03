@@ -301,6 +301,7 @@ class PlayersControllerCest extends BaseAcceptance
         $phone9 = "2184144241";
         $phone10 = "+12184144249";
         $phone11 = "4144249"; // failing number
+        $I->waitForText('Update Player: “' . $name . '”', $this::TEXT_WAIT_TIMEOUT);
         $I->wantTo('create a player on the management page with a valid number1');
         $I->fillField(['id' => 'phone'], $phone1);
         $I->click("Update");
