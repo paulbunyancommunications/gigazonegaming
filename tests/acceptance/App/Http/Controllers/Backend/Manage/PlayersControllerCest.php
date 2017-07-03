@@ -61,7 +61,7 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $I->wantTo('create a player with no team, no tournament and no game');
         $name = "Tester PlayerX";
-        $username = "DummyUserA-Tester";
+        $username = "SlySkeever";
         $email = "DummyUserA@Tester.com";
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page');
@@ -151,8 +151,8 @@ class PlayersControllerCest extends BaseAcceptance
         $faker = \Faker\Factory::create();
         $this->playerCreation($I);
         $name = "Tester PlayerX";
-        $username = "The Tester PlayerX";
-        $username2 = "The Tester PlayerX2"; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -174,8 +174,8 @@ class PlayersControllerCest extends BaseAcceptance
         $faker = \Faker\Factory::create();
         $this->playerCreation($I);
         $name = "Tester PlayerX";
-        $username = "The Tester PlayerX";
-        $username2 = "The Tester PlayerX2"; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -194,8 +194,8 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $faker = \Faker\Factory::create();
         $name = "Tester PlayerX";
-        $username = "The Tester PlayerX";
-        $username2 = "The Tester PlayerX2"; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -215,8 +215,8 @@ class PlayersControllerCest extends BaseAcceptance
         $faker = \Faker\Factory::create();
         $this->playerCreation($I);
         $name = "Tester PlayerX";
-        $username = "The Tester PlayerX";
-        $username2 = $faker->userName; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -238,8 +238,8 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAPlayerWithAnUsernameProblemMissingUserName(AcceptanceTester $I)
     {
         $name = "Tester PlayerX";
-        $username = "The Tester PlayerX";
-        $username2 = "DummyUserA-Tester2"; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -260,8 +260,8 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToCreateAPlayerWithAnUsernameProblemAlreadyExists(AcceptanceTester $I)
     {
         $name = "Tester PlayerX";
-        $username = "The Tester PlayerX";
-        $username2 = "DummyUserA-Tester2"; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -282,8 +282,8 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $faker = \Faker\Factory::create();
         $name = $faker->name;
-        $username = "The Tester PlayerX";
-        $username2 = "DummyUserA-Tester2"; //username should be unique
+        $username = "SlySkeever";
+        $username2 = "DragonDefeater"; //username should be unique
         $email = "playerx@test.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
@@ -392,5 +392,6 @@ class PlayersControllerCest extends BaseAcceptance
     private function playerCreation(AcceptanceTester $I)
     {
         $I->click(".edit-form-TheTesterPlayerX");
+        $I->waitForText("Tester PlayerX",$this::TEXT_WAIT_TIMEOUT, "#name" );
     }
 }
