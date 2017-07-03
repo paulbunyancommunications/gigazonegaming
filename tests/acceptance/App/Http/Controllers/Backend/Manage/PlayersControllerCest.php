@@ -87,7 +87,7 @@ class PlayersControllerCest extends BaseAcceptance
 
         $name = "Tester PlayerX";
         $I->click(".edit-form-TheTesterPlayerX");
-        $I->waitForText($name, $this::TEXT_WAIT_TIMEOUT, "#name");
+        $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT );
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({
                 allowClear: true
@@ -108,7 +108,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player with no team but a tournament attached which will automatically attach a game');
         $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
-        $I->waitForText($name, $this::TEXT_WAIT_TIMEOUT, "#name");
+        $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT );
         $I->selectOption(["id" => "tournament_id"], 'Tester Tournament');
         $I->executeJS("$('#tournament_id').select2({
                 allowClear: true
@@ -129,7 +129,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player with a team attached which will automatically attach a tournament and a game');
         $I->click(".edit-form-TheTesterPlayerX");
         $name = "Tester PlayerX";
-        $I->waitForText($name, $this::TEXT_WAIT_TIMEOUT, "#name");
+        $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT );
         $I->selectOption(array("id" => "team_id"), 'Tester Team');
         $I->executeJS("$('#team_id').select2({
                 allowClear: true
@@ -392,6 +392,6 @@ class PlayersControllerCest extends BaseAcceptance
     private function playerCreation(AcceptanceTester $I)
     {
         $I->click(".edit-form-TheTesterPlayerX");
-        $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT, "#name" );
+        $I->waitForText('Update Player: "Tester PlayerX"',$this::TEXT_WAIT_TIMEOUT );
     }
 }
