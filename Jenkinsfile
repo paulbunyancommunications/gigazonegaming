@@ -14,7 +14,7 @@ node {
         * Check out project from source control
         */
         stage('clean-directory') {
-            echo "WORKSPACE ${env.WORKSPACE}";
+            echo "WORKSPACE ${WORKSPACE}";
             echo "JOB_URL ${env.JOB_URL}";
             echo "BUILD_URL ${env.BUILD_URL}";
             echo "JOB_NAME ${env.JOB_NAME}";
@@ -103,7 +103,7 @@ node {
                     echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
                     sh "docker-compose down -v";
                     sh "docker system prune -f"
-                    sh "./docker-jenkins-start.sh"
+                    sh "docker-jenkins-start.sh"
                 } catch(error_b) {
                     sh "docker-compose down -v";
                     sh "docker system prune -f"
@@ -124,34 +124,12 @@ node {
             try {
                 echo "\u2605 Fixing permissions \u2605"
                 sh "chmod -fR 777 ${env.WORKSPACE}/storage";
-                sh "chmod -fR 777 ${env.WORKSPACE}/public_html/wp-content/plugins/map-manager/js";
                 sh "chmod -f 777 ${env.WORKSPACE}/c3_error.log";
             } catch(error_b) {
                 sh "docker-compose down -v";
                 sh "docker system prune -f"
                 updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
                 error("Build failed because couldn't get file permissions changed.")
-            }
-        }
-        /**
-        * unit test docker app
-        */
-        stage('test:unit') {
-            echo "\u2605 Running CODECEPT RUN UNIT \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-                sh "docker-compose exec -T code codecept run tests/unit"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
-                    sh "docker-compose exec -T code codecept run tests/unit"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because unit test didn't pass.")
-                }
             }
         }
         /**
@@ -162,37 +140,16 @@ node {
             sh "cd ${env.WORKSPACE}";
             sh "./dock-helpers.sh";
             try {
-                sh "docker-compose exec -T code codecept run tests/integration"
+                sh "docker-compose exec -T code vendor/bin/codecept run tests/integration"
             } catch(error) {
                 try {
                     echo "\u2605 Rerunning CODECEPT RUN INTEGRATION \u2605"
-                    sh "docker-compose exec -T code codecept run tests/integration"
+                    sh "docker-compose exec -T code vendor/bin/codecept run tests/integration"
                 } catch(error_b) {
                     sh "docker-compose down -v";
                     sh "docker system prune -f"
                     updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
                     error("Build failed because integration test didn't pass.")
-                }
-            }
-        }
-        /**
-        * functional test docker app
-        */
-        stage('test:functional') {
-            echo "\u2605 Running CODECEPT RUN FUNCTIONAL \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-                sh "docker-compose exec -T code codecept run tests/functional"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN FUNCTIONAL \u2605"
-                    sh "docker-compose exec -T code codecept run tests/functional"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because functional test didn't pass.")
                 }
             }
         }
@@ -204,11 +161,11 @@ node {
             sh "cd ${env.WORKSPACE}";
             sh "./dock-helpers.sh";
             try {
-                sh "docker-compose exec -T code codecept run tests/acceptance"
+                sh "docker-compose exec -T code vendor/bin/codecept run tests/acceptance"
             } catch(error) {
                 try {
-                    echo "\u2605 Rerunning CODECEPT RUN ACCEPTANCE \u2605"
-                    sh "docker-compose exec -T code codecept run tests/acceptance"
+                    echo "\u2605 Rerunning CODECEPT RUN ACCEPTANCE -vvv \u2605"
+                    sh "docker-compose exec -T code vendor/bin/codecept run tests/acceptance -vvv"
                 } catch(error_b) {
                     sh "docker-compose down -v";
                     sh "docker system prune -f"
@@ -218,6 +175,48 @@ node {
             }
         }
 
+        /**
+        * functional test docker app
+        */
+        stage('test:functional') {
+            echo "\u2605 Running CODECEPT RUN FUNCTIONAL \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+                sh "docker-compose exec -T code vendor/bin/codecept run tests/functional"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN FUNCTIONAL \u2605"
+                    sh "docker-compose exec -T code vendor/bin/codecept run tests/functional"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because functional test didn't pass.")
+                }
+            }
+        }
+        /**
+        * unit test docker app
+        */
+        stage('test:unit') {
+            echo "\u2605 Running CODECEPT RUN UNIT \u2605"
+            sh "cd ${env.WORKSPACE}";
+            sh "./dock-helpers.sh";
+            try {
+                sh "docker-compose exec -T code vendor/bin/codecept run tests/unit"
+            } catch(error) {
+                try {
+                    echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
+                    sh "docker-compose exec -T code vendor/bin/codecept run tests/unit"
+                } catch(error_b) {
+                    sh "docker-compose down -v";
+                    sh "docker system prune -f"
+                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
+                    error("Build failed because unit test didn't pass.")
+                }
+            }
+        }
         stage('build:git_log') {
             try {
                 echo "\u2605 Running git_log.sh to get current commit hash \u2605"
