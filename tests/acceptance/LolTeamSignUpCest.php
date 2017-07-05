@@ -12,6 +12,12 @@ class LolTeamSignUpCest extends \BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $tournament = 'gigazone-gaming-2016-league-of-legends';
+        $I->amOnPage('/tournament/lol-team-signup/');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('TEAM SIGNUP', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForJS("return $('#hidden').val($tournament);",$this::TEXT_WAIT_TIMEOUT);
+        $I->fillField(['name' => 'tournament'], $tournament);
     }
 
     public function _after(AcceptanceTester $I)
@@ -24,7 +30,6 @@ class LolTeamSignUpCest extends \BaseAcceptance
     {
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL team sign up form');
-        $I->amOnPage('/sign-up/lol-team-signup/');
         $I->wait(3);
         $I->seeElementInDOM(['name' => 'request_token']);
         $I->see('Team SignUp');
