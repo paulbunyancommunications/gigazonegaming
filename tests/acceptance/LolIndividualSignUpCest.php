@@ -16,7 +16,8 @@ class LolIndividualSignUpCest extends \BaseAcceptance
     {
         parent::_before($I);
         $I->amOnPage('/tournament/lol-team-signup/');
-        $I->waitForJs('return jQuery.active == 0', 10);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->executeJS("$('.hidden').val('gigazone-gaming-2016-league-of-legends');");
     }
 
     public function _after(AcceptanceTester $I)
