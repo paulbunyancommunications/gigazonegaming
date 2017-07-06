@@ -5,8 +5,11 @@
   background-image: $header-background;
   background-size: cover;
 }
+#team1{
+  margin-top:$max-height - 400;
+}
 .teamButton{
-  background-color: $trans;
+  background-color: transparent;
   margin-bottom:$min-space + 5;
   margin-top: $min-space * 6;
   font-size: $font-size-md + 34;
@@ -16,9 +19,6 @@
   border-image: $main-border-image;
   text-shadow: $text-shadow-plain;
 }
-.teamButton:hover{
-  box-shadow: $complex-box-shadow;
-}
 .teamButton:active {
   box-shadow: $box-shadow;
   transform: translateY(4px);
@@ -26,12 +26,31 @@
 #info{
   width:$width - 60;
   height:$max-height - 410;
+  margin-top: $min-space * 5;
   margin-left: auto;
   margin-right: auto;
-  background-color: $whiteFade;
-  word-wrap: $wrap;
+  @include faded-background(255,.5);
+  word-wrap: break-word;
   border: $info-border;
   overflow-y:auto;
   font-weight:bold;
   line-height: $line-height;
+}
+@media (max-width:530px) {
+  h1{
+    font-size: $font-size-lg - 30;
+  }
+  .teamButton{
+    font-size: $font-size-md + 10;
+    border: $border-sm;
+    border-image: $main-border-image;
+    text-shadow: $text-shadow-plain;
+  }
+  #team1{
+    margin-top:$min-space * 10;
+  }
+  #info{
+    height:$min-space * 10;
+  }
+
 }

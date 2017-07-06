@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/app/content/css/override.css">
     <link rel="stylesheet" type="text/css" href="/app/content/css/teamDisplay.css">
+    <link rel="stylesheet" type="text/css" href="/app/content/css/override.css">
+
 
     <Title>Champion Override</Title>
 </head>
@@ -20,7 +21,7 @@
     <label class="playerHeading" for="player3">Player3:</label><br/><input list="champions" id="player3"><br/>
     <label class="playerHeading" for="player4">Player4:</label><br/><input list="champions" id="player4"><br/>
     <label class="playerHeading" for="player5">Player5:</label><br/><input list="champions" id="player5"><br/>
-    <button class="startButton" onclick="findChampion();">Submit</button>
+    <button id='SubmitChamps'class="startButton" onclick="findChampion();">Submit</button>
 <div id="info"></div>
     <datalist id="champions">
         <option value="Aatrox">

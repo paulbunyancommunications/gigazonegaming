@@ -42,7 +42,7 @@ function showTeams2(){
 showTeams();
 showTeams2();
 
-/* These three blocks make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
+/* These functions make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
 $('#Color').change(function() {
     if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
         $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
@@ -88,13 +88,15 @@ function teamView(){
     window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
 }
 
+var testing =  document.getElementsByName('Testing').length;
 
 /**
  * Initialize Ajax with a token
  */
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $("#hiddenToken").text()
+        'X-CSRF-TOKEN': $("#hiddenToken").text(),
+        'Testing': testing ? document.getElementsByName('Testing')[0].getAttribute("content") : false
     }
 });
 
@@ -102,7 +104,6 @@ $.ajaxSetup({
 * Caches Champions for team 1 and 2
 */
 function submitCache(){
-
     $('#loader').removeClass('hidden');
     $('#submit').addClass('hidden');
     document.getElementById('info').innerHTML = 'Please Wait...';

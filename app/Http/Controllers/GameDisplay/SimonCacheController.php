@@ -33,6 +33,15 @@ class SimonCacheController extends Controller
 
     public function SubmitCache(Requests\SimonCacheSubmitCache $req)
     {
+        ///For Assertion Test: Load fixture if the exists.
+        $testing = \utilphp\util::str_to_bool($req->header('Testing'));
+        if($testing and file_exists('../../tests/_data/PlayerInfoArray.bin')){
+            $data = unserialize(file_get_contents('../../tests/_data/PlayerInfoArray.bin'));
+            $this->cacheContent($data['teamInfo'],$data['colors'],$data['teamName'],$data['players']);
+            return $data;
+        }
+
+
         $tournament = $req->tournament;
         $team = $req->team;
         $color = $req->color;
@@ -64,7 +73,10 @@ class SimonCacheController extends Controller
                 'ErrorMessage' => $e->getMessage(),
             );
         }
-
+        if($testing){
+            $data = serialize($returnArray);
+            file_put_contents('../../tests/_data/PlayerInfoArray.bin', $data);
+        }
         return $returnArray;
     }
     /**

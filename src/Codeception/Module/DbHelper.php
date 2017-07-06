@@ -27,7 +27,7 @@ class DbHelper extends CodeceptionModule
     {
         //\Codeception\Util\Debug::debug($config);
         $root = dirname(dirname(dirname(__DIR__)));
-        $I->runShellCommand('mysql -h "'.$config['server'].'" -u "'.$config['user'].'" "-p'.$config['password'].'" "'.$config['database'].'" < '.$root.'/'.$config['dump'] . ' 2> nul');
+        $I->runShellCommand('mysql -h "'.$config['server'].'" -u "'.$config['user'].'" "-p'.$config['password'].'" "'.$config['database'].'" < '.$root.'/'.$config['dump'] . ' 2> /dev/null');
     }
 
     /**

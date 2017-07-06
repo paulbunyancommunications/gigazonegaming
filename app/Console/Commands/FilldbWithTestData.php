@@ -31,18 +31,18 @@ class FilldbWithTestData extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
 
         $this->fillDB();
-        dd("This is working");
+        var_dump("This is working");
     }
     public function fillDB(){
         #Captian
         $Captian = new Player();
-        $Captian->setAttribute('username', "KingMorpheus2131");
+        $Captian->setAttribute('username', "spartan7Warrior");
         $Captian->setAttribute('email', "martushev8@gmail.com");
         $Captian->setAttribute('name', "Roman");
         $Captian->setAttribute('phone', "2182605085");
@@ -56,11 +56,12 @@ class FilldbWithTestData extends Command
         $team->save();
         #relations
         $Captian::createRelation([
-            'player' => $Captian,
-            'game' => 2,
-            'team' => $team,
+            'player' => $Captian->id,
+            'Game' => 2,
+            'Tournament' => 1,
+            'team' => $team->id,
         ]);
-        $playerUserNameArray = array('ReckonStuff', 'DidYouSeeMe31', 'HowAboutThat123', 'YoBroSo');
+        $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
         $i = 0;
         #creat players for team
         foreach ($playerUserNameArray as $Player){
@@ -71,10 +72,10 @@ class FilldbWithTestData extends Command
             $player->save();
             // attach player to team/tournament/game
             $player::createRelation([
-                'player' => $player,
-                'tournament' => 1,
-                'game' => 2,
-                'team' => $team,
+                'player' => $player->id,
+                'Game' => 2,
+                'Tournament' => 1,
+                'team' => $team->id,
             ]);
             $i++;
         }

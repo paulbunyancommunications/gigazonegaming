@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/bin/nodejs /usr/share/yarn/bin/yarn.js install
+  /usr/bin/nodejs /usr/share/yarn/bin/yarn.js
 
 PATH: 
-  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  /var/www/html/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 Yarn version: 
   0.24.5
@@ -51,7 +51,9 @@ npm manifest:
     },
     "scripts": {
       "copy-libraries": "yarn run bower && bash .npm_copy_libraries.sh",
-      "bower": "bower update --allow-root --force --silent"
+      "bower": "bower update --allow-root --force --silent",
+      "rebuild-sass": "npm rebuild node-sass",
+      "gulp": "yarn run rebuild-sass && yarn run copy-libraries && gulp -e ${1}"
     }
   }
 
@@ -4159,4 +4161,4 @@ Lockfile:
       wordwrap "0.0.2"
 
 Trace: 
-  Error: EINVAL: invalid argument, symlink '../../../browser-pack/bin/cmd.js' -> '/var/www/html/node_modules/browserify/node_modules/.bin/browser-pack'
+  Error: EINVAL: invalid argument, symlink '../../../semver/bin/semver' -> '/var/www/html/node_modules/accord/node_modules/.bin/semver'

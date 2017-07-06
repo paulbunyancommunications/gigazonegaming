@@ -10,7 +10,7 @@ modules:
         - WebDriver:
             #url: 'http://gigazonegaming.local'
             url: 'http://web'
-            host: localhost
+            host: hub
             browser: firefox
             port: 4444
             window_size: 1366x768
