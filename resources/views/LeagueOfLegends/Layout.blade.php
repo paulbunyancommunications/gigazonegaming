@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/app/content/css/teamDisplay.css">
     <Title>Team Display</Title>
-    <meta content="true" name="Testing">
-</head>
+   </head>
 <body>
 <div class="mainDiv" id="other">
     <h1 class="backgroundH1">@yield('TeamName')</h1>

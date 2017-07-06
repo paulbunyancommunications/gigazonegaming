@@ -42,7 +42,7 @@ class FilldbWithTestData extends Command
     public function fillDB(){
         #Captian
         $Captian = new Player();
-        $Captian->setAttribute('username', "spartan7Warrior");
+        $Captian->setAttribute('username', "KingMorpheus2131");
         $Captian->setAttribute('email', "martushev8@gmail.com");
         $Captian->setAttribute('name', "Roman");
         $Captian->setAttribute('phone', "2182605085");
@@ -50,7 +50,7 @@ class FilldbWithTestData extends Command
         #Team
         $team = new Team();
         $team->tournament_id = 1;
-        $team->name =  "Team Awesome";
+        $team->name =  "That Team";
         #add captain and save the team
         $team->captain = $Captian->id;
         $team->save();
@@ -61,7 +61,7 @@ class FilldbWithTestData extends Command
             'Tournament' => 1,
             'team' => $team->id,
         ]);
-        $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
+        $playerUserNameArray = array('ReckonStuff', 'manklar', 'Juanpablomontoya', 'YoBroSo');
         $i = 0;
         #creat players for team
         foreach ($playerUserNameArray as $Player){
