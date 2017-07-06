@@ -149,8 +149,8 @@ class TeamsControllerCest extends BaseAcceptance
         $I->selectOption(['id' => 'tournament_id'], $tournament_id);
         $I->click(['id' => 'submit']);
         // check that the fields are now all updated
-        $I->waitForText('The Team Name is in use, pick a new one.', $this::TEXT_WAIT_TIMEOUT);
-        $I->see('The Team Name is in use, pick a new one.');
+        $I->waitForText('A Team with the exact same name already exists for this tournament,', $this::TEXT_WAIT_TIMEOUT * 1.5);
+        $I->see('A Team with the exact same name already exists for this tournament,');
     }
 
     /**
