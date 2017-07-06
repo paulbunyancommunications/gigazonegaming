@@ -1,8 +1,7 @@
 /* Created by Roman on 5/22/17.
  * added comment
  */
-
-/* This function is set up for testing purposes only, needs to be changed for production */
+/* This function is used to control the fading of the loading "cards" and the champion images once received */
 function fadInChampion() {
     setTimeout(
         function(){
@@ -11,18 +10,29 @@ function fadInChampion() {
             $('#divA2').fadeOut(2000);
             $('#divA3').fadeOut(2000);
             $('#divA4').fadeOut(2000);
+            $('#divD0').fadeOut(2000);
+            $('#divD1').fadeOut(2000);
+            $('#divD2').fadeOut(2000);
+            $('#divD3').fadeOut(2000);
+            $('#divD4').fadeOut(2000);
+
         },
         2000
     );
     setTimeout(
         function() {
-            $('#divB0').fadeIn(3000);
-            $('#divB1').fadeIn(3000);
-            $('#divB2').fadeIn(3000);
-            $('#divB3').fadeIn(3000);
-            $('#divB4').fadeIn(3000);
+            $('#divB0').fadeIn(2000);
+            $('#divB1').fadeIn(2000);
+            $('#divB2').fadeIn(2000);
+            $('#divB3').fadeIn(2000);
+            $('#divB4').fadeIn(2000);
+            $('#divE0').fadeIn(2000);
+            $('#divE1').fadeIn(2000);
+            $('#divE2').fadeIn(2000);
+            $('#divE3').fadeIn(2000);
+            $('#divE4').fadeIn(2000);
         },
-        4100
+        4000
     );
 }
 
@@ -44,22 +54,6 @@ function displayWinLoss(){
         'filter': 'blur(5px)'
     })},2000);
 }
-/*This function creates the drop down effect for the extra stats container  */
-function showExtraStats(id) {
-    $('#' + id).animate({
-        'height': '300px'
-    }, 200, 'linear');
-    id = id.split('');
-    $('#S'+id[5]).hide();
-}
-function removeExtraStats(id){
-        $('#'+ id).animate({
-            'height': '32px'
-        }, 200, 'linear');
-        id = id.split('');
-        setTimeout(function(){$('#S'+id[5]).show();},200);
-}
-
 /*These functions create the constantly moving header image behind the team name */
 function showBackground(){
     $('.backgroundH1').animate({
@@ -75,52 +69,7 @@ function showBackground2(){
     }, 50000, 'linear',showBackground);
 }
 showBackground();
-
-/*This is used to collapse the columns so that they are smaller allowing for more info on the page if wanted*/
-$(document).on('click', '.championImage', function(){
-    $('#' + this.id+ '-0').addClass('hidden');
-    $('#' + this.id+ '-1').addClass('hidden');
-    $('#' + this.id+ '-2').addClass('hidden');
-    $('#' + this.id+ '-3').removeClass('hidden');
-    $('#' + this.id+ '-4').addClass('v-align');
-    setBoxHeight();
-});
-$(document).on('click', '#M0', function(){
-    $('#0-0').removeClass('hidden');
-    $('#0-1').removeClass('hidden');
-    $('#0-2').removeClass('hidden');
-    $('#0-4').removeClass('v-align');
-    $('#0-3').addClass('hidden');
-});
-$(document).on('click', '#M1', function(){
-    $('#1-0').removeClass('hidden');
-    $('#1-1').removeClass('hidden');
-    $('#1-2').removeClass('hidden');
-    $('#1-4').removeClass('v-align');
-    $('#1-3').addClass('hidden');
-});
-$(document).on('click', '#M2', function(){
-    $('#2-0').removeClass('hidden');
-    $('#2-1').removeClass('hidden');
-    $('#2-2').removeClass('hidden');
-    $('#2-4').removeClass('v-align');
-    $('#2-3').addClass('hidden');
-});
-$(document).on('click', '#M3', function(){
-    $('#3-0').removeClass('hidden');
-    $('#3-1').removeClass('hidden');
-    $('#3-2').removeClass('hidden');
-    $('#3-4').removeClass('v-align');
-    $('#3-3').addClass('hidden');
-});
-$(document).on('click', '#M4', function(){
-    $('#4-0').removeClass('hidden');
-    $('#4-1').removeClass('hidden');
-    $('#4-2').removeClass('hidden');
-    $('#4-4').removeClass('v-align');
-    $('#4-3').addClass('hidden');
-});
-/*This sets the defauly view for a mobile layout*/
+/*This sets the default view for a mobile layout*/
 function mobileDisplay(){
     if(document.getElementById('other')) {
         if ($(window).width() <= 530) {
@@ -128,25 +77,30 @@ function mobileDisplay(){
                 $('#' + i + '-0').addClass('hidden');
                 $('#' + i + '-1').addClass('hidden');
                 $('#' + i + '-2').addClass('hidden');
-                $('#' + i + '-3').removeClass('hidden');
-                $('#' + i + '-4').addClass('v-align');
-                setBoxHeight();
-                document.getElementById('extra' + i).innerHTML = '<button id="' + "S" + i + '" onclick=showExtraStats($(this).parent().attr("id"))>Expand</button><b class="collapse-M-heading">&nbsp;&nbsp;Spells&nbsp;&nbsp;</b><br/><b class="collapse-M-heading">&nbsp;&nbsp;Runes&nbsp;&nbsp;</b><br/><button onclick=removeExtraStats($(this).parent().attr("id"))>Collapse</button>';
+                $('#' + i + '-4').addClass('hidden').removeClass("col-lg");
+                setTimeout(function(){setBoxHeight();},1);
+                document.getElementById('extra' + i).innerHTML =
+                    '<div class="championRankMinimize" id="Rank3' + i +'" onclick=switchPlaces("Rank3' + i +'")><b>Rank 3</b><br/><img class="I3" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I3' + i +'" onclick=ShowInfo("I3' + i +'")></div>'+
+                    '<div class="championRank" id="Rank1' + i +'"><b>Rank 1</b><br/><img class="I1" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1' + i +'" onclick=ShowInfo("I1' + i +'")></div>'+
+                    '<div class="championRankMinimize" id="Rank2' + i +'" onclick=switchPlaces("Rank2' + i +'")><b>Rank 2</b><br/><img class="I2" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I2' + i +'" onclick=ShowInfo("I2' + i +'")></div>'+
+                    '<div id="imageInfo1' + i +'" >Image 1</div>' +
+                    '<div id="imageInfo2' + i +'" class="hidden">Image 2</div>' +
+                    '<div id="imageInfo3' + i +'" class="hidden">Image 3</div>';
             }
-        } else {
+            $('#carouselControls').removeClass('hidden');
+
+        }else{
             for (i = 0; i < 5; i++) {
                 $('#' + i + '-0').removeClass('hidden');
                 $('#' + i + '-1').removeClass('hidden');
                 $('#' + i + '-2').removeClass('hidden');
-                $('#' + i + '-3').addClass('hidden');
-                $('#' + i + '-4').removeClass('v-align');
-                setBoxHeight();
-                document.getElementById('extra' + i).innerHTML = '<button id="' + "S" + i + '" onclick=showExtraStats($(this).parent().attr("id"))>Expand</button><b class="collapse-M-heading">&nbsp;&nbsp;Spells&nbsp;&nbsp;</b><br/><b class="collapse-M-heading">&nbsp;&nbsp;Runes&nbsp;&nbsp;</b><br/><button onclick=removeExtraStats($(this).parent().attr("id"))>Collapse</button>';
+                $('#' + i + '-4').removeClass('hidden').addClass("col-lg");
             }
+            $('#carouselControls').addClass('hidden');
         }
     }
 }
-$(window).resize(function(){mobileDisplay();});
+$(window).resize(function(){mobileDisplay(),setTimeout(function(){setBoxHeight();},1)});
 mobileDisplay();
 /*This makes sure that when collapsed the champion image and the player stats containers are the same size*/
 function setBoxHeight(){
@@ -164,7 +118,6 @@ $(document).ready(function () {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $("#hiddenToken").text(),
-                'Testing': document.getElementsByName('Testing')[0].getAttribute("content")
             }});
     }
 );
@@ -190,13 +143,11 @@ function GetData() {
             success: function (data) {
                 if (data === 'true') {
                     location.reload();
-
                 } else{
                     setTimeout(GetData,2000);
                 }
-            }
-
-        });
+            },
+        })
     }else{
         UpdateData(true);
     }
@@ -238,4 +189,133 @@ function UpdateData(checkChamp) {
 
         }
     });
+}
+
+$(document).ready(function() {
+    $(".collapse").swiperight(function() {
+        $('#carouselControls').carousel('prev');
+        setTimeout(function(){setBoxHeight();},100);
+    });
+    $(".collapse").swipeleft(function() {
+        $('#carouselControls').carousel('next');
+        setTimeout(function(){setBoxHeight();},100);
+    });
+    $(".collapse-b").swiperight(function() {
+        $('#carouselControls').carousel('prev');
+        setTimeout(function(){setBoxHeight();},100);
+    });
+    $(".collapse-b").swipeleft(function() {
+        $('#carouselControls').carousel('next');
+        setTimeout(function(){setBoxHeight();},100);
+    });
+});
+
+$(document).ready(function() {
+    $("#extra0").swiperight(function(){swipeRightExtra(0)});
+    $("#extra1").swiperight(function(){swipeRightExtra(1)});
+    $("#extra2").swiperight(function(){swipeRightExtra(2)});
+    $("#extra3").swiperight(function(){swipeRightExtra(3)});
+    $("#extra4").swiperight(function(){swipeRightExtra(4)});
+    $("#extra0").swipeleft(function(){swipeLeftExtra(0)});
+    $("#extra1").swipeleft(function(){swipeLeftExtra(1)});
+    $("#extra2").swipeleft(function(){swipeLeftExtra(2)});
+    $("#extra3").swipeleft(function(){swipeLeftExtra(3)});
+    $("#extra4").swipeleft(function(){swipeLeftExtra(4)});
+});
+
+championCounter0 = 0;
+championCounter1 = 0;
+championCounter2 = 0;
+championCounter3 = 0;
+championCounter4 = 0;
+function swipeRightExtra(i){
+    if(i === 0){championCounter = championCounter0;}
+    else if(i === 1){championCounter = championCounter1;}
+    else if(i === 2){championCounter = championCounter2;}
+    else if(i === 3){championCounter = championCounter3;}
+    else{championCounter = championCounter4;}
+    if(championCounter === -2){championCounter = 1;}
+    if(championCounter === 0){
+        $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
+        $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
+        $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
+        championCounter--;
+    }
+    else if(championCounter === -1){
+        $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
+        $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
+        $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
+        championCounter--;
+    }
+    else{
+        $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
+        $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
+        $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
+        championCounter--;
+    }
+    if(i === 0){championCounter0 = championCounter;}
+    else if(i === 1){championCounter1 = championCounter;}
+    else if(i === 2){championCounter2 = championCounter;}
+    else if(i === 3){championCounter3 = championCounter;}
+    else{championCounter4 = championCounter;}
+}
+
+function swipeLeftExtra(i){
+    if(i === 0){championCounter = championCounter0;}
+    else if(i === 1){championCounter = championCounter1;}
+    else if(i === 2){championCounter = championCounter2;}
+    else if(i === 3){championCounter = championCounter3;}
+    else{championCounter = championCounter4;}
+    if(championCounter === 2){championCounter = -1;}
+
+    if(championCounter === 0){
+        $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
+        $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
+        $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
+        championCounter++;
+    }
+    else if(championCounter === 1){
+        $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
+        $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
+        $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
+        championCounter++;
+    }
+    else{
+        $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
+        $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
+        $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
+        championCounter++;
+    }
+    if(i === 0){championCounter0 = championCounter;}
+    else if(i === 1){championCounter1 = championCounter;}
+    else if(i === 2){championCounter2 = championCounter;}
+    else if(i === 3){championCounter3 = championCounter;}
+    else{championCounter4 = championCounter;}
+}
+
+function ShowInfo(id){
+    array = id.split("");
+    if (id.includes("I1")){
+        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).removeClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
+    }
+    else if (id.includes("I2")){
+        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).removeClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
+
+    }
+    else{
+        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).removeClass('hidden');
+
+    }
+}
+function switchPlaces(id){
+    switchArray = id.split("");
+    x = document.getElementById("Rank1"+ switchArray[5]).innerHTML;
+    document.getElementById("Rank1"+ switchArray[5]).innerHTML = document.getElementById(id).innerHTML;
+    document.getElementById(id).innerHTML = x;
 }
