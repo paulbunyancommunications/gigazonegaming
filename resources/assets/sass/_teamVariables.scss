@@ -32,8 +32,8 @@ $loader-border-top-sm: 2px solid #3498db;
 //font
 $main-font: futura-pt,Lucida Sans,Lucida Grande,Lucida Sans Unicode,sans-serif;
 $font-size-md: 16px;
-$font-size-lg: 60pt;
-$name-font-size: 15pt;
+$font-size-lg: 100px;
+$name-font-size: 20px;
 $minor-heading-color: #FBB042;
 
 //spacing and sizing
@@ -48,6 +48,7 @@ $champNameBottom:30px;
 $text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
 $text-shadow-plain:1px 1px 2px black, 0 0 25px white, 0 0 5px black;
 $box-shadow: 0 5px gray;
+$champion-box-shadow:1px 10px 10px #888888;
 $gold: #FFD700;
 $opacity-md: .4;
 $opacity-sm: .6;

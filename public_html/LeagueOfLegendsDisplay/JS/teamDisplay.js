@@ -5,32 +5,19 @@
 function fadInChampion() {
     setTimeout(
         function(){
-            $('#divA0').fadeOut(2000);
-            $('#divA1').fadeOut(2000);
-            $('#divA2').fadeOut(2000);
-            $('#divA3').fadeOut(2000);
-            $('#divA4').fadeOut(2000);
-            $('#divD0').fadeOut(2000);
-            $('#divD1').fadeOut(2000);
-            $('#divD2').fadeOut(2000);
-            $('#divD3').fadeOut(2000);
-            $('#divD4').fadeOut(2000);
-
+            for(i=0;i<5;i++) {
+                $('#divA'+i).fadeOut(2000);
+                $('#divD'+i).fadeOut(2000);
+            }
         },
         2000
     );
     setTimeout(
         function() {
-            $('#divB0').fadeIn(2000);
-            $('#divB1').fadeIn(2000);
-            $('#divB2').fadeIn(2000);
-            $('#divB3').fadeIn(2000);
-            $('#divB4').fadeIn(2000);
-            $('#divE0').fadeIn(2000);
-            $('#divE1').fadeIn(2000);
-            $('#divE2').fadeIn(2000);
-            $('#divE3').fadeIn(2000);
-            $('#divE4').fadeIn(2000);
+            for(i=0;i<5;i++) {
+                $('#divB'+i).fadeIn(2000);
+                $('#divE'+i).fadeIn(2000);
+            }
         },
         4000
     );
@@ -230,21 +217,18 @@ function swipeRightExtra(i){
     else{championCounter = championCounter4;}
     if(championCounter === -2){championCounter = 1;}
     if(championCounter === 0){
-        $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
-        $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
+        $("#I3"+i).parent().parent().find("div#imageInfo1"+i,"div#imageInfo2"+i).addClass('hidden');
         $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
         championCounter--;
     }
     else if(championCounter === -1){
-        $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
+        $("#I2"+i).parent().parent().find("div#imageInfo1"+i,"div#imageInfo3"+i).addClass('hidden');
         $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
-        $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
         championCounter--;
     }
     else{
         $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
+        $("#I1"+i).parent().parent().find("div#imageInfo2"+i,"div#imageInfo3"+i).addClass('hidden');
         championCounter--;
     }
     if(i === 0){championCounter0 = championCounter;}
@@ -263,21 +247,18 @@ function swipeLeftExtra(i){
     if(championCounter === 2){championCounter = -1;}
 
     if(championCounter === 0){
-        $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
+        $("#I2"+i).parent().parent().find("div#imageInfo1"+i,"div#imageInfo3"+i).addClass('hidden');
         $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
-        $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
         championCounter++;
     }
     else if(championCounter === 1){
-        $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
-        $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
+        $("#I3"+i).parent().parent().find("div#imageInfo1"+i,"div#imageInfo2"+i).addClass('hidden');
         $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
         championCounter++;
     }
     else{
         $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
+        $("#I1"+i).parent().parent().find("div#imageInfo2"+i,"div#imageInfo3"+i).addClass('hidden');
         championCounter++;
     }
     if(i === 0){championCounter0 = championCounter;}
@@ -291,20 +272,15 @@ function ShowInfo(id){
     array = id.split("");
     if (id.includes("I1")){
         $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).removeClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo2"+array[2],"div#imageInfo3"+array[2]).addClass('hidden');
     }
     else if (id.includes("I2")){
-        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo1"+array[2],"div#imageInfo3"+array[2]).addClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).removeClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
-
     }
     else{
-        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
+        $("#"+id).parent().parent().find("div#imageInfo1"+array[2],"div#imageInfo2"+array[2]).addClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).removeClass('hidden');
-
     }
 }
 function switchPlaces(id){

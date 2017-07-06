@@ -139,6 +139,7 @@ h1{
 }
 .summonerName{
   color: white;
+  font-size:$name-font-size;
 }
 .icon{
   border-radius: $icon-radius;
@@ -166,17 +167,17 @@ h1{
 }
 .championRank{
   display: inline-block;
-  width:33%;
-  font-size: 15pt;
+  width: $width - 67;
+  font-size: $font-size-md;
   img{
     width: $width - 20;
-    box-shadow:1px 10px 10px #888888;
+    box-shadow:$champion-box-shadow;
   }
 }
 .championRankMinimize{
   display: inline-block;
-  width:33%;
-  font-size: 15pt;
+  width:$width - 67;
+  font-size: $font-size-md;
   img {
     width: $width - 60;
   }
@@ -226,6 +227,7 @@ h1{
   z-index: $z-1 + 4;
   background: $spinner-img;
   opacity: $opacity-sm;
+  background-size: $width;
 }
 .loadChampion{
   width: $width;
@@ -285,13 +287,14 @@ h3{
   bottom:0;
   text-align: center;
 }
+.carousel-container{
+  width:$width - 20;
+  margin-left: auto;
+  margin-right:auto;
+}
 @media (min-width:1080px) {
   .col-lg {
     width: $sz-xs;
-  }
-  .summonerName{
-    font-size:$name-font-size - 3;
-    vertical-align: $v-align - 8;
   }
   #victory{
     margin-top:10%;
@@ -305,10 +308,6 @@ h3{
 @media (max-width:1079px) {
   .col-lg {
     width: $sz-sm;
-  }
-  .summonerName{
-    font-size:$name-font-size - 3;
-    vertical-align: $v-align - 2;
   }
   #victory{
     margin-top:300px;
@@ -363,7 +362,7 @@ h3{
   }
   .spinner-image {
     background: $spinner-img-mobile;
-    background-size: 100%;
+    background-size: $width;
   }
   .giga_teamImage{
     width: $max-width - 150;
