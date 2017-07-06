@@ -16,7 +16,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $I->amOnPage('/tournament/lol-team-signup/');
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('TEAM SIGNUP', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForJS("return $('#hidden').val($tournament);",$this::TEXT_WAIT_TIMEOUT);
+        $I->executeJS("$('#hidden').val('$tournament');");
         $I->fillField(['name' => 'tournament'], $tournament);
     }
 
