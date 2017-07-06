@@ -134,3 +134,12 @@ googlea13d41de2ed75e16.html
 dock-helpers-jenkins.sh
 dock-helpers.sh
 stacks.sh
+codecov_deploy.sh
+clover.xml
+env_check
+rollbar_deploy.sh
+install.sh.old
+public_html/sitemap.xml
+testing.sh
+constant_contact
+!constant_contact/email/template

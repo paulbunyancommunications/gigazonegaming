@@ -27,8 +27,8 @@ class BaseAcceptance
      */
     public function _before(AcceptanceTester $I)
     {
+        //$this->resetDB($I);
         // run migrations
-        $this->resetDB($I);
         $I->runMigration($I);
         $this->faker = \Faker\Factory::create();
     }

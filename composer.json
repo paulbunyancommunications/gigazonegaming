@@ -171,8 +171,8 @@
     "cocur/slugify": "^1.4",
     "archetyped/cornerstone": "*",
     "anahkiasen/underscore-php": "^2.0",
-    "mungobbq/enable-media-replace":"*",
-    "figureone/insert-pages":"*",
+    "mungobbq/enable-media-replace": "*",
+    "figureone/insert-pages": "*",
     "tedivm/stash": "^0.14.1",
     "wp/rest-api": "*",
     "vlucas/phpdotenv": "^2.2",
@@ -204,7 +204,8 @@
     "symfony/dom-crawler": "2.8.*|3.0.*",
     "barryvdh/laravel-ide-helper": "2.1.*",
     "phing/phing": "2.*",
-    "codeception/codeception": "^2.2",
+    "codeception/codeception": "2.3.1",
+    "codeception/base": "2.3.1",
     "codeception/c3": "^2.0",
     "etsy/phan": "^0.9.1"
   },
@@ -243,10 +244,9 @@
       "tests/acceptance/BaseAcceptance.php",
       "tests/functional/BaseFunctional.php",
       "tests/integration/BaseIntegration.php"
-
     ],
     "psr-4": {
-      "Codeception\\Module\\" : "src/Codeception/Module"
+      "Codeception\\Module\\": "src/Codeception/Module"
     }
   },
   "scripts": {
@@ -269,25 +269,56 @@
       "bash ${PWD}/composer_post_fixes.sh"
     ],
     "test": [
-      "bash testing.sh"
+      "# Running Tests, usage `composer test -- TEST_ARGUMENTS` #",
+      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919/raw/$(git ls-remote https://gist.github.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919 | grep HEAD | awk '{ print $1}')/testing.sh > testing.sh; #",
+      "chmod u+x testing.sh; #",
+      "./testing.sh"
     ],
     "test-failed": [
-      "bash testing.sh failed"
+      "@test -- -g failed"
     ],
-    "get-coverage-checker": [
-      "wget -q -N https://raw.githubusercontent.com/Ocramius/VersionEyeModule/5fcfcc3c2cba7dec9343307c9e75da26d3a51d03/coverage-checker.php -O coverage-checker.php"
-    ],
-    "coverage": [
-      "php coverage-checker.php tests/_output/coverage.xml 80"
-    ],
-    "docker_assets": [
-      "echo \"Getting Docker Assets\"",
-      "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')/docker/get_docker_assets.sh > get_docker_assets.sh",
+    "docker-assets": [
+      "# Getting Docker Assets #",
+      "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')/docker/get_docker_assets.sh > get_docker_assets.sh; #",
       "bash ${PWD}/get_docker_assets.sh"
     ],
+    "docker_assets": [
+      "# Some scripts are still using the old underscore naming",
+      "@docker-assets"
+    ],
     "post-docker": [
-      "yarn run copy-libraries",
-      "gulp"
+      "# Commands to run after ./dock.sh is done",
+      "@front-end-assets"
+    ],
+    "front-end-assets": [
+      "# Process front end assets, usage `composer front-end-assets ENVIRONMENT` #",
+      "yarn #",
+      "yarn run gulp"
+    ],
+    "docker-rebuild": [
+      "# Rebuild Docker containers",
+      "@docker_assets",
+      "docker-compose down -v",
+      "docker-compose pull",
+      "docker-compose up -d"
+    ],
+    "env-check": [
+      "# Environment variable check",
+      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check;",
+      "chmod u+x env_check",
+      "./env_check"
+    ],
+    "rollbar-deploy": [
+      "# Rollbar deployment. Usage: `composer rollbar-deploy -- TOKEN ENVIRONMENT`; #",
+      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/95fecfd2065def37f88ffdfe4250d608/raw/$(git ls-remote https://gist.github.com/paulbunyannet/95fecfd2065def37f88ffdfe4250d608 | grep HEAD | awk '{ print $1}')/rollbar_deploy.sh > rollbar_deploy.sh; #",
+      "chmod u+x rollbar_deploy.sh; #",
+      "./rollbar_deploy.sh"
+    ],
+    "codecov-deploy": [
+      "# Codecov deployment. Usage: `composer codecov-deploy -- LOCATION/OF/COVERAGE.xml TOKEN`; #",
+      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/b022b8fdb590ccb061222183e55193aa/raw/$(git ls-remote https://gist.github.com/paulbunyannet/b022b8fdb590ccb061222183e55193aa | grep HEAD | awk '{ print $1}')/codecov_deploy.sh > codecov_deploy.sh; #",
+      "chmod u+x codecov_deploy.sh; #",
+      "./codecov_deploy.sh"
     ]
   }
 }
