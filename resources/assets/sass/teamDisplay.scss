@@ -164,19 +164,23 @@ h1{
   border: #cd7f32 inset;
 
 }
-.shadow{
-  box-shadow:1px 10px 10px #888888;
-}
-.minimize{
-  width:$width - 60;
-}
-.explode{
-  width: $width - 20;
-}
 .championRank{
   display: inline-block;
   width:33%;
   font-size: 15pt;
+  img{
+    width: $width - 20;
+    box-shadow:1px 10px 10px #888888;
+  }
+}
+.championRankMinimize{
+  display: inline-block;
+  width:33%;
+  font-size: 15pt;
+  img {
+    width: $width - 60;
+  }
+
 }
 .playerInfo{
   color: white;

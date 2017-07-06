@@ -80,9 +80,9 @@ function mobileDisplay(){
                 $('#' + i + '-4').addClass('hidden').removeClass("col-lg");
                 setTimeout(function(){setBoxHeight();},1);
                 document.getElementById('extra' + i).innerHTML =
-                    '<div class="championRank" id="Rank3"><b>Rank 3</b><br/><img class="minimize I3" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I3' + i +'" onclick=ShowInfo("I3' + i +'")></div>'+
-                    '<div class="championRank" id="Rank1"><b>Rank 1</b><br/><img class="explode shadow I1" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1' + i +'" onclick=ShowInfo("I1' + i +'")></div>'+
-                    '<div class="championRank" id="Rank2"><b>Rank 2</b><br/><img class="minimize I2" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I2' + i +'" onclick=ShowInfo("I2' + i +'")></div>'+
+                    '<div class="championRankMinimize" id="Rank3' + i +'" onclick=switchPlaces("Rank3' + i +'")><b>Rank 3</b><br/><img class="I3" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I3' + i +'" onclick=ShowInfo("I3' + i +'")></div>'+
+                    '<div class="championRank" id="Rank1' + i +'"><b>Rank 1</b><br/><img class="I1" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1' + i +'" onclick=ShowInfo("I1' + i +'")></div>'+
+                    '<div class="championRankMinimize" id="Rank2' + i +'" onclick=switchPlaces("Rank2' + i +'")><b>Rank 2</b><br/><img class="I2" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I2' + i +'" onclick=ShowInfo("I2' + i +'")></div>'+
                     '<div id="imageInfo1' + i +'" >Image 1</div>' +
                     '<div id="imageInfo2' + i +'" class="hidden">Image 2</div>' +
                     '<div id="imageInfo3' + i +'" class="hidden">Image 3</div>';
@@ -230,27 +230,18 @@ function swipeRightExtra(i){
     else{championCounter = championCounter4;}
     if(championCounter === -2){championCounter = 1;}
     if(championCounter === 0){
-        $("#I3"+i).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I2"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I1"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
         $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
         $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
         championCounter--;
     }
     else if(championCounter === -1){
-        $("#I2"+i).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I1"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I3"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
         $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
         $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
         championCounter--;
     }
     else{
-        $("#I1"+i).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I2"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I3"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
         $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
         $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
@@ -272,27 +263,18 @@ function swipeLeftExtra(i){
     if(championCounter === 2){championCounter = -1;}
 
     if(championCounter === 0){
-        $("#I2"+i).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I1"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I3"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
         $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
         $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
         championCounter++;
     }
     else if(championCounter === 1){
-        $("#I3"+i).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I2"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I1"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
         $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
         $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
         championCounter++;
     }
     else{
-        $("#I1"+i).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I2"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I3"+i).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
         $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
         $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
@@ -308,29 +290,26 @@ function swipeLeftExtra(i){
 function ShowInfo(id){
     array = id.split("");
     if (id.includes("I1")){
-        $("#"+id).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I2"+array[2]).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I3"+array[2]).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).removeClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
     }
     else if (id.includes("I2")){
-        $("#"+id).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I1"+array[2]).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I3"+array[2]).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).removeClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
 
     }
     else{
-        $("#"+id).addClass('shadow').removeClass('minimize').addClass('explode');
-        $("#I2"+array[2]).removeClass('shadow').addClass('minimize').removeClass('explode');
-        $("#I1"+array[2]).removeClass('shadow').addClass('minimize').removeClass('explode');
         $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
         $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).removeClass('hidden');
 
     }
+}
+function switchPlaces(id){
+    switchArray = id.split("");
+    x = document.getElementById("Rank1"+ switchArray[5]).innerHTML;
+    document.getElementById("Rank1"+ switchArray[5]).innerHTML = document.getElementById(id).innerHTML;
+    document.getElementById(id).innerHTML = x;
 }
