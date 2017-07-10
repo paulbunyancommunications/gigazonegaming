@@ -4,8 +4,8 @@
 /* This is used to fill in the champions manually if the request cannot be fulfilled*/
 function findChampion() {
     document.getElementById("info").innerHTML = '';
-    championArray = [];
-    checkArray =["Aatrox","Ahri","Akali","Alistar","Amumu","Anivia","Annie","Ashe","AurelionSol", "Azir", "Bard",
+    let championArray = [];
+    const checkArray =["Aatrox","Ahri","Akali","Alistar","Amumu","Anivia","Annie","Ashe","AurelionSol", "Azir", "Bard",
         "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille", "Cassiopeia", "Chogath", "Corki", "Darius", "Diana",
         "DrMundo", "Draven", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank",
         "Garen", "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Illaoi", "Irelia", "Ivern", "Janna", "JarvanIV",
@@ -19,7 +19,7 @@ function findChampion() {
         "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath", "XinZhao", "Yasuo", "Yorick", "Zac",
         "Zed", "Ziggs", "Zilean", "Zyra"];
     if(document.getElementById("player1").value !== '' && document.getElementById("player2").value !== '' && document.getElementById("player3").value !== ''&& document.getElementById("player4").value !== '' && document.getElementById("player5").value !== ''){
-        for(i=1; i<6; i++)
+        for(let i=1; i<6; i++)
         {
             if (checkArray.indexOf(document.getElementById("player" + i).value) !== -1) {
                 if(document.getElementById("player" + i).value === "Wukong"){
@@ -41,7 +41,7 @@ function findChampion() {
                     data: {
                         '_token': "{{ csrf_token() }}",
                         championArray: championArray,
-                        team: $('#Team option:selected').text(),
+                        team: $('#Team').find('option:selected').text(),
                     },
                     success: function (data) {
                         document.getElementById('info').innerHTML = '<h3>' + data + '</h3>';
