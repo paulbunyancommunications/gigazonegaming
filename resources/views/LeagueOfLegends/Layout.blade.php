@@ -72,6 +72,8 @@
 </footer>
 <div id="endResult" class="hidden"></div>
 </body>
+<div id="hiddenToken" class="hidden">{{ csrf_field() }}</div>
+
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});</script>
 <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>

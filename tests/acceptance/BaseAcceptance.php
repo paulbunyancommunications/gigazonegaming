@@ -31,6 +31,7 @@ class BaseAcceptance
         $this->resetDB($I);
         $I->runMigration($I);
         $this->faker = \Faker\Factory::create();
+        exec('php artisan cache:clear');
     }
 
     /**
@@ -39,8 +40,9 @@ class BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         // reset all the databases
-        //$this->resetDB($I);
-        //$I->runMigration($I);
+        $this->resetDB($I);
+        $I->runMigration($I);
+        exec('php artisan cache:clear');
     }
 
     /**

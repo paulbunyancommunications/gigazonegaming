@@ -5,6 +5,10 @@ namespace GameDisplay\RiotDisplay;
 use GameDisplay\RiotDisplay\API\Api;
 use Mockery\Exception;
 
+/**
+ * Class Summoner
+ * @package GameDisplay\RiotDisplay
+ */
 class Summoner{
 
 # Variables
@@ -22,9 +26,13 @@ class Summoner{
 
 # Constructor
 #----------------------------------------------------------------------
+    /**
+     * Summoner constructor.
+     * @param $summonerName
+     * @param $ApiKeyNumber
+     */
     function __construct($summonerName, $ApiKeyNumber)
     {
-
         #Initailize the name of the summoner
         $this->setSummonerName($summonerName);
 
@@ -42,12 +50,14 @@ class Summoner{
 
 
 
-//        dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
-//        $this->setChampion();
-//        $this->setSoloRank();
+        #dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
+//
     }
 # Methods
 #----------------------------------------------------------------------
+    /**
+     * @return mixed
+     */
     public function checkCurrentGameStatus(){
         $status = $this->api->checkCurrentGameStatus();
         return $status;
@@ -55,43 +65,69 @@ class Summoner{
 
 # Setters
 #----------------------------------------------------------------------
+    /**
+     * @param $summonerName
+     */
     public function setSummonerName($summonerName){
         $this->summonerName = $summonerName;
     }
 
+    /**
+     *
+     */
     public function setApi(){
         #creats a new api object
         $this->api = new Api($this->summonerName, $this->ApiKey);
     }
 
+    /**
+     *
+     */
     public function setSummonerID(){
         $this->summonerID = $this->api->getSummonerId();
     }
 
+    /**
+     *
+     */
     public function  setIcon(){
         $this->icon = $this->api->getSummonerIcon();
     }
 
+    /**
+     *
+     */
     public function setSoloRank(){
         $this->soloRank = $this->api->getSoloRank();
     }
 
+    /**
+     *
+     */
     public function setSoloRankedWinLoss(){
         $this->soloRankedWinLoss = $this->api->getSoloRankedWinLoss();
     }
 
+    /**
+     *
+     */
     public function setFLEXRank()
     {
         $this->FLEXRank = $this->api->getFLEXRank();
     }
 
+    /**
+     *
+     */
     public function setFLEXRankedWinLoss()
     {
         $this->FLEXRankedWinLoss = $this->api->getFLEXRankedWinLoss();
     }
 
 
-
+    /**
+     *
+     */
     public function setChampion(){
         $this->champion = $this->api->getChampion();
     }
@@ -133,7 +169,7 @@ class Summoner{
                 $this->ApiKey = $_ENV['RIOT_API_KEY10'];
                 break;
             default:
-                throw new Exception("Api Id Not Defined For: $this->summonerName");
+                throw new Exception("Api id not set for $this->summonerName");
         }
     }
 

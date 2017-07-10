@@ -117,17 +117,18 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  *
  */
 
-Route::get('/GameDisplay/Admin','GameDisplayController@startGameDisplay');
-Route::get('/GameDisplay/customer','GameDisplayController@customerDisplay');
-Route::get('/GameDisplay/override','GameDisplayController@championOverride');
-Route::get('/GameDisplay/team1','GameDisplayController@team1ViewDisplay');
-Route::get('/GameDisplay/team2','GameDisplayController@team2ViewDisplay');
-Route::get('/GameDisplay/ajax','GameDisplayController@ajaxCheckRequest');
-Route::get('/GameDisplay/cache','SimonCacheController@teamViewDisplay');
-Route::get('/GameDisplay/getData','GameDisplayController@getData');
-Route::get('/GameDisplay/Update','GameDisplayController@updateData');
-Route::get('/GameDisplay/getTeamName','GameDisplayController@getTeamName');
-Route::get('/GameDisplay/championsOverride','GameDisplayController@cacheChampionOverride');
-Route::get('/GameDisplay/clear','GameDisplayController@clearCache');
+Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
+Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
+Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
+Route::get('/GameDisplay/team1','GameDisplay\GameDisplayController@team1ViewDisplay');
+Route::get('/GameDisplay/team2','GameDisplay\GameDisplayController@team2ViewDisplay');
+Route::get('/GameDisplay/ajax','GameDisplay\GameDisplayController@ajaxCheckRequest');
+Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
+Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
+Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
+Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
+Route::get('/GameDisplay/getTeamName','GameDisplay\GameDisplayController@getTeamName');
+Route::get('/GameDisplay/championsOverride','GameDisplay\GameDisplayController@cacheChampionOverride');
+Route::get('/GameDisplay/clear','GameDisplay\GameDisplayController@clearCache');
 
 

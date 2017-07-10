@@ -97,9 +97,21 @@ function setBoxHeight(){
     $('#D3').height($('#C3').height() - 9);
     $('#D4').height($('#C4').height() - 9);
 }
+$(document).ready($(window).resize(function(){
+    setBoxHeight();
+}));
+
+$(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $("#hiddenToken").text(),
+            }});
+    }
+);
+
 
 /*This function gets the data needed for loading the page*/
-$(document).ready(function(){GetData(),setTimeout(function(){setBoxHeight();},1)});
+$(document).ready(GetData());
 
 function GetData() {
     if (!document.getElementById('other')) {
@@ -124,18 +136,11 @@ function GetData() {
             },
         })
     }else{
-        UpdateData();
+        UpdateData(true);
     }
 }
-
-/*This function gets the champions, as well as checking the cache for any updated data*/
-function UpdateData() {
-    checkChamp = false;
-    if(!document.getElementsByClassName('championImage')){
-        checkChamp = true;
-    }
-
-    team = window.location.href;
+function UpdateData(checkChamp) {
+    var team = window.location.href;
     team = team.split('/');
     team = team[5];
     ///Execute cache controller with ajax
@@ -149,6 +154,7 @@ function UpdateData() {
             checkChamp: checkChamp
         },
         success: function (data) {
+            console.log(data);
             if (data[0] === 'true') {
                 location.reload();
             }
@@ -160,12 +166,12 @@ function UpdateData() {
                         champName[0] = "Wukong";
                     }
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                    document.getElementById('divE' + data[2][i]).innerHTML = '<img class="championImage" src="' + data[1][i] + '"/><div id="'+ "N"+ data[2][i]+'" class="championName"><h3>' + champName[0] + '</h3></div>';
+                    document.getElementById('C' + data[2][i]).innerHTML = '<img id="'+ "M"+ data[2][i]+'" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
                 }
                 fadInChampion();
-                setTimeout(UpdateData,2000);
+                setTimeout(function(){ UpdateData(false) },2000);
             }else{
-                setTimeout(UpdateData,2000);
+                setTimeout(function(){ UpdateData(checkChamp) },2000);
             }
 
         }
