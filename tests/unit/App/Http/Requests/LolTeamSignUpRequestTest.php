@@ -31,10 +31,9 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
     public function it_has_the_correct_input_rules()
     {
         $individualRequest = new LolTeamSignUpRequest();
-        
         // check email field exists and the rules are correct
         $this->assertArrayHasKey('email', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['email'], 'required|email|unique:mysql_champ.players,email');
+        $this->assertSame($individualRequest->rules()['email'], 'required|email');
         
         // check for name input and check that the rules are correct
         $this->assertArrayHasKey('name', $individualRequest->rules());
@@ -42,7 +41,7 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
 
         // check for team-captain-lol-summoner-name input and check that the rules are correct
         $this->assertArrayHasKey('team-captain-lol-summoner-name', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['team-captain-lol-summoner-name'], 'required|unique:mysql_champ.players,username');
+        $this->assertSame($individualRequest->rules()['team-captain-lol-summoner-name'], 'required');
 
         // check for team-captain-phone input and check that the rules are correct
         $this->assertArrayHasKey('team-captain-phone', $individualRequest->rules());

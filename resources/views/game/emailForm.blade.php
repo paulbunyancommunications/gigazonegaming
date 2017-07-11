@@ -130,9 +130,6 @@
         </div>
     </div>
 @endsection
-@section('js-sheet')
-
-@endsection
 @section('js')
     $(document).ready(function() {
         $("#compose").click(function(){

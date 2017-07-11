@@ -119,8 +119,8 @@ class TeamRequestTest extends WpRequestsBase
         $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method]');
         $mock->shouldReceive('method')->once()->andReturn('POST');
         $this->assertSame([
-            'name' => 'required|unique:mysql_champ.teams,name',
-            'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id',
+            'name' => 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id',
+            'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'
         ], $mock->rules());
 
     }
