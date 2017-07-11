@@ -279,45 +279,45 @@
     "docker-assets": [
       "# Getting Docker Assets #",
       "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')/docker/get_docker_assets.sh > get_docker_assets.sh; #",
-      "bash ${PWD}/get_docker_assets.sh"
+      "bash ${PWD}/get_docker_assets.sh; #"
     ],
     "docker_assets": [
-      "# Some scripts are still using the old underscore naming",
+      "# Some scripts are still using the old underscore naming; #",
       "@docker-assets"
     ],
     "post-docker": [
-      "# Commands to run after ./dock.sh is done",
+      "# Commands to run after ./dock.sh is done ; #",
       "@front-end-assets"
     ],
     "front-end-assets": [
       "# Process front end assets, usage `composer front-end-assets ENVIRONMENT` #",
       "yarn #",
-      "yarn run gulp"
+      "yarn run gulp #"
     ],
     "docker-rebuild": [
-      "# Rebuild Docker containers",
+      "# Rebuild Docker containers #",
       "@docker_assets",
-      "docker-compose down -v",
-      "docker-compose pull",
-      "docker-compose up -d"
+      "docker-compose down -v; #",
+      "docker-compose pull; #",
+      "docker-compose up -d; #"
     ],
     "env-check": [
-      "# Environment variable check",
+      "# Environment variable check #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check; #",
-      "chmod u+x env_check",
+      "chmod u+x env_check; #",
       "./env_check"
     ],
     "rollbar-deploy": [
       "# Rollbar deployment. Usage: `composer rollbar-deploy -- TOKEN ENVIRONMENT`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/95fecfd2065def37f88ffdfe4250d608/raw/$(git ls-remote https://gist.github.com/paulbunyannet/95fecfd2065def37f88ffdfe4250d608 | grep HEAD | awk '{ print $1}')/rollbar_deploy.sh > rollbar_deploy.sh; #",
       "chmod u+x rollbar_deploy.sh; #",
-      "./rollbar_deploy.sh"
+      "./rollbar_deploy.sh; #"
     ],
     "codecov-deploy": [
       "# Codecov deployment. Usage: `composer codecov-deploy -- LOCATION/OF/COVERAGE.xml TOKEN`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/b022b8fdb590ccb061222183e55193aa/raw/$(git ls-remote https://gist.github.com/paulbunyannet/b022b8fdb590ccb061222183e55193aa | grep HEAD | awk '{ print $1}')/codecov_deploy.sh > codecov_deploy.sh; #",
       "chmod u+x codecov_deploy.sh; #",
-      "./codecov_deploy.sh"
+      "./codecov_deploy.sh; #"
     ]
   }
 }
