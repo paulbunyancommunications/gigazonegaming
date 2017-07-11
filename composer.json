@@ -303,7 +303,7 @@
     ],
     "env-check": [
       "# Environment variable check",
-      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check;",
+      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check; #",
       "chmod u+x env_check",
       "./env_check"
     ],
