@@ -79,7 +79,6 @@ function mobileDisplay(){
                     '<div id="imageInfo3' + i +'" class="hidden">Image 3</div>';
             }
             $('#carouselControls').removeClass('hidden');
-
         }else{
             for (let i = 0; i < 5; i++) {
                 $('#' + i + '-0').removeClass('hidden');
