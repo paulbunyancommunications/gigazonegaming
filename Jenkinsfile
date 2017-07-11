@@ -1,246 +1,480 @@
+import java.text.SimpleDateFormat
+
+class Globals {
+
+   static DATE_FORMAT_HUMAN           = new SimpleDateFormat("EEEE',' MMMM dd',' YYYY 'at' HH:mm:ss z")
+   static DATE_FORMAT_LOGS            = new SimpleDateFormat("yyyy-MM-dd")
+   static DATE_FORMAT_STAMP           = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+   static DATE_JOB_STARTED            = new Date()
+   static String STAGE                = "Job Started"
+   static String GIT_LOG              = ""
+   static String ARCHIVE_NAME         = "job-${Globals.SCM_OWNER}-${Globals.SCM_REPO}-${Globals.SCM_BRANCH}"
+   static String WORKSPACE            = ""
+   static String TAIL_LENGTH          = 1000
+   static String SCM_URL              = ""
+   static String SCM_OWNER            = ""
+   static String SCM_REPO             = ""
+   static String SCM_BRANCH           = "develop"
+   static String COMMIT_AUTHOR_EMAIL  = "example@example.com"
+   static String COMMIT_AUTHOR_NAME   = "John Doe"
+   static String COMMIT_MESSAGE       = "Commit message"
+   /* Array of directories to make writable */
+   static String[] WRITABLE_DIRS      = []
+
+}
+
+
+/*
+ * startMessage
+ * Output a formatted start message message
+ * @prop String stage
+ * @prop String message
+ * @prop mixed timestamp
+ */
+def startMessage(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
+  println "\u2605 Started ${stage} ${message} at ${Globals.DATE_FORMAT_STAMP.format(timestamp)} \u2605"
+}
+
+/* Output a formatted success message */
+def successMessage(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
+  println "\u2713 ${stage} completed ${message} at ${Globals.DATE_FORMAT_STAMP.format(timestamp)} \u263A!"
+}
+
+/* Output a formatted warning message */
+def warningMesssage(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
+  println "\u2297 ${stage} warning: ${message} at ${Globals.DATE_FORMAT_STAMP.format(timestamp)} \u1F631!"
+}
+
+/* output a formatted error message */
+def errorMessage(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
+  println "\u2297 ${stage} failed: ${message} \u1F631!"
+  failJob(stage, message, timestamp)
+}
+/* fail the job */
+def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
+  try {
+    def JOB_FAILED_DATE = new Date()
+    // Create the error message body
+    def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n"
+
+    // Copy over log files here if it exists .....
+    sh "cp ${Globals.WORKSPACE}/ci/application/logs/log-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.php ${Globals.WORKSPACE}/tests/_output || true"
+
+    // Get the log outputfrom the code container
+    sh "echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/docker-code-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.log"
+
+    // Get the log outputfrom the web container
+    sh "echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/docker-web-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.log"
+
+    // Get the log outputfrom the hub container
+    sh "echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/docker-hub-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.log"
+
+    // Bring container down and destroy
+    sh "docker-compose down -v";
+
+    // Zip the output folder for email
+    zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
+
+    // email teh recipient the log output folder
+    emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
+    // notify mattermost of this error
+    //mattermostSend "![${currentBuild.currentResult}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.currentResult} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+
+  } catch (error) {
+    // if there was an error return it here as a warning.
+    warningMesssage(stage, error.getMessage())
+
+  }
+  // fail the job
+  return error("${stage} failed: ${message} on ${Globals.DATE_FORMAT_STAMP.format(timestamp)}")
+}
+
 node {
-    String branch = "develop"
-    String emailMe = "castillo@paulbunyan.net"
-    String archive_name = "${env.JOB_NAME}-${env.BUILD_NUMBER}-${branch}"
+
+  Globals.DATE_JOB_STARTED = new Date()
+  Globals.WORKSPACE = env.WORKSPACE
+  Globals.SCM_OWNER = SCM_OWNER
+  Globals.SCM_REPO = SCM_REPO
+  Globals.SCM_BRANCH = SCM_BRANCH
+  Globals.SCM_URL = SCM_URL
+  Globals.ARCHIVE_NAME="${env.JOB_NAME}-${env.BUILD_NUMBER}-${Globals.SCM_BRANCH}"
+  Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "ci/application/logs", "tests"] as String[]
+
+  stage('Setup'){
+
     /**
-    * String scm_url = 'https://github.com/paulbunyancommunications/gigazonegaming.git'
-    * String scm_url = 'https://github.com/castillo-n/gigazonegaming.git'
-    * String scm_url = 'https://github.com/natenolting/gigazonegaming.git'
-    * String scm_url = 'https://github.com/romanmartushev/gigazonegaming.git'
+    * Clean up the workspace to start with
     */
-    String scm_url = 'https://github.com/castillo-n/gigazonegaming.git'
-    timestamps {
-        /**
-        * Check out project from source control
-        */
-        stage('clean-directory') {
-            echo "WORKSPACE ${WORKSPACE}";
-            echo "JOB_URL ${env.JOB_URL}";
-            echo "BUILD_URL ${env.BUILD_URL}";
-            echo "JOB_NAME ${env.JOB_NAME}";
-            echo "JOB_BASE_NAME ${env.JOB_BASE_NAME}";
-            echo "BUILD_DISPLAY_NAME ${env.BUILD_DISPLAY_NAME}";
-            echo "BUILD_ID ${env.BUILD_ID}";
-            echo "BUILD_NUMBER ${env.BUILD_NUMBER}";
-            echo "CHANGE_AUTHOR_DISPLAY_NAME ${env.CHANGE_AUTHOR_DISPLAY_NAME}";
-            echo "CHANGE_AUTHOR ${env.CHANGE_AUTHOR}";
-            echo "CHANGE_TITLE ${env.CHANGE_TITLE}";
-            echo "BRANCH_NAME ${env.BRANCH_NAME}";
-            echo "currentBuild.currentResult ${currentBuild.currentResult}";
-            try {
-                sh "cd ${env.WORKSPACE}";
-                step([$class: 'WsCleanup']);
-            } catch(error) {
-                echo "directory couldn't be clean before build";
-                updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                error("Build failed because couldn't clean directory.")
-            }
-        }
 
-        stage('git-pull') {
-            echo "\u2605 Checking out project from ${scm_url} \u2605"
-            try {
-                checkout([$class: 'GitSCM', branches: [[name: "*/${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: "${scm_url}"]]])
-            } catch(error) {
-                try {
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a90cc198-6371-4211-8f0e-4344197a9fc1', url: "${scm_url}"]]])
-                } catch(error_b) {
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed on git pull.")
+    Globals.STAGE='Workspace: Clean up for build'
+    startMessage(Globals.STAGE)
+    try {
+      step([$class: 'WsCleanup']);
+      } catch (error) {
+        errorMessage(Globals.STAGE, error.getMessage())
+      }
+    successMessage(Globals.STAGE)
 
-                }
-            }
-        }
+      /**
+      * Get the latest commit and retrive the username, email, and commit message for the COMMIT_* variables
+      */
 
-        /**
-        * start docker
-        */
-        stage('build:env') {
-            echo "\u2605 Running DOCKER-START \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "cp .env.example .env";
-        }
-        /**
-        * start docker
-        */
-        stage('build:docker-assets') {
-            echo "\u2605 Running DOCKER-START \u2605"
-            try {
-                sh "cd ${env.WORKSPACE}";
-                sh "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/\$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print \$1}')/docker/update_docker_assets_file.sh > update_docker_assets_file.sh";
-                sh "chmod a+x update_docker_assets_file.sh";
-                sh "./update_docker_assets_file.sh";
-                sh "chmod a+x get_docker_assets.sh";
-                sh "./get_docker_assets.sh"
-            } catch(error) {
-                sh "docker-compose down -v";
-                sh "docker system prune -f"
-                updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                error("Build failed because couldn't get docker assets.")
-            }
-        }
-
-        /**
-        * start docker
-        */
-        stage('check:load-variables') {
-            echo "\u2605 checking variables were load \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-        }
-
-        /**
-        * start docker
-        */
-        stage('docker:up') {
-            echo "\u2605 Running DOCKER-START \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-            sh "./docker-jenkins-start.sh"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    sh "docker-jenkins-start.sh"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because couldn't docker up.")
-                }
-            }
-        }
-
-
-        /**
-        * test docker app all
-        */
-        stage('file-permissions') {
-            echo "\u2605 Running Permissions \u2605";
-            sh "cd ${env.WORKSPACE}";
-            sh "ls";
-            try {
-                echo "\u2605 Fixing permissions \u2605"
-                sh "chmod -fR 777 ${env.WORKSPACE}/storage";
-                sh "chmod -f 777 ${env.WORKSPACE}/c3_error.log";
-            } catch(error_b) {
-                sh "docker-compose down -v";
-                sh "docker system prune -f"
-                updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                error("Build failed because couldn't get file permissions changed.")
-            }
-        }
-        /**
-        * integration test docker app
-        */
-        stage('test:integration') {
-            echo "\u2605 Running CODECEPT RUN INTEGRATION \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-                sh "docker-compose exec -T code vendor/bin/codecept run tests/integration"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN INTEGRATION \u2605"
-                    sh "docker-compose exec -T code vendor/bin/codecept run tests/integration"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because integration test didn't pass.")
-                }
-            }
-        }
-        /**
-        * acceptance test docker app
-        */
-        stage('test:acceptance') {
-            echo "\u2605 Running CODECEPT RUN ACCEPTANCE \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-                sh "docker-compose exec -T code vendor/bin/codecept run tests/acceptance"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN ACCEPTANCE -vvv \u2605"
-                    sh "docker-compose exec -T code vendor/bin/codecept run tests/acceptance -vvv"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because acceptance test didn't pass.")
-                }
-            }
-        }
-
-        /**
-        * functional test docker app
-        */
-        stage('test:functional') {
-            echo "\u2605 Running CODECEPT RUN FUNCTIONAL \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-                sh "docker-compose exec -T code vendor/bin/codecept run tests/functional"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN FUNCTIONAL \u2605"
-                    sh "docker-compose exec -T code vendor/bin/codecept run tests/functional"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because functional test didn't pass.")
-                }
-            }
-        }
-        /**
-        * unit test docker app
-        */
-        stage('test:unit') {
-            echo "\u2605 Running CODECEPT RUN UNIT \u2605"
-            sh "cd ${env.WORKSPACE}";
-            sh "./dock-helpers.sh";
-            try {
-                sh "docker-compose exec -T code vendor/bin/codecept run tests/unit"
-            } catch(error) {
-                try {
-                    echo "\u2605 Rerunning CODECEPT RUN UNIT \u2605"
-                    sh "docker-compose exec -T code vendor/bin/codecept run tests/unit"
-                } catch(error_b) {
-                    sh "docker-compose down -v";
-                    sh "docker system prune -f"
-                    updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-                    error("Build failed because unit test didn't pass.")
-                }
-            }
-        }
-        stage('build:git_log') {
-            try {
-                echo "\u2605 Running git_log.sh to get current commit hash \u2605"
-                sh "cd ${env.WORKSPACE}";
-                sh "bash ${env.WORKSPACE}/git_log.sh"
-            } catch(error_b) {
-                echo "not git log was created"
-            }
-        }
-
-        stage('build:archive') {
-            echo "\u2605 Archiving artifacts \u2605"
-            archiveArtifacts artifacts: '**/*', onlyIfSuccessful: true
-        }
-        stage('docker:down') {
-            sh "docker-compose down -v";
-            sh "docker system prune -f"
-            updateGitlabCommitStatus name: 'jenkins', state: "${currentBuild.currentResult.toLowerCase()}"
-        }
-        stage('mattermost it'){
-            echo "currentBuild.result ${currentBuild.result}";
-            echo "currentBuild.currentResult ${currentBuild.currentResult}";
-            mattermostSend "![${currentBuild.currentResult}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.currentResult} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
-            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${emailMe}", sendToIndividuals: false])
+    Globals.STAGE='Workspace: Setup Environment'
+    startMessage(Globals.STAGE)
+    withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
+        try {
+            sh "curl --silent -k https://gist.githubusercontent.com/${Globals.SCM_OWNER}/99f759f8569fcffd217a03128f61bab4/raw > ${env.WORKSPACE}/github_latest_commit.php"
+            sh "cd ${env.WORKSPACE}; php github_latest_commit.php --user=${Globals.SCM_OWNER} --pass=${SCM_PASS} --owner=${Globals.SCM_OWNER} --repo=${Globals.SCM_REPO} --sha=${Globals.SCM_BRANCH} --workspace=${env.WORKSPACE}"
+            load "${env.WORKSPACE}/.env.git_latest_commit"
+        } catch (error) {
+          errorMessage(Globals.STAGE, error.getMessage())
         }
     }
+    Globals.COMMIT_AUTHOR_EMAIL  = COMMIT_AUTHOR_EMAIL
+    Globals.COMMIT_AUTHOR_NAME   = COMMIT_AUTHOR_NAME
+    Globals.COMMIT_MESSAGE       = COMMIT_MESSAGE
+    successMessage(Globals.STAGE, "last commit by '${Globals.COMMIT_AUTHOR_NAME}(${Globals.COMMIT_AUTHOR_EMAIL})' with message '${Globals.COMMIT_MESSAGE}'")
+
+
+    /**
+    * Pull down the latest version fo the repo from the given branch in SCM_BRANCH
+    */
+
+    Globals.STAGE='VCS: Git Pull'
+    startMessage(Globals.STAGE, " from ${Globals.SCM_URL} ")
+    try {
+      checkout([$class: 'GitSCM', branches: [[name: "*/${Globals.SCM_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: SCM_CHECKOUT_TOKEN, url: SCM_URL]]])
+    } catch (error) {
+      errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+    Globals.STAGE='Workspace: Setup Environment'
+    startMessage(Globals.STAGE)
+    withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
+      sh "rm -rf ${env.WORKSPACE}/groovy || true"
+      sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
+    }
+    successMessage(Globals.STAGE)
+
+
+    /**
+    * Get and check the locally stored env file and see if the keys all exist
+    */
+    Globals.STAGE='Environment: Composer installer'
+    startMessage(Globals.STAGE)
+    try {
+      // composer install is required for the next stage....
+      sh "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/f896924537ec984ffaface03e4041000/raw > ${env.WORKSPACE}/cs.sh"
+      sh "cd ${env.WORKSPACE}; bash cs.sh"
+      sh "cd ${env.workspace}; php composer.phar install --ignore-platform-reqs  --no-scripts"
+      sh "cd ${env.workspace}; php composer.phar dump-autoload -o"
+      sh "cd ${env.workspace}; php composer.phar update --ignore-platform-reqs"
+      sh "rm -f ${env.WORKSPACE}/cs.sh"
+      } catch (error) {
+        errorMessage(Globals.STAGE, error.getMessage())
+      }
+      successMessage(Globals.STAGE)
+
+    /**
+    * Make .env from stored file and load into groovy
+    */
+    Globals.STAGE='Environment: Make .env'
+    startMessage(Globals.STAGE)
+    // Get stored .env file from credentials
+    withCredentials([file(credentialsId: "${ENV_TOKEN}", variable: 'X_ENV_FILE_X')]) {
+      // Try to copy the stored environment file to the current workspace
+      echo "I will copy environment file to ${env.WORKSPACE} if it exists"
+      // Copy the env file into the current workspace and fix it's permissions
+      try {
+        sh "cp ${X_ENV_FILE_X} ${env.WORKSPACE}/.env"
+        sh "chmod 444 ${env.WORKSPACE}/.env"
+        // Create groovy file version of the .env then fix below to make
+        def envToGroovy=load "${env.WORKSPACE}/groovy/env-to-groovy.groovy"
+        envToGroovy.envToGroovy("${env.WORKSPACE}/.env",  "${env.WORKSPACE}/.env.groovy")
+
+        } catch (error) {
+          errorMessage(Globals.STAGE, error.getMessage())
+        }
+      }
+    try {
+      sh "cd ${env.WORKSPACE}; composer env-check -- --actual=.env.example --expected=.env"
+      } catch (error) {
+        errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+
+      /**
+      * Set the folder premissions for folders that need to be written to
+      */
+
+    Globals.STAGE='Environment: fix folder permissions'
+    startMessage(Globals.STAGE)
+    try {
+      for (i = 0; i <Globals.WRITABLE_DIRS.length; i++) {
+        echo "Making writable directory ${env.WORKSPACE}/${Globals.WRITABLE_DIRS[i]}"
+        sh "mkdir ${env.WORKSPACE}/${Globals.WRITABLE_DIRS[i]} || true"
+        sh "chmod -fR 777 ${env.WORKSPACE}/${Globals.WRITABLE_DIRS[i]}";
+      }
+
+      } catch (error) {
+        errorMessage(Globals.STAGE, error.getMessage())
+      }
+      successMessage(Globals.STAGE)
+
+    /**
+    * Get any docker image updates that may have been pushed using the current docker config
+    */
+
+    Globals.STAGE='Docker: Get any image updates'
+    startMessage(Globals.STAGE)
+    try {
+      sh "cd ${env.WORKSPACE}; php composer.phar docker-assets";
+      sh "docker-compose pull";
+      } catch (error) {
+        errorMessage(Globals.STAGE, error.getMessage())
+
+      }
+      successMessage(Globals.STAGE)
+
+
+      /**
+      * Start up the docker containers
+      */
+
+    Globals.STAGE='Docker: Start up containers'
+    startMessage(Globals.STAGE)
+    try {
+      sh "docker-compose down -v"
+      sh "composer docker-assets"
+      sh "./docker-jenkins-start.sh";
+    } catch (error) {
+      sh "docker-compose down -v"
+      errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+    /**
+    * Install Monolog
+    */
+    Globals.STAGE='Build: Install monolog/monolog globally'
+    startMessage(Globals.STAGE)
+    try {
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer global require monolog/monolog"
+    } catch (error) {
+      sh "docker-compose down -v"
+      errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+    /**
+    * Install backend assets
+    */
+
+    Globals.STAGE='Build: Install backend assets'
+    startMessage(Globals.STAGE)
+    try {
+      // add any backend installers here....
+      sh "chmod 444 ${env.WORKSPACE}/composer.json"
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer install"
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer dump-autoload --optimize"
+
+    } catch (error) {
+      sh "docker-compose down -v"
+      errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+
+    /**
+    * Install front end assets
+    */
+
+    Globals.STAGE='Environment: Install frontend assets'
+    startMessage(Globals.STAGE)
+    try {
+      // add any front end installers here....
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root\""
+    } catch (error){
+      sh "docker-compose down -v"
+      errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+  }
+
+  /**
+  * Run the test runner and see if all tests pass
+  */
+  // stage('Tests') {
+  //   Globals.STAGE='Tests: Run tests'
+  //   startMessage(Globals.STAGE)
+  //   try {
+  //     echo "App environment: ${APP_ENV}"
+  //     switch(APP_ENV.toString()) {
+  //       case "production":
+  //         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter --coverage --coverage-html --coverage-xml\""
+  //         break
+  //       default:
+  //         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\""
+  //         break
+  //     }
+  //   } catch (error) {
+  //     failJob(Globals.STAGE, error.getMessage())
+  //   }
+  //   successMessage(Globals.STAGE)
+  // }
+
+  /**
+  * Get the latest git log
+  */
+  stage('Prepare for deployment') {
+    Globals.STAGE='Build: Generate Git log'
+    startMessage(Globals.STAGE)
+    try {
+      echo "\u2605 Build: Generate Git log \u2605"
+      sh "echo \$(git log -n 1 --pretty=format:\"%H\") > ${env.WORKSPACE}/temp/git_log"
+      Globals.GIT_LOG=readFile("${env.WORKSPACE}/temp/git_log").trim()
+      fileOperations([fileDeleteOperation(excludes: '', includes: 'git_log.txt')])
+      fileOperations([fileCreateOperation(fileContent: "${Globals.GIT_LOG}", fileName: 'git_log.txt')])
+
+    } catch (error) {
+        sh "docker-compose down -v";
+        errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+
+    /**
+    * Rebuild composer files for shipment off to production
+    */
+
+    Globals.STAGE='Build: Create production composer autoload'
+    startMessage(Globals.STAGE)
+    try {
+      sh "docker-compose exec -T code composer update --no-dev"
+      sh "docker-compose exec -T code composer dump-autoload --no-dev --optimize"
+    } catch (error) {
+        sh "docker-compose down -v";
+        errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+
+
+    /**
+    * Archive files for deployment
+    */
+
+    Globals.STAGE='Build: Archive files for deployment'
+
+    startMessage(Globals.STAGE)
+        try {
+          def buildFolder = "build-${BUILD_NUMBER}"
+          // Zip up the curent directory
+          zip dir: '', glob: '', zipFile: "${buildFolder}.zip"
+
+            // unzip folder into build folder
+          unzip dir: "${buildFolder}", glob: '', zipFile: "${buildFolder}.zip"
+          // get rud of the archive
+          sh "rm -f ${env.WORKSPACE}/${buildFolder}.zip"
+
+          // do any cleanups to build directory here
+          // files
+          sh "rm -f ${env.WORKSPACE}/${buildFolder}/.env"
+          sh "rm -f ${env.WORKSPACE}/${buildFolder}/c3_error.log || true"
+          sh "rm -f ${env.WORKSPACE}/${buildFolder}/Dockerfile"
+          sh "find ${env.WORKSPACE}/${buildFolder} -name \"dock-*\" -type f -delete"
+          sh "find ${env.WORKSPACE}/${buildFolder}/ci/application/logs -name \"*.php\" -type f -delete"
+            //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "ci/application/logs", "tests"
+          // folders
+          sh "rm -rf ${env.WORKSPACE}/${buildFolder}/groovy"
+          sh "rm -rf ${env.WORKSPACE}/${buildFolder }/tests"
+          sh "rm -rf ${env.WORKSPACE}/${buildFolder }/temp"
+          sh "rm -rf ${env.WORKSPACE}/${buildFolder}/node_modules"
+          sh "rm -rf ${env.WORKSPACE}/${buildFolder}/database"
+          
+        } catch (error) {
+            sh "docker-compose down -v";
+            errorMessage(Globals.STAGE, error.getMessage())
+        }
+
+
+    echo "Artifacts copied to ${env.WORKSPACE}/${buildFolder}"
+
+    successMessage(Globals.STAGE)
+  }
+
+  /**
+  * Deploy archived files to the server over ssh
+  */
+  stage('Deploy') {
+    Globals.STAGE='Deployment: Deploy files to remote server'
+    startMessage(Globals.STAGE)
+    try {
+
+      sshagent(["${SSH_TOKEN}"]) {
+        // check if .env file exists on the remote host
+        // https://stackoverflow.com/a/18290318/405758
+        sh returnStatus: true, script: "ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_SERVER} stat ${SSH_PATH}/.env"
+        sh "scp -P ${SSH_PORT} ${SSH_USER}@${SSH_SERVER}:${SSH_PATH}/.env ${env.WORKSPACE}/temp"
+        // check if the remote .env and the local have all the environment keys
+        sh "cd ${env.WORKSPACE}; composer env-check -- --actual=temp/.env --expected=.env"
+        //sh "ssh -p ${SSH_PORT} -vvv -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER} uname -a"
+        /**sh "ssh user@server rm -rf /var/www/temp_deploy/dist/"
+        sh "ssh user@server mkdir -p /var/www/temp_deploy"
+        sh "scp -r dist user@server:/var/www/temp_deploy/dist/"
+        sh "ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/"
+        */
+      }
+
+    } catch (error) {
+      sh "docker-compose down -v";
+      errorMessage(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+  }
+
+
+stage('Notification') {
+  /**
+  * Let Rollbar know about the latest deployment
+  */
+  // Globals.STAGE='Deployment: Rollbar notification'
+  // startMessage(Globals.STAGE)
+  // try {
+  //   withCredentials([string(credentialsId: "${ROLLBAR_TOKEN}", variable: 'X_ROLLBAR_DEPLOY_TOKEN_X')]) {
+  //     sh "composer rollbar-deploy -- ${X_ROLLBAR_DEPLOY_TOKEN_X} ${Globals.SCM_BRANCH}"
+  //   }
+  // } catch (error) {
+  //     warningMesssage(Globals.STAGE, error.getMessage())
+  // }
+  // successMessage(Globals.STAGE)
+
+
+  /**
+  * Notify Mattermost that the build passed
+  */
+
+  // Globals.STAGE='Deployment: Mattermost notification'
+  // startMessage(Globals.STAGE)
+  // try {
+  //   mattermostSend "![${currentBuild.currentResult}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.currentResult} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+  // } catch (error) {
+  //   warningMesssage(Globals.STAGE, error.getMessage())
+  // }
+  // successMessage(Globals.STAGE)
+}
+
+
+  stage('Tear down') {
+    /**
+    * Tear down the docker containers for this build
+    */
+    Globals.STAGE='Docker: Bring containers down'
+    startMessage(Globals.STAGE)
+    sh "docker-compose down -v";
+    successMessage(Globals.STAGE)
+  }
+
 }
