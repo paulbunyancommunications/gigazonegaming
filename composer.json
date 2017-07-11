@@ -249,6 +249,9 @@
     }
   },
   "scripts": {
+    "pre-install-cmd": [
+      "php clear-compiled"
+    ],
     "post-root-package-install": [
       "php -r \"copy('.env.example', '.env');\"; #"
     ],
@@ -256,6 +259,7 @@
       "php artisan key:generate"
     ],
     "post-install-cmd": [
+      "php clear-compiled",
       "Illuminate\\Foundation\\ComposerScripts::postInstall; #",
       "php artisan ide-helper:generate; #",
       "php artisan ide-helper:meta; #",
