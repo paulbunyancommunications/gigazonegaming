@@ -168,7 +168,7 @@ node {
       sh "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/f896924537ec984ffaface03e4041000/raw > ${env.WORKSPACE}/cs.sh"
       sh "cd ${env.WORKSPACE}; bash cs.sh"
       sh "cd ${env.workspace}; php composer.phar install --ignore-platform-reqs  --no-scripts"
-      sh "cd ${env.workspace}; php composer.phar dump-autoload -o  --ignore-platform-reqs"
+      sh "cd ${env.workspace}; php composer.phar dump-autoload -o"
       sh "cd ${env.workspace}; php composer.phar update --ignore-platform-reqs"
       sh "rm -f ${env.WORKSPACE}/cs.sh"
       } catch (error) {
