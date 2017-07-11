@@ -250,53 +250,53 @@
   },
   "scripts": {
     "post-root-package-install": [
-      "php -r \"copy('.env.example', '.env');\""
+      "php -r \"copy('.env.example', '.env');\"; #"
     ],
     "post-create-project-cmd": [
       "php artisan key:generate"
     ],
     "post-install-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan ide-helper:generate",
-      "php artisan ide-helper:meta",
-      "php artisan optimize",
-      "bash ${PWD}/composer_post_fixes.sh"
+      "Illuminate\\Foundation\\ComposerScripts::postInstall; #",
+      "php artisan ide-helper:generate; #",
+      "php artisan ide-helper:meta; #",
+      "php artisan optimize; #",
+      "bash ${PWD}/composer_post_fixes.sh; #"
     ],
     "post-update-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan optimize",
-      "bash ${PWD}/composer_post_fixes.sh"
+      "Illuminate\\Foundation\\ComposerScripts::postUpdate; #",
+      "php artisan optimize; #",
+      "bash ${PWD}/composer_post_fixes.sh; #"
     ],
     "test": [
-      "# Running Tests, usage `composer test -- TEST_ARGUMENTS` #",
+      "# Running Tests, usage `composer test -- TEST_ARGUMENTS`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919/raw/$(git ls-remote https://gist.github.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919 | grep HEAD | awk '{ print $1}')/testing.sh > testing.sh; #",
       "chmod u+x testing.sh; #",
-      "./testing.sh"
+      "./testing.sh; #"
     ],
     "test-failed": [
-      "@test -- -g failed"
+      "@test -- -g failed; #"
     ],
     "docker-assets": [
-      "# Getting Docker Assets #",
+      "# Getting Docker Assets; #",
       "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')/docker/get_docker_assets.sh > get_docker_assets.sh; #",
       "bash ${PWD}/get_docker_assets.sh; #"
     ],
     "docker_assets": [
       "# Some scripts are still using the old underscore naming; #",
-      "@docker-assets"
+      "@docker-assets; #"
     ],
     "post-docker": [
       "# Commands to run after ./dock.sh is done ; #",
-      "@front-end-assets"
+      "@front-end-assets; #"
     ],
     "front-end-assets": [
-      "# Process front end assets, usage `composer front-end-assets ENVIRONMENT` #",
-      "yarn #",
-      "yarn run gulp #"
+      "# Process front end assets, usage `composer front-end-assets ENVIRONMENT`; #",
+      "yarn; #",
+      "yarn run gulp; #"
     ],
     "docker-rebuild": [
       "# Rebuild Docker containers #",
-      "@docker_assets",
+      "@docker_assets; #",
       "docker-compose down -v; #",
       "docker-compose pull; #",
       "docker-compose up -d; #"
@@ -305,7 +305,7 @@
       "# Environment variable check #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check; #",
       "chmod u+x env_check; #",
-      "./env_check"
+      "./env_check; #"
     ],
     "rollbar-deploy": [
       "# Rollbar deployment. Usage: `composer rollbar-deploy -- TOKEN ENVIRONMENT`; #",
