@@ -167,9 +167,11 @@ node {
       // composer install is required for the next stage....
       sh "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/f896924537ec984ffaface03e4041000/raw > ${env.WORKSPACE}/cs.sh"
       sh "cd ${env.WORKSPACE}; bash cs.sh"
-      sh "cd ${env.workspace}; php composer.phar install --ignore-platform-reqs  --no-scripts"
-      sh "cd ${env.workspace}; php composer.phar dump-autoload -o"
-      sh "cd ${env.workspace}; php composer.phar update --ignore-platform-reqs"
+      sh "cd ${env.WORKSPACE}; php composer.phar install --ignore-platform-reqs  --no-scripts"
+      sh "cd ${env.WORKSPACE}; php composer.phar dump-autoload -o"
+      sh "cd ${env.WORKSPACE}/tests/; mkdir _output"
+      sh "cd ${env.WORKSPACE}; chmod 777 -R ${env.WORKSPACE}/tests/_output/"
+      sh "cd ${env.WORKSPACE}; php composer.phar update --ignore-platform-reqs"
       sh "rm -f ${env.WORKSPACE}/cs.sh"
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
