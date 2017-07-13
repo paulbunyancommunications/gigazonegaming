@@ -57,9 +57,6 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     // Create the error message body
     def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n"
 
-    // Copy over log files here if it exists .....
-    sh "cp ${Globals.WORKSPACE}/ci/application/logs/log-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.php ${Globals.WORKSPACE}/tests/_output || true"
-
     // Get the log outputfrom the code container
     sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/code.log"
 
@@ -98,7 +95,7 @@ node {
   Globals.SCM_BRANCH = SCM_BRANCH
   Globals.SCM_URL = SCM_URL
   Globals.ARCHIVE_NAME="${env.JOB_NAME}-${env.BUILD_NUMBER}-${Globals.SCM_BRANCH}"
-  Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "ci/application/logs", "tests"] as String[]
+  Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"] as String[]
 
   stage('Setup'){
 
@@ -396,8 +393,7 @@ node {
           sh "rm -f ${env.WORKSPACE}/${buildFolder}/c3_error.log || true"
           sh "rm -f ${env.WORKSPACE}/${buildFolder}/Dockerfile"
           sh "find ${env.WORKSPACE}/${buildFolder} -name \"dock-*\" -type f -delete"
-          sh "find ${env.WORKSPACE}/${buildFolder}/ci/application/logs -name \"*.php\" -type f -delete"
-            //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "ci/application/logs", "tests"
+            //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"
           // folders
           sh "rm -rf ${env.WORKSPACE}/${buildFolder}/groovy"
           sh "rm -rf ${env.WORKSPACE}/${buildFolder }/tests"
