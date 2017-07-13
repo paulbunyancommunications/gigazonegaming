@@ -2,24 +2,24 @@ import java.text.SimpleDateFormat
 
 class Globals {
 
-   static DATE_FORMAT_HUMAN           = new SimpleDateFormat("EEEE',' MMMM dd',' YYYY 'at' HH:mm:ss z")
-   static DATE_FORMAT_LOGS            = new SimpleDateFormat("yyyy-MM-dd")
-   static DATE_FORMAT_STAMP           = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-   static DATE_JOB_STARTED            = new Date()
-   static String STAGE                = "Job Started"
-   static String GIT_LOG              = ""
-   static String ARCHIVE_NAME         = "job-${Globals.SCM_OWNER}-${Globals.SCM_REPO}-${Globals.SCM_BRANCH}"
-   static String WORKSPACE            = ""
-   static String TAIL_LENGTH          = 1000
-   static String SCM_URL              = ""
-   static String SCM_OWNER            = ""
-   static String SCM_REPO             = ""
-   static String SCM_BRANCH           = "develop"
-   static String COMMIT_AUTHOR_EMAIL  = "example@example.com"
-   static String COMMIT_AUTHOR_NAME   = "John Doe"
-   static String COMMIT_MESSAGE       = "Commit message"
+   static DATE_FORMAT_HUMAN           = new SimpleDateFormat("EEEE',' MMMM dd',' YYYY 'at' HH:mm:ss z");
+   static DATE_FORMAT_LOGS            = new SimpleDateFormat("yyyy-MM-dd");
+   static DATE_FORMAT_STAMP           = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+   static DATE_JOB_STARTED            = new Date();
+   static String STAGE                = "Job Started";
+   static String GIT_LOG              = "";
+   static String ARCHIVE_NAME         = "job-${Globals.SCM_OWNER}-${Globals.SCM_REPO}-${Globals.SCM_BRANCH}";
+   static String WORKSPACE            = "";
+   static String TAIL_LENGTH          = 1000;
+   static String SCM_URL              = "";
+   static String SCM_OWNER            = "";
+   static String SCM_REPO             = "";
+   static String SCM_BRANCH           = "develop";
+   static String COMMIT_AUTHOR_EMAIL  = "example@example.com";
+   static String COMMIT_AUTHOR_NAME   = "John Doe";
+   static String COMMIT_MESSAGE       = "Commit message";
    /* Array of directories to make writable */
-   static String[] WRITABLE_DIRS      = []
+   static String[] WRITABLE_DIRS      = [];
 
 }
 
@@ -57,23 +57,20 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     // Create the error message body
     def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n"
 
-    // Copy over log files here if it exists .....
-    sh "cp ${Globals.WORKSPACE}/ci/application/logs/log-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.php ${Globals.WORKSPACE}/tests/_output || true"
-
     // Get the log outputfrom the code container
-    sh "echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/docker-code-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/code.log"
 
     // Get the log outputfrom the web container
-    sh "echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/docker-web-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/web.log"
 
     // Get the log outputfrom the hub container
-    sh "echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/docker-hub-${Globals.DATE_FORMAT_LOGS.format(JOB_FAILED_DATE)}.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/hub.log"
 
     // Bring container down and destroy
-    sh "docker-compose down -v";
+    sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
 
     // Zip the output folder for email
-    zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
+    zip dir: "${Globals.WORKSPACE}/storage/logs", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
 
     // email teh recipient the log output folder
     emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
@@ -98,7 +95,7 @@ node {
   Globals.SCM_BRANCH = SCM_BRANCH
   Globals.SCM_URL = SCM_URL
   Globals.ARCHIVE_NAME="${env.JOB_NAME}-${env.BUILD_NUMBER}-${Globals.SCM_BRANCH}"
-  Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "ci/application/logs", "tests"] as String[]
+  Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"] as String[]
 
   stage('Setup'){
 
@@ -167,12 +164,21 @@ node {
       // composer install is required for the next stage....
       sh "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/f896924537ec984ffaface03e4041000/raw > ${env.WORKSPACE}/cs.sh"
       sh "cd ${env.WORKSPACE}; bash cs.sh"
-      sh "cd ${env.WORKSPACE}; php composer.phar install --ignore-platform-reqs  --no-scripts"
-      sh "cd ${env.WORKSPACE}; php composer.phar dump-autoload -o"
-      sh "cd ${env.WORKSPACE}/tests/; mkdir _output"
-      sh "cd ${env.WORKSPACE}; chmod 777 -R ${env.WORKSPACE}/tests/_output/"
-      sh "cd ${env.WORKSPACE}; php composer.phar update --ignore-platform-reqs"
-      sh "rm -f ${env.WORKSPACE}/cs.sh"
+      echo "1";
+      echo "${Globals.WORKSPACE}";
+      echo "2";
+      sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs --no-scripts; php artisan clear-compiled; php artisan optimize"
+      echo "3";
+      sh "cd ${Globals.WORKSPACE}; php composer.phar dump-autoload -o"
+      echo "4";
+      sh "cd ${Globals.WORKSPACE}/tests/; mkdir _output"
+      echo "5";
+      sh "cd ${Globals.WORKSPACE}/tests/; chmod 777 -R _output/"
+      echo "8";
+      sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs"
+      echo "9";
+      sh "rm -f ${Globals.WORKSPACE}/cs.sh"
+      echo "10";
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
@@ -233,7 +239,7 @@ node {
     startMessage(Globals.STAGE)
     try {
       sh "cd ${env.WORKSPACE}; php composer.phar docker-assets";
-      sh "docker-compose pull";
+      sh "cd ${Globals.WORKSPACE};docker-compose pull";
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
 
@@ -248,11 +254,11 @@ node {
     Globals.STAGE='Docker: Start up containers'
     startMessage(Globals.STAGE)
     try {
-      sh "docker-compose down -v"
-      sh "composer docker-assets"
-      sh "./docker-jenkins-start.sh";
+      sh "cd ${Globals.WORKSPACE};docker-compose down -v"
+      sh "cd ${Globals.WORKSPACE};composer docker-assets"
+      sh "cd ${Globals.WORKSPACE};./docker-jenkins-start.sh";
     } catch (error) {
-      sh "docker-compose down -v"
+      sh "cd ${Globals.WORKSPACE};docker-compose down -v"
       errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -265,7 +271,7 @@ node {
     try {
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer global require monolog/monolog"
     } catch (error) {
-      sh "docker-compose down -v"
+      sh "cd ${Globals.WORKSPACE};docker-compose down -v"
       errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -283,7 +289,7 @@ node {
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer dump-autoload --optimize"
 
     } catch (error) {
-      sh "docker-compose down -v"
+      sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
       errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -299,7 +305,7 @@ node {
       // add any front end installers here....
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root\""
     } catch (error){
-      sh "docker-compose down -v"
+      sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
       errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -342,7 +348,7 @@ node {
       fileOperations([fileCreateOperation(fileContent: "${Globals.GIT_LOG}", fileName: 'git_log.txt')])
 
     } catch (error) {
-        sh "docker-compose down -v";
+        sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -355,10 +361,10 @@ node {
     Globals.STAGE='Build: Create production composer autoload'
     startMessage(Globals.STAGE)
     try {
-      sh "docker-compose exec -T code composer update --no-dev"
-      sh "docker-compose exec -T code composer dump-autoload --no-dev --optimize"
+      sh "cd ${Globals.WORKSPACE}; docker-compose exec -T code composer update --no-dev"
+      sh "cd ${Globals.WORKSPACE}; docker-compose exec -T code composer dump-autoload --no-dev --optimize"
     } catch (error) {
-        sh "docker-compose down -v";
+        sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -387,8 +393,7 @@ node {
           sh "rm -f ${env.WORKSPACE}/${buildFolder}/c3_error.log || true"
           sh "rm -f ${env.WORKSPACE}/${buildFolder}/Dockerfile"
           sh "find ${env.WORKSPACE}/${buildFolder} -name \"dock-*\" -type f -delete"
-          sh "find ${env.WORKSPACE}/${buildFolder}/ci/application/logs -name \"*.php\" -type f -delete"
-            //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "ci/application/logs", "tests"
+            //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"
           // folders
           sh "rm -rf ${env.WORKSPACE}/${buildFolder}/groovy"
           sh "rm -rf ${env.WORKSPACE}/${buildFolder }/tests"
@@ -397,7 +402,7 @@ node {
           sh "rm -rf ${env.WORKSPACE}/${buildFolder}/database"
           
         } catch (error) {
-            sh "docker-compose down -v";
+            sh "cd ${Globals.WORKSPACE};docker-compose down -v";
             errorMessage(Globals.STAGE, error.getMessage())
         }
 
@@ -431,7 +436,7 @@ node {
       }
 
     } catch (error) {
-      sh "docker-compose down -v";
+      sh "cd ${Globals.WORKSPACE};docker-compose down -v";
       errorMessage(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
@@ -475,7 +480,7 @@ stage('Notification') {
     */
     Globals.STAGE='Docker: Bring containers down'
     startMessage(Globals.STAGE)
-    sh "docker-compose down -v";
+    sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
     successMessage(Globals.STAGE)
   }
 
