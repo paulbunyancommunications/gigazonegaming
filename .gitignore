@@ -121,7 +121,6 @@ Dockerfile.httpd
 get_docker_assets.sh
 httpd.conf
 php.ini
-!php-override.ini
 Dockerfile
 php-ast
 phan.log
