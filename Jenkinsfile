@@ -6,8 +6,10 @@ class Globals {
    static DATE_FORMAT_LOGS            = new SimpleDateFormat("yyyy-MM-dd");
    static DATE_FORMAT_STAMP           = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    static DATE_JOB_STARTED            = new Date();
+   static String[] CONTAINERS                = [];
    static String STAGE                = "Job Started";
    static String GIT_LOG              = "";
+   static String BUILD_FOLDER              = "";
    static String ARCHIVE_NAME         = "job-${Globals.SCM_OWNER}-${Globals.SCM_REPO}-${Globals.SCM_BRANCH}";
    static String WORKSPACE            = "";
    static String TAIL_LENGTH          = 1000;
@@ -53,12 +55,20 @@ def errorMessage(String stage, String message = "", timestamp = Globals.DATE_JOB
 /* fail the job */
 def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
   try {
-    def JOB_FAILED_DATE = new Date()
+    def JOB_FAILED_DATE = new Date();
     // Create the error message body
-    def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n"
-
+    def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n";
+    //for (i = 0; i <$(docker-compose config --services).length; i++) {
+    //sh "cd ${Globals.WORKSPACE};";
+    //sh "${ echo \"\$(docker-compose config --services).trim()\"}";
+    //sh "cd ${Globals.WORKSPACE};  echo \"$(docker-compose config --services).trim() > Globals.CONTAINERS"; ";
+    //echo "THIS IS A CONTAINER ${Globals.CONTAINERS[1]}";
+    //}
     // Get the log outputfrom the code container
     sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/code.log"
+
+    // Get the log outputfrom the firefox container
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps firefox  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/firefox.log"
 
     // Get the log outputfrom the web container
     sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/web.log"
@@ -315,24 +325,24 @@ node {
   /**
   * Run the test runner and see if all tests pass
   */
-  // stage('Tests') {
-  //   Globals.STAGE='Tests: Run tests'
-  //   startMessage(Globals.STAGE)
-  //   try {
-  //     echo "App environment: ${APP_ENV}"
-  //     switch(APP_ENV.toString()) {
-  //       case "production":
-  //         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter --coverage --coverage-html --coverage-xml\""
-  //         break
-  //       default:
-  //         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\""
-  //         break
-  //     }
-  //   } catch (error) {
-  //     failJob(Globals.STAGE, error.getMessage())
-  //   }
-  //   successMessage(Globals.STAGE)
-  // }
+  stage('Tests') {
+    Globals.STAGE='Tests: Run tests'
+    startMessage(Globals.STAGE)
+    try {
+      echo "App environment: ${APP_ENV}"
+      switch(APP_ENV.toString()) {
+        case "production":
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter --coverage --coverage-html --coverage-xml\""
+          break
+        default:
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\""
+          break
+      }
+    } catch (error) {
+      failJob(Globals.STAGE, error.getMessage())
+    }
+    successMessage(Globals.STAGE)
+  }
 
   /**
   * Get the latest git log
@@ -378,70 +388,80 @@ node {
 
     startMessage(Globals.STAGE)
         try {
-          def buildFolder = "build-${BUILD_NUMBER}"
+          Globals.BUILD_FOLDER = "build-${BUILD_NUMBER}"
           // Zip up the curent directory
-          zip dir: '', glob: '', zipFile: "${buildFolder}.zip"
+          zip dir: '', glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
 
             // unzip folder into build folder
-          unzip dir: "${buildFolder}", glob: '', zipFile: "${buildFolder}.zip"
+          unzip dir: "${Globals.BUILD_FOLDER}", glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
           // get rud of the archive
-          sh "rm -f ${env.WORKSPACE}/${buildFolder}.zip"
+          sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}.zip"
 
           // do any cleanups to build directory here
           // files
-          sh "rm -f ${env.WORKSPACE}/${buildFolder}/.env"
-          sh "rm -f ${env.WORKSPACE}/${buildFolder}/c3_error.log || true"
-          sh "rm -f ${env.WORKSPACE}/${buildFolder}/Dockerfile"
-          sh "find ${env.WORKSPACE}/${buildFolder} -name \"dock-*\" -type f -delete"
+          sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/.env"
+          sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/c3_error.log || true"
+          sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/Dockerfile"
+          sh "find ${env.WORKSPACE}/${Globals.BUILD_FOLDER} -name \"dock-*\" -type f -delete"
             //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"
           // folders
-          sh "rm -rf ${env.WORKSPACE}/${buildFolder}/groovy"
-          sh "rm -rf ${env.WORKSPACE}/${buildFolder }/tests"
-          sh "rm -rf ${env.WORKSPACE}/${buildFolder }/temp"
-          sh "rm -rf ${env.WORKSPACE}/${buildFolder}/node_modules"
-          sh "rm -rf ${env.WORKSPACE}/${buildFolder}/database"
+          sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/groovy"
+          sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/tests"
+          sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/temp"
+          sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/node_modules"
+          echo "a1";
+          sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
+          echo "a2";
           
         } catch (error) {
+          echo "a3";
             sh "cd ${Globals.WORKSPACE};docker-compose down -v";
+          echo "a4";
             errorMessage(Globals.STAGE, error.getMessage())
+          echo "a5";
         }
 
+          echo "a6";
 
-    echo "Artifacts copied to ${env.WORKSPACE}/${buildFolder}"
+    echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
 
+          echo "a7";
     successMessage(Globals.STAGE)
+          echo "a8";
   }
 
   /**
   * Deploy archived files to the server over ssh
   */
-  stage('Deploy') {
-    Globals.STAGE='Deployment: Deploy files to remote server'
-    startMessage(Globals.STAGE)
-    try {
+  /**
+  * stage('Deploy') {
+  *    Globals.STAGE='Deployment: Deploy files to remote server'
+  *    startMessage(Globals.STAGE)
+  *    try {
 
-      sshagent(["${SSH_TOKEN}"]) {
-        // check if .env file exists on the remote host
-        // https://stackoverflow.com/a/18290318/405758
-        sh returnStatus: true, script: "ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_SERVER} stat ${SSH_PATH}/.env"
-        sh "scp -P ${SSH_PORT} ${SSH_USER}@${SSH_SERVER}:${SSH_PATH}/.env ${env.WORKSPACE}/temp"
-        // check if the remote .env and the local have all the environment keys
-        sh "cd ${env.WORKSPACE}; composer env-check -- --actual=temp/.env --expected=.env"
-        //sh "ssh -p ${SSH_PORT} -vvv -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER} uname -a"
-        /**sh "ssh user@server rm -rf /var/www/temp_deploy/dist/"
-        sh "ssh user@server mkdir -p /var/www/temp_deploy"
-        sh "scp -r dist user@server:/var/www/temp_deploy/dist/"
-        sh "ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/"
-        */
-      }
+  *      sshagent(["${SSH_TOKEN}"]) {
+  *        // check if .env file exists on the remote host
+  *        // https://stackoverflow.com/a/18290318/405758
+  *        sh returnStatus: true, script: "ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_SERVER} stat ${SSH_PATH}/.env"
+  *        sh "scp -P ${SSH_PORT} ${SSH_USER}@${SSH_SERVER}:${SSH_PATH}/.env ${env.WORKSPACE}/temp"
+  *        // check if the remote .env and the local have all the environment keys
+  *        sh "cd ${env.WORKSPACE}; composer env-check -- --actual=temp/.env --expected=.env"
+  *        //sh "ssh -p ${SSH_PORT} -vvv -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER} uname -a"
+  *        /**sh "ssh user@server rm -rf /var/www/temp_deploy/dist/"
+  *        sh "ssh user@server mkdir -p /var/www/temp_deploy"
+  *        sh "scp -r dist user@server:/var/www/temp_deploy/dist/"
+  *        sh "ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/"
+  *        */
+  /**      }
 
-    } catch (error) {
-      sh "cd ${Globals.WORKSPACE};docker-compose down -v";
-      errorMessage(Globals.STAGE, error.getMessage())
-    }
-    successMessage(Globals.STAGE)
-  }
 
+  *    } catch (error) {
+  *      sh "cd ${Globals.WORKSPACE};docker-compose down -v";
+   *     errorMessage(Globals.STAGE, error.getMessage())
+  *    }
+  *    successMessage(Globals.STAGE)
+  *  }
+  */
 
 stage('Notification') {
   /**
