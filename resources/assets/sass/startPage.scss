@@ -39,6 +39,12 @@ label{
 #label2{
   margin-left:$champNameBottom * 2;
 }
+#colorLabel1{
+  margin-right:$champNameBottom * 1.5;
+}
+#colorLabel2{
+  margin-left:$champNameBottom * 1.5;
+}
 .startButton{
   -webkit-border-radius: $min-space;
   -moz-border-radius: $min-space;

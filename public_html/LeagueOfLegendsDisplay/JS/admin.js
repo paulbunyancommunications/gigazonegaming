@@ -3,80 +3,30 @@
  */
 /*This allows the display of teams and colors after a valid tournament is selected*/
 function showTeams(){
-    $("#Team").children('option').each(function(i) {
-        var id = $("#Tournament  option:selected").val();
-        var counter = 0;
-        if($(this).attr('t_id') == id){
+    $("#Team,#Team-1").children('option').each(function() {
+        const id = $("#Tournament").find("option:selected").val();
+        if($(this).attr('id') === id){
             $(this).show();
         }else{
             $(this).hide();
             $("#Team").val('default');
             $("#Color").val('default');
-            if($(this).val() == "default"){
-                $("#defaultTeam").attr('selected','selected');
-                $("#defaultColor").attr('selected','selected');
-            }
-        }
-    });
-
-}
-/*This allows the display of teams and colors after a valid tournament is selected*/
-function showTeams2(){
-    $("#Team-1").children('option').each(function(i) {
-        var id = $("#Tournament  option:selected").val();
-        var counter = 0;
-        if($(this).attr('t_id') == id){
-            $(this).show();
-        }else{
-            $(this).hide();
             $("#Team-1").val('default');
             $("#Color-1").val('default');
-            if($(this).val() == "default"){
+            if($(this).val() === "default"){
+                $("#defaultTeam").attr('selected','selected');
+                $("#defaultColor").attr('selected','selected');
                 $("#defaultTeam-1").attr('selected','selected');
                 $("#defaultColor-1").attr('selected','selected');
             }
         }
     });
-
 }
 showTeams();
-showTeams2();
 
 /* These functions make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
-$('#Color').change(function() {
-    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
-    }
-    else{
-        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
-    }
-});
-$('#Team').change(function() {
-    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
-    }
-    else{
-        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
-    }
-});
-$('#Color-1').change(function() {
-    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
-    }
-    else{
-        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
-    }
-});
-$('#Team-1').change(function() {
-    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
-        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
-    }
-    else{
-        $('#submit').addClass('startButtonDisabled').prop('disabled', true);
-    }
-});
-$('#Tournament').change(function() {
-    if($("#Tournament option:selected").text() !== 'Select a Tournament' && $("#Color option:selected").text() !== 'Select a Color' && $("#Team option:selected").text() !== 'Select a Team' && $("#Color-1 option:selected").text() !== 'Select a Color' && $("#Team-1 option:selected").text() !== 'Select a Team') {
+$('#Color,#Team,#Color-1,#Team-1,#Tournament').change(function() {
+    if($("#Tournament").find("option:selected").text() !== 'Select a Tournament' && $("#Color").find("option:selected").text() !== 'Select a Color' && $("#Team").find("option:selected").text() !== 'Select a Team' && $("#Color-1").find("option:selected").text() !== 'Select a Color' && $("#Team-1").find("option:selected").text() !== 'Select a Team') {
         $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
     }
     else{
@@ -84,11 +34,7 @@ $('#Tournament').change(function() {
     }
 });
 
-function teamView(){
-    window.open('/app/GameDisplay/'+$( '#Tournament option:selected').text()+'/'+$( '#Team option:selected').text()+'/'+$( '#Color option:selected').text());
-}
-
-var testing =  document.getElementsByName('Testing').length;
+const testing =  document.getElementsByName('Testing').length;
 
 /**
  * Initialize Ajax with a token
@@ -109,8 +55,8 @@ function submitCache(){
     document.getElementById('info').innerHTML = 'Please Wait...';
 
     ///Set up cache arrays for team and color
-    var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
-    var color = [$('#Color option:selected').text(), $('#Color-1 option:selected').text()];
+    const team = [$( '#Team').find("option:selected").text(), $( '#Team-1').find("option:selected").text()];
+    const color = [$('#Color').find("option:selected").text(), $('#Color-1').find("option:selected").text()];
 
     ///Execute cache controller with ajax
     $.ajax({
@@ -118,7 +64,7 @@ function submitCache(){
         type: "GET",
         url: "/app/GameDisplay/cache",
         data: {
-            tournament: $('#Tournament option:selected').text(),
+            tournament: $('#Tournament').find("option:selected").text(),
             team: team,
             color: color
         },
@@ -147,7 +93,7 @@ function submitCache(){
  */
 function getChampions() {
     document.getElementById('info').innerHTML = "Please Wait...";
-    var team = [$( '#Team option:selected').text(), $( '#Team-1 option:selected').text()];
+    const team = [$( '#Team').find("option:selected").text(), $( '#Team-1').find("option:selected").text()];
     $.ajax({
         method: "GET",
         type: "GET",

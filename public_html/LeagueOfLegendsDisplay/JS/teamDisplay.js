@@ -5,40 +5,27 @@
 function fadInChampion() {
     setTimeout(
         function(){
-            $('#divA0').fadeOut(2000);
-            $('#divA1').fadeOut(2000);
-            $('#divA2').fadeOut(2000);
-            $('#divA3').fadeOut(2000);
-            $('#divA4').fadeOut(2000);
-            $('#divD0').fadeOut(2000);
-            $('#divD1').fadeOut(2000);
-            $('#divD2').fadeOut(2000);
-            $('#divD3').fadeOut(2000);
-            $('#divD4').fadeOut(2000);
-
+            for(let i=0;i<5;i++) {
+                $('#divA'+i).fadeOut(2000);
+                $('#divD'+i).fadeOut(2000);
+            }
         },
         2000
     );
     setTimeout(
         function() {
-            $('#divB0').fadeIn(2000);
-            $('#divB1').fadeIn(2000);
-            $('#divB2').fadeIn(2000);
-            $('#divB3').fadeIn(2000);
-            $('#divB4').fadeIn(2000);
-            $('#divE0').fadeIn(2000);
-            $('#divE1').fadeIn(2000);
-            $('#divE2').fadeIn(2000);
-            $('#divE3').fadeIn(2000);
-            $('#divE4').fadeIn(2000);
+            for(let i=0;i<5;i++) {
+                $('#divB'+i).fadeIn(2000);
+                $('#divE'+i).fadeIn(2000);
+            }
         },
         4000
     );
 }
 
-/*This function allows the display of victory or defeat*/
+/* This function allows the display of victory or defeat at the end of the game */
 function displayWinLoss(){
-    team = window.location.href;
+    let team = window.location.href;
     team = team.split('/');
     team = team[5];
     if(team === 'team1') {
@@ -54,6 +41,7 @@ function displayWinLoss(){
         'filter': 'blur(5px)'
     })},2000);
 }
+
 /*These functions create the constantly moving header image behind the team name */
 function showBackground(){
     $('.backgroundH1').animate({
@@ -69,28 +57,30 @@ function showBackground2(){
     }, 50000, 'linear',showBackground);
 }
 showBackground();
-/*This sets the default view for a mobile layout*/
+
+/* This checks the width of the window and according to what it is, it either gives the mobile view or the default view */
 function mobileDisplay(){
     if(document.getElementById('other')) {
         if ($(window).width() <= 530) {
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 $('#' + i + '-0').addClass('hidden');
                 $('#' + i + '-1').addClass('hidden');
                 $('#' + i + '-2').addClass('hidden');
                 $('#' + i + '-4').addClass('hidden').removeClass("col-lg");
                 setTimeout(function(){setBoxHeight();},1);
                 document.getElementById('extra' + i).innerHTML =
-                    '<div class="championRankMinimize" id="Rank3' + i +'" onclick=switchPlaces("Rank3' + i +'")><b>Rank 3</b><br/><img class="I3" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I3' + i +'" onclick=ShowInfo("I3' + i +'")></div>'+
-                    '<div class="championRank" id="Rank1' + i +'"><b>Rank 1</b><br/><img class="I1" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1' + i +'" onclick=ShowInfo("I1' + i +'")></div>'+
-                    '<div class="championRankMinimize" id="Rank2' + i +'" onclick=switchPlaces("Rank2' + i +'")><b>Rank 2</b><br/><img class="I2" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I2' + i +'" onclick=ShowInfo("I2' + i +'")></div>'+
+                    '<div class="championRankMinimize" id="Rank3' + i +'"><b>Rank 3</b><br/><img class="I3" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt id="I3' + i +'"></div>'+
+                    '<div class="championRank" id="Rank1' + i +'"><b>Rank 1</b><br/><img class="I1" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1' + i +'"></div>'+
+                    '<div class="championRankMinimize" id="Rank2' + i +'"><b>Rank 2</b><br/><img class="I2" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I2' + i +'"></div>'+
+                    '<div style="width;100%;"><div class="championNav" onclick= switchPlaces('+ i +',"+")>&lt</div>'+
+                    '<div class="championNav" onclick= switchPlaces('+ i +',"-") >&gt</div></div>'+
                     '<div id="imageInfo1' + i +'" >Image 1</div>' +
                     '<div id="imageInfo2' + i +'" class="hidden">Image 2</div>' +
                     '<div id="imageInfo3' + i +'" class="hidden">Image 3</div>';
             }
             $('#carouselControls').removeClass('hidden');
-
         }else{
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 $('#' + i + '-0').removeClass('hidden');
                 $('#' + i + '-1').removeClass('hidden');
                 $('#' + i + '-2').removeClass('hidden');
@@ -100,9 +90,11 @@ function mobileDisplay(){
         }
     }
 }
-$(window).resize(function(){mobileDisplay(),setTimeout(function(){setBoxHeight();},1)});
+$(window).resize(function(){mobileDisplay()});
+$(window).resize(function(){setTimeout(function(){setBoxHeight();},1)});
 mobileDisplay();
-/*This makes sure that when collapsed the champion image and the player stats containers are the same size*/
+
+/*This makes sure that when collapsed the champion image and the player stats container are the same size*/
 function setBoxHeight(){
     $('#D0').height($('#C0').height() - 9);
     $('#D1').height($('#C1').height() - 9);
@@ -114,6 +106,7 @@ $(document).ready($(window).resize(function(){
     setBoxHeight();
 }));
 
+/* This is for testing */
 $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -122,13 +115,11 @@ $(document).ready(function () {
     }
 );
 
-
-/*This function gets the data needed for loading the page*/
+/*This gets the data needed for loading the page from the cache*/
 $(document).ready(GetData());
-
 function GetData() {
     if (!document.getElementById('other')) {
-        var team = window.location.href;
+        let team = window.location.href;
         team = team.split('/');
         team = team[5];
         ///Execute cache controller with ajax
@@ -152,8 +143,10 @@ function GetData() {
         UpdateData(true);
     }
 }
+
+/* This checks for when champions are entered into the cache as well as any other updated information*/
 function UpdateData(checkChamp) {
-    var team = window.location.href;
+    let team = window.location.href;
     team = team.split('/');
     team = team[5];
     ///Execute cache controller with ajax
@@ -172,14 +165,14 @@ function UpdateData(checkChamp) {
                 location.reload();
             }
             else if (data[1] !== 'false') {
-                for (var i = 0; i < data[1].length; i++) {
-                    champName = data[1][i].split("/");
+                for (let i = 0; i < data[1].length; i++) {
+                    let champName = data[1][i].split("/");
                     champName = champName[champName.length - 1].split("_");
                     if(champName[0] === "MonkeyKing"){
                         champName[0] = "Wukong";
                     }
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                    document.getElementById('C' + data[2][i]).innerHTML = '<img id="'+ "M"+ data[2][i]+'" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
+                    document.getElementById('divE' + data[2][i]).innerHTML = '<img id="'+ "M"+ data[2][i]+'" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
                 }
                 fadInChampion();
                 setTimeout(function(){ UpdateData(false) },2000);
@@ -191,131 +184,62 @@ function UpdateData(checkChamp) {
     });
 }
 
+/* This changes the main carousel to the previous or next summoner */
 $(document).ready(function() {
-    $(".collapse").swiperight(function() {
-        $('#carouselControls').carousel('prev');
-        setTimeout(function(){setBoxHeight();},100);
-    });
     $(".collapse").swipeleft(function() {
         $('#carouselControls').carousel('next');
         setTimeout(function(){setBoxHeight();},100);
-    });
-    $(".collapse-b").swiperight(function() {
+    }).swiperight(function() {
         $('#carouselControls').carousel('prev');
         setTimeout(function(){setBoxHeight();},100);
     });
+
     $(".collapse-b").swipeleft(function() {
         $('#carouselControls').carousel('next');
+        setTimeout(function(){setBoxHeight();},100);
+    }).swiperight(function() {
+        $('#carouselControls').carousel('prev');
         setTimeout(function(){setBoxHeight();},100);
     });
 });
 
+/* This allows the swiping effect in the extra stats container to change ranked champions */
 $(document).ready(function() {
-    $("#extra0").swiperight(function(){swipeRightExtra(0)});
-    $("#extra1").swiperight(function(){swipeRightExtra(1)});
-    $("#extra2").swiperight(function(){swipeRightExtra(2)});
-    $("#extra3").swiperight(function(){swipeRightExtra(3)});
-    $("#extra4").swiperight(function(){swipeRightExtra(4)});
-    $("#extra0").swipeleft(function(){swipeLeftExtra(0)});
-    $("#extra1").swipeleft(function(){swipeLeftExtra(1)});
-    $("#extra2").swipeleft(function(){swipeLeftExtra(2)});
-    $("#extra3").swipeleft(function(){swipeLeftExtra(3)});
-    $("#extra4").swipeleft(function(){swipeLeftExtra(4)});
+    $("#extra0").swiperight(function(){switchPlaces(0,"-")}).swipeleft(function(){switchPlaces(0,"+")});
+    $("#extra1").swiperight(function(){switchPlaces(1,"-")}).swipeleft(function(){switchPlaces(1,"+")});
+    $("#extra2").swiperight(function(){switchPlaces(2,"-")}).swipeleft(function(){switchPlaces(2,"+")});
+    $("#extra3").swiperight(function(){switchPlaces(3,"-")}).swipeleft(function(){switchPlaces(3,"+")});
+    $("#extra4").swiperight(function(){switchPlaces(4,"-")}).swipeleft(function(){switchPlaces(4,"+")});
 });
 
-championCounter0 = 0;
-championCounter1 = 0;
-championCounter2 = 0;
-championCounter3 = 0;
-championCounter4 = 0;
-function swipeRightExtra(i){
-    if(i === 0){championCounter = championCounter0;}
-    else if(i === 1){championCounter = championCounter1;}
-    else if(i === 2){championCounter = championCounter2;}
-    else if(i === 3){championCounter = championCounter3;}
-    else{championCounter = championCounter4;}
-    if(championCounter === -2){championCounter = 1;}
-    if(championCounter === 0){
-        $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
-        $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
-        $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
-        championCounter--;
+/* This displays the information according to what champion is inside the #Rank1 div */
+function ShowInfo(i){
+    if ($("#Rank1"+ i).find("b").text() === "Rank 1"){
+        $("#imageInfo1"+i).removeClass('hidden');
+        $("#imageInfo2"+i+",#imageInfo3"+i).addClass('hidden');
     }
-    else if(championCounter === -1){
-        $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
-        $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
-        $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
-        championCounter--;
+    else if ($("#Rank1"+i).find("b").text() === "Rank 2"){
+        $("#imageInfo1"+i+",#imageInfo3"+i).addClass('hidden');
+        $("#imageInfo2"+i).removeClass('hidden');
     }
     else{
-        $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
-        championCounter--;
-    }
-    if(i === 0){championCounter0 = championCounter;}
-    else if(i === 1){championCounter1 = championCounter;}
-    else if(i === 2){championCounter2 = championCounter;}
-    else if(i === 3){championCounter3 = championCounter;}
-    else{championCounter4 = championCounter;}
-}
-
-function swipeLeftExtra(i){
-    if(i === 0){championCounter = championCounter0;}
-    else if(i === 1){championCounter = championCounter1;}
-    else if(i === 2){championCounter = championCounter2;}
-    else if(i === 3){championCounter = championCounter3;}
-    else{championCounter = championCounter4;}
-    if(championCounter === 2){championCounter = -1;}
-
-    if(championCounter === 0){
-        $("#I2"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
-        $("#I2"+i).parent().parent().find("div#imageInfo2"+i).removeClass('hidden');
-        $("#I2"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
-        championCounter++;
-    }
-    else if(championCounter === 1){
-        $("#I3"+i).parent().parent().find("div#imageInfo1"+i).addClass('hidden');
-        $("#I3"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
-        $("#I3"+i).parent().parent().find("div#imageInfo3"+i).removeClass('hidden');
-        championCounter++;
-    }
-    else{
-        $("#I1"+i).parent().parent().find("div#imageInfo1"+i).removeClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo2"+i).addClass('hidden');
-        $("#I1"+i).parent().parent().find("div#imageInfo3"+i).addClass('hidden');
-        championCounter++;
-    }
-    if(i === 0){championCounter0 = championCounter;}
-    else if(i === 1){championCounter1 = championCounter;}
-    else if(i === 2){championCounter2 = championCounter;}
-    else if(i === 3){championCounter3 = championCounter;}
-    else{championCounter4 = championCounter;}
-}
-
-function ShowInfo(id){
-    array = id.split("");
-    if (id.includes("I1")){
-        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).removeClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
-    }
-    else if (id.includes("I2")){
-        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).removeClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).addClass('hidden');
-
-    }
-    else{
-        $("#"+id).parent().parent().find("div#imageInfo1"+array[2]).addClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo2"+array[2]).addClass('hidden');
-        $("#"+id).parent().parent().find("div#imageInfo3"+array[2]).removeClass('hidden');
-
+        $("#imageInfo1"+i+",#imageInfo2"+i).addClass('hidden');
+        $("#imageInfo3"+i).removeClass('hidden');
     }
 }
-function switchPlaces(id){
-    switchArray = id.split("");
-    x = document.getElementById("Rank1"+ switchArray[5]).innerHTML;
-    document.getElementById("Rank1"+ switchArray[5]).innerHTML = document.getElementById(id).innerHTML;
-    document.getElementById(id).innerHTML = x;
+/* This replaces the contents of the Rank divs in the extra stats to view different champions */
+function switchPlaces(i,sign){
+    x = document.getElementById("Rank1"+ i).innerHTML;
+    y = document.getElementById("Rank2"+ i).innerHTML;
+    z = document.getElementById("Rank3"+ i).innerHTML;
+    if(sign === "-") {
+        document.getElementById("Rank1" + i).innerHTML = z;
+        document.getElementById("Rank2" + i).innerHTML = x;
+        document.getElementById("Rank3" + i).innerHTML = y;
+    }else {
+        document.getElementById("Rank1" + i).innerHTML = y;
+        document.getElementById("Rank2" + i).innerHTML = z;
+        document.getElementById("Rank3" + i).innerHTML = x;
+    }
+    ShowInfo(i);
 }

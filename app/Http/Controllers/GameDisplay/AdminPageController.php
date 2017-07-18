@@ -37,8 +37,6 @@ class AdminPageController extends Controller
                 }
             }
         }
-        $tournaments = json_encode($tournaments);
-        $teams = json_encode($teams);
-        return view('/LeagueOfLegends/admin')->withTournaments($tournaments)->withTeams($teams);
+        return view('/LeagueOfLegends/DisplayAdmin')->withTournaments($tournaments)->withTeams($teams);
     }
 }
