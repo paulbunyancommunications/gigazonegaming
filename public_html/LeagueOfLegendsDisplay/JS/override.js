@@ -3,8 +3,8 @@
  */
 /* This is used to fill in the champions manually if the request cannot be fulfilled*/
 function findChampion() {
-    document.getElementById("info").innerHTML = '';
-    let championArray = [];
+    document.getElementById("info").innerHTML = "";
+    var championArray = [];
     const checkArray =["Aatrox","Ahri","Akali","Alistar","Amumu","Anivia","Annie","Ashe","AurelionSol", "Azir", "Bard",
         "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille", "Cassiopeia", "Chogath", "Corki", "Darius", "Diana",
         "DrMundo", "Draven", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank",
@@ -18,22 +18,22 @@ function findChampion() {
         "Trundle", "Tryndamere", "TwistedFate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Velkoz", "Vi",
         "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath", "XinZhao", "Yasuo", "Yorick", "Zac",
         "Zed", "Ziggs", "Zilean", "Zyra"];
-    if(document.getElementById("player1").value !== '' && document.getElementById("player2").value !== '' && document.getElementById("player3").value !== ''&& document.getElementById("player4").value !== '' && document.getElementById("player5").value !== ''){
-        for(let i=1; i<6; i++)
+    if(document.getElementById("player1").value !== "" && document.getElementById("player2").value !== "" && document.getElementById("player3").value !== ""&& document.getElementById("player4").value !== "" && document.getElementById("player5").value !== ""){
+        for(var i=1; i<6; i++)
         {
             if (checkArray.indexOf(document.getElementById("player" + i).value) !== -1) {
                 if(document.getElementById("player" + i).value === "Wukong"){
                     championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/MonkeyKing_0.jpg');
                 }
                 else {
-                    championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/' + document.getElementById("player" + i).value + '_0.jpg');
+                    championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/' + document.getElementById("player" + i).value + "_0.jpg");
                 }
             }else{
-                document.getElementById("info").innerHTML = document.getElementById("info").innerHTML + "Player " + i + ": " +document.getElementById("player" + i).value + ' is not a valid name!<br/>';
+                document.getElementById("info").innerHTML = document.getElementById("info").innerHTML + "Player " + i + ": " +document.getElementById("player" + i).value + " is not a valid name!<br/>";
             }
         }
             if(championArray.length === 5) {
-                document.getElementById('info').innerHTML = 'Updating Champions...';
+                document.getElementById('info').innerHTML = "Updating Champions...";
                 $.ajax({
                     method: "GET",
                     type: "GET",
@@ -44,11 +44,11 @@ function findChampion() {
                         team: $('#Team').find('option:selected').text(),
                     },
                     success: function (data) {
-                        document.getElementById('info').innerHTML = '<h3>' + data + '</h3>';
+                        document.getElementById("info").innerHTML = "<h3>" + data + "</h3>";
                     }
                 });
             }
         }else{
-        document.getElementById("info").innerHTML='<h3>All Fields Must Be Filled</h3>';
+        document.getElementById("info").innerHTML="<h3>All Fields Must Be Filled</h3>";
     }
 }

@@ -195,8 +195,8 @@ class SimonCacheController extends Controller
         return $team." Champions Successfully Updated!!";
     }
 
-    public function getChampions(Request $req){
-        $team = $req->team;
+    public function getChampions(){
+
         $apiKeyArray=array();
 
         if(Cache::has('Players')){
@@ -226,15 +226,13 @@ class SimonCacheController extends Controller
                     $returnArray = array('Champions' => $championArray, 'ChampionsPlayersId'=>$championPlayerId, 'ErrorCode' => 'false');
                     return $returnArray;
                 }
-                else{
-                    return array('ErrorCode' => 'true', 'ErrorMessage' => 'Champions are not ready.');
-                }
+                return array('ErrorCode' => 'true', 'ErrorMessage' => 'Champions are not ready.');
             }catch(\Exception $e){
                 return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage() , 'ApiArray' => $apiKeyArray);
             }
 
-        }else{
-            return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please Select a team and a color before getting champions.');
         }
+        return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please Select a team and a color before getting champions.');
+
     }
 }

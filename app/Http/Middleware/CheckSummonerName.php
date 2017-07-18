@@ -43,7 +43,6 @@ class CheckSummonerName
         return $next($request);
     }
     public function ApiRequest($Url){
-        $Info = false;
 
         #Request Info From Api
         $request = new GuzzleRequest('Get', $Url);
