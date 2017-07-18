@@ -181,21 +181,7 @@ class GameDisplayController extends Controller
         return $returnArray;
     }
 
-    public function cacheChampionOverride(Request $req)
-    {
-        $championArray = $req->championArray;
 
-        $team = $req->team;
-        $championPlayerIdArray = [0, 1, 2, 3, 4];
-        if ($team == 'Team 1') {
-            Cache::put('Team1Champions', $championArray, 70);
-            Cache::put('Team1ChampionsPlayerId', $championPlayerIdArray, 70);
-        } else {
-            Cache::put('Team2Champions', $championArray, 70);
-            Cache::put('Team2ChampionsPlayerId', $championPlayerIdArray, 70);
-        }
-        return $team." Champions Successfully Updated!!";
-    }
 
 
     public function getTeamName()
