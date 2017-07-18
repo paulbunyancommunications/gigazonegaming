@@ -116,14 +116,14 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  * Routes - LOL
  *
  */
-
-Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
-Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
-Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
-Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
-Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
-Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
-
+Route::group(['middleware' => ['auth.wp']], function () {
+    Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
+    Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
+    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
+    Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
+    Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
+    Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
+});
 
 Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
 Route::get('/GameDisplay/team1','GameDisplay\GameDisplayController@team1ViewDisplay');
