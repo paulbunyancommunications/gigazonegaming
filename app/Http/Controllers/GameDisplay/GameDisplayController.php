@@ -6,13 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Championship\Team;
-use App\Models\Championship\Tournament;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
-use Illuminate\Support\Facades\Input;
 use GameDisplay\RiotDisplay\Summoner;
-use function MongoDB\BSON\toJSON;
-use PhpParser\Node\Stmt\Return_;
 use App\Http\Controllers\Controller;
 
 /**
@@ -180,8 +175,6 @@ class GameDisplayController extends Controller
         }
         return $returnArray;
     }
-
-
 
 
     public function getTeamName()

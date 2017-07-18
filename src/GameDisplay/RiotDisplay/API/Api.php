@@ -13,7 +13,6 @@ class Api{
     private $apiKey;
     private $Summoner;
     private $summonerID;
-    private $Icon;
     private $LeagueV3Json;
     private $currentGameInfo;
     private $championId;
@@ -46,10 +45,9 @@ class Api{
 
 # Methods
 #----------------------------------------------------------------------
-    public function ApiRequest($Url, $counter = 0){
+    public function apiRequest($Url, $counter = 0){
         #Set up client
         $client = new Client();
-        $string = "";
         #Request Info From Api
         $request = new Request('Get', $Url);
         $response = $client->send($request);
@@ -67,7 +65,7 @@ class Api{
                 }
                 $counter++;
                 sleep(1);
-                return $this->ApiRequest($Url, $counter);
+                return $this->apiRequest($Url, $counter);
             case 503:
                 throw new Exception("Riot's Api is Down" . $this->apiKey . "ID:" . $this->summonerID . " The Code:" . $response->getStatusCode() . ' Counter: ' . $this->counter);
                 break;
@@ -79,7 +77,7 @@ class Api{
 
     public function checkCurrentGameStatus(){
         $Url = 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey;
-        $Info = $this->ApiRequest($Url);
+        $Info = $this->apiRequest($Url);
 
         if($Info){
             $this->currentGameStatus = true;
@@ -101,7 +99,7 @@ class Api{
     {
         #Gets players states json
         $Url = 'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
-        $Info = $this->ApiRequest($Url);
+        $Info = $this->apiRequest($Url);
 
         $this->LeagueV3Json = $Info;
     }
@@ -109,7 +107,7 @@ class Api{
     public function setSummonerID()
     {
         $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
-        $info = $this->ApiRequest($Url);
+        $info = $this->apiRequest($Url);
         if($info){
             try{
                 $this->summonerID = $info->id;
@@ -143,7 +141,7 @@ class Api{
 
     Public function setChampionName($ChampionId){
         $Url = "https://na.api.riotgames.com/api/lol/static-data/na/v1.2/champion/". $ChampionId ."?api_key=" . $this->apiKey;
-        $Info = $this->ApiRequest($Url);
+        $Info = $this->apiRequest($Url);
         $this->championName = $Info->key;
 
     }
