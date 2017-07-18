@@ -116,7 +116,7 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  * Routes - LOL
  *
  */
-Route::group(['middleware' => ['auth.wp']], function () {
+Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
     Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
     Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
