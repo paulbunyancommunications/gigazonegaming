@@ -1,0 +1,116 @@
+/*
+Create a block that looks like one of the posters (from 2017)
+
+Usage:
+
+<div class="poster">
+    <div class="poster-image-container">
+        <img src="/path/to/poster/img.png" alt="alt" class="poster-image">
+    </div>
+    <div class="poster-content-container">
+        <h3 class="poster-title"><a href="#">Title</a></h3>
+        <h4 class="poster-title-sub">Sub Title</h4>
+        <p class="poster-description">Description</p>
+    </div>
+</div>
+*/
+
+.poster {
+  background: transparent url($theme-directory + 'images/backgrounds/dark-halftones.gif') repeat-x center left;
+  display: block;
+  position: relative;
+  height: auto;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  @include margin-top(1.5);
+  @include margin-bottom(.5);
+
+
+  &:hover a {
+    color: $color-gz-orange;
+  }
+
+  &-content-container, &-image-container {
+    position: relative;
+    width: 100%;
+  }
+
+  &-content-container {
+    @include margin-top(0);
+    @include margin-bottom(1.5);
+
+    &::before {
+      @include divider-dashed-text($color: $color-gz-gray, $font-size: 2, $height: 1.25, $font-weight: 700, $kerning: -0.675, $length: 500);
+      position: absolute;
+      line-height: 0;
+      top: 0;
+      left: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  a {
+    color: $color-white;
+    text-decoration: none;
+    &:visited {
+      color: $color-white
+    }
+    &:active, &:hover {
+      color: $color-gz-orange;
+    }
+  }
+  &-title {
+    text-transform: uppercase;
+    color: $color-white;
+    text-align: center;
+    font-weight: 700;
+    @include margin-top(0);
+    @include margin-bottom(0);
+    @include padding-top(1.25);
+    @include padding-bottom(0);
+    @include font-size(2.5);
+    @include line-height(2);
+
+
+    &-sub {
+      text-transform: uppercase;
+      text-align: center;
+      color: $color-gz-gray;
+      @include font-size(1.5);
+      @include line-height(1.5);
+      @include kerning(.5);
+      @include margin-bottom(0);
+      @include margin-top(0);
+
+    }
+  }
+
+  &-description {
+    @include font-size(1.25);
+    @include line-height(1.375);
+    text-align: center;
+    color: $color-white;
+    @include margin-top(.125);
+    @include margin-bottom(0);
+  }
+
+  &-image {
+    @extend .text-center;
+    width: 100%;
+    height: auto;
+    &-container {
+      &::before {
+        @include divider-dashed-text($font-size: 5, $height: 1.25, $font-weight: 700, $kerning: -1.5, $length: 500);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        line-height: 0;
+      }
+    }
+  }
+  @include mq-phone {
+    @include margin-bottom(1);
+  }
+
+}

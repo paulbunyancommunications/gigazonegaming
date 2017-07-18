@@ -22,12 +22,11 @@ class Api
           '209.191.200.106', //gigazonegaming
           '192.168.56.1', //testing if you need another for testing, add a comma and add an extra string
           'gigazonegaming.com',
-          'gigazonegaming.local',
+          'web',//for docker. This wont change unless we change it so this is a good place holder for any site, kinda localhost but not really.
         ];
         //https://laracasts.com/discuss/channels/general-discussion/laravel-5-referrer-url/replies/105536
         $hostName = parse_url(app('Illuminate\Routing\UrlGenerator')->previous(), PHP_URL_HOST);
-
-        if (!in_array($hostName, $okSites) && !in_array($request::ip(), $okSites)) {
+        if (!in_array($hostName, $okSites) && !in_array($request->ip(), $okSites)) {
             return \Response::json(['error' => ['Not allowed!']], 400);
         }
         return $next($request);

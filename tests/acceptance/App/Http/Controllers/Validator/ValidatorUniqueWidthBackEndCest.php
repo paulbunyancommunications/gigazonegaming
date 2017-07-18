@@ -56,7 +56,7 @@ class ValidatorUniqueWidthBackEndCest extends BaseAcceptance
         $I->am("admin");
         $I->wantTo("create a team");
         $I->fillField("#name", $this::TEAM_A_NAME);
-        $I->selectOption("#tournament_id", array('text' => $this::TOURNAMENT_B_NAME)); //gz2016
+        $I->selectOption("#tournament_id", array('text' => str_replace(' ', '_', $this::TOURNAMENT_B_NAME))); //gz2016
         $I->click(['id'=>"submit"]);
         $I->waitForText("The team ".$this::TEAM_A_NAME." was added", $this::DEFAULT_WAIT);
     }
@@ -69,7 +69,7 @@ class ValidatorUniqueWidthBackEndCest extends BaseAcceptance
         $I->am("admin");
         $I->wantTo("create a team");
         $I->fillField("#name", $this::TEAM_A_NAME);
-        $I->selectOption("#tournament_id", array('text' => $this::TOURNAMENT_A_NAME)); //gz2016
+        $I->selectOption("#tournament_id", array('text' => str_replace(' ', '_', $this::TOURNAMENT_A_NAME))); //gz2016
         $I->click(['id'=>"submit"]);
         $I->waitForText("A team with the exact same name already exists for this tournament, please select a different name.", $this::DEFAULT_WAIT);
     }

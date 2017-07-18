@@ -199,3 +199,9 @@
 
   }
 }
+
+// Font-size
+@mixin kerning($number) {
+  letter-spacing: #{ $number * $base + 'px'};
+  letter-spacing: #{ $number + 'rem'};
+}

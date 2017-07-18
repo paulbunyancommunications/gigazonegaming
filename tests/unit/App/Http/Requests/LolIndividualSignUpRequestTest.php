@@ -31,11 +31,11 @@ class LolIndividualSignUpRequestTest extends \PHPUnit_Framework_TestCase
 
         // check email field exists and the rules are correct
         $this->assertArrayHasKey('email', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['email'], 'required|email|unique:mysql_champ.players,email');
+        $this->assertSame($individualRequest->rules()['email'], 'required|email');
 
         // check for name input and check that the rules are correct
         $this->assertArrayHasKey('your-lol-summoner-name', $individualRequest->rules());
-        $this->assertSame($individualRequest->rules()['your-lol-summoner-name'], 'required|unique:mysql_champ.players,username');
+        $this->assertSame($individualRequest->rules()['your-lol-summoner-name'], 'required');
 
         // check for team-captain-lol-summoner-name input and check that the rules are correct
         $this->assertArrayHasKey('name', $individualRequest->rules());
@@ -55,12 +55,13 @@ class LolIndividualSignUpRequestTest extends \PHPUnit_Framework_TestCase
         $individualRequest = new LolIndividualSignUpRequest();
 
         $messages = [
-            'name.required',
-            'your-lol-summoner-name.required',
-            'your-lol-summoner-name.unique',
-            'email.required',
-            'email.email',
-            'your-phone.required'
+            'name.required' => 'Your name is required.',
+            'your-lol-summoner-name.required' => 'Your League of Legends summoner name is required.',
+            'your-lol-summoner-name.unique' => 'Your League of Legends summoner name is already being used by someone else.',
+            'email.required' => 'Your email address is required.',
+            'email.unique' => 'Your email in use by another player',
+            'email.email' => 'Your email address must be a valid address (someone@somewhere.com for example).',
+            'your-phone.required' => 'Your phone number is required.',
         ];
 
         foreach ($messages as $m) {

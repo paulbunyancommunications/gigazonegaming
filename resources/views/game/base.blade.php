@@ -61,6 +61,10 @@
             <script src="@autoVersion('/app/content/js/modules/paths-require.js')"></script>
             <script src="@autoVersion('/app/content/js/main-require.js')"></script>
         @endif
+
         @yield('js-sheet')
+        <script type="text/javascript">
+            @yield('js')
+        </script>
     </body>
 </html>

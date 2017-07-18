@@ -53,7 +53,7 @@ class PrintingControllerCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->click(".print-tester-game");
-        $I->see('Print');
+        $I->waitForText('Print', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Download all');
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
@@ -69,7 +69,7 @@ class PrintingControllerCest extends BaseAcceptance
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
         $I->click(".print-TesterTournament");
-        $I->see('Print');
+        $I->waitForText('Print', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Download all');
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
@@ -85,7 +85,7 @@ class PrintingControllerCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->click(".print-TesterTeam");
-        $I->see('Print');
+        $I->waitForText('Print', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Download all');
         $I->see('The Tester Player000');
         $I->see('Tester Player000');

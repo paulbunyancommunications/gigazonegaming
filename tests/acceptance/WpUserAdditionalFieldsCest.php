@@ -47,6 +47,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->fillField(['id' => $fields[$i]], $fieldValue);
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
+            $I->waitForText('Profile updated', $this::TEXT_WAIT_TIMEOUT);
             $I->see('Profile updated');
             $I->seeInField(['id' => $fields[$i]], $fieldValue);
             $I->seeInField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
@@ -78,6 +79,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->wait(1);
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
+            $I->wait(5);
             // make a new post and check to see that the field are missing on page with the profile shortcode
             $I->amOnPage('/wp/wp-admin/post-new.php');
             $I->fillField(['id' => 'title'], $faker->sentence);
@@ -86,6 +88,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->fillField(['id' => 'content'], '[user-profile id="'.$this->wpAdminUser['name'].'"]');
             $I->wait(3);
             $I->click(['id' => 'publish']);
+            $I->waitForText('Post published', $this::TEXT_WAIT_TIMEOUT);
             $I->see('Post published');
             $I->click('#sample-permalink a');
             $I->wait(1);
@@ -119,7 +122,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->wait(1);
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
-
+            $I->wait(5);
             // make a new post and check to see that the field filled is on the page with the profile shortcode
             $I->amOnPage('/wp/wp-admin/post-new.php');
             $I->fillField(['id' => 'title'], $faker->sentence);
@@ -128,11 +131,13 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->fillField(['id' => 'content'], '[user-profile id="'.$this->wpAdminUser['name'].'"]');
             $I->wait(3);
             $I->click(['id' => 'publish']);
+            $I->waitForText('Post published', $this::TEXT_WAIT_TIMEOUT);
             $I->see('Post published');
             $I->click('#sample-permalink a');
             $I->wait(1);
-            $I->seeElementInDOM(['class' => 'user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i]]);
+            $I->waitForText(ucfirst($fields[$i]), $this::TEXT_WAIT_TIMEOUT);
             $I->see(ucfirst($fields[$i]));
+            $I->seeElementInDOM(['class' => 'user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i]]);
             $I->assertSame($fieldProfileValue, $I->grabAttributeFrom('.user-profile--'.$this->wpAdminUser['name'].'-'.$fields[$i].' a', 'href'));
 
         }

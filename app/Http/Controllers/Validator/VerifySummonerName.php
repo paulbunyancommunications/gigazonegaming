@@ -32,9 +32,10 @@ class VerifySummonerName extends Controller
             Cache::put("counterBackendLolKey", $counter);
         }
         $this->client = new Client();
-        $apiKey = $_ENV['RIOT_API_KEY'.$counter];
+        $apiKey = trim($_ENV['RIOT_API_KEY'.$counter], '"');
 
         $url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $summonerName . '?api_key='. $apiKey;
+
         $info = $this->ApiRequest($url);
 
         return $info;
