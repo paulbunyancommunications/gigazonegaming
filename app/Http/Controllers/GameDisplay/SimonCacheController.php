@@ -173,6 +173,12 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
 
+    public function clearCache()
+    {
+        Cache::flush();
+        return "Cache Successfully Cleared";
+    }
+
     public function getChampions(Request $req){
         $team = $req->team;
         $apiKeyArray=array();

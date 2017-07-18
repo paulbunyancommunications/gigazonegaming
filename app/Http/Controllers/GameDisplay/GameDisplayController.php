@@ -197,11 +197,6 @@ class GameDisplayController extends Controller
         return $team." Champions Successfully Updated!!";
     }
 
-    public function clearCache()
-    {
-        Cache::flush();
-        return "Cache Successfully Cleared";
-    }
 
     public function getTeamName()
     {
