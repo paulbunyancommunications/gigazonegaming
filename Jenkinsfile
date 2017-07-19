@@ -65,22 +65,22 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     //echo "THIS IS A CONTAINER ${Globals.CONTAINERS[1]}";
     //}
     // Get the log outputfrom the code container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/code.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/code.log"
 
     // Get the log outputfrom the firefox container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps firefox  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/firefox.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps firefox  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/firefox.log"
 
     // Get the log outputfrom the web container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/web.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/web.log"
 
     // Get the log outputfrom the hub container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/storage/logs/hub.log"
+    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/hub.log"
 
     // Bring container down and destroy
     sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
 
     // Zip the output folder for email
-    zip dir: "${Globals.WORKSPACE}/storage/logs", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
+    zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
 
     // email teh recipient the log output folder
     emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
@@ -332,10 +332,11 @@ node {
       echo "App environment: ${APP_ENV}"
       switch(APP_ENV.toString()) {
         case "production":
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter --coverage --coverage-html --coverage-xml\""
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter\""
           break
         default:
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\""
+          //sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\""
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v\""
           break
       }
     } catch (error) {
