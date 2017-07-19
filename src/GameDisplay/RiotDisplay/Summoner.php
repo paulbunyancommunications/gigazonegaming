@@ -137,40 +137,12 @@ class Summoner{
      */
     public function setApiKey($ApiKey)
     {
-        switch($ApiKey){
-            case 0:
-                $this->ApiKey = $_ENV['RIOT_API_KEY1'];
-                break;
-            case 1:
-                $this->ApiKey = $_ENV['RIOT_API_KEY2'];
-                break;
-            case 2:
-                $this->ApiKey = $_ENV['RIOT_API_KEY3'];
-                break;
-            case 3:
-                $this->ApiKey = $_ENV['RIOT_API_KEY4'];
-                break;
-            case 4:
-                $this->ApiKey = $_ENV['RIOT_API_KEY5'];
-                break;
-            case 5:
-                $this->ApiKey = $_ENV['RIOT_API_KEY6'];
-                break;
-            case 6:
-                $this->ApiKey = $_ENV['RIOT_API_KEY7'];
-                break;
-            case 7:
-                $this->ApiKey = $_ENV['RIOT_API_KEY8'];
-                break;
-            case 8:
-                $this->ApiKey = $_ENV['RIOT_API_KEY9'];
-                break;
-            case 9:
-                $this->ApiKey = $_ENV['RIOT_API_KEY10'];
-                break;
-            default:
-                throw new Exception("Api id not set for $this->summonerName");
+        $number =(int)$ApiKey + 1;
+        $key = env("RIOT_API_KEY$number", false);
+        if($key === false){
+            throw new Exception("Api id not set for $this->summonerName $number");
         }
+        $this->ApiKey = env("RIOT_API_KEY$number", 'null');
     }
 
 

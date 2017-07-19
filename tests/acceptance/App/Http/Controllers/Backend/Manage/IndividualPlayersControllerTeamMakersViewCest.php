@@ -27,7 +27,6 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
-
     }
 
     /**
@@ -67,28 +66,25 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         $I->wantTo('check after selecting a team that there are players');
         $I->amOnPage('/app/manage/teamMaker');
         $I->see('Team Filler/Maker');
-
         $I->click("Create Team for Selected Tournament");
         $I->dontSee("Add These Players To A New Team");
-
         $I->click("Fill selected Team");
         $I->dontSee("Add These Players To The Selected Team");
-
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->click("Create Team for Selected Tournament");
-        $I->waitForElementVisible(['id' => 'submit_create_team'], 60);
+        $I->waitForElementVisible(['id' => 'submit_create_team'], $this::TEXT_WAIT_TIMEOUT);
         $I->click(['id' => 'submit_create_team']);
+        $I->waitForText("The Players had being added to the new team", $this::TEXT_WAIT_TIMEOUT);
         $I->see("The Players had being added to the new team");
-
         $I->selectOption(['id' => 'game_sort'], "tester-game");
         $I->selectOption(['id' => 'tournament_sort'], "Tester Tournament");
         $I->selectOption(['id' => 'team_sort'], "Tester Team");
         $I->click("Fill selected Team");
-        $I->waitForElementVisible(['id' => 'submit_fill_team'], 60);
+        $I->waitForElementVisible(['id' => 'submit_fill_team'], $this::TEXT_WAIT_TIMEOUT);
         $I->click(['id' => 'submit_fill_team']);
+        $I->waitForText("The Players had being added to the team Tester Team", $this::TEXT_WAIT_TIMEOUT);
         $I->see("The Players had being added to the team Tester Team");
-
     }
 
 }

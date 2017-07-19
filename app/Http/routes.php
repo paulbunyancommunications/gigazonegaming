@@ -116,20 +116,22 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  * Routes - LOL
  *
  */
+Route::group(['middleware' => ['WPAdmin']], function () {
+    Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
+    Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
+    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
+    Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
+    Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
+    Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
+});
 
-Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
 Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
-Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
 Route::get('/GameDisplay/team1','GameDisplay\GameDisplayController@team1ViewDisplay');
 Route::get('/GameDisplay/team2','GameDisplay\GameDisplayController@team2ViewDisplay');
 Route::get('/GameDisplay/ajax','GameDisplay\GameDisplayController@ajaxCheckRequest');
-Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
-Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
 Route::get('/GameDisplay/getTeamName','GameDisplay\GameDisplayController@getTeamName');
-Route::get('/GameDisplay/championsOverride','GameDisplay\GameDisplayController@cacheChampionOverride');
-Route::get('/GameDisplay/clear','GameDisplay\GameDisplayController@clearCache');
 Route::get('/player/login','Auth\PlayerUpdateController@login');
 Route::post('/player/login','Auth\PlayerUpdateController@postLogin');
 Route::get('/player/register','Auth\PlayerUpdateController@register');

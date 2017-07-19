@@ -24,7 +24,7 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
         $this->faker = \Faker\Factory::create();
     }
 
-    protected function populateDB(AcceptanceTester $I)
+    protected function populateDB()
     {
 //        $I->runShellCommand('cd /var/www');
         exec('php artisan db:seed --class=DatabaseSeeder');

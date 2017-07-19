@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\GameDisplay;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 

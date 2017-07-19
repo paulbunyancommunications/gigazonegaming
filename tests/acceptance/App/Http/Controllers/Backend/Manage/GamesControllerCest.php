@@ -20,7 +20,6 @@ class GamesControllerCest extends BaseAcceptance
         parent::_before($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/game');
-
     }
 
     /**
@@ -52,7 +51,7 @@ class GamesControllerCest extends BaseAcceptance
         $I->wantTo('create a game on the management page');
         list($name, $title, $uri, $desc) = $this->createAGame($I);
         // check return, we should have a message and all the fields filled
-        $I->see('The game '.$title.' was added');
+        $I->waitForText('The game '.$title.' was added', $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'title'], $title);
         $I->seeInField(['id' => 'uri'], $uri);
@@ -65,23 +64,19 @@ class GamesControllerCest extends BaseAcceptance
     public function tryToUpdateAGame(AcceptanceTester $I)
     {
         $I->wantTo('update a game on the management page');
-
         $this->createAGame($I);
-
         $name2 = implode('-', $this->faker->words(3));
         $title2 = $this->faker->sentence;
         $uri2 = $this->faker->url;
         $desc2 = $this->faker->paragraph;
-
         // fill fields with new values
         $I->fillField(['id' => 'name'], $name2);
         $I->fillField(['id' => 'title'], $title2);
         $I->fillField(['id' => 'uri'], $uri2);
         $I->fillField(['id' => 'description'], $desc2);
         $I->click(['id' => 'submit']);
-
         // check that the fields are now all updated
-        $I->see('Game '. $title2.' was updated');
+        $I->waitForText('Game '. $title2.' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name2);
         $I->seeInField(['id' => 'title'], $title2);
         $I->seeInField(['id' => 'uri'], $uri2);
@@ -94,7 +89,6 @@ class GamesControllerCest extends BaseAcceptance
     public function tryAndUpdateAGameKeepingTheSameGameName(AcceptanceTester $I)
     {
         $I->wantTo('update a game ,keeping the same name and title but changing everything else.');
-
         // make a game, then update
         list($name, $title, $uri, $desc) = $this->createAGame($I);
         $uri2 = $this->faker->url;
@@ -104,18 +98,15 @@ class GamesControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'uri'], $uri2);
         $I->fillField(['id' => 'description'], $desc2);
         $I->click(['id' => 'submit']);
-
         // I don't see dupe errors
         $I->dontSee('The game name is is already being used.');
         $I->dontSee('The game title is is already being used.');
-
         // I see the right message and values in the fields
-        $I->see('Game '. $title.' was updated');
+        $I->waitForText('Game '. $title.' was updated', $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'title'], $title);
         $I->seeInField(['id' => 'uri'], $uri2);
         $I->seeInField(['id' => 'description'], $desc2);
-
     }
 
     /**
@@ -126,7 +117,7 @@ class GamesControllerCest extends BaseAcceptance
     public function seeErrorWhenNameIsMissing(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
-        $I->see('The game name is required.');
+        $I->waitForText('The game name is required.', $this::TEXT_WAIT_TIMEOUT);
     }
 
     /**
@@ -138,14 +129,12 @@ class GamesControllerCest extends BaseAcceptance
     {
         list($name, $title, $uri, $desc) = $this->createAGame($I);
         $I->amOnPage('/app/manage/game');
-
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'title'], $title);
         $I->fillField(['id' => 'uri'], $uri);
         $I->fillField(['id' => 'description'], $desc);
         $I->click(['id' => 'submit']);
-
-        $I->click(['id' => 'submit']);
+        $I->waitForText('The game name is is already being used.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The game name is is already being used.');
     }
 
@@ -160,6 +149,7 @@ class GamesControllerCest extends BaseAcceptance
     public function seeErrorWhenTitleIsMissing(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
+        $I->waitForText('The game title is required.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The game title is required.');
     }
 
@@ -173,14 +163,12 @@ class GamesControllerCest extends BaseAcceptance
     {
         list($name, $title, $uri, $desc) = $this->createAGame($I);
         $I->amOnPage('/app/manage/game');
-
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'title'], $title);
         $I->fillField(['id' => 'uri'], $uri);
         $I->fillField(['id' => 'description'], $desc);
         $I->click(['id' => 'submit']);
-
-        $I->click(['id' => 'submit']);
+        $I->waitForText('The game title is already being used.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The game title is already being used.');
     }
 
@@ -192,6 +180,7 @@ class GamesControllerCest extends BaseAcceptance
     public function seeErrorWhenUriIsMissing(AcceptanceTester $I)
     {
         $I->click(['id' => 'submit']);
+        $I->waitForText('The game uri is required.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The game uri is required.');
     }
 
@@ -204,6 +193,7 @@ class GamesControllerCest extends BaseAcceptance
     {
         $I->fillField(['id' => 'uri'], $this->faker->md5);
         $I->click(['id' => 'submit']);
+        $I->waitForText('The game uri must be a valid URL.', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The game uri must be a valid URL.');
     }
 
@@ -217,12 +207,12 @@ class GamesControllerCest extends BaseAcceptance
         $title = array_key_exists('title', $attributes) ? $attributes['title'] : $this->faker->sentence;
         $uri = array_key_exists('uri', $attributes) ? $attributes['uri'] : $this->faker->url;
         $desc = array_key_exists('description', $attributes) ? $attributes['description'] :$this->faker->paragraph;
-
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'title'], $title);
         $I->fillField(['id' => 'uri'], $uri);
         $I->fillField(['id' => 'description'], $desc);
         $I->click(['id' => 'submit']);
+        $I->waitForText('The game '.$title." was added!", $this::TEXT_WAIT_TIMEOUT);
         return array($name, $title, $uri, $desc);
     }
 }

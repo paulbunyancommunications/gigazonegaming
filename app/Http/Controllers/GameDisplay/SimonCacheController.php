@@ -173,46 +173,66 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
 
-    public function getChampions(Request $req){
+    public function clearCache()
+    {
+        Cache::flush();
+        return "Cache Successfully Cleared";
+    }
+
+    public function cacheChampionOverride(Request $req)
+    {
+        $championArray = $req->championArray;
+
         $team = $req->team;
+        $championPlayerIdArray = [0, 1, 2, 3, 4];
+        if ($team == 'Team 1') {
+            Cache::put('Team1Champions', $championArray, 70);
+            Cache::put('Team1ChampionsPlayerId', $championPlayerIdArray, 70);
+        } else {
+            Cache::put('Team2Champions', $championArray, 70);
+            Cache::put('Team2ChampionsPlayerId', $championPlayerIdArray, 70);
+        }
+        return $team." Champions Successfully Updated!!";
+    }
+
+    public function getChampions(){
+
         $apiKeyArray=array();
 
         if(Cache::has('Players')){
             try{
-            $players = Cache::get('Players');
-            $championArray = [[],[]];
-            $championPlayerId = [[],[]];
-            #t for team
-            for($t = 0; $t < count($players); $t++){
-                for($p = 0; $p < count($players[$t]); $p++){
-                    $status = $players[$t][$p]->checkCurrentGameStatus();
-                    if($status) {
-                        $players[$t][$p]->setChampion();
-                        array_push($championArray[$t], $players[$t][$p]->getChampion());
-                        array_push($championPlayerId[$t], $p);
+                $players = Cache::get('Players');
+                $championArray = [[],[]];
+                $championPlayerId = [[],[]];
+                #t for team
+                for($t = 0; $t < count($players); $t++){
+                    for($p = 0; $p < count($players[$t]); $p++){
+                        $status = $players[$t][$p]->checkCurrentGameStatus();
+                        if($status) {
+                            $players[$t][$p]->setChampion();
+                            array_push($championArray[$t], $players[$t][$p]->getChampion());
+                            array_push($championPlayerId[$t], $p);
+                        }
                     }
                 }
-            }
-            if($championArray != [[],[]]){
-                if($championArray[0] != []){
-                    Cache::put('Team1Champions', $championArray[0], 70);
-                    Cache::put('Team1ChampionsPlayerId', $championPlayerId[0], 70);
-                }if($championArray[1] != []){
-                    Cache::put('Team2Champions', $championArray[1], 70);
-                    Cache::put('Team2ChampionsPlayerId', $championPlayerId[1], 70);
+                if($championArray != [[],[]]){
+                    if($championArray[0] != []){
+                        Cache::put('Team1Champions', $championArray[0], 70);
+                        Cache::put('Team1ChampionsPlayerId', $championPlayerId[0], 70);
+                    }if($championArray[1] != []){
+                        Cache::put('Team2Champions', $championArray[1], 70);
+                        Cache::put('Team2ChampionsPlayerId', $championPlayerId[1], 70);
+                    }
+                    $returnArray = array('Champions' => $championArray, 'ChampionsPlayersId'=>$championPlayerId, 'ErrorCode' => 'false');
+                    return $returnArray;
                 }
-                $returnArray = array('Champions' => $championArray, 'ChampionsPlayersId'=>$championPlayerId, 'ErrorCode' => 'false');
-                return $returnArray;
-            }
-            else{
                 return array('ErrorCode' => 'true', 'ErrorMessage' => 'Champions are not ready.');
-            }
             }catch(\Exception $e){
                 return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage() , 'ApiArray' => $apiKeyArray);
             }
 
-        }else{
-            return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please Select a team and a color before getting champions.');
         }
+        return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please Select a team and a color before getting champions.');
+
     }
 }

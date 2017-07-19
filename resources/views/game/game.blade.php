@@ -108,7 +108,7 @@
                                     {{
                                        Form::button(
                                            '<i class="fa fa-print" aria-hidden="true"></i>',
-                                           array('type' => 'button', 'id' => 'submit-toForm-print-'.$game["game_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $game['game_name']),'title'=>"Edit game ".$game['game_name'])
+                                           array('type' => 'button', 'id' => 'submit-toForm-print-'.$game["game_id"], 'class'=>'btn btn-primary btn-gz toForm print-'.str_replace(' ', '', $game['game_name']),'title'=>"Print game ".$game['game_name'])
                                        )
                                     }}
 
