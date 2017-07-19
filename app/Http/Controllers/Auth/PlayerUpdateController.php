@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-Use App\Http\AuthenticateUser;
-use App\Http\RegisterUser;
+Use App\Models\Auth\AuthenticateUser;
+use App\Models\Auth\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Models\Championship\Player;
 
@@ -10,7 +10,7 @@ class PlayerUpdateController extends Controller
 {
     public function login(){
         $email="";
-        return view('/LeagueOfLegends/login')->withEmail($email);
+        return view('/auth/login')->withEmail($email);
     }
     public function postLogin(AuthenticateUser $auth)
     {
@@ -19,7 +19,7 @@ class PlayerUpdateController extends Controller
 
     public function register(){
         $message= "";
-        return view('/LeagueOfLegends/register')->withMessage($message);
+        return view('/auth/register')->withMessage($message);
     }
     public function postRegister(RegisterUser $auth)
     {
@@ -30,7 +30,7 @@ class PlayerUpdateController extends Controller
     {
         if($user = \Sentinel::getUser()){
             $token = Player::where('email',$user->email)->first();
-            return view('/LeagueOfLegends/playerUpdate')->withToken($token);
+            return view('/auth/playerUpdate')->withToken($token);
         }
         return redirect()->back()->withErrors("Authorization Needed")->withEmail($email='');
 

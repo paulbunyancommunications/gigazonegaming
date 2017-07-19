@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Auth;
 
 use App\Models\Championship\Player;
 use Illuminate\Database\Eloquent\Model;

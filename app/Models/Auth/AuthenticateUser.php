@@ -1,5 +1,5 @@
 <?php
-namespace App\Http;
+namespace App\Models\Auth;
 use App\Http\Requests\Auth\PlayerAuthRequest;
 use App\Models\Auth\Users\User;
 
