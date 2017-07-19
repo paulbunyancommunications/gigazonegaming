@@ -13,6 +13,7 @@ namespace App\Models\Auth\Users;
 
 use App\Models\Championship\Player;
 use Cartalyst\Sentinel\Users\EloquentUser;
+use Illuminate\Support\Facades\Hash;
 
 class User extends EloquentUser
 {
@@ -44,5 +45,13 @@ class User extends EloquentUser
     public function player()
     {
         return $this->hasOne(Player::class);
+    }
+
+    public static function byEmail($email,$password){
+        $user = Player::where('email', $email)->first();
+        if(Hash::check($password, $user->password)){
+            return $user;
+        }
+        return false;
     }
 }
