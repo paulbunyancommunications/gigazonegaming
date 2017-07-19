@@ -10,6 +10,30 @@
   @include margin-padding(.675);
 }
 
+/**\
+  * Build a row of three equal columns or a two thirds column combo
+  * with removing gutter from columns https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+  * Usage for three columns:
+  *   <div class="container">
+  *     <div class="row">
+  *       <div class="one-third"><div><!--
+  *       --><div class="one-third"><div><!--
+  *       --><div class="one-third"><div>
+  *     </div>
+  *   </div>
+  *
+  * Usage for two coulms:
+  *   <div class="container">
+  *     <div class="row">
+  *       <div class="two-thirds"><div>
+  *       <div class="one-third"><div>
+  *     </div>
+  *   </div>
+  */
+
+.one-third, .two-thirds {
+  display: inline-block;
+}
 .one-third {
   width: floor(100% * .33);
 }
@@ -18,31 +42,31 @@
   width: floor(100% * .66);
 }
 
-/*
- * Row with equal height columns
- http://www.bootply.com/126437
+/**
+  *  Row with equal height columns
+  *  http://www.bootply.com/126437
+  *
+  *  Usage with bootstrap grid:
+  *
+  *  <div class="container">
+  *      <div class="row row-flex">
+  *         <div class="col-md-6">
+  *           <div class="flex-col"><!-- .flex-col inside col-* div -->
+  *               These columns will have the same height
+  *           </div>
+  *         </div>
+  *         <div class="col-md-6">
+  *           <div class="flex-col">
+  *               <div class="flex-grow"> <!-- .flex-grow to expand a sub box to height or parent
+  *               These columns will have the same height
+  *               </div>
+  *           </div>
+  *         </div>
+  *      </div>
+  *  </div>
+  *
+  */
 
- Usage with bootstrap grid:
-
- <div class="container">
-     <div class="row row-flex">
-        <div class="col-md-6">
-          <div class="flex-col"><!-- .flex-col inside col-* div -->
-              These columns will have the same height
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="flex-col">
-              <div class="flex-grow"> <!-- .flex-grow to expand a sub box to height or parent
-              These columns will have the same height
-              </div>
-          </div>
-        </div>
-     </div>
- </div>
-
- * --------------------------------------------------
- */
 .row-flex, .row-flex > div[class*='col-'] {
   @include mq-desktop-cinema {
     @include flexbox;
@@ -74,4 +98,40 @@
 .flex-grow {
   @include flexbox;
   @include flex(2);
+}
+
+/**
+  *
+  * Bootstrap grid without gutters
+  * https://julienmelissas.com/no-gutter-column-trick-for-bootstrap/
+  * Usage:
+  * <div class="row no-gutters">
+  *   <div class="col-xs-6 col-sm-3 kitten-box">
+  *     <img src="http://placekitten.com/g/600" alt="kittens" />
+  *   </div>
+  *   ...
+  * </div>
+  *
+  */
+.row {
+  &.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  &.no-gutters > [class^="col-"],
+  &.no-gutters > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  &.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  &.no-gutters > [class^="col-"],
+  &.no-gutters > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }

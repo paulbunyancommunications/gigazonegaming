@@ -232,6 +232,7 @@
       "Wordpress\\": "src/Wordpress/",
       "Twig\\": "src/Twig/",
       "GigaZone\\": "src/GigaZone/",
+      "GameDisplay\\": "src/GameDisplay/",
       "Pbc\\GigaZoneGaming\\": "src/paulbunyannet/gigazonegaming/src"
     }
   },

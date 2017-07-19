@@ -1,0 +1,199 @@
+@import 'teamVariables';
+
+html{
+  font-family: $main-font;
+}
+body{
+  background-image: $body-background;
+}
+.startForm{
+  text-align:center;
+}
+.hidden{
+  display: none;
+}
+select{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 9;
+  font-weight: bold;
+  color: white;
+  border: none;
+  margin: $min-space + 5;
+}
+.tournamentSelect{
+  width: $width - 40;
+  max-width: $max-width + 235;
+}
+label{
+  font-size: $font-size-md + 9;
+  font-weight: bold;
+  color: white;
+  text-decoration: underline;
+}
+#label1{
+  margin-right:$champNameBottom * 2;
+}
+#label2{
+  margin-left:$champNameBottom * 2;
+}
+#colorLabel1{
+  margin-right:$champNameBottom * 1.5;
+}
+#colorLabel2{
+  margin-left:$champNameBottom * 1.5;
+}
+.startButton{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 9;
+  font-weight: bold;
+  color: white;
+  border: none;
+  margin: $min-space + 12;
+}
+.startImage{
+  text-align: center;
+  max-width: $width - 40;
+  margin: auto;
+}
+.startButtonDisabled{
+  opacity: $opacity-md - .1;
+}
+.startFooter{
+  position: fixed;
+  width: $width - 27;
+  text-align:center;
+  opacity: $opacity-md - .1;
+  left:$width - 89;
+  overflow: hidden;
+  z-index: $z-1 - 2;
+}
+#loader {
+  border: $loader-border;
+  border-radius: $loader-border-radius;
+  border-top: $loader-border-top;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: $min-space * 2;
+  width: $min-space * 6;
+  height: $min-space * 6;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#info{
+  width:$width - 19;
+  height:$max-height + 40;
+  margin-left: auto;
+  margin-right: auto;
+  @include faded-background(255,.5);
+  word-wrap: break-word;
+  border: $info-border;
+  overflow-y:auto;
+  font-weight:bold;
+  line-height: $line-height;
+}
+.console-header{
+  font-size: $font-size-md + 14;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  text-decoration: underline;
+  margin-top: $min-space;
+  margin-bottom: 0;
+  text-shadow: $text-shadow;
+}
+.console-sub-header{
+  font-size: $font-size-md + 4;
+  font-weight: bold;
+  color: white;
+  text-decoration: underline;
+  text-shadow: $text-shadow-plain;
+}
+#getChampions,#clearCache,#championOverride{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 9;
+  font-weight: bold;
+  color: white;
+  border: none;
+  margin-bottom: $min-space;
+  margin-left: auto;
+  margin-right: auto;
+  white-space: nowrap;
+}
+#buttonContainer{
+  width:$width - 19;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width:1260px) {
+  .button-Sub-Container{
+    display: inline-block;
+    width:$width - 67;
+  }
+}
+@media (min-width:1000px) {
+  .button-Sub-Container{
+    display: inline-block;
+    width:$width - 70;
+  }
+}
+@media (max-width:1000px) {
+  #info{
+    height:$min-space * 80;
+  }
+}
+@media (max-width:700px) {
+  #info{
+    height:$min-space * 50;
+  }
+}
+@media (max-width:530px) {
+  select{
+    font-size: $font-size-md;
+  }
+  label{
+    font-size: $font-size-md;
+  }
+  #getChampions,#clearCache,#championOverride{
+    font-size: $font-size-md;
+    margin-bottom: $min-space * 2;
+  }
+  .startButton{
+    font-size: $font-size-md;
+    margin: $min-space;
+    margin-bottom: $min-space * 2;
+  }
+  #label1{
+    margin-right:$champNameBottom + 10;
+  }
+  #label2{
+    margin-left:$champNameBottom + 10;
+  }
+  #loader {
+    width: $min-space * 3;
+    height: $min-space * 3;
+    border: $loader-border-sm;
+    border-top: $loader-border-top-sm;
+    margin-bottom: $min-space * 2;
+  }
+  #info{
+    height:$min-space * 50;
+  }
+}

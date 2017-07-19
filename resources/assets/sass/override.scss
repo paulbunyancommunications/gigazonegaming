@@ -1,0 +1,44 @@
+@import 'teamVariables';
+select{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 4;
+  font-weight: bold;
+  color: white;
+  border: none;
+  margin: $min-space + 5;
+}
+#info{
+  width:$width - 60;
+  height:$max-height - 360;
+  margin-left: auto;
+  margin-right: auto;
+  @include faded-background(255,.5);
+  word-wrap: break-word;
+  border: $info-border;
+  overflow-y:auto;
+  font-weight:bold;
+  line-height: $line-height;
+}
+.startButton{
+  -webkit-border-radius: $min-space;
+  -moz-border-radius: $min-space;
+  border-radius: $min-space;
+  @include faded-background(100,.5);
+  font-size: $font-size-md + 4;
+  font-weight: bold;
+  color: white;
+  border: none;
+  margin: $min-space + 12;
+  margin-bottom: $min-space * 2;
+}
+@media (max-width:530px) {
+  h1 {
+    font-size: $font-size-lg - 30;
+  }
+  #info{
+    height:$min-space * 20;
+  }
+}

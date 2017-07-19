@@ -4,3 +4,24 @@
   @include height(1);
   opacity: .3;
 }
+
+@mixin divider-dashed-text($font-size: 1, $font-weight: 400, $kerning: 1, $height: 1, $width: 100%, $color: $color-white, $length: 100, $divider: "/", $opacity: 1) {
+
+  $content: "";
+  @for $i from 1 through $length {
+    $content: $content + $divider;
+  }
+  @include height($height);
+  @include font-size($font-size);
+  @include kerning($kerning);
+  width: $width;
+  font-weight: $font-weight;
+  content: $content;
+  color: $color;
+  overflow: hidden;
+  opacity: $opacity;
+  text-indent: -25px;
+  display: block;
+  white-space: nowrap;
+  text-align: center;
+}
