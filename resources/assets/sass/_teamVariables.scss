@@ -1,0 +1,68 @@
+// assign values to all variables used
+
+// backgrounds
+$body-background: url('/LeagueOfLegendsDisplay/Images/main-background.png');
+$alt-body-background: url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center;
+$header-background: url('/LeagueOfLegendsDisplay/Images/bg-default.jpg');
+$border-background: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat right -148px;
+$border-background2: transparent url('/LeagueOfLegendsDisplay/Images/frame-sprite.png') no-repeat left -148px;
+$name-background: transparent url('/LeagueOfLegendsDisplay/Images/blueFire.jpg') center center no-repeat;
+$player-stats-background: transparent url('/LeagueOfLegendsDisplay/Images/red_blue.jpeg') center center no-repeat;
+$player-stats-background-vert: transparent url('/LeagueOfLegendsDisplay/Images/red_blue_vert.jpg') center center no-repeat;
+$overlay: url('/LeagueOfLegendsDisplay/Images/main-background.png') center center repeat;
+$spinner-img: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
+$spinner-img-mobile: #000 url('/LeagueOfLegendsDisplay/Images/GZG-Atom-to-Animate.gif') center center no-repeat;
+
+//borders
+$main-border-image: url('/LeagueOfLegendsDisplay/Images/background.jpg') 30 30 30 30 round;
+$main-border-size: 10px solid;
+$border-sm: 3px solid;
+$border-height: 26px;
+$border-top: -21px;
+$icon-radius: 50px;
+$extra-stats-border: 2px inset;
+$loader-border: 10px solid #f3f3f3;
+$loader-border-radius: 50%;
+$loader-border-top: 10px solid #3498db;
+$info-border: 5px inset white;
+$loader-border-sm: 2px solid #f3f3f3;
+$loader-border-top-sm: 2px solid #3498db;
+
+
+//font
+$main-font: futura-pt,Lucida Sans,Lucida Grande,Lucida Sans Unicode,sans-serif;
+$font-size-md: 16px;
+$font-size-lg: 100px;
+$name-font-size: 20px;
+$minor-heading-color: #FBB042;
+
+//spacing and sizing
+$min-space: 5px;
+$width: 100%;
+$v-align: 20px;
+$max-width: 300px;
+$max-height: 560px;
+$champNameBottom:30px;
+
+//special and custom
+$text-shadow: 1px 1px 2px black, 0 0 25px red, 0 0 5px darkblue;
+$text-shadow-plain:1px 1px 2px black, 0 0 25px white, 0 0 5px black;
+$box-shadow: 0 5px gray;
+$champion-box-shadow:1px 10px 10px #888888;
+$gold: #FFD700;
+$opacity-md: .4;
+$opacity-sm: .6;
+$z-1: 1;
+$line-height: 150%;
+
+
+// column sizing
+$sz-xs: 17%!important;
+$sz-sm: 33%!important;
+$sz-md: 45%!important;
+$sz-lg: 100%!important;
+
+// Mixins
+@mixin faded-background($color,$fade){
+  background-color: rgba($color, $color, $color,$fade);
+}

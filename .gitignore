@@ -142,3 +142,5 @@ public_html/sitemap.xml
 testing.sh
 constant_contact
 !constant_contact/email/template
+public_html/LeagueOfLegendsDisplay/JS/jquery.mobile.custom/jquery.mobile.custom.js
+public_html/LeagueOfLegendsDisplay/JS/jquery.mobile.custom/jquery.mobile.custom.min.js

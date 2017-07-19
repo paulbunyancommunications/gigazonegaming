@@ -12,7 +12,11 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [];
+    protected $commands = [
+        'App\Console\Commands\FilldbWithTestData',
+        'App\Console\Commands\testGameDispalyController',
+
+    ];
 
     /**
      * Define the application's command schedule.
