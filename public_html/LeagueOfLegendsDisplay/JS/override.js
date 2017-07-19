@@ -23,25 +23,25 @@ function findChampion() {
         {
             if (checkArray.indexOf(document.getElementById("player" + i).value) !== -1) {
                 if(document.getElementById("player" + i).value === "Wukong"){
-                    championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/MonkeyKing_0.jpg');
+                    championArray.push("http://ddragon.leagueoflegends.com/cdn/img/champion/loading/MonkeyKing_0.jpg");
                 }
                 else {
-                    championArray.push('http://ddragon.leagueoflegends.com/cdn/img/champion/loading/' + document.getElementById("player" + i).value + "_0.jpg");
+                    championArray.push("http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + document.getElementById("player" + i).value + "_0.jpg");
                 }
             }else{
                 document.getElementById("info").innerHTML = document.getElementById("info").innerHTML + "Player " + i + ": " +document.getElementById("player" + i).value + " is not a valid name!<br/>";
             }
         }
             if(championArray.length === 5) {
-                document.getElementById('info').innerHTML = "Updating Champions...";
+                document.getElementById("info").innerHTML = "Updating Champions...";
                 $.ajax({
                     method: "GET",
                     type: "GET",
                     url: "/app/GameDisplay/championsOverride",
                     data: {
-                        '_token': "{{ csrf_token() }}",
+                        "_token": "{{ csrf_token() }}",
                         championArray: championArray,
-                        team: $('#Team').find('option:selected').text(),
+                        team: $("#Team").find("option:selected").text(),
                     },
                     success: function (data) {
                         document.getElementById("info").innerHTML = "<h3>" + data + "</h3>";
