@@ -330,10 +330,8 @@ node {
     startMessage(Globals.STAGE)
     try {
       echo "App environment: ${APP_ENV}"
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test\"";
       switch(APP_ENV.toString()) {
-        echo "# Running Tests, usage `composer test -- TEST_ARGUMENTS`; #";
-        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"curl --silent -k https://gist.githubusercontent.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919/raw/$(git ls-remote https://gist.github.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919 | grep HEAD | awk '{ print $1}')/testing.sh > testing.sh; \"",
-        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"chmod u+x testing.sh; \"";
         case "production":
           sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
           break
