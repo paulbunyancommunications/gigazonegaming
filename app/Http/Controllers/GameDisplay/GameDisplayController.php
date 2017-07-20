@@ -212,7 +212,6 @@ class GameDisplayController extends Controller
     /**
      * @param $tournament
      * @param $team
-     * @param $color
      * @return array
      */
     public function buildTheTeams($tournament, $team)

@@ -38,15 +38,15 @@ class Summoner{
 
         #Sets up api so that its ready for requests
         $this->setApiKey($ApiKeyNumber);
-        $this->setApi();
+        $this->setApi($this->ApiKey);
 
         #set Summoner properties
-        $this->setSummonerID();
-        $this->setIcon();
-        $this->setSoloRankedWinLoss();
-        $this->setSoloRank();
-        $this->setFLEXRank();
-        $this->setFLEXRankedWinLoss();
+        $this->setSummonerID($this->api->getSummonerId());
+        $this->setIcon($this->api->getSummonerIcon());
+        $this->setSoloRankedWinLoss($this->api->getSoloRankedWinLoss());
+        $this->setSoloRank($this->api->getSoloRank());
+        $this->setFLEXRank($this->api->getFLEXRank());
+        $this->setFLEXRankedWinLoss($this->api->getFLEXRankedWinLoss());
 
 
 
@@ -73,55 +73,55 @@ class Summoner{
     }
 
     /**
-     *
+     * @param $apiKey
      */
-    public function setApi(){
+    public function setApi($apiKey){
         #creats a new api object
-        $this->api = new Api($this->summonerName, $this->ApiKey);
+        $this->api = new Api($this->summonerName, $apiKey);
     }
 
     /**
-     *
+     * @param $summonerId
      */
-    public function setSummonerID(){
-        $this->summonerID = $this->api->getSummonerId();
+    public function setSummonerID($summonerId){
+        $this->summonerID = $summonerId;
     }
 
     /**
-     *
+     * @param $icon
      */
-    public function  setIcon(){
-        $this->icon = $this->api->getSummonerIcon();
+    public function  setIcon($icon){
+        $this->icon = $icon;
     }
 
     /**
-     *
+     * @param $soloRank
      */
-    public function setSoloRank(){
-        $this->soloRank = $this->api->getSoloRank();
+    public function setSoloRank($soloRank){
+        $this->soloRank = $soloRank;
     }
 
     /**
-     *
+     * @param $soloRankedWinLoss
      */
-    public function setSoloRankedWinLoss(){
-        $this->soloRankedWinLoss = $this->api->getSoloRankedWinLoss();
+    public function setSoloRankedWinLoss($soloRankedWinLoss){
+        $this->soloRankedWinLoss = $soloRankedWinLoss;
     }
 
     /**
-     *
+     * @param $flexRank
      */
-    public function setFLEXRank()
+    public function setFLEXRank($flexRank)
     {
-        $this->FLEXRank = $this->api->getFLEXRank();
+        $this->FLEXRank = $flexRank;
     }
 
     /**
-     *
+     * @param $flexRankWinLoss
      */
-    public function setFLEXRankedWinLoss()
+    public function setFLEXRankedWinLoss($flexRankWinLoss)
     {
-        $this->FLEXRankedWinLoss = $this->api->getFLEXRankedWinLoss();
+        $this->FLEXRankedWinLoss = $flexRankWinLoss;
     }
 
 

@@ -42,7 +42,7 @@ class FilldbWithTestData extends Command
     public function fillDB(){
         #Captian
         $Captian = new Player();
-        $Captian->setAttribute('username', "KingMorpheus2131");
+        $Captian->setAttribute('username', "Spartan7Warrior");
         $Captian->setAttribute('email', "martushev8@gmail.com");
         $Captian->setAttribute('name', "Roman");
         $Captian->setAttribute('phone', "2182605085");
@@ -50,7 +50,7 @@ class FilldbWithTestData extends Command
         #Team
         $team = new Team();
         $team->tournament_id = 1;
-        $team->name =  "That Team";
+        $team->name =  "Team Awesome";
         #add captain and save the team
         $team->captain = $Captian->id;
         $team->save();
@@ -61,12 +61,12 @@ class FilldbWithTestData extends Command
             'Tournament' => 1,
             'team' => $team->id,
         ]);
-        $playerUserNameArray = array('ReckonStuff', 'manklar', 'Juanpablomontoya', 'YoBroSo');
+        $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
         $i = 0;
         #creat players for team
-        foreach ($playerUserNameArray as $Player){
+        for($i = 0; $i < count($playerUserNameArray); $i++){
             $player = new Player();
-            $player->username = $Player;
+            $player->username = $playerUserNameArray[$i];
             $player->email = "ready_player_" . $i . "@gigazonegaming.com";
             $player->phone = "2182605085";
             $player->save();
@@ -77,7 +77,6 @@ class FilldbWithTestData extends Command
                 'Tournament' => 1,
                 'team' => $team->id,
             ]);
-            $i++;
         }
     }
 }
