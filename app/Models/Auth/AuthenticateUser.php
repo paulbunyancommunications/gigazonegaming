@@ -24,7 +24,7 @@ class AuthenticateUser
         if(\Sentinel::authenticate(['email'=>$this->request->email,'password'=>$this->request->password])){
             return redirect("/player/playerUpdate");
         }
-        return false;
+        return redirect("/player/login")->withErrors("Invalid Password")->withEmail("");
     }
 
     protected function validateRequest($request){

@@ -137,4 +137,6 @@ Route::post('/player/login','Auth\PlayerUpdateController@postLogin');
 Route::get('/player/register','Auth\PlayerUpdateController@register');
 Route::post('/player/register','Auth\PlayerUpdateController@postRegister');
 Route::get('/player/playerUpdate','Auth\PlayerUpdateController@playerUpdate');
+Route::get('/player/logout','Auth\PlayerUpdateController@logout');
+Route::post('/player/logout','Auth\PlayerUpdateController@postLogin');
 

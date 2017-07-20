@@ -20,7 +20,7 @@ class PlayerUpdate extends Model
             ]);
             return "Login";
         }
-        return "This Player already has an Account";
+        return "This player already has an account!";
     }
     public function getRouteKeyName()
     {

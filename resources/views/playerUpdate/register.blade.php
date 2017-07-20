@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="@autoVersion('/bower_components/font-awesome/css/font-awesome.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/app.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/playerUpdate.css')">
-    <Title>Player Login</Title>
+    <Title>Player Register</Title>
 </head>
 <body>
 <div class="container">
@@ -19,10 +19,10 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-6">
-                            <a onclick="window.open('/app/player/login','_self')" class="active" id="login-form-link">Login</a>
+                            <a onclick="window.open('/app/player/login','_self')" id="login-form-link">Login</a>
                         </div>
                         <div class="col-xs-6">
-                            <a onclick="window.open('/app/player/register','_self')" id="register-form-link">Register</a>
+                            <a onclick="window.open('/app/player/register','_self')" class="active" id="register-form-link">Register</a>
                         </div>
                     </div>
                     <hr>
@@ -30,18 +30,21 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <form id="login-form" method="POST" role="form">
+                            <form id="register-form" action="" method="POST" role="form">
                                 <div class="form-group">
-                                    <h2 class="form-signin-heading">Please Sign In</h2>
+                                    <h2 class="form-signin-heading">Register</h2>
                                     {{ csrf_field() }}
 
-                                    <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="{{$email}}">
-                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address">
+                                    <input type="text" name="username" id="username" tabindex="2" class="form-control" placeholder="Username">
+                                    <input type="text" name="phone" id="phone" tabindex="3" class="form-control" placeholder="Phone Number">
+                                    <input type="password" name="password" id="password" tabindex="4" class="form-control" placeholder="Password">
+                                    <input type="password" name="password_confirmation" id="password_confirmation" tabindex="5" class="form-control" placeholder="Confirm Password">
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="login-submit" id="login-submit" tabindex="3" class="form-control btn btn-login" value="Log In">
+                                            <button type="submit" name="register-submit" id="register-submit" tabindex="6" class="form-control btn btn-register">Register Now</button>
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +65,12 @@
         </ul>
     </div>
 @endif
+@if($message != "" && $message == "Login")
+<h4 class="text-center">Successfully Added! You can now <a id="Login" onclick="window.open('/app/player/login','_self')">{{$message}}.</a></h4>
+    @else
+    <h4 class="text-center">{{$message}}</h4>
+@endif
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-<script src="/LeagueOfLegendsDisplay/JS/playerUpdate.js"></script>
+<script src="/resources/assets/js/playerUpdate.js"></script>
 </html>
