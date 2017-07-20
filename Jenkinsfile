@@ -332,10 +332,12 @@ node {
       echo "App environment: ${APP_ENV}"
       switch(APP_ENV.toString()) {
         case "production":
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter\"; docker-compose exec -T code bash ./testing.sh -- -f --ext DotReporter";
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter\"";
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
           break
         default:
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\"; docker-compose exec -T code bash ./testing.sh -- -f -v --coverage --coverage-html --coverage-xml"
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\"; "
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f -v --coverage --coverage-html --coverage-xml\"";
           break
       }
     } catch (error) {
@@ -412,7 +414,7 @@ node {
           echo "a1";
           sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
           echo "a2";
-          
+
         } catch (error) {
           echo "a3";
             sh "cd ${Globals.WORKSPACE};docker-compose down -v";
