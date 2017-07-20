@@ -332,11 +332,12 @@ node {
       echo "App environment: ${APP_ENV}"
       switch(APP_ENV.toString()) {
         case "production":
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f --ext DotReporter\""
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test\""
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\""
           break
         default:
-          //sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v --coverage --coverage-html --coverage-xml\""
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test -- -f -v\""
+          //sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test\""
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f  -v --coverage --coverage-html --coverage-xml\""
           break
       }
     } catch (error) {
