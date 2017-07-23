@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Acceptance;
+namespace Test\Acceptance\App\Http\Controllers\TeamDisplay;
 
 
 use AcceptanceTester;
@@ -9,6 +9,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $I->loginToWordpress($I, "admin","password",3);
         $this->populateDB($I);
     }
 

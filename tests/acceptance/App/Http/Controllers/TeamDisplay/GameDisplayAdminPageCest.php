@@ -1,5 +1,6 @@
 <?php
-namespace Tests\Acceptance;
+namespace Test\Acceptance\App\Http\Controllers\TeamDisplay;
+
 
 use AcceptanceTester;
 
@@ -10,6 +11,7 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $I->amOnPage('/app/GameDisplay/Admin');
+        $I->loginToWordpress($I, "admin","password",3);
         $I->waitForJs('return jQuery.active == 0', 10);
     }
 

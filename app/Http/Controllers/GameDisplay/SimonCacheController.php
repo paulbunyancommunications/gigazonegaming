@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GameDisplay;
 
+use GameDisplay\RiotDisplay\API\Api;
 use Illuminate\Support\Facades\Cache;
 
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class SimonCacheController extends Controller
     public function SubmitCache(Requests\SimonCacheSubmitCache $req)
     {
         ///For Assertion Test: Load fixture if the exists.
-        $testing = \utilphp\util::str_to_bool($req->header('Testing'));
+        $testing = \utilphp\util::str_to_bool($req->Testing);
         if($testing and file_exists('../../tests/_data/PlayerInfoArray.bin')){
             $data = unserialize(file_get_contents('../../tests/_data/PlayerInfoArray.bin'));
             $this->cacheContent($data['teamInfo'],$data['colors'],$data['teamName'],$data['players']);
@@ -107,7 +108,8 @@ class SimonCacheController extends Controller
                 switch ($TournamentName){
                     #LOL
                     case str_contains($TournamentName, "league-of-legends"):
-                        $summoner = new Summoner($player->username, $this->apiIterator);
+                        $api = new Api($this->apiIterator);
+                        $summoner = new Summoner($player->username, $api);
                         array_push($this->players, $summoner);
                         $this->apiIterator++;
 

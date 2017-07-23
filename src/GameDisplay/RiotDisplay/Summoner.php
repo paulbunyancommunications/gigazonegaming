@@ -22,25 +22,22 @@ class Summoner{
     protected $FLEXRank;
     protected $FLEXRankedWinLoss;
     protected $api;
-    public $ApiKey;
 
 # Constructor
 #----------------------------------------------------------------------
     /**
      * Summoner constructor.
      * @param $summonerName
-     * @param $ApiKeyNumber
+     * @param $api
      *
-     * Pass Api Class
      */
-    function __construct($summonerName, $ApiKeyNumber)
+    function __construct($summonerName, $api)
     {
         #Initailize the name of the summoner
         $this->setSummonerName($summonerName);
 
-        #Sets up api so that its ready for requests
-        $this->setApiKey($ApiKeyNumber);
-        $this->setApi($this->ApiKey);
+        #Sets up api so that its is injected with a summoner ready for requests
+        $this->setApi($api);
 
         #set Summoner properties
         $this->setSummonerID($this->api->getSummonerId());
@@ -75,11 +72,15 @@ class Summoner{
     }
 
     /**
-     * @param $apiKey
+     * @param $api
      */
-    public function setApi($apiKey){
-        #creats a new api object
-        $this->api = new Api($this->summonerName, $apiKey);
+    public function setApi($api){
+        #Sets this api
+        $this->api = $api;
+
+        #Injects summoner into api so that this api can uniquely request data for this summoner.
+        $this->api->injectSummoner($this->summonerName);
+
     }
 
     /**
@@ -132,19 +133,6 @@ class Summoner{
      */
     public function setChampion(){
         $this->champion = $this->api->getChampion();
-    }
-
-    /**
-     * @param mixed $ApiKey
-     */
-    public function setApiKey($ApiKey)
-    {
-        $number =(int)$ApiKey + 1;
-        $key = env("RIOT_API_KEY$number", false);
-        if($key === false){
-            throw new Exception("Api id not set for $this->summonerName $number");
-        }
-        $this->ApiKey = env("RIOT_API_KEY$number", 'null');
     }
 
 
