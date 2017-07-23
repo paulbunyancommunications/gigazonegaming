@@ -27,6 +27,11 @@ class Api{
 
 # Constructor
 #----------------------------------------------------------------------
+    /**
+     * Api constructor.
+     * @param $SummonerName
+     * @param $ApiKey
+     */
     function __construct($SummonerName, $ApiKey)
     {
 
@@ -36,9 +41,10 @@ class Api{
         $this->apiKey = $ApiKey;
 
         #intailize summoner info for requests
-        $this->setSummonerID();
-        #States of players rank.
-        $this->setLeagueV3Json();
+        $this->requestSummonerID();
+
+        #Grabes json array from states api for
+        $this->requestLeagueV3Json();
 
     }
 
@@ -95,7 +101,7 @@ class Api{
 
 # Setters
 #----------------------------------------------------------------------
-    public function setLeagueV3Json()
+    public function requestLeagueV3Json()
     {
         #Gets players states json
         $Url = 'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
@@ -104,7 +110,7 @@ class Api{
         $this->LeagueV3Json = $Info;
     }
 
-    public function setSummonerID()
+    public function requestSummonerID()
     {
         $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
         $info = $this->apiRequest($Url);
@@ -116,7 +122,7 @@ class Api{
                     $this->summonerID = null;
                 }
                 else{
-                    $this->setSummonerID();
+                    $this->requestSummonerID();
                     throw new Exception("Summoner ID not found in json response for: $this->Summoner");
                 }
                 $this->counter++;
@@ -150,7 +156,6 @@ class Api{
 
         $this->championImg = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" . $ChampionName . "_0.jpg";
     }
-
 
 # Getters
 #----------------------------------------------------------------------
@@ -274,6 +279,14 @@ class Api{
     public function getApiKey()
     {
         return $this->apiKey;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLeagueV3Json()
+    {
+        return $this->LeagueV3Json;
     }
 
 

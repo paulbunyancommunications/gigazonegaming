@@ -30,6 +30,8 @@ class Summoner{
      * Summoner constructor.
      * @param $summonerName
      * @param $ApiKeyNumber
+     *
+     * Pass Api Class
      */
     function __construct($summonerName, $ApiKeyNumber)
     {
