@@ -27,7 +27,6 @@ class SimonCacheSubmitCache extends Request
             'team' => 'required',
             'color' => 'required',
             'tournament' => 'required',
-            'Testing' => 'required',
         ];
     }
 }

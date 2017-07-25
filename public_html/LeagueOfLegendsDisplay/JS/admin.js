@@ -41,7 +41,8 @@ const testing =  document.getElementsByName("Testing").length;
  */
 $.ajaxSetup({
     headers: {
-        "X-CSRF-TOKEN": $("#hiddenToken").text()
+        "X-CSRF-TOKEN": $("#hiddenToken").text(),
+        'Testing': false
     }
 });
 
@@ -66,7 +67,6 @@ function submitCache(){
             tournament: $('#Tournament').find("option:selected").text(),
             team: team,
             color: color,
-            Testing: testing ? document.getElementsByName("Testing")[0].getAttribute("content") : 'false',
         },
         success: function(data){
             //Reset Info Box

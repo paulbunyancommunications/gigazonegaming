@@ -50,8 +50,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
     {   $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams stats displayed. Also submit champion Override and see champions loaded into the page');
         $I->amOnPage('/app/GameDisplay/Admin');
         $I->waitForJs('return jQuery.active == 0', 10);
-        $I->executejs("$('head').append('<meta content=\"true\" name=\"Testing\">');");
-        $I->waitForElement("meta[name='Testing']",10);
+        $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
         $I->selectOption('#Tournament', 'Tester Tournament');
         $I->selectOption('#Team', 'Tester Team');
         $I->selectOption('#Team-1', 'Tester Team');
