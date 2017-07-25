@@ -20,7 +20,7 @@ class Player extends Model
     /**
      * @var array
      */
-    protected $fillable = ['username', 'email', 'phone', 'updated_by', 'updated_on'];
+    protected $fillable = ['username', 'email', 'phone', 'updated_by', 'updated_on','password'];
 
     public static function boot()
     {

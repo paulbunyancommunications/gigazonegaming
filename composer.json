@@ -271,8 +271,7 @@
     "test": [
       "# Running Tests, usage `composer test -- TEST_ARGUMENTS`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919/raw/$(git ls-remote https://gist.github.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919 | grep HEAD | awk '{ print $1}')/testing.sh > testing.sh; #",
-      "chmod u+x testing.sh; #",
-      "./testing.sh; #"
+      "chmod u+x testing.sh; #"
     ],
     "test-failed": [
       "@test -- -g failed; #"

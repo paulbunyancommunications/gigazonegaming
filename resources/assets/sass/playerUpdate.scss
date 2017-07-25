@@ -1,0 +1,10 @@
+@import 'teamVariables';
+
+.mainDiv{
+  width: $width - 50;
+  margin-left: auto;
+  margin-right: auto;
+}
+body{
+  overflow: scroll;
+}
