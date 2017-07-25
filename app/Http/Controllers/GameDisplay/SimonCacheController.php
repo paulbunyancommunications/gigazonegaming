@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GameDisplay;
 
+use GameDisplay\RiotDisplay\API\Api;
 use Illuminate\Support\Facades\Cache;
 
 use Illuminate\Http\Request;
@@ -107,7 +108,8 @@ class SimonCacheController extends Controller
                 switch ($TournamentName){
                     #LOL
                     case str_contains($TournamentName, "league-of-legends"):
-                        $summoner = new Summoner($player->username, $this->apiIterator);
+                        $api = new Api($this->apiIterator);
+                        $summoner = new Summoner($player->username, $api);
                         array_push($this->players, $summoner);
                         $this->apiIterator++;
 

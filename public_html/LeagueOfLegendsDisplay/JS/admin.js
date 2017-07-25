@@ -42,7 +42,7 @@ const testing =  document.getElementsByName("Testing").length;
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $("#hiddenToken").text(),
-        "Testing": testing ? document.getElementsByName("Testing")[0].getAttribute("content") : false
+        'Testing': false
     }
 });
 
@@ -66,7 +66,7 @@ function submitCache(){
         data: {
             tournament: $("#Tournament").find("option:selected").text(),
             team: team,
-            color: color
+            color: color,
         },
         success: function(data){
             //Reset Info Box
