@@ -61,7 +61,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         }
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElement(['id' => 'team-name-response-value'], $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForElement(['id' => 'team-name-response-value'], $this::TEXT_WAIT_TIMEOUT * 1.5);
 
         $I->see('Thanks for signing up your team to play League of Legends!');
         $I->see($teamName, ['id' => 'team-name-response-value']);
