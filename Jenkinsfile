@@ -331,6 +331,16 @@ node {
     try {
       echo "App environment: ${APP_ENV}"
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"composer test\"";
+      sh "cd ${env.WORKSPACE};"
+      if (fileExists('yarn.lock')) {
+        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn\"";
+      }
+      if (fileExists('gruntfile.js')) {
+        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"grunt\"";
+      }
+      if (fileExists('gulpfile.js')) {
+        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
+      }
       switch(APP_ENV.toString()) {
         case "production":
           sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
