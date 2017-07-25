@@ -4,24 +4,27 @@ namespace App\Models\Auth;
 
 use App\Models\Championship\Player;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 
 class PlayerUpdate extends Model
 {
 
     public static function generateUser($request){
-        if(!Player::where('email',$request->email)->first()) {
-            \Sentinel::registerAndActivate(['email'=>$request->email,'password'=>$request->password]);
-            Player::create([
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'username' => $request->username,
-                'password' => Hash::make($request->password)
-            ]);
-            return "Login";
+        if(!Users\User::where('email',$request->email)->first()) {
+            $password = str_random(8);
+            \Sentinel::register(['email' => $request->email, 'password' => $password]);
+            if(!Player::where('email',$request->email)->first()){
+                Player::create([
+                    'email' => $request->email
+                ]);
+            }
+            \Mail::raw('Here is your temporary password: ' . $password, function ($message) use ($request) {
+                $message->to($request->email);
+            });
+            return view('/playerUpdate/register')->withSuccess('Check Your Email!');
         }
-        return "This player already has an account!";
+        return view('/playerUpdate/register')->withSuccess('')->withErrors('User already exists');
     }
+
     public function getRouteKeyName()
     {
         return 'token';
@@ -29,5 +32,14 @@ class PlayerUpdate extends Model
 
     public function user(){
         return $this->belongsTo(Player::class);
+    }
+
+    public static function updateInfo($request){
+        $token = Player::where('email',$request->email)->first();
+        $token->name = $request->name;
+        $token->username = $request->username;
+        $token->phone = $request->phone;
+        $token->save();
+        return redirect ('player/playerUpdate');
     }
 }

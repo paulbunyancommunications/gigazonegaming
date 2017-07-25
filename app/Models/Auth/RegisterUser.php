@@ -22,7 +22,7 @@ class RegisterUser
     {
         $this->validateRequest($this->request);
         $message = $this->createUser($this->request);
-        return view('/playerUpdate/register')->withMessage($message);
+        return $message;
 
     }
 

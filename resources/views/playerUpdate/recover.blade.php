@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="@autoVersion('/bower_components/font-awesome/css/font-awesome.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/app.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/playerUpdate.css')">
-    <Title>Player Register</Title>
+    <Title>Recover Password</Title>
 </head>
 <body>
 <div class="container">
@@ -19,10 +19,10 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-6">
-                            <a onclick="window.open('/app/player/login','_self')" id="login-form-link">Login</a>
+                            <a onclick="window.open('/app/player/login','_self')" class="active" id="login-form-link">Login</a>
                         </div>
                         <div class="col-xs-6">
-                            <a onclick="window.open('/app/player/register','_self')" class="active" id="register-form-link">Register</a>
+                            <a onclick="window.open('/app/player/register','_self')" id="register-form-link">Register</a>
                         </div>
                     </div>
                     <hr>
@@ -30,17 +30,17 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <form id="register-form" method="POST" role="form">
+                            <form id="login-form" method="POST" role="form">
                                 <div class="form-group">
-                                    <h2 class="form-signin-heading">Register</h2>
+                                    <h2 class="form-signin-heading">Password Recovery</h2>
                                     {{ csrf_field() }}
 
-                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address">
+                                    <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address">
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <button type="submit" name="register-submit" id="register-submit" tabindex="6" class="form-control btn btn-register">Register Now</button>
+                                            <input type="submit" name="login-submit" id="login-submit" tabindex="2" class="form-control btn btn-login" value="Reset Password">
                                         </div>
                                     </div>
                                 </div>
@@ -52,22 +52,6 @@
         </div>
     </div>
 </div>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-@if($success)
-    <div class="alert alert-success">
-        <ul>
-            <li>{{ $success }}</li>
-        </ul>
-    </div>
-@endif
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 </html>

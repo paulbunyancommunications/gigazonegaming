@@ -21,22 +21,25 @@ class AuthenticateUser
     public function login()
     {
         $this->validateRequest($this->request);
-        if(\Sentinel::authenticate(['email'=>$this->request->email,'password'=>$this->request->password])){
-            return redirect("/player/playerUpdate");
+        if($user = Users\User::where('email',$this->request->email)->first()) {
+            if (!\Activation::completed($user)) {
+                \Sentinel::activate($user);
+                if(\Sentinel::authenticate(['email' => $this->request->email, 'password' => $this->request->password])){
+                    return redirect("/player/playerUpdate");
+                }
+                return redirect("/player/login")->withErrors("Invalid Password");
+            }
+            elseif(\Sentinel::authenticate(['email' => $this->request->email, 'password' => $this->request->password])){
+                return redirect("/player/playerUpdate");
+            }
+            return redirect("/player/login")->withErrors("Invalid Password");
         }
-        return redirect("/player/login")->withErrors("Invalid Password")->withEmail("");
+        return redirect("/player/login")->withErrors("Invalid Email");
     }
 
     protected function validateRequest($request){
 
         return $request;
-    }
-    protected function getToken($request){
-        $user = User::byEmail($request->email,$request->password);
-        if($user) {
-            return $user;
-        }
-        return false;
     }
 
 }

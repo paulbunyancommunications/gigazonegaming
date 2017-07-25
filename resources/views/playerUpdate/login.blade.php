@@ -46,6 +46,7 @@
                                     </div>
                                 </div>
                             </form>
+                            <button name="recover" id="recover" tabindex="4"  onclick="window.open('/app/player/recover','_self')" class="btn btn-login">Forgot your password?</button>
                         </div>
                     </div>
                 </div>
@@ -71,5 +72,4 @@
 @endif
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-<script src="/resources/assets/js/playerUpdate.js"></script>
 </html>
