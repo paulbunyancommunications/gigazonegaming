@@ -1,66 +1,74 @@
 <?php
-namespace App\Models\Auth;
-/**
- * Created by PhpStorm.
- * User: Roman
- * Date: 7/18/17
- * Time: 10:29 AM
- */
-use App\Http\Requests\Auth\PlayerRegisterRequest;
-use App\Models\Auth\PlayerUpdate;
 
-class RegisterUser
+namespace Tests\Acceptance;
+
+use AcceptanceTester;
+
+class PlayerUpdateCest extends \BaseAcceptance
 {
-    protected $request;
-
-    public function __construct(PlayerRegisterRequest $request)
+    public function _before(AcceptanceTester $I)
     {
-        $this->request = $request;
+        parent::_before($I);
     }
 
-    public function register()
+    public function _after(AcceptanceTester $I)
     {
-        $this->validateRequest($this->request);
-        $message = $this->createUser($this->request);
-        /*gets the inbox_id from mail trap*/
+        parent::_after($I);
+    }
+
+#Tests
+#-------------------------------------------------------------------------
+    public function registerLoginLogoutPlayerUpdate(AcceptanceTester $I)
+    {
+        $faker = \Faker\Factory::create();
+        $email = $faker->email;
+        $I->wantTo('Register a user then get their password, log them in, see their profile, then log them out');
+        $I->amOnPage('app/player/register');
+        $I->fillField('#email',$email);
+        $I->click('#register-submit');
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, "https://mailtrap.io/api/v1/inboxes?api_token=122ed35b015da58276e95c8d8cb81fee");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
         $response = curl_exec($ch);
         curl_close($ch);
+
         $inbox = json_decode($response);
         $inbox_id = $inbox[0]->id;
-        /*gets the password from the message sent*/
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, "https://mailtrap.io/api/v1/inboxes/".$inbox_id."/messages?api_token=122ed35b015da58276e95c8d8cb81fee");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
         $response = curl_exec($ch);
         curl_close($ch);
+
         $inboxMessage = json_decode($response);
         $messageID = $inboxMessage[0]->id;
-        $messagePassword = trim($inboxMessage[0]->text_body);
-        /*deletes the message sent*/
+        $messagePassword = $inboxMessage[0]->text_body;
+
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, "https://mailtrap.io/api/v1/inboxes/".$inbox_id."/messages/".$messageID);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+
         $response = curl_exec($ch);
         curl_close($ch);
-
-        return $message;
-
+        $password = '';
+        $I->waitForText('Please Sign In','h2');
+        $I->fillField('#email',$email);
+        $I->fillField('#password',$password);
+        $I->click('#login-submit');
+        $I->waitForText('Player Update','h1');
+        $I->see($email,'#email');
+        $I->click('#logout');
+        $I->waitForText('Please Sign In',"h2");
+        $I->see('Successfully Logged Out!','li');
     }
-
-    protected function validateRequest($request){
-
-        return $request;
-    }
-    protected function createUser($request){
-
-        return PlayerUpdate::generateUser($request);
-    }
-
 }

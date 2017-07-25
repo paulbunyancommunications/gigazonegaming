@@ -17,7 +17,7 @@ class PlayerUpdate extends Model
                     'email' => $request->email
                 ]);
             }
-            \Mail::raw('Here is your temporary password: ' . $password, function ($message) use ($request) {
+            \Mail::raw($password, function ($message) use ($request) {
                 $message->to($request->email);
             });
             return view('/playerUpdate/register')->withSuccess('Check Your Email!');
