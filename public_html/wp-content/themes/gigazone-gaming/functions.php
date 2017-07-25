@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 'on');
 global $cachePool;
 // add wordpress settings page action for this theme
 require_once __DIR__ . '/theme-panel.php';
