@@ -73,7 +73,7 @@ class PrintingControllerCest extends BaseAcceptance
         $I->see('Download all');
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
-        $I->see('(218)-444-028');
+        $I->see('(218)-444-0028');
         $I->see('Tester Player034');
     }
     /**
@@ -89,7 +89,7 @@ class PrintingControllerCest extends BaseAcceptance
         $I->see('Download all');
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
-        $I->see('(218)-444-004');
+        $I->see('(218)-444-0004');
         $I->see('Tester Player004');
     }
     /**

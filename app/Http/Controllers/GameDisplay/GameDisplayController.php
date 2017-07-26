@@ -170,17 +170,6 @@ class GameDisplayController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     public function teamViewDisplay($tournament, $team, $color)
     {
         $this->buildTheTeams($tournament, $team);
@@ -212,7 +201,6 @@ class GameDisplayController extends Controller
     /**
      * @param $tournament
      * @param $team
-     * @param $color
      * @return array
      */
     public function buildTheTeams($tournament, $team)
@@ -267,38 +255,6 @@ class GameDisplayController extends Controller
 //        $x = json_decode(json_encode($this->team));
 //        return response()->json($x);
 
-    }
-
-    public function setTeam($TeamName, $TournamentName)
-    {
-
-        #Select the team that has been chosen from the start page
-        $team = Team::where('name', $TeamName)->first();
-        $players = $team->players;
-
-        #Loop through player of the chosen team and create an array of player objects
-        $i = 0;
-        foreach ($players as $player) {
-            if (isset($player) and isset($player->username) and $player->username != null) {
-                #Creat player object depending on which game is selected.
-                switch ($TournamentName) {
-                    #LOL
-                    case str_contains($TournamentName, "league-of-legends"):
-                        $summoner = new Summoner($player->username, $i);
-                        $i++;
-                        if ($i > 10) {
-                            $i = 0;
-                        }
-                        array_push($this->team, $summoner);
-                        break;
-                    #Overwatch
-
-                    #Default
-                    default:
-                        break;
-                }
-            }
-        }
     }
 
     public function setLolArrays()

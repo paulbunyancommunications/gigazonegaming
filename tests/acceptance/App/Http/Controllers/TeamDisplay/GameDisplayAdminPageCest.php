@@ -1,5 +1,6 @@
 <?php
-namespace Tests\Acceptance;
+namespace Test\Acceptance\App\Http\Controllers\TeamDisplay;
+
 
 use AcceptanceTester;
 
@@ -9,6 +10,7 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
     {
         parent::_before($I);
         $this->populateDB($I);
+        $I->loginToWordpress($I, "admin","password",3);
         $I->amOnPage('/app/GameDisplay/Admin');
         $I->waitForJs('return jQuery.active == 0', 10);
     }
@@ -72,8 +74,7 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
     public function tryToSubmitTheCache(AcceptanceTester $I)
     {
         $I->wantTo('Click the Submit Cache button and assert that there is the correct data cached');
-        $I->executejs("$('head').append('<meta content=\"true\" name=\"Testing\">');");
-        $I->waitForElement("meta[name='Testing']",10);
+        $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
         $I->selectOption('#Tournament', 'Tester Tournament');
         $I->selectOption('#Team', 'Tester Team');
         $I->selectOption('#Team-1', 'Tester Team');
