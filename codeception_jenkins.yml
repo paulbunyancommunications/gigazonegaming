@@ -1,4 +1,6 @@
 actor: Tester
+params:
+    - ".env"
 paths:
     tests: tests
     log: tests/_output
@@ -8,19 +10,33 @@ paths:
 settings:
     bootstrap: _bootstrap.php
     colors: true
-    memory_limit: 28000M
+    memory_limit: 24024M
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+        - Codeception\Extension\Recorder
 modules:
     config:
         Db:
-            dsn: 'mysql:host=db;dbname=gigazone_wp'
-            user: 'root'
-            password: 'root'
-            dump: 'database/dump/gigazone_wp.sql'
+            dsn: "%DB_CONNECTION%:host=%DB_HOST%;dbname=%DB_DATABASE%"
+            user: "%DB_USERNAME%"
+            password: "%DB_PASSWORD%"
+            dump: "database/dump/%DB_DATABASE%.sql"
+            populate: true
+            cleanup: true
+            reconnect: false
+            populator: '%DB_CONNECTION% -u %DB_USERNAME% -p"%DB_PASSWORD%" -h %DB_HOST% %DB_DATABASE% < database/dump/%DB_DATABASE%.sql'
+        Codeception\Extension\Recorder:
+            delete_successful: true
+            module: WebDriver
 coverage:
     enabled: true
+    remote: true
+    remote_context_options:
+        http:
+            timeout: 120
+        ssl:
+            verify_peer: false
     whitelist:
         include:
             - app/*
