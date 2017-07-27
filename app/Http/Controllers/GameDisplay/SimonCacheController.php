@@ -80,6 +80,7 @@ class SimonCacheController extends Controller
         }
         return $returnArray;
     }
+
     /**
      * @param $tournament
      * @param $team
@@ -94,6 +95,10 @@ class SimonCacheController extends Controller
         $this->setLolArrays();
     }
 
+    /**
+     * @param $TeamName
+     * @param $TournamentName
+     */
     public function setPlayers($TeamName, $TournamentName)
     {
 
@@ -127,6 +132,10 @@ class SimonCacheController extends Controller
             }
         }
     }
+
+    /**
+     *
+     */
     public function setLolArrays(){
         foreach($this->players as $player){
             array_push($this->summonerArray, $player->getSummonerName());
@@ -137,6 +146,11 @@ class SimonCacheController extends Controller
             array_push($this->flexWinLossArray, $player->getFLEXRankedWinLoss());
         }
     }
+
+    /**
+     * @param $color1
+     * @return string
+     */
     public function setTeamColor($color1){
         if ($color1 == "Red") {
             return "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
@@ -145,6 +159,10 @@ class SimonCacheController extends Controller
             return "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
         }
     }
+
+    /**
+     * @return array
+     */
     public function makeTeam(){
         $team = array(
             'summonerArray' => $this->summonerArray,
@@ -156,6 +174,10 @@ class SimonCacheController extends Controller
         );
         return $team;
     }
+
+    /**
+     *
+     */
     public function resetArrays(){
             foreach ($this as $key => $value) {
                 if($this->$key != $this->apiIterator) {
@@ -163,7 +185,14 @@ class SimonCacheController extends Controller
                 }
             }
     }
-    public function cacheContent($teamInfoArrays,$colorArray,$team,$players){
+
+    /**
+     * @param $teamInfoArrays
+     * @param $colorArray
+     * @param $team
+     * @param $players
+     */
+    public function cacheContent($teamInfoArrays, $colorArray, $team, $players){
         Cache::put('Players', $players, 70);
         Cache::put('Team1Name', $team[0], 70);
         Cache::put('Team1Info', $teamInfoArrays[0], 70);
@@ -175,12 +204,25 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
 
+    public function cacheIconRefreshBool(Request $req){
+        Cache::put($req->team . 'IconRefresh', true, 70);
+        return "$req->team IconRefresh Ready For Refresh";
+    }
+
+
+    /**
+     * @return string
+     */
     public function clearCache()
     {
         Cache::flush();
         return "Cache Successfully Cleared";
     }
 
+    /**
+     * @param Request $req
+     * @return string
+     */
     public function cacheChampionOverride(Request $req)
     {
         $championArray = $req->championArray;
@@ -197,6 +239,9 @@ class SimonCacheController extends Controller
         return $team." Champions Successfully Updated!!";
     }
 
+    /**
+     * @return array
+     */
     public function getChampions(){
 
         $apiKeyArray=array();

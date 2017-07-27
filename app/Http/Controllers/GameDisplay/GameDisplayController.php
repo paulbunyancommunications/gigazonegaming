@@ -97,13 +97,14 @@ class GameDisplayController extends Controller
         $returnArray[1] = 'false';
         $returnArray[2] = 'false';
         $returnArray[3] = $checkChamp;
+        $returnArray[4] = 'false'; //icon refresh
         $teamNumber = explode('m',$team)[1];
 
         if (Cache::has('Team'.$teamNumber.'CacheLoadedTimeStamp') and Cache::has('Team'.$teamNumber.'TimeStamp')) {
             if (Cache::get('Team'.$teamNumber.'CacheLoadedTimeStamp') < Cache::get('Team'.$teamNumber.'TimeStamp')) {
                 $returnArray[0] = 'true';
             }
-        } else {
+        }else{
             $returnArray[0] = 'true';
             return $returnArray;
         }
@@ -112,6 +113,10 @@ class GameDisplayController extends Controller
                 $returnArray[1] = Cache::get('Team'.$teamNumber.'Champions');
                 $returnArray[2] = Cache::get('Team'.$teamNumber.'ChampionsPlayerId');
             }
+        }
+        if(Cache::has('Team'.$teamNumber.'IconRefresh')){
+            $returnArray[4] = Cache::get('Team'.$teamNumber.'IconRefresh');
+            Cache::put('Team'.$teamNumber.'IconRefresh', false, 70);
         }
         return $returnArray;
     }

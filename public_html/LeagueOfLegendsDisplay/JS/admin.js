@@ -42,7 +42,7 @@ const testing =  document.getElementsByName("Testing").length;
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $("#hiddenToken").text(),
-        'Testing': false
+        'Testing': true
     }
 });
 
@@ -83,6 +83,23 @@ function submitCache(){
             //Remove loading animation and restore the submit button.
             $('#loader').addClass("hidden");
             $('#submit').removeClass("hidden");
+        }
+
+    });
+}
+
+function refreshSummonerIcons($team) {
+    ///Execute cache controller with ajax
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "/app/GameDisplay/IconRefresh",
+        data: {
+            team: $team
+        },
+        success: function(data){
+            //Reset Info Box
+            document.getElementById('info').innerHTML = data;
         }
 
     });
