@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use App\Http\Requests\UserPasswordRequest;
 Use App\Models\Auth\AuthenticateUser;
 use App\Models\Auth\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\UpdatePlayerInfo;
+use App\Models\Auth\UserPassword;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;
@@ -15,8 +17,7 @@ class PlayerUpdateController extends Controller
 {
     /*This is used to display the login page*/
     public function login(){
-        $email="";
-        return view('/playerUpdate/login')->withEmail($email)->withSuccess("");
+        return view('/playerUpdate/login')->withEmail("")->with('success',"");
     }
 
     /*After login is clicked this determines the authentication of the user returns a redirect*/
@@ -27,7 +28,7 @@ class PlayerUpdateController extends Controller
 
     /*Used to display the register page*/
     public function register(){
-        return view('/playerUpdate/register')->withSuccess($success = "");
+        return view('/playerUpdate/register')->with('success',"");
     }
 
     /*After register is clicked this registers a user with their email returns a redirect*/
@@ -61,7 +62,7 @@ class PlayerUpdateController extends Controller
                 ->withTournaments($tournaments)
                 ->withGames($games);
         }
-        return redirect('/player/login')->withErrors("Authorization Needed")->withEmail($email='');
+        return redirect('/player/login')->withErrors("Authorization Needed")->withEmail('');
     }
 
     /*This is activated when the player clicks update on their profile*/
@@ -73,7 +74,7 @@ class PlayerUpdateController extends Controller
     public function logout(){
         if($user = \Sentinel::getUser()){
             \Sentinel::logout($user, true);
-            return view('/playerUpdate/login')->withSuccess("Successfully Logged Out!")->withEmail($email = "");
+            return redirect('/player/login')->with('success',"Successfully Logged Out!")->withEmail("");
         }
         return redirect('/player/login')->withErrors("Something Went Wrong! Not Logged Out.");
     }
@@ -81,6 +82,14 @@ class PlayerUpdateController extends Controller
     /*This is the beginning stages of how to recover a password if forgotten for the player update form*/
     public function recover(){
         return view('/playerUpdate/recover');
+    }
+    /*This is the beginning stages of how to create a password*/
+    public function password(){
+        return view('/playerUpdate/createPassword')->with('success','');
+    }
+    /*This is the beginning stages of how to create a password*/
+    public function createPassword(UserPassword $auth ){
+        return $auth->createPassword();
     }
 
 }

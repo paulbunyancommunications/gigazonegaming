@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="@autoVersion('/bower_components/font-awesome/css/font-awesome.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/app.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/playerUpdate.css')">
-    <Title>Player Login</Title>
+    <Title>Create Password</Title>
 </head>
 <body>
 <div class="container">
@@ -32,21 +32,19 @@
                         <div class="col-lg-12">
                             <form id="login-form" method="POST" role="form">
                                 <div class="form-group">
-                                    <h2 class="form-signin-heading">Please Sign In</h2>
+                                    <h2 class="form-signin-heading">Create Password</h2>
                                     {{ csrf_field() }}
-
-                                    <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="{{$email}}">
-                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                    <input type="password" name="password" id="password" tabindex="1" class="form-control" placeholder="Password">
+                                    <input type="password" name="password_confirmation" id="password_confirmation" tabindex="2" class="form-control" placeholder="Confirm Password">
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="login-submit" id="login-submit" tabindex="3" class="form-control btn btn-login" value="Log In">
+                                            <input type="submit" name="password-submit" id="password-submit" tabindex="3" class="form-control btn btn-login" value="Submit">
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                            <button name="recover" id="recover" tabindex="4"  onclick="window.open('/app/player/recover','_self')" class="btn btn-login">Forgot your password?</button>
                         </div>
                     </div>
                 </div>
@@ -63,10 +61,10 @@
         </ul>
     </div>
 @endif
-@if (session('success'))
+@if($success)
     <div class="alert alert-success">
         <ul>
-            <li>{{session('success')}}</li>
+            <li>{{ $success }}</li>
         </ul>
     </div>
 @endif

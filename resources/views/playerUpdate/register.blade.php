@@ -34,13 +34,13 @@
                                 <div class="form-group">
                                     <h2 class="form-signin-heading">Register</h2>
                                     {{ csrf_field() }}
-
-                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address">
+                                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username">
+                                    <input type="email" name="email" id="email" tabindex="2" class="form-control" placeholder="Email Address">
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <button type="submit" name="register-submit" id="register-submit" tabindex="6" class="form-control btn btn-register">Register Now</button>
+                                            <button type="submit" name="register-submit" id="register-submit" tabindex="3" class="form-control btn btn-register">Register Now</button>
                                         </div>
                                     </div>
                                 </div>
@@ -61,10 +61,10 @@
         </ul>
     </div>
 @endif
-@if($success)
+@if (session('success'))
     <div class="alert alert-success">
         <ul>
-            <li>{{ $success }}</li>
+            <li>{{session('success')}}</li>
         </ul>
     </div>
 @endif

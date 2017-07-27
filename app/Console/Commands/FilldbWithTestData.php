@@ -41,38 +41,38 @@ class FilldbWithTestData extends Command
     }
     public function fillDB(){
         #Captian
-        $Captian = new Player();
-        $Captian->setAttribute('username', "Spartan7Warrior");
-        $Captian->setAttribute('email', "martushev8@gmail.com");
-        $Captian->setAttribute('name', "Roman");
-        $Captian->setAttribute('phone', "2182605085");
-        $Captian->save();
+        $Captain = Player::create([
+            'username' => "Spartan7Warrior",
+            'email' => "martushev8@gmail.com",
+            'name' => 'Roman',
+            'phone' => '2182805085']);
+        $CaptainOfTeam = Player::where('username','Spartan7Warrior')->first();
         #Team
-        $team = new Team();
-        $team->tournament_id = 1;
-        $team->name =  "Team Awesome";
-        #add captain and save the team
-        $team->captain = $Captian->id;
-        $team->save();
+        $team = Team::create([
+            'tournament_id' => 1,
+            'name' => 'Team Awesome',
+            'captain' => $CaptainOfTeam->id,
+        ]);
+        $team = Team::where('tournament_id',1)->first();
         #relations
-        $Captian::createRelation([
-            'player' => $Captian->id,
+        $Captain::createRelation([
+            'player' => $CaptainOfTeam->id,
             'Game' => 2,
             'Tournament' => 1,
             'team' => $team->id,
         ]);
         $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
-        $i = 0;
         #creat players for team
         for($i = 0; $i < count($playerUserNameArray); $i++){
-            $player = new Player();
-            $player->username = $playerUserNameArray[$i];
-            $player->email = "ready_player_" . $i . "@gigazonegaming.com";
-            $player->phone = "2182605085";
-            $player->save();
+            $player = Player::create([
+                'username' => $playerUserNameArray[$i],
+                'email' => "ready_player_" . $i . "@gigazonegaming.com",
+                'phone' => "2182605085"
+            ]);
             // attach player to team/tournament/game
+            $playerOnTeam = Player::where('username',$playerUserNameArray[$i])->first();
             $player::createRelation([
-                'player' => $player->id,
+                'player' => $playerOnTeam->id,
                 'Game' => 2,
                 'Tournament' => 1,
                 'team' => $team->id,

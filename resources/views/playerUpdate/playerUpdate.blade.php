@@ -1,4 +1,4 @@
-@extends('playerUpdateLayout')
+@extends('playerUpdate/playerUpdateLayout')
 
 @section('Name')
 {{$token->name}}

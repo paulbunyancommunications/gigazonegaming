@@ -10,19 +10,22 @@ class PlayerUpdate extends Model
 
     public static function generateUser($request){
         if(!Users\User::where('email',$request->email)->first()) {
-            $password = str_random(8);
-            \Sentinel::register(['email' => $request->email, 'password' => $password]);
+            $password = \Hash::make('password');
+            $user = \Sentinel::register(['email' => $request->email,'password'=> $password]);
+            $reminder = \Reminder::create($user);
             if(!Player::where('email',$request->email)->first()){
                 Player::create([
+                    'username' => $request->username,
                     'email' => $request->email
                 ]);
             }
-            \Mail::raw($password, function ($message) use ($request) {
+            $info = ['token'=> $reminder->code,'data'=>'Click here to be redirected and create a password!'];
+            \Mail::send('/playerUpdate/email',$info, function ($message) use ($request) {
                 $message->to($request->email);
             });
-            return view('/playerUpdate/register')->withSuccess('Check Your Email!');
+           return redirect('/player/register')->with('success','Check Your Email!');
         }
-        return view('/playerUpdate/register')->withSuccess('')->withErrors('User already exists');
+        return redirect('/player/register')->withErrors('User already exists');
     }
 
     public function getRouteKeyName()
@@ -40,6 +43,14 @@ class PlayerUpdate extends Model
         $token->username = $request->username;
         $token->phone = $request->phone;
         $token->save();
-        return redirect ('player/playerUpdate');
+        return redirect ('/player/playerUpdate');
+    }
+    public static function createPassword($request){
+        $reminder = \Reminder::where('code',$request->token)->first();
+        $user = Users\User::where('id',$reminder->user_id)->first();
+        $user->password = \Hash::make($request->password);
+        $user->save();
+        $reminder->delete();
+        return redirect('/player/login')->with('success',"Password Created! You Can Now Login!");
     }
 }
