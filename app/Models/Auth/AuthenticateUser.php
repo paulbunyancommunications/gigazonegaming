@@ -17,7 +17,12 @@ class AuthenticateUser
     {
         $this->request = $request;
     }
-
+    /** This validates a user
+     * Checks to see if the user exists
+     * completes activation
+     * authenticates user
+     * then sends them to their player profile
+     */
     public function login()
     {
         $this->validateRequest($this->request);

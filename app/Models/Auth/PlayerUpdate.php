@@ -7,13 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlayerUpdate extends Model
 {
-
+    /**
+     * This creates a user if not already created
+     * registers a user with sentinel
+     * creates a reminder code for the user
+     * mails the user a link to create a password
+     * returns a redirect response
+     */
     public static function generateUser($request){
         if(!Users\User::where('email',$request->email)->first()) {
             $password = \Hash::make('password');
             $user = \Sentinel::register(['email' => $request->email,'password'=> $password]);
             $reminder = \Reminder::create($user);
-            if(!Player::where('email',$request->email)->first()){
+            if(!Player::where(['email' => $request->email, 'username' => $request->username])->first()){
                 Player::create([
                     'username' => $request->username,
                     'email' => $request->email
@@ -37,6 +43,10 @@ class PlayerUpdate extends Model
         return $this->belongsTo(Player::class);
     }
 
+    /**
+     * This updates a players attributes
+     * returns a redirect back to page
+     */
     public static function updateInfo($request){
         $token = Player::where('email',$request->email)->first();
         $token->name = $request->name;
@@ -45,6 +55,11 @@ class PlayerUpdate extends Model
         $token->save();
         return redirect ('/player/playerUpdate');
     }
+
+    /**
+     * creates a password for the user that they entered
+     * returns a redirect
+     */
     public static function createPassword($request){
         $reminder = \Reminder::where('code',$request->token)->first();
         $user = Users\User::where('id',$reminder->user_id)->first();

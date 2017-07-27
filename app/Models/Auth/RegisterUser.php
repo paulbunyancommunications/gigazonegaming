@@ -28,6 +28,7 @@ class RegisterUser
 
         return $request;
     }
+
     protected function createUser($request){
 
         return PlayerUpdate::generateUser($request);

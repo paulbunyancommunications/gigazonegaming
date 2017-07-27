@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Http\Requests\UserPasswordRequest;
 Use App\Models\Auth\AuthenticateUser;
 use App\Models\Auth\RegisterUser;
 use App\Http\Controllers\Controller;
