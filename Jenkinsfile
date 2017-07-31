@@ -249,6 +249,7 @@ node {
     startMessage(Globals.STAGE)
     try {
       sh "cd ${env.WORKSPACE}; php composer.phar docker-assets";
+      sh "cd ${env.WORKSPACE}; sh get_docker_assets.sh;"
       sh "cd ${Globals.WORKSPACE};docker-compose pull";
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
@@ -346,11 +347,18 @@ node {
           sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
           break
         default:
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f -v --coverage --coverage-html --coverage-xml\"";
+            try {
+                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -v --coverage --coverage-xml\"";
+                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f -v --coverage --coverage-xml\"";
+            } catch (error) {
+                sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
+                failJob(Globals.STAGE, error.getMessage())
+            }
           break
       }
     } catch (error) {
-      failJob(Globals.STAGE, error.getMessage())
+        sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
+        failJob(Globals.STAGE, error.getMessage())
     }
     successMessage(Globals.STAGE)
   }
