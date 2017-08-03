@@ -48,6 +48,7 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
             $this->emailList[] = "xyz".$this->faker->email();
         }
         $I->amOnPage('/tournament/lol-team-signup/');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
     }
     /**
     * Create the test admin user
@@ -76,7 +77,6 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
      */
     public function tryToCreateATeamIShouldntSeeAnyError(AcceptanceTester $I)
     {
-        $I->amOnPage('/tournament/lol-team-signup/');
         $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
             .css({ 
                 'display': 'block',
@@ -98,6 +98,8 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
 
         $I->click("Submit");
 
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT*2);
         $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
         $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
         $I->dontSee("not a valid summoner name");
@@ -110,8 +112,6 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
      */
     public function tryToCreateATeamIShouldSeeAnError(AcceptanceTester $I)
     {
-
-        $I->amOnPage('/tournament/lol-team-signup/');
         $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_B_NAME."')
             .css({ 
                 'display': 'block',
@@ -135,6 +135,8 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
 
         $I->click("Submit");
 
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT*2);
         $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
         $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
         $I->waitForText("not a valid summoner name", $this::DEFAULT_WAIT);

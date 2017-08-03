@@ -15,7 +15,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $tournament = 'gigazone-gaming-2016-league-of-legends';
         $I->amOnPage('/tournament/lol-team-signup/');
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('TEAM SIGNUP', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('Team SignUp', $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS("$('#hidden').val('$tournament');");
         $I->fillField(['name' => 'tournament'], $tournament);
     }
