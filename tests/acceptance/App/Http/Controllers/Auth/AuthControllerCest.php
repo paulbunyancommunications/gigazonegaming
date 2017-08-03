@@ -10,6 +10,8 @@ class AuthControllerCest extends BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $I->amOnPage('/app/auth/login');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
     }
 
     public function _after(AcceptanceTester $I)
@@ -39,12 +41,11 @@ class AuthControllerCest extends BaseAcceptance
     public function i_am_able_to_login_to_the_app_from_login_page(AcceptanceTester $I, $scenario)
     {
         $I->wantTo('Check that a user can log into the app from the login page');
-        $I->amOnPage('/app/auth/login');
         $I->see('Log In', ['id' => "page-title"]);
         $I->fillField(['id' => 'email'], '');
         $I->fillField(['id' => 'password'], '');
         $I->click(['id' => 'doSubmit']);
-        $I->see('Dashboard', ['id' => "page-title"]);
+        $I->waitForText('Dashboard', ['id' => "page-title"], $this::TEXT_WAIT_TIMEOUT);
         $I->see('Logged in successfully!');
     }
 
@@ -54,9 +55,8 @@ class AuthControllerCest extends BaseAcceptance
     public function i_get_an_error_if_email_field_is_missing(AcceptanceTester $I, $scenario)
     {
         $I->wantTo('Check that if I send the form without the email field that I was get an error back');
-        $I->amOnPage('/app/auth/login');
         $I->click(['id' => 'doSubmit']);
-        $I->waitForElementVisible(['id' => 'message-container'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
+        $I->waitForElementVisible(['class' => 'alert-dismissable'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
         $I->see('The email field is required.');
     }
     /**
@@ -64,10 +64,9 @@ class AuthControllerCest extends BaseAcceptance
      */
     public function i_get_an_error_if_password_field_is_missing(AcceptanceTester $I, $scenario)
     {
-        $I->wantTo('Check that if I send the form without the email field that I was get an error back');
-        $I->amOnPage('/app/auth/login');
+        $I->wantTo('Check that if I send the form without the password field that I was get an error back');
         $I->click(['id' => 'doSubmit']);
-        $I->waitForElementVisible(['id' => 'message-container'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
+        $I->waitForElementVisible(['class' => 'alert-dismissable'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
         $I->see('The password field is required.');
     }
 }
