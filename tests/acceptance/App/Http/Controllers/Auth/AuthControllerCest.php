@@ -23,9 +23,6 @@ class AuthControllerCest extends BaseAcceptance
      */
     public function the_auth_route_shows_me_a_message_if_not_logged_in(AcceptanceTester $I, $scenario)
     {
-        /** @todo remove this once the dashboard is complete */
-        $scenario->skip();
-
         $I->wantTo('Check that without logged in state I see a message to login first');
         $I->amOnPage('/app/auth');
         $I->waitForText('You must login first.', BaseAcceptance::TEXT_WAIT_TIMEOUT);
@@ -41,9 +38,6 @@ class AuthControllerCest extends BaseAcceptance
      */
     public function i_am_able_to_login_to_the_app_from_login_page(AcceptanceTester $I, $scenario)
     {
-        /** @todo remove this once the dashboard is complete */
-        $scenario->skip();
-
         $I->wantTo('Check that a user can log into the app from the login page');
         $I->amOnPage('/app/auth/login');
         $I->see('Log In', ['id' => "page-title"]);
@@ -59,7 +53,6 @@ class AuthControllerCest extends BaseAcceptance
      */
     public function i_get_an_error_if_email_field_is_missing(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
         $I->wantTo('Check that if I send the form without the email field that I was get an error back');
         $I->amOnPage('/app/auth/login');
         $I->click(['id' => 'doSubmit']);
@@ -71,8 +64,6 @@ class AuthControllerCest extends BaseAcceptance
      */
     public function i_get_an_error_if_password_field_is_missing(AcceptanceTester $I, $scenario)
     {
-        /** @todo remove this once the dashboard is complete */
-        $scenario->skip();
         $I->wantTo('Check that if I send the form without the email field that I was get an error back');
         $I->amOnPage('/app/auth/login');
         $I->click(['id' => 'doSubmit']);
