@@ -55,9 +55,10 @@ def errorMessage(String stage, String message = "", timestamp = Globals.DATE_JOB
 /* fail the job */
 def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
   try {
+    def RESULT = "FAILED"
     def JOB_FAILED_DATE = new Date();
     // Create the error message body
-    def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n";
+    def JOB_FAILED_BODY = "Build for ${env.JOB_NAME} ${currentBuild.number} ${RESULT}! \n Console output: ${env.BUILD_URL}/console \n Stage \"${stage}\" failed on ${Globals.SCM_OWNER}/${Globals.SCM_REPO}:${Globals.SCM_BRANCH}.\n Stage \"${stage}\" was run on ${Globals.DATE_FORMAT_HUMAN.format(JOB_FAILED_DATE)}\n\n";
     //for (i = 0; i <$(docker-compose config --services).length; i++) {
     //sh "cd ${Globals.WORKSPACE};";
     //sh "${ echo \"\$(docker-compose config --services).trim()\"}";
@@ -82,10 +83,11 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     // Zip the output folder for email
     zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
 
+
     // email teh recipient the log output folder
-    emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${currentBuild.currentResult}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
+    emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${RESULT}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
     // notify mattermost of this error
-    //mattermostSend "![${currentBuild.currentResult}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.currentResult} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+    mattermostSend "![${RESULT}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${RESULT} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
 
   } catch (error) {
     // if there was an error return it here as a warning.
@@ -116,10 +118,10 @@ node {
     Globals.STAGE='Workspace: Clean up for build'
     startMessage(Globals.STAGE)
     try {
-      step([$class: 'WsCleanup']);
-      } catch (error) {
+        step([$class: 'WsCleanup']);
+    } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
-      }
+    }
     successMessage(Globals.STAGE)
 
       /**
@@ -134,7 +136,7 @@ node {
             sh "cd ${env.WORKSPACE}; php github_latest_commit.php --user=${Globals.SCM_OWNER} --pass=${SCM_PASS} --owner=${Globals.SCM_OWNER} --repo=${Globals.SCM_REPO} --sha=${Globals.SCM_BRANCH} --workspace=${env.WORKSPACE}"
             load "${env.WORKSPACE}/.env.git_latest_commit"
         } catch (error) {
-          errorMessage(Globals.STAGE, error.getMessage())
+            errorMessage(Globals.STAGE, error.getMessage())
         }
     }
     Globals.COMMIT_AUTHOR_EMAIL  = COMMIT_AUTHOR_EMAIL
@@ -152,8 +154,9 @@ node {
     try {
       checkout([$class: 'GitSCM', branches: [[name: "*/${Globals.SCM_BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: SCM_CHECKOUT_TOKEN, url: SCM_URL]]])
     } catch (error) {
-      errorMessage(Globals.STAGE, error.getMessage())
+        errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
     Globals.STAGE='Workspace: Setup Environment'
@@ -161,7 +164,7 @@ node {
     withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
       sh "rm -rf ${env.WORKSPACE}/groovy || true"
       sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
-    }
+    } 
     successMessage(Globals.STAGE)
 
 
@@ -174,25 +177,18 @@ node {
       // composer install is required for the next stage....
       sh "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/f896924537ec984ffaface03e4041000/raw > ${env.WORKSPACE}/cs.sh"
       sh "cd ${env.WORKSPACE}; bash cs.sh"
-      echo "1";
       echo "${Globals.WORKSPACE}";
-      echo "2";
       sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs --no-scripts; php artisan clear-compiled; php artisan optimize"
-      echo "3";
       sh "cd ${Globals.WORKSPACE}; php composer.phar dump-autoload -o"
-      echo "4";
       sh "cd ${Globals.WORKSPACE}/tests/; mkdir _output"
-      echo "5";
       sh "cd ${Globals.WORKSPACE}/tests/; chmod 777 -R _output/"
-      echo "8";
       sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs"
-      echo "9";
       sh "rm -f ${Globals.WORKSPACE}/cs.sh"
-      echo "10";
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
-      successMessage(Globals.STAGE)
+     
+    successMessage(Globals.STAGE)
 
     /**
     * Make .env from stored file and load into groovy
@@ -212,7 +208,7 @@ node {
         envToGroovy.envToGroovy("${env.WORKSPACE}/.env",  "${env.WORKSPACE}/.env.groovy")
 
         } catch (error) {
-          errorMessage(Globals.STAGE, error.getMessage())
+            errorMessage(Globals.STAGE, error.getMessage())
         }
       }
     try {
@@ -220,6 +216,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
 
@@ -239,7 +236,8 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
-      successMessage(Globals.STAGE)
+     
+    successMessage(Globals.STAGE)
 
     /**
     * Get any docker image updates that may have been pushed using the current docker config
@@ -255,7 +253,8 @@ node {
         errorMessage(Globals.STAGE, error.getMessage())
 
       }
-      successMessage(Globals.STAGE)
+     
+    successMessage(Globals.STAGE)
 
 
       /**
@@ -270,8 +269,9 @@ node {
       sh "cd ${Globals.WORKSPACE};./docker-jenkins-start.sh";
     } catch (error) {
       sh "cd ${Globals.WORKSPACE};docker-compose down -v"
-      errorMessage(Globals.STAGE, error.getMessage())
+        errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
     /**
@@ -283,8 +283,9 @@ node {
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer global require monolog/monolog"
     } catch (error) {
       sh "cd ${Globals.WORKSPACE};docker-compose down -v"
-      errorMessage(Globals.STAGE, error.getMessage())
+        errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
     /**
@@ -301,8 +302,9 @@ node {
 
     } catch (error) {
       sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
-      errorMessage(Globals.STAGE, error.getMessage())
+        errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
 
@@ -317,8 +319,9 @@ node {
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root; gulp\""
     } catch (error){
       sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
-      errorMessage(Globals.STAGE, error.getMessage())
+        errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
   }
@@ -360,6 +363,7 @@ node {
         sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         failJob(Globals.STAGE, error.getMessage())
     }
+
     successMessage(Globals.STAGE)
   }
 
@@ -380,6 +384,7 @@ node {
         sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
 
@@ -396,6 +401,7 @@ node {
         sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
+     
     successMessage(Globals.STAGE)
 
 
@@ -428,25 +434,18 @@ node {
           sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/tests"
           sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/temp"
           sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/node_modules"
-          echo "a1";
           sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
-          echo "a2";
 
         } catch (error) {
-          echo "a3";
             sh "cd ${Globals.WORKSPACE};docker-compose down -v";
-          echo "a4";
-            errorMessage(Globals.STAGE, error.getMessage())
-          echo "a5";
-        }
 
-          echo "a6";
+        errorMessage(Globals.STAGE, error.getMessage())
+        }
 
     echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
 
-          echo "a7";
+     
     successMessage(Globals.STAGE)
-          echo "a8";
   }
 
   /**
@@ -476,7 +475,7 @@ node {
 
   *    } catch (error) {
   *      sh "cd ${Globals.WORKSPACE};docker-compose down -v";
-   *     errorMessage(Globals.STAGE, error.getMessage())
+  *      errorMessage(Globals.STAGE, error.getMessage())
   *    }
   *    successMessage(Globals.STAGE)
   *  }
@@ -505,7 +504,7 @@ stage('Notification') {
   // Globals.STAGE='Deployment: Mattermost notification'
   // startMessage(Globals.STAGE)
   // try {
-  //   mattermostSend "![${currentBuild.currentResult}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.currentResult} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+  //   mattermostSend "![${currentBuild.result}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.result} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
   // } catch (error) {
   //   warningMesssage(Globals.STAGE, error.getMessage())
   // }
