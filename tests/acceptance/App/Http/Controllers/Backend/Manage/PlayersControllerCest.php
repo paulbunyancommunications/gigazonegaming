@@ -49,6 +49,7 @@ class PlayersControllerCest extends BaseAcceptance
     {
         $I->wantTo('get to the player management page');
         $I->amOnPage('/app/manage/player');
+        $I->waitForText('Create a new Player', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Create a new Player');
     }
 
@@ -224,6 +225,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'username'], $username2);
         $I->fillField(['id' => 'email'], $email2);
         $I->click(['id' => 'submit']);
+        $I->wait(10);
         $I->waitForText('Update Player: “' . $name . '”');
         $I->see('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
