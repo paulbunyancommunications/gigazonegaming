@@ -55,8 +55,8 @@ class AuthControllerCest extends BaseAcceptance
     public function i_get_an_error_if_email_field_is_missing(AcceptanceTester $I, $scenario)
     {
         $I->wantTo('Check that if I send the form without the email field that I was get an error back');
-        $I->click(['id' => 'doSubmit']);
-        $I->waitForElementVisible(['id' => 'message-container'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
+        $I->click(['id' => 'doSubmit']);\
+        $I->waitForElementVisible(['class' => 'alert-dismissable'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
         $I->see('The email field is required.');
     }
     /**
@@ -64,9 +64,9 @@ class AuthControllerCest extends BaseAcceptance
      */
     public function i_get_an_error_if_password_field_is_missing(AcceptanceTester $I, $scenario)
     {
-        $I->wantTo('Check that if I send the form without the email field that I was get an error back');
-        $I->click(['id' => 'doSubmit']);
-        $I->waitForElementVisible(['id' => 'message-container'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
+        $I->wantTo('Check that if I send the form without the password field that I was get an error back');
+        $I->click(['id' => 'doSubmit']);\
+        $I->waitForElementVisible(['class' => 'alert-dismissable'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
         $I->see('The password field is required.');
     }
 }
