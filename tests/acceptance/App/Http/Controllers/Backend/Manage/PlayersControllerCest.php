@@ -21,6 +21,7 @@ class PlayersControllerCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
     }
 
     /**
@@ -48,7 +49,6 @@ class PlayersControllerCest extends BaseAcceptance
     public function tryToGetToThePlayerApp(AcceptanceTester $I)
     {
         $I->wantTo('get to the player management page');
-        $I->amOnPage('/app/manage/player');
         $I->waitForText('Create a new Player', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Create a new Player');
     }
@@ -64,12 +64,13 @@ class PlayersControllerCest extends BaseAcceptance
         $email = "DummyUserA@Tester.com";
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page');
-        $I->amOnPage('/app/manage/player');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'username'], $username);
         $I->fillField(['id' => 'email'], $email);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click("Save");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Player created successfully!', $this::TEXT_WAIT_TIMEOUT * 1.5);
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
@@ -92,6 +93,8 @@ class PlayersControllerCest extends BaseAcceptance
                 allowClear: true
             });");
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “' . $nameB . '”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “' . $nameB . '”');
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
@@ -115,6 +118,8 @@ class PlayersControllerCest extends BaseAcceptance
                 allowClear: true
             });");
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “' . $nameB . '”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “' . $nameB . '”');
         $I->seeOptionIsSelected(['id' => 'game_id'], 'tester-game');
@@ -138,6 +143,8 @@ class PlayersControllerCest extends BaseAcceptance
                 allowClear: true
             });");
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “' . $nameB . '”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “' . $nameB . '”');
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
@@ -159,11 +166,12 @@ class PlayersControllerCest extends BaseAcceptance
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page without an email');
-        $I->amOnPage('/app/manage/player');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'username'], $username);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click(['id' => 'submit']);
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("A email address is required", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("A email address is required");
     }
@@ -184,6 +192,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page with an email that is not valid');
         $I->fillField(['id' => 'email'], implode(' ', $faker->words(3)));
         $I->click(['id' => 'submit']);
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("That doesn't look like an email, try again", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("That doesn't look like an email, try again");
     }
@@ -203,6 +213,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page with an email that is already in the db');
         $I->fillField(['id' => 'email'], $email);
         $I->click(['id' => 'submit']);
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("A email address is already been used, use your previously created account or create a new one", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("A email address is already been used, use your previously created account or create a new one");
     }
@@ -225,7 +237,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'username'], $username2);
         $I->fillField(['id' => 'email'], $email2);
         $I->click(['id' => 'submit']);
-        $I->wait(10);
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “' . $name . '”');
         $I->see('Update Player: “' . $name . '”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
@@ -244,11 +257,12 @@ class PlayersControllerCest extends BaseAcceptance
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page without a username');
-        $I->amOnPage('/app/manage/player');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'email'], $email2);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click("Save");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("A Username is required",$this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("A Username is required");
     }
@@ -266,14 +280,19 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'email'], $email);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Save");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Player created successfully!', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $name2 = "Tester PlayerX2";
         $email2 = "playerx2222@Tester.com";
         $I->amOnPage('/app/manage/player');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'name'], $name2);
         $I->fillField(['id' => 'username'], $username);
         $I->fillField(['id' => 'email'], $email2);
         $I->click("Save");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("The Username is already in use, please select a new one", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("The Username is already in use, please select a new one");
     }
@@ -295,6 +314,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'email'], $email2);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Save");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
@@ -326,6 +347,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone1);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
@@ -333,6 +356,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone2);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
@@ -340,6 +365,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone3);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
@@ -347,6 +374,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone4);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
@@ -354,6 +383,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone5);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
@@ -361,6 +392,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone6);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
@@ -368,6 +401,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone7);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
@@ -375,6 +410,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone8);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
@@ -382,6 +419,8 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone9);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
@@ -389,12 +428,16 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone10);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
         $I->wantTo('create a player on the management page with a valid number11');
         $I->fillField(['id' => 'phone'], $phone11);
         $I->click("Update");
+        $I->wait(5);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("The phone number isn't a valid one, or you forgot the area code", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("The phone number isn't a valid one, or you forgot the area code");
         $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
