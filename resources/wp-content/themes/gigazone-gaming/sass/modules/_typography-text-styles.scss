@@ -31,7 +31,11 @@
   font-weight: 400;
 }
 
-.lighter {
+.thin, .text-thin, .txt-thin {
+  @extend .text-normal;
+}
+
+.lighter, .text-lighter, .txt-lighter {
   @extend .txt-color--highlight;
 
   & .insert-page-title {

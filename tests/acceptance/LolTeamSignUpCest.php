@@ -7,9 +7,17 @@ class LolTeamSignUpCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;
 
+    public $nameList = ["ChaChing77", "SlySkeever", "DragonDefeater", "CacheMeOuside", "CrackAColdOne", "YouBetterNotComeAtMe"];
+
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+        $tournament = 'gigazone-gaming-2016-league-of-legends';
+        $I->amOnPage('/tournament/lol-team-signup/');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('Team SignUp', $this::TEXT_WAIT_TIMEOUT);
+        $I->executeJS("$('#hidden').val('$tournament');");
+        $I->fillField(['name' => 'tournament'], $tournament);
     }
 
     public function _after(AcceptanceTester $I)
@@ -22,7 +30,6 @@ class LolTeamSignUpCest extends \BaseAcceptance
     {
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL team sign up form');
-        $I->amOnPage('/sign-up/lol-team-signup/');
         $I->wait(3);
         $I->seeElementInDOM(['name' => 'request_token']);
         $I->see('Team SignUp');
@@ -30,7 +37,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $I->fillField(['name' => 'team-name'], $teamName);
         $teamCaptain = $faker->name;
         $I->fillField(['name' => 'name'], $teamCaptain);
-        $teamCaptainLol = $faker->userName;
+        $teamCaptainLol = $this->nameList[0];
         $I->fillField(['name' => 'team-captain-lol-summoner-name'], $teamCaptainLol);
         $teamCaptainEmail = $faker->email;
         $I->fillField(['name' => 'email'], $teamCaptainEmail);
@@ -40,7 +47,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
 
         for ($i = 1; $i <= 4; $i++) {
             $teamMembers[$i] = [
-                'username' => $faker->userName,
+                'username' => $this->nameList[$i],
                 'email' => $faker->email,
             ];
             $I->fillField(
@@ -54,7 +61,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         }
 
         $I->click(['id' => 'doFormSubmit']);
-        $I->waitForElement(['id' => 'team-name-response-value']);
+        $I->waitForElement(['id' => 'team-name-response-value'], $this::TEXT_WAIT_TIMEOUT * 1.5);
 
         $I->see('Thanks for signing up your team to play League of Legends!');
         $I->see($teamName, ['id' => 'team-name-response-value']);

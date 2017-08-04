@@ -51,13 +51,15 @@ class PrintingControllerCest extends BaseAcceptance
     {
         $I->wantTo('go to the game controller and try to print one of the elements and see if the response is correct');
         $I->amOnPage('/app/manage/game');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Create a new Game');
         $I->click(".print-tester-game");
-        $I->see('Print');
-        $I->see('Download all');
+        $I->waitForText('Print', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('Download all', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
-        $I->see('(218)-444-028');
+        $I->see('(218)-444-0028');
         $I->see('Tester Player034');
     }
     /**
@@ -67,13 +69,15 @@ class PrintingControllerCest extends BaseAcceptance
     {
         $I->wantTo('go to the tournament controller and try to print one of the elements and see if the response is correct');
         $I->amOnPage('/app/manage/tournament');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Create a new Tournament');
         $I->click(".print-TesterTournament");
-        $I->see('Print');
-        $I->see('Download all');
+        $I->waitForText('Print', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('Download all', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
-        $I->see('(218)-444-028');
+        $I->see('(218)-444-0028');
         $I->see('Tester Player034');
     }
     /**
@@ -83,13 +87,15 @@ class PrintingControllerCest extends BaseAcceptance
     {
         $I->wantTo('go to the team controller and try to print one of the elements and see if the response is correct');
         $I->amOnPage('/app/manage/team');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->see('Create a new Team');
         $I->click(".print-TesterTeam");
-        $I->see('Print');
-        $I->see('Download all');
+        $I->waitForText('Print', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForText('Download all', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->see('The Tester Player000');
         $I->see('Tester Player000');
-        $I->see('(218)-444-004');
+        $I->see('(218)-444-0004');
         $I->see('Tester Player004');
     }
     /**

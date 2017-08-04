@@ -12,3 +12,4 @@ modules:
         - WpHelper
         - Asserts
         - DbHelper
+        - Laravel5

@@ -84,7 +84,3 @@
     </div>
     {{ Form::close() }}
 @endsection
-@section('js')
-    $(document).ready(function() {
-    });
-@endsection

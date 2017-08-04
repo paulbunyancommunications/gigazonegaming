@@ -202,11 +202,10 @@
     "phpunit/phpunit": "5.4.*",
     "symfony/css-selector": "2.8.*|3.0.*",
     "symfony/dom-crawler": "2.8.*|3.0.*",
-    "barryvdh/laravel-ide-helper": "2.1.*",
+    "barryvdh/laravel-ide-helper": "2.4.*",
     "phing/phing": "2.*",
     "codeception/codeception": "2.3.1",
-    "codeception/base": "2.3.1",
-    "codeception/c3": "^2.0",
+    "codeception/c3": "2.0.12",
     "etsy/phan": "^0.9.1"
   },
   "extra": {
@@ -233,6 +232,7 @@
       "Wordpress\\": "src/Wordpress/",
       "Twig\\": "src/Twig/",
       "GigaZone\\": "src/GigaZone/",
+      "GameDisplay\\": "src/GameDisplay/",
       "Pbc\\GigaZoneGaming\\": "src/paulbunyannet/gigazonegaming/src"
     }
   },
@@ -251,74 +251,69 @@
   },
   "scripts": {
     "post-root-package-install": [
-      "php -r \"copy('.env.example', '.env');\""
+      "php -r \"copy('.env.example', '.env');\"; #"
     ],
     "post-create-project-cmd": [
       "php artisan key:generate"
     ],
     "post-install-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan ide-helper:generate",
-      "php artisan ide-helper:meta",
-      "php artisan optimize",
-      "bash ${PWD}/composer_post_fixes.sh"
+      "php artisan ide-helper:generate; #",
+      "php artisan ide-helper:meta; #",
+      "php artisan optimize; #",
+      "bash ${PWD}/composer_post_fixes.sh; #"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan optimize",
-      "bash ${PWD}/composer_post_fixes.sh"
+      "php artisan optimize; #",
+      "bash ${PWD}/composer_post_fixes.sh; #"
     ],
     "test": [
-      "# Running Tests, usage `composer test -- TEST_ARGUMENTS` #",
+      "# Running Tests, usage `composer test -- TEST_ARGUMENTS`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919/raw/$(git ls-remote https://gist.github.com/paulbunyannet/216d5ad5e48cf8dfbd72c0bb3d6be919 | grep HEAD | awk '{ print $1}')/testing.sh > testing.sh; #",
-      "chmod u+x testing.sh; #",
-      "./testing.sh"
+      "chmod u+x testing.sh; #"
     ],
     "test-failed": [
-      "@test -- -g failed"
+      "@test -- -g failed; #"
     ],
     "docker-assets": [
-      "# Getting Docker Assets #",
+      "# Getting Docker Assets; #",
       "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')/docker/get_docker_assets.sh > get_docker_assets.sh; #",
-      "bash ${PWD}/get_docker_assets.sh"
-    ],
-    "docker_assets": [
-      "# Some scripts are still using the old underscore naming",
-      "@docker-assets"
+      "bash ${PWD}/get_docker_assets.sh; #"
     ],
     "post-docker": [
-      "# Commands to run after ./dock.sh is done",
-      "@front-end-assets"
+      "# Commands to run after ./dock.sh is done ; #",
+      "@front-end-assets; #"
     ],
     "front-end-assets": [
-      "# Process front end assets, usage `composer front-end-assets ENVIRONMENT` #",
-      "yarn #",
-      "yarn run gulp"
+      "# Process front end assets, usage `composer front-end-assets ENVIRONMENT`; #",
+      "yarn; #",
+      "yarn run gulp; #"
     ],
     "docker-rebuild": [
-      "# Rebuild Docker containers",
-      "@docker_assets",
-      "docker-compose down -v",
-      "docker-compose pull",
-      "docker-compose up -d"
+      "# Rebuild Docker containers #",
+      "@docker_assets; #",
+      "docker-compose down -v; #",
+      "docker-compose pull; #",
+      "docker-compose up -d; #"
     ],
     "env-check": [
-      "# Environment variable check",
-      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check;",
-      "chmod u+x env_check",
-      "./env_check"
+      "# Environment variable check #",
+      "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002/raw/$(git ls-remote https://gist.github.com/paulbunyannet/21c889d6c4c45a9ea802607410e3d002 | grep HEAD | awk '{ print $1}')/env_check.php > env_check; #",
+      "chmod u+x env_check; #",
+      "./env_check; #"
     ],
     "rollbar-deploy": [
       "# Rollbar deployment. Usage: `composer rollbar-deploy -- TOKEN ENVIRONMENT`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/95fecfd2065def37f88ffdfe4250d608/raw/$(git ls-remote https://gist.github.com/paulbunyannet/95fecfd2065def37f88ffdfe4250d608 | grep HEAD | awk '{ print $1}')/rollbar_deploy.sh > rollbar_deploy.sh; #",
       "chmod u+x rollbar_deploy.sh; #",
-      "./rollbar_deploy.sh"
+      "./rollbar_deploy.sh; #"
     ],
     "codecov-deploy": [
       "# Codecov deployment. Usage: `composer codecov-deploy -- LOCATION/OF/COVERAGE.xml TOKEN`; #",
       "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/b022b8fdb590ccb061222183e55193aa/raw/$(git ls-remote https://gist.github.com/paulbunyannet/b022b8fdb590ccb061222183e55193aa | grep HEAD | awk '{ print $1}')/codecov_deploy.sh > codecov_deploy.sh; #",
       "chmod u+x codecov_deploy.sh; #",
-      "./codecov_deploy.sh"
+      "./codecov_deploy.sh; #"
     ]
   }
 }

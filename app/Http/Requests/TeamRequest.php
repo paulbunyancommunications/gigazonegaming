@@ -38,6 +38,12 @@ class TeamRequest extends Request
             case 'POST':
             {
                 $tournament_id = $this->tournament_id;
+                if($tournament_id == null){
+                    return [
+                        'name' => 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id',
+                        'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'
+                    ];
+                }
                 return [
                     'name' => 'required|uniqueWidth:mysql_champ.teams,self_,tournament_id',
                     'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$tournament_id.',tournament_id'

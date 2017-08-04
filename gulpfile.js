@@ -3,7 +3,7 @@
 var path = require("path");
 var rootDir = __dirname;
 var themeFolder = path.join(rootDir,'public_html/wp-content/themes/gigazone-gaming');
-var resourceRoot = path.join(rootDir, 'resources')
+var resourceRoot = path.join(rootDir, 'resources');
 var themeResourceFolder = path.join(resourceRoot, 'wp-content/themes/gigazone-gaming');
 var appFolder = path.join(rootDir,'public_html/app/content');
 var appResourceFolder = path.join(resourceRoot,'assets');

@@ -25,7 +25,7 @@
     "laravel-elixir": "6.0.0-14",
     "laravel-elixir-livereload": "^1.1.4",
     "laravel-elixir-sass-compass": "^0.5.0",
-    "node-sass": "^3.13.0"
+    "node-sass": "^4.5.3"
   },
   "dependencies": {
     "axios": "^0.15.3",
