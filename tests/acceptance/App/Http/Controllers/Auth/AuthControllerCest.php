@@ -41,7 +41,7 @@ class AuthControllerCest extends BaseAcceptance
     public function i_am_able_to_login_to_the_app_from_login_page(AcceptanceTester $I, $scenario)
     {
         $I->wantTo('Check that a user can log into the app from the login page');
-        $I->see('Log In', ['id' => "page-title"]);
+        $I->waitForText('Log In', ['id' => "page-title"], $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'email'], '');
         $I->fillField(['id' => 'password'], '');
         $I->click(['id' => 'doSubmit']);

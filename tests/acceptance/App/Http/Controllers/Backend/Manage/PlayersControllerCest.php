@@ -87,7 +87,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click(".edit-form-TheTesterPlayerX");
         $I->waitForText('Update Player: “'.$name.'”',$this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->fillField(['id' => 'name'], $nameB);
-        $I->fillField(['id' => 'username'], "DragonDefeater1");
+        $I->fillField(['id' => 'username'], "DragonDefeater");
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({
                 allowClear: true
@@ -95,7 +95,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click("Update");
         $I->wait(5);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('Update Player: “' . $nameB . '”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
+        $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “' . $nameB . '”');
         $I->seeOptionIsSelected('select#game_id', 'tester-game');
         $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
