@@ -91,7 +91,7 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
 
   } catch (error) {
     // if there was an error return it here as a warning.
-    warningMesssage(stage, error.getMessage())
+    warningMessage(stage, error.getMessage())
 
   }
   // fail the job
@@ -345,14 +345,15 @@ node {
       if (fileExists('gulpfile.js')) {
         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
       }
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"chmod 777 testing.sh"
       switch(APP_ENV.toString()) {
         case "production":
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -f --ext DotReporter\"";
           break
         default:
             try {
-                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -v --coverage --coverage-xml\"";
-                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f -v --coverage --coverage-xml\"";
+                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -v --coverage --coverage-xml\"";
+                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -f -v --coverage --coverage-xml\"";
             } catch (error) {
                 sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
                 failJob(Globals.STAGE, error.getMessage())
