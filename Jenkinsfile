@@ -91,7 +91,7 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
 
   } catch (error) {
     // if there was an error return it here as a warning.
-    warningMesssage(stage, error.getMessage())
+    warningMessage(stage, error.getMessage())
 
   }
   // fail the job
