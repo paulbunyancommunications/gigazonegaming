@@ -21,16 +21,11 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
         exec('php artisan migrate:refresh');
     }
 
-    public function __construct()
-    {
-        $this->faker = \Faker\Factory::create();
-    }
 
     protected function populateDB()
     {
 //        $I->runShellCommand('cd /var/www');
         exec('php artisan db:seed --class=DatabaseSeeder');
-        $this->faker = \Faker\Factory::create();
     }
 
 // tests
