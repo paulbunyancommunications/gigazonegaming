@@ -22,11 +22,6 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
     }
 
 
-    protected function populateDB()
-    {
-//        $I->runShellCommand('cd /var/www');
-        exec('php artisan db:seed --class=DatabaseSeeder');
-    }
 
 // tests
 #------------------------------------------------------------------------
