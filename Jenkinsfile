@@ -66,16 +66,16 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     //echo "THIS IS A CONTAINER ${Globals.CONTAINERS[1]}";
     //}
     // Get the log outputfrom the code container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/code.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps code > ./tests/_output/code.log"
 
     // Get the log outputfrom the firefox container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps firefox  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/firefox.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps firefox > ./tests/_output/firefox.log"
 
     // Get the log outputfrom the web container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/web.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps web > ./tests/_output/web.log"
 
     // Get the log outputfrom the hub container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/hub.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps hub > ./tests/_output/hub.log"
 
     // Bring container down and destroy
     sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
@@ -156,7 +156,7 @@ node {
     } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
     Globals.STAGE='Workspace: Setup Environment'
@@ -164,7 +164,7 @@ node {
     withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
       sh "rm -rf ${env.WORKSPACE}/groovy || true"
       sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
-    } 
+    }
     successMessage(Globals.STAGE)
 
 
@@ -187,7 +187,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -216,7 +216,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -236,7 +236,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -253,7 +253,7 @@ node {
         errorMessage(Globals.STAGE, error.getMessage())
 
       }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -271,7 +271,7 @@ node {
       sh "cd ${Globals.WORKSPACE};docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -285,7 +285,7 @@ node {
       sh "cd ${Globals.WORKSPACE};docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -304,7 +304,7 @@ node {
       sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -321,7 +321,7 @@ node {
       sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
   }
@@ -345,15 +345,15 @@ node {
       if (fileExists('gulpfile.js')) {
         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
       }
-      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"chmod 777 testing.sh"
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"chmod 777 testing.sh\""
       switch(APP_ENV.toString()) {
         case "production":
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -f --ext DotReporter\"";
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
           break
         default:
             try {
-                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -v --coverage --coverage-xml\"";
-                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -f -v --coverage --coverage-xml\"";
+                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh --verbose --coverage --coverage-xml\"";
+                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --verbose --coverage --coverage-xml\"";
             } catch (error) {
                 sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
                 failJob(Globals.STAGE, error.getMessage())
@@ -385,7 +385,7 @@ node {
         sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -402,7 +402,7 @@ node {
         sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -445,7 +445,7 @@ node {
 
     echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
 
-     
+
     successMessage(Globals.STAGE)
   }
 
