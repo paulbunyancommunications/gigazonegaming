@@ -1,0 +1,30 @@
+@import "../libraries/gutenberg/gutenberg-mixins";
+/**
+ * Wordpress gallery overrides
+ */
+
+
+div[class*='gallery-'] {
+  & img {
+    border: 1px solid lighten($divider-color, 20%) !important;
+    @include padding(.125, .125);
+    border-radius: 3px;
+  }
+  & .gallery-item {
+      @include padding(.5,.5);
+      margin: 0;
+    img {
+
+    }
+  }
+  .gallery-caption {
+    @include font-size(1.5);
+    @include margin-top(0);
+    @include font-family('display');
+    @include line-height(1.125);
+    @include padding(.25, .25);
+    strong, b {
+      @include font-size(1.4125);
+    }
+  }
+}

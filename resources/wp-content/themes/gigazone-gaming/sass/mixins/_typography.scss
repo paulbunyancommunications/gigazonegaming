@@ -205,3 +205,17 @@
   letter-spacing: #{ $number * $base + 'px'};
   letter-spacing: #{ $number + 'rem'};
 }
+// set font family
+@mixin font-family($family: sans-serif) {
+  @if ($family == 'sans-serif') {
+    font-family: $font-family-sans-serif;
+  } @else if($family == 'serif') {
+    font-family: $font-family-serif;
+  } @else if($family == 'display') {
+    font-family: $font-family-display;
+  } @else if($family == 'display') {
+    font-family: $font-family-monospace;
+  } @else {
+    font-family: $font-family-base;
+  }
+}
