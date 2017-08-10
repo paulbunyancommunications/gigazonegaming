@@ -98,10 +98,9 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
 
         $I->click("Submit");
 
-        $I->wait(5);
+        $I->wait(2);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT*2);
-        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
-        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->waitForElementVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT*2);
         $I->dontSee("not a valid summoner name");
         $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.");
 
@@ -135,10 +134,9 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
 
         $I->click("Submit");
 
-        $I->wait(5);
+        $I->wait(2);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT*2);
-        $I->waitForElementNotVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT);
-        $I->waitForElementVisible(".message-outer-container",$this::DEFAULT_WAIT);
+        $I->waitForElementVisible("#lol-team-sign-up-message-container",$this::DEFAULT_WAIT*2);
         $I->waitForText("not a valid summoner name", $this::DEFAULT_WAIT);
         $I->dontSee("A team with the exact same name already exists for this tournament, please select a different name.");
     }
