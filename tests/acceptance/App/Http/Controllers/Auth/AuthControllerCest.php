@@ -56,7 +56,7 @@ class AuthControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that if I send the form without the email field that I was get an error back');
         $I->click(['id' => 'doSubmit']);
-        $I->waitForElementVisible(['class' => 'alert-dismissable'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
+        $I->waitForElementVisible(['class' => 'alert-danger'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
         $I->see('The email field is required.');
     }
     /**
@@ -66,7 +66,7 @@ class AuthControllerCest extends BaseAcceptance
     {
         $I->wantTo('Check that if I send the form without the password field that I was get an error back');
         $I->click(['id' => 'doSubmit']);
-        $I->waitForElementVisible(['class' => 'alert-dismissable'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
+        $I->waitForElementVisible(['class' => 'alert-danger'], BaseAcceptance::TEXT_WAIT_TIMEOUT*1.5 );
         $I->see('The password field is required.');
     }
 }
