@@ -43,7 +43,7 @@ def successMessage(String stage, String message = "", timestamp = Globals.DATE_J
 }
 
 /* Output a formatted warning message */
-def warningMesssage(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
+def warningMessage(String stage, String message = "", timestamp = Globals.DATE_JOB_STARTED) {
   println "\u2297 ${stage} warning: ${message} at ${Globals.DATE_FORMAT_STAMP.format(timestamp)} \u1F631!"
 }
 
@@ -66,28 +66,45 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     //echo "THIS IS A CONTAINER ${Globals.CONTAINERS[1]}";
     //}
     // Get the log outputfrom the code container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps code || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/code.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps code > ./tests/_output/code.log"
 
+// Wait a few seconds
+sleep 1
     // Get the log outputfrom the firefox container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps firefox  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/firefox.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps firefox > ./tests/_output/firefox.log"
 
+// Wait a few seconds
+sleep 1
     // Get the log outputfrom the web container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps web  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/web.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps web > ./tests/_output/web.log"
 
+// Wait a few seconds
+sleep 1
     // Get the log outputfrom the hub container
-    sh "cd ${Globals.WORKSPACE}; echo \"\$(docker-compose logs --tail ${Globals.TAIL_LENGTH} --timestamps hub  || true)\" | dd of=${Globals.WORKSPACE}/tests/_output/hub.log"
+    sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps hub > ./tests/_output/hub.log"
 
-    // Bring container down and destroy
-    sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
 
+// Wait a few seconds
+sleep 1
     // Zip the output folder for email
     zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
 
 
+// Wait a few seconds
+sleep 2
+
     // email teh recipient the log output folder
     emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${RESULT}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
+
+// Wait a few seconds
+sleep 2
     // notify mattermost of this error
     mattermostSend "![${RESULT}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${RESULT} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+
+// Wait a few seconds
+sleep 2
+    // Bring container down and destroy
+    sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
 
   } catch (error) {
     // if there was an error return it here as a warning.
@@ -156,7 +173,7 @@ node {
     } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
     Globals.STAGE='Workspace: Setup Environment'
@@ -164,7 +181,7 @@ node {
     withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
       sh "rm -rf ${env.WORKSPACE}/groovy || true"
       sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
-    } 
+    }
     successMessage(Globals.STAGE)
 
 
@@ -187,7 +204,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -216,7 +233,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -236,7 +253,7 @@ node {
       } catch (error) {
         errorMessage(Globals.STAGE, error.getMessage())
       }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -253,7 +270,7 @@ node {
         errorMessage(Globals.STAGE, error.getMessage())
 
       }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -268,10 +285,9 @@ node {
       sh "cd ${Globals.WORKSPACE};composer docker-assets"
       sh "cd ${Globals.WORKSPACE};./docker-jenkins-start.sh";
     } catch (error) {
-      sh "cd ${Globals.WORKSPACE};docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -282,10 +298,9 @@ node {
     try {
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer global require monolog/monolog"
     } catch (error) {
-      sh "cd ${Globals.WORKSPACE};docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
     /**
@@ -301,10 +316,9 @@ node {
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer dump-autoload --optimize"
 
     } catch (error) {
-      sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -318,10 +332,9 @@ node {
       // add any front end installers here....
       sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root; gulp\""
     } catch (error){
-      sh "cd ${Globals.WORKSPACE}; docker-compose down -v"
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
   }
@@ -345,24 +358,22 @@ node {
       if (fileExists('gulpfile.js')) {
         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
       }
-      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"chmod 777 testing.sh"
+      sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"chmod 777 testing.sh\""
       switch(APP_ENV.toString()) {
         case "production":
-          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -f --ext DotReporter\"";
+          sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --ext DotReporter\"";
           break
         default:
             try {
-                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -v --coverage --coverage-xml\"";
-                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"sh testing.sh -f -v --coverage --coverage-xml\"";
+                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh --verbose --coverage --coverage-xml\"";
+                // sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"./testing.sh -f --verbose --coverage --coverage-xml\"";
             } catch (error) {
-                sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
-                failJob(Globals.STAGE, error.getMessage())
+                errorMessage(Globals.STAGE, error.getMessage())
             }
           break
       }
     } catch (error) {
-        sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
-        failJob(Globals.STAGE, error.getMessage())
+        errorMessage(Globals.STAGE, error.getMessage())
     }
 
     successMessage(Globals.STAGE)
@@ -382,10 +393,9 @@ node {
       fileOperations([fileCreateOperation(fileContent: "${Globals.GIT_LOG}", fileName: 'git_log.txt')])
 
     } catch (error) {
-        sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -399,10 +409,9 @@ node {
       sh "cd ${Globals.WORKSPACE}; docker-compose exec -T code composer update --no-dev"
       sh "cd ${Globals.WORKSPACE}; docker-compose exec -T code composer dump-autoload --no-dev --optimize"
     } catch (error) {
-        sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
         errorMessage(Globals.STAGE, error.getMessage())
     }
-     
+
     successMessage(Globals.STAGE)
 
 
@@ -438,14 +447,12 @@ node {
           sh "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
 
         } catch (error) {
-            sh "cd ${Globals.WORKSPACE};docker-compose down -v";
-
         errorMessage(Globals.STAGE, error.getMessage())
         }
 
     echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
 
-     
+
     successMessage(Globals.STAGE)
   }
 
@@ -475,7 +482,6 @@ node {
 
 
   *    } catch (error) {
-  *      sh "cd ${Globals.WORKSPACE};docker-compose down -v";
   *      errorMessage(Globals.STAGE, error.getMessage())
   *    }
   *    successMessage(Globals.STAGE)
@@ -493,7 +499,7 @@ stage('Notification') {
   //     sh "composer rollbar-deploy -- ${X_ROLLBAR_DEPLOY_TOKEN_X} ${Globals.SCM_BRANCH}"
   //   }
   // } catch (error) {
-  //     warningMesssage(Globals.STAGE, error.getMessage())
+  //     warningMessage(Globals.STAGE, error.getMessage())
   // }
   // successMessage(Globals.STAGE)
 
@@ -507,7 +513,7 @@ stage('Notification') {
   // try {
   //   mattermostSend "![${currentBuild.result}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.result} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
   // } catch (error) {
-  //   warningMesssage(Globals.STAGE, error.getMessage())
+  //   warningMessage(Globals.STAGE, error.getMessage())
   // }
   // successMessage(Globals.STAGE)
 }

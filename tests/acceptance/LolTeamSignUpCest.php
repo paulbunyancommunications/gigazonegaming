@@ -30,9 +30,9 @@ class LolTeamSignUpCest extends \BaseAcceptance
     {
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL team sign up form');
-        $I->wait(3);
+        $I->waitForElementVisible("#app-lol-team-sign-up-form", $this::TEXT_WAIT_TIMEOUT);
         $I->seeElementInDOM(['name' => 'request_token']);
-        $I->see('Team SignUp');
+        $I->see('TEAM SIGN UP');
         $teamName = $faker->company;
         $I->fillField(['name' => 'team-name'], $teamName);
         $teamCaptain = $faker->name;
