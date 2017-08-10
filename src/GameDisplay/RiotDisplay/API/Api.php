@@ -19,6 +19,8 @@ class Api{
     private $championName;
     private $championImg;
     private $currentGameStatus = false;
+    private $IconId;
+    private $DDragonVersion;
 
     #Request Counter
     private $counter = 0;
@@ -29,31 +31,17 @@ class Api{
 #----------------------------------------------------------------------
     /**
      * Api constructor.
-     * @param $SummonerName
      * @param $ApiKeyNumber
      */
-    function __construct($ApiKeyNumber)
+    function __construct()
     {
         #set up api key ready for requests
-        $this->setApiKey($ApiKeyNumber);
+        $this->setApiKey();
     }
 
 
 # Methods
 #----------------------------------------------------------------------
-    /**Injects summoner and profiles this api for further requests
-     * @param $summoner
-     */
-    public function injectSummoner($summoner){
-        $this->setSummoner($summoner);
-
-        #intailize summoner info for requests
-        $this->requestSummonerID();
-
-        #Grabes json array from states api for
-        $this->requestLeagueV3Json();
-
-    }
 
     public function apiRequest($Url, $counter = 0){
         #Set up client
@@ -85,6 +73,31 @@ class Api{
         }
     }
 
+    /**Injects summoner and profiles this api for further requests
+     * @param $summoner
+     */
+    public function injectSummoner($summoner){
+        $this->setSummoner($summoner);
+
+        #intailize summoner info for requests
+        $this->requestSummonerIDAndIconId();
+
+        #get the most updated version to grab icons from
+        $this->requestDDragonVersion();
+
+        #Grabes json array from states api for
+        $this->requestLeagueV3Json();
+
+    }
+
+    public function requestDDragonVersion(){
+        #Gets players states json
+        $Url = 'https://ddragon.leagueoflegends.com/api/versions.json';
+        $info = $this->apiRequest($Url);
+
+        $this->DDragonVersion = $info[0];
+    }
+
     public function requestLeagueV3Json()
     {
         #Gets players states json
@@ -94,22 +107,18 @@ class Api{
         $this->LeagueV3Json = $Info;
     }
 
-    public function requestSummonerID()
+    public function requestSummonerIDAndIconId()
     {
         $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
         $info = $this->apiRequest($Url);
         if($info){
             try{
                 $this->summonerID = $info->id;
+                $this->IconId = $info->profileIconId;
             }catch( \Exception $e){
-                if($this->counter > 10){
-                    $this->summonerID = null;
-                }
-                else{
-                    $this->requestSummonerID();
-                    throw new Exception("Summoner ID not found in json response for: $this->Summoner");
-                }
-                $this->counter++;
+                $this->summonerID = null;
+                $this->IconId = null;
+                throw new Exception("Summoner ID and IconId not found in json response for: $this->Summoner");
             }
         }
         else{
@@ -144,18 +153,14 @@ class Api{
     /**
      * @param mixed $apiKey
      */
-    public function setApiKey($apiKey)
+    public function setApiKey()
     {
-        $number =(int)$apiKey + 1;
-        $key = env("RIOT_API_KEY$number", false);
-        if($key === false){
-            throw new Exception("Api is not found in ENV File");
-        }
-        $this->apiKey = env("RIOT_API_KEY$number", 'null');
+        $this->apiKey = env("RIOT_API_KEY", 'null');
     }
     /**
     * @param mixed $Summoner
-    */public function setSummoner($Summoner)
+    */
+    public function setSummoner($Summoner)
     {
         $this->Summoner = $Summoner;
     }
@@ -186,8 +191,18 @@ class Api{
         return $this->summonerID;
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getIconId()
+    {
+        return $this->IconId;
+    }
+
     public function getSummonerIcon(){
-        return "https://avatar.leagueoflegends.com/na/".$this->Summoner.".png";
+
+        return "http://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/profileicon/$this->IconId.png";
     }
 
     public function getSoloRankedWinLoss(){
@@ -312,7 +327,21 @@ class Api{
         return $this->LeagueV3Json;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSummoner()
+    {
+        return $this->Summoner;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getDDragonVersion()
+    {
+        return $this->DDragonVersion;
+    }
 
 
 }
