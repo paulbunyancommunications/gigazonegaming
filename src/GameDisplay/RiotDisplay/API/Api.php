@@ -11,7 +11,7 @@ class Api{
 # Variables
 #----------------------------------------------------------------------
     private $apiKey;
-    private $Summoner;
+    private $summoner;
     private $summonerID;
     private $LeagueV3Json;
     private $currentGameInfo;
@@ -59,7 +59,7 @@ class Api{
                 break;
             case 429:
                 if ($counter > 2) {
-                    throw new Exception("Calling Api Key Too Soon $this->apiKey summoner: $this->Summoner");
+                    throw new Exception("Calling Api Key Too Soon $this->apiKey summoner: $this->summoner");
                 }
                 $counter++;
                 sleep(1);
@@ -68,7 +68,7 @@ class Api{
                 throw new Exception("Riot's Api is Down" . $this->apiKey . "ID:" . $this->summonerID . " The Code:" . $response->getStatusCode() . ' Counter: ' . $this->counter);
                 break;
             default:
-                throw new Exception("Unknown Riot Api Error code:" . $response->getStatusCode() . " ApiKey: " . $this->apiKey);
+                throw new Exception("Unknown Riot Api Error code:" . $response->getStatusCode() . " ApiKey: " . $this->apiKey . " Summoner: " .$this->summoner);
                 break;
         }
     }
@@ -109,7 +109,7 @@ class Api{
 
     public function requestSummonerIDAndIconId()
     {
-        $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->Summoner . '?api_key='. $this->apiKey;
+        $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->summoner . '?api_key='. $this->apiKey;
         $info = $this->apiRequest($Url);
         if($info){
             try{
@@ -118,11 +118,11 @@ class Api{
             }catch( \Exception $e){
                 $this->summonerID = null;
                 $this->IconId = null;
-                throw new Exception("Summoner ID and IconId not found in json response for: $this->Summoner");
+                throw new Exception("Summoner ID and IconId not found in json response for: $this->summoner");
             }
         }
         else{
-            throw new Exception("Summoner '$this->Summoner' is not a valid name in North America");
+            throw new Exception("Summoner '$this->summoner' is not a valid name in North America");
         }
 
         #sets summoner ID for further use with the api.
@@ -131,7 +131,7 @@ class Api{
     }
 
     public function checkCurrentGameStatus(){
-        $Url = 'https://na1.api.riotgames.com/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/' . $this->summonerID . '?api_key=' . $this->apiKey;
+        $Url = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
         $Info = $this->apiRequest($Url);
 
         if($Info){
@@ -144,7 +144,7 @@ class Api{
 
     public function __sleep()
     {
-    return array('Summoner', 'summonerID', 'apiKey', 'counter');
+    return array('summoner', 'summonerID', 'apiKey', 'counter');
     }
 
 
@@ -158,11 +158,11 @@ class Api{
         $this->apiKey = env("RIOT_API_KEY", 'null');
     }
     /**
-    * @param mixed $Summoner
+    * @param mixed $summoner
     */
-    public function setSummoner($Summoner)
+    public function setSummoner($summoner)
     {
-        $this->Summoner = $Summoner;
+        $this->summoner = $summoner;
     }
 
     public function setChampionId(){
@@ -332,7 +332,7 @@ class Api{
      */
     public function getSummoner()
     {
-        return $this->Summoner;
+        return $this->summoner;
     }
 
     /**
