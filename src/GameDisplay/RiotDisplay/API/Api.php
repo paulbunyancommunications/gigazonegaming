@@ -174,7 +174,7 @@ class Api{
     }
 
     Public function setChampionName($ChampionId){
-        $Url = "https://na.api.riotgames.com/api/lol/static-data/na/v1.2/champion/". $ChampionId ."?api_key=" . $this->apiKey;
+        $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions/". $ChampionId ."?api_key=" . $this->apiKey;
         $Info = $this->apiRequest($Url);
         $this->championName = $Info->key;
 
