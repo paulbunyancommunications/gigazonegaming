@@ -144,5 +144,6 @@ Route::post('/player/playerUpdate','Auth\PlayerUpdateController@postUpdate');
 Route::get('/player/logout','Auth\PlayerUpdateController@logout');
 Route::post('/player/logout','Auth\PlayerUpdateController@postLogin');
 Route::get('/player/recover','Auth\PlayerUpdateController@recover');
+Route::post('/player/recover','Auth\PlayerUpdateController@postRecover');
 Route::get('/player/createPassword/{token}','Auth\PlayerUpdateController@password');
 Route::post('/player/createPassword/{token}','Auth\PlayerUpdateController@createPassword');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 Use App\Models\Auth\AuthenticateUser;
+use App\Models\Auth\RecoverPassword;
 use App\Models\Auth\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\UpdatePlayerInfo;
@@ -81,6 +82,10 @@ class PlayerUpdateController extends Controller
     /*This is the beginning stages of how to recover a password if forgotten for the player update form*/
     public function recover(){
         return view('/playerUpdate/recover');
+    }
+    public function postRecover(RecoverPassword $auth){
+
+        return $auth->recovery();
     }
     /*This is the beginning stages of how to create a password*/
     public function password(){
