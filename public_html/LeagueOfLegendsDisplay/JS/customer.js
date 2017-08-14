@@ -5,8 +5,8 @@
 /*This function gets the team names and their color to update the
 * buttons once the cache is loaded as well as continually
 * checks the cache for updates */
-$(document).ready(GetTeamNames());
-function GetTeamNames(){
+$(document).ready(getTeamNames());
+function getTeamNames(){
     document.getElementById("info").innerHTML="Getting Team Names...";
     setInterval(function(){
         ///Execute cache controller with ajax
@@ -33,6 +33,6 @@ function GetTeamNames(){
                 }
             }
 
-        })
+        });
     }, 5000);
 }

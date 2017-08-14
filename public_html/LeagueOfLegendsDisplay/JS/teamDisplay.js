@@ -180,12 +180,6 @@ function UpdateData(checkChamp) {
                 }
                 fadInChampion();
                 setTimeout(function(){ UpdateData(false) },2000);
-            }else if(data[4] !== 'false'){
-                $('.icon').each(function(){
-                    let src = $(this).attr('src');
-                    $(this).attr("src", src);
-                });
-                setTimeout(function(){ UpdateData(checkChamp) },2000);
             }else{
                 setTimeout(function(){ UpdateData(checkChamp) },2000);
             }
