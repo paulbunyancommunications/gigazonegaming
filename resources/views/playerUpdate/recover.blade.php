@@ -40,7 +40,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="login-submit" id="login-submit" tabindex="2" class="form-control btn btn-login" value="Reset Password">
+                                            <input type="submit" name="reset" id="reset" tabindex="2" class="form-control btn btn-login" value="Reset Password">
                                         </div>
                                     </div>
                                 </div>
