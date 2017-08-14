@@ -88,6 +88,23 @@ function submitCache(){
     });
 }
 
+function refreshSummonerIcons($team) {
+    ///Execute cache controller with ajax
+    $.ajax({
+        method: "GET",
+        type: "GET",
+        url: "/app/GameDisplay/IconRefresh",
+        data: {
+            team: $team
+        },
+        success: function(data){
+            //Reset Info Box
+            document.getElementById('info').innerHTML = data;
+        }
+
+    });
+}
+
 /**
  * Loads the cache player objects and then checks to see if their champion is ready. If so it caches the champions
  */

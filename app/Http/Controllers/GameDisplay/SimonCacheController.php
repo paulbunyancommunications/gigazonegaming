@@ -18,6 +18,7 @@ use function MongoDB\BSON\toJSON;
 use PhpParser\Node\Stmt\Return_;
 use App\Http\Controllers\Controller;
 
+
 class SimonCacheController extends Controller
 {
 
@@ -30,7 +31,6 @@ class SimonCacheController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
-    protected $apiIterator = 0;
 
     public function SubmitCache(Requests\SimonCacheSubmitCache $req)
     {
@@ -54,8 +54,12 @@ class SimonCacheController extends Controller
             for($i = 0; $i < 2; $i++){
                 $this->buildTheTeams($tournament, $team[$i]);
                 $colorResult = $this->setTeamColor($color[$i]);
+
+                #Creation of team info array
                 array_push($teamInfoArrays,$this->makeTeam());
+                #Creation of team color array
                 array_push($colorArray,$colorResult);
+                #We create the players array to cache so that latter on when we call get champions we do not have to create these object again.
                 array_push($playersArray, $this->players);
                 $this->resetArrays();
             }
@@ -80,6 +84,7 @@ class SimonCacheController extends Controller
         }
         return $returnArray;
     }
+
     /**
      * @param $tournament
      * @param $team
@@ -94,6 +99,10 @@ class SimonCacheController extends Controller
         $this->setLolArrays();
     }
 
+    /**
+     * @param $TeamName
+     * @param $TournamentName
+     */
     public function setPlayers($TeamName, $TournamentName)
     {
 
@@ -108,15 +117,9 @@ class SimonCacheController extends Controller
                 switch ($TournamentName){
                     #LOL
                     case str_contains($TournamentName, "league-of-legends"):
-                        $api = new Api($this->apiIterator);
+                        $api = new Api();
                         $summoner = new Summoner($player->username, $api);
                         array_push($this->players, $summoner);
-                        $this->apiIterator++;
-
-                        //Reset Api Key Counter
-                        if($this->apiIterator == 10){
-                            $this->apiIterator = 0;
-                        }
                         break;
                     #Overwatch
 
@@ -127,6 +130,10 @@ class SimonCacheController extends Controller
             }
         }
     }
+
+    /**
+     *
+     */
     public function setLolArrays(){
         foreach($this->players as $player){
             array_push($this->summonerArray, $player->getSummonerName());
@@ -137,6 +144,11 @@ class SimonCacheController extends Controller
             array_push($this->flexWinLossArray, $player->getFLEXRankedWinLoss());
         }
     }
+
+    /**
+     * @param $color1
+     * @return string
+     */
     public function setTeamColor($color1){
         if ($color1 == "Red") {
             return "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(255,0,0,0.2); width:100%; height:auto; min-height:100%";
@@ -145,6 +157,10 @@ class SimonCacheController extends Controller
             return "background-size:cover; box-shadow:inset 0 0 0 2000px rgba(0,0,255,0.2); width:100%; height:auto; min-height:100%";
         }
     }
+
+    /**
+     * @return array
+     */
     public function makeTeam(){
         $team = array(
             'summonerArray' => $this->summonerArray,
@@ -156,14 +172,23 @@ class SimonCacheController extends Controller
         );
         return $team;
     }
+
+    /**
+     *
+     */
     public function resetArrays(){
             foreach ($this as $key => $value) {
-                if($this->$key != $this->apiIterator) {
-                    $this->$key = array();
-                }
+                $this->$key = array();
             }
     }
-    public function cacheContent($teamInfoArrays,$colorArray,$team,$players){
+
+    /**
+     * @param $teamInfoArrays
+     * @param $colorArray
+     * @param $team
+     * @param $players
+     */
+    public function cacheContent($teamInfoArrays, $colorArray, $team, $players){
         Cache::put('Players', $players, 70);
         Cache::put('Team1Name', $team[0], 70);
         Cache::put('Team1Info', $teamInfoArrays[0], 70);
@@ -175,12 +200,25 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
 
+    public function cacheIconRefreshBool(Request $req){
+        Cache::put($req->team . 'IconRefresh', true, 70);
+        return "$req->team IconRefresh Ready For Refresh";
+    }
+
+
+    /**
+     * @return string
+     */
     public function clearCache()
     {
         Cache::flush();
         return "Cache Successfully Cleared";
     }
 
+    /**
+     * @param Request $req
+     * @return string
+     */
     public function cacheChampionOverride(Request $req)
     {
         $championArray = $req->championArray;
@@ -197,23 +235,24 @@ class SimonCacheController extends Controller
         return $team." Champions Successfully Updated!!";
     }
 
+    /**
+     * @return array
+     */
     public function getChampions(){
-
-        $apiKeyArray=array();
 
         if(Cache::has('Players')){
             try{
                 $players = Cache::get('Players');
                 $championArray = [[],[]];
                 $championPlayerId = [[],[]];
-                #t for team
+                #t for teams
                 for($t = 0; $t < count($players); $t++){
                     for($p = 0; $p < count($players[$t]); $p++){
                         $status = $players[$t][$p]->checkCurrentGameStatus();
                         if($status) {
                             $players[$t][$p]->setChampion();
-                            array_push($championArray[$t], $players[$t][$p]->getChampion());
-                            array_push($championPlayerId[$t], $p);
+                            array_push($championArray[$t], $players[$t][$p]->getChampion()); #Set champion image to player on team
+                            array_push($championPlayerId[$t], $p); #Set the player number this champion belongs to
                         }
                     }
                 }
@@ -230,11 +269,11 @@ class SimonCacheController extends Controller
                 }
                 return array('ErrorCode' => 'true', 'ErrorMessage' => 'Champions are not ready.');
             }catch(\Exception $e){
-                return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage() , 'ApiArray' => $apiKeyArray);
+                return array('ErrorCode' => 'true', 'ErrorMessage' => $e->getMessage());
             }
 
         }
-        return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please Select a team and a color before getting champions.');
+        return array('ErrorCode' => 'true', 'ErrorMessage' => 'The cache is not available. Please submit a team and a color before getting champions.');
 
     }
 }

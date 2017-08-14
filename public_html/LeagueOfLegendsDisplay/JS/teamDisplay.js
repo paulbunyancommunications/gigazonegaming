@@ -161,10 +161,14 @@ function UpdateData(checkChamp) {
         },
         success: function (data) {
             console.log(data);
-            if (data[0] === "true") {
+
+            //If Content has been updated
+            if (data[0] === 'true') {
                 location.reload();
             }
-            else if (data[1] !== "false") {
+
+            //If Champions have been submitted
+            else if (data[1] !== 'false') {
                 for (let i = 0; i < data[1].length; i++) {
                     let champName = data[1][i].split("/");
                     champName = champName[champName.length - 1].split("_");
@@ -176,6 +180,12 @@ function UpdateData(checkChamp) {
                 }
                 fadInChampion();
                 setTimeout(function(){ UpdateData(false) },2000);
+            }else if(data[4] !== 'false'){
+                $('.icon').each(function(){
+                    let src = $(this).attr('src');
+                    $(this).attr("src", src);
+                });
+                setTimeout(function(){ UpdateData(checkChamp) },2000);
             }else{
                 setTimeout(function(){ UpdateData(checkChamp) },2000);
             }

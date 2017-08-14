@@ -47,7 +47,10 @@ class TeamViewDisplayCest extends \BaseAcceptance
     }
 
     public function seeTeam1StatesDisplayed(AcceptanceTester $I)
-    {   $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams stats displayed. Also submit champion Override and see champions loaded into the page');
+    {
+        $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams stats displayed. Also submit champion Override and see champions loaded into the page');
+
+        //Cache team data
         $I->amOnPage('/app/GameDisplay/Admin');
         $I->waitForJs('return jQuery.active == 0', 10);
         $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
@@ -58,22 +61,42 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->selectOption('#Color-1', 'Blue');
         $I->click('Submit');
         $I->waitForText('UPDATED', 10, '.console-header');
+
+        //See team data on pages team1 and team2
         $I->amOnPage('/app/GameDisplay/team1');
-        $I->waitForText('Team Awesome', 15, 'h1');
+        $I->waitForText('That Team', 15, 'h1');
         $I->amOnPage('/app/GameDisplay/team2');
         $I->waitForText('Team Awesome', 15, 'h1');
         $I->wantTo('See Champions loaded into page');
+
+        //Select champs team 1
         $I->amOnPage('/app/GameDisplay/override');
         $I->selectOption('#Team','Team 1');
         $I->fillField('#player1','Ashe');
-        $I->fillField('#player2','Ashe');
-        $I->fillField('#player3','Ashe');
-        $I->fillField('#player4','Ashe');
-        $I->fillField('#player5','Ashe');
+        $I->fillField('#player2','Morgana');
+        $I->fillField('#player3','Darius');
+        $I->fillField('#player4','Nidalee');
+        $I->fillField('#player5','Zed');
         $I->click('#SubmitChamps');
         $I->waitForText('Team 1 Champions Successfully Updated!!', 10, 'h3');
+
+        //Select champs team 2
+        $I->selectOption('#Team','Team 2');
+        $I->fillField('#player1','Jinx');
+        $I->fillField('#player2','Thresh');
+        $I->fillField('#player3','Renekton');
+        $I->fillField('#player4','Kindred');
+        $I->fillField('#player5','Talon');
+        $I->click('#SubmitChamps');
+        $I->waitForText('Team 2 Champions Successfully Updated!!', 10, 'h3');
+
+        //see champs on team 1
         $I->amOnPage('/app/GameDisplay/team1');
         $I->waitForText('Ashe', 15, 'h3');
+
+        //see champs on team 2
+        $I->amOnPage('/app/GameDisplay/team2');
+        $I->waitForText('Jinx', 15, 'h3');
     }
 
 }

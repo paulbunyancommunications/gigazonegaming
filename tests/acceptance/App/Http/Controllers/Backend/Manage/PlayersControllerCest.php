@@ -85,7 +85,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click(".edit-form-TheTesterPlayerX");
         $I->waitForText('Update Player: “'.$name.'”',$this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->fillField(['id' => 'name'], $nameB);
-        $I->fillField(['id' => 'username'], "DragonDefeater");
+        $I->fillField(['id' => 'username'], "DragonDefeater1");
         $I->selectOption(array("id" => "game_id"), 'tester-game');
         $I->executeJS("$('#game_id').select2({
                 allowClear: true

@@ -123,11 +123,13 @@ Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
     Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
     Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
+    Route::get('/GameDisplay/IconRefresh','GameDisplay\SimonCacheController@cacheIconRefreshBool');
 });
 
 Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
-Route::get('/GameDisplay/team1','GameDisplay\GameDisplayController@team1ViewDisplay');
-Route::get('/GameDisplay/team2','GameDisplay\GameDisplayController@team2ViewDisplay');
+
+Route::get('/GameDisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
+
 Route::get('/GameDisplay/ajax','GameDisplay\GameDisplayController@ajaxCheckRequest');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
