@@ -79,7 +79,7 @@ class PlayerUpdateController extends Controller
         return redirect('/player/login')->withErrors("Something Went Wrong! Not Logged Out.");
     }
 
-    /*This is the beginning stages of how to recover a password if forgotten for the player update form*/
+    /*This is how to recover a password if forgotten for the player update form*/
     public function recover(){
         return view('/playerUpdate/recover');
     }

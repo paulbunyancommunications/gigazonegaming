@@ -95,7 +95,7 @@ class PlayerUpdateCest extends \BaseAcceptance
         $name = $faker->userName;
         $email = $faker->email;
         $password = $faker->password;
-        $I->wantTo('Register a user,Create a password for that user,Reset password,User creates a new password,see their info,Logout');
+        $I->wantTo('Register a user,Create a password for that user,Reset password,User creates a new password');
         $I->amOnPage('/app/player/register');
         $I->fillField('#username',$name);
         $I->fillField('#email',$email);
@@ -178,12 +178,13 @@ class PlayerUpdateCest extends \BaseAcceptance
         $I->click('#password-submit');
         $I->waitForText('Please Sign In',30, 'h2');
         $I->see('Password Created! You Can Now Login!','li');
-        $I->fillField('#email',$email);
-        $I->fillField('#password',$password);
-        $I->click('#login-submit');
-        $I->waitForText('Player Update',30,'h1');
-        $I->seeInField('#email',$email);
-        $I->click('#logout');
-        $I->waitForText('Successfully Logged Out!',30,'li');
     }
+
+    public function NoAccess(AcceptanceTester $I)
+    {
+        $I->wantTo('Make sure a guest user cannot access the player update page unless they login');
+        $I->amOnPage('app/player/playerUpdate');
+        $I->waitForText('Authorization Needed',30,'li');
+    }
+
 }

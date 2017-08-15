@@ -49,4 +49,67 @@ class PlayerUpdateTest extends \TestCase
         $this->assertSame($getIndividual->email, $parameters['email']);
         $this->assertSame($getUser->email, $parameters['email']);
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_redirect_to_the_player_update_page()
+    {
+        $faker = \Faker\Factory::create();
+        $this->withoutMiddleware();
+        $email = $faker->email;
+        $password = $faker->password;
+        $username = $faker->userName;
+        $parameters =['email'=>$email,
+            'password'=>$password];
+        $user = \Sentinel::register([
+            'email'=>$email,
+            'password'=>$password
+        ]);
+        $player = Player::create([
+            'email'=>$email,
+            'username'=>$username
+        ]);
+        $player->save();
+        $this->call('POST', '/player/login',$parameters);
+        $this->assertRedirectedTo('/player/playerUpdate');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_redirect_to_the_player_update_page_after_updating_players_information()
+    {
+        $faker = \Faker\Factory::create();
+        $this->withoutMiddleware();
+        $email = $faker->email;
+        $username = $faker->userName;
+        $name = $faker->name;
+        $phone = $faker->phoneNumber;
+        $password = $faker->password;
+        $parameters =['email'=>$email,
+            'name'=>$name,
+            'username'=>$username,
+            'phone'=>$phone];
+        $user = \Sentinel::register([
+            'email'=>$email,
+            'password'=>$password
+        ]);
+        $player = Player::create([
+            'email'=>$email,
+            'username'=>$username,
+        ]);
+        $player->save();
+        $this->call('POST', '/player/playerUpdate',$parameters);
+        $this->assertRedirectedTo('/player/playerUpdate');
+
+        // now check the db for this players updated information
+        $getIndividual = Player::where('email', '=', $parameters['email'])->first();
+        \Codeception\Util\Debug::debug($getIndividual);
+        $this->assertInstanceOf(Player::class, $getIndividual);
+        $this->assertSame($getIndividual->email, $parameters['email']);
+        $this->assertSame($getIndividual->name, $parameters['name']);
+        $this->assertSame($getIndividual->phone, $parameters['phone']);
+        $this->assertSame($getIndividual->username, $parameters['username']);
+    }
 }
