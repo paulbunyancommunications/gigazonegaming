@@ -6,7 +6,7 @@ namespace Tests\Integration\Classes;
 use GameDisplay\RiotDisplay\API\Api;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
+//todo: Test with invalid summoner name
 class RiotApiTest extends \TestCase
 {
     /**
@@ -44,7 +44,7 @@ class RiotApiTest extends \TestCase
         $this->assertTrue(is_int($this->API->getIconId()));
     }
 
-    public function testInjectSummonerIntoAdiAndReturnAnObjectWithSummonerSummonerIDAndIcon(){
+    public function testInjectSummonerIntoApiAndReturnAnObjectWithSummonerSummonerIDAndIcon(){
         $this->API->injectSummoner("KingMorpheus2131");
         $this->assertEquals($this->API->getSummoner(),"KingMorpheus2131");
         $this->assertEquals($this->API->getSummonerId(),'67902786');

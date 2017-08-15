@@ -179,7 +179,9 @@ function UpdateData(checkChamp) {
                     document.getElementById("divE" + data[2][i]).innerHTML = '<img id="'+ "M"+ data[2][i]+'" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
                 }
                 fadInChampion();
-                setTimeout(function(){ UpdateData(false) },2000);
+                setTimeout(function () {
+                    UpdateData(false)
+                }, 2000);
             }else{
                 setTimeout(function(){ UpdateData(checkChamp) },2000);
             }

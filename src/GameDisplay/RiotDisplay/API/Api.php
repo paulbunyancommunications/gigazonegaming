@@ -43,6 +43,11 @@ class Api{
 # Methods
 #----------------------------------------------------------------------
 
+    /**All Request pass through this method and returns json encoded
+     * @param $Url
+     * @param int $counter
+     * @return array|bool|mixed|object
+     */
     public function apiRequest($Url, $counter = 0){
         #Set up client
         $client = new Client();
@@ -90,6 +95,9 @@ class Api{
 
     }
 
+    /**
+     *Gets Current version of Data Dragon so that we can grabe the most updated images from there URL
+     */
     public function requestDDragonVersion(){
         #Gets players states json
         $Url = 'https://ddragon.leagueoflegends.com/api/versions.json';
@@ -98,6 +106,10 @@ class Api{
         $this->DDragonVersion = $info[0];
     }
 
+    /**
+     * Gets the initial summoner static data with in one request to then be parsed latter by
+     * getSoloRankedWinLoss(), getSoloRank(), getFLEXRankedWinLoss(), getFLEXRank()
+     */
     public function requestLeagueV3Json()
     {
         #Gets players states json
@@ -107,6 +119,9 @@ class Api{
         $this->LeagueV3Json = $Info;
     }
 
+    /**
+     *When the api is injected this method is called to get the initial ID and Icon ID need to make requests for the summoner
+     */
     public function requestSummonerIDAndIconId()
     {
         $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->summoner . '?api_key='. $this->apiKey;
@@ -130,6 +145,10 @@ class Api{
 
     }
 
+    /**
+     * Returns True if summoner is in game
+     * @return bool
+     */
     public function checkCurrentGameStatus(){
         $Url = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
         $Info = $this->apiRequest($Url);
@@ -173,6 +192,9 @@ class Api{
         }
     }
 
+    /**
+     * @param $ChampionId
+     */
     Public function setChampionName($ChampionId){
         $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions/". $ChampionId ."?api_key=" . $this->apiKey;
         $Info = $this->apiRequest($Url);
@@ -180,9 +202,12 @@ class Api{
 
     }
 
+    /**
+     * @param $ChampionName
+     */
     public function setChampionIMG($ChampionName){
 
-        $this->championImg = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" . $ChampionName . "_0.jpg";
+        $this->championImg = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" . $ChampionName . "_0.jpg";
     }
 
 # Getters
@@ -200,11 +225,17 @@ class Api{
         return $this->IconId;
     }
 
+    /**
+     * @return string
+     */
     public function getSummonerIcon(){
 
         return "http://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/profileicon/$this->IconId.png";
     }
 
+    /**
+     * @return string
+     */
     public function getSoloRankedWinLoss(){
         $soloRankWinsLosses = "";
 
@@ -229,6 +260,9 @@ class Api{
         return $soloRankWinsLosses;
     }
 
+    /**
+     * @return string
+     */
     public function getSoloRank(){
         $soloRank = "";
 
@@ -253,6 +287,9 @@ class Api{
         return $soloRank;
     }
 
+    /**
+     * @return string
+     */
     public function getFLEXRankedWinLoss(){
 
 
@@ -279,6 +316,9 @@ class Api{
         return $FLEXRankWinsLosses;
     }
 
+    /**
+     * @return string
+     */
     public function getFLEXRank(){
 
         $FLEXRank = "";
@@ -304,11 +344,17 @@ class Api{
         return $FLEXRank;
     }
 
+    /**
+     * @return mixed
+     */
     public function getChampion(){
-        $this->setChampionId();
-        $this->setChampionName($this->championId);
-        $this->setChampionIMG($this->championName);
-        return $this->championImg;
+        if($this->currentGameStatus){
+            $this->setChampionId();
+            $this->setChampionName($this->championId);
+            $this->setChampionIMG($this->championName);
+            return $this->championImg;
+        }
+        throw new Exception("Call checkCurrentGameStatus before calling this method. $this->summoner is not in game");
     }
 
     /**
