@@ -97,6 +97,7 @@ class SearchControllerForPlayerCest extends BaseAcceptance
         $I->click(['id' => 'doSearchBoxSubmit']);
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->wait(1);
+        $I->waitForElementVisible('a[title="Edit player '. $firstName . ' ' . $lastName .'"]',BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->see($firstName . ' ' . $lastName, 'a[title="Edit player '. $firstName . ' ' . $lastName .'"]');
 
     }

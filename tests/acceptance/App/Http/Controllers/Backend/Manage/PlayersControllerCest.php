@@ -167,7 +167,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->wantTo('create a player on the management page without an email');
         $I->fillField(['id' => 'name'], $name);
         $I->fillField(['id' => 'username'], $username2);
-        $I->fillField(['id' => 'email'], $email);
+        $I->fillField(['id' => 'email'], "");
         $I->fillField(['id' => 'phone'], $phone);
         $I->click(['id' => 'submit']);
         $I->wait(5);
