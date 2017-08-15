@@ -155,19 +155,19 @@ class PlayersControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
-    public function tryToCreateAPlayerWithAnEmailMissing(AcceptanceTester $I)
+    public function tryToCreateAPlayerWithAMissingEmail(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create();
-        $this->playerCreation($I);
         $name = "Tester PlayerX";
         $username = "SlySkeever";
         $username2 = "DragonDefeater"; //username should be unique
-        $email = "playerx@test.com";
+        $email = "playerx@test123.com";
         $email2 = "DummyUserA@bpaosd.com"; //email should be unique
         $phone = "(218) - 444 - 4444";
         $I->wantTo('create a player on the management page without an email');
         $I->fillField(['id' => 'name'], $name);
-        $I->fillField(['id' => 'username'], $username);
+        $I->fillField(['id' => 'username'], $username2);
+        $I->fillField(['id' => 'email'], $email);
         $I->fillField(['id' => 'phone'], $phone);
         $I->click(['id' => 'submit']);
         $I->wait(5);
@@ -179,7 +179,7 @@ class PlayersControllerCest extends BaseAcceptance
     /**
      * @param AcceptanceTester $I
      */
-    public function tryToCreateAPlayerWithAnEmailBadEmail(AcceptanceTester $I)
+    public function tryToCreateAPlayerWithABadEmail(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create();
         $this->playerCreation($I);
@@ -342,7 +342,7 @@ class PlayersControllerCest extends BaseAcceptance
         $phone10 = "+12184144249";
         $phone11 = "4144249"; // failing number
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
-        $I->wantTo('create a player on the management page with a valid number1');
+        $I->wantTo('update a player on the management page with a valid number1');
         $I->fillField(['id' => 'username'], "DragonDefeater");
         $I->fillField(['id' => 'phone'], $phone1);
         $I->fillField(['id' => 'name'], $nameB);
@@ -352,7 +352,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number2');
+        $I->wantTo('update a player on the management page with a valid number2');
         $I->fillField(['id' => 'phone'], $phone2);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
@@ -361,7 +361,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number3');
+        $I->wantTo('update a player on the management page with a valid number3');
         $I->fillField(['id' => 'phone'], $phone3);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
@@ -370,7 +370,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number4');
+        $I->wantTo('update a player on the management page with a valid number4');
         $I->fillField(['id' => 'phone'], $phone4);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
@@ -379,7 +379,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number5');
+        $I->wantTo('update a player on the management page with a valid number5');
         $I->fillField(['id' => 'phone'], $phone5);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
@@ -388,7 +388,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number6');
+        $I->wantTo('update a player on the management page with a valid number6');
         $I->fillField(['id' => 'phone'], $phone6);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
@@ -397,7 +397,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number7');
+        $I->wantTo('update a player on the management page with a valid number7');
         $I->fillField(['id' => 'phone'], $phone7);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
@@ -406,7 +406,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number8');
+        $I->wantTo('update a player on the management page with a valid number8');
         $I->fillField(['id' => 'phone'], $phone8);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
@@ -415,7 +415,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number9');
+        $I->wantTo('update a player on the management page with a valid number9');
         $I->fillField(['id' => 'phone'], $phone9);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click("Update");
@@ -424,7 +424,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$nameB.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$nameB.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number10');
+        $I->wantTo('update a player on the management page with a valid number10');
         $I->fillField(['id' => 'phone'], $phone10);
         $I->fillField(['id' => 'name'], $name);
         $I->click("Update");
@@ -433,7 +433,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForText('Update Player: “'.$name.'”', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see('Update Player: “'.$name.'”');
         $I->click(".close");
-        $I->wantTo('create a player on the management page with a valid number11');
+        $I->wantTo('update a player on the management page with a valid number11');
         $I->fillField(['id' => 'phone'], $phone11);
         $I->click("Update");
         $I->wait(5);
