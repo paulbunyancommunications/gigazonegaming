@@ -42,8 +42,6 @@
 <div id="info">
     @yield('info')
 </div>
-<button onclick="refreshSummonerIcons('Team1')">Team 1 Icon Ref</button>
-<button onclick="refreshSummonerIcons('Team2')">Team 2 Icon Ref</button>
 <div id="hiddenToken" class="hidden">{{ csrf_field() }}</div>
 <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 <script src="/LeagueOfLegendsDisplay/JS/admin.js"></script>

@@ -200,11 +200,6 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
 
-    public function cacheIconRefreshBool(Request $req){
-        Cache::put($req->team . 'IconRefresh', true, 70);
-        return "$req->team IconRefresh Ready For Refresh";
-    }
-
 
     /**
      * @return string

@@ -172,20 +172,16 @@ function UpdateData(checkChamp) {
                 for (let i = 0; i < data[1].length; i++) {
                     let champName = data[1][i].split("/");
                     champName = champName[champName.length - 1].split("_");
-                    if(champName[0] === "MonkeyKing"){
+                    if (champName[0] === "MonkeyKing") {
                         champName[0] = "Wukong";
                     }
                     document.getElementById('divB' + data[2][i]).innerHTML = '<img id="' + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
-                    document.getElementById('divE' + data[2][i]).innerHTML = '<img id="'+ "M"+ data[2][i]+'" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
+                    document.getElementById('divE' + data[2][i]).innerHTML = '<img id="' + "M" + data[2][i] + '" class="championImage" src="' + data[1][i] + '"/><div class="championName"><h3>' + champName[0] + '</h3></div>';
                 }
                 fadInChampion();
-                setTimeout(function(){ UpdateData(false) },2000);
-            }else if(data[4] !== 'false'){
-                $('.icon').each(function(){
-                    let src = $(this).attr('src');
-                    $(this).attr("src", src);
-                });
-                setTimeout(function(){ UpdateData(checkChamp) },2000);
+                setTimeout(function () {
+                    UpdateData(false)
+                }, 2000);
             }else{
                 setTimeout(function(){ UpdateData(checkChamp) },2000);
             }
