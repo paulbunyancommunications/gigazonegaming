@@ -1,28 +1,51 @@
 @import "../libraries/gutenberg/gutenberg-mixins";
 /**
- * Wordpress gallery overrides
+ * Wordpress gallery overrides and caption container with image
+ * Usage without gallery:
+ *
+ * <div class="caption-container">
+ *     <img src="/src/to/image.png" />
+ *     <div class="caption-item">
+ *         <div class="caption">foo bar</div>
+ *     </div>
+ * </div>
+ *
  */
 
 
-div[class*='gallery-'] {
+div[class*='gallery-'], .caption-container {
   & img {
     border: 1px solid lighten($divider-color, 20%) !important;
     @include padding(.125, .125);
     border-radius: 3px;
   }
-  & .gallery-item {
-      @include padding(.5,.5);
+  & .gallery-item, .caption-item {
+      @include padding(.375,.375);
       margin: 0;
     img {
 
     }
   }
-  .gallery-caption {
+  .gallery-caption, .caption {
     @include font-size(1.5);
     @include margin-top(0);
     @include font-family('display');
     @include line-height(1.125);
     @include padding(.25, .25);
+    a {
+      text-decoration: none;
+      border-bottom: 1px solid $primary-color-dark;
+      color: $primary-color-dark;
+      @include padding-bottom(0.05);
+      &:hover, &:active {
+        color: $secondary-text-color;
+        border-color: $secondary-text-color;
+      }
+      &:visited {
+        color: $accent-color;
+        border-color: $accent-color;
+      }
+    }
     strong, b {
       @include font-size(1.4125);
     }
