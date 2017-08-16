@@ -87,7 +87,7 @@ class PlayerUpdateController extends Controller
 
         return $auth->recovery();
     }
-    /*This is the beginning stages of how to create a password*/
+    /*This is the how to create a password*/
     public function password(){
         return view('/playerUpdate/createPassword')->with('success','');
     }

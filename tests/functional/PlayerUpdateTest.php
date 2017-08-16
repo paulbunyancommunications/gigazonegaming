@@ -62,7 +62,7 @@ class PlayerUpdateTest extends \TestCase
         $username = $faker->userName;
         $parameters =['email'=>$email,
             'password'=>$password];
-        $user = \Sentinel::register([
+        \Sentinel::register([
             'email'=>$email,
             'password'=>$password
         ]);
@@ -78,7 +78,7 @@ class PlayerUpdateTest extends \TestCase
     /**
      * @test
      */
-    public function it_returns_a_redirect_to_the_player_update_page_after_updating_players_information()
+    public function it_returns_a_redirect_to_the_player_update_page_after_updating_players_information_and_checks_the_db_for_updated_info()
     {
         $faker = \Faker\Factory::create();
         $this->withoutMiddleware();
@@ -91,15 +91,18 @@ class PlayerUpdateTest extends \TestCase
             'name'=>$name,
             'username'=>$username,
             'phone'=>$phone];
-        $user = \Sentinel::register([
+        \Sentinel::register([
             'email'=>$email,
             'password'=>$password
         ]);
+        $user = User::where('email', '=', $email)->first();
         $player = Player::create([
             'email'=>$email,
             'username'=>$username,
         ]);
         $player->save();
+        \Sentinel::activate($user);
+        \Sentinel::authenticate($user);
         $this->call('POST', '/player/playerUpdate',$parameters);
         $this->assertRedirectedTo('/player/playerUpdate');
 
