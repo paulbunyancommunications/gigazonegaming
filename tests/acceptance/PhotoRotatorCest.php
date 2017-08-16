@@ -21,7 +21,7 @@ class PhotoRotatorCest extends \BaseAcceptance
     {
 
         $I->amOnPage('/');
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(".masthead-photo-rotator-item", $this::DEFAULT_WAIT * 2);
         $id = $I->executeJS('return $(".masthead-photo-rotator-item").first().children("img").first().attr("id")');
         \Codeception\Util\Debug::debug($id);
         $I->canSeeElementInDOM(['id' => $id]);
@@ -36,7 +36,7 @@ class PhotoRotatorCest extends \BaseAcceptance
     {
 
         $I->amOnPage('/');
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(".masthead-photo-rotator-item", $this::DEFAULT_WAIT * 2);
         $id = $I->executeJS('return $(".masthead-photo-rotator-item").first().children("img").first().attr("id")');
         \Codeception\Util\Debug::debug($id);
         $I->canSeeElementInDOM(['id' => $id]);
@@ -52,7 +52,7 @@ class PhotoRotatorCest extends \BaseAcceptance
     public function it_is_linked_to_a_missing_image(AcceptanceTester $I)
     {
         $I->amOnPage('/');
-        $I->wait(self::DEFAULT_WAIT);
+        $I->waitForElementVisible(".masthead-photo-rotator-item", $this::DEFAULT_WAIT * 2);
         $id = $I->executeJS('return $(".masthead-photo-rotator-item").first().children("img").first().attr("id")');
         \Codeception\Util\Debug::debug($id);
         $I->canSeeElementInDOM(['id' => $id]);

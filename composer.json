@@ -281,10 +281,6 @@
       "curl --silent https://raw.githubusercontent.com/paulbunyannet/bash/$(git ls-remote https://github.com/paulbunyannet/bash.git | grep HEAD | awk '{ print $1}')/docker/get_docker_assets.sh > get_docker_assets.sh; #",
       "bash ${PWD}/get_docker_assets.sh; #"
     ],
-    "docker_assets": [
-      "# Some scripts are still using the old underscore naming; #",
-      "@docker-assets; #"
-    ],
     "post-docker": [
       "# Commands to run after ./dock.sh is done ; #",
       "@front-end-assets; #"

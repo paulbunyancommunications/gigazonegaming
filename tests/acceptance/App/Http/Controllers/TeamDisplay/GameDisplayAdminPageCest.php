@@ -21,10 +21,7 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
         exec('php artisan migrate:refresh');
     }
 
-    public function __construct()
-    {
-        $this->faker = \Faker\Factory::create();
-    }
+
 
 // tests
 #------------------------------------------------------------------------

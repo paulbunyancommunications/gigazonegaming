@@ -27,6 +27,8 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
+        $I->amOnPage('/app/manage/teamMaker');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
     }
 
     /**
@@ -53,7 +55,6 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
     public function tryToGetToTheTeamMakerApp(AcceptanceTester $I)
     {
         $I->wantTo('get to the individual player management page');
-        $I->amOnPage('/app/manage/teamMaker');
         $I->see('Team Filler/Maker');
     }
     /**
@@ -64,7 +65,6 @@ class IndividualPlayersControllerTeamMakersViewCest extends BaseAcceptance
     public function seeIfThereArePlayersShowingAfterSelectingATeam(AcceptanceTester $I)
     {
         $I->wantTo('check after selecting a team that there are players');
-        $I->amOnPage('/app/manage/teamMaker');
         $I->see('Team Filler/Maker');
         $I->click("Create Team for Selected Tournament");
         $I->dontSee("Add These Players To A New Team");
