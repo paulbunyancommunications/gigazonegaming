@@ -33,6 +33,22 @@
         </div>
         <button class="btn" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
     </form>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            <ul>
+                <li>{{session('success')}}</li>
+            </ul>
+        </div>
+    @endif
     <div class="mainDiv text-center">
         @yield('Form')
         <button class="btn margin-sm-top" id="logout" onclick="window.open('/app/player/logout','_self')">Logout</button>

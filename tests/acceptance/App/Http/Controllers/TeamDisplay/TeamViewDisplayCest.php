@@ -98,5 +98,25 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->amOnPage('/app/GameDisplay/team2');
         $I->waitForText('Jinx', 15, 'h3');
     }
+    public function seeTeam1AndTeam2DisplayedOnCustomerPage(AcceptanceTester $I)
+    {
+        $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams names on the customer page');
+
+        //Cache team data
+        $I->amOnPage('/app/GameDisplay/Admin');
+        $I->waitForJs('return jQuery.active == 0', 10);
+        $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
+        $I->selectOption('#Tournament', 'Tester Tournament');
+        $I->selectOption('#Team', 'Tester Team');
+        $I->selectOption('#Team-1', 'Tester Team');
+        $I->selectOption('#Color', 'Red');
+        $I->selectOption('#Color-1', 'Blue');
+        $I->click('Submit');
+        $I->waitForText('UPDATED', 15, '.console-header');
+
+        $I->amOnPage('/app/GameDisplay/customer');
+        $I->waitForText('That Team',15,'#team1');
+        $I->see('Team Awesome','#team2');
+    }
 
 }
