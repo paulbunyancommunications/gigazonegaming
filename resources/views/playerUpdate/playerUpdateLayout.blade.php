@@ -43,14 +43,14 @@
         </div>
     @endif
     @if (session('success'))
-        <div class="alert alert-success">
-            <ul>
-                <li>{{session('success')}}</li>
-            </ul>
+        <div class="text-center">
+            {{session('success')}}
         </div>
     @endif
-    <div class="mainDiv text-center">
+    <div class="mainDiv">
         @yield('Form')
+    </div>
+    <div class="text-center">
         <button class="btn margin-sm-top" id="logout" onclick="window.open('/app/player/logout','_self')">Logout</button>
     </div>
 </body>

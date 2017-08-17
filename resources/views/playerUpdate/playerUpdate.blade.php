@@ -18,21 +18,38 @@
 
 @section('Form')
     @if($tournaments || $games || $teams)
-    <h3>Additional Information</h3>
-    @endif
-    @if($tournaments)
-        @for($i=0;$i<count($tournaments);$i++)
-            <h4>Tournament Entered: {{$tournaments[$i]->name}}</h4>
-        @endfor
+        <div class="text-center">
+            <h3>Additional Information:</h3>
+        </div>
     @endif
     @if($games)
+        <h4>Games Entered:</h4>
+        <ul>
         @for($i=0;$i<count($games);$i++)
-            <h4>Game Entered: {{$games[$i]->title}}</h4>
+            <li>{{$games[$i]->title}}</li>
+            @if($tournaments)
+                <li class="list-unstyled">
+                    <h5>Tournaments Entered:</h5>
+                    <ul>
+                @for($j=0;$j<count($tournaments);$j++)
+                    @if($tournaments[$j]->game_id === $games[$i]->id)
+                    <li>{{$tournaments[$j]->name}}</li>
+                        @if($teams)
+                            <li class="list-unstyled">
+                                <h6>Teams Entered:</h6>
+                                <ul>
+                                @if($teams[$j]->tournament_id === $tournaments[$j]->id)
+                                    <li>{{$teams[$j]->name}}</li>
+                                @endif
+                        @endif
+                                </ul>
+                            </li>
+                    @endif
+                @endfor
+                    </ul>
+                </li>
+            @endif
         @endfor
-    @endif
-    @if($teams)
-        @for($i=0;$i<count($teams);$i++)
-            <h5>Team Name: {{$teams[$i]->name}}</h5>
-        @endfor
+        </ul>
     @endif
 @stop
