@@ -73,8 +73,8 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
-        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT);
-        $I->see("Update Player: “". $firstName . ' ' . $lastName ."”");
+        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT*3);
+        $I->seeElement("#name",["value"=> $firstName . ' ' . $lastName ]);
 
     }
 
@@ -107,8 +107,8 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
-        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT);
-        $I->see("Update Player: “". $firstName . ' ' . $lastName ."”");
+        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT*3);
+        $I->seeElement("#name",["value"=> $firstName . ' ' . $lastName ]);
 
     }
 
@@ -141,8 +141,8 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
-        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT);
-        $I->see("Update Player: “". $firstName . ' ' . $lastName ."”");
+        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT*3);
+        $I->seeElement("#name",["value"=> $firstName . ' ' . $lastName ]);
     }
 
     /**
@@ -176,8 +176,8 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
-        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT);
-        $I->see("Update Player: “". $firstName . ' ' . $lastName ."”");
+        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT*3);
+        $I->seeElement("#name",["value"=> $firstName . ' ' . $lastName ]);
 
     }
 
@@ -210,8 +210,8 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
-        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT);
-        $I->see("Update Player: “". $firstName . ' ' . $lastName ."”");
+        $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT*3);
+        $I->seeElement("#name",["value"=> $firstName . ' ' . $lastName ]);
 
     }
 
