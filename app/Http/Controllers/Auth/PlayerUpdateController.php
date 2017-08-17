@@ -15,20 +15,11 @@ use App\Models\Championship\Tournament;
 
 class PlayerUpdateController extends Controller
 {
-    /*This is used to display the login page*/
-    public function login(){
-        return view('/playerUpdate/login')->withEmail("")->with('success',"");
-    }
 
     /*After login is clicked this determines the authentication of the user returns a redirect*/
     public function postLogin(AuthenticateUser $auth)
     {
         return $auth->login();
-    }
-
-    /*Used to display the register page*/
-    public function register(){
-        return view('/playerUpdate/register')->with('success',"");
     }
 
     /*After register is clicked this registers a user with their email returns a redirect*/
@@ -92,18 +83,11 @@ class PlayerUpdateController extends Controller
         return redirect('/player/login')->withErrors("Something Went Wrong! Not Logged Out.");
     }
 
-    /*This is how to recover a password if forgotten for the player update form*/
-    public function recover(){
-        return view('/playerUpdate/recover');
-    }
     public function postRecover(RecoverPassword $auth){
 
         return $auth->recovery();
     }
-    /*This is the initial password view*/
-    public function password(){
-        return view('/playerUpdate/createPassword')->with('success','');
-    }
+
     /*This is how a user creates a password*/
     public function createPassword(UserPassword $auth ){
         return $auth->createPassword();

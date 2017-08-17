@@ -41,7 +41,7 @@
         </div>
     @endif
     @if (session('success'))
-        <div class="text-center">
+        <div class="alert-success text-center">
             {{session('success')}}
         </div>
     @endif
