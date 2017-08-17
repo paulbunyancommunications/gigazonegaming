@@ -20,8 +20,8 @@
             <input type="text" name="name" id="name" placeholder="Name" value="@yield('Name')"/>
         </div>
         <div class="margin-bottom">
-            <label for="username">Username: </label>
-            <input type="text" name="username" id="username" placeholder="Username" value="@yield('Username')"/>
+            <label for="username">SummonerName: </label>
+            <input type="text" name="username" id="username" placeholder="SummonerName" value="@yield('Username')"/>
         </div>
         <div class="margin-bottom">
             <label for="email">Email: </label>
