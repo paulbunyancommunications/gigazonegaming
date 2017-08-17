@@ -206,7 +206,7 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
         $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT * 4);
-        $I->seeElementInDOM(["id"=>"#name"],["value"=> "$firstName $lastName" ]);
+        $I->seeInField("#name", "$firstName $lastName" );
 
     }
 
