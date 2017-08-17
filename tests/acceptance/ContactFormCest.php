@@ -77,7 +77,7 @@ class ContactFormCest extends \BaseAcceptance
 
         $I->click(['id' => 'doFormSubmit']);
         $I->waitForElementVisible(['id' => 'contact-us-message-container'], $this::TEXT_WAIT_TIMEOUT*1.5);
-        $I->waitForText('Thanks for filling out the Contact Us form', $this::TEXT_WAIT_TIMEOUT*1.5);
+        $I->waitForText('The name field is required.', $this::TEXT_WAIT_TIMEOUT*1.5);
         $I->see('The name field is required.');
     }
 
@@ -89,7 +89,7 @@ class ContactFormCest extends \BaseAcceptance
 
         $I->click(['id' => 'doFormSubmit']);
         $I->waitForElementVisible(['id' => 'contact-us-message-container'], $this::TEXT_WAIT_TIMEOUT*1.5);
-        $I->waitForText('Thanks for filling out the Contact Us form', $this::TEXT_WAIT_TIMEOUT*1.5);
+        $I->waitForText('The email field is required.', $this::TEXT_WAIT_TIMEOUT*1.5);
         $I->see('The email field is required.');
     }
 
@@ -103,7 +103,7 @@ class ContactFormCest extends \BaseAcceptance
 
         $I->click(['id' => 'doFormSubmit']);
         $I->waitForElementVisible(['id' => 'contact-us-message-container'], $this::TEXT_WAIT_TIMEOUT*1.5);
-        $I->waitForText('Thanks for filling out the Contact Us form', $this::TEXT_WAIT_TIMEOUT*1.5);
+        $I->waitForText('The email must be a valid email address.', $this::TEXT_WAIT_TIMEOUT*1.5);
         $I->see('The email must be a valid email address.');
     }
 }

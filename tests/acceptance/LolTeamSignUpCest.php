@@ -32,7 +32,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $I->wantTo('Submit the LOL team sign up form');
         $I->waitForElementVisible("#app-lol-team-sign-up-form", $this::TEXT_WAIT_TIMEOUT);
         $I->seeElementInDOM(['name' => 'request_token']);
-        $I->see('TEAM SIGN UP');
+        $I->seeElementInDOM(['name' => 'team-name']);
         $teamName = $faker->company;
         $I->fillField(['name' => 'team-name'], $teamName);
         $teamCaptain = $faker->name;

@@ -35,6 +35,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      */
     public function tryToSubmitAnEmailToTheUpdatesListWithParticipate(AcceptanceTester $I, $scenario)
     {
+        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with the participate flag');
         $I->amOnPage('/');
@@ -61,6 +62,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      */
     public function tryToSubmitAnEmailToTheUpdatesListWithoutParticipate(AcceptanceTester $I, $scenario)
     {
+        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller without the participate flag');
         $I->amOnPage('/');
@@ -89,6 +91,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      */
     public function tryToSubmitAnBadEMailToTheUpdatesListFails(AcceptanceTester $I, $scenario)
     {
+        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a bad email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -117,6 +120,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      */
     public function tryToSubmitDuplicateEmailFails(AcceptanceTester $I, $scenario)
     {
+        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a duplicate email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -144,6 +148,7 @@ class SignUpForUpdatesCest extends \BaseAcceptance
      */
     public function checkToSeeThatThereAreGeoLocationFieldsInForm(AcceptanceTester $I, $scenario)
     {
+        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with geo location data');
         $I->amOnPage('/');
