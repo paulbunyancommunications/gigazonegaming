@@ -43,7 +43,7 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
 
     public function tryToClickGetChampionsButtonWithOutSelectingATeam(AcceptanceTester $I){
         $I->click('Get Champions');
-        $I->waitForText('The cache is not available. Please Select a team and a color before getting champions.', 15, '#info');
+        $I->waitForText('The cache is not available. Please submit a team and a color before getting champions.', 15, '#info');
     }
 
 
