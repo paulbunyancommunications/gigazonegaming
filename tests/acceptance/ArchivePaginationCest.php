@@ -33,7 +33,6 @@ class ArchivePaginationCest extends BaseAcceptance
      */
     public function pagination_displays_on_archive(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
         $I->wantTo('see that the pagination block shows on a archive list page');
         $I->amOnPage('/'.date('Y').'/'.date('m'));
         $I->seeElement(['class' => 'pagination']);
@@ -42,11 +41,12 @@ class ArchivePaginationCest extends BaseAcceptance
     /**
      * Check that clicking on pagination sends to the right page
      *
+     * @skip
      * @param AcceptanceTester $I
      */
     public function pagination_send_to_archive_page_on_click(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
+        $scenario->incomplete("this test was skipt due to errors when going into jenkins");
         $I->wantTo('see that the pagination block shows on a archive list page');
         $I->amOnPage('/'.date('Y').'/'.date('m'));
         $I->click(['id' => 'pagination-2']);

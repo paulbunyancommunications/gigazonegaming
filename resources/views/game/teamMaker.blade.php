@@ -10,6 +10,7 @@
     border-bottom:5px solid #000;
     padding-bottom:5px;
     }
+    .hidden{display:none;}
 @endsection
 @section('content')
     <div class="form-horizontal">
