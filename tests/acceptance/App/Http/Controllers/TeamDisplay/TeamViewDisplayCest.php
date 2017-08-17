@@ -19,18 +19,6 @@ class TeamViewDisplayCest extends \BaseAcceptance
         exec('php artisan migrate:refresh');
     }
 
-    public function __construct()
-    {
-        $this->faker = \Faker\Factory::create();
-    }
-
-    protected function populateDB(AcceptanceTester $I)
-    {
-//        $I->runShellCommand('cd /var/www');
-        exec('php artisan db:seed --class=DatabaseSeeder');
-        $this->faker = \Faker\Factory::create();
-    }
-
 #test
 #-----------------------------------------------------------------------------
     public function seeTeam1Display(AcceptanceTester $I){

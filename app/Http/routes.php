@@ -117,22 +117,24 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  *
  */
 Route::group(['middleware' => ['WPAdmin']], function () {
+// Admin Page
     Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
-    Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
     Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
     Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
     Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
+// Champion Override Page
+    Route::get('/GameDisplay/override',function (){return view('/LeagueOfLegends/championOverride');});
     Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
 });
 
-Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
-
+// Team View Display
 Route::get('/GameDisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
-
-Route::get('/GameDisplay/ajax','GameDisplay\GameDisplayController@ajaxCheckRequest');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
+
+// Customer Page todo: Change name to "User" not Customer
 Route::get('/GameDisplay/getTeamName','GameDisplay\GameDisplayController@getTeamName');
+Route::get('/GameDisplay/customer', function (){return view('/LeagueOfLegends/customerPage');});
 
 Route::get('/player/login','Auth\PlayerUpdateController@login');
 Route::post('/player/login','Auth\PlayerUpdateController@postLogin');

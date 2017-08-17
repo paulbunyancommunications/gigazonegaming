@@ -19,4 +19,8 @@ class GameDisplayControllerTest extends \TestCase
     {
         parent::tearDown();
     }
+
+    public function testTeamViewDisplay(){
+
+    }
 }
