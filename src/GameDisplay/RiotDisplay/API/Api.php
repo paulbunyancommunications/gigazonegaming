@@ -174,7 +174,7 @@ class Api{
      */
     public function setApiKey()
     {
-        $this->apiKey = env("RIOT_API_KEY", 'null');
+        $this->apiKey = env("RIOT_API_KEY1", 'null');
     }
     /**
     * @param mixed $summoner
