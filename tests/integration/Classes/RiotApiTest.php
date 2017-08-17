@@ -51,4 +51,25 @@ class RiotApiTest extends \TestCase
         $this->assertNotNull($this->API->getIconID());
         $this->assertNotNull($this->API->getSummonerIcon());
     }
+
+    public function testInjectBadSummonerNameAndGetBackAnException(){
+        try{
+            $this->API->injectSummoner("djasfhjfghdfsafdafas");
+        }catch (\Exception $e){
+            $this->assertEquals("Summoner 'djasfhjfghdfsafdafas' is not a valid name in North America",$e->getMessage());
+        }
+    }
+
+    public function testCallingGetChampionsBeforeCheckingStatusThrowException(){
+        $this->API->injectSummoner("KingMorpheus2131");
+        $testPass = True;
+        try{
+            $this->API->getChampion();
+            $testPass = false;
+        }catch (\Exception $e){
+            $this->assertEquals("Call checkCurrentGameStatus before calling this method. KingMorpheus2131 is not in game",$e->getMessage());
+        }
+        $this->assertTrue($testPass);
+    }
+
 }

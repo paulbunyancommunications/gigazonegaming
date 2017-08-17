@@ -67,7 +67,7 @@ class PlayerUpdate extends Model
         $token->username = $request->username;
         $token->phone = $request->phone;
         $token->save();
-        return redirect ('/player/playerUpdate');
+        return redirect('/player/playerUpdate');
     }
 
     /**
