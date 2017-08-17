@@ -53,7 +53,6 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
     public function testSearchControllerGetAPlayerByFullNameSearch(AcceptanceTester $I)
     {
         $I->wantTo('Check that we can get a player from the search bar by full name');
-        $I->amOnPage('/app/manage/player');
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
         $username = $this->faker->userName;
@@ -74,7 +73,7 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
         $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT * 4);
-        $I->seeElement(["id"=>"name"],["value"=> "$firstName $lastName" ]);
+        $I->seeInField("#name", "$firstName $lastName" );
 
     }
 
@@ -88,7 +87,6 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
     public function testSearchControllerGetAPlayerByEmailSearch(AcceptanceTester $I)
     {
         $I->wantTo('Check that we can get a player from the search bar by email');
-        $I->amOnPage('/app/manage/player');
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
         $username = $this->faker->userName;
@@ -108,7 +106,7 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
         $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT * 4);
-        $I->seeElement(["id"=>"name"],["value"=> "$firstName $lastName" ]);
+        $I->seeInField("#name", "$firstName $lastName" );
 
     }
 
@@ -122,7 +120,6 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
     public function testSearchControllerGetAPlayerByUserNameSearch(AcceptanceTester $I)
     {
         $I->wantTo('Check that we can get a player from the search bar by username');
-        $I->amOnPage('/app/manage/player');
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
         $username = $this->faker->userName;
@@ -142,7 +139,7 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
         $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT * 4);
-        $I->seeElement(["id"=>"name"],["value"=> "$firstName $lastName" ]);
+        $I->seeInField("#name", "$firstName $lastName" );
     }
 
     /**
@@ -156,7 +153,6 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
     public function testSearchControllerGetAPlayerByFirstNameSearch(AcceptanceTester $I)
     {
         $I->wantTo('Check that we can get a player from the search bar by first name only');
-        $I->amOnPage('/app/manage/player');
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
         $username = $this->faker->userName;
@@ -177,7 +173,7 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
         $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT * 4);
-        $I->seeElement(["id"=>"name"],["value"=> "$firstName $lastName" ]);
+        $I->seeInField("#name", "$firstName $lastName" );
 
     }
 
@@ -191,7 +187,6 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
     public function testSearchControllerGetAPlayerByLastNameSearch(AcceptanceTester $I)
     {
         $I->wantTo('Check that we can get a player from the search bar by last name only');
-        $I->amOnPage('/app/manage/player');
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
         $username = $this->faker->userName;
@@ -211,7 +206,7 @@ class SearchControllerForPlayerCest extends \BaseAcceptance
         $I->waitForElementVisible('a[title="Player '. $firstName . ' ' . $lastName .'"]', $this::TEXT_WAIT_TIMEOUT);
         $I->click('a[title="Player '. $firstName . ' ' . $lastName .'"]');
         $I->waitForText("Update Player:", $this::TEXT_WAIT_TIMEOUT * 4);
-        $I->seeElement(["id"=>"name"],["value"=> "$firstName $lastName" ]);
+        $I->seeElementInDOM(["id"=>"#name"],["value"=> "$firstName $lastName" ]);
 
     }
 
