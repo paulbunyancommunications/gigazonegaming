@@ -34,12 +34,10 @@
         <button class="btn" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
     </form>
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
+        <div class="alert-danger text-center">
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    {{ $error }}
                 @endforeach
-            </ul>
         </div>
     @endif
     @if (session('success'))

@@ -43,6 +43,8 @@ class PlayerUpdateController extends Controller
         $tournaments=[];
         $teams=[];
         $games=[];
+        $playersRelations=[];
+        $players=[];
         if($user = \Sentinel::getUser()){
             $token = Player::where('email',$user->email)->first();
             $teamRelations = PlayerRelation::where('player_id',$token->id)->where('relation_type','App\Models\Championship\Team')->get();
@@ -57,10 +59,21 @@ class PlayerUpdateController extends Controller
             for($i=0;$i<count($gameRelations);$i++){
                 array_push($games , Game::where('id',$gameRelations[$i]->relation_id)->first());
             }
+            for($i=0;$i<count($teams);$i++){
+                if($token->id === $teams[$i]->captain){
+                    array_push($playersRelations,PlayerRelation::where('relation_id',$teams[$i]->id)->where('relation_type','App\Models\Championship\Team')->get());
+                    $players[$i] = array();
+                    for($j=0;$j<count($playersRelations[$i]);$j++) {
+                        array_push($players[$i], Player::where('id',$playersRelations[$i][$j]->player_id)->first());
+                    }
+                }
+            }
+
             return view('/playerUpdate/playerUpdate')->withToken($token)
                 ->withTeams($teams)
                 ->withTournaments($tournaments)
-                ->withGames($games);
+                ->withGames($games)
+                ->withPlayers($players);
         }
         return redirect('/player/login')->withErrors("Authorization Needed")->withEmail('');
     }
@@ -87,11 +100,11 @@ class PlayerUpdateController extends Controller
 
         return $auth->recovery();
     }
-    /*This is the how to create a password*/
+    /*This is the initial password view*/
     public function password(){
         return view('/playerUpdate/createPassword')->with('success','');
     }
-    /*This is the beginning stages of how to create a password*/
+    /*This is how a user creates a password*/
     public function createPassword(UserPassword $auth ){
         return $auth->createPassword();
     }
