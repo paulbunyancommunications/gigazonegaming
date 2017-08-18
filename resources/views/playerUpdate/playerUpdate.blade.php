@@ -23,20 +23,20 @@
         </div>
     @endif
     @if($games)
-        <h4>Games Entered:</h4>
         <ul>
         @for($i=0;$i<count($games);$i++)
+            <li class="list-unstyled"><h4>Game Entered:</h4></li>
             <li>{{$games[$i]->title}}</li>
             @if($tournaments)
                 <li class="list-unstyled">
-                    <h5>Tournaments Entered:</h5>
+                    <h5>Tournament Entered:</h5>
                     <ul>
                 @for($j=0;$j<count($tournaments);$j++)
                     @if($tournaments[$j]->game_id === $games[$i]->id)
                         <li>{{$tournaments[$j]->name}}</li>
                         @if($teams)
                             <li class="list-unstyled">
-                                <h6>Teams Entered:</h6>
+                                <h6>Team Entered:</h6>
                                 <ul>
                                 @if($teams[$j]->tournament_id === $tournaments[$j]->id)
                                     <li>{{$teams[$j]->name}}</li>
