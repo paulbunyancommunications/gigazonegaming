@@ -15,7 +15,7 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $tournament = 'gigazone-gaming-2016-league-of-legends';
         $I->amOnPage('/tournament/lol-team-signup/');
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('Team SignUp', $this::TEXT_WAIT_TIMEOUT);
+        $I->waitForElementVisible("#app-lol-team-sign-up-form", $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS("$('#hidden').val('$tournament');");
         $I->fillField(['name' => 'tournament'], $tournament);
     }
@@ -30,7 +30,6 @@ class LolTeamSignUpCest extends \BaseAcceptance
     {
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit the LOL team sign up form');
-        $I->waitForElementVisible("#app-lol-team-sign-up-form", $this::TEXT_WAIT_TIMEOUT);
         $I->seeElementInDOM(['name' => 'request_token']);
         $I->seeElementInDOM(['name' => 'team-name']);
         $teamName = $faker->company;
