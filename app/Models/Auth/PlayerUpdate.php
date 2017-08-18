@@ -65,11 +65,11 @@ class PlayerUpdate extends Model
      */
     public static function updateInfo($request){
         $token = Player::where('email',$request->email)->first();
-        $verify = new VerifySummonerName();
-        if(!$verify->VerifySummonerName($request->username)){
-            return redirect()->back()
-                ->withErrors('Summoner Name Error - '.$request->username.' - is not a real summoner name');
-        }
+//        $verify = new VerifySummonerName();
+//        if(!$verify->VerifySummonerName($request->username)){
+//            return redirect()->back()
+//                ->withErrors('Summoner Name Error - '.$request->username.' - is not a real summoner name');
+//        }
         $token->name = $request->name;
         $token->username = $request->username;
         $token->phone = $request->phone;
