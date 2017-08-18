@@ -31,11 +31,12 @@ class SignUpForUpdatesCest extends \BaseAcceptance
 
     /**
      * Test the form with the participation flag
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitAnEmailToTheUpdatesListWithParticipate(AcceptanceTester $I, $scenario)
     {
-        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with the participate flag');
         $I->amOnPage('/');
@@ -58,11 +59,12 @@ class SignUpForUpdatesCest extends \BaseAcceptance
 
     /**
      * Submit a form without a participation flag
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitAnEmailToTheUpdatesListWithoutParticipate(AcceptanceTester $I, $scenario)
     {
-        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller without the participate flag');
         $I->amOnPage('/');
@@ -87,11 +89,12 @@ class SignUpForUpdatesCest extends \BaseAcceptance
     /**
      * Check to see that a bad email address with fail submission of form
      *
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitAnBadEMailToTheUpdatesListFails(AcceptanceTester $I, $scenario)
     {
-        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a bad email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -116,11 +119,12 @@ class SignUpForUpdatesCest extends \BaseAcceptance
     /**
      * Check to see that submitting a duplicate email address with fail
      *
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitDuplicateEmailFails(AcceptanceTester $I, $scenario)
     {
-        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a duplicate email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -145,10 +149,11 @@ class SignUpForUpdatesCest extends \BaseAcceptance
 
     /**
      * Submit email address to the update controller with geo location data
+     * @skip
      */
     public function checkToSeeThatThereAreGeoLocationFieldsInForm(AcceptanceTester $I, $scenario)
     {
-        $scenario->incomplete("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with geo location data');
         $I->amOnPage('/');
