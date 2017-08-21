@@ -82,7 +82,7 @@ class BackEndTesterSeeder extends Seeder
                     'name' => "Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'username' => "The Tester Player".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'email' => "player".str_pad($i, 3, '0', STR_PAD_LEFT)."@test.com",
-                    'phone' => "(218)-444-".str_pad($i, 3, '0', STR_PAD_LEFT),
+                    'phone' => "(218)-444-0".str_pad($i, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
             \App\Models\Championship\Relation\PlayerRelation::create([
@@ -121,7 +121,7 @@ class BackEndTesterSeeder extends Seeder
                     'name' => "Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'username' => "The Tester Player".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'email' => "player".str_pad($i+5, 3, '0', STR_PAD_LEFT)."@test.com",
-                    'phone' => "(218)-444-".str_pad($i+5, 3, '0', STR_PAD_LEFT),
+                    'phone' => "(218)-444-0".str_pad($i+5, 3, '0', STR_PAD_LEFT),
                     'user_id' => $faker->numberBetween(20, 2226000)
                 ])->toArray();
         }// create the tester user if not already created

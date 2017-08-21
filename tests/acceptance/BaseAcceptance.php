@@ -27,10 +27,11 @@ class BaseAcceptance
      */
     public function _before(AcceptanceTester $I)
     {
-        //$this->resetDB($I);
         // run migrations
+        $this->resetDB($I);
         $I->runMigration($I);
         $this->faker = \Faker\Factory::create();
+        exec('php artisan cache:clear');
     }
 
     /**
@@ -41,6 +42,7 @@ class BaseAcceptance
         // reset all the databases
         $this->resetDB($I);
         $I->runMigration($I);
+        exec('php artisan cache:clear');
     }
 
     /**
@@ -49,7 +51,6 @@ class BaseAcceptance
     protected function resetDB(AcceptanceTester $I)
     {
         // reset all the databases
-        $I->runShellCommand('php artisan migrate:refresh');
         $I->populateDatabase($I, [
             'server' => env('DB_HOST'),
             'user' => env('DB_USERNAME'),

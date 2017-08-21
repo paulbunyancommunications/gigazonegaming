@@ -25,16 +25,20 @@ class VerifySummonerName extends Controller
     public function VerifySummonerName($summonerName)
     {
         $counter = 1;
-        if( !Cache::has("counterBackendLolKey") or Cache::get("counterBackendLolKey") > 10){
-            Cache::put("counterBackendLolKey", 1);
-        }else{
-            $counter = Cache::get("counterBackendLolKey") + 1 ;
-            Cache::put("counterBackendLolKey", $counter);
-        }
+//        if( !Cache::has("counterBackendLolKey") or Cache::get("counterBackendLolKey") > 10){
+//            Cache::put("counterBackendLolKey", 1);
+//        }else{
+//            $counter = Cache::get("counterBackendLolKey");
+////            $counter = Cache::get("counterBackendLolKey") + 1 ;
+//            Cache::put("counterBackendLolKey", $counter);
+////            Cache::put("counterBackendLolKey", $counter);
+//        }
         $this->client = new Client();
-        $apiKey = $_ENV['RIOT_API_KEY'.$counter];
+        $apiKey = trim($_ENV['RIOT_API_KEY1'], '"');
+//        $apiKey = trim($_ENV['RIOT_API_KEY'.$counter], '"');
 
         $url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $summonerName . '?api_key='. $apiKey;
+
         $info = $this->ApiRequest($url);
 
         return $info;

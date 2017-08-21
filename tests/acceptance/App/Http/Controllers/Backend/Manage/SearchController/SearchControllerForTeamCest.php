@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
+namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage\SearchController;
 
 use \AcceptanceTester;
 use \BaseAcceptance;

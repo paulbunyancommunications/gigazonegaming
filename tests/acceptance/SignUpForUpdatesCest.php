@@ -31,16 +31,19 @@ class SignUpForUpdatesCest extends \BaseAcceptance
 
     /**
      * Test the form with the participation flag
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitAnEmailToTheUpdatesListWithParticipate(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with the participate flag');
         $I->amOnPage('/');
         // label might be hidden on this form, so just check for the string in the source
-        $I->seeInSource('Signup For Updates');
+        $I->waitForElementVisible('Signup For Updates', $this::TEXT_WAIT_TIMEOUT);
+        $I->click("Sign up for updates");
+        $I->waitForElementVisible('Sign up to stay in touch!', $this::TEXT_WAIT_TIMEOUT);
         $email = $faker->companyEmail;
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
@@ -56,18 +59,21 @@ class SignUpForUpdatesCest extends \BaseAcceptance
 
     /**
      * Submit a form without a participation flag
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitAnEmailToTheUpdatesListWithoutParticipate(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller without the participate flag');
         $I->amOnPage('/');
 
         // label might be hidden on this form, so just check for the string in the source
         $I->seeInSource('Signup For Updates');
+        $I->click("Sign up for updates");
         $email = $faker->companyEmail;
+        $I->waitForElementVisible('Sign up to stay in touch!', $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
         // element might be hidden in the dom, detach and move it so it's visible for clicking
@@ -83,11 +89,12 @@ class SignUpForUpdatesCest extends \BaseAcceptance
     /**
      * Check to see that a bad email address with fail submission of form
      *
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitAnBadEMailToTheUpdatesListFails(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a bad email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -95,6 +102,8 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         // label might be hidden on this form, so just check for the string in the source
         $I->seeInSource('Signup For Updates');
         $email = $faker->md5();
+        $I->click("Sign up for updates");
+        $I->waitForElementVisible('Sign up to stay in touch!', $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
         // element might be hidden in the dom, detach and move it so it's visible for clicking
@@ -110,11 +119,12 @@ class SignUpForUpdatesCest extends \BaseAcceptance
     /**
      * Check to see that submitting a duplicate email address with fail
      *
+     * @skip
      * @param AcceptanceTester $I
      */
     public function tryToSubmitDuplicateEmailFails(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit a duplicate email address to the updates controller and see that I get an error');
         $I->amOnPage('/');
@@ -122,6 +132,8 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         // label might be hidden on this form, so just check for the string in the source
         $I->seeInSource('Signup For Updates');
         $email = $faker->companyEmail;
+        $I->click("Sign up for updates");
+        $I->waitForElementVisible('Sign up to stay in touch!', $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
         $I->click(['id' => 'updateSignUpFormSubmit']);
         $I->waitForElementVisible(['id' => 'update-sign-up-message-container'], (self::DEFAULT_WAIT * 2));
@@ -137,10 +149,11 @@ class SignUpForUpdatesCest extends \BaseAcceptance
 
     /**
      * Submit email address to the update controller with geo location data
+     * @skip
      */
     public function checkToSeeThatThereAreGeoLocationFieldsInForm(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip();
+        $scenario->skip("the tests aint going to work. once the link to sign up for updates is clicked, you are shoot to contactcontact.com in a new tab.");
         $faker = \Faker\Factory::create();
         $I->wantTo('Submit email address to the update controller with geo location data');
         $I->amOnPage('/');
@@ -148,6 +161,8 @@ class SignUpForUpdatesCest extends \BaseAcceptance
         // label might be hidden on this form, so just check for the string in the source
         $I->seeInSource('Signup For Updates');
         $email = $faker->companyEmail;
+        $I->click("Sign up for updates");
+        $I->waitForElementVisible('Sign up to stay in touch!', $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'updateSignUpForm-email'], $email);
 
         // element might be hidden in the dom, detach and move it so it's visible for clicking

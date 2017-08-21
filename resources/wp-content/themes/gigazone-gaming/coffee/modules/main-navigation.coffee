@@ -25,7 +25,7 @@ define ['jquery', 'variables'], ($, variables) ->
         # the main menu will have the navigation in the correct order already
         ###
         thisSectionTitle = $(this).children('a').text()
-        if thisSectionTitle == sectionTitle.text()
+        if thisSectionTitle == sectionTitle.text() || thisSectionTitle == sectionTitle.text() + "s"
           sidebarSectionNav.html($(this).children('ul').html())
         ###
         # add "Hovering" class to the parent of the current hovering caret and sub-menu

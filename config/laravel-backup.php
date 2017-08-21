@@ -153,10 +153,9 @@ return [
          * Here you can specify how emails should be sent.
          */
         'mail' => [
-            'from' => 'backup@'.str_replace_first('www.', '', parse_url(env('APP_URL', 'example.com'), PHP_URL_HOST)),
-            'to'   => 'admin@'.str_replace_first('www.', '', parse_url(env('APP_URL', 'example.com'), PHP_URL_HOST)),
+            'from' => 'backup@'.str_replace_first('https://', '', (str_replace_first('www.', '', parse_url(env('APP_URL', 'example.com'), PHP_URL_HOST)))),
+            'to'   => 'admin@'.str_replace_first('https://', '', (str_replace_first('www.', '', parse_url(env('APP_URL', 'example.com'), PHP_URL_HOST)))),
         ],
-
         /*
          * Here you can specify how messages should be sent to Slack.
          */

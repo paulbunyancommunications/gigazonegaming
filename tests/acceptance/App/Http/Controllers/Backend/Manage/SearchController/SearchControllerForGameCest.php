@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
+namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage\SearchController;
 
 use \AcceptanceTester;
 use \BaseAcceptance;
@@ -21,6 +21,7 @@ class SearchControllerForGameCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
 
     }
 
@@ -58,8 +59,7 @@ class SearchControllerForGameCest extends BaseAcceptance
         /** DO by full first name and last name */
         $I->fillField(['id' => 'searchText'], strtolower($this->gameName));
         $I->click(['id' => 'doSearchBoxSubmit']);
-        $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
-        $I->wait(1);
+        $I->waitForText("Searching for", BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->see($this->gameName.' Game', 'a[title="Game '. strtolower($this->gameName) . '-game"]');
 
     }
@@ -78,8 +78,7 @@ class SearchControllerForGameCest extends BaseAcceptance
         /** DO by full first name and last name */
         $I->fillField(['id' => 'searchText'], $name);
         $I->click(['id' => 'doSearchBoxSubmit']);
-        $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
-        $I->wait(1);
+        $I->waitForText("Searching for", BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->see($this->gameName.' Game', 'a[title="Game '. strtolower($this->gameName) . '-game"]');
 
     }
@@ -97,8 +96,7 @@ class SearchControllerForGameCest extends BaseAcceptance
         /** Do search by email */
         $I->fillField(['id' => 'searchText'], $this->gameName);
         $I->click(['id' => 'doSearchBoxSubmit']);
-        $I->waitForElementVisible(['id' => 'searchResults'], BaseAcceptance::TEXT_WAIT_TIMEOUT);
-        $I->wait(1);
+        $I->waitForText("Searching for", BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->see($this->gameName.' Game', 'a[title="Game '. strtolower($this->gameName) . '-game"]');
 
     }

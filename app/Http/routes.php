@@ -43,9 +43,9 @@ Route::post('/updates/signup', [
 
 // Update route can come from /update-sign-up also
 Route::post('/update-sign-up', [
-        'uses' => 'Frontend\Updates\UpdatesController@store',
-        'as' => 'update-sign-up',
-        'middleware' => ['CCAddRecipient']
+    'uses' => 'Frontend\Updates\UpdatesController@store',
+    'as' => 'update-sign-up',
+    'middleware' => ['CCAddRecipient']
 ]);
 
 Route::get('/updates/map', ['as' => 'updates.map', 'uses' => 'Frontend\Updates\UpdatesController@map']);
@@ -95,7 +95,7 @@ Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function (
  */
 // @codeCoverageIgnoreStart
 Route::get('/report/{extra}', function () {
-    
+
 })->where('extra', '.*');
 
 Route::get('/c3/{extra}', function () {
@@ -108,4 +108,33 @@ Route::get('/c3/{extra}', function () {
 foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
     require_once $partials->getPathname();
 }
+
+
+
+/**
+ * Roman and Simon
+ * Routes - LOL
+ *
+ */
+Route::group(['middleware' => ['WPAdmin']], function () {
+    Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
+    Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
+    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
+    Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
+    Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
+    Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
+});
+
+Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
+Route::get('/GameDisplay/team1','GameDisplay\GameDisplayController@team1ViewDisplay');
+Route::get('/GameDisplay/team2','GameDisplay\GameDisplayController@team2ViewDisplay');
+Route::get('/GameDisplay/ajax','GameDisplay\GameDisplayController@ajaxCheckRequest');
+Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
+Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
+Route::get('/GameDisplay/getTeamName','GameDisplay\GameDisplayController@getTeamName');
+Route::get('/player/login','Auth\PlayerUpdateController@login');
+Route::post('/player/login','Auth\PlayerUpdateController@postLogin');
+Route::get('/player/register','Auth\PlayerUpdateController@register');
+Route::post('/player/register','Auth\PlayerUpdateController@postRegister');
+Route::get('/player/playerUpdate','Auth\PlayerUpdateController@playerUpdate');
 
