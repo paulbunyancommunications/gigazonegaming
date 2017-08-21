@@ -43,7 +43,6 @@ vm_flush.sh
 !public_html/wp-content/index.php
 !public_html/wp-content/plugins/gzg-manager
 cache
-!cache/.gitignore
 config/ide-helper.php
 coverage-checker.php
 .sass-cache/*
@@ -121,6 +120,7 @@ Dockerfile.httpd
 get_docker_assets.sh
 httpd.conf
 php.ini
+php-override.ini
 Dockerfile
 php-ast
 phan.log
@@ -128,20 +128,3 @@ server.crt
 server.key
 update_docker_assets_file.sh
 AdvancedEditorUserGuide_1010.pdf
-googlea13d41de2ed75e16.html
-.env.enc
-dock-helpers-jenkins.sh
-dock-helpers.sh
-stacks.sh
-codecov_deploy.sh
-clover.xml
-env_check
-rollbar_deploy.sh
-install.sh.old
-public_html/sitemap.xml
-testing.sh
-constant_contact
-!constant_contact/email/template
-public_html/LeagueOfLegendsDisplay/JS/jquery.mobile.custom/jquery.mobile.custom.js
-public_html/LeagueOfLegendsDisplay/JS/jquery.mobile.custom/jquery.mobile.custom.min.js
-/dock-helpers.sh
