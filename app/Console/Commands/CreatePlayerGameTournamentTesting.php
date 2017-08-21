@@ -29,7 +29,7 @@ class CreatePlayerGameTournamentTesting extends Command
      *
      * @var string
      */
-    protected $description = 'fill DB with test summoner with multiple games and tournaments';
+    protected $description = 'fill DB with test summoners with multiple games and tournaments';
     /**
      * Create a new command instance.
      *
@@ -47,23 +47,23 @@ class CreatePlayerGameTournamentTesting extends Command
     public function handle()
     {
 
-        $this->fillDB();
+        $this->fillDBWithTester();
         var_dump("It Worked");
     }
 
     /**
-     * If you run this you must delete it manually,
-     * First: delete player,
+     * If you run this you must delete it manually in db,
+     * First: delete players,
      * Second: Teams,
      * Third: Tournament,
      * Fourth: Game,
      * Last: Player Relations.
      */
-    public function fillDB(){
+    public function fillDBWithTester(){
         #Captian
         $Captain = Player::create([
-            'username' => "Spartan7Warrior",
-            'email' => "martushev8@gmail.com",
+            'username' => 'Spartan7Warrior',
+            'email' => 'martushev8@gmail.com',
             'name' => 'Roman',
             'phone' => '2182805085']);
         $CaptainOfTeam = Player::where('username','Spartan7Warrior')->first();
@@ -74,14 +74,14 @@ class CreatePlayerGameTournamentTesting extends Command
             'captain' => $CaptainOfTeam->id,
         ]);
         Game::create([
-            'name' => "Testing Game",
-            'title' => "The Tester Game",
-            'description' => "For Testing",
-            'uri' => "http://leagueoflegends.com/"
+            'name' => 'Testing Game',
+            'title' => 'The Tester Game',
+            'description' => 'For Testing',
+            'uri' => 'http://leagueoflegends.com/'
         ]);
         $game = Game::where('name','testing-game')->first();
         Tournament::create([
-            'name' => "League-Of-Legends-Testing",
+            'name' => 'League-Of-Legends-Testing',
             'game_id' => $game->id,
             'sign_up_open' => '0000-00-00 00:00:00',
             'sign_up_close' => '0000-00-00 00:00:00',
@@ -109,6 +109,29 @@ class CreatePlayerGameTournamentTesting extends Command
             'Tournament' => 1,
             'team' => $team->id,
         ]);
+        $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
+        #creat players for team
+        for($i = 0; $i < count($playerUserNameArray); $i++){
+            $player = Player::create([
+                'username' => $playerUserNameArray[$i],
+                'email' => "ready_player_" . $i . "@gigazonegaming.com",
+                'phone' => "2182605085"
+            ]);
+            // attach player to team/tournament/game
+            $playerOnTeam = Player::where('username',$playerUserNameArray[$i])->first();
+            $player::createRelation([
+                'player' => $playerOnTeam->id,
+                'Game' => 2,
+                'Tournament' => 1,
+                'team' => $team->id,
+            ]);
+            $player::createRelation([
+                'player' => $playerOnTeam->id,
+                'Game' => $game->id,
+                'Tournament' => $tournament->id,
+                'team' => $team2->id,
+            ]);
+        }
 
     }
 }
