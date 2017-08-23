@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GameDisplay;
 
 use Carbon\Carbon;
+use GameDisplay\RiotDisplay\API\Api;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Championship\Team;
@@ -36,9 +37,29 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/customerPage');
     }
 
+    /* This will make a call to api to get all champions in case we cannot get champions from api for the summoners playing
+     * if that fails I have created a champion list from scratch.
+     * Warning! It may not be up to date. So be aware.
+     *  */
     public function championOverride()
     {
-        return view('/LeagueOfLegends/championOverride');
+        $allChampions = [];
+        $Url = 'https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key='.$_ENV['RIOT_API_KEY1'];
+        if(Cache::has('AllChampions')){
+            $champions = Cache::get('AllChampions');
+        }else{
+            $info = new Api();
+            if($champions = $info->apiRequest($Url)){
+                Cache::put('AllChampions',$champions,1440);
+                $champions = Cache::get('AllChampions');
+                    foreach($champions->data as $champion){
+                        array_push($allChampions,$champion->key);
+                    }
+                sort($allChampions);
+                return view('/LeagueOfLegends/championOverrideLayout')->with('allChampions',$allChampions);
+            }
+        }
+        return view('/LeagueOfLegends/championOverrideLayout')->with('allChampions',$allChampions);
     }
 
 
