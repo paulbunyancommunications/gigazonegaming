@@ -30,7 +30,6 @@ class GameDisplayController extends Controller
             return view('/LeagueOfLegends/DisplayTeam', [
                 'teamName' => $teamName,
                 'color' => $teamColor,
-                'teamColor' => $teamColor,
                 'summonerArray' => $teamInfo['summonerArray'],
                 'iconArray' => $teamInfo['iconArray'],
                 'soloRankArray' => $teamInfo['soloRankArray'],
@@ -43,7 +42,7 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/DisplayAltTeam');
     }
 
-    public function getData(Requests\GameDisplayGetData $req)
+    public function getData(Requests\GameDisplayGetDataRequest $req)
     {
         $team = $req->team;
         switch ($team) {
@@ -60,17 +59,17 @@ class GameDisplayController extends Controller
         }
     }
 
-    public function updateData(Request $req)
+    public function updateData(Requests\GameDisplayUpdateDataRequest $req)
     {
         $team = $req->team;
         $checkChamp = $req->checkChamp;
 
 
         $returnArray = array();
-        $returnArray[0] = 'false';
-        $returnArray[1] = 'false';
-        $returnArray[2] = 'false';
-        $returnArray[3] = $checkChamp;
+        $returnArray[0] = 'false'; #Bool For Page Reload (Meaning there has or hasn't been resubmitted data)
+        $returnArray[1] = 'false'; #Champion Images will be loaded into this array or False if Images are not available.
+        $returnArray[2] = 'false'; #Player Ids that are 1:1 with champion images with be stored here to keep track of who has which champion.
+        $returnArray[3] = $checkChamp; #Bool that states if champion cache needs to be checked.
         $teamNumber = explode('m',$team)[1];
 
         if (Cache::has('Team'.$teamNumber.'CacheLoadedTimeStamp') and Cache::has('Team'.$teamNumber.'TimeStamp')) {
@@ -88,17 +87,5 @@ class GameDisplayController extends Controller
             }
         }
         return $returnArray;
-    }
-
-    public function getTeamName()
-    {
-        $teamNames = array();
-        if (Cache::has('Team1Name') && Cache::has('Team2Name') && Cache::has('Team1Color') && Cache::has('Team2Color')) {
-            array_push($teamNames, Cache::get('Team1Name'));
-            array_push($teamNames, Cache::get('Team2Name'));
-            array_push($teamNames, Cache::get('Team1Color'));
-            array_push($teamNames, Cache::get('Team2Color'));
-            return $teamNames;
-        }
     }
 }

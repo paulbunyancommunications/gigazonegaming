@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class GameDisplayGetData extends Request
+class GameDisplayGetDataRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

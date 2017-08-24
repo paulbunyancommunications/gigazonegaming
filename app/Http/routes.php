@@ -133,7 +133,16 @@ Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
 
 // Customer Page todo: Change name to "User" not Customer
-Route::get('/GameDisplay/getTeamName','GameDisplay\GameDisplayController@getTeamName');
+Route::get('/GameDisplay/getTeamName', function (){
+    $teamNames = array();
+    if (Cache::has('Team1Name') && Cache::has('Team2Name') && Cache::has('Team1Color') && Cache::has('Team2Color')) {
+        array_push($teamNames, Cache::get('Team1Name'));
+        array_push($teamNames, Cache::get('Team2Name'));
+        array_push($teamNames, Cache::get('Team1Color'));
+        array_push($teamNames, Cache::get('Team2Color'));
+        return $teamNames;
+    }
+    return false;});
 Route::get('/GameDisplay/customer', function (){return view('/LeagueOfLegends/customerPage');});
 
 Route::get('/player/login','Auth\PlayerUpdateController@login');
