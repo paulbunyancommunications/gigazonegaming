@@ -72,21 +72,21 @@ class TeamViewDisplayCest extends \BaseAcceptance
         //Select champs team 1
         $I->amOnPage('/app/GameDisplay/override');
         $I->selectOption('#Team','Team 1');
-        $I->fillField('#player1','Ashe');
-        $I->fillField('#player2','Morgana');
-        $I->fillField('#player3','Darius');
-        $I->fillField('#player4','Nidalee');
-        $I->fillField('#player5','Zed');
+        $I->selectOption('#player1','Ashe');
+        $I->selectOption('#player2','Morgana');
+        $I->selectOption('#player3','Darius');
+        $I->selectOption('#player4','Nidalee');
+        $I->selectOption('#player5','Zed');
         $I->click('#SubmitChamps');
         $I->waitForText('Team 1 Champions Successfully Updated!!', 10, 'h3');
 
         //Select champs team 2
         $I->selectOption('#Team','Team 2');
-        $I->fillField('#player1','Jinx');
-        $I->fillField('#player2','Thresh');
-        $I->fillField('#player3','Renekton');
-        $I->fillField('#player4','Kindred');
-        $I->fillField('#player5','Talon');
+        $I->selectOption('#player1','Jinx');
+        $I->selectOption('#player2','Thresh');
+        $I->selectOption('#player3','Renekton');
+        $I->selectOption('#player4','Kindred');
+        $I->selectOption('#player5','Talon');
         $I->click('#SubmitChamps');
         $I->waitForText('Team 2 Champions Successfully Updated!!', 10, 'h3');
 

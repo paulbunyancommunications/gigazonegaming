@@ -55,11 +55,12 @@ class GameDisplayAdminPageCest extends \BaseAcceptance
         $I->selectOption('#Color-1', 'Blue');
     }
 
-//    public function seeChampionOverrideTitleAfterClickingChampionOverrideButton(AcceptanceTester $I){
-//        $I->click('Champion Override');
-//        $I->waitForText('Champion Override', 10, 'h1');
-//        //need to see if $I is on another page now instead of admin page
-//    }
+    public function seeChampionOverrideTitleAfterClickingChampionOverrideButton(AcceptanceTester $I){
+        $I->click('Champion Override');
+        $I->switchToNextTab();
+        $I->waitForText('Champion Override', 10, 'h1');
+        //need to see if $I is on another page now instead of admin page
+    }
 
     public function tryToSubmitTheCache(AcceptanceTester $I)
     {
