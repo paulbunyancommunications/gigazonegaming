@@ -6,7 +6,7 @@
  * Time: 9:47 AM
  */
 
-namespace App\Models\Auth;
+namespace App\Http\Middleware;
 
 use App\Http\Requests\UpdatePlayerRequest;
 

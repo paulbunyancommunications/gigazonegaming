@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models\Auth;
+namespace App\Http\Middleware;
 
 use App\Http\Controllers\Validator\VerifySummonerName;
 use App\Http\Middleware\CheckSummonerName;
+use App\Models\Auth\Users\User;
 use App\Models\Championship\Player;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,7 @@ class PlayerUpdate extends Model
      * returns a redirect response
      */
     public static function generateUser($request){
-        if(!Users\User::where('email',$request->email)->first()) {
+        if(!User::where('email',$request->email)->first()) {
             $password = \Hash::make('password');
             $user = \Sentinel::register(['email' => $request->email,'password'=> $password]);
             $reminder = \Reminder::create($user);
@@ -36,7 +37,7 @@ class PlayerUpdate extends Model
         return redirect('/player/register')->withErrors('User already exists');
     }
     public static function createNewPassword($request){
-        if($user = Users\User::where('email',$request->email)->first()) {
+        if($user = User::where('email',$request->email)->first()) {
             $password = \Hash::make('password');
             $user->password = $password;
             $user->save();
@@ -83,7 +84,7 @@ class PlayerUpdate extends Model
      */
     public static function createPassword($request){
         $reminder = \Reminder::where('code',$request->token)->first();
-        $user = Users\User::where('id',$reminder->user_id)->first();
+        $user = User::where('id',$reminder->user_id)->first();
         $user->password = \Hash::make($request->password);
         $user->save();
         $reminder->delete();

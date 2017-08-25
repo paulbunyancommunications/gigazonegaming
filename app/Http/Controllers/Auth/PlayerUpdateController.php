@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-Use App\Models\Auth\AuthenticateUser;
-use App\Models\Auth\RecoverPassword;
-use App\Models\Auth\RegisterUser;
+Use App\Http\Middleware\AuthenticateUser;
+use App\Http\Middleware\RecoverPassword;
+use App\Http\Middleware\RegisterUser;
 use App\Http\Controllers\Controller;
-use App\Models\Auth\UpdatePlayerInfo;
-use App\Models\Auth\UserPassword;
+use App\Http\Middleware\UpdatePlayerInfo;
+use App\Http\Middleware\UserPassword;
 use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;

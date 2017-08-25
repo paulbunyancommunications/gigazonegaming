@@ -36,7 +36,7 @@
                         <li>{{$tournaments[$j]->name}}</li>
                         @if($teams)
                             <li class="list-unstyled">
-                                <h6>Team Entered:</h6>
+                                <h6>Team Enteplayerred:</h6>
                                 <ul>
                                 @if($teams[$j]->tournament_id === $tournaments[$j]->id)
                                     <li>{{$teams[$j]->name}}</li>

@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Auth;
+namespace App\Http\Middleware;
 use App\Http\Requests\Auth\PlayerAuthRequest;
 use App\Models\Auth\Users\User;
 
@@ -26,7 +26,7 @@ class AuthenticateUser
     public function login()
     {
         $this->validateRequest($this->request);
-        if($user = Users\User::where('email',$this->request->email)->first()) {
+        if($user = User::where('email',$this->request->email)->first()) {
             if (!\Activation::completed($user)) {
                 \Sentinel::activate($user);
                 if(\Sentinel::authenticate(['email' => $this->request->email, 'password' => $this->request->password])){

@@ -6,7 +6,7 @@
  * Time: 10:48 AM
  */
 
-namespace App\Models\Auth;
+namespace App\Http\Middleware;
 
 
 use App\Http\Requests\RecoverPasswordRequest;

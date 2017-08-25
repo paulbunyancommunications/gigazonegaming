@@ -142,8 +142,6 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->see('ReckonStuff','.summonerName');
         $I->click('.carousel-control-prev');
         $I->see('ThatBoy18','.summonerName');
-
-
     }
 
 }
