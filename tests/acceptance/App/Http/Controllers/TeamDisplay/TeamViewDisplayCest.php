@@ -118,5 +118,32 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->waitForText('That Team',15,'#team1');
         $I->see('Team Awesome','#team2');
     }
+    public function seeThatTheCarouselWorks(AcceptanceTester $I)
+    {
+        $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams stats displayed in the mobile view');
+
+        //Cache team data
+        $I->amOnPage('/app/GameDisplay/Admin');
+        $I->waitForJs('return jQuery.active == 0', 10);
+        $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
+        $I->selectOption('#Tournament', 'Tester Tournament');
+        $I->selectOption('#Team', 'Tester Team');
+        $I->selectOption('#Team-1', 'Tester Team');
+        $I->selectOption('#Color', 'Red');
+        $I->selectOption('#Color-1', 'Blue');
+        $I->click('Submit');
+        $I->waitForText('UPDATED', 10, '.console-header');
+
+        //See team data on pages team1 and team2
+        $I->amOnPage('/app/GameDisplay/team1');
+        $I->resizeWindow(360, 862);
+        $I->see('ThatBoy18','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('ReckonStuff','.summonerName');
+        $I->click('.carousel-control-prev');
+        $I->see('ThatBoy18','.summonerName');
+
+
+    }
 
 }
