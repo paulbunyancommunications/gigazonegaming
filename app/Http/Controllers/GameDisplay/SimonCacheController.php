@@ -31,8 +31,10 @@ class SimonCacheController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
+    protected $something="";
 
-    public function SubmitCache(Requests\SimonCacheSubmitCache $req)
+
+    public function submitCache(Requests\SimonCacheSubmitCache $req)
     {
         ///For Assertion Test: Load fixture if the exists.
         $testing = \utilphp\util::str_to_bool($req->header('Testing'));
@@ -200,6 +202,7 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
     /**
+     * todo: Clear Specific Cache
      * @return string
      */
     public function clearCache()

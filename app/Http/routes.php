@@ -119,7 +119,7 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
 Route::group(['middleware' => ['WPAdmin']], function () {
 // Admin Page
     Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
-    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
+    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@submitCache');
     Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
     Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
 // Champion Override Page

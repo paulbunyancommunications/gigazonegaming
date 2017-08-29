@@ -1,10 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Championship\Game;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Codeception\Util\Fixtures;
