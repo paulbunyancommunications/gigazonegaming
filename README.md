@@ -33,6 +33,11 @@ To run the test suite you can either run the test outside the containers:
 
 ```
 # Run tests outside containers
-docker-compose exec code bash testing.sh
+docker-compose exec code codecept run
 ```
 Or run them inside the code container by running
+
+```
+# Run tests inside containers
+codecept run
+```
