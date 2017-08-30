@@ -535,9 +535,9 @@ stage('Notification') {
     }
         sh "cd ${Globals.WORKSPACE}; git checkout origin/master";
         sh "cd ${Globals.WORKSPACE}; git pull origin master";
-        sh "cd ${Globals.WORKSPACE}; git merge develop”;
-        sh "cd ${Globals.WORKSPACE}; git commit -q -m 'tests passed on Jenkins'”;
-        sh "cd ${Globals.WORKSPACE}; git push origin master”;
+        sh "cd ${Globals.WORKSPACE}; git merge develop";
+        sh "cd ${Globals.WORKSPACE}; git commit -q -m 'tests passed on Jenkins'";
+        sh "cd ${Globals.WORKSPACE}; git push origin master";
 
   }
   stage('Tear down') {
