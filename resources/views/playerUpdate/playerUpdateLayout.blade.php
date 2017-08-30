@@ -23,6 +23,7 @@
             <label for="username">Username: </label>
             <input type="text" name="username" id="username" placeholder="Username" value="@yield('Username')"/>
         </div>
+        @yield('UserNames')
         <div class="margin-bottom">
             <label for="email">Email: </label>
             <input type="text" name="email" id="email" value="@yield('Email')" readonly/>

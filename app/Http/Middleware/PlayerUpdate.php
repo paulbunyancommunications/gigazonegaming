@@ -6,6 +6,8 @@ use App\Http\Controllers\Validator\VerifySummonerName;
 use App\Http\Middleware\CheckSummonerName;
 use App\Models\Auth\Users\User;
 use App\Models\Championship\Player;
+use App\Models\Championship\Tournament;
+use App\Models\Championship\Username;
 use Illuminate\Database\Eloquent\Model;
 
 class PlayerUpdate extends Model
@@ -66,14 +68,24 @@ class PlayerUpdate extends Model
      */
     public static function updateInfo($request){
         $token = Player::where('email',$request->email)->first();
-//        $verify = new VerifySummonerName();
-//        if(!$verify->VerifySummonerName($request->username)){
-//            return redirect()->back()
-//                ->withErrors('Summoner Name Error - '.$request->username.' - is not a real summoner name');
-//        }
+        $verify = new VerifySummonerName();
+        if(!$verify->VerifySummonerName($request->summonerName)){
+            return redirect()->back()
+                ->withErrors('Summoner Name Error - '.$request->summonerName.' - is not a real summoner name');
+        }
+        $lOLUsername = Username::where('player_id',$token->id)->get();
+        for($i=0;$i<count($lOLUsername);$i++){
+            if($tournament = Tournament::where('id',$lOLUsername[$i]->tournament_id)->first()){
+                if(stristr($tournament->name,'league') !== false){
+                    $lOLUsername = Username::where('player_id',$token->id)->where('tournament_id',$tournament->id)->first();
+                }
+            }
+        }
         $token->name = $request->name;
         $token->username = $request->username;
+        $lOLUsername->username = $request->summonerName;
         $token->phone = $request->phone;
+        $lOLUsername->save();
         $token->save();
         return redirect('/player/playerUpdate')->with('success','Information Successfully Updated!');
     }

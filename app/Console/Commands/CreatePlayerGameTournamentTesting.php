@@ -13,6 +13,7 @@ use App\Models\Championship\Game;
 use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use App\Models\Championship\Username;
 use Faker\Factory;
 use Illuminate\Console\Command;
 
@@ -89,6 +90,12 @@ class CreatePlayerGameTournamentTesting extends Command
             'max_players' => 6,
         ]);
         $tournament = Tournament::where('name',"League-Of-Legends-Testing")->first();
+        Username::create([
+            'username' => $CaptainOfTeam->username,
+            'avatar_url' => '',
+            'player_id' => $CaptainOfTeam->id,
+            'tournament_id' => $tournament->id
+        ]);
         Team::create([
             'tournament_id' => $tournament->id,
             'name' => 'Spartans',
@@ -119,6 +126,12 @@ class CreatePlayerGameTournamentTesting extends Command
             ]);
             // attach player to team/tournament/game
             $playerOnTeam = Player::where('username',$playerUserNameArray[$i])->first();
+            Username::create([
+                'username' => $playerOnTeam->username,
+                'avatar_url' => '',
+                'player_id' => $playerOnTeam->id,
+                'tournament_id' => $playerOnTeam->id
+            ]);
             $player::createRelation([
                 'player' => $playerOnTeam->id,
                 'Game' => 2,

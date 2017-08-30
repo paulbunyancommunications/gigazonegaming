@@ -26,6 +26,7 @@ class UpdatePlayerRequest extends Request
         return [
             'name',
             'username',
+            'summonerName',
             'email',
             'phone'
         ];

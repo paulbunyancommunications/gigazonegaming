@@ -16,6 +16,22 @@
 {{$token->phone}}
 @stop
 
+@section('UserNames')
+    @for($i=0;$i<count($user_names);$i++)
+        @if(stristr($games[$i]->title,"league") !== false)
+            <div class="margin-bottom">
+                <label for="summonerName">SummonerName: </label>
+                <input type="text" name="summonerName" id="summonerName" placeholder="SummonerName" value="{{$user_names[$i]->username}}"/>
+            </div>
+            @elseif(stristr($games[$i]->title,"overwatch") !== false)
+            <div class="margin-bottom">
+                <label for="overwatch">OverwatchName: </label>
+                <input type="text" name="overwatch" id="overwatch" placeholder="OverwatchName" value="{{$user_names[$i]->username}}"/>
+            </div>
+        @endif
+    @endfor
+@stop
+
 @section('Form')
     @if($tournaments || $games || $teams || $players)
         <div class="text-center">
@@ -36,7 +52,7 @@
                         <li>{{$tournaments[$j]->name}}</li>
                         @if($teams)
                             <li class="list-unstyled">
-                                <h6>Team Enteplayerred:</h6>
+                                <h6>Team Entered:</h6>
                                 <ul>
                                 @if($teams[$j]->tournament_id === $tournaments[$j]->id)
                                     <li>{{$teams[$j]->name}}</li>
