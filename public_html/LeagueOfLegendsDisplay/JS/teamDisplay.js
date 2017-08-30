@@ -67,17 +67,8 @@ function mobileDisplay(){
                 $("#" + i + "-1").addClass("hidden");
                 $("#" + i + "-2").addClass("hidden");
                 $("#" + i + "-4").addClass("hidden").removeClass("col-lg");
-                setTimeout(function(){setBoxHeight();},1);
-                document.getElementById("extra" + i).innerHTML =
-                    '<div class="championRankMinimize" id="Rank3' + i +'"><b>Rank 3</b><br/><img class="I3" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt id="I3' + i +'"></div>'+
-                    '<div class="championRank" id="Rank1' + i +'"><b>Rank 1</b><br/><img class="I1" src="/LeagueOfLegendsDisplay/Images/defaultChampIcon.png" alt id="I1' + i +'"></div>'+
-                    '<div class="championRankMinimize" id="Rank2' + i +'"><b>Rank 2</b><br/><img class="I2" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I2' + i +'"></div>'+
-                    '<div style="width;100%;"><div class="championNav" onclick= switchPlaces('+ i +',"+")>&lt</div>'+
-                    '<div class="championNav" onclick= switchPlaces('+ i +',"-") >&gt</div></div>'+
-                    '<div id="imageInfo1' + i +'" >Image 1</div>' +
-                    '<div id="imageInfo2' + i +'" class="hidden">Image 2</div>' +
-                    '<div id="imageInfo3' + i +'" class="hidden">Image 3</div>';
             }
+            setTimeout(function(){setBoxHeight();},1);
             $("#carouselControls").removeClass("hidden");
         }else{
             for (let i = 0; i < 5; i++) {
