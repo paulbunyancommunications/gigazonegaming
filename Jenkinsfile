@@ -182,7 +182,7 @@ node {
     startMessage(Globals.STAGE)
     withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
       sh "rm -rf ${env.WORKSPACE}/groovy || true"
-      sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
+      sh "git clone https://paulbunyannet:${SCM_PASS}@github.com/paulbunyannet/groovy-scripts.git groovy"
     }
     successMessage(Globals.STAGE)
 
