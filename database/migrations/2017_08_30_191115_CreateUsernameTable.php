@@ -12,6 +12,9 @@ class CreateUsernameTable extends Migration
      */
     public function up()
     {
+        if(Schema::connection('mysql_champ')->hasTable('usernames')) {
+            Schema::connection('mysql_champ')->drop('usernames');
+        }
         Schema::connection('mysql_champ')->create('usernames', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->increments('id');
