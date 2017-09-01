@@ -35,14 +35,14 @@
         <button class="btn" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
     </form>
     @if ($errors->any())
-        <div class="alert-danger text-center">
+        <div class="alert alert-danger text-center">
                 @foreach ($errors->all() as $error)
                     {{ $error }}
                 @endforeach
         </div>
     @endif
     @if (session('success'))
-        <div class="alert-success text-center">
+        <div class=" alert alert-success text-center">
             {{session('success')}}
         </div>
     @endif

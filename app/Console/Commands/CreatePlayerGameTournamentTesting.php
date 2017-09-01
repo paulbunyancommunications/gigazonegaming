@@ -14,7 +14,6 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use App\Models\Championship\Username;
-use Faker\Factory;
 use Illuminate\Console\Command;
 
 class CreatePlayerGameTournamentTesting extends Command
@@ -76,7 +75,7 @@ class CreatePlayerGameTournamentTesting extends Command
         ]);
         Game::create([
             'name' => 'Testing Game',
-            'title' => 'The Tester Game',
+            'title' => 'TheTesterGame',
             'description' => 'For Testing',
             'uri' => 'http://leagueoflegends.com/'
         ]);
@@ -130,7 +129,7 @@ class CreatePlayerGameTournamentTesting extends Command
                 'username' => $playerOnTeam->username,
                 'avatar_url' => '',
                 'player_id' => $playerOnTeam->id,
-                'tournament_id' => $playerOnTeam->id
+                'tournament_id' => $tournament->id
             ]);
             $player::createRelation([
                 'player' => $playerOnTeam->id,

@@ -81,11 +81,12 @@ class PlayerUpdate extends Model
                 }
             }
         }
+        $lOLUsername->username = $request->summonerName;
+        $lOLUsername->save();
+
         $token->name = $request->name;
         $token->username = $request->username;
-        $lOLUsername->username = $request->summonerName;
         $token->phone = $request->phone;
-        $lOLUsername->save();
         $token->save();
         return redirect('/player/playerUpdate')->with('success','Information Successfully Updated!');
     }
