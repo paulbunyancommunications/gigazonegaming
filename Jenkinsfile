@@ -1,3 +1,5 @@
+
+
 import java.text.SimpleDateFormat
 
 class Globals {
@@ -180,7 +182,7 @@ node {
     startMessage(Globals.STAGE)
     withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
       sh "rm -rf ${env.WORKSPACE}/groovy || true"
-      sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
+      sh "git clone https://paulbunyannet:${SCM_PASS}@github.com/paulbunyannet/groovy-scripts.git groovy"
     }
     successMessage(Globals.STAGE)
 
@@ -508,17 +510,37 @@ stage('Notification') {
   * Notify Mattermost that the build passed
   */
 
-  // Globals.STAGE='Deployment: Mattermost notification'
-  // startMessage(Globals.STAGE)
-  // try {
-  //   mattermostSend "![${currentBuild.result}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.result} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
-  // } catch (error) {
-  //   warningMessage(Globals.STAGE, error.getMessage())
-  // }
-  // successMessage(Globals.STAGE)
+   Globals.STAGE='Deployment: Mattermost notification'
+   startMessage(Globals.STAGE)
+   try {
+     mattermostSend "![${currentBuild.result}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.result} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+   } catch (error) {
+     warningMessage(Globals.STAGE, error.getMessage())
+   }
+   successMessage(Globals.STAGE)
 }
 
 
+
+  stage('Push to master') {
+
+   Globals.STAGE='Deployment: git push to master'
+    sh "cd ${Globals.WORKSPACE}; git fetch origin";
+    try {
+        sh "cd ${Globals.WORKSPACE}; git pull origin master";
+        //if there is an error that means that the changes push didnt have the last changes from the main branch so you should pull the main branch and resolve all issues first :)
+    } catch (error) {
+        sh "echo 'if there is an error that means that the changes push didnt have the last changes from the main branch so you should pull the main branch and resolve all issues first :)'";
+        warningMessage(Globals.STAGE, error.getMessage())
+    }
+        sh "cd ${Globals.WORKSPACE}; git stash";
+        sh "cd ${Globals.WORKSPACE}; git checkout origin/master";
+        sh "cd ${Globals.WORKSPACE}; git pull origin master";
+        sh "cd ${Globals.WORKSPACE}; git merge develop";
+        sh "cd ${Globals.WORKSPACE}; git commit -q -m 'tests passed on Jenkins'";
+        sh "cd ${Globals.WORKSPACE}; git push origin master";
+
+  }
   stage('Tear down') {
     /**
     * Tear down the docker containers for this build
@@ -530,3 +552,5 @@ stage('Notification') {
   }
 
 }
+
+
