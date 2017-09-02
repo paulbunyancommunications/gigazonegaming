@@ -533,6 +533,7 @@ stage('Notification') {
         sh "echo 'if there is an error that means that the changes push didnt have the last changes from the main branch so you should pull the main branch and resolve all issues first :)'";
         warningMessage(Globals.STAGE, error.getMessage())
     }
+        sh "cd ${Globals.WORKSPACE}; git stash";
         sh "cd ${Globals.WORKSPACE}; git checkout origin/master";
         sh "cd ${Globals.WORKSPACE}; git pull origin master";
         sh "cd ${Globals.WORKSPACE}; git merge develop";
