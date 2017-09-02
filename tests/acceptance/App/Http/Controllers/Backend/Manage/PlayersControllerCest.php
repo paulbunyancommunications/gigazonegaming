@@ -71,9 +71,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click("Save");
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Player created successfully!', $this::TEXT_WAIT_TIMEOUT * 1.5);
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->dontSeeOptionIsSelected('#game_id', 'Tester Game');
+        $I->dontSeeOptionIsSelected('#tournament_id', 'Tester Tournament');
+        $I->dontSeeOptionIsSelected('#team_id', 'Tester Team');
     }
     /**
      * @param AcceptanceTester $I
@@ -96,9 +96,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
-        $I->seeOptionIsSelected('select#game_id', 'tester-game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->seeOptionIsSelected('#game_id', 'tester-game');
+        $I->dontSeeOptionIsSelected('#tournament_id', 'Tester Tournament');
+        $I->dontSeeOptionIsSelected('#team_id', 'Tester Team');
     }
     /**
      * @param AcceptanceTester $I
@@ -146,9 +146,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
-        $I->seeOptionIsSelected('select#game_id', 'tester-game');
-        $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->seeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->seeOptionIsSelected(['id' => 'game_id'], 'tester-game');
+        $I->seeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
+        $I->seeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
     }
 
     /**
@@ -236,9 +236,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->dontSeeOptionIsSelected(['id' => 'game_id'], 'Tester Game');
+        $I->dontSeeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
+        $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
     }
     /**
      * @param AcceptanceTester $I
@@ -310,9 +310,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->dontSeeOptionIsSelected(['id' => 'game_id'], 'Tester Game');
+        $I->dontSeeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
+        $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
     }
     /**
      * @param AcceptanceTester $I
@@ -421,9 +421,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("The phone number isn't a valid one, or you forgot the area code", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("The phone number isn't a valid one, or you forgot the area code");
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $I->dontSeeOptionIsSelected(['id' => 'game_id'], 'Tester Game');
+        $I->dontSeeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
+        $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
     }
     /**
      * @param AcceptanceTester $I
