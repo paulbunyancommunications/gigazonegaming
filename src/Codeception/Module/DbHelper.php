@@ -37,4 +37,17 @@ class DbHelper extends CodeceptionModule
     {
         $I->runShellCommand('php artisan migrate:refresh');
     }
+
+    /**
+     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param array $config
+     * @param string $query
+     */
+    public function runQuery($I, $config = [], $query = '')
+    {
+        $queryFile = __DIR__ . '/' . md5($query) . '.sql';
+        file_put_contents($queryFile, $query);
+        $I->runShellCommand('mysql -h ' . $config['server'] . ' -u ' . $config['user'] . ' -p\'' . $config['password'] . '\' ' . $config['database'] . ' < ' . $queryFile);
+        unlink($queryFile);
+    }
 }
