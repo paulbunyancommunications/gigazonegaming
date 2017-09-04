@@ -31,6 +31,56 @@ class GigaZoneGamingBootstrap extends Timber
     }
 
     /**
+     * Pull tournament from db and display from short code
+     * @param $attributes
+     * @return string
+     */
+    public function tournamentSignUpFormShortCode($attributes)
+    {
+        global $wpdb;
+
+        $attr = shortcode_atts(array(
+            'tournament' => '',
+        ), $attributes);
+
+        // if no tournament was submitted then return error
+        if(!$attr['tournament']) {
+            return $this->alert(['alert' => 'error'], 'A tournament name is required.');
+        }
+
+        $lookup = $wpdb->get_row($wpdb->prepare('SELECT * FROM champ_tournaments WHERE name="%s"', [$attr['tournament']]));
+        // if lookup was no found then return error
+        if(!$lookup) {
+            return $this->alert(['alert' => 'error'], 'No tournament was found for <b>&#8220;'. $attr['tournament'] .'&#8221;</b>');
+        }
+        // check and make sure that the tournament for is open
+        if(time() < strtotime($lookup->sign_up_open)) {
+            return $this->alert(['alert' => 'warning'], 'The tournament <b>&#8220;'. $lookup->title .'&#8221;</b> will start taking submissions on '. date('l, F jS \a\t g:iA', strtotime($lookup->sign_up_open)) .'.');
+        }
+        // check to see if the tournament for is closed
+        if(time() > strtotime($lookup->sign_up_close)) {
+            return $this->alert(['alert' => 'warning'], 'The tournament <b>&#8220;'. $lookup->title .'&#8221;</b> is now closed to submissions');
+        }
+
+        return do_shortcode($lookup->sign_up_form_shortcode);
+    }
+
+    /**
+     * Create an alert
+     *
+     * @param $attributes
+     * @param $content
+     * @return string
+     */
+    public function alert($attributes, $content)
+    {
+        $attr = shortcode_atts(array(
+            'alert' => 'info',
+        ), $attributes);
+        return '<div class="alert alert-'.$attr['alert'].'"><p>'.$content.'</p></div>';
+    }
+
+    /**
      * Add context to timber twig output
      *
      * @param $context
@@ -289,6 +339,9 @@ class GigaZoneGamingBootstrap extends Timber
                 '/../' . $autoVersion->file('/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')
             );
         }
+        $context['name'] = $name;
+        $context['new_line'] = $new_line;
+        $context['delimiter'] = $delimiter;
         $context['action'] = '/app/' . $name;
         $context['method'] = 'POST';
         $context['content'] = $content;
