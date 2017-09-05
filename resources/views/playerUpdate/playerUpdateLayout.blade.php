@@ -23,6 +23,7 @@
             <label for="username">Username: </label>
             <input type="text" name="username" id="username" placeholder="Username" value="@yield('Username')"/>
         </div>
+        @yield('UserNames')
         <div class="margin-bottom">
             <label for="email">Email: </label>
             <input type="text" name="email" id="email" value="@yield('Email')" readonly/>
@@ -31,17 +32,17 @@
             <label for="phone">Phone: </label>
             <input type="text" name="phone" id="phone" placeholder="Phone" value="@yield('Phone')"/>
         </div>
-        <button class="btn" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
+        <button class="btn" id ="update" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
     </form>
     @if ($errors->any())
-        <div class="alert-danger text-center">
+        <div class="alert alert-danger text-center">
                 @foreach ($errors->all() as $error)
                     {{ $error }}
                 @endforeach
         </div>
     @endif
     @if (session('success'))
-        <div class="alert-success text-center">
+        <div class=" alert alert-success text-center">
             {{session('success')}}
         </div>
     @endif

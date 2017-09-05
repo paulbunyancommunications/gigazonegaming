@@ -23,12 +23,13 @@ class PlayerUpdateCest extends \BaseAcceptance
     public function PlayerUpdate(AcceptanceTester $I)
     {
         $faker = \Faker\Factory::create();
-        $name = $faker->userName;
+        $username = $faker->userName;
         $email = $faker->email;
         $password = $faker->password;
-        $I->wantTo('Register a user,Create a password for that user, login,see their info,Logout');
+        $name = $faker->name;
+        $I->wantTo('Register a user,Create a password for that user, login,see their info,update info,Logout');
         $I->amOnPage('/app/player/register');
-        $I->fillField('#username',$name);
+        $I->fillField('#username',$username);
         $I->fillField('#email',$email);
         $I->click('#register-submit');
         $I->waitForText('Check Your Email!',30,'li');
@@ -44,6 +45,10 @@ class PlayerUpdateCest extends \BaseAcceptance
         $I->click('#login-submit');
         $I->waitForText('Player Update',30,'h1');
         $I->seeInField('#email',$email);
+        $I->seeInField('#username',$username);
+        $I->fillField('#name',$name);
+        $I->click('#update');
+        $I->waitForText('Information Successfully Updated!',30,'.alert-success');
         $I->click('#logout');
         $I->waitForText('Successfully Logged Out!',30,'li');
     }

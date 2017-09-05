@@ -12,6 +12,7 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use App\Models\Championship\Username;
 
 class PlayerUpdateController extends Controller
 {
@@ -36,8 +37,10 @@ class PlayerUpdateController extends Controller
         $games=[];
         $playersRelations=[];
         $players=[];
+        $tournamentNames=[];
         if($user = \Sentinel::getUser()){
             $token = Player::where('email',$user->email)->first();
+            $userNames = Username::where('player_id',$token->id)->get();
             $teamRelations = PlayerRelation::where('player_id',$token->id)->where('relation_type','App\Models\Championship\Team')->get();
             $tournamentRelations = PlayerRelation::where('player_id',$token->id)->where('relation_type','App\Models\Championship\Tournament')->get();
             $gameRelations = PlayerRelation::where('player_id',$token->id)->where('relation_type','App\Models\Championship\Game')->get();
@@ -59,12 +62,12 @@ class PlayerUpdateController extends Controller
                     }
                 }
             }
-
             return view('/playerUpdate/playerUpdate')->withToken($token)
                 ->withTeams($teams)
                 ->withTournaments($tournaments)
                 ->withGames($games)
-                ->withPlayers($players);
+                ->withPlayers($players)
+                ->withUser_names($userNames);
         }
         return redirect('/player/login')->withErrors("Authorization Needed")->withEmail('');
     }

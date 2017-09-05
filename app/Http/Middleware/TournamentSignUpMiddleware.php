@@ -3,9 +3,11 @@
 namespace App\Http\Middleware;
 
 use App\Models\Championship\Player;
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Closure;
+use Mockery\Exception;
 use Pbc\Bandolier\Type\Numbers;
 
 class TournamentSignUpMiddleware
@@ -18,6 +20,17 @@ class TournamentSignUpMiddleware
      * @return mixed
      */
     public function handle($request, Closure $next)
+    {
+        $this->mandle($request, $next);
+    }
+        /**
+         * Handle an incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
+        public function mandle($request, Closure $next)
     {
 
         if($request->input('tournament') !== $request->route()->getName()) {
@@ -141,7 +154,7 @@ class TournamentSignUpMiddleware
             }
         }
         if (count($error)!=0) {
-            return Response::json([
+            return \Response::json([
                 'error' => $error
             ]);
         }
@@ -158,10 +171,20 @@ class TournamentSignUpMiddleware
                 $captain = Player::where('email', '=', $theRequests['email'])->first();
             } else {
                 $captain = new Player();
-                $captain->setAttribute('username', $request->input('username'));
-                $captain->setAttribute('email', $request->input('email'));
-                $captain->setAttribute('name', $request->input('name'));
-                $captain->setAttribute('phone', $request->input('phone'));
+                if($request->has('username') and $request->has('username')!='' and $request->has('username')!= null){
+                    $captain->username = $request->input('username');
+                }else{
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $charactersLength = strlen($characters);
+                    $username = '';
+                    for ($i = 0; $i < 12; $i++) {
+                        $username .= $characters[rand(0, $charactersLength - 1)];
+                    }
+                    $captain->username = $username;
+                }
+                $captain->email = $request->input('email');
+                $captain->name = $request->input('name');
+                $captain->phone = $request->input('phone');
                 $captain->save();
             }
 
@@ -185,7 +208,17 @@ class TournamentSignUpMiddleware
                         $player = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->first();
                     } else {
                         $player = new Player();
-                        $player->username = $request->input('teammate-' . Numbers::toWord($i) . '-username');
+                        if($request->has('teammate-' . Numbers::toWord($i) . '-username') and $request->input('teammate-' . Numbers::toWord($i) . '-username')!='' and $request->input('teammate-' . Numbers::toWord($i) . '-username')!=null) {
+                            $player->username = $request->input('teammate-' . Numbers::toWord($i) . '-username');
+                        }else{
+                            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            $charactersLength = strlen($characters);
+                            $username = '';
+                            for ($i = 0; $i < 12; $i++) {
+                                $username .= $characters[rand(0, $charactersLength - 1)];
+                            }
+                            $player->username = $username;
+                        }
                         $player->email = $request->input('teammate-' . Numbers::toWord($i) . '-email');
                         $player->save();
                     }
@@ -207,7 +240,19 @@ class TournamentSignUpMiddleware
                         $player = Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email'])->first();
                     } else {
                         $player = new Player();
-                        $player->username = $request->input('alternate-' . Numbers::toWord($i) . '-username');
+
+
+                        if($request->has('alternate-' . Numbers::toWord($i) . '-username') and $request->input('alternate-' . Numbers::toWord($i) . '-username')!='' and $request->input('alternate-' . Numbers::toWord($i) . '-username')!=null) {
+                            $player->username = $request->input('alternate-' . Numbers::toWord($i) . '-username');
+                        }else{
+                            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            $charactersLength = strlen($characters);
+                            $username = '';
+                            for ($i = 0; $i < 12; $i++) {
+                                $username .= $characters[rand(0, $charactersLength - 1)];
+                            }
+                            $player->username = $username;
+                        }
                         $player->email = $request->input('alternate-' . Numbers::toWord($i) . '-email');
                         $player->save();
                     }
@@ -221,10 +266,10 @@ class TournamentSignUpMiddleware
                 }
             }
         } catch (Exception $ex) {
-            DB::rollBack();
-            return Response::json(['error' => [$ex->getMessage()]]);
+            \DB::rollBack();
+            return \Response::json(['error' => [$ex->getMessage()]]);
         }
-        DB::commit();
+        \DB::commit();
 
 
         return $next($request);
