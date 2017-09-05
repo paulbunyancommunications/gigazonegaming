@@ -46,6 +46,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $exist = $I->executeJS("var myElem = document.getElementById('".$id."');if (myElem === null){return 0;}else{return 1;}");
         if($exist == "1" or $exist == 1){
+            $I->scrollTo(['id' => $id ]);
             $I->waitForElementVisible(['id' => $id ], $this::TEXT_WAIT_TIMEOUT);
             foreach($values as $key => $value){
                 $I->dontSeeOptionIsSelected(['id' => $id ], $value);
@@ -66,6 +67,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $exist = $I->executeJS("var myElem = document.getElementById('".$id."');if (myElem === null){return 0;}else{return 1;}");
         if($exist == "1" or $exist == 1){
+            $I->scrollTo(['id' => $id ]);
             $I->waitForElementVisible(['id' => $id ], $this::TEXT_WAIT_TIMEOUT);
             foreach($values as $key => $value){
                 $I->seeOptionIsSelected(['id' => $id ], $value);
