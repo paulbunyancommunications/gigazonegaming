@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="@autoVersion('/bower_components/font-awesome/css/font-awesome.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/app.css')">
     <link rel="stylesheet" href="@autoVersion('/app/content/css/playerUpdate.css')">
-    <Title>Player Login</Title>
+    <Title>Recover Password</Title>
 </head>
 <body>
 <div class="container">
@@ -32,16 +32,15 @@
                         <div class="col-lg-12">
                             <form id="login-form" method="POST" role="form">
                                 <div class="form-group">
-                                    <h2 class="form-signin-heading">Please Sign In</h2>
+                                    <h2 class="form-signin-heading">Password Recovery</h2>
                                     {{ csrf_field() }}
 
-                                    <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="{{$email}}">
-                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                    <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address">
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="login-submit" id="login-submit" tabindex="3" class="form-control btn btn-login" value="Log In">
+                                            <input type="submit" name="reset" id="reset" tabindex="2" class="form-control btn btn-login" value="Reset Password">
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +61,13 @@
         </ul>
     </div>
 @endif
+@if (session('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li>{{session('success')}}</li>
+        </ul>
+    </div>
+@endif
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-<script src="/LeagueOfLegendsDisplay/JS/playerUpdate.js"></script>
 </html>

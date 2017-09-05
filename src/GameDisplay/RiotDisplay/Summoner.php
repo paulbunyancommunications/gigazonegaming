@@ -47,8 +47,6 @@ class Summoner{
         $this->setFLEXRank($this->api->getFLEXRank());
         $this->setFLEXRankedWinLoss($this->api->getFLEXRankedWinLoss());
 
-
-
         #dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
 //
     }

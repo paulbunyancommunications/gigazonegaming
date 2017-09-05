@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GameDisplay;
 
 use Carbon\Carbon;
+use GameDisplay\RiotDisplay\API\Api;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Championship\Team;
@@ -36,21 +37,43 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/customerPage');
     }
 
+    /* This will make a call to api to get all champions in case we cannot get champions from api for the summoners playing
+     * if that fails I have created a champion list from scratch.
+     * Warning! It may not be up to date. So be aware.
+     *  */
     public function championOverride()
     {
-        return view('/LeagueOfLegends/championOverride');
+        $allChampions = [];
+        $Url = 'https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key='.$_ENV['RIOT_API_KEY1'];
+        if(Cache::has('AllChampions')){
+            $champions = Cache::get('AllChampions');
+        }else{
+            $info = new Api();
+            if($champions = $info->apiRequest($Url)){
+                Cache::put('AllChampions',$champions,1440);
+                $champions = Cache::get('AllChampions');
+                    foreach($champions->data as $champion){
+                        array_push($allChampions,$champion->key);
+                    }
+                sort($allChampions);
+                return view('/LeagueOfLegends/championOverrideLayout')->with('allChampions',$allChampions);
+            }
+        }
+        return view('/LeagueOfLegends/championOverrideLayout')->with('allChampions',$allChampions);
     }
 
 
-    public function team1ViewDisplay()
+    public function teamViewDisplay($team)
     {
+        $teamNumber = explode('m',$team)[1];
+
         #Cache Set
-        if (Cache::has('Team1Name') && Cache::has('Team1Info') && Cache::has('Team1Color')) {
-            $teamName = Cache::get('Team1Name');
-            $teamInfo = Cache::get('Team1Info');
-            $teamColor = Cache::get('Team1Color');
+        if (Cache::has('Team'.$teamNumber.'Name') && Cache::has('Team'.$teamNumber.'Info') && Cache::has('Team'.$teamNumber.'Color')) {
+            $teamName = Cache::get('Team'.$teamNumber.'Name');
+            $teamInfo = Cache::get('Team'.$teamNumber.'Info');
+            $teamColor = Cache::get('Team'.$teamNumber.'Color');
 
-            Cache::put('Team1CacheLoadedTimeStamp', Carbon::now(), 70);
+            Cache::put('Team'.$teamNumber.'CacheLoadedTimeStamp', Carbon::now(), 70);
             return view('/LeagueOfLegends/DisplayTeam', [
                 'teamName' => $teamName,
                 'color' => $teamColor,
@@ -66,48 +89,6 @@ class GameDisplayController extends Controller
         #Data Default data
         return view('/LeagueOfLegends/DisplayAltTeam');
     }
-
-    public function team2ViewDisplay()
-    {
-#Cache Set
-        if (Cache::has('Team2Name') && Cache::has('Team2Info') && Cache::has('Team2Color')) {
-            $teamName = Cache::get('Team2Name');
-            $teamInfo = Cache::get('Team2Info');
-            $teamColor = Cache::get('Team2Color');
-
-            Cache::put('Team2CacheLoadedTimeStamp', Carbon::now(), 70);
-            return view('/LeagueOfLegends/DisplayTeam', [
-                'teamName' => $teamName,
-                'color' => $teamColor,
-                'teamColor' => $teamColor,
-                'summonerArray' => $teamInfo['summonerArray'],
-                'iconArray' => $teamInfo['iconArray'],
-                'soloRankArray' => $teamInfo['soloRankArray'],
-                'soloWinLossArray' => $teamInfo['soloWinLossArray'],
-                'flexRankArray' => $teamInfo['flexRankArray'],
-                'flexWinLossArray' => $teamInfo['flexWinLossArray']
-            ]);
-        }
-        #Data Default data
-        return view('/LeagueOfLegends/DisplayAltTeam');
-    }
-
-    protected function returnView($TeamName, $TeamInfo, $TeamColor)
-    {
-        return view('/LeagueOfLegends/DisplayTeam', [
-            'teamName' => $TeamName,
-            'color' => $TeamColor,
-            'teamColor' => $TeamColor,
-            'summonerArray' => $TeamInfo['summonerArray'],
-            'iconArray' => $TeamInfo['iconArray'],
-            'soloRankArray' => $TeamInfo['soloRankArray'],
-            'soloWinLossArray' => $TeamInfo['soloWinLossArray'],
-            'flexRankArray' => $TeamInfo['flexRankArray'],
-            'flexWinLossArray' => $TeamInfo['flexWinLossArray']
-        ]);
-
-    }
-
     public function getData(Requests\GameDisplayGetData $req)
     {
         $team = $req->team;
@@ -143,7 +124,7 @@ class GameDisplayController extends Controller
             if (Cache::get('Team'.$teamNumber.'CacheLoadedTimeStamp') < Cache::get('Team'.$teamNumber.'TimeStamp')) {
                 $returnArray[0] = 'true';
             }
-        } else {
+        }else{
             $returnArray[0] = 'true';
             return $returnArray;
         }
@@ -169,34 +150,6 @@ class GameDisplayController extends Controller
         }
     }
 
-
-    public function teamViewDisplay($tournament, $team, $color)
-    {
-        $this->buildTheTeams($tournament, $team);
-        if ($this->summonerArray[0] == "") {
-            $color = $this->setTeamColor($color);
-            return view('/LeagueOfLegends/DisplayAltTeam', [
-                'tournament' => $tournament,    #NEW
-                'teamName' => $team,
-                'color' => $color,
-            ]);
-
-        }
-
-        $color = $this->setTeamColor($color);
-        return view('/LeagueOfLegends/DisplayTeam', [
-            'tournament' => $tournament,    #NEW
-            'teamName' => $team,
-            'color' => $color,
-            'teamColor' => $color,
-            'summonerArray' => $this->summonerArray,
-            'iconArray' => $this->iconArray,
-            'soloRankArray' => $this->soloRankArray,
-            'soloWinLossArray' => $this->soloWinLossArray,
-            'flexRankArray' => $this->flexRankArray,
-            'flexWinLossArray' => $this->flexWinLossArray
-        ]);
-    }
 
     /**
      * @param $tournament
