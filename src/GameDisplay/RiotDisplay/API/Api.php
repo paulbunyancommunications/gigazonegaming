@@ -444,6 +444,7 @@ class Api{
         }
         $championImgSplashArt = [];
         $championImgIconArray = [];
+        $championRank = [];
         for($i = 0; $i < 3; $i++){
             $this->setChampionName($this->championMasteries[$i]->championId);
             array_push($championImgIconArray, "http://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/champion/$this->championName.png");
