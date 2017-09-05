@@ -204,7 +204,7 @@ class TournamentSignUpMiddleware
                 if ($request->input('teammate-' . Numbers::toWord($i) . '-username')
                     && filter_var($request->input('teammate-' . Numbers::toWord($i) . '-email'), FILTER_VALIDATE_EMAIL)
                 ) {
-                    if( Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->exists()){
+                    if(Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->exists()){
                         $player = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->first();
                     } else {
                         $player = new Player();
