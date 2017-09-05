@@ -39,4 +39,27 @@ class Acceptance extends \Codeception\Module
             }
         }
     }
+    /**
+     * Create a post
+     *
+     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param string $title
+     * @param string $content
+     */
+    public function createAPost($I, $title="", $content="") {
+
+        $I->amOnPage('/wp/wp-admin/post-new.php');
+        $I->waitForJs('return jQuery.active == 0', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->fillField(['id' => 'title'], $title);
+        $I->click(['id' => 'content-html']);
+        $I->wait(1);
+        $I->fillField(['id' => 'content'], $content);
+        $I->wait(5);
+        $I->click(['id' => 'publish']);
+        $I->waitForText('Post published', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->see('Post published');
+        $path = $I->executeJS('return document.querySelector("#sample-permalink > a").getAttribute("href")');
+        \Codeception\Util\Debug::debug($path);
+        $I->amOnPage(parse_url($path, PHP_URL_PATH));
+    }
 }

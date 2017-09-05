@@ -32,6 +32,46 @@ class PlayersControllerCest extends BaseAcceptance
         exec('php artisan db:seed --class=DatabaseSeeder');
         $this->faker = \Faker\Factory::create();
     }
+    /**
+     * Create the test admin user
+     *
+     * @param AcceptanceTester $I
+     * @param $id
+     * a css # id of the element
+     * @param $values
+     * a single value or an array of values for the select
+     */
+    protected function localDontSeeOptionIsSelected(AcceptanceTester $I, $id, $values)
+    {
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $exist = $I->executeJS("var myElem = document.getElementById('".$id."');if (myElem === null){return 0;}else{return 1;}");
+        if($exist == "1" or $exist == 1){
+            $I->waitForElementVisible(['id' => $id ], $this::TEXT_WAIT_TIMEOUT);
+            foreach($values as $key => $value){
+                $I->dontSeeOptionIsSelected(['id' => $id ], $value);
+            }
+        }
+    }
+    /**
+     * Create the test admin user
+     *
+     * @param AcceptanceTester $I
+     * @param $id
+     * a css # id of the element
+     * @param $values
+     * a single value or an array of values for the select
+     */
+    protected function localSeeOptionIsSelected(AcceptanceTester $I, $id, $values)
+    {
+        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $exist = $I->executeJS("var myElem = document.getElementById('".$id."');if (myElem === null){return 0;}else{return 1;}");
+        if($exist == "1" or $exist == 1){
+            $I->waitForElementVisible(['id' => $id ], $this::TEXT_WAIT_TIMEOUT);
+            foreach($values as $key => $value){
+                $I->seeOptionIsSelected(['id' => $id ], $value);
+            }
+        }
+    }
 
     /**
      * @param AcceptanceTester $I
@@ -71,9 +111,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click("Save");
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Player created successfully!', $this::TEXT_WAIT_TIMEOUT * 1.5);
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $this->localDontSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localDontSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
     /**
      * @param AcceptanceTester $I
@@ -96,9 +136,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
-        $I->seeOptionIsSelected('select#game_id', 'tester-game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $this->localSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localDontSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
     /**
      * @param AcceptanceTester $I
@@ -121,9 +161,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
-        $I->seeOptionIsSelected(['id' => 'game_id'], 'tester-game');
-        $I->seeOptionIsSelected(['id' => 'tournament_id'], 'Tester Tournament');
-        $I->dontSeeOptionIsSelected(['id' => 'team_id'], 'Tester Team');
+        $this->localSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localDontSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
     /**
      * @param AcceptanceTester $I
@@ -146,9 +186,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
-        $I->seeOptionIsSelected('select#game_id', 'tester-game');
-        $I->seeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->seeOptionIsSelected('select#team_id', 'Tester Team');
+        $this->localSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
 
     /**
@@ -236,9 +276,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $this->localDontSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localDontSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
     /**
      * @param AcceptanceTester $I
@@ -310,9 +350,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $this->localDontSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localDontSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
     /**
      * @param AcceptanceTester $I
@@ -421,9 +461,9 @@ class PlayersControllerCest extends BaseAcceptance
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("The phone number isn't a valid one, or you forgot the area code", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("The phone number isn't a valid one, or you forgot the area code");
-        $I->dontSeeOptionIsSelected('select#game_id', 'Tester Game');
-        $I->dontSeeOptionIsSelected('select#tournament_id', 'Tester Tournament');
-        $I->dontSeeOptionIsSelected('select#team_id', 'Tester Team');
+        $this->localDontSeeOptionIsSelected($I, 'game_id', ['tester-game']);
+        $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
+        $this->localDontSeeOptionIsSelected($I, 'team_id', ['Tester Team']);
     }
     /**
      * @param AcceptanceTester $I
