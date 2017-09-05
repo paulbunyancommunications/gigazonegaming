@@ -25,9 +25,9 @@ function showTeams(){
 showTeams();
 
 /* These functions make sure there is a valid selection in all of the dropdowns before the submit button is displayed */
-$('#Color,#Team,#Color-1,#Team-1,#Tournament').change(function() {
+$("#Color,#Team,#Color-1,#Team-1,#Tournament").change(function() {
     if($("#Tournament").find("option:selected").text() !== "Select a Tournament" && $("#Color").find("option:selected").text() !== "Select a Color" && $("#Team").find("option:selected").text() !== "Select a Team" && $("#Color-1").find("option:selected").text() !== "Select a Color" && $("#Team-1").find("option:selected").text() !== "Select a Team") {
-        $('#submit').removeClass('startButtonDisabled').prop('disabled', false);
+        $("#submit").removeClass("startButtonDisabled").prop("disabled", false);
     }
     else{
         $("#submit").addClass("startButtonDisabled").prop("disabled", true);
@@ -50,13 +50,13 @@ $.ajaxSetup({
 * Caches Champions for team 1 and 2
 */
 function submitCache(){
-    $('#loader').removeClass("hidden");
-    $('#submit').addClass("hidden");
+    $("#loader").removeClass("hidden");
+    $("#submit").addClass("hidden");
     document.getElementById("info").innerHTML = "Please Wait...";
 
     ///Set up cache arrays for team and color
-    const team = [$('#Team').find("option:selected").text(), $( '#Team-1').find("option:selected").text()];
-    const color = [$('#Color').find("option:selected").text(), $('#Color-1').find("option:selected").text()];
+    const team = [$("#Team").find("option:selected").text(), $( "#Team-1").find("option:selected").text()];
+    const color = [$("#Color").find("option:selected").text(), $("#Color-1").find("option:selected").text()];
 
     ///Execute cache controller with ajax
     $.ajax({
@@ -64,7 +64,7 @@ function submitCache(){
         type: "GET",
         url: "/app/GameDisplay/cache",
         data: {
-            tournament: $('#Tournament').find("option:selected").text(),
+            tournament: $("#Tournament").find("option:selected").text(),
             team: team,
             color: color,
         },
@@ -81,8 +81,8 @@ function submitCache(){
             console.log(data);
 
             //Remove loading animation and restore the submit button.
-            $('#loader').addClass("hidden");
-            $('#submit').removeClass("hidden");
+            $("#loader").addClass("hidden");
+            $("#submit").removeClass("hidden");
         }
 
     });
@@ -93,14 +93,14 @@ function submitCache(){
  */
 function getChampions() {
     document.getElementById("info").innerHTML = "Please Wait...";
-    const team = [$( '#Team').find("option:selected").text(), $( '#Team-1').find("option:selected").text()];
+    const team = [$( "#Team").find("option:selected").text(), $( "#Team-1").find("option:selected").text()];
     $.ajax({
         method: "GET",
         type: "GET",
         url: "/app/GameDisplay/cacheChampions",
         success: function(data){
             console.log(data);
-            if(data.ErrorCode === 'true'){
+            if(data.ErrorCode === "true"){
                 document.getElementById("info").innerHTML = data.ErrorMessage;
             }else{
                 document.getElementById("info").innerHTML = data.Champions;
@@ -114,13 +114,13 @@ function getChampions() {
  * Clears all the cache.
 */
 function clearCache(){
-    document.getElementById('info').innerHTML = 'Please Wait...';
+    document.getElementById("info").innerHTML = "Please Wait...";
     $.ajax({
         method: "GET",
         type: "GET",
         url: "/app/GameDisplay/clear",
         success: function(data){
-            document.getElementById('info').innerHTML = data;
+            document.getElementById("info").innerHTML = data;
         }
     });
 }
