@@ -3,11 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\Championship\Player;
-use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
 use Closure;
-use Cocur\Slugify\Slugify;
 use Pbc\Bandolier\Type\Numbers;
 
 class TournamentSignUpMiddleware
@@ -21,7 +19,7 @@ class TournamentSignUpMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $slug = new Slugify();
+
         if($request->input('tournament') !== $request->route()->getName()) {
             return \Response::json(['error' => ['Tournament route mismatch']]);
         }
@@ -61,48 +59,35 @@ class TournamentSignUpMiddleware
         $teams = $tournament->Teams()->get();
         $playerExist = [];
         $usernameExists = [];
-        if(!isset($theRequests['username'])) {
-            $theRequests['username'] = $slug->slugify($theRequests['name']);
-        }
 
         // for if the the main contact exists as a player in the system already
-        if (Player::where('email', '=', $theRequests['email'])->exists()) {
+        if (isset($theRequests['email']) AND Player::where('email', '=', $theRequests['email'])->exists()) {
             $id = Player::where('email', '=', $theRequests['email'])->first()->id;
             $playerExist[$theRequests['email']] =  $id;
         }
         // if main contact user name was submitted then check if it already exists
-        if (Player::where('username', '=', $theRequests['username'])->exists()) {
+        if (isset($theRequests['username']) AND Player::where('username', '=', $theRequests['username'])->exists()) {
             $email = Player::where('username', '=', $theRequests['username'])->first()->email;
             $username =  $theRequests['username'];
             $usernameExists[$email] =  $username;
         }
         // run through all the other teammates and alternates and check if they exist
         for($i=1; $i < $tournament->max_players; $i++) {
-            if ($request->input('teammate-'.Numbers::toWord($i).'-email') AND Player::where('email', '=', $request->input('teammate-'.Numbers::toWord($i).'-email'))->exists()) {
-                $email = $request->input('teammate-'.Numbers::toWord($i).'-email');
-                $id = Player::where('email', '=', $email)->first()->id;
+            if (isset($theRequests['teammate-'.Numbers::toWord($i).'-email']) AND Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->exists()) {
+                $id = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->first()->id;
+                $email = $theRequests['teammate-'.Numbers::toWord($i).'-email'];
                 $playerExist[$email] = $id;
             }//if not dont even push it to the array so we run faster through each
-            if ($request->input('alternate-' . Numbers::toWord($i) . '-email') AND Player::where('email', '=', $request->input('alternate-' . Numbers::toWord($i) . '-email'))->exists()) {
-                $email =  $request->input('alternate-' . Numbers::toWord($i) . '-email');
-                $id =  Player::where('email', '=', $email)->first()->id;
+            if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-email']) AND Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email'])->exists()) {
+                $id =  Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'])->first()->id;
+                $email =  $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'];
                 $playerExist[$email] =  $id;
-            }
-            // if no user name was passed for a teammate and there is a name then create a user name for them
-            if(!$request->input('teammate-'.Numbers::toWord($i).'-username') AND $request->input('teammate-'.Numbers::toWord($i).'-name')) {
-                $theRequests['teammate-'.Numbers::toWord($i).'-username'] = $slug->slugify($theRequests['teammate-'.Numbers::toWord($i).'-name']);
-            }
-            // if a username was crated for this teammate check if the player already exists.
-            if (isset($theRequests['teammate-' . Numbers::toWord($i) . '-username']) AND Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-username'])->exists()) {
+            }//if not dont even push it to the array so we run faster through each
+            if (isset($theRequests['teammate-'.Numbers::toWord($i).'-username']) AND Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-username'])->exists()) {
                 $email = Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-username'])->first()->email;
                 $username = $theRequests['teammate-'.Numbers::toWord($i).'-username'];
                 $usernameExists[$email] = $username;
             }
-            // if there's no user name but a name was passed for the alt player, create a user name for them
-            if(!$request->input('alternate-' . Numbers::toWord($i) . '-username') AND $request->input('alternate-' . Numbers::toWord($i) . '-name')) {
-                $theRequests['alternate-' . Numbers::toWord($i) . '-username'] = $slug->slugify($request->input('alternate-' . Numbers::toWord($i) . '-name'));
-            }
-            // if there's a user name created check if the username already exists
             if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-username']) AND Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-username'])->exists()) {
                 $email =  Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-username'])->first()->email;
                 $username =  $theRequests['alternate-' . Numbers::toWord($i) . '-username'];
@@ -156,7 +141,7 @@ class TournamentSignUpMiddleware
             }
         }
         if (count($error)!=0) {
-            return \Response::json([
+            return Response::json([
                 'error' => $error
             ]);
         }
@@ -165,15 +150,15 @@ class TournamentSignUpMiddleware
             // make new team
             $team = new Team();
             $team->tournament_id = $tournament->id;
-            $team->name =  $request->input('team-name', 'Team ' . $request->input('name'));
+            $team->name =  $request->input('team-name');
             $team->save();
 
             // add captain
-            if( Player::where('email', '=', $request->input('email'))->exists()){
-                $captain = Player::where('email', '=', $request->input('email'))->first();
+            if( Player::where('email', '=', $theRequests['email'])->exists()){
+                $captain = Player::where('email', '=', $theRequests['email'])->first();
             } else {
                 $captain = new Player();
-                $captain->setAttribute('username', $theRequests['username']);
+                $captain->setAttribute('username', $request->input('username'));
                 $captain->setAttribute('email', $request->input('email'));
                 $captain->setAttribute('name', $request->input('name'));
                 $captain->setAttribute('phone', $request->input('phone'));
@@ -193,14 +178,14 @@ class TournamentSignUpMiddleware
 
             // add other players
             for ($i = 1; $i < $tournament->max_players; $i++) {
-                if (isset($theRequests['teammate-' . Numbers::toWord($i) . '-username'])
+                if ($request->input('teammate-' . Numbers::toWord($i) . '-username')
                     && filter_var($request->input('teammate-' . Numbers::toWord($i) . '-email'), FILTER_VALIDATE_EMAIL)
                 ) {
                     if( Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->exists()){
                         $player = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->first();
                     } else {
                         $player = new Player();
-                        $player->username = $theRequests['teammate-' . Numbers::toWord($i) . '-username'];
+                        $player->username = $request->input('teammate-' . Numbers::toWord($i) . '-username');
                         $player->email = $request->input('teammate-' . Numbers::toWord($i) . '-email');
                         $player->save();
                     }
@@ -215,14 +200,14 @@ class TournamentSignUpMiddleware
             }
             // add other players alternate-###-email alternate-###-username
             for ($i = 1; $i < $tournament->max_players; $i++) {
-                if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-username'])
+                if ($request->input('alternate-' . Numbers::toWord($i) . '-username')
                     && filter_var($request->input('alternate-' . Numbers::toWord($i) . '-email'), FILTER_VALIDATE_EMAIL)
                 ) {
                     if( Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email'])->exists()){
                         $player = Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email'])->first();
                     } else {
                         $player = new Player();
-                        $player->username = $theRequests['alternate-' . Numbers::toWord($i) . '-username'];
+                        $player->username = $request->input('alternate-' . Numbers::toWord($i) . '-username');
                         $player->email = $request->input('alternate-' . Numbers::toWord($i) . '-email');
                         $player->save();
                     }
@@ -236,10 +221,10 @@ class TournamentSignUpMiddleware
                 }
             }
         } catch (Exception $ex) {
-            \DB::rollBack();
+            DB::rollBack();
             return Response::json(['error' => [$ex->getMessage()]]);
         }
-        \DB::commit();
+        DB::commit();
 
 
         return $next($request);
