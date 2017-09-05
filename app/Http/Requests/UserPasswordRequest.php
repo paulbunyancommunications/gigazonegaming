@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests;
+
 use App\Http\Requests\Request;
 
-class PlayerRegisterRequest extends Request
+class UserPasswordRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,7 @@ class PlayerRegisterRequest extends Request
     public function rules()
     {
         return [
-            'username' => 'required',
-            'email' => 'required|email',
+            'password' => 'required|confirmed'
         ];
     }
 }

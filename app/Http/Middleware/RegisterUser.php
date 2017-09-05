@@ -1,5 +1,5 @@
 <?php
-namespace App\Http;
+namespace App\Http\Middleware;
 /**
  * Created by PhpStorm.
  * User: Roman
@@ -7,7 +7,6 @@ namespace App\Http;
  * Time: 10:29 AM
  */
 use App\Http\Requests\Auth\PlayerRegisterRequest;
-use App\PlayerUpdate;
 
 class RegisterUser
 {
@@ -21,15 +20,14 @@ class RegisterUser
     public function register()
     {
         $this->validateRequest($this->request);
-        $message = $this->createUser($this->request);
-        return view('/LeagueOfLegends/register')->withMessage($message);
-
+        return $this->createUser($this->request);
     }
 
     protected function validateRequest($request){
 
         return $request;
     }
+
     protected function createUser($request){
 
         return PlayerUpdate::generateUser($request);

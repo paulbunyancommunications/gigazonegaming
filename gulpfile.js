@@ -118,7 +118,7 @@ elixir.extend('sassy', function(source, destination, options){
             .pipe(sourcemaps.write('./maps'))
             .pipe(gulp.dest(destination));
     }).watch(source)
-})
+});
 
 /**
  * Delete task to remove files/folders
@@ -128,7 +128,7 @@ elixir.extend('delete', function(toClean){
     new Task('delete', function(){
         return del(toClean)
     })
-})
+});
 
 /**
  * Main gulp elixir task
