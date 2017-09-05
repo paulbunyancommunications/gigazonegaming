@@ -256,6 +256,7 @@ class TournamentSignUpMiddleware
 
         return $next($request);
     }
+    
     private function error($return){
         return response(['error' => [$return]],200);
     }
