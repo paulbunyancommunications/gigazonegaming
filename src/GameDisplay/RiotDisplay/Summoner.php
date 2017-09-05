@@ -136,14 +136,6 @@ class Summoner{
     }
 
     /**
-     * @param mixed $top3ChampionStats
-     */
-    public function setTop3ChampionStats($top3ChampionStats)
-    {
-        $this->top3ChampionStats = $top3ChampionStats;
-    }
-
-    /**
      * @param mixed $top3Champions
      */
     public function setTop3Champions($top3Champions)
@@ -230,7 +222,7 @@ class Summoner{
 
     /**
      * @return mixed
-     * Returns two arrays. [0] is the champion Icon [1] is the champion splash art
+     * Returns two arrays. [0] is the champion Icon [3] is the champion splash art
      */
     public function getTop3Champions()
     {

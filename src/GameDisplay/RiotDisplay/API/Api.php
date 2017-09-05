@@ -440,17 +440,20 @@ class Api{
      */
     public function getTop3Champions(){
         if($this->championMasteries === false){
-            return [false,false];
+            return [false,false,false,false];
         }
         $championImgSplashArt = [];
         $championImgIconArray = [];
         $championRank = [];
+        $championPoints = [];
         for($i = 0; $i < 3; $i++){
             $this->setChampionName($this->championMasteries[$i]->championId);
             array_push($championImgIconArray, "http://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/champion/$this->championName.png");
             array_push($championImgSplashArt, 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'.$this->championName.'_0.png');
+            array_push($championRank, $this->championMasteries[$i]->championLevel);
+            array_push($championPoints, $this->championMasteries[$i]->championPoints);
         }
-        return [$championImgIconArray,$championImgSplashArt];
+        return [$championImgIconArray,$championImgSplashArt,$championRank,$championPoints];
     }
 
 

@@ -37,7 +37,9 @@ class GameDisplayController extends Controller
                 'flexRankArray' => $teamInfo['flexRankArray'],
                 'flexWinLossArray' => $teamInfo['flexWinLossArray'],
                 'top3ChampionIcons' => $teamInfo['top3ChampionIcons'],
-                'top3ChampionImages' => $teamInfo['top3ChampionImages']
+                'top3ChampionImages' => $teamInfo['top3ChampionImages'],
+                'top3ChampionRanks' => $teamInfo['top3ChampionRanks'],
+                'top3ChampionPionts' => $teamInfo['top3ChampionPionts']
             ]);
         }
         #Data Default data

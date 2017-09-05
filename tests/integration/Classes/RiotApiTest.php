@@ -95,6 +95,8 @@ class RiotApiTest extends \TestCase
         $this->API->requestDDragonVersion();
         $this->assertSame(count($this->API->getTop3Champions()[0]), 3);
         $this->assertSame(count($this->API->getTop3Champions()[1]), 3);
+        $this->assertSame(count($this->API->getTop3Champions()[2]), 3);
+        $this->assertSame(count($this->API->getTop3Champions()[3]), 3);
         $this->assertSame((array)$this->API->getChampionMasteries()[0],(array)Cache::get($this->API->getSummonerId().'MasterieData')[0]);
     }
 }
