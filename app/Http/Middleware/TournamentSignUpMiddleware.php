@@ -226,6 +226,9 @@ class TournamentSignUpMiddleware
         }
         DB::commit();
 
+        // add message for the return that will be tacked onto the formmail message
+        $request->merge(array("customRequestBody" => View::make('tournament/'.$request->route()->getName(), $tournament)->render()));
+
 
         return $next($request);
     }
