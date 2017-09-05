@@ -21,7 +21,7 @@ class TournamentSignUpMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this->mandle($request, $next);
+        return $this->mandle($request, $next);
     }
         /**
          * Handle an incoming request.
