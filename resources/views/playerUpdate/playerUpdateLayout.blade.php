@@ -32,7 +32,7 @@
             <label for="phone">Phone: </label>
             <input type="text" name="phone" id="phone" placeholder="Phone" value="@yield('Phone')"/>
         </div>
-        <button class="btn" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
+        <button class="btn" id ="update" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
     </form>
     @if ($errors->any())
         <div class="alert alert-danger text-center">
