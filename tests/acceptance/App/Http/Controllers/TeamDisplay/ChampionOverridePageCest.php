@@ -43,12 +43,12 @@ class ChampionOverridePageCest extends \BaseAcceptance
     public function tryToSubmitTeam1andTeam2Champions(AcceptanceTester $I){
         $I->wantTo('Submit Champions and see the correct response "Team 1 Champions Successfully Updated!!"');
         $I->selectOption('#Team','Team 1');
-        $I->fillField('#player1','Ashe');
-        $I->fillField('#player2','Ashe');
-        $I->fillField('#player3','Ashe');
-        $I->fillField('#player4','Ashe');
-        $I->fillField('#player5','Ashe');
+        $I->selectOption('#player1','Ashe');
+        $I->selectOption('#player2','Ashe');
+        $I->selectOption('#player3','Ashe');
+        $I->selectOption('#player4','Ashe');
+        $I->selectOption('#player5','Ashe');
         $I->click('#SubmitChamps');
-        $I->waitForText('Team 1 Champions Successfully Updated!!', 10, 'h3');
+        $I->waitForText('Team 1 Champions Successfully Updated!!', 30, 'h3');
     }
 }

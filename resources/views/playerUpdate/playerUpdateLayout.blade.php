@@ -33,8 +33,22 @@
         </div>
         <button class="btn" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
     </form>
-    <div class="mainDiv text-center">
+    @if ($errors->any())
+        <div class="alert-danger text-center">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
+                @endforeach
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert-success text-center">
+            {{session('success')}}
+        </div>
+    @endif
+    <div class="mainDiv">
         @yield('Form')
+    </div>
+    <div class="text-center">
         <button class="btn margin-sm-top" id="logout" onclick="window.open('/app/player/logout','_self')">Logout</button>
     </div>
 </body>

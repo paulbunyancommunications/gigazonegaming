@@ -31,7 +31,8 @@ class SimonCacheController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
-    protected $something="";
+    protected $top3ChampionIcons = [];
+    protected $top3ChampionImgs = [];
 
 
     public function submitCache(Requests\SimonCacheSubmitCache $req)
@@ -144,6 +145,8 @@ class SimonCacheController extends Controller
             array_push($this->soloWinLossArray, $player->getSoloRankedWinLoss());
             array_push($this->flexRankArray, $player->getFLEXRank());
             array_push($this->flexWinLossArray, $player->getFLEXRankedWinLoss());
+            array_push($this->top3ChampionIcons, $player->getTop3Champions()[0]);
+            array_push($this->top3ChampionImgs, $player->getTop3Champions()[1]);
         }
     }
 
@@ -171,6 +174,8 @@ class SimonCacheController extends Controller
             'soloWinLossArray' => $this->soloWinLossArray,
             'flexRankArray' => $this->flexRankArray,
             'flexWinLossArray' => $this->flexWinLossArray,
+            'top3ChampionIcons' => $this->top3ChampionIcons,
+            'top3ChampionImages' => $this->top3ChampionImgs
         );
         return $team;
     }

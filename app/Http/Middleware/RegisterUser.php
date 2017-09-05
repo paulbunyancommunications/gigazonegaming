@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Auth;
+namespace App\Http\Middleware;
 /**
  * Created by PhpStorm.
  * User: Roman
@@ -7,7 +7,6 @@ namespace App\Models\Auth;
  * Time: 10:29 AM
  */
 use App\Http\Requests\Auth\PlayerRegisterRequest;
-use App\Models\Auth\PlayerUpdate;
 
 class RegisterUser
 {

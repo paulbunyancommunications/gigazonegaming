@@ -123,7 +123,7 @@ Route::group(['middleware' => ['WPAdmin']], function () {
     Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
     Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
 // Champion Override Page
-    Route::get('/GameDisplay/override',function (){return view('/LeagueOfLegends/championOverride');});
+    Route::get('/GameDisplay/override','GameDisplay\ChampionOverrideController@pageLoad');
     Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
 });
 
@@ -145,15 +145,26 @@ Route::get('/GameDisplay/getTeamName', function (){
     return false;});
 Route::get('/GameDisplay/customer', function (){return view('/LeagueOfLegends/customerPage');});
 
-Route::get('/player/login','Auth\PlayerUpdateController@login');
+Route::get('/player/login',function(){
+    return view('/playerUpdate/login')->withEmail("")->with('success',"");
+});
 Route::post('/player/login','Auth\PlayerUpdateController@postLogin');
-Route::get('/player/register','Auth\PlayerUpdateController@register');
+
+Route::get('/player/register',function(){
+    return view('/playerUpdate/register')->with('success',"");
+});
 Route::post('/player/register','Auth\PlayerUpdateController@postRegister');
 Route::get('/player/playerUpdate','Auth\PlayerUpdateController@playerUpdate');
 Route::post('/player/playerUpdate','Auth\PlayerUpdateController@postUpdate');
 Route::get('/player/logout','Auth\PlayerUpdateController@logout');
 Route::post('/player/logout','Auth\PlayerUpdateController@postLogin');
-Route::get('/player/recover','Auth\PlayerUpdateController@recover');
+Route::get('/player/recover',function (){
+    return view('/playerUpdate/recover');
+});
+
 Route::post('/player/recover','Auth\PlayerUpdateController@postRecover');
-Route::get('/player/createPassword/{token}','Auth\PlayerUpdateController@password');
+Route::get('/player/createPassword/{token}',function (){
+    return view('/playerUpdate/createPassword')->with('success','');
+});
+
 Route::post('/player/createPassword/{token}','Auth\PlayerUpdateController@createPassword');

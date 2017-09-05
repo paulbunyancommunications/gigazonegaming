@@ -16,10 +16,10 @@ function getTeamNames(){
             url: "/app/GameDisplay/getTeamName",
             success: function(data){
                 if(data){
-                    let color1 = [];
-                    let color2 = [];
-                    let color_1 = data[2].split(";");
-                    let color_2 = data[3].split(";");
+                    var color1 = [];
+                    var color2 = [];
+                    var color_1 = data[2].split(";");
+                    var color_2 = data[3].split(";");
                     for(let i=0;i<4;i++) {
                         color1.push(color_1[i].split(":"));
                         color2.push(color_2[i].split(":"));
