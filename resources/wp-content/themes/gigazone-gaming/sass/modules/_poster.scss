@@ -25,10 +25,14 @@ Usage:
   overflow: hidden;
   @include margin-top(1.5);
   @include margin-bottom(.5);
+  border: 6px solid $color-gz-gray;
 
 
   &:hover a {
     color: $color-gz-orange;
+    &:visited {
+      color: $color-gz-orange !important;
+    }
   }
 
   &-content-container, &-image-container {
@@ -57,7 +61,7 @@ Usage:
       color: $color-white
     }
     &:active, &:hover {
-      color: $color-gz-orange;
+      color: $color-gz-orange !important;
     }
   }
   &-title {
@@ -78,21 +82,26 @@ Usage:
       text-align: center;
       color: $color-gz-gray;
       @include font-size(1.5);
-      @include line-height(1.5);
+      @include line-height(1.125);
       @include kerning(.5);
-      @include margin-bottom(0);
-      @include margin-top(0);
-
+      @include margin-bottom(.25);
+      @include margin-top(.25);
+      @include padding-left(.375);
+      @include padding-right(.375);
     }
   }
 
   &-description {
+    text-transform: uppercase;
+    font-weight: normal;
     @include font-size(1.25);
     @include line-height(1.375);
     text-align: center;
     color: $color-white;
     @include margin-top(.125);
     @include margin-bottom(0);
+    @include padding-left(.375);
+    @include padding-right(.375);
   }
 
   &-image {

@@ -2,8 +2,8 @@
 
 namespace App\Models\Championship;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Championship\Relation\PlayerRelationable;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Tournament
@@ -20,7 +20,22 @@ class Tournament extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'game_id', 'max_players','updated_by','updated_on'];
+    protected $fillable = [
+        'name',
+        'title',
+        'max_players',
+        'max_teams',
+        'updated_by',
+        'updated_on',
+        'game_id',
+        'overflow',
+        'sign_up_open',
+        'sign_up_close',
+        'occurring',
+        'form',
+        'form_shortcode',
+        'overflow'
+    ];
 
     /**
      * @var array
@@ -93,4 +108,5 @@ class Tournament extends Model
     {
         return $this->teams()->get();
     }
+
 }

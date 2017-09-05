@@ -23,6 +23,7 @@ add_shortcode('build-form', [$bootstrap, 'formFieldsShortCode']);
 add_shortcode('env', [$bootstrap, 'getEnvShortCode']);
 add_shortcode('user-profile', [$bootstrap, 'userProfileShortCode']);
 add_shortcode('get-option', ["\\Pbc\\GigaZoneGaming\\ShortCodes\\Option", 'shortCode']);
+add_shortcode('tournament-signup-form', [$bootstrap, 'tournamentSignUpFormShortCode']);
 
 
 // get image by id, usage [get-image 12345]
