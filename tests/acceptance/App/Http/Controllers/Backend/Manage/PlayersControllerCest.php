@@ -136,7 +136,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click(['id'=>"submit"]);
         $I->wait(5);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
+        $I->waitForText('Player updated successfully', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
         $this->localSeeOptionIsSelected($I, 'game_id', ['tester-game']);
         $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
@@ -161,7 +161,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click(['id'=>"submit"]);
         $I->wait(5);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
+        $I->waitForText('Player updated successfully', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
         $this->localSeeOptionIsSelected($I, 'game_id', ['tester-game']);
         $this->localSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
@@ -186,7 +186,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->click(['id'=>"submit"]);
         $I->wait(5);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
+        $I->waitForText('Player updated successfully', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
         $this->localSeeOptionIsSelected($I, 'game_id', ['tester-game']);
         $this->localSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
@@ -276,7 +276,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'email'], $email2);
         $I->click(['id' => 'submit']);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
-        $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
+        $I->waitForText('Player updated successfully', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
         $this->localDontSeeOptionIsSelected($I, 'game_id', ['tester-game']);
         $this->localDontSeeOptionIsSelected($I, 'tournament_id', ['Tester Tournament']);
@@ -381,7 +381,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone1);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
@@ -389,7 +389,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone2);
         $I->fillField(['id' => 'name'], $name);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
@@ -397,7 +397,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone3);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
@@ -405,7 +405,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone4);
         $I->fillField(['id' => 'name'], $name);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
@@ -413,7 +413,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone5);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
@@ -421,7 +421,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone6);
         $I->fillField(['id' => 'name'], $name);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
@@ -429,7 +429,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone7);
         $I->fillField(['id' => 'name'], $nameB);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$nameB" );
@@ -437,7 +437,7 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone8);
         $I->fillField(['id' => 'name'], $name);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
@@ -452,14 +452,14 @@ class PlayersControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'phone'], $phone10);
         $I->fillField(['id' => 'name'], $name);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Update Player:', $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->seeInField("#name", "$name" );
         $I->wantTo('update a player on the management page with a valid number11');
         $I->fillField(['id' => 'phone'], $phone11);
         $I->click(['id'=>"submit"]);
-        $I->wait(5);
+        $I->wait(10);
         $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText("The phone number isn't a valid one, or you forgot the area code", $this::TEXT_WAIT_TIMEOUT * 1.5 );
         $I->see("The phone number isn't a valid one, or you forgot the area code");
