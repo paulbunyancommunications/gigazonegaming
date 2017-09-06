@@ -137,6 +137,9 @@ class RiotApiMock{
         }
         throw new Exception("Call checkCurrentGameStatus before calling this method. $this->summoner is not in game");
     }
+    public function getTop3Champions(){
+        return [false,false,false,false];
+    }
 }
 //Summoner in game
 class RiotApiMock_2
@@ -195,5 +198,9 @@ class RiotApiMock_2
             return "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_0.jpg";
         }
         throw new Exception("Call checkCurrentGameStatus before calling this method. $this->summoner is not in game");
+    }
+
+    public function getTop3Champions(){
+        return [false,false,false,false];
     }
 }

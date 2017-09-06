@@ -80,7 +80,6 @@ class GameDisplayControllerTest extends \TestCase
         $response = $this->call('GET', '/GameDisplay/team1');
         $content = $response->getOriginalContent();
         $data = $content->getData();
-
         foreach($data as $key => $value){
             $this->assertSame($value, Fixtures::get('team1' . $key));
         }
