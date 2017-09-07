@@ -96,18 +96,16 @@
             <div id="imageInfo2{{$i}}" class="hidden">Summoner level too low to have masteries</div>
             <div id="imageInfo3{{$i}}" class="hidden">Summoner level too low to have masteries</div>
         @else
-            <div id="imageInfo1{{$i}}" >{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}</div>
-            <div id="imageInfo2{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}</div>
-            <div id="imageInfo3{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</div>
+            <div id="imageInfo1{{$i}}" ><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][0]}}.png"></div>
+            <div id="imageInfo2{{$i}}" class="hidden"><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][1]}}.png"></div>
+            <div id="imageInfo3{{$i}}" class="hidden"><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][2]}}.png"></div>
         @endif
     @stop
     @section('Player'.$i.'MasteriesSplashArt')
         <div style="width:100%; height:100%;position:absolute;">
-            <img id="splash1{{$i}}" class="back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg" />
-            <img id="splash2{{$i}}" class="hidden back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg" />
-            <img id="splash3{{$i}}" class="hidden back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg" />
+            <img id='splash1{{$i}}' class="back-splash" src="{{$top3ChampionImages[$i][0]}}"/>
+            <img id='splash2{{$i}}' class="hidden back-splash" src="{{$top3ChampionImages[$i][1]}}"/>
+            <img id='splash3{{$i}}' class="hidden back-splash" src="{{$top3ChampionImages[$i][2]}}"/>
         </div>
     @stop
-
-
 @endfor
