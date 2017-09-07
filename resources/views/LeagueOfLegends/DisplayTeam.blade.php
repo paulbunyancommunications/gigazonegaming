@@ -103,11 +103,9 @@
     @stop
     @section('Player'.$i.'MasteriesSplashArt')
         <div style="width:100%; height:100%;position:absolute;">
-            <img class="back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg" />
-            <img class="hidden back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg" />
-            <img class="hidden back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg" />
+            <img id='splash1{{$i}}' class="back-splash" src="{{$top3ChampionImages[$i][0]}}"/>
+            <img id='splash2{{$i}}' class="hidden back-splash" src="{{$top3ChampionImages[$i][1]}}"/>
+            <img id='splash3{{$i}}' class="hidden back-splash" src="{{$top3ChampionImages[$i][2]}}"/>
         </div>
     @stop
-
-
 @endfor

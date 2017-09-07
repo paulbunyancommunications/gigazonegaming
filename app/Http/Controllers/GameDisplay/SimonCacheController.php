@@ -226,6 +226,10 @@ class SimonCacheController extends Controller
         Cache::forget('Team2Info');
         Cache::forget('Team2Color');
         Cache::forget('Team2TimeStamp');
+        Cache::forget('Team1Champions');
+        Cache::forget('Team2Champions');
+        Cache::forget('Team1ChampionsPlayerId');
+        Cache::forget('Team2ChampionsPlayerId');
         return "Cache Successfully Cleared";
     }
 

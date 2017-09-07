@@ -72,20 +72,20 @@ $team1top3ChampionIcons = [
     4 => false];
 $team1top3ChampionImages = [
     0 => [
-        0 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Diana_0.png',
-        1 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malzahar_0.png',
-        2 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Morgana_0.png'
+        0 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Diana_0.jpg',
+        1 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malzahar_0.jpg',
+        2 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Morgana_0.jpg'
     ],
     1 =>[
-        0 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_0.png',
-        1 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Blitzcrank_0.png',
-        2 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.png'
+        0 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_0.jpg',
+        1 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Blitzcrank_0.jpg',
+        2 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg'
     ],
     2 => false,
     3 => [
-        0 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.png',
-        1 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ziggs_0.png',
-        2 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Taric_0.png'
+        0 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg',
+        1 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ziggs_0.jpg',
+        2 => 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Taric_0.jpg'
     ],
     4 => false
 ];
