@@ -64,30 +64,30 @@
     @section('Player' . $i . 'MasteriesIcons')
         @if($top3ChampionIcons[$i] === false)
             <div class="championRankMinimize" id="Rank3{{$i}}">
-                <b>No Masteries</b><br/>
+                <br/>
                 <img class="I3" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I3{{$i}}">
             </div>
             <div class="championRank" id="Rank1{{$i}}">
-                <b>No Masteries</b><br/>
+                <br/>
                 <img class="I1" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I1{{$i}}">
             </div>
             <div class="championRankMinimize" id="Rank2{{$i}}">
-                <b>No Masteries</b><br/>
+                <br/>
                 <img class="I2" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I2{{$i}}">
             </div>
         @else
-            <div class="championRankMinimize" id="Rank3{{$i}}">
-                <b>Rank 3</b><br/>
-                <img class="I3" src="{{ $top3ChampionIcons[$i][2]}}" alt id="I3{{$i}}">
-            </div>
-            <div class="championRank" id="Rank1{{$i}}">
-                <b>Rank 1</b><br/>
-                <img class="I1" src="{{ $top3ChampionIcons[$i][0]}}" alt id="I1{{$i}}">
-            </div>
-            <div class="championRankMinimize" id="Rank2{{$i}}">
-                <b>Rank 2</b><br/>
-                <img class="I2" src="{{ $top3ChampionIcons[$i][1]}}" alt id="I2{{$i}}">
-            </div>
+                <div class="championRankMinimize" id="Rank3{{$i}}">
+                    <br/>
+                    <img class="I3" src="{{ $top3ChampionIcons[$i][2]}}" alt id="I3{{$i}}">
+                </div>
+                <div class="championRank" id="Rank1{{$i}}">
+                    <br/>
+                    <img class="I1" src="{{ $top3ChampionIcons[$i][0]}}" alt id="I1{{$i}}">
+                </div>
+                <div class="championRankMinimize" id="Rank2{{$i}}">
+                    <br/>
+                    <img class="I2" src="{{ $top3ChampionIcons[$i][1]}}" alt id="I2{{$i}}">
+                </div>
         @endif
     @stop
     @section('Player'. $i. 'MasterieRankAndPoints')
@@ -101,5 +101,13 @@
             <div id="imageInfo3{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</div>
         @endif
     @stop
+    @section('Player'.$i.'MasteriesSplashArt')
+        <div style="width:100%; height:100%;position:absolute;">
+            <img class="back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg" />
+            <img class="hidden back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg" />
+            <img class="hidden back-splash" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg" />
+        </div>
+    @stop
+
 
 @endfor
