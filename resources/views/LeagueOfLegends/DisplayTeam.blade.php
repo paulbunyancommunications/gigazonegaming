@@ -96,9 +96,9 @@
             <div id="imageInfo2{{$i}}" class="hidden">Summoner level too low to have masteries</div>
             <div id="imageInfo3{{$i}}" class="hidden">Summoner level too low to have masteries</div>
         @else
-            <div id="imageInfo1{{$i}}" >{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}</div>
-            <div id="imageInfo2{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}</div>
-            <div id="imageInfo3{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</div>
+            <div id="imageInfo1{{$i}}" >{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}<br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][0]}}.png"></div>
+            <div id="imageInfo2{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}<br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][1]}}.png"></div>
+            <div id="imageInfo3{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}<br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][2]}}.png"></div>
         @endif
     @stop
 
