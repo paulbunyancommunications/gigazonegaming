@@ -65,10 +65,12 @@ class SimonCacheControllerTest extends \TestCase
         $this->assertSame(Cache::get('Team1Info'),$teamInfoArrays[0]);
         $this->assertSame(Cache::get('Team1Color'),$colorArray[0]);
         $this->assertNotNull(Cache::get('Team1TimeStamp'));
+        $this-> assertGreaterThan(Cache::get('Team1TimeStamp'), Carbon::now());
         $this->assertSame(Cache::get('Team2Name'),$team[1]);
         $this->assertSame(Cache::get('Team2Info'),$teamInfoArrays[1]);
         $this->assertSame(Cache::get('Team2Color'),$colorArray[1]);
         $this->assertNotNull(Cache::get('Team2TimeStamp'));
+        $this-> assertGreaterThan(Cache::get('Team2TimeStamp'), Carbon::now());
     }
 
     public function testSetTeamColor(){
