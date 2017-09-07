@@ -14,47 +14,422 @@
     <div class='borderTop'></div>
     <div class='borderTop2'></div>
     <div id='0-4' class='col-lg'>
-        <div id='0-0'><div class="playerNameContainer">@yield('Player0Icon')<b class="summonerName">@yield('Player0Name')</b></div></div>
-        <div id='0-1' class="playerBorder"><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>@yield('Player0SoloRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player0SoloWinLoss')</div><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>@yield('Player0FlexRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player0FlexWinLoss')</div></div>
-        <div id='0-2'><div id="divA0" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divB0" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div>
+        <div id='0-0'>
+            <div class="playerNameContainer">
+                @yield('Player0Icon')
+                <b class="summonerName">@yield('Player0Name')</b>
+            </div>
+        </div>
+        <div id='0-1' class="playerBorder">
+            <div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                @yield('Player0SoloRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player0SoloWinLoss')
+            </div><div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                @yield('Player0FlexRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player0FlexWinLoss')
+            </div>
+        </div>
+        <div id='0-2'>
+            <div id="divA0" class="spinner-container">
+                <div class="spinner-overlay"></div>
+                <div class="spinner-image">
+                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                </div>
+            </div>
+            <div id="divB0" class="imageContainer hidden">
+                <div class="spinner-container">
+                    <div class="spinner-overlay"></div>
+                    <div class="spinner-image">
+                        <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id='1-4' class='col-lg'>
-        <div id='1-0'><div class="playerNameContainer">@yield('Player1Icon')<b class="summonerName">@yield('Player1Name')</b></div></div>
-        <div id='1-1' class="playerBorder"><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>@yield('Player1SoloRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player1SoloWinLoss')</div><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>@yield('Player1FlexRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player1FlexWinLoss')</div></div>
-        <div id='1-2'><div id="divA1" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divB1" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div>
+        <div id='1-0'>
+            <div class="playerNameContainer">
+                @yield('Player1Icon')
+                <b class="summonerName">@yield('Player1Name')</b>
+            </div>
+        </div>
+        <div id='1-1' class="playerBorder">
+            <div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                @yield('Player1SoloRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player1SoloWinLoss')
+            </div><div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                @yield('Player1FlexRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player1FlexWinLoss')
+            </div>
+        </div>
+        <div id='1-2'>
+            <div id="divA1" class="spinner-container">
+                <div class="spinner-overlay"></div>
+                <div class="spinner-image">
+                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                </div>
+            </div>
+            <div id="divB1" class="imageContainer hidden">
+                <div class="spinner-container">
+                    <div class="spinner-overlay"></div>
+                    <div class="spinner-image">
+                        <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id='2-4' class='col-lg'>
-        <div id='2-0'><div class="playerNameContainer">@yield('Player2Icon')<b class="summonerName">@yield('Player2Name')</b></div></div>
-        <div id='2-1' class="playerBorder"><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>@yield('Player2SoloRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player2SoloWinLoss')</div><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>@yield('Player2FlexRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player2FlexWinLoss')</div></div>
-        <div id='2-2'><div id="divA2" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divB2" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div>
+        <div id='2-0'>
+            <div class="playerNameContainer">
+                @yield('Player2Icon')
+                <b class="summonerName">@yield('Player2Name')</b>
+            </div>
+        </div>
+        <div id='2-1' class="playerBorder">
+            <div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                @yield('Player2SoloRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player2SoloWinLoss')
+            </div><div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                @yield('Player2FlexRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player2FlexWinLoss')
+            </div>
+        </div>
+        <div id='2-2'>
+            <div id="divA2" class="spinner-container">
+                <div class="spinner-overlay"></div>
+                <div class="spinner-image">
+                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                </div>
+            </div>
+            <div id="divB2" class="imageContainer hidden">
+                <div class="spinner-container">
+                    <div class="spinner-overlay"></div>
+                    <div class="spinner-image">
+                        <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id='3-4' class='col-lg'>
-        <div id='3-0'><div class="playerNameContainer">@yield('Player3Icon')<b class="summonerName">@yield('Player3Name')</b></div></div>
-        <div id='3-1' class="playerBorder"><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>@yield('Player3SoloRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player3SoloWinLoss')</div><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>@yield('Player3FlexRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player3FlexWinLoss')</div></div>
-        <div id='3-2'><div id="divA3" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divB3" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div>
+        <div id='3-0'>
+            <div class="playerNameContainer">
+                @yield('Player3Icon')
+                <b class="summonerName">@yield('Player3Name')</b>
+            </div>
+        </div>
+        <div id='3-1' class="playerBorder">
+            <div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                @yield('Player3SoloRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player3SoloWinLoss')
+            </div><div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                @yield('Player3FlexRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player3FlexWinLoss')
+            </div>
+        </div>
+        <div id='3-2'>
+            <div id="divA3" class="spinner-container">
+                <div class="spinner-overlay"></div>
+                <div class="spinner-image">
+                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                </div>
+            </div>
+            <div id="divB3" class="imageContainer hidden">
+                <div class="spinner-container">
+                    <div class="spinner-overlay"></div>
+                    <div class="spinner-image">
+                        <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id='4-4' class='col-lg'>
-        <div id='4-0'><div class="playerNameContainer">@yield('Player4Icon')<b class="summonerName">@yield('Player4Name')</b></div></div>
-        <div id='4-1' class="playerBorder"><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>@yield('Player4SoloRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player4SoloWinLoss')</div><div class="playerInfo playerStatsContainer"><b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>@yield('Player4FlexRank')<br/><b class="playerHeading">Win/Loss:</b><br/> @yield('Player4FlexWinLoss')</div></div>
-        <div id='4-2'><div id="divA4" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divB4" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div>
+        <div id='4-0'>
+            <div class="playerNameContainer">
+                @yield('Player4Icon')
+                <b class="summonerName">@yield('Player4Name')</b>
+            </div>
+        </div>
+        <div id='4-1' class="playerBorder">
+            <div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                @yield('Player4SoloRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player4SoloWinLoss')
+            </div><div class="playerInfo playerStatsContainer">
+                <b class="playerMainHeading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                @yield('Player4FlexRank')<br/>
+                <b class="playerHeading">Win/Loss:</b><br/>
+                @yield('Player4FlexWinLoss')
+            </div>
+        </div>
+        <div id='4-2'>
+            <div id="divA4" class="spinner-container">
+                <div class="spinner-overlay"></div>
+                <div class="spinner-image">
+                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                </div>
+            </div>
+            <div id="divB4" class="imageContainer hidden">
+                <div class="spinner-container">
+                    <div class="spinner-overlay"></div>
+                    <div class="spinner-image">
+                        <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="carouselControls" class="carousel slide hidden" data-ride="carousel" data-interval="false">
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-                <div id='0-3' class="carousel-container"><div class="playerNameContainer">@yield('Player0Icon')<b class="summonerName">@yield('Player0Name')</b></div><div id="C0" class="collapse"><div id="divD0" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divE0" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div><div id="D0" class="collapse-b"><b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player0SoloRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player0SoloWinLoss')</span><br/><b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player0FlexRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player0FlexWinLoss')</span></div><div class="extra-stats" id="extra0">@yield('Player0MasteriesIcons')<div style="width:100%;"><div class="championNav" onclick= switchPlaces(0,"-")>&lt</div><div class="championNav" onclick= switchPlaces(0,"+") >&gt</div></div>@yield('Player0MasterieRankAndPoints')</div></div>
+                <div id='0-3' class="carousel-container">
+                    <div class="playerNameContainer">
+                        @yield('Player0Icon')
+                        <b class="summonerName">@yield('Player0Name')</b>
+                    </div>
+                    <div id="C0" class="collapse">
+                        <div id="divD0" class="spinner-container">
+                            <div class="spinner-overlay"></div>
+                            <div class="spinner-image">
+                                <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                            </div>
+                        </div>
+                        <div id="divE0" class="imageContainer hidden">
+                            <div class="spinner-container">
+                                <div class="spinner-overlay"></div>
+                                <div class="spinner-image">
+                                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="D0" class="collapse-b">
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player0SoloRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player0SoloWinLoss')</span><br/>
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player0FlexRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player0FlexWinLoss')</span>
+                    </div>
+                    <div class="extra-stats" id="extra0" style="position:relative">
+                        @yield('Player0MasteriesSplashArt')
+                        <div style="position:relative">
+                            @yield('Player0MasteriesIcons')
+                            <div style="width:100%;">
+                                <div class="championNav" onclick= switchPlaces(0,"-")>&lt</div><div class="championNav" onclick= switchPlaces(0,"+") >&gt</div>
+                            </div>
+                        </div>
+                        <div style="position:relative">
+                            @yield('Player0MasterieRankAndPoints')
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="carousel-item">
-                <div id='1-3' class="carousel-container"><div class="playerNameContainer">@yield('Player1Icon')<b class="summonerName">@yield('Player1Name')</b></div><div id="C1" class="collapse"><div id="divD1" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divE1" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div><div id="D1" class="collapse-b"><b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player1SoloRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player1SoloWinLoss')</span><br/><b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player1FlexRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player1FlexWinLoss')</span></div><div class="extra-stats" id="extra1">@yield('Player1MasteriesIcons')<div style="width:100%;"><div class="championNav" onclick= switchPlaces(1,"-")>&lt</div><div class="championNav" onclick= switchPlaces(1,"+") >&gt</div></div>@yield('Player1MasterieRankAndPoints')</div></div>
+                <div id='1-3' class="carousel-container">
+                    <div class="playerNameContainer">
+                        @yield('Player1Icon')
+                        <b class="summonerName">@yield('Player1Name')</b>
+                    </div>
+                    <div id="C1" class="collapse">
+                        <div id="divD1" class="spinner-container">
+                            <div class="spinner-overlay"></div>
+                            <div class="spinner-image">
+                                <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                            </div>
+                        </div>
+                        <div id="divE1" class="imageContainer hidden">
+                            <div class="spinner-container">
+                                <div class="spinner-overlay"></div>
+                                <div class="spinner-image">
+                                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="D1" class="collapse-b">
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player1SoloRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player1SoloWinLoss')</span><br/>
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player1FlexRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player1FlexWinLoss')</span>
+                    </div>
+                    <div class="extra-stats" id="extra1" style="position:relative">
+                        @yield('Player1MasteriesSplashArt')
+                        <div style="position:relative">
+                            @yield('Player1MasteriesIcons')
+                            <div style="width:100%;">
+                                <div class="championNav" onclick= switchPlaces(1,"-")>&lt</div><div class="championNav" onclick= switchPlaces(1,"+") >&gt</div>
+                            </div>
+                        </div>
+                        <div style="position:relative">
+                            @yield('Player1MasterieRankAndPoints')
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="carousel-item">
-                <div id='2-3' class="carousel-container"><div class="playerNameContainer">@yield('Player2Icon')<b class="summonerName">@yield('Player2Name')</b></div><div id="C2" class="collapse"><div id="divD2" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divE2" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div><div id="D2" class="collapse-b"><b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player2SoloRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player2SoloWinLoss')</span><br/><b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player2FlexRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player2FlexWinLoss')</span></div><div class="extra-stats" id="extra2">@yield('Player2MasteriesIcons')<div style="width:100%;"><div class="championNav" onclick= switchPlaces(2,"-")>&lt</div><div class="championNav" onclick= switchPlaces(2,"+") >&gt</div></div>@yield('Player2MasterieRankAndPoints')</div></div>
+                <div id='2-3' class="carousel-container">
+                    <div class="playerNameContainer">
+                        @yield('Player2Icon')
+                        <b class="summonerName">@yield('Player2Name')</b>
+                    </div>
+                    <div id="C2" class="collapse">
+                        <div id="divD2" class="spinner-container">
+                            <div class="spinner-overlay"></div>
+                            <div class="spinner-image">
+                                <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                            </div>
+                        </div>
+                        <div id="divE2" class="imageContainer hidden">
+                            <div class="spinner-container">
+                                <div class="spinner-overlay"></div>
+                                <div class="spinner-image">
+                                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="D2" class="collapse-b">
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player2SoloRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player2SoloWinLoss')</span><br/>
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player2FlexRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player2FlexWinLoss')</span>
+                    </div>
+                    <div class="extra-stats" id="extra2" style="position:relative">
+                        @yield('Player2MasteriesSplashArt')
+                        <div style="position:relative">
+                            @yield('Player2MasteriesIcons')
+                            <div style="width:100%;">
+                                <div class="championNav" onclick= switchPlaces(2,"-")>&lt</div><div class="championNav" onclick= switchPlaces(2,"+") >&gt</div>
+                            </div>
+                        </div>
+                        <div style="position:relative">
+                            @yield('Player2MasterieRankAndPoints')
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="carousel-item">
-                <div id='3-3' class="carousel-container"><div class="playerNameContainer">@yield('Player3Icon')<b class="summonerName">@yield('Player3Name')</b></div><div id="C3" class="collapse"><div id="divD3" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divE3" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div><div id="D3" class="collapse-b"><b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player3SoloRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player3SoloWinLoss')</span><br/><b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player3FlexRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player3FlexWinLoss')</span></div><div class="extra-stats" id="extra3">@yield('Player3MasteriesIcons')<div style="width:100%;"><div class="championNav" onclick= switchPlaces(3,"-")>&lt</div><div class="championNav" onclick= switchPlaces(3,"+") >&gt</div></div>@yield('Player3MasterieRankAndPoints')</div></div>
+                <div id='3-3' class="carousel-container">
+                    <div class="playerNameContainer">
+                        @yield('Player3Icon')
+                        <b class="summonerName">@yield('Player3Name')</b>
+                    </div>
+                    <div id="C3" class="collapse">
+                        <div id="divD3" class="spinner-container">
+                            <div class="spinner-overlay"></div>
+                            <div class="spinner-image">
+                                <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                            </div>
+                        </div>
+                        <div id="divE3" class="imageContainer hidden">
+                            <div class="spinner-container">
+                                <div class="spinner-overlay"></div>
+                                <div class="spinner-image">
+                                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="D3" class="collapse-b">
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player3SoloRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player3SoloWinLoss')</span><br/>
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player3FlexRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player3FlexWinLoss')</span>
+                    </div>
+                    <div class="extra-stats" id="extra3" style="position:relative">
+                        @yield('Player3MasteriesSplashArt')
+                        <div style="position:relative">
+                            @yield('Player3MasteriesIcons')
+                            <div style="width:100%;">
+                                <div class="championNav" onclick= switchPlaces(3,"-")>&lt</div><div class="championNav" onclick= switchPlaces(3,"+") >&gt</div>
+                            </div>
+                        </div>
+                        <div style="position:relative">
+                            @yield('Player3MasterieRankAndPoints')
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="carousel-item">
-                <div id='4-3' class="carousel-container"><div class="playerNameContainer">@yield('Player4Icon')<b class="summonerName">@yield('Player4Name')</b></div><div id="C4" class="collapse"><div id="divD4" class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div><div id="divE4" class="imageContainer hidden"><div class="spinner-container"><div class="spinner-overlay"></div><div class="spinner-image"><img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/></div></div></div></div><div id="D4" class="collapse-b"><b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player4SoloRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player4SoloWinLoss')</span><br/><b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b><span class="rankV">@yield('Player4FlexRank')</span><br/><b class="collapse-heading">Win/Loss:</b><br/><span class="rankV">@yield('Player4FlexWinLoss')</span></div><div class="extra-stats" id="extra4">@yield('Player4MasteriesIcons')<div style="width:100%;"><div class="championNav" onclick= switchPlaces(4,"-")>&lt</div><div class="championNav" onclick= switchPlaces(4,"+") >&gt</div></div>@yield('Player4MasterieRankAndPoints')</div></div>
+                <div id='4-3' class="carousel-container">
+                    <div class="playerNameContainer">
+                        @yield('Player4Icon')
+                        <b class="summonerName">@yield('Player4Name')</b>
+                    </div>
+                    <div id="C4" class="collapse">
+                        <div id="divD4" class="spinner-container">
+                            <div class="spinner-overlay"></div>
+                            <div class="spinner-image">
+                                <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                            </div>
+                        </div>
+                        <div id="divE4" class="imageContainer hidden">
+                            <div class="spinner-container">
+                                <div class="spinner-overlay"></div>
+                                <div class="spinner-image">
+                                    <img class="loadChampion" src="/LeagueOfLegendsDisplay/Images/defaultChampion.jpg"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="D4" class="collapse-b">
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Solo&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player4SoloRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player4SoloWinLoss')</span><br/>
+                        <b class="collapse-M-heading">&nbsp;&nbsp;Flex&nbsp;&nbsp;<br/></b>
+                        <span class="rankV">@yield('Player4FlexRank')</span><br/>
+                        <b class="collapse-heading">Win/Loss:</b><br/>
+                        <span class="rankV">@yield('Player4FlexWinLoss')</span>
+                    </div>
+                    <div class="extra-stats" id="extra4" style="position:relative">
+                        @yield('Player4MasteriesSplashArt')
+                        <div style="position:relative">
+                            @yield('Player4MasteriesIcons')
+                            <div style="width:100%;">
+                                <div class="championNav" onclick= switchPlaces(4,"-")>&lt</div><div class="championNav" onclick= switchPlaces(4,"+") >&gt</div>
+                            </div>
+                        </div>
+                        <div style="position:relative">
+                            @yield('Player4MasterieRankAndPoints')
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <a class="carousel-control-prev"  onclick="setTimeout(function(){setBoxHeight();},100),$('#carouselControls').carousel('prev');">
