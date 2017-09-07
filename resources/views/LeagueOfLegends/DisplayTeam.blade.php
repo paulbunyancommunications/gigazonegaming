@@ -61,4 +61,45 @@
     @stop
     @section('Player' . $i . 'Champion')
     @stop
+    @section('Player' . $i . 'MasteriesIcons')
+        @if($top3ChampionIcons[$i] === false)
+            <div class="championRankMinimize" id="Rank3{{$i}}">
+                <b>No Masteries</b><br/>
+                <img class="I3" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I3{{$i}}">
+            </div>
+            <div class="championRank" id="Rank1{{$i}}">
+                <b>No Masteries</b><br/>
+                <img class="I1" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I1{{$i}}">
+            </div>
+            <div class="championRankMinimize" id="Rank2{{$i}}">
+                <b>No Masteries</b><br/>
+                <img class="I2" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I2{{$i}}">
+            </div>
+        @else
+            <div class="championRankMinimize" id="Rank3{{$i}}">
+                <b>Rank 3</b><br/>
+                <img class="I3" src="{{ $top3ChampionIcons[$i][2]}}" alt id="I3{{$i}}">
+            </div>
+            <div class="championRank" id="Rank1{{$i}}">
+                <b>Rank 1</b><br/>
+                <img class="I1" src="{{ $top3ChampionIcons[$i][0]}}" alt id="I1{{$i}}">
+            </div>
+            <div class="championRankMinimize" id="Rank2{{$i}}">
+                <b>Rank 2</b><br/>
+                <img class="I2" src="{{ $top3ChampionIcons[$i][1]}}" alt id="I2{{$i}}">
+            </div>
+        @endif
+    @stop
+    @section('Player'. $i. 'MasterieRankAndPoints')
+        @if($top3ChampionIcons[$i] === false)
+            <div id="imageInfo1{{$i}}" >Summoner level too low to have masteries</div>
+            <div id="imageInfo2{{$i}}" class="hidden">Summoner level too low to have masteries</div>
+            <div id="imageInfo3{{$i}}" class="hidden">Summoner level too low to have masteries</div>
+        @else
+            <div id="imageInfo1{{$i}}" >{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}</div>
+            <div id="imageInfo2{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}</div>
+            <div id="imageInfo3{{$i}}" class="hidden">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</div>
+        @endif
+    @stop
+
 @endfor
