@@ -8,7 +8,7 @@ function findChampion() {
     if(document.getElementById("player1").value !== "" && document.getElementById("player2").value !== "" && document.getElementById("player3").value !== ""&& document.getElementById("player4").value !== "" && document.getElementById("player5").value !== ""){
         for(var i=1; i<6; i++)
         {
-            championArray.push("http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + document.getElementById("player" + i).value + "_0.jpg");
+            championArray.push("https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + document.getElementById("player" + i).value + "_0.jpg");
         }
             if(championArray.length === 5) {
                 document.getElementById("info").innerHTML = "Updating Champions...";
