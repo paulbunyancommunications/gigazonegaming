@@ -213,12 +213,19 @@ class SimonCacheController extends Controller
         Cache::put('Team2TimeStamp', Carbon::now(), 70);
     }
     /**
-     * todo: Clear Specific Cache
      * @return string
      */
     public function clearCache()
     {
-        Cache::flush();
+        Cache::forget('Players');
+        Cache::forget('Team1Name');
+        Cache::forget('Team1Info');
+        Cache::forget('Team1Color');
+        Cache::forget('Team1TimeStamp');
+        Cache::forget('Team2Name');
+        Cache::forget('Team2Info');
+        Cache::forget('Team2Color');
+        Cache::forget('Team2TimeStamp');
         return "Cache Successfully Cleared";
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\GameDisplay\SimonCacheController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 
 class SimonCacheControllerTest extends \TestCase
@@ -24,6 +25,27 @@ class SimonCacheControllerTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
+    }
+
+    public function loadCache(){
+        $data = unserialize(file_get_contents('tests/_data/PlayerInfoArray.bin'));
+
+        $teamInfoArrays = $data['teamInfo'];
+        $colorArray = $data['colors'];
+        $team = $data['teamName'];
+        $players = $data['players'];
+
+        Cache::put('Players', $players, 70);
+        Cache::put('Team1Name', $team[0], 70);
+        Cache::put('Team1Info', $teamInfoArrays[0], 70);
+        Cache::put('Team1Color', $colorArray[0], 70);
+        Cache::put('Team1TimeStamp', Carbon::now(), 70);
+        Cache::put('Team2Name', $team[1], 70);
+        Cache::put('Team2Info', $teamInfoArrays[1], 70);
+        Cache::put('Team2Color', $colorArray[1], 70);
+        Cache::put('Team2TimeStamp', Carbon::now(), 70);
+
+        Cache::put('TestingCacheThatShouldNotBeClearedByClearCache', 'Something Amazing', 5);
     }
 
     // tests
@@ -74,5 +96,22 @@ class SimonCacheControllerTest extends \TestCase
         $this->controller->cacheChampionOverride($req);
         $this->assertSame(Cache::get('Team2Champions'), $champions);
         $this->assertSame(Cache::get('Team2ChampionsPlayerId'),[0,1,2,3,4]);
+    }
+    public function testClearCacheClearsOnlyTeamCacheNotAllCache(){
+        $this->loadCache();
+        $this->assertNotNull('Team1Name');
+        $this->controller->clearCache();
+        $this->assertNull(Cache::get('Team1Name'));
+        $this->assertNull(Cache::get('Players'));
+        $this->assertNull(Cache::get('Team1Name'));
+        $this->assertNull(Cache::get('Team1Info'));
+        $this->assertNull(Cache::get('Team1Color'));
+        $this->assertNull(Cache::get('Team1TimeStamp'));
+        $this->assertNull(Cache::get('Team2Name'));
+        $this->assertNull(Cache::get('Team2Info'));
+        $this->assertNull(Cache::get('Team2Color'));
+        $this->assertNull(Cache::get('Team2TimeStamp'));
+
+        $this->assertSame(Cache::get('TestingCacheThatShouldNotBeClearedByClearCache'), 'Something Amazing');
     }
 }
