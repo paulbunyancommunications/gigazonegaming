@@ -39,7 +39,7 @@ class GameDisplayController extends Controller
                 'top3ChampionIcons' => $teamInfo['top3ChampionIcons'],
                 'top3ChampionImages' => $teamInfo['top3ChampionImages'],
                 'top3ChampionRanks' => $teamInfo['top3ChampionRanks'],
-                'top3ChampionPionts' => $teamInfo['top3ChampionPoints']
+                'top3ChampionPoints' => $teamInfo['top3ChampionPoints']
             ]);
         }
         #Data Default data

@@ -65,15 +65,15 @@
         @if($top3ChampionIcons[$i] === false)
             <div class="championRankMinimize" id="Rank3{{$i}}">
                 <br/>
-                <img class="I3" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I3{{$i}}">
+                <img class="I3" src="/LeagueOfLegendsDisplay/Images/questionMarkIcon.png" alt id="I3{{$i}}">
             </div>
             <div class="championRank" id="Rank1{{$i}}">
                 <br/>
-                <img class="I1" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I1{{$i}}">
+                <img class="I1" src="/LeagueOfLegendsDisplay/Images/questionMarkIcon.png" alt id="I1{{$i}}">
             </div>
             <div class="championRankMinimize" id="Rank2{{$i}}">
                 <br/>
-                <img class="I2" src="/LeagueOfLegendsDisplay/Images/Amumu.png" alt id="I2{{$i}}">
+                <img class="I2" src="/LeagueOfLegendsDisplay/Images/questionMarkIcon.png" alt id="I2{{$i}}">
             </div>
         @else
                 <div class="championRankMinimize" id="Rank3{{$i}}">
@@ -96,9 +96,9 @@
             <div id="imageInfo2{{$i}}" class="hidden">Summoner level too low to have masteries</div>
             <div id="imageInfo3{{$i}}" class="hidden">Summoner level too low to have masteries</div>
         @else
-            <div id="imageInfo1{{$i}}" ><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][0]}}.png">{{ $top3ChampionRanks[$i][0]}}</div>
-            <div id="imageInfo2{{$i}}" class="hidden"><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][1]}}.png">{{ $top3ChampionRanks[$i][1]}}</div>
-            <div id="imageInfo3{{$i}}" class="hidden"><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][2]}}.png">{{ $top3ChampionRanks[$i][2]}}</div>
+            <div id="imageInfo1{{$i}}" ><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][0])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][0]}}.png"><br/><div class="collapse"><b class="collapse-M-heading">LVL:</b> {{ $top3ChampionRanks[$i][0]}}</div><div class="collapse"><b class="collapse-M-heading">Points:</b> {{ $top3ChampionPoints[$i][0]}}</div></div>
+            <div id="imageInfo2{{$i}}" class="hidden"><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][1])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][1]}}.png"><br/><div class="collapse"><b class="collapse-M-heading">LVL:</b> {{ $top3ChampionRanks[$i][1]}}</div><div class="collapse"><b class="collapse-M-heading">Points:</b> {{ $top3ChampionPoints[$i][1]}}</div></div>
+            <div id="imageInfo3{{$i}}" class="hidden"><b class="summonerName">{{explode('/',explode('.',$top3ChampionIcons[$i][2])[4])[3]}}</b><br/><img src="/LeagueOfLegendsDisplay/Images/ChampionMastery/ChampMastery_{{ $top3ChampionRanks[$i][2]}}.png"><br/><div class="collapse"><b class="collapse-M-heading">LVL:</b> {{ $top3ChampionRanks[$i][2]}}</div><div class="collapse"><b class="collapse-M-heading">Points:</b> {{ $top3ChampionPoints[$i][2]}}</div></div>
         @endif
     @stop
     @section('Player'.$i.'MasteriesSplashArt')
