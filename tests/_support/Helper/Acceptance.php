@@ -49,7 +49,7 @@ class Acceptance extends \Codeception\Module
     public function createAPost($I, $title="", $content="") {
 
         $I->amOnPage('/wp/wp-admin/post-new.php');
-        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  \BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'title'], $title);
         $exist = $this->checkIfJQueryIsWorking($I);
         if($exist != 0 and $exist != "0"){
