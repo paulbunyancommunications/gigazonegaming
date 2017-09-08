@@ -125,11 +125,28 @@ class TeamViewDisplayCest extends \BaseAcceptance
         //See team data on pages team1 and team2
         $I->amOnPage('/app/GameDisplay/team1');
         $I->resizeWindow(360, 862);
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('Juanpablomontoya','.summonerName');
+        $I->click('.carousel-control-next');
         $I->see('ThatBoy18','.summonerName');
         $I->click('.carousel-control-next');
+        $I->see('manklar','.summonerName');
+        $I->click('.carousel-control-next');
         $I->see('ReckonStuff','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('Juanpablomontoya','.summonerName');
         $I->click('.carousel-control-prev');
-        $I->see('ThatBoy18','.summonerName');
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->see('Diana',['b','.summonerName']);
+        $I->click('#topChampNav0Next');
+        $I->see('Malzahar',['b','.summonerName']);
+        $I->click('#topChampNav0Next');
+        $I->see('Morgana',['b','.summonerName']);
+        $I->click('#topChampNav0Prev');
+        $I->see('Malzahar',['b','.summonerName']);
     }
 
 }
