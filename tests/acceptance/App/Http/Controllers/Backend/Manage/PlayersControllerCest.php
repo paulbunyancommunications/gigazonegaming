@@ -44,9 +44,12 @@ class PlayersControllerCest extends BaseAcceptance
     protected function localDontSeeOptionIsSelected(AcceptanceTester $I, $id, $values)
     {
 
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $exist = $I->executeJS("var myElem = document.getElementById('".$id."');if (myElem === null){return 0;}else{return 1;}");
         if($exist == "1" or $exist == 1){
-            $I->executeJS(['id' => $id ]);
+            $I->executeJS("$('html, body').animate({
+                scrollTop: $(\"#$id\").offset().top - 30
+                }, 10);");
             $I->waitForElementVisible(['id' => $id ], $this::TEXT_WAIT_TIMEOUT);
             foreach($values as $key => $value){
                 $I->dontSeeOptionIsSelected(['id' => $id ], $value);
