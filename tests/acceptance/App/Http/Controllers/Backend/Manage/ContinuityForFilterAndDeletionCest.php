@@ -1,10 +1,10 @@
 <?php
 namespace Tests\Acceptance\App\Http\Controllers\Backend\Manage;
+
 use \AcceptanceTester;
 use \BaseAcceptance;
-
 /**
- * Class GamesControllerCest
+ * Class ContinuityForFilterAndDeletionCest
  * @package Tests\Acceptance\App\Http\Controllers\Backend\Manage
  */
 class ContinuityForFilterAndDeletionCest extends BaseAcceptance
@@ -18,6 +18,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
 
     }
 
@@ -75,6 +76,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->see('Team List');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete_soft-form-TesterTeam");
         $I->waitForElementNotVisible(".delete_soft-form-TesterTeam", $this::TEXT_WAIT_TIMEOUT);
@@ -121,14 +123,17 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/team');
         $I->see('Create a new Team');
         $I->see( 'Tester Team');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");', $this::TEXT_WAIT_TIMEOUT);
         $I->click(".delete_soft-form-TesterTeam");
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->waitForElementNotVisible(".delete_soft-form-TesterTeam", $this::TEXT_WAIT_TIMEOUT);
         $I->waitForText('Create a new Team', $this::TEXT_WAIT_TIMEOUT);
         $I->dontSeeLink('Tester Team');
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament');
         $I->see( 'Tester Tournament');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete-TesterTournament");
         $I->waitForElementNotVisible(".delete-TesterTournament", $this::TEXT_WAIT_TIMEOUT);
@@ -137,6 +142,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->see( 'tester-game');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete-tester-game");
         $I->waitForElementNotVisible(".delete-tester-game", $this::TEXT_WAIT_TIMEOUT);
@@ -154,6 +160,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/tournament');
         $I->see('Create a new Tournament', ['id' => 'gaming-page-title']);
         $I->see('Tester Tournament');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete-TesterTournament");
         $I->waitForElementNotVisible(".delete-TesterTournament", $this::TEXT_WAIT_TIMEOUT);
@@ -164,6 +171,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->see( 'tester-game');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete-tester-game");
         $I->waitForElementNotVisible(".delete-tester-game", $this::TEXT_WAIT_TIMEOUT);
@@ -180,6 +188,7 @@ class ContinuityForFilterAndDeletionCest extends BaseAcceptance
         $I->amOnPage('/app/manage/game');
         $I->see('Create a new Game');
         $I->see( 'tester-game');
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS('$("form").attr("onsubmit", "nothing = 1;");');
         $I->click(".delete-tester-game");
         $I->waitForElementNotVisible(".delete-tester-game", $this::TEXT_WAIT_TIMEOUT);

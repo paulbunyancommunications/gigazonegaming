@@ -8,7 +8,7 @@ class BaseAcceptance
     /**
      *
      */
-    const TEXT_WAIT_TIMEOUT = 30;
+    const TEXT_WAIT_TIMEOUT = 45;
 
 
     /**
@@ -99,6 +99,9 @@ class BaseAcceptance
 
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
     protected function destroySelect2(AcceptanceTester $I)
     {
         $I->executeJS('$("select").each(function(ele){ $(this).select2("destroy"); });');
@@ -106,6 +109,7 @@ class BaseAcceptance
     }
 
     /**
+     * @param AcceptanceTester $I
      * Populate db with test seeder
      */
     protected function populateDB(AcceptanceTester $I)
