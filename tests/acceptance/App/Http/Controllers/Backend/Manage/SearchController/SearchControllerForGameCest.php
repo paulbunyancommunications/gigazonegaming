@@ -21,7 +21,7 @@ class SearchControllerForGameCest extends BaseAcceptance
         $this->populateDB($I);
         $this->loginWithAdminUser($I);
         $I->amOnPage('/app/manage/player');
-        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
 
     }
 

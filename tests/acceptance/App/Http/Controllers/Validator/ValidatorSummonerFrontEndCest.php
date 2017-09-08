@@ -48,7 +48,7 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
             $this->emailList[] = "xyz".$this->faker->email();
         }
         $I->amOnPage('/tournament/lol-team-signup/');
-        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
     }
     /**
     * Create the test admin user

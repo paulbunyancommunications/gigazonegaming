@@ -34,7 +34,7 @@
 //        $I->waitForText("Update", $this::TEXT_WAIT_TIMEOUT, "input");
 //        $I->amOnPage($this->url);
 //        $I->waitForText("LOL INDIVIDUAL SIGN UP", $this::TEXT_WAIT_TIMEOUT);
-//        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+//        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
 //    }
 //
 //    public function _after(AcceptanceTester $I)
