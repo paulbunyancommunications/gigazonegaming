@@ -77,6 +77,7 @@ class GamesControllerCest extends BaseAcceptance
         $I->click(['id' => 'submit']);
         // check that the fields are now all updated
         $I->waitForText('Game '. $title2.' was updated', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name2);
         $I->seeInField(['id' => 'title'], $title2);
         $I->seeInField(['id' => 'uri'], $uri2);
@@ -99,10 +100,12 @@ class GamesControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'description'], $desc2);
         $I->click(['id' => 'submit']);
         // I don't see dupe errors
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->dontSee('The game name is is already being used.');
         $I->dontSee('The game title is is already being used.');
         // I see the right message and values in the fields
         $I->waitForText('Game '. $title.' was updated', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->seeInField(['id' => 'name'], $name);
         $I->seeInField(['id' => 'title'], $title);
         $I->seeInField(['id' => 'uri'], $uri2);
