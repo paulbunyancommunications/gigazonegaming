@@ -49,10 +49,9 @@ class Acceptance extends \Codeception\Module
     public function createAPost($I, $title="", $content="") {
 
         $I->amOnPage('/wp/wp-admin/post-new.php');
-        $I->waitForJs('return jQuery.active == 0', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'title'], $title);
-        $exist = $I->executeJS("return !!jQuery('#content-html').length;");
-        $exist = $I->executeJS("return jQuery('#content-html').length;");
+        $exist = $this->checkIfJQueryIsWorking($I);
         if($exist != 0 and $exist != "0"){
             $I->click(['id' => 'content-html']);
             $I->waitForElement( '#content["aria-hidden"="false"]', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
@@ -66,5 +65,19 @@ class Acceptance extends \Codeception\Module
         $path = $I->executeJS('return document.querySelector("#sample-permalink > a").getAttribute("href")');
 //        \Codeception\Util\Debug::debug($path);
         $I->amOnPage(parse_url($path, PHP_URL_PATH));
+    }
+
+    /**
+     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param $timeOut
+     * @return mixed
+     */
+    public function checkIfJQueryIsWorking($I, $timeOut = "notSet")
+    {
+        if($timeOut == "notSet"){$timeOut=\BaseAcceptance::TEXT_WAIT_TIMEOUT;}
+        $I->waitForJs('return jQuery.active == 0', $timeOut);
+        $exist = $I->executeJS("return !!jQuery('body').length;"); //this will activate jquery if it wasn't still
+        $exist = $I->executeJS("return !!jQuery('body').length;"); //this will let you know that yes it is there!
+        return true;
     }
 }
