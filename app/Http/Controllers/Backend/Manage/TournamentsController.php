@@ -40,6 +40,7 @@ class TournamentsController extends Controller
         $tournament = new Tournament();
         $tournament->game_id = $request['game_id'];
         $tournament->max_players = $request['max_players'];
+        $tournament->max_teams = $request['max_teams'];
         $tournament->name = $request['name'];
         $tournament->updated_by =  $this->getUserId();
         $tournament->updated_on = Carbon::now("CST");
