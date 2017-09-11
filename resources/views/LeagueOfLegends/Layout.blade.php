@@ -238,7 +238,7 @@
                         <div style="position:relative">
                             @yield('Player0MasteriesIcons')
                             <div style="width:100%;">
-                                <div class="championNav" onclick= switchPlaces(0,"-")>&lt</div><div class="championNav" onclick= switchPlaces(0,"+") >&gt</div>
+                                <div id="topChampNav0Prev" class="championNav" onclick= switchPlaces(0,"-")>&lt</div><div id="topChampNav0Next" class="championNav" onclick= switchPlaces(0,"+") >&gt</div>
                             </div>
                         </div>
                         <div style="position:relative">
@@ -284,7 +284,7 @@
                         <div style="position:relative">
                             @yield('Player1MasteriesIcons')
                             <div style="width:100%;">
-                                <div class="championNav" onclick= switchPlaces(1,"-")>&lt</div><div class="championNav" onclick= switchPlaces(1,"+") >&gt</div>
+                                <div id="topChampNav1Prev" class="championNav" onclick= switchPlaces(1,"-")>&lt</div><div id="topChampNav1Next" class="championNav" onclick= switchPlaces(1,"+") >&gt</div>
                             </div>
                         </div>
                         <div style="position:relative">
@@ -330,7 +330,7 @@
                         <div style="position:relative">
                             @yield('Player2MasteriesIcons')
                             <div style="width:100%;">
-                                <div class="championNav" onclick= switchPlaces(2,"-")>&lt</div><div class="championNav" onclick= switchPlaces(2,"+") >&gt</div>
+                                <div id="topChampNav2Prev" class="championNav" onclick= switchPlaces(2,"-")>&lt</div><div id="topChampNav1Next" class="championNav" onclick= switchPlaces(2,"+") >&gt</div>
                             </div>
                         </div>
                         <div style="position:relative">
@@ -376,7 +376,7 @@
                         <div style="position:relative">
                             @yield('Player3MasteriesIcons')
                             <div style="width:100%;">
-                                <div class="championNav" onclick= switchPlaces(3,"-")>&lt</div><div class="championNav" onclick= switchPlaces(3,"+") >&gt</div>
+                                <div id="topChampNav3Prev" class="championNav" onclick= switchPlaces(3,"-")>&lt</div><div id="topChampNav3Next" class="championNav" onclick= switchPlaces(3,"+") >&gt</div>
                             </div>
                         </div>
                         <div style="position:relative">
@@ -422,7 +422,7 @@
                         <div style="position:relative">
                             @yield('Player4MasteriesIcons')
                             <div style="width:100%;">
-                                <div class="championNav" onclick= switchPlaces(4,"-")>&lt</div><div class="championNav" onclick= switchPlaces(4,"+") >&gt</div>
+                                <div id="topChampNav4Prev" class="championNav" onclick= switchPlaces(4,"-")>&lt</div><div id="topChampNav4Next" class="championNav" onclick= switchPlaces(4,"+") >&gt</div>
                             </div>
                         </div>
                         <div style="position:relative">

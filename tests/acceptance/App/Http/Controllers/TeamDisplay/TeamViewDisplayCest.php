@@ -112,7 +112,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->click('Submit');
         $I->waitForText('UPDATED', 15, '.console-header');
 
-        $I->amOnPage('/app/GameDisplay/customer');
+        $I->amOnPage('/app/GameDisplay');
         $I->waitForText('That Team',15,'#team1');
         $I->see('Team Awesome','#team2');
     }
@@ -138,8 +138,25 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->see('KingMorpheus2131','.summonerName');
         $I->click('.carousel-control-next');
         $I->see('Juanpablomontoya','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('ThatBoy18','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('manklar','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('ReckonStuff','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('Juanpablomontoya','.summonerName');
         $I->click('.carousel-control-prev');
         $I->see('KingMorpheus2131','.summonerName');
+        $I->see('Diana', '.summonerName');
+        $I->click('#topChampNav0Next');
+        $I->see('Malzahar','.summonerName');
+        $I->click('#topChampNav0Next');
+        $I->see('Morgana','.summonerName');
+        $I->click('#topChampNav0Prev');
+        $I->see('Malzahar','.summonerName');
     }
 
 }

@@ -123,7 +123,7 @@ Route::get('/GameDisplay/getTeamName', function (){
         return $teamNames;
     }
     return false;});
-Route::get('/GameDisplay/customer', function (){return view('/LeagueOfLegends/customerPage');});
+Route::get('/GameDisplay', function (){return view('/LeagueOfLegends/customerPage');});
 
 Route::get('/player/login',function(){
     return view('/playerUpdate/login')->withEmail("")->with('success',"");
