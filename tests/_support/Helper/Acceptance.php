@@ -56,7 +56,7 @@ class Acceptance extends \Codeception\Module
         $exist = $I->executeJS("return !!jQuery('#content-html').length;");
         if($exist != 0 and $exist != "0"){
             $I->click(['id' => 'content-html']);
-            $I->waitForElement( '#content[aria-hidden=false]', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+            $I->wait( 5);
         }
         $I->click(['id' => 'content']);
         $I->fillField(['id' => 'content'], $content);
