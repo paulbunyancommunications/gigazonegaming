@@ -49,7 +49,7 @@
     <div class="col-xs-8">
         <input type="number" min="2" max="60" name="max_teams" id="max_teams" class="form-control"
                placeholder="The maximum amount of teams per tournament"
-               @if(isset($theTournament->max_teams))value="{{$theTournament->max_teams}}"@endif/>
+               @if(isset($theTournament->max_teams))value=@if($theTournament->max_teams<2) {{"2"}} @else "{{$theTournament->max_teams}}" @endif @endif/>
     </div>
 </div>
 <div class="form-group">
