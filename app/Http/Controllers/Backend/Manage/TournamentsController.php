@@ -156,14 +156,14 @@ class TournamentsController extends Controller
             $tournament =  Tournament::
             join('games', 'games.id', '=', 'tournaments.game_id')
                 ->where('tournaments.game_id', '=', $game)
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.max_teams', 'tournaments.id as tournament_id','games.name as game_name'])
                 ->orderBy('game_name', 'asc')
                 ->orderBy('tournament_name', 'asc')
                 ->get()
                 ->toArray();
         }else{
             $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.max_teams', 'tournaments.id as tournament_id','games.name as game_name'])
                 ->get()
                 ->toArray();
         }
