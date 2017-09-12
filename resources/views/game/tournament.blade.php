@@ -137,3 +137,6 @@
 @section('js-sheet')
     <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
 @endsection
+@section('js')
+
+@endsection
