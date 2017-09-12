@@ -147,6 +147,15 @@ class TournamentsController extends Controller
      */
     public function filter(Request $ids)
     {
+        $select = [
+            'tournaments.name as tournament_name',
+            'tournaments.game_id',
+            'tournaments.max_players',
+            'tournaments.max_teams',
+            'tournaments.id as tournament_id',
+            'games.name as game_name'
+        ];
+
         if(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
             if(is_numeric($ids->game_sort)){
                 $game = trim($ids->game_sort);
@@ -156,14 +165,14 @@ class TournamentsController extends Controller
             $tournament =  Tournament::
             join('games', 'games.id', '=', 'tournaments.game_id')
                 ->where('tournaments.game_id', '=', $game)
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.max_teams', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select($select)
                 ->orderBy('game_name', 'asc')
                 ->orderBy('tournament_name', 'asc')
                 ->get()
                 ->toArray();
         }else{
             $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.max_teams', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select($select)
                 ->get()
                 ->toArray();
         }
