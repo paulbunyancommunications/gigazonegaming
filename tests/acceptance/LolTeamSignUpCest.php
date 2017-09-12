@@ -6,7 +6,7 @@ use Pbc\Bandolier\Type\Numbers;
 class LolTeamSignUpCest extends \BaseAcceptance
 {
     const DEFAULT_WAIT = 15;
-    public $pageAddress = "LOL16_test";
+    public $pageAddress =  'gigazone-gaming-2016-league-of-legends';
     public $nameList = ["ChaChing77", "SlySkeever", "DragonDefeater", "CacheMeOuside", "CrackAColdOne", "YouBetterNotComeAtMe"];
     public $post = "*REGISTRATION IS OPEN ONLY TO THOSE WHO RESIDE WITHIN THE 218 AREA CODE IN THE STATE OF MINNESOTA*  Proof of residency will be required prior to tournament.
 
@@ -26,12 +26,10 @@ class LolTeamSignUpCest extends \BaseAcceptance
         $I->createAPost($I, $this->pageAddress, $this->post);
         $this->logoutOfWp($I);
 
-        $tournament = 'gigazone-gaming-2016-league-of-legends';
         $I->amOnPage($this->pageAddress);
         $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->waitForElementVisible("#app-lol-team-sign-up-form", $this::TEXT_WAIT_TIMEOUT);
         $I->executeJS("$('#hidden').val('$this->pageAddress');");
-        $I->fillField(['name' => 'tournament'], $tournament);
     }
 
     public function _after(AcceptanceTester $I)

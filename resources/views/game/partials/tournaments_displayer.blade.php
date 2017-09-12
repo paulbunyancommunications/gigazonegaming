@@ -11,6 +11,12 @@
                 </span></p>
         </td>
         <td>
+                <p><span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x txt-color--midtone"></i>
+                    <strong class="fa-stack-1x txt-color--light small">{{$tournament["max_teams"]}}</strong>
+                </span></p>
+        </td>
+        <td>
 
             <div class="btn-group" role="group" aria-label="Tournament Actions">
                 {{
