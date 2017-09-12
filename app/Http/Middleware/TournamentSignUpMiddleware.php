@@ -10,6 +10,7 @@ use Closure;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Pbc\Bandolier\Type\Numbers;
+use Illuminate\Http\Request;
 
 class TournamentSignUpMiddleware
 {
@@ -22,6 +23,12 @@ class TournamentSignUpMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $forCheck = new Request();
+        $forCheck2 = $forCheck;
+        $forCheck2->replace([]);
+        if($request === [] or $request === $forCheck or $request === $forCheck2){
+            return $this->error("There was no real request here.... moving on!");
+        }
         if($request->input('tournament') !== $request->route()->getName()) {
             return $this->error('Tournament route mismatch');
         }
@@ -148,7 +155,6 @@ class TournamentSignUpMiddleware
             // make new team
             $team = new Team();
             if(Team::where([['name', '=', $request->input('team-name')],['tournament_id', '=', $tournament->id]])->exists()){
-
                 return $this->error("Team Name is already in the db");
             }else {
                 $team->tournament_id = $tournament->id;
