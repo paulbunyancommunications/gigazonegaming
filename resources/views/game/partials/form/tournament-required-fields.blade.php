@@ -16,23 +16,35 @@
 </div>
 <div class="form-group">
     <label for="name" class="control-label col-xs-4">Occurring On: </label>
-    <div class="col-xs-8">
-        <input type="text" name="occurring" id="occurring" class="form-control"
-               @if(isset($theTournament->occurring))value="{{$theTournament->occurring}}"@endif/>
+    <div class="col-xs-4">
+        <input type="text" name="occurring_date" id="occurring_date" class="form-control datepicker"
+               @if(isset($theTournament->occurring_date))value="{{$theTournament->occurring_date}}"@endif/>
+    </div>
+    <div class="col-xs-4">
+        <input type="text" name="occurring_time" id="occurring_time" class="form-control timepicker"
+               @if(isset($theTournament->occurring_time))value="{{$theTournament->occurring_time}}"@endif/>
     </div>
 </div>
 <div class="form-group">
     <label for="name" class="control-label col-xs-4">Sign Up Open: </label>
-    <div class="col-xs-8">
-        <input type="text" name="sign_up_open" id="sign_up_open" class="form-control"
-               @if(isset($theTournament->sign_up_open))value="{{$theTournament->sign_up_open}}"@endif/>
+    <div class="col-xs-4">
+        <input type="text" name="sign_up_open_date" id="sign_up_open_date" class="form-control datepicker"
+               @if(isset($theTournament->sign_up_open_date))value="{{$theTournament->sign_up_open_date}}"@endif/>
+    </div>
+    <div class="col-xs-4">
+        <input type="text" name="sign_up_open_time" id="sign_up_open_time" class="form-control timepicker"
+               @if(isset($theTournament->sign_up_open_time))value="{{$theTournament->sign_up_open_time}}"@endif/>
     </div>
 </div>
 <div class="form-group">
     <label for="name" class="control-label col-xs-4">Sign Up Close: </label>
-    <div class="col-xs-8">
-        <input type="text" name="sign_up_close" id="sign_up_close" class="form-control"
-               @if(isset($theTournament->sign_up_close))value="{{$theTournament->sign_up_close}}"@endif/>
+    <div class="col-xs-4">
+        <input type="text" name="sign_up_close_date" id="sign_up_close_date" class="form-control datepicker"
+               @if(isset($theTournament->sign_up_close_date))value="{{$theTournament->sign_up_close_date}}"@endif/>
+    </div>
+    <div class="col-xs-4">
+        <input type="text" name="sign_up_close_time" id="sign_up_close_time" class="form-control timepicker"
+               @if(isset($theTournament->sign_up_close_time))value="{{$theTournament->sign_up_close_time}}"@endif/>
     </div>
 </div>
 <div class="form-group">

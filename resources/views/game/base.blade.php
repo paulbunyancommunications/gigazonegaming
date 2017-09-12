@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css">
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="/bower_components/jquery-ui/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/bower_components/clockpicker/dist/jquery-clockpicker.css">
     <link rel="stylesheet" href="/app/content/css/app.css">
     <style type="text/css" href="">
         @yield('css')
@@ -52,8 +53,10 @@
             <script src="/bower_components/requirejs/require.js"></script>
             <script src="/app/content/js/main-require.js"></script>
             <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+            <script src="/bower_components/clockpicker/dist/jquery-clockpicker.js"></script>
         @else
             <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+            <script src="/bower_components/clockpicker/dist/jquery-clockpicker.js"></script>
             <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
             <script type="text/javascript" src="/app/content/libraries/bootstrap/js/bootstrap.min.js"></script>
             <script type="text/javascript" src="/bower_components/select2/dist/js/select2.full.min.js"></script>
@@ -70,7 +73,13 @@
             $(function() {
 
                 @yield('js')
-                $(".datepicker").datepicker();
+                $(".datepicker").datepicker({
+                    dateFormat: 'yy-dd-mm'
+                });
+                $('.timepicker').clockpicker({
+                    donetext: 'Done',
+                    autoclose: true
+                });
             });
         </script>
     </body>
