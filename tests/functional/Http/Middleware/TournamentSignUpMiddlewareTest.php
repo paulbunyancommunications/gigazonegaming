@@ -25,7 +25,8 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
 {
     use DatabaseTransactions, DatabaseMigrations;
 
-    protected $teamInputs;
+    public $faker;
+    public $counter = 0;
 
     /**
      *
@@ -34,29 +35,8 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
     {
         parent::setUp();
 
-        $faker = \Faker\Factory::create();
+        $this->faker = \Faker\Factory::create();
 
-        // create a dummy tournament for this team to sign up for
-        $tournamentName = implode('-', $faker->words());
-        $tournament = factory(\App\Models\Championship\Tournament::class)->create([
-            'name' => $tournamentName,
-            'max_players' => 5]);
-
-        // dummy team inputs
-        $this->teamInputs = [
-            'email' => time().$faker->email,
-            'name' => time().'-'.$faker->name,
-            'team-captain-lol-summoner-name' => $faker->userName,
-            'team-captain-phone' => $faker->phoneNumber,
-            'team-captain-name' => $faker->userName,
-            'tournament' => $tournament->name,
-            'team-name' => implode(' ', $faker->words()),
-        ];
-
-        for ($i = 1; $i < $tournament->max_players; $i++) {
-            $this->teamInputs['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] = time() .'-'.$faker->userName;
-            $this->teamInputs['teammate-' . Numbers::toWord($i) . '-email-address'] = time() . '_' . $faker->email;
-        }
     }
 
     /**
@@ -68,26 +48,38 @@ class LolTeamSignUpMiddlewareTest extends \TestCase
         $this->teamInputs = [];
     }
 //
-//    /**
-//     * If validation fails check that an error array was returned
-//     * @test
-//     */
-//    public function it_returns_a_json_array_of_errors_when_validation_fails()
-//    {
-//        $request = new Request();
-//        $params = [];
-//        $request->replace($params);
-//        $middleware = new LolTeamSignUpMiddleware();
-//
-//        $handle = $middleware->handle($request, function () {
-//            return 'I ran the closure';
-//        });
-//        // check return
-//        $this->assertJson($handle->getContent());
-//        $response = json_decode($handle->getContent());
-//        $this->assertObjectHasAttribute('error', $response);
-//        $this->assertTrue(is_array($response->error));
-//    }
+public function count(){
+    echo $this->counter;
+    $this->counter++;
+    return $this->counter;
+}
+    /**
+     * If validation fails check that an error array was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_validation_fails()
+    {
+        $request = new Request();
+        $params = [];
+        codecept_debug($this->count());
+        $request->replace($params);
+        codecept_debug($this->count());
+        $middleware = new TournamentSignUpMiddleware();
+
+//        return $this->error("There was no real request here.... moving on!");
+        codecept_debug($this->count());
+        $handle = $middleware->handle($request, function () {
+            return 'I ran the closure';
+        });
+        codecept_debug($this->count());
+        // check return
+        $result = $handle->getContent();
+        codecept_debug( $result );
+        $this->assertJson($result);
+        $response = json_decode($handle->getContent());
+        $this->assertObjectHasAttribute('error', $response);
+        $this->assertTrue(is_array($response->error));
+    }
 //
 //    /**
 //     * If validation fails check that an tournament error was returned
