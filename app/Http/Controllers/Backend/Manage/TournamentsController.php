@@ -107,6 +107,13 @@ class TournamentsController extends Controller
             'updated_on' => $updatedOn
         ] );
         unset($toUpdate['_token']);
+        unset($toUpdate['occurring_date']);
+        unset($toUpdate['occurring_time']);
+        unset($toUpdate['sign_up_open_date']);
+        unset($toUpdate['sign_up_open_time']);
+        unset($toUpdate['sign_up_close_date']);
+        unset($toUpdate['sign_up_close_time']);
+        unset($toUpdate['_token']);
         unset($toUpdate['_method']);
         unset($toUpdate['id']);
         unset($toUpdate['reset']);
