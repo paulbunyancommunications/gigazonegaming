@@ -78,6 +78,16 @@ class TournamentsController extends Controller
      */
     public function edit(Tournament $tournament)
     {
+        $minimum = Carbon::create(2012, 1, 1, 1, 1, 1, 'America/Chicago');
+        if($tournament->occurring->lt($minimum)){$tournament->occurring=carbon::now();}
+        if($tournament->sign_up_open->lt($minimum)){$tournament->sign_up_open=carbon::now();}
+        if($tournament->sign_up_close->lt($minimum)){$tournament->sign_up_close=carbon::now();}
+        $tournament['occurring_date'] = $tournament->occurring->toDateString();
+        $tournament['occurring_time'] = $tournament->occurring->toTimeString();
+        $tournament['sign_up_open_date'] = $tournament->sign_up_open->toDateString();
+        $tournament['sign_up_open_time'] = $tournament->sign_up_open->toTimeString();
+        $tournament['sign_up_close_date'] = $tournament->sign_up_close->toDateString();
+        $tournament['sign_up_close_time'] = $tournament->sign_up_close->toTimeString();
         return View::make('game/tournament')->with("theTournament", $tournament);
     }
 
