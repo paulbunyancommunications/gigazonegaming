@@ -50,7 +50,7 @@ class TournamentSignUpMiddleware
             }
             // fix any secondary keys
             foreach (array_reverse($form) as $key => $value) {
-                foreach ($returnedErrors as $key => $message) {
+                foreach ($returnedErrors as $subkey => $message) {
                     $returnedErrors[$key] = str_replace_first($key, $value[0], $returnedErrors[$key]);
                 }
             }

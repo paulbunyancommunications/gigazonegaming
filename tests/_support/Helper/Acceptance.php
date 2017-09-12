@@ -52,9 +52,11 @@ class Acceptance extends \Codeception\Module
         $I->checkIfJQueryIsWorking($I,  \BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'title'], $title);
         $exist = $this->checkIfJQueryIsWorking($I);
+        $I->assertEquals(true, $exist, "if false, jquery wasnt working properly.");
+        $exist = $I->executeJS("return !!jQuery('#content-html').length;");
         if($exist != 0 and $exist != "0"){
             $I->click(['id' => 'content-html']);
-            $I->waitForElement( '#content["aria-hidden"="false"]', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+            $I->wait( 5);
         }
         $I->click(['id' => 'content']);
         $I->fillField(['id' => 'content'], $content);
