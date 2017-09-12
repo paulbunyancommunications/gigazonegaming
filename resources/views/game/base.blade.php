@@ -78,7 +78,9 @@
                 });
                 $('.timepicker').clockpicker({
                     donetext: 'Done',
-                    autoclose: true
+                    default: 'now',
+                    autoclose: true,
+                    twelvehour: false,
                 });
             });
         </script>
