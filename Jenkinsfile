@@ -1,3 +1,5 @@
+
+
 import java.text.SimpleDateFormat
 
 class Globals {
@@ -68,41 +70,26 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     // Get the log outputfrom the code container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps code > ./tests/_output/code.log"
 
-// Wait a few seconds
-sleep 1
     // Get the log outputfrom the firefox container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps firefox > ./tests/_output/firefox.log"
 
-// Wait a few seconds
-sleep 1
     // Get the log outputfrom the web container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps web > ./tests/_output/web.log"
 
-// Wait a few seconds
-sleep 1
     // Get the log outputfrom the hub container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps hub > ./tests/_output/hub.log"
 
-
-// Wait a few seconds
-sleep 1
     // Zip the output folder for email
     zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
 
 
-// Wait a few seconds
-sleep 2
 
     // email teh recipient the log output folder
     emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${RESULT}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
 
-// Wait a few seconds
-sleep 2
     // notify mattermost of this error
     mattermostSend "![${RESULT}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${RESULT} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
 
-// Wait a few seconds
-sleep 2
     // Bring container down and destroy
     sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
 
@@ -180,7 +167,7 @@ node {
     startMessage(Globals.STAGE)
     withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
       sh "rm -rf ${env.WORKSPACE}/groovy || true"
-      sh "git clone https://${Globals.SCM_OWNER}:${SCM_PASS}@github.com/${Globals.SCM_OWNER}/groovy-scripts.git groovy"
+      sh "git clone https://paulbunyannet:${SCM_PASS}@github.com/paulbunyannet/groovy-scripts.git groovy"
     }
     successMessage(Globals.STAGE)
 
@@ -508,17 +495,37 @@ stage('Notification') {
   * Notify Mattermost that the build passed
   */
 
-  // Globals.STAGE='Deployment: Mattermost notification'
-  // startMessage(Globals.STAGE)
-  // try {
-  //   mattermostSend "![${currentBuild.result}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.result} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
-  // } catch (error) {
-  //   warningMessage(Globals.STAGE, error.getMessage())
-  // }
-  // successMessage(Globals.STAGE)
+   Globals.STAGE='Deployment: Mattermost notification'
+   startMessage(Globals.STAGE)
+   try {
+     mattermostSend "![${currentBuild.result}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${currentBuild.result} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
+   } catch (error) {
+     warningMessage(Globals.STAGE, error.getMessage())
+   }
+   successMessage(Globals.STAGE)
 }
 
 
+
+  stage('Push to master') {
+
+   Globals.STAGE='Deployment: git push to master'
+    sh "cd ${Globals.WORKSPACE}; git fetch origin";
+    try {
+        sh "cd ${Globals.WORKSPACE}; git pull origin master";
+        //if there is an error that means that the changes push didnt have the last changes from the main branch so you should pull the main branch and resolve all issues first :)
+    } catch (error) {
+        sh "echo 'if there is an error that means that the changes push didnt have the last changes from the main branch so you should pull the main branch and resolve all issues first :)'";
+        warningMessage(Globals.STAGE, error.getMessage())
+    }
+        sh "cd ${Globals.WORKSPACE}; git stash";
+        sh "cd ${Globals.WORKSPACE}; git checkout origin/master";
+        sh "cd ${Globals.WORKSPACE}; git pull origin master";
+        sh "cd ${Globals.WORKSPACE}; git merge origin develop";
+        sh "cd ${Globals.WORKSPACE}; git commit -q -m 'tests passed on Jenkins'";
+        sh "cd ${Globals.WORKSPACE}; git push origin master";
+
+  }
   stage('Tear down') {
     /**
     * Tear down the docker containers for this build
@@ -530,3 +537,5 @@ stage('Notification') {
   }
 
 }
+
+

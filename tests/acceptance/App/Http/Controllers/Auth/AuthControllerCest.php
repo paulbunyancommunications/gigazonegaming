@@ -11,7 +11,7 @@ class AuthControllerCest extends BaseAcceptance
     {
         parent::_before($I);
         $I->amOnPage('/app/auth/login');
-        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
     }
 
     public function _after(AcceptanceTester $I)

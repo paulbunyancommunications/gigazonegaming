@@ -50,7 +50,7 @@ class TournamentToGameTeamPlayerControllerCest extends BaseAcceptance
     public function checkIfReceiveArrayWhenSendingATournamentId(AcceptanceTester $I)
     {
         $I->wantTo('go to url and see that I received the right information while providing a tournament Id');
-        $I->amOnPage('/app/api/tournament_id/16');
+        $I->amOnPage('/app/api/tournament_id/19');
         $I->see("games");
         $I->see("tournaments");
         $I->see("teams");

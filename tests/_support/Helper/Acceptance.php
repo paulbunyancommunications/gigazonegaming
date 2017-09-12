@@ -39,4 +39,47 @@ class Acceptance extends \Codeception\Module
             }
         }
     }
+    /**
+     * Create a post
+     *
+     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param string $title
+     * @param string $content
+     */
+    public function createAPost($I, $title="", $content="") {
+
+        $I->amOnPage('/wp/wp-admin/post-new.php');
+        $I->checkIfJQueryIsWorking($I,  \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->fillField(['id' => 'title'], $title);
+        $exist = $this->checkIfJQueryIsWorking($I);
+        $I->assertEquals(true, $exist, "if false, jquery wasnt working properly.");
+        $exist = $I->executeJS("return !!jQuery('#content-html').length;");
+        if($exist != 0 and $exist != "0"){
+            $I->click(['id' => 'content-html']);
+            $I->wait( 5);
+        }
+        $I->click(['id' => 'content']);
+        $I->fillField(['id' => 'content'], $content);
+        $I->wait(5);
+        $I->click(['id' => 'publish']);
+        $I->waitForText('Post published', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
+        $I->see('Post published');
+        $path = $I->executeJS('return document.querySelector("#sample-permalink > a").getAttribute("href")');
+//        \Codeception\Util\Debug::debug($path);
+        $I->amOnPage(parse_url($path, PHP_URL_PATH));
+    }
+
+    /**
+     * @param \AcceptanceTester|\FunctionalTester $I
+     * @param $timeOut
+     * @return mixed
+     */
+    public function checkIfJQueryIsWorking($I, $timeOut = "notSet")
+    {
+        if($timeOut == "notSet"){$timeOut=\BaseAcceptance::TEXT_WAIT_TIMEOUT;}
+        $I->waitForJs('return jQuery.active == 0', $timeOut);
+        $exist = $I->executeJS("return !!jQuery('body').length;"); //this will activate jquery if it wasn't still
+        $exist = $I->executeJS("return !!jQuery('body').length;"); //this will let you know that yes it is there!
+        return true;
+    }
 }

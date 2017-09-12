@@ -24,13 +24,10 @@ class TournamentRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     * @todo Nelson, please fix switch statement, only use colons and breaks between conditions http://php.net/manual/en/control-structures.switch.php
      * @return array
      */
     public function rules()
     {
-//        protected $fillable = ['name', 'game_id','updated_by','updated_on'];
-//        dd($this->route());
         switch($this->method())
         {
             case 'GET':
@@ -44,6 +41,7 @@ class TournamentRequest extends Request
                     'game_id' => 'required|numeric|exists:mysql_champ.games,id',
                     'name' => 'required|unique:mysql_champ.tournaments',
                     'max_players' => 'required|numeric',
+                    'max_teams' => 'required|numeric',
                 ];
             }
             case 'PUT':
@@ -57,6 +55,7 @@ class TournamentRequest extends Request
                     'game_id' => 'required|numeric|exists:mysql_champ.games,id',
                     'name' => 'required|unique:mysql_champ.tournaments,name,'.$name.',name',
                     'max_players' => 'required|numeric',
+                    'max_teams' => 'required|numeric',
                 ];
             }
             default:break;
@@ -67,7 +66,6 @@ class TournamentRequest extends Request
     }
 
     /**
-     * @todo Nelson, Where are the rules for required name and game_id? Are they handled in the model? They should be in the rules method.
      * @return array
      */
     public function messages()
@@ -78,6 +76,8 @@ class TournamentRequest extends Request
             'game_id.numeric' => 'A Game must be selected from the list.',
             'max_players.numeric' => 'The NUMBER of players needs to be ... a number, LOL.',
             'max_players.required' => 'The number of players is a required field.',
+            'max_teams.numeric' => 'The NUMBER of players needs to be ... a number, LOL.',
+            'max_teams.required' => 'The number of players is a required field.',
         ];
     }
 }

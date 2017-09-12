@@ -24,44 +24,14 @@
                 {{  Form::open(array('id' => "tournamentForm", 'action' => array('Backend\Manage\TournamentsController@store'), 'class' => 'form-horizontal')) }}
             @endif
 
-                @if(isset($theTournament->name))
-                    <input name="_method" type="hidden" value="PUT">
-                    @include('game.partials.form.tournament-required-fields', ['theTournament' => $theTournament, 'games' => $games])
-                @else
-                    <input name="_method" type="hidden" value="POST">
-                    @include('game.partials.form.tournament-required-fields', ['theTournament' => [], 'games' => $games])
-                @endif
+            @if(isset($theTournament->name))
+                <input name="_method" type="hidden" value="PUT">
+                @include('game.partials.form.tournament-required-fields', ['theTournament' => $theTournament, 'games' => $games])
+            @else
+                <input name="_method" type="hidden" value="POST">
+                @include('game.partials.form.tournament-required-fields', ['theTournament' => [], 'games' => $games])
+            @endif
 
-{{--                <div class="form-group">
-                    <label for="name" class="control-label col-xs-4">Tournament Name: </label>
-                    <div class="col-xs-8">
-                        <input type="text" name="name" id="name" class="form-control"
-                               placeholder="The name of the tournament"
-                               @if(isset($theTournament->name))value="{{$theTournament->name}}"@endif/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="max_players" class="control-label col-xs-4">Players per Team: </label>
-                    <div class="col-xs-8">
-                        <input type="number" min="1" max="20" name="max_players" id="max_players" class="form-control"
-
-                               placeholder="The maximum amount of players per team"
-                               @if(isset($theTournament->max_players))value="{{$theTournament->max_players}}"@endif/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="game_id" class="control-label col-xs-4">Tournament Game ID: </label>
-                    <div class="col-xs-8">
-                        <select type="text" name="game_id" id="game_id" class="form-control">
-                            <option>---</option>
-                            @foreach($games as $key => $game)
-                                <option value="{{$game['game_id']}}"
-                                        @if(isset($theTournament['game_id']) and $theTournament['game_id'] == $game['game_id']) selected @endif
-                                >{{ $game['game_name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>--}}
                 <div class="form-group">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 </div>
@@ -122,8 +92,9 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th class="col-md-6 text-center">Tournament</th>
+                        <th class="col-md-4 text-center">Tournament</th>
                         <th class="col-md-2 text-center">Max Players Per Team</th>
+                        <th class="col-md-2 text-center">Max Teams In Tournament</th>
                         <th class="col-md-4 text-center">Actions</th>
                     </tr>
                     </thead>
@@ -165,4 +136,7 @@
 @endsection
 @section('js-sheet')
     <script type="text/javascript" src="/app/content/js/filterForm.js"></script>
+@endsection
+@section('js')
+
 @endsection

@@ -146,7 +146,8 @@
 
                         {# -# if hidden field set it up here #}
                         {% elseif input.1 is defined and input.1 == 'hidden' and input.2 is defined %}
-                            <input name='{{ input.0 }}'
+                           {{ input.0 }}
+                            <input name='{{ input.0|slugify }}'
                                    type='{{ input.1 }}'
                                    id="{{ input.1 }}"
                                    title="{{ input.1 }}"
@@ -174,7 +175,8 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                    <button class='btn btn-default btn-gz margin-top'
+                    <button class='btn btn-default btn-gz margin-top disabled'
+                            disabled
                             id='{{ submitId }}'
                             type='submit'>Submit</button>
                     <span class='fa-stack fa-lg progress-container' style='display: none;'>

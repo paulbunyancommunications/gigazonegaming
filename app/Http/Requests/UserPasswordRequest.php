@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class GameDisplayGetData extends Request
+class UserPasswordRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class GameDisplayGetData extends Request
     public function rules()
     {
         return [
-        'team' => 'required'
+            'password' => 'required|confirmed'
         ];
     }
 }

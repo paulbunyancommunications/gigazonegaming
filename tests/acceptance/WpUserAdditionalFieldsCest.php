@@ -40,7 +40,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
         $faker = \Faker\Factory::create();
         $fields = GigaZoneGamingBootstrap::extraProfileFields();
         $I->amOnPage('/wp/wp-admin/profile.php');
-        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'nickname'], $faker->userName);
         for($i=0; $i < count($fields); $i++) {
             $fieldValue = $faker->userName;
@@ -50,7 +50,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->click(['id' => 'submit']);
             $I->waitForText('Profile updated', $this::TEXT_WAIT_TIMEOUT);
             $I->see('Profile updated');
-            $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+            $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
             $I->seeInField(['id' => $fields[$i]], $fieldValue);
             $I->seeInField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
         }
@@ -72,7 +72,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
         $I->click(['id' => 'submit']);
         for($i=0; $i < count($fields); $i++) {
             $I->amOnPage('/wp/wp-admin/profile.php');
-            $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+            $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
             $fieldValue = '';
             $fieldProfileValue = '';
             $I->scrollTo(['id' => $fields[$i]]);
@@ -83,10 +83,10 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
             $I->wait(5);
-            $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+            $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
             // make a new post and check to see that the field are missing on page with the profile shortcode
             $I->amOnPage('/wp/wp-admin/post-new.php');
-            $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+            $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
             $I->fillField(['id' => 'title'], $faker->sentence);
             $I->click(['id' => 'content-html']);
             $I->wait(1);
@@ -114,14 +114,14 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
         $faker = \Faker\Factory::create();
         $fields = GigaZoneGamingBootstrap::extraProfileFields();
         $I->amOnPage('/wp/wp-admin/profile.php');
-        $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+        $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'nickname'], $faker->userName);
         $I->click(['id' => 'submit']);
         $I->wait(3);
         for($i=0; $i < count($fields); $i++) {
             $I->amOnPage('/wp/wp-admin/profile.php');
             $I->wait(5);
-            $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+            $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
             $fieldValue = $faker->userName;
             $fieldProfileValue = $faker->url;
             $I->scrollTo(['id' => $fields[$i]]);
@@ -132,7 +132,7 @@ class WpUserAdditionalFieldsCest extends \BaseAcceptance
             $I->fillField(['id' => $fields[$i].'_profile'], $fieldProfileValue);
             $I->click(['id' => 'submit']);
             $I->wait(5);
-            $I->waitForJs('return jQuery.active == 0', $this::TEXT_WAIT_TIMEOUT);
+            $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
             // make a new post and check to see that the field filled is on the page with the profile shortcode
             $I->amOnPage('/wp/wp-admin/post-new.php');
             $I->fillField(['id' => 'title'], $faker->sentence);

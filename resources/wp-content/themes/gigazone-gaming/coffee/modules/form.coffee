@@ -8,6 +8,7 @@ define ['jquery', 'underscore', 'Utility'], ($, _, Utility) ->
   
   form.init = ->
     form.getCsrfToken()
+    $('#doFormSubmit').removeClass('disabled').removeAttr('disabled')
     return
 
   # get the csrf token add add it to the jquery ajax setup

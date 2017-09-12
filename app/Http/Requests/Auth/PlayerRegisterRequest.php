@@ -23,10 +23,8 @@ class PlayerRegisterRequest extends Request
     public function rules()
     {
         return [
-            'phone' => 'required|digits:10',
+            'username' => 'required',
             'email' => 'required|email',
-            'username' =>'required',
-            'password' => 'required|confirmed',
         ];
     }
 }

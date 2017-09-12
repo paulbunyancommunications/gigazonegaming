@@ -13,46 +13,46 @@
 </head>
 <body>
     <h1 class="txt-center">Player Update</h1>
-    <div class="text-center mainDiv">
+    <form class="text-center mainDiv" method="POST">
+        {{ csrf_field() }}
         <div class="margin-bottom">
             <label for="name" class="">Name: </label>
-            <input type="text" name="name" id="name" placeholder="Name" value="{{$token->name}}"/>
+            <input type="text" name="name" id="name" placeholder="Name" value="@yield('Name')"/>
         </div>
         <div class="margin-bottom">
             <label for="username">Username: </label>
-            <input type="text" name="username" id="username" placeholder="Username" value="{{$token->username}}"/>
+            <input type="text" name="username" id="username" placeholder="Username" value="@yield('Username')"/>
         </div>
+        @yield('UserNames')
         <div class="margin-bottom">
             <label for="email">Email: </label>
-            <input type="text" name="email" id="email" placeholder="Email" value="{{$token->email}}"/>
+            <input type="text" name="email" id="email" value="@yield('Email')" readonly/>
         </div>
         <div class="margin-bottom">
             <label for="phone">Phone: </label>
-            <input type="text" name="phone" id="phone" placeholder="Phone" value="{{$token->phone}}"/>
+            <input type="text" name="phone" id="phone" placeholder="Phone" value="@yield('Phone')"/>
         </div>
-        <button class="btn" onclick="UpdatePlayerInfo()">Update</button>
+        <button class="btn" id ="update" onclick="window.open('/app/player/playerUpdate','_self')">Update</button>
+    </form>
+    @if ($errors->any())
+        <div class="alert alert-danger text-center">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
+                @endforeach
+        </div>
+    @endif
+    @if (session('success'))
+        <div class=" alert alert-success text-center">
+            {{session('success')}}
+        </div>
+    @endif
+    <div class="mainDiv">
+        @yield('Form')
     </div>
-    <div class="mainDiv text-center">
-        <h3>Additional Information</h3>
-            <h4>Tournaments Entered:</h4>
-                <div class="margin-bottom">
-                    <b>League of Legends</b><br/>
-                    Team Name: <br/>
-                    Summoner Name: {{$token->username}}
-                </div>
-                <div class="margin-bottom">
-                    <b>OverWatch</b><br/>
-                    Team Name: <br/>
-                    Player Name:
-                </div>
-                <div class="margin-bottom">
-                    <b>Madden</b><br/>
-                    Team Name: <br/>
-                    Player Name:
-                </div>
+    <div class="text-center">
+        <button class="btn margin-sm-top" id="logout" onclick="window.open('/app/player/logout','_self')">Logout</button>
     </div>
-<button onclick="">Logout</button>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-<script src="/LeagueOfLegendsDisplay/JS/playerUpdate.js"></script>
+<script src="/resources/assets/js/playerUpdate.js"></script>
 </html>

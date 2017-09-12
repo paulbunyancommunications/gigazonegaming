@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class GameDisplayUpdateData extends Request
+class RecoverPasswordRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class GameDisplayUpdateData extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class GameDisplayUpdateData extends Request
     public function rules()
     {
         return [
-            //
+            'email' => 'required|email',
         ];
     }
 }
