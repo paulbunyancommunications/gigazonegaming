@@ -74,7 +74,9 @@
 
                 @yield('js')
                 $(".datepicker").datepicker({
-                    dateFormat: 'yy-dd-mm'
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
                 });
                 $('.timepicker').clockpicker({
                     donetext: 'Done',
