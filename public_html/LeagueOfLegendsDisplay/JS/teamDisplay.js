@@ -211,17 +211,17 @@ $(document).ready(function() {
 
 /* This displays the information according to what champion is inside the #Rank1 div */
 function ShowInfo(i){
-    if ($("#Rank1"+ i).find("b").text() === "Rank 1"){
-        $("#imageInfo1"+i).removeClass("hidden");
-        $("#imageInfo2"+i+",#imageInfo3"+i).addClass("hidden");
+    if ($("#Rank1"+ i).find("img").attr("id") === "I1"+i){
+        $("#imageInfo1"+i+",#splash1"+i).removeClass("hidden");
+        $("#imageInfo2"+i+",#imageInfo3"+i+",#splash2"+i+",#splash3"+i).addClass("hidden");
     }
-    else if ($("#Rank1"+i).find("b").text() === "Rank 2"){
-        $("#imageInfo1"+i+",#imageInfo3"+i).addClass("hidden");
-        $("#imageInfo2"+i).removeClass("hidden");
+    else if ($("#Rank1"+ i).find("img").attr("id") === "I2"+i){
+        $("#imageInfo1"+i+",#imageInfo3"+i+",#splash1"+i+",#splash3"+i).addClass("hidden");
+        $("#imageInfo2"+i+",#splash2"+i).removeClass("hidden");
     }
     else{
-        $("#imageInfo1"+i+",#imageInfo2"+i).addClass("hidden");
-        $("#imageInfo3"+i).removeClass("hidden");
+        $("#imageInfo1"+i+",#imageInfo2"+i+",#splash1"+i+",#splash2"+i).addClass("hidden");
+        $("#imageInfo3"+i+",#splash3"+i).removeClass("hidden");
     }
 }
 /* This replaces the contents of the Rank divs in the extra stats to view different champions */

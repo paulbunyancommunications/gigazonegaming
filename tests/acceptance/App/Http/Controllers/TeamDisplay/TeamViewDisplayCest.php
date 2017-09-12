@@ -3,6 +3,7 @@ namespace Test\Acceptance\App\Http\Controllers\TeamDisplay;
 
 
 use AcceptanceTester;
+use Illuminate\Support\Facades\Cache;
 
 class TeamViewDisplayCest extends \BaseAcceptance
 {
@@ -19,20 +20,33 @@ class TeamViewDisplayCest extends \BaseAcceptance
         exec('php artisan migrate:refresh');
     }
 
-    public function __construct()
-    {
-        $this->faker = \Faker\Factory::create();
-    }
-
-    protected function populateDB(AcceptanceTester $I)
-    {
-//        $I->runShellCommand('cd /var/www');
-        exec('php artisan db:seed --class=DatabaseSeeder');
-        $this->faker = \Faker\Factory::create();
-    }
-
 #test
 #-----------------------------------------------------------------------------
+
+    public function _cacheChampionData($team){
+        $championPlayerIdArray = [0,1,2,3,4];
+        if ($team == 'Team 1') {
+            $championArray = [
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Morgana_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Darius_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Nidalee_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Zed_0.jpg",
+            ];
+            Cache::put('Team1Champions', $championArray, 70);
+            Cache::put('Team1ChampionsPlayerId', $championPlayerIdArray, 70);
+        } else {
+            $championArray = [
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Jinx_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Thresh_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Renekton_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Kindred_0.jpg",
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Talon_0.jpg",
+            ];
+            Cache::put('Team2Champions', $championArray, 70);
+            Cache::put('Team2ChampionsPlayerId', $championPlayerIdArray, 70);
+        }
+    }
     public function seeTeam1Display(AcceptanceTester $I){
         $I->wantTo('See that the default page is loaded for team1 since there is no cache for team1');
 
@@ -67,28 +81,12 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->waitForText('That Team', 15, 'h1');
         $I->amOnPage('/app/GameDisplay/team2');
         $I->waitForText('Team Awesome', 15, 'h1');
-        $I->wantTo('See Champions loaded into page');
 
         //Select champs team 1
-        $I->amOnPage('/app/GameDisplay/override');
-        $I->selectOption('#Team','Team 1');
-        $I->selectOption('#player1','Ashe');
-        $I->selectOption('#player2','Morgana');
-        $I->selectOption('#player3','Darius');
-        $I->selectOption('#player4','Nidalee');
-        $I->selectOption('#player5','Zed');
-        $I->click('#SubmitChamps');
-        $I->waitForText('Team 1 Champions Successfully Updated!!', 10, 'h3');
+        $this->_cacheChampionData('Team 1');
 
         //Select champs team 2
-        $I->selectOption('#Team','Team 2');
-        $I->selectOption('#player1','Jinx');
-        $I->selectOption('#player2','Thresh');
-        $I->selectOption('#player3','Renekton');
-        $I->selectOption('#player4','Kindred');
-        $I->selectOption('#player5','Talon');
-        $I->click('#SubmitChamps');
-        $I->waitForText('Team 2 Champions Successfully Updated!!', 10, 'h3');
+        $this->_cacheChampionData('Team 2');
 
         //see champs on team 1
         $I->amOnPage('/app/GameDisplay/team1');
@@ -114,7 +112,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->click('Submit');
         $I->waitForText('UPDATED', 15, '.console-header');
 
-        $I->amOnPage('/app/GameDisplay/customer');
+        $I->amOnPage('/app/GameDisplay');
         $I->waitForText('That Team',15,'#team1');
         $I->see('Team Awesome','#team2');
     }
@@ -137,11 +135,28 @@ class TeamViewDisplayCest extends \BaseAcceptance
         //See team data on pages team1 and team2
         $I->amOnPage('/app/GameDisplay/team1');
         $I->resizeWindow(360, 862);
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('Juanpablomontoya','.summonerName');
+        $I->click('.carousel-control-next');
         $I->see('ThatBoy18','.summonerName');
         $I->click('.carousel-control-next');
+        $I->see('manklar','.summonerName');
+        $I->click('.carousel-control-next');
         $I->see('ReckonStuff','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->click('.carousel-control-next');
+        $I->see('Juanpablomontoya','.summonerName');
         $I->click('.carousel-control-prev');
-        $I->see('ThatBoy18','.summonerName');
+        $I->see('KingMorpheus2131','.summonerName');
+        $I->see('Diana', '.summonerName');
+        $I->click('#topChampNav0Next');
+        $I->see('Malzahar','.summonerName');
+        $I->click('#topChampNav0Next');
+        $I->see('Morgana','.summonerName');
+        $I->click('#topChampNav0Prev');
+        $I->see('Malzahar','.summonerName');
     }
 
 }

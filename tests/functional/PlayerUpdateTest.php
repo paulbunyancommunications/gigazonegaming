@@ -36,8 +36,9 @@ class PlayerUpdateTest extends \TestCase
         $username = $faker->userName;
         $parameters =['email'=>$email,
             'username'=>$username];
-        $this->call('POST', '/player/register',$parameters);
-        $this->assertRedirectedTo('/player/register', $with = ['success'=>'Check Your Email!']);
+        $array = ['success'=>'Check Your Email!'];
+        $this->call('POST', 'http://'.$_SERVER['SERVER_NAME'].'/player/register',$parameters);
+        $this->assertRedirectedTo('http://'.$_SERVER['SERVER_NAME'].'/player/register',$array);
 
         // now check the db for this player
         $getIndividual = Player::where('email', '=', $parameters['email'])->first();

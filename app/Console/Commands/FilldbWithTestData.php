@@ -7,6 +7,9 @@ use App\Models\Championship\Player;
 use Illuminate\Console\Command;
 class FilldbWithTestData extends Command
 {
+    //todo: fix team assign
+
+
     /**
      * The name and signature of the console command.
      *
@@ -40,20 +43,19 @@ class FilldbWithTestData extends Command
         var_dump("This is working");
     }
     public function fillDB(){
-        #Captian
         $Captain = Player::create([
-            'username' => "Spartan7Warrior",
+            'username' => "KingMorpheus2131",
             'email' => "martushev8@gmail.com",
             'name' => 'Roman',
             'phone' => '2182805085']);
-        $CaptainOfTeam = Player::where('username','Spartan7Warrior')->first();
+        $CaptainOfTeam = Player::where('username','KingMorpheus2131')->first();
         #Team
         $team = Team::create([
             'tournament_id' => 1,
-            'name' => 'Team Awesome',
+            'name' => 'That Team',
             'captain' => $CaptainOfTeam->id,
         ]);
-        $team = Team::where('tournament_id',1)->first();
+        $team = Team::where('name', 'That Team')->first();
         #relations
         $Captain::createRelation([
             'player' => $CaptainOfTeam->id,
@@ -61,7 +63,7 @@ class FilldbWithTestData extends Command
             'Tournament' => 1,
             'team' => $team->id,
         ]);
-        $playerUserNameArray = array('CacheMeOuside', 'DragonDefeater1', 'SlySkeever', 'ChaChing77');
+        $playerUserNameArray = array('Juanpablomontoya', 'ThatBoy18', 'manklar', 'ReckonStuff');
         #creat players for team
         for($i = 0; $i < count($playerUserNameArray); $i++){
             $player = Player::create([

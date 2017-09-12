@@ -22,6 +22,8 @@ class Summoner{
     protected $FLEXRank;
     protected $FLEXRankedWinLoss;
     protected $api;
+    protected $top3Champions;
+    protected $top3ChampionStats;
 
 # Constructor
 #----------------------------------------------------------------------
@@ -46,6 +48,7 @@ class Summoner{
         $this->setSoloRank($this->api->getSoloRank());
         $this->setFLEXRank($this->api->getFLEXRank());
         $this->setFLEXRankedWinLoss($this->api->getFLEXRankedWinLoss());
+        $this->setTop3Champions($this->api->getTop3Champions());
 
         #dd("Solo Rank: " . $this->soloRank . " Solo Win|Loss: " . $this->soloRankedWinLoss ." Flex Rank: " . $this->FLEXRank . " Flex Win|Loss: " . $this->FLEXRankedWinLoss);
 //
@@ -77,7 +80,7 @@ class Summoner{
         $this->api = $api;
 
         #Injects summoner into api so that this api can uniquely request data for this summoner.
-        $this->api->injectSummoner($this->summonerName);
+        $this->api->injectSummoner($this->summonerName, true);
 
     }
 
@@ -125,13 +128,22 @@ class Summoner{
         $this->FLEXRankedWinLoss = $flexRankWinLoss;
     }
 
-
     /**
      *
      */
     public function setChampion(){
         $this->champion = $this->api->getChampion();
     }
+
+    /**
+     * @param mixed $top3Champions
+     */
+    public function setTop3Champions($top3Champions)
+    {
+        $this->top3Champions = $top3Champions;
+    }
+
+
 
 
 # Getters
@@ -207,5 +219,15 @@ class Summoner{
     {
         return $this->summonerName;
     }
+
+    /**
+     * @return mixed
+     * Returns two arrays. [0] is the champion Icon [3] is the champion splash art
+     */
+    public function getTop3Champions()
+    {
+        return $this->top3Champions;
+    }
+
 
 }

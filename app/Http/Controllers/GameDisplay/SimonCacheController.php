@@ -31,8 +31,13 @@ class SimonCacheController extends Controller
     protected $soloWinLossArray = array();
     protected $flexRankArray = array();
     protected $flexWinLossArray = array();
+    protected $top3ChampionIcons = [];
+    protected $top3ChampionImgs = [];
+    protected $top3ChampionRanks = [];
+    protected $top3ChampionPionts = [];
 
-    public function SubmitCache(Requests\SimonCacheSubmitCache $req)
+
+    public function submitCache(Requests\SimonCacheSubmitCache $req)
     {
         ///For Assertion Test: Load fixture if the exists.
         $testing = \utilphp\util::str_to_bool($req->header('Testing'));
@@ -142,6 +147,10 @@ class SimonCacheController extends Controller
             array_push($this->soloWinLossArray, $player->getSoloRankedWinLoss());
             array_push($this->flexRankArray, $player->getFLEXRank());
             array_push($this->flexWinLossArray, $player->getFLEXRankedWinLoss());
+            array_push($this->top3ChampionIcons, $player->getTop3Champions()[0]);
+            array_push($this->top3ChampionImgs, $player->getTop3Champions()[1]);
+            array_push($this->top3ChampionRanks, $player->getTop3Champions()[2]);
+            array_push($this->top3ChampionPionts, $player->getTop3Champions()[3]);
         }
     }
 
@@ -169,6 +178,10 @@ class SimonCacheController extends Controller
             'soloWinLossArray' => $this->soloWinLossArray,
             'flexRankArray' => $this->flexRankArray,
             'flexWinLossArray' => $this->flexWinLossArray,
+            'top3ChampionIcons' => $this->top3ChampionIcons,
+            'top3ChampionImages' => $this->top3ChampionImgs,
+            'top3ChampionRanks' => $this->top3ChampionRanks,
+            'top3ChampionPoints' => $this->top3ChampionPionts
         );
         return $team;
     }
@@ -204,7 +217,19 @@ class SimonCacheController extends Controller
      */
     public function clearCache()
     {
-        Cache::flush();
+        Cache::forget('Players');
+        Cache::forget('Team1Name');
+        Cache::forget('Team1Info');
+        Cache::forget('Team1Color');
+        Cache::forget('Team1TimeStamp');
+        Cache::forget('Team2Name');
+        Cache::forget('Team2Info');
+        Cache::forget('Team2Color');
+        Cache::forget('Team2TimeStamp');
+        Cache::forget('Team1Champions');
+        Cache::forget('Team2Champions');
+        Cache::forget('Team1ChampionsPlayerId');
+        Cache::forget('Team2ChampionsPlayerId');
         return "Cache Successfully Cleared";
     }
 

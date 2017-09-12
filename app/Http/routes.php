@@ -97,22 +97,33 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  *
  */
 Route::group(['middleware' => ['WPAdmin']], function () {
+// Admin Page
     Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
-    Route::get('/GameDisplay/override','GameDisplay\GameDisplayController@championOverride');
-    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@SubmitCache');
+    Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@submitCache');
     Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
     Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
+// Champion Override Page
+    Route::get('/GameDisplay/override','GameDisplay\ChampionOverrideController@pageLoad');
     Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
 });
 
-Route::get('/GameDisplay/customer','GameDisplay\GameDisplayController@customerDisplay');
-
+// Team View Display
 Route::get('/GameDisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
-
-Route::get('/GameDisplay/ajax','GameDisplay\GameDisplayController@ajaxCheckRequest');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
-Route::get('/GameDisplay/getTeamName','GameDisplay\GameDisplayController@getTeamName');
+
+// Customer Page todo: Change name to "User" not Customer
+Route::get('/GameDisplay/getTeamName', function (){
+    $teamNames = array();
+    if (Cache::has('Team1Name') && Cache::has('Team2Name') && Cache::has('Team1Color') && Cache::has('Team2Color')) {
+        array_push($teamNames, Cache::get('Team1Name'));
+        array_push($teamNames, Cache::get('Team2Name'));
+        array_push($teamNames, Cache::get('Team1Color'));
+        array_push($teamNames, Cache::get('Team2Color'));
+        return $teamNames;
+    }
+    return false;});
+Route::get('/GameDisplay', function (){return view('/LeagueOfLegends/customerPage');});
 
 Route::get('/player/login',function(){
     return view('/playerUpdate/login')->withEmail("")->with('success',"");

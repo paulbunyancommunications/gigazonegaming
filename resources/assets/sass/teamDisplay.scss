@@ -301,6 +301,11 @@ h3{
   margin-left: auto;
   margin-right:auto;
 }
+.back-splash{
+  height:auto;
+  width:$width;
+  -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+}
 @media (min-width:1080px) {
   .col-lg {
     width: $sz-xs;
@@ -377,7 +382,7 @@ h3{
     width: $max-width - 150;
   }
   .teamFooter{
-    text-align: center;
+    text-align: left;
     width:$width;
   }
   h1{
