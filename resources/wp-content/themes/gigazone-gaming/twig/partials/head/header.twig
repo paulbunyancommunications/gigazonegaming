@@ -4,7 +4,7 @@
   <meta content='IE=edge' http-equiv='X-UA-Compatible'>
   <meta content='width=device-width, initial-scale=1' name='viewport'>
   <meta content='{{ APP_ENV }}' name='env'>
-  {% include "partials/head/header-favicon" %}
+  {% include "partials/head/header-favicon.twig" %}
   {% if request_token is defined %}
     <meta content='{{ request_token }}' name='request_token'>
   {% endif %}
