@@ -1,6 +1,8 @@
 <?php
 namespace Helper;
 
+use \utilphp\util;
+
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
 
@@ -49,12 +51,9 @@ class Acceptance extends \Codeception\Module
     public function createAPost($I, $title="", $content="") {
 
         $I->amOnPage('/wp/wp-admin/post-new.php');
-        $I->checkIfJQueryIsWorking($I,  \BaseAcceptance::TEXT_WAIT_TIMEOUT);
         $I->fillField(['id' => 'title'], $title);
-        $exist = $this->checkIfJQueryIsWorking($I);
-        $I->assertEquals(true, $exist, "if false, jquery wasnt working properly.");
-        $exist = $I->executeJS("return !!jQuery('#content-html').length;");
-        if($exist != 0 and $exist != "0"){
+        $exist = util::str_to_bool($I->executeJS("return !!document.getElementById('content-html')"));
+        if(!$exist){
             $I->click(['id' => 'content-html']);
             $I->wait( 5);
         }
