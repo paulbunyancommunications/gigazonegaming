@@ -65,7 +65,7 @@ class Api{
                 break;
             case 429:
                 if ($counter > 2) {
-                    throw new Exception("Calling Api Key Too Soon summoner: $this->summoner");
+                    throw new Exception("Calling Api Key Too Soon summoner: $this->summoner on " . explode('?',$Url)[0]);
                 }
                 $counter++;
                 sleep(1);
@@ -228,13 +228,25 @@ class Api{
      * @param $ChampionId
      */
     Public function setChampionName($ChampionId){
-        if(Cache::has($ChampionId . 'Name')){
-            $this->championName = Cache::get($ChampionId . 'Name');
-        }else{
-            $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions/". $ChampionId ."?api_key=" . $this->apiKey;
+        $data = '';
+        $path = dirname(dirname(dirname(dirname(__DIR__))))."/storage/app/Champions/ChampionNamesToId.bin";
+        if(file_exists($path)){
+            $data = file_get_contents($path);
+            $data = json_decode($data);
+        }
+        if(isset($data->data->{$ChampionId}->key)){
+            $this->championName = $data->data->{$ChampionId}->key;
+        }
+        else{
+            dd($data);
+            #make the request serialize it.
+            $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=true&api_key=" . $this->apiKey;
             $Info = $this->apiRequest($Url);
-            Cache::put($ChampionId . 'Name', $Info->key, 1440);
-            $this->championName = $Info->key;
+            file_put_contents($path, json_encode($Info));
+            if(!isset($Info->data->{$ChampionId}->key)){
+                throw new Exception("Champion id: $ChampionId does not exists");
+            }
+            $this->championName = $Info->data->{$ChampionId}->key;
         }
     }
 
@@ -383,6 +395,14 @@ class Api{
             $FLEXRank = "Unranked";
         }
         return $FLEXRank;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChampionName()
+    {
+        return $this->championName;
     }
 
     /**
