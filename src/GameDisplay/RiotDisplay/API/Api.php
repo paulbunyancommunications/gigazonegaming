@@ -122,7 +122,7 @@ class Api{
             #Gets players states json
             $Url = 'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
             $Info = $this->apiRequest($Url);
-            Cache::put($this->summonerID.'LeagueV3Data', $Info, 120);
+            Cache::put($this->summonerID.'LeagueV3Data', $Info, 200);
             $this->LeagueV3Json = $Info;
         }
 
@@ -142,7 +142,7 @@ class Api{
         else{
             $Url = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $this->summoner . '?api_key='. $this->apiKey;
             $info = $this->apiRequest($Url);
-            Cache::put($this->summonerID.'SummonerData', $info, 90);
+            Cache::put($this->summonerID.'SummonerData', $info, 200);
         }
         if($info){
             try{
@@ -172,7 +172,7 @@ class Api{
             if($Info === []){
                 $Info = false;
             }
-            Cache::put($this->summonerID.'MasterieData', $Info, 120);
+            Cache::put($this->summonerID.'MasterieData', $Info, 200);
             $this->championMasteries = $Info;
         }
     }
@@ -266,7 +266,7 @@ class Api{
      */
     public function getSummonerIcon(){
 
-        return "http://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/profileicon/$this->IconId.png";
+        return "https://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/profileicon/$this->IconId.png";
     }
 
     /**
@@ -448,8 +448,8 @@ class Api{
         $championPoints = [];
         for($i = 0; $i < 3; $i++){
             $this->setChampionName($this->championMasteries[$i]->championId);
-            array_push($championImgIconArray, "http://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/champion/$this->championName.png");
-            array_push($championImgSplashArt, 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'.$this->championName.'_0.jpg');
+            array_push($championImgIconArray, "https://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/champion/$this->championName.png");
+            array_push($championImgSplashArt, 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/'.$this->championName.'_0.jpg');
             array_push($championRank, $this->championMasteries[$i]->championLevel);
             array_push($championPoints, $this->championMasteries[$i]->championPoints);
         }

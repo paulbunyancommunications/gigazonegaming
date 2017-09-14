@@ -40,6 +40,7 @@ class TournamentsController extends Controller
         $tournament = new Tournament();
         $tournament->game_id = $request['game_id'];
         $tournament->max_players = $request['max_players'];
+        $tournament->max_teams = $request['max_teams'];
         $tournament->name = $request['name'];
         $tournament->updated_by =  $this->getUserId();
         $tournament->updated_on = Carbon::now("CST");
@@ -77,6 +78,16 @@ class TournamentsController extends Controller
      */
     public function edit(Tournament $tournament)
     {
+        $minimum = Carbon::create(2012, 1, 1, 1, 1, 1, 'America/Chicago');
+        if($tournament->occurring->lt($minimum)){$tournament->occurring=carbon::now();}
+        if($tournament->sign_up_open->lt($minimum)){$tournament->sign_up_open=carbon::now();}
+        if($tournament->sign_up_close->lt($minimum)){$tournament->sign_up_close=carbon::now();}
+        $tournament['occurring_date'] = $tournament->occurring->toDateString();
+        $tournament['occurring_time'] = $tournament->occurring->toTimeString();
+        $tournament['sign_up_open_date'] = $tournament->sign_up_open->toDateString();
+        $tournament['sign_up_open_time'] = $tournament->sign_up_open->toTimeString();
+        $tournament['sign_up_close_date'] = $tournament->sign_up_close->toDateString();
+        $tournament['sign_up_close_time'] = $tournament->sign_up_close->toTimeString();
         return View::make('game/tournament')->with("theTournament", $tournament);
     }
 
@@ -95,6 +106,13 @@ class TournamentsController extends Controller
             'updated_by' => $updatedBy,
             'updated_on' => $updatedOn
         ] );
+        unset($toUpdate['_token']);
+        unset($toUpdate['occurring_date']);
+        unset($toUpdate['occurring_time']);
+        unset($toUpdate['sign_up_open_date']);
+        unset($toUpdate['sign_up_open_time']);
+        unset($toUpdate['sign_up_close_date']);
+        unset($toUpdate['sign_up_close_time']);
         unset($toUpdate['_token']);
         unset($toUpdate['_method']);
         unset($toUpdate['id']);
@@ -146,6 +164,15 @@ class TournamentsController extends Controller
      */
     public function filter(Request $ids)
     {
+        $select = [
+            'tournaments.name as tournament_name',
+            'tournaments.game_id',
+            'tournaments.max_players',
+            'tournaments.max_teams',
+            'tournaments.id as tournament_id',
+            'games.name as game_name'
+        ];
+
         if(trim($ids->game_sort) != "" and trim($ids->game_sort) != "---" and $ids->game_sort!=[]) {
             if(is_numeric($ids->game_sort)){
                 $game = trim($ids->game_sort);
@@ -155,14 +182,14 @@ class TournamentsController extends Controller
             $tournament =  Tournament::
             join('games', 'games.id', '=', 'tournaments.game_id')
                 ->where('tournaments.game_id', '=', $game)
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select($select)
                 ->orderBy('game_name', 'asc')
                 ->orderBy('tournament_name', 'asc')
                 ->get()
                 ->toArray();
         }else{
             $tournament =  Tournament::join('games', 'games.id', '=', 'tournaments.game_id')
-                ->select(['tournaments.name as tournament_name', 'tournaments.game_id', 'tournaments.max_players', 'tournaments.id as tournament_id','games.name as game_name'])
+                ->select($select)
                 ->get()
                 ->toArray();
         }

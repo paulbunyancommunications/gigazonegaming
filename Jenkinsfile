@@ -70,41 +70,26 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
     // Get the log outputfrom the code container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps code > ./tests/_output/code.log"
 
-// Wait a few seconds
-sleep 1
     // Get the log outputfrom the firefox container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps firefox > ./tests/_output/firefox.log"
 
-// Wait a few seconds
-sleep 1
     // Get the log outputfrom the web container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps web > ./tests/_output/web.log"
 
-// Wait a few seconds
-sleep 1
     // Get the log outputfrom the hub container
     sh "cd ${Globals.WORKSPACE}; docker-compose logs --timestamps hub > ./tests/_output/hub.log"
 
-
-// Wait a few seconds
-sleep 1
     // Zip the output folder for email
     zip dir: "${Globals.WORKSPACE}/tests/_output", glob: '', zipFile: "${Globals.WORKSPACE}/${Globals.ARCHIVE_NAME}-test-output.zip"
 
 
-// Wait a few seconds
-sleep 2
 
     // email teh recipient the log output folder
     emailext attachmentsPattern: "${Globals.ARCHIVE_NAME}-test-output.zip", body: JOB_FAILED_BODY, subject: "Build for ${env.JOB_NAME} ${currentBuild.number} ${RESULT}!", to: "${Globals.COMMIT_AUTHOR_EMAIL}"
 
-// Wait a few seconds
-sleep 2
     // notify mattermost of this error
     mattermostSend "![${RESULT}](https://jenkins.paulbunyan.net:8443/buildStatus/icon?job=${env.JOB_NAME} 'Icon') ${RESULT} ${env.JOB_NAME} # ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open Pipe>)(<${env.BUILD_URL}/console|Open Console>)"
 
-// Wait a few seconds
-sleep 2
     // Bring container down and destroy
     sh "cd ${Globals.WORKSPACE}; docker-compose down -v";
 

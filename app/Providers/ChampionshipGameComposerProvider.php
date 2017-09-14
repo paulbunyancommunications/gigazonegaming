@@ -268,8 +268,7 @@ class ChampionshipGameComposerProvider extends ServiceProvider
                 case ('id'):
                     array_push($select, $this->tableColumnAsTableColumn($table, $columns[$c]));
                     break;
-                case ('game_id'):
-                case ('max_players'):
+                default:
                     array_push($select, $this->tableColumnAsColumn($table, $columns[$c]));
                     break;
             }

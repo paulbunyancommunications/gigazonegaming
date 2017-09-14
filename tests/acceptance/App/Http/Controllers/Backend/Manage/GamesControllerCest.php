@@ -99,6 +99,7 @@ class GamesControllerCest extends BaseAcceptance
         $I->fillField(['id' => 'uri'], $uri2);
         $I->fillField(['id' => 'description'], $desc2);
         $I->click(['id' => 'submit']);
+        $I->wait(5);
         // I don't see dupe errors
         $I->checkIfJQueryIsWorking($I,  $this::TEXT_WAIT_TIMEOUT);
         $I->dontSee('The game name is is already being used.');
