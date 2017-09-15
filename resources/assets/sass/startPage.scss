@@ -33,12 +33,6 @@ label{
   color: white;
   text-decoration: underline;
 }
-#label1{
-  margin-right:$champNameBottom * 2;
-}
-#label2{
-  margin-left:$champNameBottom * 2;
-}
 #colorLabel1{
   margin-right:$champNameBottom * 1.5;
 }
@@ -179,12 +173,6 @@ label{
     font-size: $font-size-md;
     margin: $min-space;
     margin-bottom: $min-space * 2;
-  }
-  #label1{
-    margin-right:$champNameBottom + 10;
-  }
-  #label2{
-    margin-left:$champNameBottom + 10;
   }
   #loader {
     width: $min-space * 3;
