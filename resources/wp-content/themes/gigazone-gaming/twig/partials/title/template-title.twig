@@ -1,6 +1,6 @@
 <h1 class="tag-title tight-bottom">
     <span class="tag-title-label">{% block section %}Section{% endblock %}</span>
     {% block image %}{% endblock %}
-    <span class="tag-title-text">{% block title %}Title{% endblock %}</span>
+    <span class="tag-title-text">{% block title %}Title{% endblock %} {% include "partials/archive-paged.twig" %}</span>
 </h1>
 <hr class="divider horizontal dashed">

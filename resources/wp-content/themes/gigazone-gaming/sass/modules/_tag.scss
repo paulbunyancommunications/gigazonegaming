@@ -36,10 +36,12 @@
     border-bottom: none;
     @include padding-bottom(0);
     text-transform: uppercase;
+    @include min-height(1.625);
 
     @include mq-phone {
       @include font-size(3.75);
       @include line-height(.75);
+      @include min-height(1.125);
     }
 
     &-label, &-image-container, &-text, .paged {

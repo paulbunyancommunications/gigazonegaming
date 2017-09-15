@@ -12,10 +12,21 @@ class ArchivePaginationCest extends BaseAcceptance
     public function _before(AcceptanceTester $I)
     {
         parent::_before($I);
+
+        $postsCount = 3;
+        $I->runQuery($I,
+            [
+                'server' => env('DB_HOST'),
+                'user' => env('DB_USERNAME'),
+                'password' => env('DB_PASSWORD'),
+                'database' => env('DB_DATABASE'),
+            ],
+            "UPDATE `wp_options` SET `option_value` = '" . $postsCount . "' WHERE `option_name` = 'posts_per_page'");
+
         $I->loginToWordpress($I, 'admin', 'password', 1);
-        $postsPerPage = $I->grabFromDatabase('wp_options', 'option_value', ['option_name' => 'posts_per_page']);
+
         /** Make a bunch of posts so that the pagination will show up */
-        for($i=0; $i < floor(intval($postsPerPage) * 2.5); $i++) {
+        for($i=0; $i < ($postsCount * 2); $i++) {
             $I->createAPost($I, $this->faker->sentence(), $this->faker->paragraph());
         }
 
@@ -35,7 +46,7 @@ class ArchivePaginationCest extends BaseAcceptance
      * Check that pagination shows on archive pages
      *
      * @param AcceptanceTester $I
-     * @group pagination
+     * @group archive
      * @test
      */
     public function checkThatPaginationShowsOnArchivePages(AcceptanceTester $I, $scenario)
@@ -47,7 +58,7 @@ class ArchivePaginationCest extends BaseAcceptance
     /**
      * Check that clicking on pagination sends to the right page
      * @param AcceptanceTester $I
-     * @group pagination
+     * @group archive
      * @test
      */
     public function checkThatClickingOnPaginationSendsToTheRightPage(AcceptanceTester $I, $scenario)
