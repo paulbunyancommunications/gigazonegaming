@@ -36,7 +36,6 @@ class GigaZoneFromPaulBunyanTest extends \TestCase
      */
     public function getGigazoneInfoThatIsNotCached()
     {
-        dd("Something");
         $driver = \Mockery::mock();
         $pool = \Mockery::mock();
         $pool->shouldReceive('save');
