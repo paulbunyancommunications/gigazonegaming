@@ -4,7 +4,7 @@
 /**
  * Class paginationCest
  */
-class ArchivePaginationCest extends BaseAcceptance
+class ArchiveAcceptanceCest extends BaseAcceptance
 {
     /**
      * @param AcceptanceTester $I
