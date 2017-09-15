@@ -1,7 +1,9 @@
 <?php
+
 namespace Helper;
 
-use \utilphp\util;
+use Pbc\Bandolier\Type\Arrays;
+use utilphp\util;
 
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
@@ -25,7 +27,7 @@ class Acceptance extends \Codeception\Module
     public static function loginToWordpress(\AcceptanceTester $I, $user, $pass, $maxAttempts = 10)
     {
 
-        for($i=0; $i <= $maxAttempts; $i++ ) {
+        for ($i = 0; $i <= $maxAttempts; $i++) {
             try {
                 $I->amOnPage('/wp/wp-login.php');
                 $I->fillField(['id' => 'user_login'], $user);
@@ -37,28 +39,53 @@ class Acceptance extends \Codeception\Module
                 if ($i === $maxAttempts) {
                     $I->fail("{$i} login attempts were made.");
                 }
-              continue;
+                continue;
             }
         }
     }
+
     /**
      * Create a post
+     * Provide a string for title and content, or pass an array for the second param to change extra fields
+     * the meta field should be set like:
+     * ['webdriver_command','selector','value'], Examples:
+     * * ['fillField','#someId','abc123']
+     * * ['selectOption','#someSelectField','ABC 123']
      *
      * @param \AcceptanceTester|\FunctionalTester $I
-     * @param string $title
+     * @param string|array $title
      * @param string $content
      */
-    public function createAPost($I, $title="", $content="") {
+    public function createAPost($I, $title = "", $content = "")
+    {
+
+        $faker = \Faker\Factory::create();
+        if (is_array($title)) {
+            extract(Arrays::defaultAttributes([
+                    'title' => $faker->sentence(),
+                    'content' => $faker->paragraph(),
+                    'meta' => []
+                ]
+                , $title)
+            );
+        }
 
         $I->amOnPage('/wp/wp-admin/post-new.php');
         $I->fillField(['id' => 'title'], $title);
         $exist = util::str_to_bool($I->executeJS("return !!document.getElementById('content-html')"));
-        if(!$exist){
+        if (!$exist) {
             $I->click(['id' => 'content-html']);
-            $I->wait( 5);
+            $I->wait(5);
         }
         $I->click(['id' => 'content']);
         $I->fillField(['id' => 'content'], $content);
+
+        // run though the meta field and set any extra fields that is contains
+        if (isset($meta) && count($meta) > 0) {
+            for($i=0, $iCount=count($meta); $i < $iCount; $i++) {
+                $I->{$meta[$i][0]}($meta[$i][1],$meta[$i][2]);
+            }
+        }
         $I->wait(5);
         $I->click(['id' => 'publish']);
         $I->waitForText('Post published', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
@@ -75,7 +102,9 @@ class Acceptance extends \Codeception\Module
      */
     public function checkIfJQueryIsWorking($I, $timeOut = "notSet")
     {
-        if($timeOut == "notSet"){$timeOut=\BaseAcceptance::TEXT_WAIT_TIMEOUT;}
+        if ($timeOut == "notSet") {
+            $timeOut = \BaseAcceptance::TEXT_WAIT_TIMEOUT;
+        }
         $I->waitForJs('return jQuery.active == 0', $timeOut);
         $exist = $I->executeJS("return !!jQuery('body').length;"); //this will activate jquery if it wasn't still
         $exist = $I->executeJS("return !!jQuery('body').length;"); //this will let you know that yes it is there!

@@ -33,6 +33,7 @@ if ($context['is_category']) {
     $context['posts'] = Timber::get_posts();
     $context['category_label'] = "Categories";
     $context['pagination'] = Timber::get_pagination();
+    $context['paged'] = $paged;
 }
 
 /**
