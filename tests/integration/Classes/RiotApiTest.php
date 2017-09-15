@@ -77,19 +77,26 @@ class RiotApiTest extends \TestCase
         }
         $this->assertTrue($testPass);
     }
+    public function testSetChampionNameandCacheIt(){
+        $championID = '222';
+        $this->API->setChampionName($championID);
+
+//        $this->assertSame($this->API->getChampionName());
+    }
 
     public function testRequestChampionMasterieDataShouldSetJsonAndCacheIt(){
-        $this->API->setSummoner("Juanpablomontoya");
+        $this->API->setSummoner("Xarxes Infinium");
         $this->API->requestSummonerIDAndIconId();
         $this->API->requestChampionMasterData();
         $this->assertObjectHasAttribute('championId',$this->API->getChampionMasteries()[0]);
         $masterie = (array)Cache::get($this->API->getSummonerId().'MasterieData')[0];
         $this->assertSame((array)$this->API->getChampionMasteries()[0],$masterie);
         $this->assertTrue($masterie != []);
+        dd(Cache::get($this->API->getSummonerId().'MasterieData'));
     }
 
     public function testGetTop3ChampionsShouldReturnArrayOfImages(){
-        $this->API->setSummoner("KingMorpheus2131");
+        $this->API->setSummoner("oO Salsa Oo");
         $this->API->requestSummonerIDAndIconId();
         $this->API->requestChampionMasterData();
         $this->API->requestDDragonVersion();
