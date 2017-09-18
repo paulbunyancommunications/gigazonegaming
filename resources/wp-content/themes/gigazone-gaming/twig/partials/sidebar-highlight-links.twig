@@ -1,4 +1,5 @@
 {% if sidebar_highlight_links is defined and sidebar_highlight_links|length > 0 %}
+    <div class="sidebar-highlight-links">
 {% for link in sidebar_highlight_links %}
 <div class='sidebar-highlight-link'>
   <div class='sidebar-highlight-link-title'>
@@ -17,4 +18,5 @@
   </p>
 </div>
 {% endfor %}
+    </div>
 {% endif %}

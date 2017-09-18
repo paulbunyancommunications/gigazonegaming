@@ -1,4 +1,6 @@
 {% if function('comments_open', post.id) or function('get_comments_number', post.id) %}
     <hr class="divider horizontal dashed">
-    {{ function('comments_template', '/comments.php') }}
+    <div id="comments-for-{{ post.title|slugify }}">
+        {{ function('comments_template', '/comments.php') }}
+    </div>
 {% endif %}
