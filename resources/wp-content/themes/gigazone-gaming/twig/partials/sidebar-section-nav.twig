@@ -1,0 +1,8 @@
+{% if function('is_front_page') != true %}
+<div class='sidebar-section-nav'>
+  {% if section %}
+  <h2 id='section-title'>{% if page.post_type == 'page' %}{{page.post_title}}{% else %}{{ section.post_title }}{% endif %}</h2>
+  {% endif %}
+  <div id='sidebar-section-nav'></div>
+</div>
+{% endif %}

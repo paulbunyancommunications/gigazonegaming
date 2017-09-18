@@ -1,10 +1,4 @@
-.article-container {
-  margin-top: -1px;
 
-  @include mq-phone {
-    @include bs-full-width-columns;
-  }
-}
 
 .title-page {
   @include font-size(5.875);

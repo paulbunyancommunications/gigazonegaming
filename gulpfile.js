@@ -172,10 +172,6 @@ elixir(function (mix) {
         .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
         // compile app coffee files to js
         .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
-        // convert theme haml to twig
-        .hamlToTwig(themeResourceFolder + '/haml', themeFolder + '/views')
-        // convert app haml to twig
-        .hamlToTwig(appResourceFolder + '/haml', appFolder + '/views')
         // copy twig views from resources to theme folder
         .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views')
         // copy js files from resources to theme folder

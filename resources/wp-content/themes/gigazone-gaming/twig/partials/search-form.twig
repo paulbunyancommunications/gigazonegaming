@@ -1,0 +1,17 @@
+<form action="{{ function('esc_url', function('home_url', '/')) }}" class='search-form' id='search-form' method='get' role='search'>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-xs-12'>
+        <label class='sr-only' for='search-field'>{{ function('_x', 'Search For:', site.theme.slug) }}</label>
+        <div class='input-group'>
+          <input class='form-control' id='search-field' name='s' placeholder="{{ function('esc_attr_x','Search For:', 'placeholder', site.theme.slug) }}" title="{{ function('esc_attr_x','Search For:', 'label', site.theme.slug) }}" type='text' value="{{ function('get_search_query') }}">
+          <span class='input-group-btn'>
+            <button class='btn btn-default' id='doSiteSearch' type='submit'>
+              <i class='fa fa-search'></i>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

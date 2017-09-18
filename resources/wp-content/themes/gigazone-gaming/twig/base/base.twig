@@ -1,0 +1,27 @@
+{% extends "base/skeleton.twig" %}
+{% block body %}
+<!-- .meter -->
+<!-- .meter-8 -->
+<div class='main-container' id='main-container'>
+  <div class='masthead-container'>
+    {% include "partials/masthead.twig" %}
+  </div>
+  <div class='main-navigation-container'>
+    {% include "partials/main-navigation.twig" with {'page': page} %}
+  </div>
+  <div class='photo-rotator-container dark-pattern-background'>
+    {% include "partials/media/masthead-photo-rotator.twig" %}
+  </div>
+  <!-- .search-container -->
+  <!-- {% include "partials/search-form.twig" %} -->
+  <div class='content-container'>
+    <div class='article-container'>
+      {% block article %}welcome to the site{% endblock %}
+    </div>
+  </div>
+</div>
+<div class='footer--container' id='footer-container'>
+  {% include "partials/footer.twig" %}
+  {% block footer %}{% endblock %}
+</div>
+{% endblock %}

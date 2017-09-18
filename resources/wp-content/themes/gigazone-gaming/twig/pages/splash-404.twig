@@ -1,0 +1,38 @@
+{% extends "base/skeleton.twig" %}
+{% block body %}
+<div class='home-outer'>
+  <div class='home-container'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='home-inner-container'>
+            <div class='home-inner-container-bg'></div>
+            <div class='masthead-logo'>
+              <h1>
+                <a class='masthead-logo-link' href="{{ function('home_url','/') }}">{{ function("bloginfo","name") }}</a>
+              </h1>
+            </div>
+            <div class='home-content'>
+              <h1 class='title-page'>{{ function('_e', 'Oops! That page can&rsquo;t be found.', 'gigazone-gaming')}}</h1>
+              <p>{{function('_e', 'It looks like nothing was found at this location.', 'gigazone-gaming')}}</p>
+              <div class='disclaimer sidebar'>
+                {% set disclaimer = function('get_posts',{'name':'riot-disclaimer', 'post_type':'post', 'post_status':'publish', 'numberposts': 1}) %}
+                {% if disclaimer|length == 1 %}
+                {{ function("apply_filters","the_content", disclaimer[0].post_content) }}
+                {% endif %}
+              </div>
+              <div class='sidebar'>
+                <div class='sidebar-social-media'>
+                  {% include "partials/social-media.twig" %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='home-footer'></div>
+    {% include "partials/footer-js.twig" %}
+  </div>
+</div>
+{% endblock %}

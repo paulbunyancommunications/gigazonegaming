@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang='en'>
+  {% include "partials/head/header.twig" %}
+  <body class='{{ body_class }}'>
+    {% block body %}BASE{% endblock %}
+    {{ function('wp_footer') }}
+  </body>
+</html>
