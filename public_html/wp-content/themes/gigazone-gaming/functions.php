@@ -145,3 +145,31 @@ function cc_mime_types($mimes) {
     return $mimes;
 }
 add_filter('upload_mimes', 'cc_mime_types');
+
+
+/**
+ * Default custom fields for posts
+ */
+$defaultCustomFields = [
+    'display_as_a_page' => 'no',
+    'display_related_posts' => 'yes',
+    'layout' => 'sidebar'
+];
+/**
+ * Set default meta fields
+ * @param $post_ID
+ * @return mixed
+ */
+function set_default_meta($post_ID){
+    global $defaultCustomFields;
+    foreach ($defaultCustomFields as $key => $val) {
+        $current_field_value = get_post_meta($post_ID,$key,true);
+        $default_meta = $val; // value
+        if ($current_field_value == '' && !wp_is_post_revision($post_ID)){
+            add_post_meta($post_ID,$key,$default_meta,true);
+        }
+    }
+
+    return $post_ID;
+}
+add_action('wp_insert_post','set_default_meta');
