@@ -26,3 +26,15 @@ a {
     height: auto;
   }
 }
+
+.article-container {
+  margin-top: -1px;
+
+  @include mq-phone {
+    @include bs-full-width-columns;
+  }
+
+  .container:first-child {
+    background: $color-white;
+  }
+}
