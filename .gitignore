@@ -152,3 +152,6 @@ public_html/LeagueOfLegendsDisplay/JS/jquery.mobile.custom/jquery.mobile.custom.
 =======
 install.sh.old
 >>>>>>> Update for install script
+!/tests/_output/records.html
+records.html
+phlint.phar
