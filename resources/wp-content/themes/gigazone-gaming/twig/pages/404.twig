@@ -1,0 +1,13 @@
+{% extends "base/base.twig" %}
+{% block article %}
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h1 class='title-page'>{{ function('_e', 'Oops! That page can&rsquo;t be found.', 'greater-bemidji')}}</h1>
+    </div>
+    <div class='col-md-12'>
+      <p>{{function('_e', 'It looks like nothing was found at this location.', 'greater-bemidji')}}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
