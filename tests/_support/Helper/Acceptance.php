@@ -64,13 +64,17 @@ class Acceptance extends \Codeception\Module
             extract(Arrays::defaultAttributes([
                     'title' => $faker->sentence(),
                     'content' => $faker->paragraph(),
-                    'meta' => []
+                    'meta' => [],
+                    'customFields' => []
                 ]
                 , $title)
             );
         }
 
         $I->amOnPage('/wp/wp-admin/post-new.php');
+        // show the settings dialog link
+        $I->click('#show-settings-link');
+
         $I->fillField(['id' => 'title'], $title);
         $exist = util::str_to_bool($I->executeJS("return !!document.getElementById('content-html')"));
         if (!$exist) {
@@ -86,6 +90,16 @@ class Acceptance extends \Codeception\Module
                 $I->{$meta[$i][0]}($meta[$i][1],$meta[$i][2]);
             }
         }
+        // run though the custom fields. since there's no good way to know what
+        // the name/id of the input is they will be looked up via the value
+        if (isset($customFields) && count($customFields) > 0) {
+            $I->scrollTo('#postcustom');
+            for($i=0, $iCount=count($customFields); $i < $iCount; $i++) {
+                $I->fillField('#' . str_replace('key','value',$I->executeJS('return document.querySelectorAll(\'input[value="'. $customFields[$i][0] .'"]\')[0].id;')), $customFields[$i][1]);
+            }
+        }
+
+
         $I->wait(5);
         $I->click(['id' => 'publish']);
         $I->waitForText('Post published', \BaseAcceptance::TEXT_WAIT_TIMEOUT);
