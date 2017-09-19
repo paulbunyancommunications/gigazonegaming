@@ -338,11 +338,7 @@ node {
                     try {
                         sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --verbose --coverage --coverage-xml\"";
                     } catch (error) {
-                        try {
-                            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run -g failed -vvv --coverage --coverage-xml\"";
-                        } catch (errorb) {
-                            errorMessage(Globals.STAGE, errorb.getMessage())
-                        }
+                        errorMessage(Globals.STAGE, errorb.getMessage())
                     }
                     break
             }
