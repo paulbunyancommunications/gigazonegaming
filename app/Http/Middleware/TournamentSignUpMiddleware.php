@@ -56,8 +56,15 @@ class TournamentSignUpMiddleware
 //            if()
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///// check that the tournament is full /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        //
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         ///// check that the request have all validation required ///////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
+
         $theRequests = $request->all();
 
         /** @var Tournament $tournament */
@@ -75,15 +82,14 @@ class TournamentSignUpMiddleware
         ////TODO::fix
         /// [ErrorException] Undefined index: teammate-two-email
 
-
         if($validator->fails()) {
             // format returned messages
             $returnedErrors = [];
             $form = json_decode($d_tournament->sign_up_form, true);
+
             ////////////////////////////////////////////////////////////////////////////////////////////////
             //// TODO: DELETE THIS SECTION V ///////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////////////////
-            return $this->error($form);
             ////////////////////////////////////////////////////////////////////////////////////////////////
             //// TODO: DELETE THIS SECTION ^ ///////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +101,10 @@ class TournamentSignUpMiddleware
             // fix any secondary keys
             foreach (array_reverse($form) as $key => $value) {
                 foreach ($returnedErrors as $subkey => $message) {
-                    $returnedErrors[$key] = str_replace_first($key, $value[0], $returnedErrors[$key]);
+                    $returnedErrors[$key] = str_replace_first($key, $value[0], $returnedErrors[$subkey]);
+                    if (is_int($subkey)) { //it will unset any previous value set with a number as index
+                        unset($returnedErrors[$subkey]);
+                    }
                 }
             }
             return $this->error($returnedErrors);
