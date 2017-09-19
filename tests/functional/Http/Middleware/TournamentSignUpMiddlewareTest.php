@@ -86,7 +86,6 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      */
     public function it_returns_a_json_array_of_errors_when_tournament_not_found()
     {
-        $faker = \Faker\Factory::create();
         $request = Request::create("/gigazone-gaming-2017-league-sign-up", 'POST');
         $params = [
             'tournament' => "tournament-a",
@@ -109,7 +108,6 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      */
     public function it_returns_a_json_array_of_errors_when_tournament_is_found_but_signing_is_before_sign_up()
     {
-        $faker = \Faker\Factory::create();
         $tournament_name = "gigazone-gaming-2017-league-of-legends";
         $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
         $method = "POST";
@@ -122,8 +120,8 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-
-        $this->edit_tournament($tournament_name, $tomorrow, $tomorrow);
+        $params = ["sign_up_open"=>$tomorrow, "sign_up_close"=>$tomorrow];
+        $this->edit_tournament($tournament_name, $params);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
@@ -138,7 +136,6 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      */
     public function it_returns_a_json_array_of_errors_when_tournament_is_found_but_signing_is_after_sign_up()
     {
-        $faker = \Faker\Factory::create();
         $tournament_name = "gigazone-gaming-2017-league-of-legends";
         $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
         $method = "POST";
@@ -152,7 +149,8 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
 
-        $this->edit_tournament($tournament_name, $yesterday, $yesterday);
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday];
+        $this->edit_tournament($tournament_name, $params);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
@@ -167,7 +165,6 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      */
     public function it_returns_a_json_array_of_errors_when_tournament_is_found_but_there_is_no_sign_up()
     {
-        $faker = \Faker\Factory::create();
         $tournament_name = "gigazone-gaming-2017-league-of-legends";
         $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
         $method = "POST";
@@ -180,7 +177,8 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
 
-        $this->edit_tournament($tournament_name, "0000-00-00 00:00:00", "0000-00-00 00:00:00");
+        $params = ["sign_up_open"=>"0000-00-00 00:00:00", "sign_up_close"=>"0000-00-00 00:00:00"];
+        $this->edit_tournament($tournament_name, $params);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
@@ -195,7 +193,6 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      */
     public function it_returns_a_json_array_of_errors_when_tournament_request_doesnt_have_rules()
     {
-        $faker = \Faker\Factory::create();
         $tournament_name = "gigazone-gaming-2017-league-of-legends";
         $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
         $tournament_sign_up_form = "";
@@ -211,7 +208,8 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
 
-        $tournament = $this->edit_tournament($tournament_name, $yesterday, $tomorrow, $tournament_sign_up_form);
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
@@ -224,12 +222,12 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      * If validation fails check that an tournament error was returned
      * @test
      */
-    public function it_returns_a_json_array_of_errors_when_tournament_request_doesnt_have()
+    public function it_passes()
     {
         $faker = \Faker\Factory::create();
         $tournament_name = "gigazone-gaming-2017-league-of-legends";
         $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
-        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","gigazone-gaming-2017-overwatch"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
 
         $method = "POST";
         list($yesterday, $tomorrow, $now) = $this->get_dates();
@@ -242,14 +240,340 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
 
-        $this->edit_tournament($tournament_name, $yesterday, $tomorrow, $tournament_sign_up_form);
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
 
-        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => $faker->name("male").$faker->name("female"),
+            "email" => $faker->safeEmail,
+            "team-name" => "team $faker->name('male').$faker->name('female')",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => $faker->safeEmail
 
-        codecept_debug($handle);
-        $find = 'It is to early to register for the tournament';
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $this->assertEquals("$handle", "I ran the closure");
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_captain_name_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "",
+            "email" => $faker->safeEmail,
+            "team-name" => "team $faker->name('male').$faker->name('female')",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => $faker->safeEmail
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The name field is required.';
         $response = $this->find_and_check_in_returned_error($handle, $find);
-        codecept_debug($response);
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_captain_email_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "$faker->name('male').$faker->name('female')",
+            "email" => "",
+            "team-name" => "team $faker->name('male').$faker->name('female')",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => $faker->safeEmail
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The email field is required.';
+        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_team_name_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "$faker->name('male').$faker->name('female')",
+            "email" => $faker->safeEmail,
+            "team-name" => "",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => $faker->safeEmail
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The team-name field is required.';
+        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_teammate_one_name_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "$faker->name('male') $faker->name('female')",
+            "email" => $faker->safeEmail,
+            "team-name" => "team $faker->name('female') $faker->name('male')",
+            "teammate-one-name" => "",
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => $faker->safeEmail
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The teammate-one-name field is required.';
+        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_teammate_one_email_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "$faker->name('male') $faker->name('female')",
+            "email" => $faker->safeEmail,
+            "team-name" => "team $faker->name('female') $faker->name('male')",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => "",
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => $faker->safeEmail
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The teammate-one-email field is required.';
+        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_teammate_two_name_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "$faker->name('male') $faker->name('female')",
+            "email" => $faker->safeEmail,
+            "team-name" => "team $faker->name('female') $faker->name('male')",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => "",
+            "teammate-two-email" => $faker->safeEmail
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The teammate-two-name field is required.';
+        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+
+    }
+    /**
+     * If validation fails check that an tournament error was returned
+     * @test
+     */
+    public function it_returns_a_json_array_of_errors_when_teammate_two_email_is_missing()
+    {
+        $faker = \Faker\Factory::create();
+        $tournament_name = "gigazone-gaming-2017-league-of-legends";
+        $tournament_uri = "/gigazone-gaming-2017-league-sign-up";
+        $tournament_sign_up_form = '{"update-recipient":["update-recipient","","hidden","yes"],"participate":["participate","","hidden","yes"],"tournament":["tournament","required|exists:mysql_champ.tournaments,name","hidden","'.$tournament_name.'"],"team-name":["Team Name","required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##","text",""],"name":["Team Captain","required","text",""],"email":["Team Captain Email","required|email","email",""],"phone":["Team Captain Phone","required","tel",""],"teammate-one-name":["Teammate One Name","required|different:name|different:teammate-two-name","text",""],"teammate-one-email":["Teammate One Email","required|email|different:email|different:teammate-two-email","email",""],"teammate-two-name":["Teammate Two Name","required|different:name|different:teammate-one-name","text",""],"teammate-two-email":["Teammate Two Email","required|email|different:email|different:teammate-one-email","email",""]}';
+
+        $method = "POST";
+        list($yesterday, $tomorrow, $now) = $this->get_dates();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        //////////////////////////////////////////////////////////////////////////////////
+        ////////////backup////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+        $params = ["sign_up_open"=>$yesterday, "sign_up_close"=>$yesterday, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1];
+        $tournament = $this->edit_tournament($tournament_name, $params);
+
+        $params = [
+            "tournament" => $tournament_name,
+            "phone" => $faker->phoneNumber,
+            "name" => "$faker->name('male') $faker->name('female')",
+            "email" => $faker->safeEmail,
+            "team-name" => "team $faker->name('female') $faker->name('male')",
+            "teammate-one-name" => $faker->name("male"),
+            "teammate-one-email" => $faker->safeEmail,
+            "teammate-two-name" => $faker->name("female"),
+            "teammate-two-email" => ""
+
+        ];
+        $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
+
+        $find = 'The teammate-two-email field is required.';
+        $response = $this->find_and_check_in_returned_error($handle, $find);
         $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
 
     }
@@ -276,20 +600,27 @@ class TournamentSignUpMiddlewareTest extends \TestCase
     public function find_and_check_in_returned_error($handle, $find)
     {
         $response = json_decode($handle->getContent());
-
         $this->assertObjectHasAttribute('error', $response);
-
         $this->assertTrue(is_array($response->error));
-
+        codecept_debug($response->error);
         $errorExist = false;
         foreach ($response->error as $key => $d_error) {
-            if ($d_error == $find) {
-                $errorExist = true;
-                break;
+            $is_array = json_decode($d_error, True);
+            if(is_array($is_array)){
+                foreach ($is_array as $k => $d_err) {
+                    if ($d_err == $find) {
+                        $errorExist = true;
+                        break;
+                    }
+                }
+            }else {
+                if ($d_error == $find) {
+                    $errorExist = true;
+                    break;
+                }
             }
         }
         $this->assertTrue($errorExist);
-
         return $response;
     }
 
@@ -310,15 +641,9 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      * @param $close
      * @return Tournament
      */
-    private function edit_tournament($tournament_name, $open, $close, $sign_up_form = false)
+    private function edit_tournament($tournament_name, $params = [])
     {
-        $db_tournament = Tournament::where("name", '=', $tournament_name)->first();
-        $db_tournament->sign_up_open = $open;
-        $db_tournament->sign_up_close = $close;
-        if($sign_up_form !== false){
-            $db_tournament->sign_up_form = $sign_up_form;
-        }
-        $db_tournament->update();
+        $db_tournament = Tournament::where("name", '=', $tournament_name)->first()->update($params);
         return $db_tournament;
     }
 
