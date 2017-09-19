@@ -116,18 +116,18 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $params = ["sign_up_open"=>$tomorrow, "sign_up_close"=>$tomorrow];
+        $params = [ "sign_up_open"=>$tomorrow, "sign_up_close"=>$tomorrow ];
         $this->edit_tournament($tournament_name, $params);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
         $find = 'It is to early to register for the tournament';
         $response = $this->find_and_check_in_returned_error($handle, $find);
-        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close);
+        $this->edit_tournament($tournament_name, $old_copy);
 
     }
     /**
@@ -144,7 +144,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $find = 'It is to late to register for the tournament';
         $response = $this->find_and_check_in_returned_error($handle, $find);
 
-        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close);
+        $this->edit_tournament($tournament_name, $old_copy);
     }
     /**
      * If validation fails check that an tournament error was returned
@@ -172,7 +172,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +185,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $find = 'Sorry, there is no registration day for this tournament';
         $response = $this->find_and_check_in_returned_error($handle, $find);
 
-        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close);
+        $this->edit_tournament($tournament_name, $old_copy);
     }
     /**
      * If validation fails check that an tournament error was returned
@@ -203,7 +203,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +235,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -278,7 +278,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -324,7 +324,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +369,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -414,7 +414,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -459,7 +459,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -484,7 +484,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
         $find = 'The teammate-one-email field is required.';
         $response = $this->find_and_check_in_returned_error($handle, $find);
-        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+        $this->edit_tournament($tournament_name, $old_copy);
 
     }
     /**
@@ -504,7 +504,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -529,7 +529,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
         $find = 'The teammate-two-name field is required.';
         $response = $this->find_and_check_in_returned_error($handle, $find);
-        $this->edit_tournament($tournament_name, $old_copy->sign_up_open, $old_copy->sign_up_close, $old_copy->sign_up_form);
+        $this->edit_tournament($tournament_name, $old_copy);
 
     }
     /**
@@ -549,7 +549,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
-        $old_copy = Tournament::where("name", '=', $tournament_name)->first(); ///////////
+        $old_copy = Tournament::where("name", '=', $tournament_name)->first()->toArray(); ///////////
         //////////////////////////////////////////////////////////////////////////////////
         ////////////backup////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////
@@ -602,11 +602,23 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $response = json_decode($handle->getContent());
         $this->assertObjectHasAttribute('error', $response);
         $this->assertTrue(is_array($response->error));
+        codecept_debug("#response->error############################################################################");
         codecept_debug($response->error);
+        codecept_debug("#find############################################################################");
+        codecept_debug($find);
+        codecept_debug("#done1############################################################################");
         $errorExist = false;
         foreach ($response->error as $key => $d_error) {
             $is_array = json_decode($d_error, True);
+            codecept_debug("#is_array1############################################################################");
+            codecept_debug($is_array);
+            codecept_debug("#is_array2############################################################################");
+            codecept_debug(is_array($is_array));
+            codecept_debug("#is_array3############################################################################");
+            codecept_debug(boolval(is_array($is_array)));
+            codecept_debug("#done2############################################################################");
             if(is_array($is_array)){
+                codecept_debug("#in is array############################################################################");
                 foreach ($is_array as $k => $d_err) {
                     if ($d_err == $find) {
                         $errorExist = true;
@@ -614,6 +626,14 @@ class TournamentSignUpMiddlewareTest extends \TestCase
                     }
                 }
             }else {
+                codecept_debug("#in else############################################################################");
+                codecept_debug("#error############################################################################");
+                codecept_debug($d_error);
+                codecept_debug("#find############################################################################");
+                codecept_debug($find);
+                codecept_debug("#resultOf==############################################################################");
+                codecept_debug(($d_error == $find));
+                codecept_debug("#done3############################################################################");
                 if ($d_error == $find) {
                     $errorExist = true;
                     break;
@@ -643,6 +663,9 @@ class TournamentSignUpMiddlewareTest extends \TestCase
      */
     private function edit_tournament($tournament_name, $params = [])
     {
+        codecept_debug("#params############################################################################");
+        codecept_debug($params);
+        codecept_debug("#done############################################################################");
         $db_tournament = Tournament::where("name", '=', $tournament_name)->first()->update($params);
         return $db_tournament;
     }
