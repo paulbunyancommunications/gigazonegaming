@@ -15,17 +15,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Pbc\Bandolier\Type\Paths;
 
 Route::get('/', function () {
-    $path = Config::get('app.url'); // env('APP_URL', 'http://example.local');
+    $path = Paths::curlPath(parse_url(Config::get('app.url'), PHP_URL_PATH)); // env('APP_URL', 'http://example.local');
     try {
         return Cache::remember('front-page-from-wp', 2, function () use ($path) {
-            return file_get_contents($path);
+            return Paths::fileGetContents(['toPath' => $path, 'clientParams' => ['verify' => false]]);
         });
         // @codeCoverageIgnoreStart
     } catch (\Illuminate\Database\QueryException $ex) {
         Log::error($ex->getMessage());
-        return file_get_contents($path);
+        return Paths::fileGetContents(['toPath' => $path, 'clientParams' => ['verify' => false]]);
         // @codeCoverageIgnoreEnd
     }
 });
