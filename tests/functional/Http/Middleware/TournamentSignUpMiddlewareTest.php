@@ -115,7 +115,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
             return 'I ran the closure';
         });
         $find = 'There was no real tournament here.... moving on!';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
     }
 
     /**
@@ -134,7 +134,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
         $find = 'It is to early to register for the tournament';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
     /**
@@ -156,7 +156,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
         $find = 'It is to late to register for the tournament';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
     }
     /**
      * If validation fails check that an tournament error was returned
@@ -172,16 +172,13 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
         list($this->yesterday, $this->tomorrow, $this->now) = $this->get_dates();
 
-        codecept_debug("to edit");
         $params_edit = ["sign_up_open"=>"0000-00-00 00:00:00", "sign_up_close"=>"0000-00-00 00:00:00", "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
         $x = $this->edit_tournament($tournament_name, $params_edit);
-        codecept_debug($x);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
-        codecept_debug($handle);
 
         $find = 'Sorry, there is no registration day for this tournament';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
     /**
@@ -200,12 +197,12 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name);
 
         $find = 'The Tournament has no set of rules... no rules, no sign up.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
     /**
@@ -225,7 +222,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open" => $this->yesterday, "sign_up_close" => $this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -261,7 +258,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -278,7 +275,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The name field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
 
@@ -299,7 +296,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -316,7 +313,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The email field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
     }
     /**
      * If validation fails check that an tournament error was returned
@@ -335,7 +332,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -352,7 +349,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The team-name field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
     /**
@@ -371,7 +368,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         list($this->yesterday, $this->tomorrow, $this->now) = $this->get_dates();
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -388,7 +385,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The teammate-one-name field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
     /**
@@ -408,7 +405,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -425,7 +422,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The teammate-one-email field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
 
     }
     /**
@@ -445,7 +442,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
 
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -462,7 +459,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The teammate-two-name field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
     }
     /**
      * If validation fails check that an tournament error was returned
@@ -479,7 +476,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $method = "POST";
 
         $params_edit = ["sign_up_open"=>$this->yesterday, "sign_up_close"=>$this->tomorrow, "sign_up_form" => $tournament_sign_up_form, "max_teams" => 50, "overflow" => 1, "occurring" => $this->tomorrow];
-        $tournament = $this->edit_tournament($tournament_name, $params_edit);
+        $this->edit_tournament($tournament_name, $params_edit);
 
         $params = [
             "tournament" => $tournament_name,
@@ -496,7 +493,7 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         $handle = $this->create_the_request($tournament_uri, $method, $tournament_name, $params);
 
         $find = 'The teammate-two-email field is required.';
-        $response = $this->find_and_check_in_returned_error($handle, $find);
+        $this->find_and_check_in_returned_error($handle, $find);
     }
 
 
@@ -541,7 +538,6 @@ class TournamentSignUpMiddlewareTest extends \TestCase
             }
         }
         $this->assertTrue($errorExist);
-        return $response;
     }
 
     /**
@@ -568,21 +564,13 @@ class TournamentSignUpMiddlewareTest extends \TestCase
         unset($params["updated_at"]);
         unset($params["updated_by"]);
         unset($params["updated_on"]);
-        codecept_debug("1");
-        codecept_debug($params);
-        codecept_debug($tournament_name);
         $db_tournament = Tournament::where("name", '=', $tournament_name)->first();
-        codecept_debug("2");
-        codecept_debug($db_tournament);
         foreach ($params as $k => $v){
             if($v=="-0001-11-30 00:00:00") {
                 $params[$k] = $this->yesterday;
             }
         }
-        codecept_debug("3");
         $db_tournament->update($params);
-        codecept_debug("4");
-        return $db_tournament->toArray();
     }
 
     /**
