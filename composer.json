@@ -23,10 +23,10 @@
       "package": {
         "name": "wordpress/wordpress",
         "type": "webroot",
-        "version": "4.7.4",
+        "version": "4.7.6",
         "dist": {
           "type": "zip",
-          "url": "https://wordpress.org/wordpress-4.7.4.zip"
+          "url": "https://wordpress.org/wordpress-4.7.6.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -152,6 +152,19 @@
           "composer/installers": "v1.0.7"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "paulbunyancommunications/mailtrapper",
+        "type": "git",
+        "version": "master",
+        "source": {
+          "url": "https://github.com/paulbunyancommunications/mailtrapper.git",
+          "type": "git",
+          "reference": "master"
+        }
+      }
     }
   ],
   "require": {
@@ -159,7 +172,7 @@
     "laravel/framework": "5.2.*",
     "cartalyst/sentinel": "2.0.*",
     "doctrine/dbal": "~2.5",
-    "wordpress/wordpress": "4.7.4",
+    "wordpress/wordpress": "4.7.6",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
     "paulbunyannet/autoversion": "~1.0",
@@ -206,7 +219,8 @@
     "phing/phing": "2.*",
     "codeception/codeception": "2.3.1",
     "codeception/c3": "2.0.12",
-    "etsy/phan": "^0.9.1"
+    "etsy/phan": "^0.9.1",
+    "paulbunyancommunications/mailtrapper": "dev-master"
   },
   "extra": {
     "webroot-dir": "public_html/wp",
