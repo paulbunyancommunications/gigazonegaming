@@ -1,0 +1,37 @@
+{% extends "base/skeleton.twig" %}
+{% block body %}
+<div class='splash-outer'>
+  <div class='splash-container'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='splash-inner-container'>
+            <div class='splash-inner-container-bg'></div>
+            <div class='masthead-logo'>
+              <h1>
+                <a class='masthead-logo-link' href="{{ function('home_url','/') }}">{{ function("bloginfo","name") }}</a>
+              </h1>
+            </div>
+            <div class='splash-content'>
+              {{ function("apply_filters","the_content", page.post_content) }}
+              <div class='disclaimer sidebar'>
+                {% set disclaimer = function('get_posts',{'name':'riot-disclaimer', 'post_type':'post', 'post_status':'publish', 'numberposts': 1}) %}
+                {% if disclaimer|length == 1 %}
+                {{ function("apply_filters","the_content", disclaimer[0].post_content) }}
+                {% endif %}
+              </div>
+              <div class='sidebar'>
+                <div class='sidebar-social-media'>
+                  {% include "partials/social-media.twig" %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='splash-footer'></div>
+    {% include "partials/footer-js.twig" %}
+  </div>
+</div>
+{% endblock %}
