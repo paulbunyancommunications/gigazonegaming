@@ -80,7 +80,7 @@ class TournamentSignUpMiddleware
             // get the form validation rules and check for errors
             $rules = [];
             if($d_tournament->sign_up_form == ""){
-                return $this->error("The Tournament has no set of rules, no rules no sign up.");
+                return $this->error("The Tournament has no set of rules... no rules, no sign up.");
             }
             foreach (json_decode($d_tournament->sign_up_form, true) as $key => $value) {
                 $rules[$key] = $value[1];
