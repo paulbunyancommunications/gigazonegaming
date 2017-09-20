@@ -8,7 +8,7 @@
     <Title>Team Select</Title>
 </head>
 <body class="cMainDiv">
-<h1>Choose A Team:</h1>
+<h1>Select A Team:</h1>
 <div id="buttonDiv">
     <button id="team1" class="teamButton" onclick="window.open('/app/GameDisplay/team1')">Team 1</button><br/>
     <button id ="team2" class="teamButton" onclick="window.open('/app/GameDisplay/team2')">Team 2</button>
