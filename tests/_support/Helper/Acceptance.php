@@ -77,7 +77,7 @@ class Acceptance extends \Codeception\Module
 
         $I->fillField(['id' => 'title'], $title);
         $exist = util::str_to_bool($I->executeJS("return !!document.getElementById('content-html')"));
-        if (!$exist) {
+        if ($exist) {
             $I->click(['id' => 'content-html']);
             $I->wait(5);
         }
