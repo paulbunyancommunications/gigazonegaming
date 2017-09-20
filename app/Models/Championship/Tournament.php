@@ -32,8 +32,8 @@ class Tournament extends Model
         'sign_up_open',
         'sign_up_close',
         'occurring',
-        'form',
-        'form_shortcode',
+        'sign_up_form',
+        'sign_up_form_shortcode',
         'overflow'
     ];
 
