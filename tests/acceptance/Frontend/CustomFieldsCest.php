@@ -173,4 +173,52 @@ class CustomFieldsCest extends \BaseAcceptance
 
         $I->dontSeeElement('#comments-for-'.$slugify->slugify($postProperties['title']));
     }
+
+    /**
+     * Test that when using the "display_related_posts" custom field related posts box will display
+     * @param \AcceptanceTester $I
+     * @test
+     * @group customFields
+     */
+    public function testThatWhenUsingTheDisplayRelatedPostsCustomFieldRelatedPostsBoxWillDisplay(\AcceptanceTester $I)
+    {
+        $slugify = new Slugify();
+        $postProperties = [
+            'title' => $this->faker->sentence(),
+            'content' => $this->faker->paragraph(),
+            'meta' => [
+                ['checkOption','#postcustom-hide',''],
+            ],
+            'customFields' => [
+                ['display_related_posts', "yes"]
+            ]
+        ];
+        $I->createAPost($I, $postProperties);
+
+        $I->seeElement('.related-posts');
+    }
+
+    /**
+     * Test that when not using the "display_related_posts" custom field related posts box will not display
+     * @param \AcceptanceTester $I
+     * @test
+     * @group customFields
+     */
+    public function testThatWhenNotUsingTheDisplayRelatedPostsCustomFieldRelatedPostsBoxWillNotDisplay(\AcceptanceTester $I)
+    {
+        $slugify = new Slugify();
+        $postProperties = [
+            'title' => $this->faker->sentence(),
+            'content' => $this->faker->paragraph(),
+            'meta' => [
+                ['checkOption','#postcustom-hide',''],
+            ],
+            'customFields' => [
+                ['display_related_posts', "no"]
+            ]
+        ];
+        $I->createAPost($I, $postProperties);
+
+        $I->dontSeeElement('.related-posts');
+    }
 }
