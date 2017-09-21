@@ -94,7 +94,6 @@ class RiotApiTest extends \TestCase
         $masterie = (array)Cache::get($this->API->getSummonerId().'MasterieData')[0];
         $this->assertSame((array)$this->API->getChampionMasteries()[0],$masterie);
         $this->assertTrue($masterie != []);
-        dd(Cache::get($this->API->getSummonerId().'MasterieData'));
     }
 
     public function testGetTop3ChampionsShouldReturnArrayOfImages(){
