@@ -2,8 +2,8 @@
 {% block article %}
 <div class='container'>
   <div class='row'>
-    {% set layout = (page.layout is defined ? page.layout|slugify : "") %}
-    <div class='layout {{layout}}'>
+    {% set layout = (page.layout is defined ? page.layout|slugify : "sidebar") %}
+    <div class='layout layout-{{layout|slugify}}'>
       {% include ["partials/layouts/layout-" ~ layout ~ ".twig", "partials/layouts/layout-sidebar.twig"] %}
     </div>
   </div>

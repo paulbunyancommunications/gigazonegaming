@@ -1,10 +1,9 @@
-{% if function("is_front_page") == false and function("is_home") == false and section.id != page.id %}
-    <h1 class="title-page{% if single is defined and single == true %} post-title{% endif %}">
-        {% if (section.id is defined and this_post is defined and section.id == this_post.post_parent and single is defined and single == true) or (section.id is defined and section.id == page.id) %}
-            <a href="{{ site.url }}/{{ section.slug }}" class="title-section">
-                {{ section.post_title }}
-            </a>
-        {% endif %}
-        {% include "partials/archive-paged.twig" %}
-    </h1>
+{% if function("is_front_page") == false %}
+    {% if (section.id is defined and this_post is defined and section.id == this_post.post_parent and single is defined and single == true) or (section.id is defined and section.id == page.id) %}
+        <h1 class="tag-title">
+            <span class="tag-title-text">{{ section.post_title }} {% include "partials/archive-paged.twig" %}</span>
+
+        </h1>
+        <hr class="divider horizontal dashed margin-after">
+    {% endif %}
 {% endif %}

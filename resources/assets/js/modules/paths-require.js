@@ -21,7 +21,7 @@ var jQuery = window.jQuery,
 // check for jQuery
 if (!jQuery || oldjQuery) {
     // load if it's not available or doesn't meet min standards
-    paths.jquery = localJqueryPath;
+    paths.jquery = "https://code.jquery.com/jquery-3.2.1.min.js";
     noConflict = !!oldjQuery;
 } else {
     // register the current jQuery
@@ -32,11 +32,11 @@ if (!jQuery || oldjQuery) {
  * Check if bootstrap 3 is loaded
  * @type {boolean}
  */
-var bootstrap3Enabled = (typeof $().emulateTransitionEnd == 'function')
+var bootstrap3Enabled = (typeof $().emulateTransitionEnd == 'function');
     // Bootstrap.js load path from /app/content/js
     localBoostrapPath = "../libraries/bootstrap/js/bootstrap.min";
 if (!bootstrap3Enabled) {
-    paths.bootstrap = localBoostrapPath;
+    paths.bootstrap = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js";
     shims.bootstrap = ['jquery']
 }
 

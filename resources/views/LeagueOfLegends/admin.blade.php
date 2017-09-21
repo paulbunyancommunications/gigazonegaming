@@ -11,25 +11,26 @@
 <body>
 <div class="startForm" id="root">
     <label id="tournamentLabel" for="Tournament">Tournament:</label><br/>
-        <select class="tournamentSelect" id="Tournament" onchange="showTeams()">
-            @yield('Tournament')
-        </select><br/>
-        <label id="label1" for="Team">Team 1:</label><label id="label2" for="Team-1">Team 2:</label><br/>
-        <select id="Team">
-            @yield('Team')
-        </select>
-        <select id="Team-1">
-            @yield('Team-1')
-        </select><br/>
-        <label id="colorLabel1" for="Color">Color 1:</label><label id="colorLabel2" for="Color-1">Color 2:</label><br/>
-        <select id="Color">
-            @yield('Color')
-        </select>
-        <select id="Color-1">
-            @yield('Color-1')
-        </select><br/>
-        <button class="startButton startButtonDisabled" id="submit" disabled onclick="submitCache();">Submit</button>
-        <div id="loader" class="hidden"></div>
+    <select class="tournamentSelect" id="Tournament" onchange="showTeams()">
+        @yield('Tournament')
+    </select><br/>
+    <label id="label1" for="Team">Team 1:</label><br/>
+    <select id="Team">
+        @yield('Team')
+    </select><br/>
+    <label id="label2" for="Team-1">Team 2:</label><br/>
+    <select id="Team-1">
+        @yield('Team-1')
+    </select><br/>
+    <label id="colorLabel1" for="Color">Color 1:</label><label id="colorLabel2" for="Color-1">Color 2:</label><br/>
+    <select id="Color">
+        @yield('Color')
+    </select>
+    <select id="Color-1">
+        @yield('Color-1')
+    </select><br/>
+    <button class="startButton startButtonDisabled" id="submit" disabled onclick="submitCache();">Submit</button>
+    <div id="loader" class="hidden"></div>
     <div id="buttonContainer">
         <div class="button-Sub-Container"><button id="championOverride" onclick="window.open('/app/GameDisplay/override')">Champion Override</button></div>
         <div class="button-Sub-Container"><button id="getChampions" onclick="getChampions();">Get Champions</button></div>

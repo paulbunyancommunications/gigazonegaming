@@ -37,6 +37,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_allows_user_if_logged_in_and_super_user()
     {
@@ -48,6 +49,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_allows_user_if_logged_in_and_user_admin()
     {
@@ -60,6 +62,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_does_not_allow_the_user_if_not_logged_in()
     {
@@ -70,6 +73,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_does_not_allow_the_user_if_logged_in_but_not_a_super_admin_or_user_admin()
     {
@@ -83,6 +87,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_empty_array_on_default_method()
     {
@@ -93,6 +98,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_empty_array_on_get_method()
     {
@@ -103,6 +109,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_empty_array_on_delete_method()
     {
@@ -113,6 +120,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_array_of_rules_on_post_method()
     {
@@ -127,6 +135,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_array_of_rules_on_put_method()
     {
@@ -149,6 +158,7 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_array_of_rules_on_patch_method()
     {
@@ -172,19 +182,12 @@ class TournamentRequestTest extends WpRequestsBase
 
     /**
      * @test
+     * @group TournamentRequest
      */
     public function it_returns_an_array_of_messages()
     {
         $request = new \App\Http\Requests\TournamentRequest();
-        $this->assertSame(
-            [
-                'name.required' => 'The Tournament Name is required.',
-                'game_id.required' => 'A Game must be selected.',
-                'game_id.numeric' => 'A Game must be selected from the list.',
-                'max_players.numeric' => 'The NUMBER of players needs to be ... a number, LOL.',
-                'max_players.required' => 'The number of players is a required field.',
-            ],
-            $request->messages()
-        );
+        $this->assertTrue(is_array($request->messages()));
+        $this->assertNotEmpty($request->messages());
     }
 }

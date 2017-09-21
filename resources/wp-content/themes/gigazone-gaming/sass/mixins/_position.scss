@@ -84,3 +84,17 @@
   margin-right: #{ $number * $leading + 'px'};
   margin-right: #{ $number * $leading-rem + 'rem'};
 }
+
+// set a minimum height
+@mixin min-height($number)
+{
+  min-height: #{ $number * $leading + 'px'};
+  min-height: #{ $number * $leading-rem + 'rem'};
+}
+
+// set a minimum width
+@mixin min-width($number)
+{
+  min-width: #{ $number * $leading + 'px'};
+  min-width: #{ $number * $leading-rem + 'rem'};
+}

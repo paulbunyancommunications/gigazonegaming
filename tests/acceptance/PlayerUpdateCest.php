@@ -17,7 +17,6 @@ class PlayerUpdateCest extends \BaseAcceptance
     public function _after(AcceptanceTester $I)
     {
         parent::_after($I);
-        exec('php artisan migrate:refresh');
     }
 
     public function PlayerUpdate(AcceptanceTester $I)
