@@ -38,6 +38,7 @@ class RiotApiTest extends \TestCase
         $this->API->requestDDragonVersion();
         $this->assertEquals(preg_match("[\d{1,3}\.\d{1,3}\.\d{1,3}]",$this->API->getDDragonVersion()),1);
     }
+
     public function testRequestSummonerIDAndIconIdMethodAndSeeThatSummonerIdAndIconIdIsSet(){
         $this->API->setSummoner("KingMorpheus2131");
         $this->API->requestSummonerIDAndIconId();
@@ -77,6 +78,7 @@ class RiotApiTest extends \TestCase
         }
         $this->assertTrue($testPass);
     }
+
     public function testSetChampionNameandCacheIt(){
         $championID = '222';
         $this->API->setChampionName($championID);

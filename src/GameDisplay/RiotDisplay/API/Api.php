@@ -46,16 +46,47 @@ class Api{
 
     /**All Request pass through this method and returns json encoded
      * @param $Url
-     * @param int $counter
      * @return array|bool|mixed|object
      */
-    public function apiRequest($Url, $counter = 0){
+    public function apiRequest($Url){
         #Set up client
         $client = new Client();
         #Request Info From Api
         $request = new Request('Get', $Url);
         $response = $client->send($request);
-        #If Request Goes Through Return Json Response, Else Try 10 Times then through exception.
+        #If Request Goes Through Return Json Response else throw they exception.
+        $jSon = $this->checkResponse($response, $Url);
+        return $jSon;
+    }
+
+    private function apiRequestAsynchronously(){
+        $client = new Client();
+        $promises = [];
+
+        #DD version
+        array_push($promises, $client->getAsync('GET', 'https://ddragon.leagueoflegends.com/api/versions.json'));
+
+        #Summoner Rank Stats
+        if(!Cache::has($this->summonerID.'LeagueV3Data')){
+            array_push($promises, $client->getAsync('GET', 'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey));
+        }else {$this->LeagueV3Json =Cache::get($this->summonerID.'LeagueV3Data');}
+
+        #Summoner Champion Mastery
+        if(!Cache::has($this->summonerID.'MasterieData')){
+            array_push($promises,$client->getAsync('GET','https://na1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey));
+        }else {$this->championMasteries =Cache::get($this->summonerID.'MasterieData');}
+
+        $results = \reacr($promises)->wait();
+    }
+
+
+    /**
+     * Check weather or not the request was successful
+     * @param $response
+     * @param $Url
+     * @return array|bool|mixed|object
+     */
+    public function checkResponse($response, $Url){
         switch ((int)$response->getStatusCode()) {
             case 200:
                 return json_decode($response->getBody());
@@ -64,12 +95,7 @@ class Api{
                 return false;
                 break;
             case 429:
-                if ($counter > 2) {
-                    throw new Exception("Calling Api Key Too Soon summoner: $this->summoner on " . explode('?',$Url)[0]);
-                }
-                $counter++;
-                sleep(1);
-                return $this->apiRequest($Url, $counter);
+                throw new Exception("Calling Api Key Too Soon summoner: $this->summoner on " . explode('?',$Url)[0]);
             case 503:
                 throw new Exception("Riot's Api is Down ID:" . $this->summonerID . " The Code:" . $response->getStatusCode() . ' Counter: ' . $this->counter);
                 break;
@@ -80,22 +106,15 @@ class Api{
     }
 
     /**Injects summoner and profiles this api for further requests
-     * @param $summoner, $preFill
+     * @param $summoner, $prefill
      */
-    public function injectSummoner($summoner, $preFill){
+    public function injectSummoner($summoner, $prefill){
         $this->setSummoner($summoner);
 
         #intailize summoner info for requests
         $this->requestSummonerIDAndIconId();
-        If($preFill){
-            #get the most updated version to grab icons from
-            $this->requestDDragonVersion();
-
-            #Grabes json array from states api for
-            $this->requestLeagueV3Json();
-
-            #Grabes json data for Champion Masteries
-            $this->requestChampionMasterData();
+        If($prefill){
+            $this->apiRequestAsynchronously();
         }
     }
 
