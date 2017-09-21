@@ -325,6 +325,26 @@ node {
     /**
     * Run the test runner and see if all tests pass
     */
+    stage('Dependencies') {
+        Globals.STAGE='Tests: Run Dependencies before starting testing'
+        startMessage(Globals.STAGE)
+
+          if (fileExists('yarn.lock')) {
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn\"";
+          }
+          if (fileExists('gruntfile.js')) {
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"grunt\"";
+          }
+          if (fileExists('bower.json')) {
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"bower install --allow-root\"";
+          }
+          if (fileExists('gulpfile.js')) {
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
+          }
+    }
+    /**
+    * Run the test runner and see if all tests pass
+    */
     stage('Tests') {
         Globals.STAGE='Tests: Run tests'
         startMessage(Globals.STAGE)
