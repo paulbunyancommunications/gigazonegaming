@@ -43,7 +43,15 @@ class GameDisplayController extends Controller
             ]);
         }
         #Data Default data
-        return view('/LeagueOfLegends/DisplayAltTeam');
+        $fileContents = glob(public_path("content/LeagueImages/*.*"));
+        $images=[];
+        for($i=0; $i<count($fileContents);$i++){
+            $brokenPath = explode('/',$fileContents[$i]);
+            $neededPath = array_slice($brokenPath,5);
+            $fixedPath= implode("/",$neededPath);
+            array_push($images,$fixedPath);
+        }
+        return view('/LeagueOfLegends/DisplayAltTeam')->withImages($images);
     }
 
     public function getData(Requests\GameDisplayGetDataRequest $req)
