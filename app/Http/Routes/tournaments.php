@@ -19,16 +19,6 @@ Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function (
         ]
     );
 
-    // individual sign up request
-    Route::post(
-        '/lol-individual-sign-up',
-        [
-            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-            'as' => 'lol-individual-sign-up',
-            'middleware' => ['LolIndividualSignUp']
-        ]
-    );
-
 });
 Route::group(['middleware' => ['TournamentSignUp', 'UpdateRecipient', 'CCAddRecipient']], function () {
     Route::post(

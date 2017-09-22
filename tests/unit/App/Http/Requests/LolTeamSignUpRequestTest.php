@@ -1,13 +1,12 @@
 <?php
 /**
- * LolIndividualSignUpRequestTest
+ * LolTeamSignUpRequest
  *
  * Created 5/27/16 8:04 AM
- * Unit tests for LolIndividualSignUpRequest class
+ * Unit tests for LolTeamSignUpRequest class
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  */
-
 namespace App\Http\Requests;
 
 use App\Http\Requests\LolTeamSignUpRequest;
