@@ -112,6 +112,7 @@ Route::group(['middleware' => ['WPAdmin']], function () {
 Route::get('/GameDisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
+Route::get('/GameDisplay/CarouselUpdate','GameDisplay\GameDisplayController@CarouselUpdate');
 
 // Customer Page todo: Change name to "User" not Customer
 Route::get('/GameDisplay/getTeamName', function (){
