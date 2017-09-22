@@ -10,16 +10,16 @@
 </head>
 <body class="mainDiv">
     <h1>Please Wait For Game To Begin</h1>
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="10000">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="10000" style="margin-top: 20px">
             <div class="carousel-inner" role="listbox">
                 <div class="carousel-item active">
-                    <img class="d-block img-fluid" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt="">
+                    <img class="d-block img-fluid" src="/LeagueOfLegendsDisplay/Images/bg-default.jpg" alt="" style="margin-right:auto; margin-left: auto;">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block img-fluid" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt="">
+                    <img class="d-block img-fluid" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt="" style="margin-right:auto; margin-left: auto;">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block img-fluid" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt="">
+                    <img class="d-block img-fluid" src="/LeagueOfLegendsDisplay/Images/Ahri.png" alt="" style="margin-right:auto; margin-left: auto;">
                 </div>
             </div>
         </div>
