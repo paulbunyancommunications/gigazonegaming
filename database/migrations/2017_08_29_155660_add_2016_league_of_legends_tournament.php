@@ -8,7 +8,7 @@ class Add2016LeagueOfLegendsTournament extends Migration
 {
     protected $game = 'league-of-legends';
     protected $name = 'gigazone-gaming-2016-{{ name }}';
-    protected $title = 'Gigazone Gaming Championship 2017 {{ title }} Tournament';
+    protected $title = 'Gigazone Gaming Championship 2016 {{ title }} Tournament';
     protected $maxPlayers = 5;
     protected $maxTeams = 32;
     protected $signUpOpen = "2016-05-01 16:00:00";

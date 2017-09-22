@@ -47,6 +47,7 @@ class BackEndTesterSeeder extends Seeder
                     'sign_up_close' => $faker->dateTimeBetween('+2 days', '+1 week'),
                     'occurring' => $faker->dateTimeBetween('+1 month', '+2 months'),
                     'max_players' => $faker->randomDigitNotNull,
+                    'max_teams' => $faker->randomDigitNotNull,
                 ] );
         }
         $sp_tournament = \App\Models\Championship\Tournament::create(
@@ -57,6 +58,7 @@ class BackEndTesterSeeder extends Seeder
                 'sign_up_close' => $faker->dateTimeBetween('+6 days', '+10 week'),
                 'occurring' => $faker->dateTimeBetween('+3 month', '+6 months'),
                 'max_players' => 6,
+                'max_teams' => 8,
             ] );
         $sp_team = \App\Models\Championship\Team::create(
             [
