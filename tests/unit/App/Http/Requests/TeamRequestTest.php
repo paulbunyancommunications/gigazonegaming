@@ -135,13 +135,15 @@ class TeamRequestTest extends WpRequestsBase
         $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PUT');
         $name = $faker->username;
         $tournamentId = $faker->numberBetween(1, 99);
+        $teamId = $faker->numberBetween(1, 99);
         $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
             'team_id' => (object)[
+                'id' => $teamId,
                 'name' => $name,
                 'tournament_id' => $tournamentId
             ]
         ]);
-        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.teams,name,'.$name.',name');
+        $this->assertSame($mock->rules()['name'], 'required');
         $this->assertSame($mock->rules()['tournament_id'], 'required|numeric:mysql_champ.tournament,tournament_id'.$tournamentId.',tournament_id');
 
 

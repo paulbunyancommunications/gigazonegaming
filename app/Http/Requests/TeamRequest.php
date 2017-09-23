@@ -52,15 +52,32 @@ class TeamRequest extends Request
             case 'PUT':
             case 'PATCH':
             {
-                $original_name = $this->route()->team_id->name;
-                $requested_name = $this->name;
-                $original_tournament_id = $this->route()->team_id->tournament_id;
-                $requested_tournament_id = (int)$this->tournament_id;
-                $team_id = $this->route()->team_id->id;
-
-                if($original_name === $requested_name and $original_tournament_id === $requested_tournament_id){ //same name, same tournament
+                $team_id = false;
+                $requested_tournament_id = false;
+                $original_tournament_id = false;
+                $original_name = false;
+                $requested_name = false;
+                if(isset($this->name) and $this->name!=null) {
+                    $requested_name = $this->name;
+                }
+                if(isset($this->tournament_id) and $this->tournament_id!=null) {
+                    $requested_tournament_id = intval($this->tournament_id);
+                }
+                if($this->route()->team_id != null) {
+                    if (isset($this->route()->team_id->name) and $this->route()->team_id->name != null) {
+                        $original_name = $this->route()->team_id->name;
+                    }
+                    if (isset($this->route()->team_id->tournament_id) and $this->route()->team_id->tournament_id != null) {
+                        $original_tournament_id = intval($this->route()->team_id->tournament_id);
+                    }
+                    if (isset($this->route()->team_id->id) and $this->route()->team_id->id != null) {
+                        $team_id = $this->route()->team_id->id;
+                    }
+                }
+                dd($this->route(),$team_id, $requested_tournament_id, $original_tournament_id, $original_name, $requested_name);
+                if($original_name == $requested_name and $original_tournament_id == $requested_tournament_id){ //same name, same tournament
                     return [
-                        'name' => 'required|uniqueWidth:mysql_champ.teams,self,tournament_id',
+                        'name' => 'required',
                         'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id'.$requested_tournament_id.',tournament_id'
                     ];
                 }else{//something change, name or tournament updated

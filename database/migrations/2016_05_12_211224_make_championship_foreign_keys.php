@@ -66,7 +66,7 @@ class MakeChampionshipForeignKeys extends Migration
         }
         if (Schema::connection('mysql_champ')->hasColumn('players', 'team_id')) {
             Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
-                //$table->dropForeign('players_team_id_foreign');
+                $table->dropForeign('players_team_id_foreign');
                 $table->dropColumn(['team_id']);
             });
         }
@@ -78,7 +78,7 @@ class MakeChampionshipForeignKeys extends Migration
         }
         if (Schema::connection('mysql_champ')->hasColumn('individual_players', 'game_id')) {
             Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
-//                $table->dropForeign('individual_players_game_id_foreign');
+                $table->dropForeign('individual_players_game_id_foreign');
                 $table->dropColumn(['game_id']);
             });
         }
