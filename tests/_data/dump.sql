@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.56)
+# Host: 127.0.0.1 (MySQL 5.5.57)
 # Database: gigazone_wp
-# Generation Time: 2017-05-31 18:19:54 +0000
+# Generation Time: 2017-09-25 15:44:35 +0000
 # ************************************************************
 
 
@@ -60,7 +60,9 @@ LOCK TABLES `champ_games` WRITE;
 INSERT INTO `champ_games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`, `updated_by`, `updated_on`)
 VALUES
 	(1,'unknown','','Unknown game','',NULL,NULL,0,'0000-00-00 00:00:00'),
-	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-24 03:58:54','2016-05-24 03:58:54',0,'0000-00-00 00:00:00');
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-24 03:58:54','2016-05-24 03:58:54',0,'0000-00-00 00:00:00'),
+	(3,'madden-nfl-18','Madden NFL 18','','https://www.easports.com/madden-nfl','2017-09-25 15:42:46','2017-09-25 15:42:46',0,'0000-00-00 00:00:00'),
+	(4,'overwatch','Overwatch','','https://playoverwatch.com/en-us/','2017-09-25 15:42:46','2017-09-25 15:42:46',0,'0000-00-00 00:00:00');
 
 /*!40000 ALTER TABLE `champ_games` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -140,6 +142,7 @@ CREATE TABLE `champ_teams` (
   `updated_by` int(11) NOT NULL,
   `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `teams_name_tournament_id_unique` (`name`,`tournament_id`),
   KEY `teams_tournament_id_foreign` (`tournament_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -155,6 +158,7 @@ CREATE TABLE `champ_tournaments` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `max_players` int(11) NOT NULL DEFAULT '0',
+  `max_teams` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `game_id` int(10) unsigned NOT NULL,
@@ -163,6 +167,9 @@ CREATE TABLE `champ_tournaments` (
   `sign_up_open` datetime NOT NULL,
   `sign_up_close` datetime NOT NULL,
   `occurring` datetime NOT NULL,
+  `sign_up_form` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `overflow` tinyint(1) NOT NULL DEFAULT '0',
+  `sign_up_form_shortcode` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tournaments_name_unique` (`name`),
   KEY `tournaments_game_id_foreign` (`game_id`)
@@ -171,13 +178,34 @@ CREATE TABLE `champ_tournaments` (
 LOCK TABLES `champ_tournaments` WRITE;
 /*!40000 ALTER TABLE `champ_tournaments` DISABLE KEYS */;
 
-INSERT INTO `champ_tournaments` (`id`, `name`, `title`, `max_players`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`, `sign_up_open`, `sign_up_close`, `occurring`)
+INSERT INTO `champ_tournaments` (`id`, `name`, `title`, `max_players`, `max_teams`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`, `sign_up_open`, `sign_up_close`, `occurring`, `sign_up_form`, `overflow`, `sign_up_form_shortcode`)
 VALUES
-	(1,'gigazone-gaming-2016-league-of-legends','',5,'2016-05-24 03:58:54','2016-10-13 23:17:49',2,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-11-12 10:00:00'),
-	(2,'gigazone-gaming-2017-league-of-legends','',5,'2017-04-21 17:27:33','2017-04-21 17:27:33',2,1,'2017-04-21 17:27:33','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00');
+	(1,'gigazone-gaming-2016-league-of-legends','',5,0,'2016-05-24 03:58:54','2016-10-13 23:17:49',2,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-11-12 10:00:00','',0,''),
+	(2,'gigazone-gaming-2017-league-of-legends','',5,0,'2017-04-21 17:27:33','2017-04-21 17:27:33',2,1,'2017-04-21 17:27:33','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','',0,''),
+	(3,'gigazone-gaming-2017-overwatch','Gigazone Gaming Championship 2017 Overwatch Tournament',3,32,'2017-09-25 15:42:46','2017-09-25 15:42:46',4,0,'0000-00-00 00:00:00','2017-09-05 16:00:00','2017-09-28 11:59:59','2017-09-30 12:00:00','{\"update-recipient\":[\"update-recipient\",\"\",\"hidden\",\"yes\"],\"participate\":[\"participate\",\"\",\"hidden\",\"yes\"],\"tournament\":[\"tournament\",\"required|exists:mysql_champ.tournaments,name\",\"hidden\",\"gigazone-gaming-2017-overwatch\"],\"team-name\":[\"Team Name\",\"required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##\",\"text\",\"\"],\"name\":[\"Team Captain\",\"required\",\"text\",\"\"],\"email\":[\"Team Captain Email\",\"required|email\",\"email\",\"\"],\"phone\":[\"Team Captain Phone\",\"required\",\"tel\",\"\"],\"teammate-one-name\":[\"Teammate One Name\",\"required|different:name|different:teammate-two-name\",\"text\",\"\"],\"teammate-one-email\":[\"Teammate One Email\",\"required|email|different:email|different:teammate-two-email\",\"email\",\"\"],\"teammate-two-name\":[\"Teammate Two Name\",\"required|different:name|different:teammate-one-name\",\"text\",\"\"],\"teammate-two-email\":[\"Teammate Two Email\",\"required|email|different:email|different:teammate-one-email\",\"email\",\"\"]}',0,'[build-form name=\"gigazone-gaming-2017-overwatch-sign-up\" new_line=\",\" delimiter=\"|\" start=\"1504627200\" expires=\"1506599999\" questions=\"update-recipient|hidden|yes,participate|hidden|yes,tournament|hidden|gigazone-gaming-2017-overwatch,Team Name|text,Team Captain|text,Team Captain Email|email,Team Captain Phone|tel,Teammate One Name|text,Teammate One Email|email,Teammate Two Name|text,Teammate Two Email|email\" inputs=\"update-recipient|update-recipient,participate|participate,tournament|tournament,team-name|team-name,team-captain|name,team-captain-email|email,team-captain-phone|phone,teammate-one-name|teammate-one-name,teammate-one-email|teammate-one-email,teammate-two-name|teammate-two-name,teammate-two-email|teammate-two-email\" headings=\"Team Info|team-name,Team Captain|team-captain,Teammates|teammate-one-name\"]'),
+	(4,'gigazone-gaming-2017-madden-nfl-18','Gigazone Gaming Championship 2017 Madden NFL 18 Tournament',1,32,'2017-09-25 15:42:46','2017-09-25 15:42:46',3,0,'0000-00-00 00:00:00','2017-09-05 16:00:00','2017-09-28 11:59:59','2017-09-30 12:00:00','{\"update-recipient\":[\"update-recipient\",\"\",\"hidden\",\"yes\"],\"participate\":[\"participate\",\"\",\"hidden\",\"yes\"],\"tournament\":[\"tournament\",\"required|exists:mysql_champ.tournaments,name\",\"hidden\",\"gigazone-gaming-2017-madden-nfl-18\"],\"name\":[\"Team Captain\",\"required\",\"text\",\"\"],\"email\":[\"Team Captain Email\",\"required|email\",\"email\",\"\"],\"phone\":[\"Team Captain Phone\",\"required\",\"tel\",\"\"]}',0,'[build-form name=\"-sign-up\" new_line=\",\" delimiter=\"|\" start=\"1504627200\" expires=\"1506599999\" questions=\"update-recipient|hidden|yes,participate|hidden|yes,tournament|hidden|gigazone-gaming-2017-madden-nfl-18,Team Captain|text,Team Captain Email|email,Team Captain Phone|tel\" inputs=\"update-recipient|update-recipient,participate|participate,tournament|tournament,team-captain|name,team-captain-email|email,team-captain-phone|phone\" headings=\"Team Info|team-name,Team Captain|team-captain,Teammates|teammate-one-name\"]');
 
 /*!40000 ALTER TABLE `champ_tournaments` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+# Dump of table champ_usernames
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `champ_usernames`;
+
+CREATE TABLE `champ_usernames` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `tournament_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `usernames_username_unique` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 
 # Dump of table failed_jobs
@@ -220,6 +248,7 @@ CREATE TABLE `form_mail` (
   `greeting` text COLLATE utf8_unicode_ci NOT NULL,
   `confirmation` tinyint(1) NOT NULL,
   `queue` tinyint(1) NOT NULL,
+  `custom_request_body` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -309,7 +338,20 @@ VALUES
 	('2016_10_31_200100_add_confirmation_column_to_form_mail_table',10),
 	('2016_10_31_201854_add_queue_column_to_form_mail_table',10),
 	('2016_12_16_173245_create_scores_table',10),
-	('2016_12_19_144950_AddTitleToTournamentTable',10);
+	('2016_12_19_144950_AddTitleToTournamentTable',10),
+	('2017_05_31_182341_add_team_name_tournament_id_constraint',11),
+	('2017_08_29_143850_add_sign_up_form_column_to_tournament_table',11),
+	('2017_08_29_143851_add_max_teams_column_to_tournament_table',11),
+	('2017_08_29_143852_add_overflow_column_to_database',11),
+	('2017_08_29_143852_add_sign_up_form_shortcode_column_to_tournament_table',11),
+	('2017_08_29_143858_make_madden_nfl_18_game_if_it_does_not_exist_already',11),
+	('2017_08_29_143859_make_overwatch_game_if_it_does_not_exist_already',11),
+	('2017_08_29_155657_add_2017_overwatch_tournament',11),
+	('2017_08_29_155658_add_2017_madden_tournament',11),
+	('2017_08_29_155659_add_2017_league_of_legends_tournament',11),
+	('2017_08_29_155660_add_2016_league_of_legends_tournament',11),
+	('2017_08_30_191115_CreateUsernameTable',11),
+	('2017_09_05_201855_add_custom_request_body_column_to_form_mail_table',11);
 
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
