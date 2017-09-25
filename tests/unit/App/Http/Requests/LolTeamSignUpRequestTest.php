@@ -1,13 +1,12 @@
 <?php
 /**
- * LolIndividualSignUpRequestTest
+ * LolTeamSignUpRequest
  *
  * Created 5/27/16 8:04 AM
- * Unit tests for LolIndividualSignUpRequest class
+ * Unit tests for LolTeamSignUpRequest class
  *
  * @author Nate Nolting <naten@paulbunyan.net>
  */
-
 namespace App\Http\Requests;
 
 use App\Http\Requests\LolTeamSignUpRequest;
@@ -61,14 +60,14 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
                 'teammate-' . Numbers::toWord($i) . '-lol-summoner-name',
                 $individualRequest->rules()
             );
-            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'], 'required|unique:mysql_champ.players,username');
+            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'], 'required');
 
             // check for teammate-x-email-address input and check that the rules are correct
             $this->assertArrayHasKey(
                 'teammate-' . Numbers::toWord($i) . '-email-address',
                 $individualRequest->rules()
             );
-            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-email-address'], 'required|email|unique:mysql_champ.players,email');
+            $this->assertSame($individualRequest->rules()['teammate-' . Numbers::toWord($i) . '-email-address'], 'required|email');
         
         }
     }
@@ -81,12 +80,12 @@ class LolTeamSignUpRequestTest extends \PHPUnit_Framework_TestCase
         $individualRequest = new LolTeamSignUpRequest();
 
         $messages = [
+            'team-name.uniqueWidth' => 'A team with the exact same name already exists for this tournament, please select a different name.',
+            'team-name.unique_width' => 'A team with the exact same name already exists for this tournament, please select a different name.',
             'email.required' => 'The team captain email address is required.',
-            'email.unique' => 'The team captain email address is already assigned to a different user.',
             'email.email' => 'The team captain email address myst be a valid email address (someone@somewhere.com for example).',
             'name.required' => 'The name of the team captain is required.',
             'team-captain-lol-summoner-name.required' => 'The team captain LOL summoner name is required.',
-            'team-captain-lol-summoner-name.unique' => 'The team captain LOL summoner name is already assigned to a different user.',
             'team-captain-phone.required' => 'The team captain phone number is required.',
             'team-name.required' => 'The team name is required.',
         ];

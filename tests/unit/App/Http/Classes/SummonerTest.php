@@ -17,9 +17,9 @@ class SummonerTest extends \TestCase
 
     public function setUp()
     {
+        parent::setUp();
         $api = new RiotApiMock();
         $this->summoner = new Summoner("KingMorpheus2131", $api);
-        parent::setUp();
     }
 
     public function tearDown()

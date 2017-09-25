@@ -22,8 +22,8 @@ class BlogAcceptanceCest extends \BaseAcceptance
         /** Make a bunch of posts so that the pagination will show up */
         for ($i = 0; $i < ($postsCount * 2); $i++) {
             $I->createAPost($I, [
-                'title' => '$this->faker->sentence()',
-                'content' => '$this->faker->paragraph()',
+                'title' => $this->faker->sentence(),
+                'content' => $this->faker->paragraph(),
                 'meta' => [['selectOption', '#cnr_post_parent', 'Blog']]
             ]);
         }
