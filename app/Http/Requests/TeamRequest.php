@@ -74,7 +74,7 @@ class TeamRequest extends Request
                         $team_id = $this->route()->team_id->id;
                     }
                 }
-                dd($this->route(),$team_id, $requested_tournament_id, $original_tournament_id, $original_name, $requested_name);
+//                dd($this->route(),$team_id, $requested_tournament_id, $original_tournament_id, $original_name, $requested_name);
                 if($original_name == $requested_name and $original_tournament_id == $requested_tournament_id){ //same name, same tournament
                     return [
                         'name' => 'required',
