@@ -242,6 +242,27 @@ node {
 
         successMessage(Globals.STAGE)
 
+        Globals.STAGE='Git: Remote add origin'
+        startMessage(Globals.STAGE)
+        try {
+            sh "cd ${Globals.WORKSPACE}; git remote add origin git@github.com:${SCM_OWNER}/${SCM_REPO}.git";
+        } catch (error) {
+                echo "There was no need to add origin, it was already added. Skipping this step."
+        }
+        successMessage(Globals.STAGE)
+
+        Globals.STAGE='Git: Remote add upstream'
+        startMessage(Globals.STAGE)
+        try {
+            if("${SCM_UPSTREAM_URL}" != "NONE"){
+                sh "cd ${Globals.WORKSPACE}; git remote add upstream ${SCM_UPSTREAM_URL}";
+            }else{
+                echo "There was no upstream designated. Skipping this step."
+            }
+        } catch (error) {
+            errorMessage(Globals.STAGE, error.getMessage())
+        }
+        successMessage(Globals.STAGE)
 
         /**
         * Get any docker image updates that may have been pushed using the current docker config
@@ -709,9 +730,7 @@ node {
         stage('Push to master') {
 
             Globals.STAGE='Deployment: git push to master'
-            if("${SCM_UPSTREAM_URL}" != "NONE"){
-                sh "cd ${Globals.WORKSPACE}; git remote add upstream ${SCM_UPSTREAM_URL}";
-            }
+
             sh "cd ${Globals.WORKSPACE}; git fetch --all";
             sh "cd ${Globals.WORKSPACE}; git stash";
             sh "cd ${Globals.WORKSPACE}; git checkout -b master --track origin/master";
@@ -725,13 +744,20 @@ node {
             sh "cd ${Globals.WORKSPACE}; git stash";
             sh "cd ${Globals.WORKSPACE}; git merge origin/develop --commit -v -m 'tests passed on Jenkins'";
             echo "1";
-            withCredentials([string(credentialsId: "${SCM_PERSONAL_ACCESS_TOKEN}", variable: 'SCM_PASS')]) {
-                sh "git push https://${SCM_OWNER}:${SCM_PASS}@github.com/${SCM_OWNER}/${SCM_REPO}.git master"
-            }
+            /*
+
+            SCM_PASS_TOKEN=21a3d495-3c96-4438-b2e6-e2b3e244c150
+            SCM_CHECKOUT_TOKEN=8e279f9e-f3e3-4ffc-87dc-a87f0308d9a0
+            SCM_PERSONAL_ACCESS_TOKEN=6044ee39-fc0b-4e67-b531-6cf98e43992c
+
+            */
+
+            sh "cd ${Globals.WORKSPACE}; ssh-agent sh -c 'ssh-add /var/lib/jenkins/.ssh/id_rsa; git push git@github.com:${SCM_OWNER}/${SCM_REPO}.git master'"
             echo "2";
             if("${SCM_UPSTREAM_URL}" != "NONE"){
                 sh "cd ${Globals.WORKSPACE}; git pull-request -b ${SCM_UPSTREAM_URL}:develop -o -m 'Updates from Jenkins'";
             }
+            echo "3";
 
 
         }
@@ -748,6 +774,3 @@ node {
 
     }
 }
-
-
-
