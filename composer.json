@@ -219,7 +219,6 @@
     "phing/phing": "2.*",
     "codeception/codeception": "2.3.1",
     "codeception/c3": "2.0.12",
-    "etsy/phan": "^0.9.1",
     "paulbunyancommunications/mailtrapper": "dev-master"
   },
   "extra": {
@@ -260,7 +259,8 @@
       "tests/integration/BaseIntegration.php"
     ],
     "psr-4": {
-      "Codeception\\Module\\": "src/Codeception/Module"
+      "Codeception\\Module\\": "src/Codeception/Module",
+      "Enqueue\\Test\\": "src/Enqueue/Test"
     }
   },
   "scripts": {

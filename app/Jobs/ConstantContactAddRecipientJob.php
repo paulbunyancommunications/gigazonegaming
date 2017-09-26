@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class ConstantContactAddRecipientJob extends Job implements ShouldQueue
 {
@@ -86,6 +87,8 @@ class ConstantContactAddRecipientJob extends Job implements ShouldQueue
         if ($validator->fails()) {
             // email not set or failed validation
             $message = is_array($validator->getMessageBag()) ? implode(' ', (array)$validator->getMessageBag()) : $validator->getMessageBag();
+            $message .= ' when email address used is "'.$this->email.'"';
+            Log::error($message, ['name' => $this->name, 'email' => $this->email]);
             throw new ConstantContactAddRecipientJobException($message);
         }
         return $this;
