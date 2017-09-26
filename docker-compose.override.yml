@@ -4,3 +4,6 @@ services:
   code:
     volumes:
       - ${PWD}/php-override.ini:/usr/local/etc/php/conf.d/php-override.ini
+  db:
+    volumes:
+      - ${PWD}/mysql-override.cnf:/etc/mysql/conf.d/max_connections.cnf
