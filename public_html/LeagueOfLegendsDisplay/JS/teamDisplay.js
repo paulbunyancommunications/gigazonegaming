@@ -127,6 +127,36 @@ function GetData() {
                     location.reload();
                 } else{
                     setTimeout(GetData,2000);
+                    $.ajax({
+                        method: "GET",
+                        type: "GET",
+                        url: "/app/GameDisplay/CarouselUpdate",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            team: team
+                        },
+                        success: function (data) {
+                            if(data){
+                                var images = [];
+                                $("img").each(function(){
+                                    images.push($(this).attr('src'))
+                                });
+                                for(i=0;i<data.length;i++) {
+                                    if (images.indexOf("/" + data[i]) === -1) {
+                                        $('.carousel-inner').append("<div class='carousel-item'><img class='d-block img-fluid' src=/" + data[i] + " alt='' style='margin-right:auto; margin-left: auto;'></div>");
+                                    }
+                                }
+                                for(i=0;i<images.length;i++){
+                                    if(data.indexOf(images[i].slice(1)) === -1){
+                                        console.log("here");
+                                        var source = images[i];
+                                        var sourceBefore = images[0];
+                                        $('img[src$="'+source+'"]').parent().remove();
+                                    }
+                                }
+                            }
+                        }
+                    })
                 }
             },
         })

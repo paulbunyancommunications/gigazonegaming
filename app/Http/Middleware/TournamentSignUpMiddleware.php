@@ -6,6 +6,7 @@ use App\Models\Championship\Player;
 use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Team;
 use App\Models\Championship\Tournament;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
@@ -23,63 +24,113 @@ class TournamentSignUpMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $forCheck = new Request();
-        $forCheck2 = $forCheck;
-        $forCheck2->replace([]);
-        if($request === [] or $request === $forCheck or $request === $forCheck2){
-            return $this->error("There was no real request here.... moving on!");
-        }
-        if($request->input('tournament') !== $request->route()->getName()) {
-            return $this->error('Tournament route mismatch');
-        }
-        $theRequests = $request->all();
-        $getTournament = Tournament::where('name', $request->route()->getName());
-        if(!$getTournament->exists()) {
-            return $this->error('The tournament submitted does not exist');
-        }
-        /** @var Tournament $tournament */
-        $tournament = $getTournament->first();
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///// check that the request doesn't come empty //////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+            $forCheck = new Request();
+            $d_tournament = false;
+            $forCheck2 = $forCheck;
+            $forCheck2->replace([]);
+            if($request == [] or $request == $forCheck or $request == $forCheck2){
+                return $this->error("There was no real request here.... moving on!");
+            }
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///// check that the requested tournament is setup and dates are correct ////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+            if(! Tournament::where("name","=",$request->input('tournament'))->exists()) {
+                return $this->error("There was no real tournament here.... moving on!");
+            }else{
+                $d_tournament = Tournament::where("name","=",$request->input('tournament'))->first();
+                $today = Carbon::now("America/Chicago")->timestamp;
+                $opening = Carbon::parse(date_format($d_tournament->sign_up_open,'Y-m-d H:i:s'))->timestamp;
+                $closing = Carbon::parse(date_format($d_tournament->sign_up_close,'Y-m-d H:i:s'))->timestamp;
+                if($opening < 0 OR $closing < 0) {
+                    return $this->error("Sorry, there is no registration day for this tournament");
+                }
+                if($opening > $today) {
+                    return $this->error("It is to early to register for the tournament");
+                }
+                if($closing < $today) {
+                    return $this->error("It is to late to register for the tournament");
+                }
+            }
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///// check that the tournament is full /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+            // $team_size is the max number of players per team
+            $team_size = $d_tournament->max_players;
+            // $team_max is the max number of players per team
+            $team_max = $d_tournament->max_teams;
+            // $team_overflow is the tournament allowed to have extra teams in case one drop off?
+            $team_overflow = boolval($d_tournament->overflow);
+            // $teams_number is the number of teams already in the tournament
+            $teams_number = $d_tournament->Teams()->count();
 
-        // get the form validation rules and check for errors
-        $rules = [];
-        foreach (json_decode($tournament->sign_up_form, true) as $key => $value) {
-            $rules[$key] = $value[1];
-        }
-        $validator = \Validator::make($theRequests, $rules);
-        if($validator->fails()) {
-            // format returned messages
-            $returnedErrors = [];
-            $form = json_decode($tournament->sign_up_form, true);
-            foreach ($form as $key => $value) {
-                foreach ($validator->messages()->get($key) as $message) {
-                    array_push($returnedErrors, str_replace_first($key, $value[0], $message));
+
+            if($team_max <= $teams_number){ //if the number of teams allowed on the tournament is the same or less to the amount of teams in the tournament then go into here for an extra check
+                if(!$team_overflow){ //if there is no overflow available then return sorry message
+                    return $this->error("Sorry, the number of teams registered on the tournament has reach the maximum. We can't accept your team application at this time.");
                 }
             }
-            // fix any secondary keys
-            foreach (array_reverse($form) as $key => $value) {
-                foreach ($returnedErrors as $subkey => $message) {
-                    $returnedErrors[$key] = str_replace_first($key, $value[0], $returnedErrors[$key]);
-                }
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///// check that the request have all validation required ///////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+            $theRequests = $request->all();
+            /** @var Tournament $d_tournament */
+            // get the form validation rules and check for errors
+            $rules = [];
+            if($d_tournament->sign_up_form == ""){
+                return $this->error("The Tournament has no set of rules... no rules, no sign up.");
             }
-            return $this->error($returnedErrors);
-        }
-        $teams = $tournament->Teams()->get();
+            foreach (json_decode($d_tournament->sign_up_form, true) as $key => $value) {
+                $rules[$key] = $value[1];
+            }
+            $validator = \Validator::make($theRequests, $rules);
+
+            if($validator->fails()) {
+                // format returned messages
+                $returnedErrors = [];
+                $form = json_decode($d_tournament->sign_up_form, true);
+
+                foreach ($form as $key => $value) {
+                    foreach ($validator->messages()->get($key) as $message) {
+                        $returnedErrors[$value[0]] = $message;
+                    }
+                }
+                return $this->error(json_encode($returnedErrors));
+            }
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        //// TODO: DELETE THIS SECTION V ///////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        //// TODO: DELETE THIS SECTION ^ ///////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///// check all information submited ///////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        $teams = $d_tournament->Teams()->get();
         $playerExist = [];
         $usernameExists = [];
 
-        // for if the the main contact exists as a player in the system already
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // if the the main contact exists as a player in the system already get it
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         if (isset($theRequests['email']) AND Player::where('email', '=', $theRequests['email'])->exists()) {
             $id = Player::where('email', '=', $theRequests['email'])->first()->id;
             $playerExist[$theRequests['email']] =  $id;
         }
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         // if main contact user name was submitted then check if it already exists
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         if (isset($theRequests['username']) AND Player::where('username', '=', $theRequests['username'])->exists()) {
             $email = Player::where('username', '=', $theRequests['username'])->first()->email;
             $username =  $theRequests['username'];
             $usernameExists[$email] =  $username;
         }
         // run through all the other teammates and alternates and check if they exist
-        for($i=1; $i < $tournament->max_players; $i++) {
+        for($i=1; $i < $team_size; $i++) {
             if (isset($theRequests['teammate-'.Numbers::toWord($i).'-email']) AND Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->exists()) {
                 $id = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email'])->first()->id;
                 $email = $theRequests['teammate-'.Numbers::toWord($i).'-email'];
@@ -132,7 +183,7 @@ class TournamentSignUpMiddleware
             }
         }
         $error = [];
-        if ($tournament === null) {
+        if ($d_tournament === null) {
             $error[]= trans('tournament.not_found', ['tournament' => $this->getTournament()]);
         }
         if (count($repeatedPlayers)>0 ){
@@ -154,10 +205,10 @@ class TournamentSignUpMiddleware
             DB::beginTransaction();
             // make new team
             $team = new Team();
-            if(Team::where([['name', '=', $request->input('team-name')],['tournament_id', '=', $tournament->id]])->exists()){
+            if(Team::where([['name', '=', $request->input('team-name')],['tournament_id', '=', $d_tournament->id]])->exists()){
                 return $this->error("Team Name is already in the db");
             }else {
-                $team->tournament_id = $tournament->id;
+                $team->tournament_id = $d_tournament->id;
                 $team->name = $request->input('team-name');
                 $team->save();
             }
@@ -183,7 +234,7 @@ class TournamentSignUpMiddleware
             // add captain to team/tournament/game
             $captain::createRelation([
                 'player' => $captain,
-                'game' => $tournament->game,
+                'game' => $d_tournament->game,
                 'team' => $team,
             ]);
 
@@ -192,7 +243,7 @@ class TournamentSignUpMiddleware
             $team->save();
 
             // add other players
-            for ($i = 1; $i < $tournament->max_players; $i++) {
+            for ($i = 1; $i < $d_tournament->max_players; $i++) {
                 if (($request->input('teammate-' . Numbers::toWord($i) . '-name')
                      OR $request->input('teammate-' . Numbers::toWord($i) . '-username'))
                     AND filter_var($request->input('teammate-' . Numbers::toWord($i) . '-email'), FILTER_VALIDATE_EMAIL)
@@ -219,14 +270,14 @@ class TournamentSignUpMiddleware
                     // attach player to team/tournament/game
                     $player::createRelation([
                         'player' => $player,
-                        'tournament' => $tournament,
-                        'game' => $tournament->game,
+                        'tournament' => $d_tournament,
+                        'game' => $d_tournament->game,
                         'team' => $team,
                     ]);
                 }
             }
             // add other players alternate-###-email alternate-###-username
-            for ($i = 1; $i < $tournament->max_players; $i++) {
+            for ($i = 1; $i < $d_tournament->max_players; $i++) {
                 if (($request->input('alternate-' . Numbers::toWord($i) . '-name')
                         OR $request->input('alternate-' . Numbers::toWord($i) . '-username'))
                     AND filter_var($request->input('alternate-' . Numbers::toWord($i) . '-email'), FILTER_VALIDATE_EMAIL)
@@ -247,8 +298,8 @@ class TournamentSignUpMiddleware
                     // attach player to team/tournament/game
                     $player::createRelation([
                         'player' => $player,
-                        'tournament' => $tournament,
-                        'game' => $tournament->game,
+                        'tournament' => $d_tournament,
+                        'game' => $d_tournament->game,
                         'team' => $team,
                     ]);
                 }

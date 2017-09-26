@@ -43,7 +43,39 @@ class GameDisplayController extends Controller
             ]);
         }
         #Data Default data
-        return view('/LeagueOfLegends/DisplayAltTeam');
+        $fileContents = glob(public_path("content/LeagueImages/*.*"));
+        $images=[];
+        for($i=0; $i<count($fileContents);$i++){
+            $brokenPath = explode('/',$fileContents[$i]);
+            $neededPath = array_slice($brokenPath,5);
+            $fixedPath= implode("/",$neededPath);
+            array_push($images,$fixedPath);
+        }
+        $timestamp = filemtime(public_path("content/LeagueImages/"));
+        Cache::put("ImageDirTimestamp",$timestamp,150000);
+        return view('/LeagueOfLegends/DisplayAltTeam')->withImages($images);
+    }
+    public function CarouselUpdate(){
+        if(Cache::has("ImageDirTimestamp")){
+            $oldTimestamp = Cache::get("ImageDirTimestamp");
+            $timestamp = filemtime(public_path("content/LeagueImages/"));
+            if($timestamp > $oldTimestamp){
+                $fileContents = glob(public_path("content/LeagueImages/*.*"));
+                $images=[];
+                for($i=0; $i<count($fileContents);$i++){
+                    $brokenPath = explode('/',$fileContents[$i]);
+                    $neededPath = array_slice($brokenPath,5);
+                    $fixedPath= implode("/",$neededPath);
+                    array_push($images,$fixedPath);
+                }
+                Cache::put("ImageDirTimestamp",$timestamp,150000);
+                return response()->json($images);
+            }
+        }
+        $timestamp = filemtime(public_path("content/LeagueImages/"));
+        Cache::put("ImageDirTimestamp",$timestamp,150000);
+
+        return response()->json(false);
     }
 
     public function getData(Requests\GameDisplayGetDataRequest $req)
