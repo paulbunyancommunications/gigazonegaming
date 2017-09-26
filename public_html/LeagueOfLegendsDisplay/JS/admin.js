@@ -42,7 +42,7 @@ const testing =  document.getElementsByName("Testing").length;
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $("#hiddenToken").text(),
-        'Testing': false
+        'Testing': true
     }
 });
 
