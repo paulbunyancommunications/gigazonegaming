@@ -5,7 +5,7 @@ namespace Enqueue\Test;
 /**
  * Trait RetryTrait
  * Borrowed from https://github.com/php-enqueue/enqueue-dev/blob/59bbc53727200f2465f8526bf10bdae56a8d4a15/pkg/test/RetryTrait.php#L5
- *
+ * Blog post: https://blog.forma-pro.com/retry-an-erratic-test-fc4d928c57fb
  * @package Enqueue\Test
  */
 trait RetryTrait
