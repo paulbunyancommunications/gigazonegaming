@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.57)
+# Host: 127.0.0.1 (MySQL 5.5.56)
 # Database: gigazone_wp
-# Generation Time: 2017-09-27 08:00:06 +0000
+# Generation Time: 2017-05-31 18:19:54 +0000
 # ************************************************************
 
 
@@ -27,10 +27,10 @@ DROP TABLE IF EXISTS `cache`;
 
 CREATE TABLE `cache` (
   `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `value` text COLLATE utf8_unicode_ci NOT NULL,
+  `value` longtext COLLATE utf8_unicode_ci NOT NULL,
   `expiration` int(11) NOT NULL,
   UNIQUE KEY `cache_key_unique` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -48,21 +48,19 @@ CREATE TABLE `champ_games` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `updated_by` int(11) NOT NULL,
-  `updated_on` int(11) NOT NULL,
+  `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `games_name_unique` (`name`),
   KEY `games_title_index` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `champ_games` WRITE;
 /*!40000 ALTER TABLE `champ_games` DISABLE KEYS */;
 
 INSERT INTO `champ_games` (`id`, `name`, `title`, `description`, `uri`, `created_at`, `updated_at`, `updated_by`, `updated_on`)
 VALUES
-	(1,'unknown','','Unknown game','',NULL,NULL,0,0),
-	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2017-09-27 07:58:49','2017-09-27 07:58:49',0,0),
-	(3,'madden-nfl-18','Madden NFL 18','','https://www.easports.com/madden-nfl','2017-09-27 07:58:51','2017-09-27 07:58:51',0,0),
-	(4,'overwatch','Overwatch','','https://playoverwatch.com/en-us/','2017-09-27 07:58:51','2017-09-27 07:58:51',0,0);
+	(1,'unknown','','Unknown game','',NULL,NULL,0,'0000-00-00 00:00:00'),
+	(2,'league-of-legends','League of Legends','','http://leagueoflegends.com/','2016-05-24 03:58:54','2016-05-24 03:58:54',0,'0000-00-00 00:00:00');
 
 /*!40000 ALTER TABLE `champ_games` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -101,12 +99,10 @@ CREATE TABLE `champ_players` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `updated_by` int(11) NOT NULL,
-  `updated_on` int(11) NOT NULL,
+  `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `players_username_unique` (`username`),
-  UNIQUE KEY `players_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -142,12 +138,10 @@ CREATE TABLE `champ_teams` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `tournament_id` int(10) unsigned NOT NULL,
   `updated_by` int(11) NOT NULL,
-  `updated_on` int(11) NOT NULL,
+  `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `teams_name_tournament_id_unique` (`name`,`tournament_id`),
-  KEY `teams_tournament_id_foreign` (`tournament_id`),
-  CONSTRAINT `teams_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `champ_tournaments` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `teams_tournament_id_foreign` (`tournament_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -161,55 +155,29 @@ CREATE TABLE `champ_tournaments` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `max_players` int(11) NOT NULL DEFAULT '0',
-  `max_teams` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `game_id` int(10) unsigned NOT NULL,
   `updated_by` int(11) NOT NULL,
-  `updated_on` int(11) NOT NULL,
+  `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `sign_up_open` datetime NOT NULL,
   `sign_up_close` datetime NOT NULL,
   `occurring` datetime NOT NULL,
-  `sign_up_form` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `overflow` tinyint(1) NOT NULL DEFAULT '0',
-  `sign_up_form_shortcode` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tournaments_name_unique` (`name`),
-  KEY `tournaments_game_id_foreign` (`game_id`),
-  CONSTRAINT `tournaments_game_id_foreign` FOREIGN KEY (`game_id`) REFERENCES `champ_games` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `tournaments_game_id_foreign` (`game_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `champ_tournaments` WRITE;
 /*!40000 ALTER TABLE `champ_tournaments` DISABLE KEYS */;
 
-INSERT INTO `champ_tournaments` (`id`, `name`, `title`, `max_players`, `max_teams`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`, `sign_up_open`, `sign_up_close`, `occurring`, `sign_up_form`, `overflow`, `sign_up_form_shortcode`)
+INSERT INTO `champ_tournaments` (`id`, `name`, `title`, `max_players`, `created_at`, `updated_at`, `game_id`, `updated_by`, `updated_on`, `sign_up_open`, `sign_up_close`, `occurring`)
 VALUES
-	(1,'gigazone-gaming-2016-league-of-legends','',5,0,'2017-09-27 07:58:49','2017-09-27 07:58:50',2,0,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','',0,''),
-	(2,'gigazone-gaming-2017-overwatch','Gigazone Gaming Championship 2017 Overwatch Tournament',3,32,'2017-09-27 07:58:51','2017-09-27 07:58:51',4,0,0,'2017-09-05 16:00:00','2017-09-28 11:59:59','2017-09-30 12:00:00','{\"update-recipient\":[\"update-recipient\",\"\",\"hidden\",\"yes\"],\"participate\":[\"participate\",\"\",\"hidden\",\"yes\"],\"tournament\":[\"tournament\",\"required|exists:mysql_champ.tournaments,name\",\"hidden\",\"gigazone-gaming-2017-overwatch\"],\"team-name\":[\"Team Name\",\"required|uniqueWidth:mysql_champ.teams,=name,tournament_id>\",\"text\",\"\"],\"name\":[\"Team Captain\",\"required\",\"text\",\"\"],\"email\":[\"Team Captain Email\",\"required|email\",\"email\",\"\"],\"phone\":[\"Team Captain Phone\",\"required\",\"tel\",\"\"],\"teammate-one-name\":[\"Teammate One Name\",\"required|different:name|different:teammate-two-name\",\"text\",\"\"],\"teammate-one-email\":[\"Teammate One Email\",\"required|email|different:email|different:teammate-two-email\",\"email\",\"\"],\"teammate-two-name\":[\"Teammate Two Name\",\"required|different:name|different:teammate-one-name\",\"text\",\"\"],\"teammate-two-email\":[\"Teammate Two Email\",\"required|email|different:email|different:teammate-one-email\",\"email\",\"\"]}',0,'[build-form name=\"gigazone-gaming-2017-overwatch-sign-up\" new_line=\",\" delimiter=\"|\" start=\"1504627200\" expires=\"1506599999\" questions=\"update-recipient|hidden|yes,participate|hidden|yes,tournament|hidden|gigazone-gaming-2017-overwatch,Team Name|text,Team Captain|text,Team Captain Email|email,Team Captain Phone|tel,Teammate One Name|text,Teammate One Email|email,Teammate Two Name|text,Teammate Two Email|email\" inputs=\"update-recipient|update-recipient,participate|participate,tournament|tournament,team-name|team-name,team-captain|name,team-captain-email|email,team-captain-phone|phone,teammate-one-name|teammate-one-name,teammate-one-email|teammate-one-email,teammate-two-name|teammate-two-name,teammate-two-email|teammate-two-email\" headings=\"Team Info|team-name,Team Captain|team-captain,Teammates|teammate-one-name\"]'),
-	(3,'gigazone-gaming-2017-madden-nfl-18','Gigazone Gaming Championship 2017 Madden NFL 18 Tournament',1,32,'2017-09-27 07:58:51','2017-09-27 07:58:51',3,0,0,'2017-09-05 16:00:00','2017-09-28 11:59:59','2017-09-30 12:00:00','{\"update-recipient\":[\"update-recipient\",\"\",\"hidden\",\"yes\"],\"participate\":[\"participate\",\"\",\"hidden\",\"yes\"],\"tournament\":[\"tournament\",\"required|exists:mysql_champ.tournaments,name\",\"hidden\",\"gigazone-gaming-2017-madden-nfl-18\"],\"name\":[\"Team Captain\",\"required\",\"text\",\"\"],\"email\":[\"Team Captain Email\",\"required|email\",\"email\",\"\"],\"phone\":[\"Team Captain Phone\",\"required\",\"tel\",\"\"]}',0,'[build-form name=\"-sign-up\" new_line=\",\" delimiter=\"|\" start=\"1504627200\" expires=\"1506599999\" questions=\"update-recipient|hidden|yes,participate|hidden|yes,tournament|hidden|gigazone-gaming-2017-madden-nfl-18,Team Captain|text,Team Captain Email|email,Team Captain Phone|tel\" inputs=\"update-recipient|update-recipient,participate|participate,tournament|tournament,team-captain|name,team-captain-email|email,team-captain-phone|phone\" headings=\"Team Info|team-name,Team Captain|team-captain,Teammates|teammate-one-name\"]'),
-	(4,'gigazone-gaming-2017-league-of-legends','Gigazone Gaming Championship 2017 League of Legends Tournament',5,32,'2017-09-27 07:58:51','2017-09-27 07:58:51',2,0,0,'2017-05-01 16:00:00','2017-07-01 11:59:59','2017-09-30 12:00:00','{\"update-recipient\":[\"update-recipient\",\"\",\"hidden\",\"yes\"],\"participate\":[\"participate\",\"\",\"hidden\",\"yes\"],\"tournament\":[\"tournament\",\"required|exists:mysql_champ.tournaments,name\",\"hidden\",\"gigazone-gaming-2017-league-of-legends\"],\"team-name\":[\"Team Name\",\"required|uniqueWidth:mysql_champ.teams,=name,tournament_id>{{tournament_id}}\",\"text\",\"\"],\"name\":[\"Team Captain\",\"required\",\"text\",\"\"],\"team-captain-lol-summoner-name\":[\"Team Captain LoL Summoner Name\",\"required\",\"text\",\"\"],\"email\":[\"Team Captain Email\",\"required|email\",\"email\",\"\"],\"team-captain-phone\":[\"Team Captain Phone\",\"required\",\"tel\",\"\"],\"teammate-one-lol-summoner-id\":[\"Teammate-One-Lol-Summoner-Id\",\"required|different:team-captain-lol-summoner-name|different:teammate-two-lol-summoner-id|different:teammate-three-lol-summoner-id|different:teammate-four-lol-summoner-id\",\"text\",\"\"],\"teammate-one-email-address\":[\"Teammate-One-Email-Address\",\"required|email|different:email|different:temmate-two-email-address|different:temmate-three-email-address|different:temmate-four-email-address\",\"email\",\"\"],\"teammate-two-lol-summoner-id\":[\"Teammate-Two-Lol-Summoner-Id\",\"required|different:team-captain-lol-summoner-name|different:teammate-one-lol-summoner-id|different:teammate-three-lol-summoner-id|different:teammate-four-lol-summoner-id\",\"text\",\"\"],\"teammate-two-email-address\":[\"Teammate-Two-Email-Address\",\"required|email|different:email|different:temmate-one-email-address|different:temmate-three-email-address|different:temmate-four-email-address\",\"email\",\"\"],\"teammate-three-lol-summoner-id\":[\"Teammate-Three-Lol-Summoner-Id\",\"required|different:team-captain-lol-summoner-name|different:teammate-one-lol-summoner-id|different:teammate-two-lol-summoner-id|different:teammate-four-lol-summoner-id\",\"text\",\"\"],\"teammate-three-email-address\":[\"Teammate-Three-Email-Address\",\"required|email|different:email|different:temmate-one-email-address|different:temmate-two-email-address|different:temmate-four-email-address\",\"email\",\"\"],\"teammate-four-lol-summoner-id\":[\"Teammate-Four-Lol-Summoner-Id\",\"required|different:team-captain-lol-summoner-name|different:teammate-one-lol-summoner-id|different:teammate-two-lol-summoner-id|different:teammate-three-lol-summoner-id\",\"text\",\"\"],\"teammate-four-email-address\":[\"Teammate-Four-Email-Address\",\"required|email|different:email|different:temmate-one-email-address|different:temmate-two-email-address|different:temmate-three-email-address\",\"email\",\"\"]}',0,'[build-form name=\"-sign-up\" new_line=\",\" delimiter=\"|\" start=\"1493654400\" expires=\"1498910399\" questions=\"update-recipient|hidden|yes,participate|hidden|yes,tournament|hidden|gigazone-gaming-2017-league-of-legends,Team Name|text,Team Captain|text,Team Captain LoL Summoner Name|text,Team Captain Email|email,Team Captain Phone|tel,Teammate-One-Lol-Summoner-Id|text,Teammate-One-Email-Address|email,Teammate-Two-Lol-Summoner-Id|text,Teammate-Two-Email-Address|email,Teammate-Three-Lol-Summoner-Id|text,Teammate-Three-Email-Address|email,Teammate-Four-Lol-Summoner-Id|text,Teammate-Four-Email-Address|email\" inputs=\"update-recipient|update-recipient,participate|participate,tournament|tournament,team-name|team-name,team-captain|name,team-captain-lol-summoner-name|team-captain-lol-summoner-name,team-captain-email|email,team-captain-phone|team-captain-phone,teammate-one-lol-summoner-id|teammate-one-lol-summoner-id,teammate-one-email-address|teammate-one-email-address,teammate-two-lol-summoner-id|teammate-two-lol-summoner-id,teammate-two-email-address|teammate-two-email-address,teammate-three-lol-summoner-id|teammate-three-lol-summoner-id,teammate-three-email-address|teammate-three-email-address,teammate-four-lol-summoner-id|teammate-four-lol-summoner-id,teammate-four-email-address|teammate-four-email-address\" headings=\"Team Info|team-name,Team Captain|team-captain,Teammates|teammate-one-lol-summoner-id\"]');
+	(1,'gigazone-gaming-2016-league-of-legends','',5,'2016-05-24 03:58:54','2016-10-13 23:17:49',2,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-11-12 10:00:00'),
+	(2,'gigazone-gaming-2017-league-of-legends','',5,'2017-04-21 17:27:33','2017-04-21 17:27:33',2,1,'2017-04-21 17:27:33','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00');
 
 /*!40000 ALTER TABLE `champ_tournaments` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-# Dump of table champ_usernames
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `champ_usernames`;
-
-CREATE TABLE `champ_usernames` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `avatar_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `player_id` int(11) NOT NULL,
-  `tournament_id` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `usernames_username_unique` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 
 
 # Dump of table failed_jobs
@@ -224,7 +192,7 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext COLLATE utf8_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -252,9 +220,8 @@ CREATE TABLE `form_mail` (
   `greeting` text COLLATE utf8_unicode_ci NOT NULL,
   `confirmation` tinyint(1) NOT NULL,
   `queue` tinyint(1) NOT NULL,
-  `custom_request_body` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -274,7 +241,7 @@ CREATE TABLE `jobs` (
   `created_at` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `jobs_queue_reserved_reserved_at_index` (`queue`,`reserved`,`reserved_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -286,76 +253,63 @@ DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 
 INSERT INTO `migrations` (`migration`, `batch`)
 VALUES
-	('2014_07_02_230147_migration_cartalyst_sentinel',1),
 	('2016_04_06_184419_make_update_recipients_table',1),
 	('2016_04_07_161308_make_cache_table',1),
 	('2016_04_08_152924_make_riot_disclaimer_post',1),
-	('2016_04_16_013749_update_updates_table_with_geo_location',1),
-	('2016_05_04_132956_remove_laravel_user_table',1),
-	('2016_05_04_132957_remove_laravel_password_recovery_table',1),
-	('2016_05_04_161101_change_cache_value_column_type_to_long_text',1),
-	('2016_05_04_192010_add_gigazone_info_shortcode_to_homepage_footer',1),
-	('2016_05_10_152845_add_contact_form_to_contact_page',1),
-	('2016_05_10_161033_make_sure_there_is_a_sign_up_section',1),
-	('2016_05_12_173940_make_team_sign_up_post',1),
-	('2016_05_12_173956_make_individual_sign_up_post',1),
-	('2016_05_12_190128_set_blog_description',1),
-	('2016_05_12_202504_create_tournaments_table',1),
-	('2016_05_12_202505_create_games_table',1),
-	('2016_05_12_202507_create_teams_table',1),
-	('2016_05_12_202509_create_players_table',1),
-	('2016_05_12_202510_create_individual_players_table',1),
-	('2016_05_12_211224_make_championship_foreign_keys',1),
-	('2016_05_12_215616_make_championship_default_game',1),
-	('2016_05_18_170356_MakeLeagueOfLegendsGameEntry',1),
-	('2016_05_18_171246_MakeGigazoneGamingChampionshopLolTournament',1),
-	('2016_05_20_154110_updated_by_on',1),
-	('2016_05_23_172002_MakeGigazoneServicePage',1),
-	('2016_06_16_135109_create_jobs_table',1),
-	('2016_06_16_144536_create_form_mail_models_table',1),
-	('2016_06_16_144537_add_branding_column_to_form_mail_table',1),
-	('2016_06_21_151815_create_failed_jobs_table',1),
-	('2016_08_24_153946_set_posts_per_page_to_six',1),
-	('2016_08_25_131036_turn_on_rest_api_plugins',1),
-	('2016_09_13_184728_polymorphic_table_for_players',1),
-	('2016_09_14_184226_move_team_players_to_polymorphic_table_for_players',1),
-	('2016_09_14_184246_move_individual_players_to_polymorphic_table_for_players',1),
-	('2016_09_14_194147_remove_individual_player_table',1),
-	('2016_09_14_194356_remove_team_id_from_players',1),
-	('2016_09_14_204237_add_maximun_number_of_players_in_team_on_tournament_table',1),
-	('2016_09_14_220639_add_verification_code_to_team_table',1),
-	('2016_09_16_214836_add_user_id_field_to_player',1),
-	('2016_09_19_153343_add_tournament_open_and_close_times',1),
-	('2016_09_19_172033_add_tournament_occurring_date',1),
-	('2016_09_20_161309_switch_sign_up_grammar_on_lol_forms',1),
-	('2016_09_21_214950_clean_player_relations_where_team_doesnt_exist_anymore',1),
-	('2016_09_21_224211_create_game_relationship_for_each_player',1),
-	('2016_10_05_165626_form_mail_add_head_column',1),
-	('2016_10_28_202117_add_greeting_field_to_form_mail_table',1),
-	('2016_10_31_200100_add_confirmation_column_to_form_mail_table',1),
-	('2016_10_31_201854_add_queue_column_to_form_mail_table',1),
-	('2016_12_16_173245_create_scores_table',1),
-	('2016_12_19_144950_AddTitleToTournamentTable',1),
-	('2017_05_31_182341_add_team_name_tournament_id_constraint',1),
-	('2017_08_29_143850_add_sign_up_form_column_to_tournament_table',1),
-	('2017_08_29_143851_add_max_teams_column_to_tournament_table',1),
-	('2017_08_29_143852_add_overflow_column_to_database',1),
-	('2017_08_29_143852_add_sign_up_form_shortcode_column_to_tournament_table',1),
-	('2017_08_29_143858_make_madden_nfl_18_game_if_it_does_not_exist_already',1),
-	('2017_08_29_143859_make_overwatch_game_if_it_does_not_exist_already',1),
-	('2017_08_29_155657_add_2017_overwatch_tournament',1),
-	('2017_08_29_155658_add_2017_madden_tournament',1),
-	('2017_08_29_155659_add_2017_league_of_legends_tournament',2),
-	('2017_08_29_155660_add_2016_league_of_legends_tournament',2),
-	('2017_08_30_191115_CreateUsernameTable',2),
-	('2017_09_05_201855_add_custom_request_body_column_to_form_mail_table',2);
+	('2016_04_16_013749_update_updates_table_with_geo_location',2),
+	('2016_05_04_132956_remove_laravel_user_table',3),
+	('2016_05_04_132957_remove_laravel_password_recovery_table',3),
+	('2016_05_04_161101_change_cache_value_column_type_to_long_text',3),
+	('2016_05_04_192010_add_gigazone_info_shortcode_to_homepage_footer',3),
+	('2016_05_10_152845_add_contact_form_to_contact_page',4),
+	('2016_05_10_161033_make_sure_there_is_a_sign_up_section',4),
+	('2016_05_12_173940_make_team_sign_up_post',4),
+	('2016_05_12_173956_make_individual_sign_up_post',4),
+	('2016_05_12_190128_set_blog_description',4),
+	('2016_05_12_202504_create_tournaments_table',5),
+	('2016_05_12_202505_create_games_table',5),
+	('2016_05_12_202507_create_teams_table',5),
+	('2016_05_12_202509_create_players_table',5),
+	('2016_05_12_202510_create_individual_players_table',5),
+	('2016_05_12_211224_make_championship_foreign_keys',5),
+	('2016_05_12_215616_make_championship_default_game',5),
+	('2016_05_18_170356_MakeLeagueOfLegendsGameEntry',5),
+	('2016_05_18_171246_MakeGigazoneGamingChampionshopLolTournament',5),
+	('2016_05_20_154110_updated_by_on',5),
+	('2016_05_23_172002_MakeGigazoneServicePage',5),
+	('2016_06_16_135109_create_jobs_table',6),
+	('2016_06_16_144536_create_form_mail_models_table',6),
+	('2016_06_16_144537_add_branding_column_to_form_mail_table',6),
+	('2016_06_21_151815_create_failed_jobs_table',6),
+	('2016_08_24_153946_set_posts_per_page_to_six',7),
+	('2016_08_25_131036_turn_on_rest_api_plugins',8),
+	('2014_07_02_230147_migration_cartalyst_sentinel',9),
+	('2016_09_13_184728_polymorphic_table_for_players',9),
+	('2016_09_14_184226_move_team_players_to_polymorphic_table_for_players',9),
+	('2016_09_14_184246_move_individual_players_to_polymorphic_table_for_players',9),
+	('2016_09_14_194147_remove_individual_player_table',9),
+	('2016_09_14_194356_remove_team_id_from_players',9),
+	('2016_09_14_204237_add_maximun_number_of_players_in_team_on_tournament_table',9),
+	('2016_09_14_220639_add_verification_code_to_team_table',9),
+	('2016_09_16_214836_add_user_id_field_to_player',9),
+	('2016_09_19_153343_add_tournament_open_and_close_times',9),
+	('2016_09_19_172033_add_tournament_occurring_date',9),
+	('2016_09_20_161309_switch_sign_up_grammar_on_lol_forms',9),
+	('2016_09_21_214950_clean_player_relations_where_team_doesnt_exist_anymore',9),
+	('2016_09_21_224211_create_game_relationship_for_each_player',9),
+	('2016_10_05_165626_form_mail_add_head_column',9),
+	('2016_10_28_202117_add_greeting_field_to_form_mail_table',10),
+	('2016_10_31_200100_add_confirmation_column_to_form_mail_table',10),
+	('2016_10_31_201854_add_queue_column_to_form_mail_table',10),
+	('2016_12_16_173245_create_scores_table',10),
+	('2016_12_19_144950_AddTitleToTournamentTable',10);
 
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -410,7 +364,7 @@ CREATE TABLE `sentinel_reminders` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -1691,7 +1645,7 @@ VALUES
 	(388,1,'2016-04-04 15:43:10','2016-04-04 15:43:10','<p class=\"p1\"><span class=\"s1\">Thank you to all who participated in or attended our first ever Gigazone Gaming Championship! We certainly had a blast putting it all together for you, and hope that you all had a great time. We\'ve got some more events in the works for the future, so make sure you follow us at (<a href=\"https://twitter.com/GigazoneGaming\" target=\"_blank\">twitter</a> and <a href=\"https://www.facebook.com/gigazonegaming/\" target=\"_blank\">facebook</a>, etc.) or sign up for updates by clicking the button to the right. Thank you again to all that made this possible, and you\'ll hear more from us soon!</span></p>\r\n&nbsp;\r\n\r\n[splash]\r\n<iframe class=\"splash-video\" src=\"https://www.youtube.com/embed/iX5KS_cTy9g\" width=\"560\" height=\"315\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>\r\n[/splash]','About','','publish','closed','closed','','about','','','2017-01-16 21:56:44','2017-01-16 21:56:44','',0,'https://gigazonegaming.localhost/?page_id=388',0,'page','',0),
 	(389,1,'2016-04-04 15:43:03','2016-04-04 15:43:03','','About','','inherit','closed','closed','','388-revision-v1','','','2016-04-04 15:43:03','2016-04-04 15:43:03','',388,'https://gigazonegaming.localhost/%postpath%/388-revision-v1/',0,'revision','',0),
 	(392,1,'2016-04-04 15:44:26','2016-04-04 15:44:26',' ','','','publish','closed','closed','','392','','','2017-04-21 19:27:00','2017-04-21 19:27:00','',0,'https://gigazonegaming.localhost/?p=392',1,'nav_menu_item','',0),
-	(396,1,'2016-04-04 16:39:26','2016-04-04 16:39:26','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nSummoners! Our second League of Legends Tournament is nearly upon us! September 29-30th at the Sanford Center in Bemidji, MN, we\'ll be opening the doors to numerous pick up console tournaments, another Magic: The Gathering draft tournament, and of course, the main event, the 2017 League of Legends finals! Follow us on <a href=\"https://www.facebook.com/gigazonegaming/\" target=\"_blank\" rel=\"noopener noreferrer\">Facebook</a> or <a href=\"https://visitor.r20.constantcontact.com/manage/optin?v=001AnFeLO9BKH3PGGzFWHBQpuPkpFpoTA3OF_ibk2Gl7wEXwFikOlXAX2bAgNj5qPt0068n_5LQal2_vnvCNwX3nY-MIdnLOzH91GFy-HVJMPLXopWbYdouFG64cHcyLenwA3Xna6LIj91Mgd6iSokemgf3H0uiy3A3\" target=\"_blank\" rel=\"noopener noreferrer\">sign up for email updates</a> to stay on top of the specifics of the events as they materialize from the void as we trek towards another epic day of gaming in Northern Minnesota!\r\n[/splash]\n\r[gigazone-info]','Home','','publish','closed','closed','','home','','','2017-04-21 21:01:07','2017-04-21 21:01:07','',0,'https://gigazonegaming.localhost/?page_id=396',0,'page','',0),
+	(396,1,'2016-04-04 16:39:26','2016-04-04 16:39:26','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nSummoners! Our second League of Legends Tournament is nearly upon us! September 29-30th at the Sanford Center in Bemidji, MN, we\'ll be opening the doors to numerous pick up console tournaments, another Magic: The Gathering draft tournament, and of course, the main event, the 2017 League of Legends finals! Follow us on <a href=\"https://www.facebook.com/gigazonegaming/\" target=\"_blank\" rel=\"noopener noreferrer\">Facebook</a> or <a href=\"https://visitor.r20.constantcontact.com/manage/optin?v=001AnFeLO9BKH3PGGzFWHBQpuPkpFpoTA3OF_ibk2Gl7wEXwFikOlXAX2bAgNj5qPt0068n_5LQal2_vnvCNwX3nY-MIdnLOzH91GFy-HVJMPLXopWbYdouFG64cHcyLenwA3Xna6LIj91Mgd6iSokemgf3H0uiy3A3\" target=\"_blank\" rel=\"noopener noreferrer\">sign up for email updates</a> to stay on top of the specifics of the events as they materialize from the void as we trek towards another epic day of gaming in Northern Minnesota!\r\n[/splash]','Home','','publish','closed','closed','','home','','','2017-04-21 21:01:07','2017-04-21 21:01:07','',0,'https://gigazonegaming.localhost/?page_id=396',0,'page','',0),
 	(397,1,'2016-04-04 16:39:26','2016-04-04 16:39:26','','Home','','inherit','closed','closed','','396-revision-v1','','','2016-04-04 16:39:26','2016-04-04 16:39:26','',396,'https://gigazonegaming.localhost/%postpath%/396-revision-v1/',0,'revision','',0),
 	(401,1,'2016-04-04 16:43:56','2016-04-04 16:43:56','[contact-us new_line=\",\" delimiter=\"|\" questions=\"Please list any comments or suggestions.|textarea,Your Name|text,Your Email Address|email,Sign up for updates|boolean\" inputs=\"your-name|name,your-email-address|email,sign-up-for-updates|update-recipient,please-list-any-comments-or-suggestions|comment\"]Have comments or questions, please let us know![/contact-us]','Contact Us','','publish','closed','closed','','contact-us','','','2016-08-10 13:20:06','2016-08-10 13:20:06','',388,'https://gigazonegaming.localhost/auto-draft/',0,'post','',0),
 	(402,1,'2016-04-04 16:43:56','2016-04-04 16:43:56','Contact Us','Contact Us','','inherit','closed','closed','','401-revision-v1','','','2016-04-04 16:43:56','2016-04-04 16:43:56','',401,'https://gigazonegaming.localhost/%postpath%/401-revision-v1/',0,'revision','',0),
@@ -2269,10 +2223,7 @@ VALUES
 	(1069,1,'2017-04-21 19:49:34','2017-04-21 19:49:34','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nThe main event will be a League of Legends tourney. More details will be coming soon.\r\n<h2 style=\"text-align: center;\">We\'re Constantly Playing.</h2>\r\n[recent-post-preview category=\"17,72\" numberposts=\"6\" wrapper_class=\"front-page-related\" ]\r\n[/splash]','Home','','inherit','closed','closed','','396-revision-v1','','','2017-04-21 19:49:34','2017-04-21 19:49:34','',396,'https://gigazonegaming.localhost/%postpath%/396-revision-v1/',0,'revision','',0),
 	(1070,3,'2017-04-21 20:37:08','2017-04-21 20:37:08','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nSummoners! Our second League of Legends Tournament is nearly upon us! September 29-30th at the Sanford Center in Bemidji, MN, we\'ll be opening the doors to numerous pick up console tournaments, another Magic: The Gathering draft tournament, and of course, the main event, the 2017 League of Legends finals! Follow us on Facebook or sign up for email updates to stay on top of the specifics of the events as they materialize from the void as we trek towards another epic day of gaming in Northern Minnesota!\r\n<h2 style=\"text-align: center;\">We\'re Constantly Playing.</h2>\r\n[recent-post-preview category=\"17,72\" numberposts=\"6\" wrapper_class=\"front-page-related\" ]\r\n[/splash]','Home','','inherit','closed','closed','','396-revision-v1','','','2017-04-21 20:37:08','2017-04-21 20:37:08','',396,'https://gigazonegaming.localhost/%postpath%/396-revision-v1/',0,'revision','',0),
 	(1071,1,'2017-04-21 21:00:38','2017-04-21 21:00:38','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nSummoners! Our second League of Legends Tournament is nearly upon us! September 29-30th at the Sanford Center in Bemidji, MN, we\'ll be opening the doors to numerous pick up console tournaments, another Magic: The Gathering draft tournament, and of course, the main event, the 2017 League of Legends finals! Follow us on <a href=\"https://www.facebook.com/gigazonegaming/\" target=\"_blank\" rel=\"noopener noreferrer\">Facebook</a> or <a href=\"https://visitor.r20.constantcontact.com/manage/optin?v=001AnFeLO9BKH3PGGzFWHBQpuPkpFpoTA3OF_ibk2Gl7wEXwFikOlXAX2bAgNj5qPt0068n_5LQal2_vnvCNwX3nY-MIdnLOzH91GFy-HVJMPLXopWbYdouFG64cHcyLenwA3Xna6LIj91Mgd6iSokemgf3H0uiy3A3\" target=\"_blank\" rel=\"noopener noreferrer\">sign up for email updates</a> to stay on top of the specifics of the events as they materialize from the void as we trek towards another epic day of gaming in Northern Minnesota!\r\n<h2 style=\"text-align: center;\"></h2>','Home','','inherit','closed','closed','','396-revision-v1','','','2017-04-21 21:00:38','2017-04-21 21:00:38','',396,'https://gigazonegaming.localhost/%postpath%/396-revision-v1/',0,'revision','',0),
-	(1072,1,'2017-04-21 21:01:07','2017-04-21 21:01:07','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nSummoners! Our second League of Legends Tournament is nearly upon us! September 29-30th at the Sanford Center in Bemidji, MN, we\'ll be opening the doors to numerous pick up console tournaments, another Magic: The Gathering draft tournament, and of course, the main event, the 2017 League of Legends finals! Follow us on <a href=\"https://www.facebook.com/gigazonegaming/\" target=\"_blank\" rel=\"noopener noreferrer\">Facebook</a> or <a href=\"https://visitor.r20.constantcontact.com/manage/optin?v=001AnFeLO9BKH3PGGzFWHBQpuPkpFpoTA3OF_ibk2Gl7wEXwFikOlXAX2bAgNj5qPt0068n_5LQal2_vnvCNwX3nY-MIdnLOzH91GFy-HVJMPLXopWbYdouFG64cHcyLenwA3Xna6LIj91Mgd6iSokemgf3H0uiy3A3\" target=\"_blank\" rel=\"noopener noreferrer\">sign up for email updates</a> to stay on top of the specifics of the events as they materialize from the void as we trek towards another epic day of gaming in Northern Minnesota!\r\n[/splash]','Home','','inherit','closed','closed','','396-revision-v1','','','2017-04-21 21:01:07','2017-04-21 21:01:07','',396,'https://gigazonegaming.localhost/%postpath%/396-revision-v1/',0,'revision','',0),
-	(1073,1,'2017-09-27 07:58:48','2017-09-27 07:58:48','If you&#39;re looking to participate in the [bloginfo key=\"description\"] you can sign up as either <a href=\"http://gigazonegaming.local/sign-up/lol-team-sign-up/\">a team</a> or <a href=\"http://gigazonegaming.local/sign-up/lol-individual-sign-up/\">an individual player</a>.','Sign Up','','publish','closed','closed','','sign-up','','','2017-09-27 07:58:48','2017-09-27 07:58:48','',0,'http://gigazonegaming.local/?page_id=1073',0,'page','',0),
-	(1074,1,'2017-09-27 07:58:48','2017-09-27 07:58:48','[lol-team-sign-up new_line=\",\" delimiter=\"|\" questions=\"tournament|hidden|gigazone-gaming-2016-league-of-legends,Team Name,update-recipient|hidden|yes,participate|hidden|yes,Team Captain,Team Captain LOL Summoner Name,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One LOL Summoner Name,Teammate One Email Address|email,Teammate Two LOL Summoner Name,Teammate Two Email Address|email,Teammate Three LOL Summoner Name,Teammate Three Email Address|email,Teammate Four LOL Summoner Name,Teammate Four Email Address|email\" inputs=\"team-captain|name,team-captain-email-address|email\" headings=\"Team Info|team-name,Team Captain|team-captain,Team Members|teammate-one-lol-summoner-name\"]Please fill out the form below to let us know that your are interested in participating in the event[/lol-team-sign-up]','League of Legends Team Signup','','publish','open','open','','lol-team-signup','','','2017-09-27 07:58:50','2017-09-27 07:58:50','',1073,'http://gigazonegaming.local/auto-draft/',0,'post','',0),
-	(1075,1,'2017-09-27 07:58:48','2017-09-27 07:58:48','[lol-individual-sign-up new_line=\",\" delimiter=\"|\" questions=\"game|hidden|league-of-legends,update-recipient|hidden|yes,participate|hidden|yes,Your Name,Your LOL Summoner Name,Your Email Address|email,Your Phone|tel\" inputs=\"your-name|name,your-email-address|email\"]Please fill out the form below to let us know that your are interested in participating in the event but don&#39;t have a team to compete with . We will try and find you a team[/lol-individual-sign-up]','League of Legends Individual Signup','','publish','open','open','','lol-individual-signup','','','2017-09-27 07:58:50','2017-09-27 07:58:50','',1073,'http://gigazonegaming.local/auto-draft/',0,'post','',0);
+	(1072,1,'2017-04-21 21:01:07','2017-04-21 21:01:07','[splash]\r\n<h1 class=\"text-normal\" style=\"text-align: center;\">Are you ready for the 2017 GigaZone Gaming Championship?</h1>\r\nThe next GigaZone Gaming Championship will be [get-option key=\"event_date\"] at the [get-option key=\"event_location\"]. <a href=\"https://visitor.r20.constantcontact.com/d.jsp?llr=4c7v7txab&amp;p=oi&amp;m=1124875300959&amp;sit=gifoqeukb&amp;f=52d90f08-f6b7-4f7d-a654-d80e49c6b409\" target=\"_blank\" rel=\"noopener noreferrer\">Sign up for updates</a> to get notified of news on all the new GZG developments!\r\n<p style=\"text-align: center;\"><a class=\"btn btn-xl btn-gz\" href=\"https://gigazonegaming.localhost/tournament/lol-team-signup/\">Click here to sign up your League of Legends Team!</a></p>\r\n\r\n<h2 style=\"text-align: center;\">About the Next Tourney</h2>\r\nSummoners! Our second League of Legends Tournament is nearly upon us! September 29-30th at the Sanford Center in Bemidji, MN, we\'ll be opening the doors to numerous pick up console tournaments, another Magic: The Gathering draft tournament, and of course, the main event, the 2017 League of Legends finals! Follow us on <a href=\"https://www.facebook.com/gigazonegaming/\" target=\"_blank\" rel=\"noopener noreferrer\">Facebook</a> or <a href=\"https://visitor.r20.constantcontact.com/manage/optin?v=001AnFeLO9BKH3PGGzFWHBQpuPkpFpoTA3OF_ibk2Gl7wEXwFikOlXAX2bAgNj5qPt0068n_5LQal2_vnvCNwX3nY-MIdnLOzH91GFy-HVJMPLXopWbYdouFG64cHcyLenwA3Xna6LIj91Mgd6iSokemgf3H0uiy3A3\" target=\"_blank\" rel=\"noopener noreferrer\">sign up for email updates</a> to stay on top of the specifics of the events as they materialize from the void as we trek towards another epic day of gaming in Northern Minnesota!\r\n[/splash]','Home','','inherit','closed','closed','','396-revision-v1','','','2017-04-21 21:01:07','2017-04-21 21:01:07','',396,'https://gigazonegaming.localhost/%postpath%/396-revision-v1/',0,'revision','',0);
 
 /*!40000 ALTER TABLE `wp_posts` ENABLE KEYS */;
 UNLOCK TABLES;
