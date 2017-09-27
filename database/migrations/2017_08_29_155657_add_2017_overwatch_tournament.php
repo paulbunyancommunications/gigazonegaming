@@ -28,9 +28,8 @@ class Add2017OverwatchTournament extends Migration
 
         $m = new Mustache_Engine();
         $slug = new \Cocur\Slugify\Slugify();
-        $exists = Tournament::where('name', $this->name)->first();
-        if (!$exists) {
-            $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        if (!Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
             $tournament = new Tournament();
             $tournament->name = $m->render($this->name, $getGame);
             $tournament->title = $m->render($this->title, $getGame);
@@ -40,6 +39,8 @@ class Add2017OverwatchTournament extends Migration
             $tournament->sign_up_open = $this->signUpOpen;
             $tournament->sign_up_close = $this->signUpClose;
             $tournament->occurring = $this->occurring;
+            $tournament->occurring = $this->occurring;
+
             // create store for form fields
             $form = [
                 'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
@@ -108,12 +109,13 @@ class Add2017OverwatchTournament extends Migration
                 'sign-up-close' => $tournament->sign_up_close,
             ]);
 
-            // finally save this tournament to the db
-            $tournament->save();
+                // finally save this tournament to the db
+            $tournament->update();
 
-            // replace the id from above in the form array
+                // replace the id from above in the form array
             $tournament->sign_up_form = str_replace('##id##', $tournament->id, $tournament->sign_up_form);
 
+            $tournament->save();
         }
 
     }
@@ -125,8 +127,11 @@ class Add2017OverwatchTournament extends Migration
      */
     public function down()
     {
-        if (Tournament::where('name', $this->name)->exists()) {
-            Tournament::where('name', $this->name)->first()->delete();
+        $m = new Mustache_Engine();
+        $slug = new \Cocur\Slugify\Slugify();
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        if (Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
+            Tournament::where('name', $m->render($this->name, $getGame))->first()->delete();
         }
     }
 }

@@ -38,6 +38,7 @@ class MakeMaddenNfl18GameIfItDoesNotExistAlready extends Migration
     public function down()
     {
         $exists = $this->exists();
+
         if($exists) {
             $exists->delete();
         }
