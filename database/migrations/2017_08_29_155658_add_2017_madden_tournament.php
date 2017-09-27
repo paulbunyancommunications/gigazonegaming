@@ -91,9 +91,8 @@ class Add2017MaddenTournament extends Migration
      */
     public function down()
     {
-        $exists = Tournament::where('name', $this->name)->first();
-        if($exists) {
-            $exists->delete();
+        if (Tournament::where('name', $this->name)->exists()) {
+            Tournament::where('name', $this->name)->first()->delete();
         }
     }
 }
