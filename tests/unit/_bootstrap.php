@@ -108,7 +108,7 @@ $team1top3ChampionRanks = [
     ],
     4 => false
 ];
-$team1top3ChampionPionts = [
+$team1top3ChampionPoints = [
     0 => [
         0 => 51852,
         1 => 44805,
@@ -138,7 +138,7 @@ Fixtures::add('team1flexWinLossArray', $team1flexWinLossArray);
 Fixtures::add('team1top3ChampionIcons', $team1top3ChampionIcons);
 Fixtures::add('team1top3ChampionImages', $team1top3ChampionImages);
 Fixtures::add('team1top3ChampionRanks', $team1top3ChampionRanks);
-Fixtures::add('team1top3ChampionPionts', $team1top3ChampionPionts);
+Fixtures::add('team1top3ChampionPoints', $team1top3ChampionPoints);
 
 #-----Team 2#-----#
 
@@ -206,7 +206,7 @@ $team2top3ChampionRanks = [
     3 => false,
     4 => false
 ];
-$team2top3ChampionPionts = [
+$team2top3ChampionPoints = [
     0 => false,
     1 => false,
     2 => false,
@@ -223,6 +223,6 @@ Fixtures::add('team2flexWinLossArray', $team2flexWinLossArray);
 Fixtures::add('team2top3ChampionIcons', $team2top3ChampionIcons);
 Fixtures::add('team2top3ChampionImages', $team2top3ChampionImages);
 Fixtures::add('team2top3ChampionRanks', $team2top3ChampionRanks);
-Fixtures::add('team2top3ChampionPionts', $team2top3ChampionPionts);
+Fixtures::add('team2top3ChampionPoints', $team2top3ChampionPoints);
 
 ########################################################################################

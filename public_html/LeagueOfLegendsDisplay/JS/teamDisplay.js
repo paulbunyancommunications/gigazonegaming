@@ -270,3 +270,8 @@ function switchPlaces(i,sign){
     }
     ShowInfo(i);
 }
+
+//sets the interval of time between slides on carousel
+$('.carousel').carousel({
+    interval: 5000
+})
