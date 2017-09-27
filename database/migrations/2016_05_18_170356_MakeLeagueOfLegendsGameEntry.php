@@ -33,9 +33,58 @@ class MakeLeagueOfLegendsGameEntry extends Migration
      */
     public function down()
     {
-        $game = Game::where('name', $this->name)->first();
+        $game = \App\Models\Championship\Game::where('name', $this->name)->first();
+        $hasTable = false;
+        if(Schema::connection('mysql_champ')->hasTable('player_relations')) {
+            $hasTable = true;
+        }
+//        dd($game);
         if ($game) {
-            Game::where('id', $game->id)->delete();
+            $teams = $game->teams();
+            foreach ($teams as $team){
+                if($hasTable) {
+                    if (\App\Models\Championship\Relation\PlayerRelation::where([
+                        ["relation_id", "=", $team->id],
+                        ["relation_type", "=", \App\Models\Championship\Team::class],
+                    ])->exists()
+                    ) {
+                        \App\Models\Championship\Relation\PlayerRelation::where([
+                            ["relation_id", "=", $team->id],
+                            ["relation_type", "=", \App\Models\Championship\Team::class],
+                        ])->delete();
+                    }
+                }
+                $team->delete();
+            }
+            $tournaments = $game->tournaments();
+            foreach ($tournaments as $tournament){
+                if($hasTable) {
+                    if (\App\Models\Championship\Relation\PlayerRelation::where([
+                        ["relation_id", "=", $tournament->id],
+                        ["relation_type", "=", \App\Models\Championship\Tournament::class],
+                    ])->exists()
+                    ) {
+                        \App\Models\Championship\Relation\PlayerRelation::where([
+                            ["relation_id", "=", $tournament->id],
+                            ["relation_type", "=", \App\Models\Championship\Tournament::class],
+                        ])->delete();
+                    }
+                }
+                $tournament->delete();
+            }
+            if($hasTable) {
+                if (\App\Models\Championship\Relation\PlayerRelation::where([
+                    ["relation_id", "=", $game->id],
+                    ["relation_type", "=", \App\Models\Championship\Game::class],
+                ])->exists()
+                ) {
+                    \App\Models\Championship\Relation\PlayerRelation::where([
+                        ["relation_id", "=", $game->id],
+                        ["relation_type", "=", \App\Models\Championship\Game::class],
+                    ])->delete();
+                }
+            }
+            $game->delete();
         }
     }
 }

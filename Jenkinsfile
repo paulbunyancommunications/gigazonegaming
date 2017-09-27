@@ -102,7 +102,6 @@ def failJob(String stage, String message = "", timestamp = Globals.DATE_JOB_STAR
 }
 
 node {
-
     Globals.DATE_JOB_STARTED = new Date()
     Globals.WORKSPACE = env.WORKSPACE
     Globals.SCM_OWNER = SCM_OWNER
@@ -113,11 +112,9 @@ node {
     Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"] as String[]
 
     stage('Setup'){
-
         /**
         * Clean up the workspace to start with
         */
-
         Globals.STAGE='Workspace: Clean up for build'
         startMessage(Globals.STAGE)
         try {
@@ -130,7 +127,6 @@ node {
         /**
         * Get the latest commit and retrive the username, email, and commit message for the COMMIT_* variables
         */
-
         Globals.STAGE='Workspace: Setup Environment'
         startMessage(Globals.STAGE)
         withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
@@ -147,11 +143,9 @@ node {
         Globals.COMMIT_MESSAGE       = COMMIT_MESSAGE
         successMessage(Globals.STAGE, "last commit by '${Globals.COMMIT_AUTHOR_NAME}(${Globals.COMMIT_AUTHOR_EMAIL})' with message '${Globals.COMMIT_MESSAGE}'")
 
-
         /**
         * Pull down the latest version fo the repo from the given branch in SCM_BRANCH
         */
-
         Globals.STAGE='VCS: Git Pull'
         startMessage(Globals.STAGE, " from ${Globals.SCM_URL} ")
         try {
@@ -159,9 +153,7 @@ node {
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
-
         Globals.STAGE='Workspace: Setup Environment'
         startMessage(Globals.STAGE)
         withCredentials([string(credentialsId: "${SCM_PASS_TOKEN}", variable: 'SCM_PASS')]) {
@@ -169,7 +161,6 @@ node {
             sh "git clone https://paulbunyannet:${SCM_PASS}@github.com/paulbunyannet/groovy-scripts.git groovy"
         }
         successMessage(Globals.STAGE)
-
 
         /**
         * Get and check the locally stored env file and see if the keys all exist
@@ -187,11 +178,9 @@ node {
             sh "cd ${Globals.WORKSPACE}/tests/; chmod 777 -R _output/"
             sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs"
             sh "rm -f ${Globals.WORKSPACE}/cs.sh"
-
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
 
         /**
@@ -220,14 +209,11 @@ node {
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
-
 
         /**
         * Set the folder premissions for folders that need to be written to
         */
-
         Globals.STAGE='Environment: fix folder permissions'
         startMessage(Globals.STAGE)
         try {
@@ -239,7 +225,6 @@ node {
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
 
         Globals.STAGE='Git: Remote add origin'
@@ -267,9 +252,6 @@ node {
         /**
         * Get any docker image updates that may have been pushed using the current docker config
         */
-
-        
-
         Globals.STAGE='Docker: Get any image updates'
         startMessage(Globals.STAGE)
         try {
@@ -280,14 +262,10 @@ node {
             errorMessage(Globals.STAGE, error.getMessage())
         }
         successMessage(Globals.STAGE)
-        
 
         /**
         * Start up the docker containers
         */
-
-        
-
         Globals.STAGE='Docker: Start up containers'
         startMessage(Globals.STAGE)
         try {
@@ -297,15 +275,11 @@ node {
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
-        
 
         /**
         * Install Monolog
         */
-        
-
         Globals.STAGE='Build: Install monolog/monolog globally'
         startMessage(Globals.STAGE)
         try {
@@ -313,16 +287,11 @@ node {
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
-        
 
         /**
         * Install backend assets
         */
-        
-
-
         Globals.STAGE='Build: Install backend assets'
         startMessage(Globals.STAGE)
         try {
@@ -330,21 +299,14 @@ node {
             sh "chmod 444 ${env.WORKSPACE}/composer.json"
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer install"
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer dump-autoload --optimize"
-
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
-        
-
 
         /**
         * Install front end assets
         */
-        
-
-
         Globals.STAGE='Environment: Install frontend assets'
         startMessage(Globals.STAGE)
         try {
@@ -353,17 +315,12 @@ node {
         } catch (error){
             errorMessage(Globals.STAGE, error.getMessage())
         }
-
         successMessage(Globals.STAGE)
-        
-
     }
 
     /**
     * Run the test runner and see if all tests pass
     */
-        
-
     stage('Dependencies') {
         Globals.STAGE='Tests: Run Dependencies before starting testing'
         startMessage(Globals.STAGE)
@@ -382,40 +339,21 @@ node {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
             }
     }
-        
-
-
-
     /**
     * Run the test runner and see if all tests pass
     */
-        
-
-
     stage('Tests') {
         Globals.STAGE='Tests: Run tests'
         startMessage(Globals.STAGE)
         try {
-            echo "App environment: ${APP_ENV}"
-            switch(APP_ENV.toString()) {
-                case "production":
-                    sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run -f --ext DotReporter\"";
-                    break
-                default:
-                    try {
-                        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --verbose --coverage --coverage-xml --steps --no-interaction\"";
-                    } catch (error) {
-                        errorMessage(Globals.STAGE, errorb.getMessage())
-                    }
-                    break
-            }
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --coverage --coverage-xml --no-interaction\"";
         } catch (error) {
-        errorMessage(Globals.STAGE, error.getMessage())
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --verbose --steps --debug --no-interaction -g failed\"";
+            errorMessage(Globals.STAGE, error.getMessage())
         }
 
         successMessage(Globals.STAGE)
     }
-        
 
 
     /**
@@ -436,14 +374,9 @@ node {
 
         successMessage(Globals.STAGE)
 
-
         /**
         * Rebuild composer files for shipment off to production
         */
-        
-
-
-
         Globals.STAGE='Build: Create production composer autoload'
         startMessage(Globals.STAGE)
         try {
@@ -454,86 +387,6 @@ node {
         }
 
         successMessage(Globals.STAGE)
-
-
-        
-
-
-        /**
-        * Archive files for deployment
-        */
-
-        Globals.STAGE='Build: Archive files for deployment'
-
-        startMessage(Globals.STAGE)
-        try {
-            Globals.BUILD_FOLDER = "build-${BUILD_NUMBER}"
-            String check = "NONE"
-            if ("${SSH_TOKEN}" != "NONE"){
-
-                // Zip up the current directory
-                zip dir: '', glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
-
-                // do any cleanups to build directory here
-                // files
-                sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/.env"
-                sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/c3_error.log || true"
-                sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/Dockerfile"
-                sudo sh -c "find ${env.WORKSPACE}/${Globals.BUILD_FOLDER} -name \"dock-*\" -type f -delete"
-                //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"
-                // folders
-                sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/groovy"
-                sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/tests"
-                sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/temp"
-                sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/node_modules"
-                sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
-
-                // unzip folder into build folder
-                unzip dir: "${Globals.BUILD_FOLDER}", glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
-                // get rud of the archive
-                sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}.zip"
-            }
-
-        } catch (error) {
-            errorMessage(Globals.STAGE, error.getMessage())
-        }
-
-        echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
-
-
-        successMessage(Globals.STAGE)
-
-        /**
-        * Deploy archived files to the server over ssh
-        */
-        /**
-        * stage('Deploy') {
-        *    Globals.STAGE='Deployment: Deploy files to remote server'
-        *    startMessage(Globals.STAGE)
-        *    try {
-
-        *      sshagent(["${SSH_TOKEN}"]) {
-        *        // check if .env file exists on the remote host
-        *        // https://stackoverflow.com/a/18290318/405758
-        *        sh returnStatus: true, script: "ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_SERVER} stat ${SSH_PATH}/.env"
-        *        sh "scp -P ${SSH_PORT} ${SSH_USER}@${SSH_SERVER}:${SSH_PATH}/.env ${env.WORKSPACE}/temp"
-        *        // check if the remote .env and the local have all the environment keys
-        *        sh "cd ${env.WORKSPACE}; composer env-check -- --actual=temp/.env --expected=.env"
-        *        //sh "ssh -p ${SSH_PORT} -vvv -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER} uname -a"
-        *        /**sh "ssh user@server rm -rf /var/www/temp_deploy/dist/"
-        *        sh "ssh user@server mkdir -p /var/www/temp_deploy"
-        *        sh "scp -r dist user@server:/var/www/temp_deploy/dist/"
-        *        sh "ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/"
-        *        */
-        /**      }
-
-
-        *    } catch (error) {
-        *      errorMessage(Globals.STAGE, error.getMessage())
-        *    }
-        *    successMessage(Globals.STAGE)
-        *  }
-        */
 
         stage('Notification') {
             /**
@@ -564,8 +417,6 @@ node {
             }
             successMessage(Globals.STAGE)
         }
-
-
 
         stage('Push to master') {
 
@@ -598,6 +449,63 @@ node {
             }
 
 
+        }
+        /**
+        * Archive files for deployment
+        */
+        stage('Deploy') {
+
+            Globals.STAGE='Build: read ignore file'
+
+            startMessage(Globals.STAGE)
+            try {
+                Globals.BUILD_FOLDER = "build-${BUILD_NUMBER}"
+                sh "cd ${env.WORKSPACE}"
+                def words = []
+                new File( '.gitignore' ).eachLine { line ->
+                    words << line
+                }
+                String check = "NONE"
+                /**
+
+
+            Globals.STAGE='Build: Archive files for deployment'
+
+            startMessage(Globals.STAGE)
+                if ("${SSH_TOKEN}" != "NONE"){
+
+                    // Zip up the current directory
+                    zip dir: '', glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
+
+                    // do any cleanups to build directory here
+                    // files
+                    sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/.env"
+                    sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/c3_error.log || true"
+                    sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/Dockerfile"
+                    sudo sh -c "find ${env.WORKSPACE}/${Globals.BUILD_FOLDER} -name \"dock-*\" -type f -delete"
+                    //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"
+                    // folders
+                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/groovy"
+                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/tests"
+                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/temp"
+                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/node_modules"
+                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
+
+                    // unzip folder into build folder
+                    unzip dir: "${Globals.BUILD_FOLDER}", glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
+                    // get rud of the archive
+                    sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}.zip"
+                }
+                **/
+
+            } catch (error) {
+                errorMessage(Globals.STAGE, error.getMessage())
+            }
+
+            echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
+
+
+            successMessage(Globals.STAGE)
         }
 
         stage('Tear down') {
