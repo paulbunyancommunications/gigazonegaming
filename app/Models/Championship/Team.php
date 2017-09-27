@@ -32,9 +32,23 @@ class Team extends Model
 
         // when deleted
         static::deleting(function ($team) {
-            PlayerRelation::where('relation_type', '=', self::class)
-                ->where('relation_id', '=', $team->id)
-                ->delete();
+            $hasTable = false;
+            if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
+                $hasTable = true;
+            }
+            if($hasTable) {
+                if (PlayerRelation::where([
+                    ["relation_id", "=", $team->id],
+                    ["relation_type", "=", Team::class],
+                ])->exists()
+                ) {
+                    PlayerRelation::where([
+                        ["relation_id", "=", $team->id],
+                        ["relation_type", "=", Team::class],
+                    ])->delete();
+                }
+            }
+            $team->delete();
         });
     }
 
