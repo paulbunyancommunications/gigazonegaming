@@ -30,18 +30,20 @@ class Add2017OverwatchTournament extends Migration
         $slug = new \Cocur\Slugify\Slugify();
         if (!Tournament::where('name', $this->name)->exists()) {
             $tournament = new Tournament();
+            $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+            $tournament->name = $m->render($this->name, $getGame);
+            $tournament->title = $m->render($this->title, $getGame);
+            $tournament->max_players = $this->maxPlayers;
+            $tournament->max_teams = $this->maxTeams;
+            $tournament->game_id = $getGame->id;
+            $tournament->sign_up_open = $this->signUpOpen;
+            $tournament->sign_up_close = $this->signUpClose;
+            $tournament->occurring = $this->occurring;
+            $tournament->occurring = $this->occurring;
+
         }else{
             $tournament = Tournament::where('name', $this->name)->first();
         }
-        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
-        $tournament->name = $m->render($this->name, $getGame);
-        $tournament->title = $m->render($this->title, $getGame);
-        $tournament->max_players = $this->maxPlayers;
-        $tournament->max_teams = $this->maxTeams;
-        $tournament->game_id = $getGame->id;
-        $tournament->sign_up_open = $this->signUpOpen;
-        $tournament->sign_up_close = $this->signUpClose;
-        $tournament->occurring = $this->occurring;
         // create store for form fields
         $form = [
             'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
