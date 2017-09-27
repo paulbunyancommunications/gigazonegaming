@@ -125,7 +125,7 @@ class Add2017OverwatchTournament extends Migration
      */
     public function down()
     {
-        $exists = Tournament::where('name', $this->name)->first();
+        $exists = Tournament::where('name', '=', $this->name)->first();
         if ($exists) {
             $exists->delete();
         }

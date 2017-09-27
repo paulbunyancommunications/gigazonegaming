@@ -2,6 +2,7 @@
 
 namespace App\Models\Championship;
 
+use App\Models\Championship\Relation\PlayerRelation;
 use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Championship\Relation\PlayerRelationable;
@@ -38,6 +39,58 @@ class Game extends Model
 
         // cause a delete of a game to cascade to children so they are also deleted
         static::deleting(function ($game) {
+            $hasTable = false;
+            if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
+                $hasTable = true;
+            }
+//        dd($game);
+            if ($game) {
+                $teams = $game->teams();
+                foreach ($teams as $team){
+                    if($hasTable) {
+                        if (PlayerRelation::where([
+                            ["relation_id", "=", $team->id],
+                            ["relation_type", "=", Team::class],
+                        ])->exists()
+                        ) {
+                            PlayerRelation::where([
+                                ["relation_id", "=", $team->id],
+                                ["relation_type", "=", Team::class],
+                            ])->delete();
+                        }
+                    }
+                    $team->delete();
+                }
+                $tournaments = $game->tournaments();
+                foreach ($tournaments as $tournament){
+                    if($hasTable) {
+                        if (PlayerRelation::where([
+                            ["relation_id", "=", $tournament->id],
+                            ["relation_type", "=", Tournament::class],
+                        ])->exists()
+                        ) {
+                            PlayerRelation::where([
+                                ["relation_id", "=", $tournament->id],
+                                ["relation_type", "=", Tournament::class],
+                            ])->delete();
+                        }
+                    }
+                    $tournament->delete();
+                }
+                if($hasTable) {
+                    if (PlayerRelation::where([
+                        ["relation_id", "=", $game->id],
+                        ["relation_type", "=", Game::class],
+                    ])->exists()
+                    ) {
+                        PlayerRelation::where([
+                            ["relation_id", "=", $game->id],
+                            ["relation_type", "=", Game::class],
+                        ])->delete();
+                    }
+                }
+                $game->delete();
+            }
             $game->tournaments()->delete();
 
         });
