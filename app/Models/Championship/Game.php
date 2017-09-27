@@ -45,36 +45,8 @@ class Game extends Model
             }
 //        dd($game);
             if ($game) {
-                $teams = $game->teams();
-                foreach ($teams as $team){
-                    if($hasTable) {
-                        if (PlayerRelation::where([
-                            ["relation_id", "=", $team->id],
-                            ["relation_type", "=", Team::class],
-                        ])->exists()
-                        ) {
-                            PlayerRelation::where([
-                                ["relation_id", "=", $team->id],
-                                ["relation_type", "=", Team::class],
-                            ])->delete();
-                        }
-                    }
-                    $team->delete();
-                }
                 $tournaments = $game->tournaments();
                 foreach ($tournaments as $tournament){
-                    if($hasTable) {
-                        if (PlayerRelation::where([
-                            ["relation_id", "=", $tournament->id],
-                            ["relation_type", "=", Tournament::class],
-                        ])->exists()
-                        ) {
-                            PlayerRelation::where([
-                                ["relation_id", "=", $tournament->id],
-                                ["relation_type", "=", Tournament::class],
-                            ])->delete();
-                        }
-                    }
                     $tournament->delete();
                 }
                 if($hasTable) {
@@ -91,7 +63,6 @@ class Game extends Model
                 }
                 $game->delete();
             }
-            $game->tournaments()->delete();
 
         });
     }
