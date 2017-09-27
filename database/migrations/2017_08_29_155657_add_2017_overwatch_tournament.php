@@ -28,9 +28,9 @@ class Add2017OverwatchTournament extends Migration
 
         $m = new Mustache_Engine();
         $slug = new \Cocur\Slugify\Slugify();
-        if (!Tournament::where('name', $this->name)->exists()) {
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        if (!Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
             $tournament = new Tournament();
-            $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
             $tournament->name = $m->render($this->name, $getGame);
             $tournament->title = $m->render($this->title, $getGame);
             $tournament->max_players = $this->maxPlayers;
@@ -41,83 +41,82 @@ class Add2017OverwatchTournament extends Migration
             $tournament->occurring = $this->occurring;
             $tournament->occurring = $this->occurring;
 
-        }else{
-            $tournament = Tournament::where('name', $this->name)->first();
-        }
-        // create store for form fields
-        $form = [
-            'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
-            'participate' => ['participate', '', 'hidden', 'yes'],
-            'tournament' => [
-                'tournament',
-                'required|exists:mysql_champ.tournaments,name',
-                'hidden',
-                $tournament->name
-            ],
-            'team-name' => [
-                'Team Name',
-                'required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##',
-                'text',
-                ''
-            ],
-            'name' => [
-                'Team Captain',
-                'required',
-                'text',
-                ''
-            ],
-            'email' => [
-                'Team Captain Email',
-                'required|email',
-                'email',
-                ''
-            ],
-            'phone' => [
-                'Team Captain Phone',
-                'required',
-                'tel',
-                ''
-            ]
-        ];
+            // create store for form fields
+            $form = [
+                'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
+                'participate' => ['participate', '', 'hidden', 'yes'],
+                'tournament' => [
+                    'tournament',
+                    'required|exists:mysql_champ.tournaments,name',
+                    'hidden',
+                    $tournament->name
+                ],
+                'team-name' => [
+                    'Team Name',
+                    'required|uniqueWidth:mysql_champ.teams,=name,tournament_id>##id##',
+                    'text',
+                    ''
+                ],
+                'name' => [
+                    'Team Captain',
+                    'required',
+                    'text',
+                    ''
+                ],
+                'email' => [
+                    'Team Captain Email',
+                    'required|email',
+                    'email',
+                    ''
+                ],
+                'phone' => [
+                    'Team Captain Phone',
+                    'required',
+                    'tel',
+                    ''
+                ]
+            ];
 
-        // create rules for the other players
-        for ($i = 1; $i < $this->maxPlayers; $i++) {
-            $nameKey = 'teammate ' . Numbers::toWord($i) . ' name';
-            $nameRules = 'required|different:name';
-            $emailKey = 'teammate ' . Numbers::toWord($i) . ' email';
-            $emailRules = 'required|email|different:email';
-            foreach (range(1, $this->maxPlayers - 1) as $dif) {
-                if ($dif === $i) {
-                    continue;
+            // create rules for the other players
+            for ($i = 1; $i < $this->maxPlayers; $i++) {
+                $nameKey = 'teammate ' . Numbers::toWord($i) . ' name';
+                $nameRules = 'required|different:name';
+                $emailKey = 'teammate ' . Numbers::toWord($i) . ' email';
+                $emailRules = 'required|email|different:email';
+                foreach (range(1, $this->maxPlayers - 1) as $dif) {
+                    if ($dif === $i) {
+                        continue;
+                    }
+                    $nameRules .= '|different:teammate-' . Numbers::toWord($dif) . '-name';
+                    $emailRules .= '|different:teammate-' . Numbers::toWord($dif) . '-email';
                 }
-                $nameRules .= '|different:teammate-' . Numbers::toWord($dif) . '-name';
-                $emailRules .= '|different:teammate-' . Numbers::toWord($dif) . '-email';
-            }
 
-            $form[$slug->slugify($nameKey)] = [\Pbc\Bandolier\Type\Strings::formatForTitle($nameKey), $nameRules, 'text', ''];
-            $form[$slug->slugify($emailKey)] = [\Pbc\Bandolier\Type\Strings::formatForTitle($emailKey), $emailRules, 'email', ''];
-        };
-        $tournament->sign_up_form = json_encode($form);
+                $form[$slug->slugify($nameKey)] = [\Pbc\Bandolier\Type\Strings::formatForTitle($nameKey), $nameRules, 'text', ''];
+                $form[$slug->slugify($emailKey)] = [\Pbc\Bandolier\Type\Strings::formatForTitle($emailKey), $emailRules, 'email', ''];
+            };
+            $tournament->sign_up_form = json_encode($form);
 
-        // Create shortcode for wordpress from the form fields
-        //[build-form name="overwatch-three-v-three-sign-up" new_line="," delimiter="|", expires="",
-        // questions="tournament|hidden|gigazone-gaming-2017-overwatch,Team Name,update-recipient|hidden|yes,participate|hidden|yes,Team Captain,Team Captain Overwatch Player Name,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One Overwatch Player Name,Teammate One Email Address|email,Teammate Two Overwatch Player Name,Teammate Two Email Address|email"
-        // inputs="team-captain|name,team-captain-email-address|email,team-captain-phone|phone,teammate-one-overwatch-player-name|player-one-name,teammate-one-email-address|player-one-email,teammate-two-overwatch-player-name|player-two-name,teammate-two-email-address|player-two-email"
-        // headings="Team Info|team-name,Team Captain|team-captain,Team Members|teammate-one-overwatch-player-name"]
-        $shortcode = new \App\Helpers\Frontend\ShortCode();
-        $tournament->sign_up_form_shortcode = $shortcode->generateTournamentSignUpFormShortCode([
-            'tournament-name' => $tournament->name,
-            'fields' => $form,
-            'sign-up-open' => $tournament->sign_up_open,
-            'sign-up-close' => $tournament->sign_up_close,
-        ]);
+            // Create shortcode for wordpress from the form fields
+            //[build-form name="overwatch-three-v-three-sign-up" new_line="," delimiter="|", expires="",
+            // questions="tournament|hidden|gigazone-gaming-2017-overwatch,Team Name,update-recipient|hidden|yes,participate|hidden|yes,Team Captain,Team Captain Overwatch Player Name,Team Captain Email Address|email,Team Captain Phone|tel,Teammate One Overwatch Player Name,Teammate One Email Address|email,Teammate Two Overwatch Player Name,Teammate Two Email Address|email"
+            // inputs="team-captain|name,team-captain-email-address|email,team-captain-phone|phone,teammate-one-overwatch-player-name|player-one-name,teammate-one-email-address|player-one-email,teammate-two-overwatch-player-name|player-two-name,teammate-two-email-address|player-two-email"
+            // headings="Team Info|team-name,Team Captain|team-captain,Team Members|teammate-one-overwatch-player-name"]
+            $shortcode = new \App\Helpers\Frontend\ShortCode();
+            $tournament->sign_up_form_shortcode = $shortcode->generateTournamentSignUpFormShortCode([
+                'tournament-name' => $tournament->name,
+                'fields' => $form,
+                'sign-up-open' => $tournament->sign_up_open,
+                'sign-up-close' => $tournament->sign_up_close,
+            ]);
 
-            // finally save this tournament to the db
-        $tournament->save();
+                // finally save this tournament to the db
+            $tournament->update();
 
-            // replace the id from above in the form array
-        $tournament->sign_up_form = str_replace('##id##', $tournament->id, $tournament->sign_up_form);
+                // replace the id from above in the form array
+            $tournament->sign_up_form = str_replace('##id##', $tournament->id, $tournament->sign_up_form);
 
+            $tournament->save();
+        }
 
     }
 
@@ -128,8 +127,11 @@ class Add2017OverwatchTournament extends Migration
      */
     public function down()
     {
-        if (Tournament::where('name', $this->name)->exists()) {
-            Tournament::where('name', $this->name)->first()->delete();
+        $m = new Mustache_Engine();
+        $slug = new \Cocur\Slugify\Slugify();
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        if (Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
+            Tournament::where('name', $m->render($this->name, $getGame))->first()->delete();
         }
     }
 }

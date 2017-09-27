@@ -126,6 +126,10 @@ class Add2017LeagueOfLegendsTournament extends Migration
      */
     public function down()
     {
+        $m = new Mustache_Engine();
+        $slug = new \Cocur\Slugify\Slugify();
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        $name = $m->render($this->name, $getGame);
         if (Tournament::where('name', $this->name)->exists()) {
             Tournament::where('name', $this->name)->first()->delete();
         }
