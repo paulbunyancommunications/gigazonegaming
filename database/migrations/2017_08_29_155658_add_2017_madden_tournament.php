@@ -1,8 +1,9 @@
 <?php
 
 use App\Models\Championship\Tournament;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Pbc\Bandolier\Type\Numbers;
+
 
 class Add2017MaddenTournament extends Migration
 {
@@ -27,7 +28,6 @@ class Add2017MaddenTournament extends Migration
     {
 
         $m = new Mustache_Engine();
-        $slug = new \Cocur\Slugify\Slugify();
         $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
         if (!Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
             $tournament = new Tournament();
@@ -91,7 +91,6 @@ class Add2017MaddenTournament extends Migration
     public function down()
     {
         $m = new Mustache_Engine();
-        $slug = new \Cocur\Slugify\Slugify();
         $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
         if (Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
             Tournament::where('name', $m->render($this->name, $getGame))->first()->delete();
