@@ -272,13 +272,15 @@
     ],
     "post-install-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan ide-helper:generate; #",
-      "php artisan ide-helper:meta; #",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:generate; fi; #",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:meta; fi; #",
       "php artisan optimize; #",
       "bash ${PWD}/composer_post_fixes.sh; #"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:generate; fi; #",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:meta; fi; #",
       "php artisan optimize; #",
       "bash ${PWD}/composer_post_fixes.sh; #"
     ],
