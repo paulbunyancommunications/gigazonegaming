@@ -318,6 +318,10 @@ h3{
     margin-top:15%;
     width: $width - 60;
   }
+  .waitCarousel{
+    margin-left:auto;
+    margin-right:auto;
+  }
 }
 @media (max-width:1079px) {
   .col-lg {
@@ -337,6 +341,10 @@ h3{
   .teamFooter{
     text-align: left;
     width:0;
+  }
+  .waitCarousel{
+    margin-left:auto;
+    margin-right:auto;
   }
 }
 @media (max-width:1030px) {
@@ -358,7 +366,9 @@ h3{
     text-align: left;
     width:0;
   }
-
+  .waitCarousel{
+    margin:auto;
+  }
 }
 @media (max-width:530px) {
   .col-lg {
@@ -387,9 +397,12 @@ h3{
     width:$width;
   }
   h1{
-    font-size: $font-size-lg - 30;
+    font-size: $font-size-lg - 50;
   }
   .summonerName{
     vertical-align: 0;
+  }
+  .waitCarousel{
+    margin:auto;
   }
 }

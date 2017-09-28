@@ -8,35 +8,18 @@
     <link rel="stylesheet" type="text/css" href="/app/content/css/teamDisplay.css">
     <Title>Loading Team Display</Title>
 </head>
+
 <body class="mainDiv">
-    <h1>Please Wait For Game To Begin</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="my-slider" class="carousel slide">
-                    <div class="carousel-inner" role="listbox">
-                        <div class="carousel-item active">
-                            <img class="carousel_img" src="/app/content/LeagueImages/test.png" alt="something">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="carousel_img" src="/app/content/LeagueImages/test.png" alt="something">
-                        </div>
-                    </div>
-                </div>
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="10000" style="margin-top: 20px">
+            <div class="carousel-inner" role="listbox">
+                @yield('carousel-contents')
             </div>
         </div>
-    </div>
-
-        {{--<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="10000" style="margin-top: 20px">--}}
-        {{--<div class="carousel-inner" role="listbox">--}}
-            {{--@yield('carousel-contents')--}}
-        {{--</div>--}}
-    {{--</div>--}}
+        <h1>Please Wait For Game To Begin</h1>
 </body>
 
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <script src="/LeagueOfLegendsDisplay/JS/teamDisplay.js"></script>
-
 </html>
