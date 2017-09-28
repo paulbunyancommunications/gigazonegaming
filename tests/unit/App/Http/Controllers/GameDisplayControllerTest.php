@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Codeception\Util\Fixtures;
+use Mockery\Exception;
 
 //todo:clear cache, get data and assert it
 class GameDisplayControllerTest extends \TestCase
@@ -59,8 +60,7 @@ class GameDisplayControllerTest extends \TestCase
     }
 
     public function testTeamViewDisplayWithNoCacheForTeam1ShouldReturnAltPageWithSpecificTitleForTeam1(){
-        $response = $this->call('GET', '/GameDisplay/team1');
-
+        $response = $this->call('get', '/GameDisplay/team1');
         $this->assertSame($response->getStatusCode(),200);
         $title = explode("</Title>", explode('<Title>',$response->getContent())[1])[0];
         $this->assertSame($title, "Loading Team Display");

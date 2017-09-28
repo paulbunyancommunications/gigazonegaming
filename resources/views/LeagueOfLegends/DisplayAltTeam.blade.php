@@ -1,6 +1,5 @@
 @extends('LeagueOfLegends/altLayout')
 
-@section('TeamName')
-@stop
-@section('Color')
+@section('carousel-contents')
+
 @stop
