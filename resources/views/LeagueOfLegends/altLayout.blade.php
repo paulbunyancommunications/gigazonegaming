@@ -10,12 +10,12 @@
 </head>
 
 <body class="mainDiv">
-    <h1>Please Wait For Game To Begin</h1>
         <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="10000" style="margin-top: 20px">
             <div class="carousel-inner" role="listbox">
                 @yield('carousel-contents')
             </div>
         </div>
+        <h1>Please Wait For Game To Begin</h1>
 </body>
 
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
