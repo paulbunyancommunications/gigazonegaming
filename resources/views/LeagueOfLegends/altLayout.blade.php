@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/app/content/css/teamDisplay.css">
     <Title>Loading Team Display</Title>
 </head>
+
 <body class="mainDiv">
     <h1>Please Wait For Game To Begin</h1>
     <div id='carousel' class="container">
