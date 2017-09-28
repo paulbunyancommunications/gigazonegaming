@@ -2,6 +2,7 @@
 
 namespace App\Models\Championship;
 
+use App\Models\Championship\Relation\PlayerRelation;
 use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Championship\Relation\PlayerRelationable;
@@ -38,7 +39,30 @@ class Game extends Model
 
         // cause a delete of a game to cascade to children so they are also deleted
         static::deleting(function ($game) {
-            $game->tournaments()->delete();
+            $hasTable = false;
+            if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
+                $hasTable = true;
+            }
+//        dd($game);
+            if ($game) {
+                $tournaments = $game->tournaments();
+                foreach ($tournaments as $tournament){
+                    $tournament->delete();
+                }
+                if($hasTable) {
+                    if (PlayerRelation::where([
+                        ["relation_id", "=", $game->id],
+                        ["relation_type", "=", Game::class],
+                    ])->exists()
+                    ) {
+                        PlayerRelation::where([
+                            ["relation_id", "=", $game->id],
+                            ["relation_type", "=", Game::class],
+                        ])->delete();
+                    }
+                }
+                $game->delete();
+            }
 
         });
     }

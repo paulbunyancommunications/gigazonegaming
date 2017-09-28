@@ -219,7 +219,6 @@
     "phing/phing": "2.*",
     "codeception/codeception": "2.3.1",
     "codeception/c3": "2.0.12",
-    "etsy/phan": "^0.9.1",
     "paulbunyancommunications/mailtrapper": "dev-master"
   },
   "extra": {
@@ -260,7 +259,8 @@
       "tests/integration/BaseIntegration.php"
     ],
     "psr-4": {
-      "Codeception\\Module\\": "src/Codeception/Module"
+      "Codeception\\Module\\": "src/Codeception/Module",
+      "Enqueue\\Test\\": "src/Enqueue/Test"
     }
   },
   "scripts": {
@@ -272,13 +272,15 @@
     ],
     "post-install-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan ide-helper:generate; #",
-      "php artisan ide-helper:meta; #",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:generate; fi; #",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:meta; fi; #",
       "php artisan optimize; #",
       "bash ${PWD}/composer_post_fixes.sh; #"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:generate; fi; #",
+      "if [ -f ./vendor/barryvdh/laravel-ide-helper/src/IdeHelperServiceProvider.php ]; then php artisan ide-helper:meta; fi; #",
       "php artisan optimize; #",
       "bash ${PWD}/composer_post_fixes.sh; #"
     ],

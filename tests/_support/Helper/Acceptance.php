@@ -120,7 +120,7 @@ class Acceptance extends \Codeception\Module
             $timeOut = \BaseAcceptance::TEXT_WAIT_TIMEOUT;
         }
         $I->waitForJs('return jQuery.active == 0', $timeOut);
-        $exist = $I->executeJS("return !!jQuery('body').length;"); //this will activate jquery if it wasn't still
+        $I->executeJS("return !!jQuery('body').length;"); //this will activate jquery if it wasn't still
         $exist = $I->executeJS("return !!jQuery('body').length;"); //this will let you know that yes it is there!
         return true;
     }

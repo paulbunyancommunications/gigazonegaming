@@ -12,6 +12,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Routing\Route;
 use Mockery;
 
 class TeamRequestTest extends WpRequestsBase
@@ -130,19 +131,13 @@ class TeamRequestTest extends WpRequestsBase
      */
     public function it_returns_an_array_of_rules_on_put_method()
     {
-        $faker = \Faker\Factory::create();
-        $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method,route]');
-        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PUT');
-        $name = $faker->username;
-        $tournamentId = $faker->numberBetween(1, 99);
-        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
-            'team_id' => (object)[
-                'name' => $name,
-                'tournament_id' => $tournamentId
-            ]
-        ]);
-        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.teams,name,'.$name.',name');
-        $this->assertSame($mock->rules()['tournament_id'], 'required|numeric:mysql_champ.tournament,tournament_id'.$tournamentId.',tournament_id');
+
+        $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method]');
+        $mock->shouldReceive('method')->once()->andReturn('PUT');
+        $this->assertSame([
+            'name' => 'required',
+            'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id,tournament_id'
+        ], $mock->rules());
 
 
     }
@@ -152,19 +147,12 @@ class TeamRequestTest extends WpRequestsBase
      */
     public function it_returns_an_array_of_rules_on_patch_method()
     {
-        $faker = \Faker\Factory::create();
-        $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method,route]');
-        $mock->shouldReceive('method')->zeroOrMoreTimes()->andReturn('PATCH');
-        $name = $faker->username;
-        $tournamentId = $faker->numberBetween(1, 99);
-        $mock->shouldReceive('route')->zeroOrMoreTimes()->andReturn((object)[
-            'team_id' => (object)[
-                'name' => $name,
-                'tournament_id' => $tournamentId
-            ]
-        ]);
-        $this->assertSame($mock->rules()['name'], 'required|unique:mysql_champ.teams,name,'.$name.',name');
-        $this->assertSame($mock->rules()['tournament_id'], 'required|numeric:mysql_champ.tournament,tournament_id'.$tournamentId.',tournament_id');
+        $mock = Mockery::mock('App\\Http\\Requests\\TeamRequest[method]');
+        $mock->shouldReceive('method')->once()->andReturn('PATCH');
+        $this->assertSame([
+            'name' => 'required',
+            'tournament_id' => 'required|numeric:mysql_champ.tournament,tournament_id,tournament_id'
+        ], $mock->rules());
     }
 
 
