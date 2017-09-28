@@ -43,7 +43,7 @@ class GameDisplayController extends Controller
             ]);
         }
         #Data Default data
-        $fileContents = glob(public_path("content/LeagueImages/*.*"));
+        $fileContents = glob(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/*.*");
         $images=[];
         for($i=0; $i<count($fileContents);$i++){
             $brokenPath = explode('/',$fileContents[$i]);
@@ -51,16 +51,18 @@ class GameDisplayController extends Controller
             $fixedPath= implode("/",$neededPath);
             array_push($images,$fixedPath);
         }
-        $timestamp = filemtime(public_path("content/LeagueImages/"));
+        $timestamp = filemtime(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/");
         Cache::put("ImageDirTimestamp",$timestamp,150000);
         return view('/LeagueOfLegends/DisplayAltTeam')->withImages($images);
     }
+
     public function CarouselUpdate(){
         if(Cache::has("ImageDirTimestamp")){
             $oldTimestamp = Cache::get("ImageDirTimestamp");
-            $timestamp = filemtime(public_path("content/LeagueImages/"));
+
+            $timestamp = filemtime(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/");
             if($timestamp > $oldTimestamp){
-                $fileContents = glob(public_path("content/LeagueImages/*.*"));
+                $fileContents = glob(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/*.*");
                 $images=[];
                 for($i=0; $i<count($fileContents);$i++){
                     $brokenPath = explode('/',$fileContents[$i]);
@@ -72,9 +74,8 @@ class GameDisplayController extends Controller
                 return response()->json($images);
             }
         }
-        $timestamp = filemtime(public_path("content/LeagueImages/"));
+        $timestamp = filemtime(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/");
         Cache::put("ImageDirTimestamp",$timestamp,150000);
-
         return response()->json(false);
     }
 
