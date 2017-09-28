@@ -10,7 +10,7 @@
 </head>
 <body class="mainDiv">
     <h1>Please Wait For Game To Begin</h1>
-    <div class="container">
+    <div id='carousel' class="container">
         <div class="row">
             <div class="col-sm-12">
                 <div id="my-slider" class="carousel slide">
@@ -32,11 +32,17 @@
             {{--@yield('carousel-contents')--}}
         {{--</div>--}}
     {{--</div>--}}
-</body>
 
+    <div id="hiddenToken" class="hidden">{{ csrf_field() }}</div>
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+{{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>--}}
 <script src="/LeagueOfLegendsDisplay/JS/teamDisplay.js"></script>
 
+
+<script type='text/javascript' src='/wp-content/themes/gigazone-gaming/js/common-require.js?ver=4.7.6'></script>
+<script type='text/javascript' src='/bower_components/requirejs/require.js?ver=4.7.6'></script>
+<script type='text/javascript' src='/wp-content/themes/gigazone-gaming/js/main-require.js?ver=4.7.6'></script>
+
+</body>
 </html>

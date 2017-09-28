@@ -7,6 +7,8 @@ use App\Models\Championship\Team;
 use App\Http\Requests;
 use GameDisplay\RiotDisplay\Summoner;
 use App\Http\Controllers\Controller;
+use PhpParser\Node\Scalar\MagicConst\Dir;
+
 /**
  * Class GameDisplayController
  * @package App\Http\Controllers\GameDisplay
@@ -81,5 +83,29 @@ class GameDisplayController extends Controller
             }
         }
         return $returnArray;
+    }
+
+    ///Will grab images from a specific File
+
+    /**
+     * @param $req
+     */
+    public function carouselUpdate()
+    {
+
+        $webPath = '/app/content/Carousel_Imgs';
+        $rootPath = '../../public_html' . $webPath.DIRECTORY_SEPARATOR;
+        $data = scandir($rootPath);
+        $files = ['files'=> []];
+        for($i = 0; $i < count($data); $i++){
+            if( $data[$i] ==='.' || $data[$i]==='..'){
+                continue;
+            }
+            array_push($files['files'], ['path' => $webPath.DIRECTORY_SEPARATOR.$data[$i], 'modified' => filemtime($rootPath.DIRECTORY_SEPARATOR.$data[$i])]);
+
+        }
+        $files['hash'] = md5(serialize($files['files']));
+
+        return $files;
     }
 }

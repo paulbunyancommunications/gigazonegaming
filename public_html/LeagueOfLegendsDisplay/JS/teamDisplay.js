@@ -101,13 +101,15 @@ $(document).ready($(window).resize(function(){
 $(document).ready(function () {
         $.ajaxSetup({
             headers: {
-                "X-CSRF-TOKEN": $("#hiddenToken").text(),
+                "X-CSRF-TOKEN": $("#hiddenToken").children("input[name=_token]").val(),
             }});
     }
 );
 
 /*This gets the data needed for loading the page from the cache*/
 $(document).ready(GetData());
+
+var fileListHash='';
 function GetData() {
     if (!document.getElementById("other")) {
         let team = window.location.href;
@@ -119,46 +121,38 @@ function GetData() {
             type: "GET",
             url: "/app/GameDisplay/getData",
             data: {
-                "_token": "{{ csrf_token() }}",
+                "_token":  $("#hiddenToken").children("input[name=_token]").val(),
                 team: team
             },
             success: function (data) {
                 if (data === "true") {
                     location.reload();
                 } else{
-                    setTimeout(GetData,2000);
                     $.ajax({
                         method: "GET",
                         type: "GET",
                         url: "/app/GameDisplay/CarouselUpdate",
                         data: {
-                            "_token": "{{ csrf_token() }}",
-                            team: team
+                            "_token":  $("#hiddenToken").children("input[name=_token]").val(),
                         },
                         success: function (data) {
-                            if(data){
-                                var images = [];
-                                $("img").each(function(){
-                                    images.push($(this).attr('src'))
-                                });
-                                for(i=0;i<data.length;i++) {
-                                    if (images.indexOf("/" + data[i]) === -1) {
-                                        $('.carousel-inner').append("<div class='carousel-item'><img class='d-block img-fluid' src=/" + data[i] + " alt='' style='margin-right:auto; margin-left: auto;'></div>");
-                                    }
+                            if(data.hash !== fileListHash){
+                                fileListHash = data.hash;
+                                var rotatorImgDiv = document.getElementsById('inner');
+                                for(var i = 0; i < data.files.length; i++){
+
+                                    //src of img
+                                    //rotatorImgDiv.innerHTML += '<li class="masthead-photo-rotator-item imager" id="rslides1_s5" style="display: list-item; float: none; position: absolute; opacity: 0; z-index: 1; transition: opacity 900ms ease-in-out;"> <img src="https://gigazonegaming.com/bower_components/image.php/image.php/845.jpg?width=1200&amp;image=/wp-content/uploads/2016/11/semifinals-2016-victory.jpg" class="image-replace" alt="" data-src="https://gigazonegaming.com/bower_components/image.php/image.php/845.jpg?width={width}&amp;image=/wp-content/uploads/2016/11/semifinals-2016-victory.jpg" id="responsive-image-kQacQMs3oB"> </li>';
                                 }
-                                for(i=0;i<images.length;i++){
-                                    if(data.indexOf(images[i].slice(1)) === -1){
-                                        console.log("here");
-                                        var source = images[i];
-                                        var sourceBefore = images[0];
-                                        $('img[src$="'+source+'"]').parent().remove();
-                                    }
-                                }
+
+
                             }
+                            console.log(data);
+                            setTimeout(GetData, 2000);
                         }
                     })
                 }
-            },
+            }
         })
     }else{
         UpdateData(true);
