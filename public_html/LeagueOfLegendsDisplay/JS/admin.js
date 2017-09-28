@@ -84,7 +84,6 @@ function submitCache(){
             $("#loader").addClass("hidden");
             $("#submit").removeClass("hidden");
         }
-
     });
 }
 
