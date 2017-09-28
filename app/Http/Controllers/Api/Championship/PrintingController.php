@@ -18,7 +18,6 @@ class PrintingController extends Controller
      */
     public function index()
     {
-        dd($_GET);
         return View::make('game.print');
     }
 
@@ -68,7 +67,6 @@ class PrintingController extends Controller
     {
 //        $playerList = $player->getPlayersInfoBy(['player'=>$player->id]);
         $playerList = $player->getPlayersInfoBy(['player'=>$player->id, 'order_by'=>'player_username']);
-        dd($playerList);
         return View::make('game.print')->with('playerList', $playerList);
     }
 

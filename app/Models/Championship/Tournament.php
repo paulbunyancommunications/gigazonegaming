@@ -2,6 +2,7 @@
 
 namespace App\Models\Championship;
 
+use App\Models\Championship\Relation\PlayerRelation;
 use App\Models\Championship\Relation\PlayerRelationable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -59,8 +60,32 @@ class Tournament extends Model
 
         static::deleting(function ($tournament) {
             /** @var Tournament $tournament */
-            $tournament->teams()->delete();
-            $tournament->findPlayersRelations()->delete(); //this should delete the relations not the players
+
+            $hasTable = false;
+            if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
+                $hasTable = true;
+            }
+//        dd($game);
+            if ($tournament) {
+                $teams = $tournament->teams();
+                foreach ($teams as $team){
+                    $team->delete();
+                }
+                if($hasTable) {
+                    if (PlayerRelation::where([
+                        ["relation_id", "=", $tournament->id],
+                        ["relation_type", "=", Tournament::class],
+                    ])->exists()
+                    ) {
+                        PlayerRelation::where([
+                            ["relation_id", "=", $tournament->id],
+                            ["relation_type", "=", Tournament::class],
+                        ])->delete();
+                    }
+                }
+                $tournament->delete();
+            }
+
 
         });
     }

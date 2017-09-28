@@ -12,9 +12,11 @@ class AddCustomRequestBodyColumnToFormMailTable extends Migration
      */
     public function up()
     {
-        Schema::table('form_mail', function (Blueprint $table) {
-            $table->longText('custom_request_body');
-        });
+        if (!Schema::hasColumn('form_mail', 'custom_request_body')) {
+            Schema::table('form_mail', function (Blueprint $table) {
+                $table->longText('custom_request_body');
+            });
+        }
     }
 
     /**
@@ -24,8 +26,10 @@ class AddCustomRequestBodyColumnToFormMailTable extends Migration
      */
     public function down()
     {
-        Schema::table('form_mail', function (Blueprint $table) {
-            $table->dropColumn('custom_request_body');
-        });
+        if (Schema::hasColumn('form_mail', 'custom_request_body')) {
+            Schema::table('form_mail', function (Blueprint $table) {
+                $table->dropColumn('custom_request_body');
+            });
+        }
     }
 }

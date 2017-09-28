@@ -13,10 +13,7 @@ use App\Http\Middleware\Auth\SentinelRedirectIfAuthenticated;
 use App\Http\Middleware\Auth\SentinelStandardUser;
 use App\Http\Middleware\Auth\ValidateRole;
 use App\Http\Middleware\EncryptCookies;
-use App\Http\Middleware\LolIndividualSignUpMiddleware;
 use App\Http\Middleware\LolTeamSignUpMiddleware;
-use App\Http\Middleware\MaddenNflSignUpMiddleware;
-use App\Http\Middleware\OverwatchThreeVThreeSignUpMiddleware;
 use App\Http\Middleware\TournamentSignupMiddleware;
 use App\Http\Middleware\UpdateRecipientMiddleware;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -77,7 +74,6 @@ class Kernel extends HttpKernel
         'UpdateRecipient' => UpdateRecipientMiddleware::class,
         'CCAddRecipient' => AddContactToConstantContactGigazoneGamingUpdatesMiddleware::class,
         'LolTeamSignUp' => LolTeamSignUpMiddleware::class,
-        'LolIndividualSignUp' => LolIndividualSignUpMiddleware::class,
         'TournamentSignUp' => TournamentSignUpMiddleware::class,
         'auth' => SentinelAuthenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,

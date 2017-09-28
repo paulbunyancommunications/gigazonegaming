@@ -1,8 +1,9 @@
 <?php
 
 use App\Models\Championship\Tournament;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Pbc\Bandolier\Type\Numbers;
+
 
 class Add2017MaddenTournament extends Migration
 {
@@ -27,10 +28,8 @@ class Add2017MaddenTournament extends Migration
     {
 
         $m = new Mustache_Engine();
-
-        $exists = Tournament::where('name', $this->name)->first();
-        if (!$exists) {
-            $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        if (!Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
             $tournament = new Tournament();
             $tournament->name = $m->render($this->name, $getGame);
             $tournament->title = $m->render($this->title, $getGame);
@@ -40,6 +39,7 @@ class Add2017MaddenTournament extends Migration
             $tournament->sign_up_open = $this->signUpOpen;
             $tournament->sign_up_close = $this->signUpClose;
             $tournament->occurring = $this->occurring;
+
             // create store for form fields
             $form = [
                 'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
@@ -79,7 +79,6 @@ class Add2017MaddenTournament extends Migration
                 'sign-up-open' => $tournament->sign_up_open,
                 'sign-up-close' => $tournament->sign_up_close,
             ]);
-
             $tournament->save();
         }
     }
@@ -91,9 +90,10 @@ class Add2017MaddenTournament extends Migration
      */
     public function down()
     {
-        $exists = Tournament::where('name', $this->name)->first();
-        if($exists) {
-            $exists->delete();
+        $m = new Mustache_Engine();
+        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+        if (Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
+            Tournament::where('name', $m->render($this->name, $getGame))->first()->delete();
         }
     }
 }

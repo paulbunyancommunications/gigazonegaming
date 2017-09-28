@@ -18,7 +18,9 @@ class AddMaximunNumberOfPlayersInTeamOnTournamentTable extends Migration
                 $table->integer('max_players')->default(0)->after('name');
             });
         }
-        $tournamentUpdated = \App\Models\Championship\Tournament::find(1)->update(['max_players'=> 5]);
+        if(\App\Models\Championship\Tournament::where("id","=",1)->exists()) {
+            $tournamentUpdated = \App\Models\Championship\Tournament::where("id","=",1)->update(['max_players' => 5]);
+        }
     }
 
     /**

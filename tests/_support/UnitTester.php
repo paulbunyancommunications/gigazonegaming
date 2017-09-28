@@ -23,4 +23,23 @@ class UnitTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
+
+    public function ReloadDBAndMigrate()
+    {
+        $this->ReloadDB();
+        $this->MigrateDB();
+    }
+    public function ReloadDB()
+    {
+        $dir = dirname(dirname(dirname(__DIR__))) . '/database/dump/gigazone_wp.sql';
+        exec('mysql -h "'.env('DB_HOST').'" -u "'.env('DB_USERNAME').'" "-p'.env('DB_PASSWORD').'" "'.env('DB_DATABASE').'" < '.$dir. ' 2> /dev/null');
+    }
+    public function MigrateDB()
+    {
+        exec('php artisan migrate');
+    }
+    public function ClearCache()
+    {
+        exec('php artisan cache:clear');
+    }
 }
