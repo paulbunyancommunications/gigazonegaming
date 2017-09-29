@@ -9,6 +9,7 @@ use App\Models\Championship\Team;
 use App\Http\Requests;
 use GameDisplay\RiotDisplay\Summoner;
 use App\Http\Controllers\Controller;
+use function PasswordCompat\binary\_strlen;
 
 /**
  * Class GameDisplayController
@@ -43,38 +44,35 @@ class GameDisplayController extends Controller
             ]);
         }
         #Data Default data
-        $fileContents = glob(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/*.*");
+        $rootPublicPath = dirname(dirname(dirname(dirname(__DIR__)))) . "/public_html";
+        $fileContents = glob($rootPublicPath ."/app/content/CarouselImages/*.*");
         $images=[];
         for($i=0; $i<count($fileContents);$i++){
-            $brokenPath = explode('/',$fileContents[$i]);
-            $neededPath = array_slice($brokenPath,5);
-            $fixedPath= implode("/",$neededPath);
+            $fixedPath = substr($fileContents[$i], strlen($rootPublicPath), strlen($fileContents[$i]));
             array_push($images,$fixedPath);
         }
-        $timestamp = filemtime(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/");
+        $timestamp = filemtime($rootPublicPath."/app/content/CarouselImages/");
         Cache::put("ImageDirTimestamp",$timestamp,150000);
         return view('/LeagueOfLegends/DisplayAltTeam')->withImages($images);
     }
 
     public function carouselUpdate(){
+        $rootPublicPath = dirname(dirname(dirname(dirname(__DIR__)))) . "/public_html";
         if(Cache::has("ImageDirTimestamp")){
             $oldTimestamp = Cache::get("ImageDirTimestamp");
-
-            $timestamp = filemtime(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/");
+            $timestamp = filemtime($rootPublicPath . "/app/content/CarouselImages/");
             if($timestamp > $oldTimestamp){
-                $fileContents = glob(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/*.*");
+                $fileContents = glob($rootPublicPath."/app/content/CarouselImages/*.*");
                 $images=[];
                 for($i=0; $i<count($fileContents);$i++){
-                    $brokenPath = explode('/',$fileContents[$i]);
-                    $neededPath = array_slice($brokenPath,5);
-                    $fixedPath= implode("/",$neededPath);
+                    $fixedPath = substr($fileContents[$i], strlen($rootPublicPath), strlen($fileContents[$i]));
                     array_push($images,$fixedPath);
                 }
                 Cache::put("ImageDirTimestamp",$timestamp,150000);
                 return response()->json($images);
             }
         }
-        $timestamp = filemtime(dirname(dirname(dirname(dirname(__DIR__))))."/public_html/app/content/CarouselImages/");
+        $timestamp = filemtime($rootPublicPath."/app/content/CarouselImages/");
         Cache::put("ImageDirTimestamp",$timestamp,150000);
         return response()->json(false);
     }
