@@ -84,7 +84,6 @@ class SimonCacheController extends Controller
             );
         }
         if($testing){
-            dd("here");
             $data = serialize($returnArray);
             file_put_contents('../../tests/_data/PlayerInfoArray.bin', $data);
         }
