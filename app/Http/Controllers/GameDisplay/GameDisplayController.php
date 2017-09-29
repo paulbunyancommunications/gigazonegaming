@@ -56,7 +56,7 @@ class GameDisplayController extends Controller
         return view('/LeagueOfLegends/DisplayAltTeam')->withImages($images);
     }
 
-    public function CarouselUpdate(){
+    public function carouselUpdate(){
         if(Cache::has("ImageDirTimestamp")){
             $oldTimestamp = Cache::get("ImageDirTimestamp");
 

@@ -206,7 +206,6 @@ class Api{
             $this->championName = $data->data->{$ChampionId}->key;
         }
         else{
-            dd($data);
             #make the request serialize it.
             $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=true&api_key=" . $this->apiKey;
             $Info = $this->apiRequest($Url);
