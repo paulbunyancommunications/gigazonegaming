@@ -49,7 +49,7 @@ class Summoner{
         $this->setFLEXRank($this->api->getFLEXRank());
         $this->setFLEXRankedWinLoss($this->api->getFLEXRankedWinLoss());
         $this->setTop3Champions($this->api->getTop3Champions());
-//
+
     }
 
 # Methods

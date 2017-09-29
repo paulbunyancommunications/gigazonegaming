@@ -41,7 +41,7 @@ const testing =  document.getElementsByName("Testing").length;
  */
 $.ajaxSetup({
     headers: {
-        "X-CSRF-TOKEN": $("#hiddenToken").text(),
+        "X-CSRF-TOKEN": $("#hiddenToken").children().val(),
         'Testing': false
     }
 });
@@ -84,7 +84,6 @@ function submitCache(){
             $("#loader").addClass("hidden");
             $("#submit").removeClass("hidden");
         }
-
     });
 }
 
