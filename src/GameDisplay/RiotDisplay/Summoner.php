@@ -51,6 +51,7 @@ class Summoner{
         $this->setTop3Champions($this->api->getTop3Champions());
 
     }
+
 # Methods
 #----------------------------------------------------------------------
     /**
