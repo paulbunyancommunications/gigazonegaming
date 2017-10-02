@@ -12,9 +12,11 @@ class AddTeamNameTournamentIdConstraint extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->unique(['name','tournament_id']);
-        });
+        if(Schema::connection('mysql_champ')->hasColumns('teams',['name','tournament_id'])) {
+            Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
+                $table->unique(['name', 'tournament_id']);
+            });
+        }
     }
 
     /**
@@ -24,8 +26,10 @@ class AddTeamNameTournamentIdConstraint extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->dropUnique('teams_name_tournament_id_unique');
-        });
+        if(Schema::connection('mysql_champ')->hasColumns('teams',['name','tournament_id'])) {
+            Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
+                $table->dropUnique('teams_name_tournament_id_unique');
+            });
+        }
     }
 }
