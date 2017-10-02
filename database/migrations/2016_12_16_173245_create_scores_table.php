@@ -12,17 +12,15 @@ class CreateScoresTable extends Migration
      */
     public function up()
     {
-        if(Schema::connection('mysql_champ')->hasTable('scores')) {
-            Schema::connection('mysql_champ')->drop('scores');
+        if(!Schema::connection('mysql_champ')->hasTable('scores')) {
+            Schema::connection('mysql_champ')->create('scores', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('player');
+                $table->integer('tournament');
+                $table->string('score');
+                $table->timestamps();
+            });
         }
-
-        Schema::connection('mysql_champ')->create('scores', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('player');
-            $table->integer('tournament');
-            $table->string('score');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -32,6 +30,8 @@ class CreateScoresTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->drop('scores');
+        if(Schema::connection('mysql_champ')->hasTable('scores')) {
+            Schema::connection('mysql_champ')->drop('scores');
+        }
     }
 }
