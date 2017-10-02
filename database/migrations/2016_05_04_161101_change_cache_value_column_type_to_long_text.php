@@ -12,10 +12,11 @@ class ChangeCacheValueColumnTypeToLongText extends Migration
      */
     public function up()
     {
-        Schema::table('cache', function($table)
-        {
-            $table->longText('value')->change();
-        });
+        if (Schema::hasTable('cache') and Schema::hasColumn('cache', "value")) {
+            Schema::table('cache', function ($table) {
+                $table->longText('value')->change();
+            });
+        }
     }
 
     /**
@@ -25,9 +26,10 @@ class ChangeCacheValueColumnTypeToLongText extends Migration
      */
     public function down()
     {
-        Schema::table('cache', function($table)
-        {
-            $table->text('value')->change();
-        });
+        if (Schema::hasTable('cache') and Schema::hasColumn('cache', "value")) {
+            Schema::table('cache', function ($table) {
+                $table->text('value')->change();
+            });
+        }
     }
 }
