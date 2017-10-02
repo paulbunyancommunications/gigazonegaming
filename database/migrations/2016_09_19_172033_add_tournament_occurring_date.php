@@ -12,9 +12,11 @@ class AddTournamentOccurringDate extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            $table->dateTime('occurring');
-        });
+        if (!Schema::connection('mysql_champ')->hasColumn('players', 'occurring')) {
+            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+                $table->dateTime('occurring');
+            });
+        }
     }
 
     /**
