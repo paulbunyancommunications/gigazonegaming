@@ -16,13 +16,17 @@ class MakeGigazoneGamingChampionshopLolTournament extends Migration
      */
     public function up()
     {
-        $game = Game::where('name', 'league-of-legends')->first();
-        $tournament = Tournament::where('name', $this->name)->first();
-        if (!$tournament) {
-            $newTournament = new Tournament();
-            $newTournament->setAttribute('game_id', $game->id);
-            $newTournament->setAttribute('name', $this->name);
-            $newTournament->save();
+        if (Schema::connection('mysql_champ')->hasTable('games')) {
+            $game = Game::where('name', 'league-of-legends')->first();
+            if (Schema::connection('mysql_champ')->hasTable('tournaments')) {
+                $tournament = Tournament::where('name', $this->name)->first();
+                if (!$tournament) {
+                    $newTournament = new Tournament();
+                    $newTournament->setAttribute('game_id', $game->id);
+                    $newTournament->setAttribute('name', $this->name);
+                    $newTournament->save();
+                }
+            }
         }
     }
 
@@ -33,9 +37,11 @@ class MakeGigazoneGamingChampionshopLolTournament extends Migration
      */
     public function down()
     {
-        $tournament = Tournament::where('name', $this->name)->first();
-        if ($tournament) {
-            Tournament::where('id', $tournament->id)->delete();
+        if (Schema::connection('mysql_champ')->hasTable('tournaments')) {
+            $tournament = Tournament::where('name', $this->name)->first();
+            if ($tournament) {
+                Tournament::where('id', $tournament->id)->delete();
+            }
         }
     }
 }
