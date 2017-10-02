@@ -14,11 +14,13 @@ class AddGigazoneInfoShortcodeToHomepageFooter extends Migration
      */
     public function up()
     {
-        $frontPage = DB::table('wp_options')->where('option_name', 'page_on_front')->first();
-        $page = App\Models\WpPost::find($frontPage->option_value);
-        if($page && strpos($page->post_content, $this->shortCode) === false) {
-            $page->post_content = $page->post_content . "\n\r" . $this->shortCode;
-            $page->save();
+        if (Schema::hasTable('wp_options') and Schema::hasColumn('wp_options', "option_name")) {
+            $frontPage = DB::table('wp_options')->where('option_name', 'page_on_front')->first();
+            $page = App\Models\WpPost::find($frontPage->option_value);
+            if ($page && strpos($page->post_content, $this->shortCode) === false) {
+                $page->post_content = $page->post_content . "\n\r" . $this->shortCode;
+                $page->save();
+            }
         }
 
     }
@@ -30,11 +32,13 @@ class AddGigazoneInfoShortcodeToHomepageFooter extends Migration
      */
     public function down()
     {
-        $frontPage = DB::table('wp_options')->where('option_name', 'page_on_front')->first();
-        $page = App\Models\WpPost::find($frontPage->option_value);
-        if($page && strpos($page->post_content, $this->shortCode) !== false) {
-            $page->post_content = str_replace_last("\n\r" . $this->shortCode, '', $page->post_content);
-            $page->save();
+        if (Schema::hasTable('wp_options') and Schema::hasColumn('wp_options', "option_name")) {
+            $frontPage = DB::table('wp_options')->where('option_name', 'page_on_front')->first();
+            $page = App\Models\WpPost::find($frontPage->option_value);
+            if ($page && strpos($page->post_content, $this->shortCode) !== false) {
+                $page->post_content = str_replace_last("\n\r" . $this->shortCode, '', $page->post_content);
+                $page->save();
+            }
         }
     }
 }
