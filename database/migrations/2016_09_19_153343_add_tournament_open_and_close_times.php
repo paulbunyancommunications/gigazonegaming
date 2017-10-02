@@ -14,11 +14,13 @@ class AddTournamentOpenAndCloseTimes extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-            for ($i = 0; $i < count($this->columns); $i++) {
-                $table->dateTime($this->columns[$i]);
-            }
-        });
+        if (!Schema::connection('mysql_champ')->hasColumns('players', $this->columns)) {
+            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+                for ($i = 0; $i < count($this->columns); $i++) {
+                    $table->dateTime($this->columns[$i]);
+                }
+            });
+        }
     }
 
     /**
@@ -28,11 +30,13 @@ class AddTournamentOpenAndCloseTimes extends Migration
      */
     public function down()
     {
-        for ($i = 0; $i < count($this->columns); $i++) {
-            if (Schema::connection('mysql_champ')->hasColumn('tournaments', $this->columns[$i])) {
-                Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) use ($i) {
-                    $table->dropColumn($this->columns[$i]);
-                });
+        if (Schema::connection('mysql_champ')->hasColumns('players', $this->columns)) {
+            for ($i = 0; $i < count($this->columns); $i++) {
+                if (Schema::connection('mysql_champ')->hasColumn('tournaments', $this->columns[$i])) {
+                    Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) use ($i) {
+                        $table->dropColumn($this->columns[$i]);
+                    });
+                }
             }
         }
     }
