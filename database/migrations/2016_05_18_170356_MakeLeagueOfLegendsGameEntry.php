@@ -15,14 +15,15 @@ class MakeLeagueOfLegendsGameEntry extends Migration
      */
     public function up()
     {
-        $game = Game::where('name', $this->name)->first();
-        if (!$game) {
-            $newGame = new Game();
-            $newGame->setAttribute('name', $this->name);
-            $newGame->setAttribute('title', 'League of Legends');
-            $newGame->setAttribute('uri', 'http://leagueoflegends.com/');
-            $newGame->save();
-
+        if (Schema::connection('mysql_champ')->hasTable('games')) {
+            $game = Game::where('name', $this->name)->first();
+            if (!$game) {
+                $newGame = new Game();
+                $newGame->setAttribute('name', $this->name);
+                $newGame->setAttribute('title', 'League of Legends');
+                $newGame->setAttribute('uri', 'http://leagueoflegends.com/');
+                $newGame->save();
+            }
         }
     }
 
@@ -33,7 +34,9 @@ class MakeLeagueOfLegendsGameEntry extends Migration
      */
     public function down()
     {
-        \App\Models\Championship\Game::where('name', $this->name)->delete();
+        if (Schema::connection('mysql_champ')->hasTable('games')) {
+            \App\Models\Championship\Game::where('name', $this->name)->delete();
+        }
 
     }
 }
