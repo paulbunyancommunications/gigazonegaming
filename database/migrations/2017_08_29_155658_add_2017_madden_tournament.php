@@ -27,59 +27,64 @@ class Add2017MaddenTournament extends Migration
     public function up()
     {
 
-        $m = new Mustache_Engine();
-        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
-        if (!Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
-            $tournament = new Tournament();
-            $tournament->name = $m->render($this->name, $getGame);
-            $tournament->title = $m->render($this->title, $getGame);
-            $tournament->max_players = $this->maxPlayers;
-            $tournament->max_teams = $this->maxTeams;
-            $tournament->game_id = $getGame->id;
-            $tournament->sign_up_open = $this->signUpOpen;
-            $tournament->sign_up_close = $this->signUpClose;
-            $tournament->occurring = $this->occurring;
+        if(
+            Schema::connection('mysql_champ')->hasTable('games') and
+            Schema::connection('mysql_champ')->hasTable('tournaments')
+        ) {
+            $m = new Mustache_Engine();
+            $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+            if (!Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
+                $tournament = new Tournament();
+                $tournament->name = $m->render($this->name, $getGame);
+                $tournament->title = $m->render($this->title, $getGame);
+                $tournament->max_players = $this->maxPlayers;
+                $tournament->max_teams = $this->maxTeams;
+                $tournament->game_id = $getGame->id;
+                $tournament->sign_up_open = $this->signUpOpen;
+                $tournament->sign_up_close = $this->signUpClose;
+                $tournament->occurring = $this->occurring;
 
-            // create store for form fields
-            $form = [
-                'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
-                'participate' => ['participate', '', 'hidden', 'yes'],
-                'tournament' => [
-                    'tournament',
-                    'required|exists:mysql_champ.tournaments,name',
-                    'hidden',
-                    $tournament->name
-                ],
-                'name' => [
-                    'Team Captain',
-                    'required',
-                    'text',
-                    ''
-                ],
-                'email' => [
-                    'Team Captain Email',
-                    'required|email',
-                    'email',
-                    ''
-                ],
-                'phone' => [
-                    'Team Captain Phone',
-                    'required',
-                    'tel',
-                    ''
-                ]];
-            $tournament->sign_up_form = json_encode($form);
+                // create store for form fields
+                $form = [
+                    'update-recipient' => ['update-recipient', '', 'hidden', 'yes'],
+                    'participate' => ['participate', '', 'hidden', 'yes'],
+                    'tournament' => [
+                        'tournament',
+                        'required|exists:mysql_champ.tournaments,name',
+                        'hidden',
+                        $tournament->name
+                    ],
+                    'name' => [
+                        'Team Captain',
+                        'required',
+                        'text',
+                        ''
+                    ],
+                    'email' => [
+                        'Team Captain Email',
+                        'required|email',
+                        'email',
+                        ''
+                    ],
+                    'phone' => [
+                        'Team Captain Phone',
+                        'required',
+                        'tel',
+                        ''
+                    ]];
+                $tournament->sign_up_form = json_encode($form);
 
-            // create tne form shortcode
-            $shortCode = new \App\Helpers\Frontend\ShortCode();
+                // create tne form shortcode
+                $shortCode = new \App\Helpers\Frontend\ShortCode();
 
-            $tournament->sign_up_form_shortcode = $shortCode->generateTournamentSignUpFormShortCode([
-                'tournament_name' => $tournament->name,
-                'fields' => $form,
-                'sign-up-open' => $tournament->sign_up_open,
-                'sign-up-close' => $tournament->sign_up_close,
-            ]);
-            $tournament->save();
+                $tournament->sign_up_form_shortcode = $shortCode->generateTournamentSignUpFormShortCode([
+                    'tournament_name' => $tournament->name,
+                    'fields' => $form,
+                    'sign-up-open' => $tournament->sign_up_open,
+                    'sign-up-close' => $tournament->sign_up_close,
+                ]);
+                $tournament->save();
+            }
         }
     }
 
@@ -90,10 +95,15 @@ class Add2017MaddenTournament extends Migration
      */
     public function down()
     {
-        $m = new Mustache_Engine();
-        $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
-        if (Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
-            Tournament::where('name', $m->render($this->name, $getGame))->first()->delete();
+        if(
+            Schema::connection('mysql_champ')->hasTable('games') and
+            Schema::connection('mysql_champ')->hasTable('tournaments')
+        ) {
+            $m = new Mustache_Engine();
+            $getGame = \App\Models\Championship\Game::where('name', $this->game)->first();
+            if (Tournament::where('name', $m->render($this->name, $getGame))->exists()) {
+                Tournament::where('name', $m->render($this->name, $getGame))->first()->delete();
+            }
         }
     }
 }
