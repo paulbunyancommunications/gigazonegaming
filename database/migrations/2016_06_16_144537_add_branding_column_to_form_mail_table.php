@@ -12,9 +12,11 @@ class AddBrandingColumnToFormMailTable extends Migration
      */
     public function up()
     {
-        Schema::table('form_mail', function (Blueprint $table) {
-            $table->addColumn('text', 'branding');
-        });
+        if (Schema::hasTable('form_mail') and !Schema::hasColumn('form_mail','branding' )) {
+            Schema::table('form_mail', function (Blueprint $table) {
+                $table->addColumn('text', 'branding');
+            });
+        }
     }
 
     /**
@@ -24,8 +26,10 @@ class AddBrandingColumnToFormMailTable extends Migration
      */
     public function down()
     {
-        Schema::table('form_mail', function (Blueprint $table) {
-            $table->dropColumn('branding');
-        });
+        if (Schema::hasTable('form_mail') and Schema::hasColumn('form_mail','branding' )) {
+            Schema::table('form_mail', function (Blueprint $table) {
+                $table->dropColumn('branding');
+            });
+        }
     }
 }
