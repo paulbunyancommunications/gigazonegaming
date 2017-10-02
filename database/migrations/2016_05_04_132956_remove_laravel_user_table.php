@@ -12,8 +12,7 @@ class RemoveLaravelUserTable extends Migration
      */
     public function up()
     {
-        $table = Schema::hasTable('users');
-        if($table) {
+        if (Schema::hasTable('users')) {
             Schema::drop('users');
         }
 
@@ -26,8 +25,7 @@ class RemoveLaravelUserTable extends Migration
      */
     public function down()
     {
-        $table = Schema::hasTable('users');
-        if(!$table) {
+        if (!Schema::hasTable('users')) {
             DB::query(
                 'CREATE TABLE `users` (
                   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
