@@ -19,14 +19,16 @@ class MakeMaddenNfl18GameIfItDoesNotExistAlready extends Migration
      */
     public function up()
     {
-        $exists = $this->exists();
-        if(!$exists) {
-            $overwatch = new Game();
-            $overwatch->name = $this->name;
-            $overwatch->title = $this->title;
-            $overwatch->uri = $this->uri;
-            $overwatch->description = $this->description;
-            $overwatch->save();
+        if(Schema::connection('mysql_champ')->hasTable('games')) {
+            $exists = $this->exists();
+            if (!$exists) {
+                $overwatch = new Game();
+                $overwatch->name = $this->name;
+                $overwatch->title = $this->title;
+                $overwatch->uri = $this->uri;
+                $overwatch->description = $this->description;
+                $overwatch->save();
+            }
         }
     }
 
@@ -37,12 +39,12 @@ class MakeMaddenNfl18GameIfItDoesNotExistAlready extends Migration
      */
     public function down()
     {
-        $exists = $this->exists();
-
-        if($exists) {
-            $exists->delete();
+        if(Schema::connection('mysql_champ')->hasTable('games')) {
+            $exists = $this->exists();
+            if ($exists) {
+                $exists->delete();
+            }
         }
-
     }
 
     /**
