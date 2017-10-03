@@ -19,7 +19,7 @@ p {
 }
 
 @include mq-phone {
-  @include base_typography(.825);
+  @include base_typography(.65);
 }
 
 
