@@ -99,17 +99,17 @@ foreach (File::allFiles(__DIR__ . '/Routes') as $partials) {
  */
 Route::group(['middleware' => ['WPAdmin']], function () {
 // Admin Page
-    Route::get('/GameDisplay/Admin','GameDisplay\AdminPageController@startGameDisplay');
+    Route::get('/gamedisplay/admin','GameDisplay\AdminPageController@startGameDisplay');
     Route::get('/GameDisplay/cache','GameDisplay\SimonCacheController@submitCache');
     Route::get('/GameDisplay/cacheChampions','GameDisplay\SimonCacheController@getChampions');
     Route::get('/GameDisplay/clear','GameDisplay\SimonCacheController@clearCache');
 // Champion Override Page
-    Route::get('/GameDisplay/override','GameDisplay\ChampionOverrideController@pageLoad');
+    Route::get('/gamedisplay/override','GameDisplay\ChampionOverrideController@pageLoad');
     Route::get('/GameDisplay/championsOverride','GameDisplay\SimonCacheController@cacheChampionOverride');
 });
 
 // Team View Display
-Route::get('/GameDisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
+Route::get('/gamedisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
 Route::get('/GameDisplay/CarouselUpdate','GameDisplay\GameDisplayController@carouselUpdate');
@@ -126,7 +126,7 @@ Route::get('/GameDisplay/getTeamName', function () {
     }
     return response()->json(false);
 });
-Route::get('/GameDisplay', function (){return view('/LeagueOfLegends/customerPage');});
+Route::get('/gamedisplay', function (){return view('/LeagueOfLegends/customerPage');});
 
 Route::get('/player/login',function(){
     return view('/playerUpdate/login')->withEmail("")->with('success',"");
