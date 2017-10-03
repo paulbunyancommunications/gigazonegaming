@@ -12,7 +12,7 @@ class AddGreetingFieldToFormMailTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('form_mail')) {
+        if (!Schema::hasColumn('form_mail','greeting')) {
             Schema::table('form_mail', function (Blueprint $table) {
                 $table->addColumn('text', 'greeting');
             });
@@ -26,7 +26,7 @@ class AddGreetingFieldToFormMailTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('form_mail')) {
+        if (Schema::hasColumn('form_mail','greeting')) {
             Schema::table('form_mail', function (Blueprint $table) {
                 $table->dropColumn('greeting');
             });
