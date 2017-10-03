@@ -12,7 +12,7 @@ class FormMailAddHeadColumn extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('form_mail')) {
+        if (!Schema::hasColumn('form_mail', 'head')) {
             Schema::table('form_mail', function (Blueprint $table) {
                 $table->addColumn('text', 'head');
             });
@@ -26,7 +26,7 @@ class FormMailAddHeadColumn extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('form_mail')) {
+        if (Schema::hasColumn('form_mail', 'head')) {
         Schema::table('form_mail', function (Blueprint $table) {
             $table->dropColumn('head');
         });
