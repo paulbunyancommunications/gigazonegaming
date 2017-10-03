@@ -35,7 +35,7 @@ class DbHelper extends CodeceptionModule
      */
     public function runMigration($I)
     {
-        $I->runShellCommand('php artisan migrate:refresh');
+        $I->runShellCommand('php artisan migrate');
     }
 
     /**
