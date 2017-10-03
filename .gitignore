@@ -50,7 +50,6 @@ coverage-checker.php
 node_modules/*
 public_html/bower_components/*
 ModelFactory.php.orig
-composer.lock
 build/packaging
 build/staging-deployment/build/packaging
 .mertrc
@@ -128,7 +127,6 @@ server.crt
 server.key
 update_docker_assets_file.sh
 AdvancedEditorUserGuide_1010.pdf
-<<<<<<< HEAD
 googlea13d41de2ed75e16.html
 .env.enc
 dock-helpers-jenkins.sh
@@ -149,9 +147,7 @@ public_html/LeagueOfLegendsDisplay/JS/jquery.mobile.custom/jquery.mobile.custom.
 /temp/
 /v8-compile-cache-0/
 /public_html/timestamp.php
-=======
 install.sh.old
->>>>>>> Update for install script
 !/tests/_output/records.html
 records.html
 phlint.phar

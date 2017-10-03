@@ -450,61 +450,69 @@ node {
 
 
         }
-        /**
-        * Archive files for deployment
-        */
-        stage('Deploy') {
+        // ====================================================================================
+        // This will create an archive of all the source files needed to deploy to the server
+        // ====================================================================================
+        stage('Archive') {
 
-            Globals.STAGE='Build: read ignore file'
-
-            startMessage(Globals.STAGE)
+            Globals.STAGE='Build: Creating Archive for Deployment'
             try {
+                sh "cd ${env.WORKSPACE}; composer install"
+
+                startMessage(Globals.STAGE)
+
+                // ====================================================================================
+                // Create an archive of the current SCM branch and save it to a tar.gz
+                // ====================================================================================
+
+
+                echo "Create build directory if it does not exist"
                 Globals.BUILD_FOLDER = "build-${BUILD_NUMBER}"
-                sh "cd ${env.WORKSPACE}"
-                def words = []
-                new File( '.gitignore' ).eachLine { line ->
-                    words << line
+                def archiveFolder = new File("${env.WORKSPACE}/${Globals.BUILD_FOLDER}")
+                // If it doesn't exist
+                if( !archiveFolder.exists() ) {
+                    archiveFolder.mkdirs()
                 }
-                String check = "NONE"
-                /**
+
+                echo "Create a archive of the current build in ${archiveFolder}"
+                sh "cd ${env.WORKSPACE}; git archive --format=tar.gz -o ${archiveFolder}/${Globals.BUILD_FOLDER}.tar.gz HEAD"
+
+                // extract new build file and remove the current tar.gz to add the other folders
+                sh "cd ${archiveFolder}; tar -zxf ${Globals.BUILD_FOLDER}.tar.gz; rm -f ${Globals.BUILD_FOLDER}.tar.gz"
+
+                // ====================================================================================
+                // Loop over the deployment.nonignore file (if it exists)
+                // and look if those folders are in the workspace. If they are
+                // then copy them to the archive folder.
+                // ====================================================================================
 
 
-            Globals.STAGE='Build: Archive files for deployment'
-
-            startMessage(Globals.STAGE)
-                if ("${SSH_TOKEN}" != "NONE"){
-
-                    // Zip up the current directory
-                    zip dir: '', glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
-
-                    // do any cleanups to build directory here
-                    // files
-                    sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/.env"
-                    sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/c3_error.log || true"
-                    sudo sh -c "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/Dockerfile"
-                    sudo sh -c "find ${env.WORKSPACE}/${Globals.BUILD_FOLDER} -name \"dock-*\" -type f -delete"
-                    //"database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"
-                    // folders
-                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/groovy"
-                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/tests"
-                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/temp"
-                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/node_modules"
-                    sudo sh -c "rm -rf ${env.WORKSPACE}/${Globals.BUILD_FOLDER}/database"
-
-                    // unzip folder into build folder
-                    unzip dir: "${Globals.BUILD_FOLDER}", glob: '', zipFile: "${Globals.BUILD_FOLDER}.zip"
-                    // get rud of the archive
-                    sh "rm -f ${env.WORKSPACE}/${Globals.BUILD_FOLDER}.zip"
+                echo "Add in the non ignored folders to the archive"
+                def nonIgnoresFile = new File("${env.WORKSPACE}/deployment.nonignore")
+                if (nonIgnoresFile.exists()) {
+                    def nonIgnoreLines = nonIgnoresFile.readLines()
+                    nonIgnoreLines.each { String nonIgnored ->
+                        // if folder exist locally then add it to the archive
+                        sh "if [ -d ${env.WORKSPACE}/${nonIgnored} ]; then cp -r ${env.WORKSPACE}/${nonIgnored}/ ${archiveFolder}/; fi;"
+                    }
                 }
-                **/
 
-            } catch (error) {
+                // recombine the new copied and the archived file from git into a new archived
+                sh "cd ${env.WORKSPACE}; tar --remove-files -zcf ${Globals.BUILD_FOLDER}.tar.gz ${archiveFolder}/;"
+                if( !archiveFolder.exists() ) {
+                    archiveFolder.mkdirs()
+                }
+                sh "cd ${env.WORKSPACE}; mv ${Globals.BUILD_FOLDER}.tar.gz ${archiveFolder}"
+
+                // ====================================================================================
+                // Now we have an archive that can be sent to the server.
+                // folder structure for deployment files in tar is WORKSPACE/build-BUILD_NUMBER/
+                // on the other side we'll rsync from that folder once deployment has taken place.
+                // ====================================================================================
+
+            } catch(error) {
                 errorMessage(Globals.STAGE, error.getMessage())
             }
-
-            echo "Artifacts copied to ${env.WORKSPACE}/${Globals.BUILD_FOLDER}"
-
-
             successMessage(Globals.STAGE)
         }
 
