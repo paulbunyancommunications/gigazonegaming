@@ -12,7 +12,7 @@ class UpdateUpdatesTableWithGeoLocation extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('update_recipients')) {
+        if (Schema::hasTable('update_recipients') and !Schema::hasColumns('update_recipients', ['geo_lat','geo_long'])) {
             Schema::table('update_recipients', function (Blueprint $table) {
                 $table->string('geo_lat');
                 $table->string('geo_long');
@@ -27,7 +27,7 @@ class UpdateUpdatesTableWithGeoLocation extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('update_recipients')) {
+        if (Schema::hasTable('update_recipients') and Schema::hasColumns('update_recipients', ['geo_lat','geo_long'])) {
             Schema::table('update_recipients', function (Blueprint $table) {
                 $table->dropColumn('geo_lat');
                 $table->dropColumn('geo_long');
