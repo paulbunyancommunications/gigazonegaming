@@ -13,9 +13,11 @@ class MakeChampionshipDefaultGame extends Migration
     public function up()
     {
         if (Schema::connection('mysql_champ')->hasTable('games')) {
-            $query = "INSERT INTO `champ_games` (`name`, `description`, `uri`, `created_at`, `updated_at`)
+            if(! \App\Models\Championship\Game::where("name", "=", "unknown")->exists() ) {
+                $query = "INSERT INTO `champ_games` (`name`, `description`, `uri`, `created_at`, `updated_at`)
             VALUES ('unknown', 'Unknown game', '', NULL, NULL);";
-            DB::connection('mysql_champ')->insert($query);
+                DB::connection('mysql_champ')->insert($query);
+            }
         }
     }
 
@@ -27,7 +29,9 @@ class MakeChampionshipDefaultGame extends Migration
     public function down()
     {
         if (Schema::connection('mysql_champ')->hasTable('games')) {
-            DB::connection('mysql_champ')->delete("DELETE FROM `champ_games` WHERE `name`='unknown'");
+            if( \App\Models\Championship\Game::where("name", "=", "unknown")->exists() ) {
+                DB::connection('mysql_champ')->delete("DELETE FROM `champ_games` WHERE `name`='unknown'");
+            }
         }
     }
 }
