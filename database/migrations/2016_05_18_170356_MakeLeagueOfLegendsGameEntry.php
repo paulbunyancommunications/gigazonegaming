@@ -16,8 +16,7 @@ class MakeLeagueOfLegendsGameEntry extends Migration
     public function up()
     {
         if (Schema::connection('mysql_champ')->hasTable('games')) {
-            $game = Game::where('name', $this->name)->first();
-            if (!$game) {
+            if (!Game::where('name', $this->name)->exists()) {
                 $newGame = new Game();
                 $newGame->setAttribute('name', $this->name);
                 $newGame->setAttribute('title', 'League of Legends');
@@ -35,7 +34,9 @@ class MakeLeagueOfLegendsGameEntry extends Migration
     public function down()
     {
         if (Schema::connection('mysql_champ')->hasTable('games')) {
-            \App\Models\Championship\Game::where('name', $this->name)->delete();
+            if (Game::where('name', $this->name)->exists()) {
+                \App\Models\Championship\Game::where('name', $this->name)->delete();
+            }
         }
 
     }
