@@ -14,7 +14,13 @@
     @include font-size(7.375 * $multiplier);
     @include line-height(5.125 * $multiplier);
     @include margin-bottom(1.375 * $multiplier);
+    &.uppercase {
+      @include font-size(7.0 * $multiplier);
+      @include line-height(4.875 * $multiplier);
+    }
   }
+
+
 
   h2 {
     font-family: $font-family-display;
@@ -22,6 +28,10 @@
     @include line-height(3 * $multiplier);
     @include margin-bottom(1.325 * $multiplier);
     font-weight: 700;
+    &.uppercase {
+      @include font-size(3.75 * $multiplier);
+      @include line-height(2.75 * $multiplier);
+    }
   }
 
   h3 {
@@ -58,9 +68,9 @@
 
   p {
     font-family: $font-family-sans-serif;
-    @include font-size(1.625 * $multiplier);
-    @include line-height(1.75 * $multiplier);
-    @include margin-bottom(1.75 * $multiplier);
+    @include font-size(1.875 * $multiplier);
+    @include line-height(2 * $multiplier);
+    @include margin-bottom(2 * $multiplier);
     color: $color-dark-gray;
   }
 
