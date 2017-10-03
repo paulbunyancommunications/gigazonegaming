@@ -12,7 +12,7 @@ class AddQueueColumnToFormMailTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('form_mail')) {
+        if (!Schema::hasColumn('form_mail','queue')) {
             Schema::table('form_mail', function (Blueprint $table) {
                 $table->boolean('queue');
             });
@@ -26,7 +26,7 @@ class AddQueueColumnToFormMailTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('form_mail')) {
+        if (Schema::hasColumn('form_mail','queue')) {
             Schema::table('form_mail', function (Blueprint $table) {
                 $table->dropColumn('queue');
             });
