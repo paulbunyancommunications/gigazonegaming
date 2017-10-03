@@ -19,8 +19,8 @@ class MakeGigazoneGamingChampionshopLolTournament extends Migration
         if (Schema::connection('mysql_champ')->hasTable('games')) {
             $game = Game::where('name', 'league-of-legends')->first();
             if (Schema::connection('mysql_champ')->hasTable('tournaments')) {
-                $tournament = Tournament::where('name', $this->name)->first();
-                if (!$tournament) {
+                if (!Tournament::where('name', $this->name)->exists()) {
+                    $tournament = Tournament::where('name', $this->name)->first();
                     $newTournament = new Tournament();
                     $newTournament->setAttribute('game_id', $game->id);
                     $newTournament->setAttribute('name', $this->name);
@@ -38,8 +38,8 @@ class MakeGigazoneGamingChampionshopLolTournament extends Migration
     public function down()
     {
         if (Schema::connection('mysql_champ')->hasTable('tournaments')) {
-            $tournament = Tournament::where('name', $this->name)->first();
-            if ($tournament) {
+            if (!Tournament::where('name', $this->name)->exists()) {
+                $tournament = Tournament::where('name', $this->name)->first();
                 Tournament::where('id', $tournament->id)->delete();
             }
         }
