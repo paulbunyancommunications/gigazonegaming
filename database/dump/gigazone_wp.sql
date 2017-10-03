@@ -54,6 +54,7 @@ CREATE TABLE `champ_games` (
   KEY `games_title_index` (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
 LOCK TABLES `champ_games` WRITE;
 /*!40000 ALTER TABLE `champ_games` DISABLE KEYS */;
 
