@@ -27,6 +27,7 @@ class MakeChampionshipForeignKeys extends Migration
         if (!Schema::connection('mysql_champ')->hasColumn('players', 'team_id')) {
             Schema::connection('mysql_champ')->table('players', function (Blueprint $table) {
                 $table->integer('team_id')->unsigned();
+                $table->foreign('team_id')->references('id')->on('teams');
             });
         }
 
@@ -58,9 +59,9 @@ class MakeChampionshipForeignKeys extends Migration
      */
     public function down()
     {
-        if (Schema::connection('mysql_champ')->hasColumn('tournaments', 'game_id')) {
-            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
-                $table->dropForeign('tournaments_game_id_foreign');
+        if (Schema::connection('mysql_champ')->hasColumn('individual_players', 'game_id')) {
+            Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
+                $table->dropForeign('individual_players_game_id_foreign');
                 $table->dropColumn(['game_id']);
             });
         }
@@ -76,9 +77,9 @@ class MakeChampionshipForeignKeys extends Migration
                 $table->dropColumn(['tournament_id']);
             });
         }
-        if (Schema::connection('mysql_champ')->hasColumn('individual_players', 'game_id')) {
-            Schema::connection('mysql_champ')->table('individual_players', function (Blueprint $table) {
-                $table->dropForeign('individual_players_game_id_foreign');
+        if (Schema::connection('mysql_champ')->hasColumn('tournaments', 'game_id')) {
+            Schema::connection('mysql_champ')->table('tournaments', function (Blueprint $table) {
+                $table->dropForeign('tournaments_game_id_foreign');
                 $table->dropColumn(['game_id']);
             });
         }
