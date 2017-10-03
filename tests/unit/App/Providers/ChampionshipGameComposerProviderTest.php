@@ -24,22 +24,14 @@ class ChampionshipGameComposerProviderTest extends \TestCase
     public function setUp()
     {
         parent::setUp();
-        exec('php artisan migrate:refresh');
     }
 
     public function tearDown()
     {
         parent::tearDown();
         Mockery::close();
-
-
     }
-
-    public static function tearDownAfterClass()
-    {
-        exec('php artisan migrate:refresh');
-    }
-
+    
     /**
      * Test getting the result of the ChampionshipGameComposerProvider::teams method
      * @test

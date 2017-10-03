@@ -22,7 +22,7 @@ class HomeRouteTest extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
+
     }
     
     /**

@@ -21,7 +21,7 @@ class Acceptance extends \Codeception\Module
 
     public function _beforeSuite($settings = [])
     {
-        exec('php artisan migrate:refresh');
+
     }
 
     public static function loginToWordpress(\AcceptanceTester $I, $user, $pass, $maxAttempts = 10)
