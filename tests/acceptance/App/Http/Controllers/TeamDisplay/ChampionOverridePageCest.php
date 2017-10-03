@@ -11,7 +11,7 @@ class ChampionOverridePageCest extends \BaseAcceptance
         parent::_before($I);
         $this->populateDB($I);
         $I->loginToWordpress($I, "admin","password",3);
-        $I->amOnPage('/app/GameDisplay/override');
+        $I->amOnPage('/app/gamedisplay/override');
         $I->waitForJs('return jQuery.active == 0', 10);
     }
 

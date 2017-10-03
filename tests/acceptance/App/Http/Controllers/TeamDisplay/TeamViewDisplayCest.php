@@ -50,13 +50,13 @@ class TeamViewDisplayCest extends \BaseAcceptance
     public function seeTeam1Display(AcceptanceTester $I){
         $I->wantTo('See that the default page is loaded for team1 since there is no cache for team1');
 
-        $I->amOnPage('/app/GameDisplay/team1');
+        $I->amOnPage('/app/gamedisplay/team1');
         $I->see('Please Wait For Game To Begin', 'h1');
     }
     public function seeTeam2Display(AcceptanceTester $I){
         $I->wantTo('See that the default page is loaded for team2 since there is no cache for team2');
 
-        $I->amOnPage('/app/GameDisplay/team2');
+        $I->amOnPage('/app/gamedisplay/team2');
         $I->see('Please Wait For Game To Begin', 'h1');
     }
 
@@ -65,7 +65,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams stats displayed. Also submit champion Override and see champions loaded into the page');
 
         //Cache team data
-        $I->amOnPage('/app/GameDisplay/Admin');
+        $I->amOnPage('/app/gamedisplay/admin');
         $I->waitForJs('return jQuery.active == 0', 10);
         $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
         $I->selectOption('#Tournament', 'Tester Tournament');
@@ -77,9 +77,9 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->waitForText('UPDATED', 10, '.console-header');
 
         //See team data on pages team1 and team2
-        $I->amOnPage('/app/GameDisplay/team1');
+        $I->amOnPage('/app/gamedisplay/team1');
         $I->waitForText('That Team', 15, 'h1');
-        $I->amOnPage('/app/GameDisplay/team2');
+        $I->amOnPage('/app/gamedisplay/team2');
         $I->waitForText('Team Awesome', 15, 'h1');
 
         //Select champs team 1
@@ -89,11 +89,11 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $this->_cacheChampionData('Team 2');
 
         //see champs on team 1
-        $I->amOnPage('/app/GameDisplay/team1');
+        $I->amOnPage('/app/gamedisplay/team1');
         $I->waitForText('Ashe', 15, 'h3');
 
         //see champs on team 2
-        $I->amOnPage('/app/GameDisplay/team2');
+        $I->amOnPage('/app/gamedisplay/team2');
         $I->waitForText('Jinx', 15, 'h3');
     }
     public function seeTeam1AndTeam2DisplayedOnCustomerPage(AcceptanceTester $I)
@@ -101,7 +101,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams names on the customer page');
 
         //Cache team data
-        $I->amOnPage('/app/GameDisplay/Admin');
+        $I->amOnPage('/app/gamedisplay/admin');
         $I->waitForJs('return jQuery.active == 0', 10);
         $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
         $I->selectOption('#Tournament', 'Tester Tournament');
@@ -112,7 +112,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->click('Submit');
         $I->waitForText('UPDATED', 15, '.console-header');
 
-        $I->amOnPage('/app/GameDisplay');
+        $I->amOnPage('/app/gamedisplay');
         $I->waitForText('That Team',15,'#team1');
         $I->see('Team Awesome','#team2');
     }
@@ -121,7 +121,7 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->wantTo('Create Cache for team1 and team2 TeamDisplay and see the teams stats displayed in the mobile view');
 
         //Cache team data
-        $I->amOnPage('/app/GameDisplay/Admin');
+        $I->amOnPage('/app/gamedisplay/admin');
         $I->waitForJs('return jQuery.active == 0', 10);
         $I->executejs("$.ajaxSetup({headers: {\"X-CSRF-TOKEN\": $(\"#hiddenToken\").text(),'Testing': true}});");
         $I->selectOption('#Tournament', 'Tester Tournament');
@@ -133,7 +133,8 @@ class TeamViewDisplayCest extends \BaseAcceptance
         $I->waitForText('UPDATED', 10, '.console-header');
 
         //See team data on pages team1 and team2
-        $I->amOnPage('/app/GameDisplay/team1');
+        //Know that in the future this could change
+        $I->amOnPage('/app/gamedisplay/team1');
         $I->resizeWindow(360, 862);
         $I->see('KingMorpheus2131','.summonerName');
         $I->click('.carousel-control-next');
