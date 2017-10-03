@@ -67,6 +67,7 @@ class Api{
                 break;
         }
     }
+
     /**Injects summoner and profiles this api for further requests
      * @param $summoner, $preFill
      */
@@ -83,6 +84,7 @@ class Api{
             $this->requestChampionMasterData();
         }
     }
+
     /**
      *Gets Current version of Data Dragon so that we can grabe the most updated images from there URL
      */
@@ -92,6 +94,7 @@ class Api{
         $info = $this->apiRequest($Url);
         $this->DDragonVersion = $info[0];
     }
+
     /**
      * Gets the initial summoner static data with in one request to then be parsed latter by
      * getSoloRankedWinLoss(), getSoloRank(), getFLEXRankedWinLoss(), getFLEXRank()
@@ -108,6 +111,7 @@ class Api{
             $this->LeagueV3Json = $Info;
         }
     }
+
     /**
      *When the api is injected this method is called to get the initial ID and Icon ID need to make requests for the summoner
      */
@@ -139,6 +143,10 @@ class Api{
         }
         #sets summoner ID for further use with the api.
     }
+
+    /**
+     *Request mastrie data so that we can receive the json of the top 3 champions for this player.
+     */
     public function requestChampionMasterData(){
         if(Cache::has($this->summonerID.'MasterieData')){
             $this->championMasteries = Cache::get($this->summonerID.'MasterieData');
@@ -152,6 +160,7 @@ class Api{
             $this->championMasteries = $Info;
         }
     }
+
     /**
      * Returns True if summoner is in game
      * @return bool
@@ -165,6 +174,12 @@ class Api{
         }
         return $this->currentGameStatus;
     }
+
+
+    /**
+     * @return array
+     * Sets all attributes that should be stored when serialized.
+     */
     public function __sleep()
     {
         return array('summoner', 'summonerID', 'apiKey', 'counter');
@@ -172,12 +187,13 @@ class Api{
 # Setters
 #----------------------------------------------------------------------
     /**
-     * @param mixed $apiKey
+     * Grabs and sets the api key from env
      */
     public function setApiKey()
     {
         $this->apiKey = env("RIOT_API_KEY1", 'null');
     }
+
     /**
      * @param mixed $summoner
      */
@@ -185,6 +201,10 @@ class Api{
     {
         $this->summoner = $summoner;
     }
+
+    /**
+     *Grabs the champion id this player is playing so that we can then determine the name of that champion.
+     */
     public function setChampionId(){
         foreach($this->currentGameInfo->participants as $player){
             if($player->summonerId == $this->summonerID){
@@ -192,8 +212,10 @@ class Api{
             }
         }
     }
+
     /**
      * @param $ChampionId
+     * Checks storage/app/Champions/ChampionNamesToId.bin for name and if not present will make another request to api to get update info
      */
     Public function setChampionName($ChampionId){
         $data = '';
@@ -399,11 +421,15 @@ class Api{
     {
         return $this->DDragonVersion;
     }
+
+    /**
+     * @return mixed
+     */
     public function getChampionMasteries(){
         return $this->championMasteries;
     }
     /**
-     *The top 3 champions in order from rank [1]to [3]
+     *The top 3 champions in order from rank [1] to [3]
      * Returns two arrays. [0] is the champion Icon [1] is the champion splash art
      */
     public function getTop3Champions(){

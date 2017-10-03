@@ -59,14 +59,14 @@ class GameDisplayControllerTest extends \TestCase
     }
 
     public function testTeamViewDisplayWithNoCacheForTeam1ShouldReturnAltPageWithSpecificTitleForTeam1(){
-        $response = $this->call('GET', '/GameDisplay/team1');
+        $response = $this->call('GET', '/gamedisplay/team1');
         $this->assertSame($response->getStatusCode(),200);
         $title = explode("</Title>", explode('<Title>',$response->getContent())[1])[0];
         $this->assertSame($title, "Loading Team Display");
     }
 
     public function testTeamViewDisplayWithNoCacheForTeam2ShouldReturnAltPageWithSpecificTitleForTeam2(){
-        $response = $this->call('GET', '/GameDisplay/team2');
+        $response = $this->call('GET', '/gamedisplay/team2');
 
         $this->assertSame($response->getStatusCode(),200);
         $title = explode("</Title>", explode('<Title>',$response->getContent())[1])[0];
@@ -76,7 +76,7 @@ class GameDisplayControllerTest extends \TestCase
     public function testTeamViewDisplayWithCacheForTeam1ShouldReturnViewWithSpecificDataForTeam1(){
         $this->cacheTeam();
 
-        $response = $this->call('GET', '/GameDisplay/team1');
+        $response = $this->call('GET', '/gamedisplay/team1');
         $content = $response->getOriginalContent();
         $data = $content->getData();
         foreach($data as $key => $value){
@@ -88,7 +88,7 @@ class GameDisplayControllerTest extends \TestCase
     public function testTeamViewDisplayWithCacheForTeam2ShouldReturnViewWithSpecificDataForTeam2(){
         $this->cacheTeam();
 
-        $response = $this->call('GET', '/GameDisplay/team2');
+        $response = $this->call('GET', '/gamedisplay/team2');
         $content = $response->getOriginalContent();
         $data = $content->getData();
 
@@ -118,40 +118,40 @@ class GameDisplayControllerTest extends \TestCase
     }
     public function testUpdateDataShouldReturnFalseForPageReloadWithCacheAndNoUpdatedDataForTeam1(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team1');
+        $this->call('GET', '/gamedisplay/team1');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team1', 'checkChamp' => true]);
         $this->assertSame($response->getOriginalContent()[0], 'false');
     }
     public function testUpdateDataShouldReturnFalseWithNoCacheAndNoUpdatedDataForTeam2(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team2');
+        $this->call('GET', '/gamedisplay/team2');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team2', 'checkChamp' => true]);
         $this->assertSame($response->getOriginalContent()[0], 'false');
     }
     public function testUpdateDataShouldReturnTrueForPageReloadWithCacheAndUpdatedDataForTeam1(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team1');
+        $this->call('GET', '/gamedisplay/team1');
         $this->cacheTeam();
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team1', 'checkChamp' => true]);
         $this->assertSame($response->getOriginalContent()[0], 'true');
     }
     public function testUpdateDataShouldReturnTrueForPageReloadWithCacheAndUpdatedDataForTeam2(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team2');
+        $this->call('GET', '/gamedisplay/team2');
         $this->cacheTeam();
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team2', 'checkChamp' => true]);
         $this->assertSame($response->getOriginalContent()[0], 'true');
     }
     public function testUpdateDataShouldReturnTrueForPageReloadWithCacheClearedForTeam1(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team1');
+        $this->call('GET', '/gamedisplay/team1');
         exec('php artisan cache:clear');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team1', 'checkChamp' => true]);
         $this->assertSame($response->getOriginalContent()[0], 'true');
     }
     public function testUpdateDataShouldReturnTrueForPageReloadWithCacheClearedForTeam2(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team2');
+        $this->call('GET', '/gamedisplay/team2');
         exec('php artisan cache:clear');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team2', 'checkChamp' => true]);
         $this->assertSame($response->getOriginalContent()[0], 'true');
@@ -159,7 +159,7 @@ class GameDisplayControllerTest extends \TestCase
 
     public function testUpdateDataShouldReturnFalseOnChampionWhenThereIsNoCacheForChampionsForTeam1(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team1');
+        $this->call('GET', '/gamedisplay/team1');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team1', 'checkChamp' => 'true']);
         $this->assertSame($response->getOriginalContent()[1], 'false');
         $this->assertSame($response->getOriginalContent()[2], 'false');
@@ -167,7 +167,7 @@ class GameDisplayControllerTest extends \TestCase
     }
     public function testUpdateDataShouldReturnFalseOnChampionWhenThereIsNoCacheForChampionsForTeam2(){
         $this->cacheTeam();
-        $this->call('GET', '/GameDisplay/team2');
+        $this->call('GET', '/gamedisplay/team2');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team2', 'checkChamp' => 'true']);
         $this->assertSame($response->getOriginalContent()[1], 'false');
         $this->assertSame($response->getOriginalContent()[2], 'false');
@@ -176,7 +176,7 @@ class GameDisplayControllerTest extends \TestCase
     public function testUpdateDataShouldReturnTrueOnChampionWhenThereIsCacheForChampionsForTeam1(){
         $this->cacheTeam();
         $this->cacheChampions('1');
-        $this->call('GET', '/GameDisplay/team1');
+        $this->call('GET', '/gamedisplay/team1');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team1', 'checkChamp' => 'true']);
         $this->assertSame($response->getOriginalContent()[1], [
             "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Garen_0.jpg",
@@ -190,7 +190,7 @@ class GameDisplayControllerTest extends \TestCase
     public function testUpdateDataShouldReturnTrueOnChampionWhenThereIsCacheForChampionsForTeam2(){
         $this->cacheTeam();
         $this->cacheChampions('2');
-        $this->call('GET', '/GameDisplay/team2');
+        $this->call('GET', '/gamedisplay/team2');
         $response = $this->call('GET', '/GameDisplay/Update',['team' => 'team2', 'checkChamp' => 'true']);
         $this->assertSame($response->getOriginalContent()[1], [
             "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Garen_0.jpg",

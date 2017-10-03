@@ -32,7 +32,7 @@
     <button class="startButton startButtonDisabled" id="submit" disabled onclick="submitCache();">Submit</button>
     <div id="loader" class="hidden"></div>
     <div id="buttonContainer">
-        <div class="button-Sub-Container"><button id="championOverride" onclick="window.open('/app/GameDisplay/override')">Champion Override</button></div>
+        <div class="button-Sub-Container"><button id="championOverride" onclick="window.open('/app/gamedisplay/override')">Champion Override</button></div>
         <div class="button-Sub-Container"><button id="getChampions" onclick="getChampions();">Get Champions</button></div>
         <div class="button-Sub-Container"><button id="clearCache" onclick="clearCache();">Clear Cache</button></div>
     </div>
