@@ -68,7 +68,7 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     */
     protected function resetDBSignUp(AcceptanceTester $I)
     {
-        exec('php artisan migrate:refresh');
+
     }
     /**
      * @param AcceptanceTester $I

@@ -63,7 +63,7 @@ class TeamRequest extends Request
                 if(isset($this->tournament_id) and $this->tournament_id!=null) {
                     $requested_tournament_id = intval($this->tournament_id);
                 }
-                if($this->route()->team_id != null) {
+                if($this->route() != null and $this->route()->team_id != null) {
                     if (isset($this->route()->team_id->name) and $this->route()->team_id->name != null) {
                         $original_name = $this->route()->team_id->name;
                     }
@@ -74,7 +74,6 @@ class TeamRequest extends Request
                         $team_id = $this->route()->team_id->id;
                     }
                 }
-//                dd($this->route(),$team_id, $requested_tournament_id, $original_tournament_id, $original_name, $requested_name);
                 if($original_name == $requested_name and $original_tournament_id == $requested_tournament_id){ //same name, same tournament
                     return [
                         'name' => 'required',

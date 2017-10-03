@@ -187,12 +187,47 @@ class GameTest extends \TestCase
      *
      * @test
      */
-    public function it_deletes_tournament_when_deleted()
+    public function it_deletes_all_child_tournaments_when_a_game_is_deleted()
     {
-        $game = factory(Game::class)->create();
-        $tournament = factory(Tournament::class)->create(['game_id' => $game->id]);
+        $gameName = "delete me game";
+        $tournamentName = "delete me team";
+        codecept_debug(Game::where("name", "=", $gameName)->exists());
+        codecept_debug("game if");
+        if(!Game::where("name", "=", $gameName)->exists()){
+            codecept_debug("game doesnt exists");
+            $game = new Game();
+            $game->name = $gameName;
+            $game->title = "title " . $gameName;
+            $game->description = "description " . $gameName;
+            $game->uri = "http://www." . str_replace(' ', '', $gameName) . "com";
+            $game->save();
+        }
+        codecept_debug("game first");
+        $game = Game::where("name", "=", $gameName)->first();
+        codecept_debug("game id");
+        $gameId = $game->id;
+        if(!Tournament::where("name", "=", $tournamentName)->exists()) {
+            codecept_debug("tournament doesnt exists");
+            $tournament = new Tournament();
+            $tournament->name = $gameName;
+            $tournament->title = "title " . $tournamentName;
+            $tournament->max_players = 6;
+            $tournament->max_teams = 20;
+            $tournament->max_teams = 20;
+            $tournament->game_id = $gameId;
+            $tournament->sign_up_open = Carbon::now()->subDays(3);
+            $tournament->sign_up_close = Carbon::now()->addDays(4);
+            $tournament->occurring = Carbon::now()->addDays(5);
+            $tournament->overflow = 1;
+            $tournament->save();
+        }
+        codecept_debug("tournament first");
+        $tournament = Tournament::where("name", "=", $gameName)->first();
+        codecept_debug($tournament);
 
+        codecept_debug("game delete");
         $game->delete();
+        codecept_debug(Tournament::find($tournament->id));
         $this->assertNull(Tournament::find($tournament->id));
     }
 }

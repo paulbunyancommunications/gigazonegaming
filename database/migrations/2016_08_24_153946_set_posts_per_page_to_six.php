@@ -12,13 +12,15 @@ class SetPostsPerPageToSix extends Migration
      */
     public function up()
     {
-        $setting = DB::table('wp_options')
-            ->where('option_name', 'posts_per_page')
-            ->first();
-        if ($setting && $setting->option_value != 6) {
-            $option = \App\Models\WpOption::find($setting->option_id);
-            $option->option_value = 6;
-            $option->save();
+        if (Schema::hasTable('wp_options') and Schema::hasColumn('wp_options', 'option_name')) {
+            $setting = DB::table('wp_options')
+                ->where('option_name', '=','posts_per_page')
+                ->first();
+            if ($setting && $setting->option_value != 6) {
+                $option = \App\Models\WpOption::find($setting->option_id);
+                $option->option_value = 6;
+                $option->save();
+            }
         }
     }
 
@@ -29,13 +31,15 @@ class SetPostsPerPageToSix extends Migration
      */
     public function down()
     {
-        $setting = DB::table('wp_options')
-            ->where('option_name', 'posts_per_page')
-            ->first();
-        if ($setting && $setting->option_value != 10) {
-            $option = \App\Models\WpOption::find($setting->option_id);
-            $option->option_value = 10;
-            $option->save();
+        if (Schema::hasTable('wp_options') and Schema::hasColumn('wp_options', 'option_name')) {
+            $setting = DB::table('wp_options')
+                ->where('option_name', '=','posts_per_page')
+                ->first();
+            if ($setting && $setting->option_value != 10) {
+                $option = \App\Models\WpOption::find($setting->option_id);
+                $option->option_value = 10;
+                $option->save();
+            }
         }
     }
 }

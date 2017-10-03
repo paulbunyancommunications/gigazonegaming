@@ -12,9 +12,18 @@ class AddTeamNameTournamentIdConstraint extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->unique(['name','tournament_id']);
-        });
+        if(Schema::connection('mysql_champ')->hasColumns('teams',['name','tournament_id'])) {
+            Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
+                try {
+                    $table->unique(['name', 'tournament_id'])->unsigned()->nullable();
+                }catch (\Illuminate\Database\QueryException $exception){
+                    echo "the key already existed";
+                } catch (\Exception $e) {
+                    // something went wrong elsewhere, handle gracefully
+                    echo "the key game_id existed but there was some other error";
+                }
+            });
+        }
     }
 
     /**
@@ -24,8 +33,17 @@ class AddTeamNameTournamentIdConstraint extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
-            $table->dropUnique('teams_name_tournament_id_unique');
-        });
+        if(Schema::connection('mysql_champ')->hasColumns('teams',['name','tournament_id'])) {
+            Schema::connection('mysql_champ')->table('teams', function (Blueprint $table) {
+                try {
+                    $table->dropUnique('teams_name_tournament_id_unique');
+                }catch (\Illuminate\Database\QueryException $exception){
+                    echo "the key did not existed";
+                } catch (\Exception $e) {
+                    // something went wrong elsewhere, handle gracefully
+                    echo "the key game_id existed but there was some other error";
+                }
+            });
+        }
     }
 }

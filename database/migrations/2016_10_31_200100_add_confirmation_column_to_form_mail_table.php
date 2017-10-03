@@ -12,9 +12,11 @@ class AddConfirmationColumnToFormMailTable extends Migration
      */
     public function up()
     {
-        Schema::table('form_mail', function (Blueprint $table) {
-            $table->boolean('confirmation');
-        });
+        if (!Schema::hasColumn('form_mail', 'confirmation')) {
+            Schema::table('form_mail', function (Blueprint $table) {
+                $table->boolean('confirmation');
+            });
+        }
     }
 
     /**
@@ -24,8 +26,10 @@ class AddConfirmationColumnToFormMailTable extends Migration
      */
     public function down()
     {
-        Schema::table('form_mail', function (Blueprint $table) {
-            $table->dropColumn('confirmation');
-        });
+        if (Schema::hasColumn('form_mail', 'confirmation')) {
+            Schema::table('form_mail', function (Blueprint $table) {
+                $table->dropColumn('confirmation');
+            });
+        }
     }
 }

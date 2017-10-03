@@ -12,12 +12,14 @@ class CreateTournamentsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->create('tournaments', function (Blueprint $table) {
-            $table->engine = "InnoDB";
-            $table->increments('id');
-            $table->string('name')->index()->unique();
-            $table->timestamps();
-        });
+        if (!Schema::connection('mysql_champ')->hasTable('tournaments')) {
+            Schema::connection('mysql_champ')->create('tournaments', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+                $table->increments('id');
+                $table->string('name')->index()->unique();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -27,6 +29,8 @@ class CreateTournamentsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->drop('tournaments');
+        if (Schema::connection('mysql_champ')->hasTable('tournaments')) {
+            Schema::connection('mysql_champ')->drop('tournaments');
+        }
     }
 }

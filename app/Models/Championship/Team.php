@@ -2,6 +2,7 @@
 
 namespace App\Models\Championship;
 
+use App\Http\Requests\TeamRequest;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Championship\Relation\PlayerRelationable;
 use App\Models\Championship\Relation\PlayerRelation;
@@ -48,7 +49,6 @@ class Team extends Model
                     ])->delete();
                 }
             }
-            $team->delete();
         });
     }
 

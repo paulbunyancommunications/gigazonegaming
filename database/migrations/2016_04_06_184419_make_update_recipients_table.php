@@ -12,13 +12,15 @@ class MakeUpdateRecipientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('update_recipients', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('email');
-            $table->boolean('participate')->default(0);
-            $table->timestamps();
-            $table->engine = 'InnoDB';
-        });
+        if (!Schema::hasTable('update_recipients')) {
+            Schema::create('update_recipients', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('email');
+                $table->boolean('participate')->default(0);
+                $table->timestamps();
+                $table->engine = 'InnoDB';
+            });
+        }
     }
 
     /**
@@ -28,6 +30,8 @@ class MakeUpdateRecipientsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('update_recipients');
+        if (Schema::hasTable('update_recipients')) {
+            Schema::drop('update_recipients');
+        }
     }
 }

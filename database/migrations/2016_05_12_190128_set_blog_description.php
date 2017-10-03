@@ -11,13 +11,15 @@ class SetBlogDescription extends Migration
      */
     public function up()
     {
-        $setting = DB::table('wp_options')
-            ->where('option_name', 'blogdescription')
-            ->first();
-        if ($setting && $setting->option_value === '') {
-            $option = \App\Models\WpOption::find($setting->option_id);
-            $option->option_value = 'Gigazone Gaming Championship';
-            $option->save();
+        if (Schema::hasTable('wp_options') and Schema::hasColumn('wp_options', 'option_name')) {
+            $setting = DB::table('wp_options')
+                ->where('option_name', 'blogdescription')
+                ->first();
+            if ($setting && $setting->option_value === '') {
+                $option = \App\Models\WpOption::find($setting->option_id);
+                $option->option_value = 'Gigazone Gaming Championship';
+                $option->save();
+            }
         }
     }
 

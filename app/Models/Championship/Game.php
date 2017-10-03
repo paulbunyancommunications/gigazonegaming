@@ -61,7 +61,6 @@ class Game extends Model
                         ])->delete();
                     }
                 }
-                $game->delete();
             }
 
         });

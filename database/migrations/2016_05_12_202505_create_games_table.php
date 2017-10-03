@@ -12,15 +12,17 @@ class CreateGamesTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_champ')->create('games', function (Blueprint $table) {
-            $table->engine = "InnoDB";
-            $table->increments('id');
-            $table->string('name')->index()->unique();
-            $table->string('title')->index();
-            $table->text('description');
-            $table->string('uri');
-            $table->timestamps();
-        });
+        if (!Schema::connection('mysql_champ')->hasTable('games')) {
+            Schema::connection('mysql_champ')->create('games', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+                $table->increments('id');
+                $table->string('name')->index()->unique();
+                $table->string('title')->index();
+                $table->text('description');
+                $table->string('uri');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,6 +32,8 @@ class CreateGamesTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->drop('games');
+        if (Schema::connection('mysql_champ')->hasTable('games')) {
+            Schema::connection('mysql_champ')->drop('games');
+        }
     }
 }

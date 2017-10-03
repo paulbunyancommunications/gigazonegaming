@@ -34,7 +34,7 @@ class BaseIntegration extends \TestCase
     {
         parent::setUp();
         $this->faker = Factory::create();
-        exec('php artisan migrate:refresh');
+
     }
 
     /**
@@ -43,6 +43,6 @@ class BaseIntegration extends \TestCase
     public function tearDown()
     {
         parent::tearDown();
-        exec('php artisan migrate:refresh');
+
     }
 }

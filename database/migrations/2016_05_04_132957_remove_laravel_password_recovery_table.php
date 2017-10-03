@@ -12,8 +12,7 @@ class RemoveLaravelPasswordRecoveryTable extends Migration
      */
     public function up()
     {
-        $table = Schema::hasTable('password_resets');
-        if($table) {
+        if (Schema::hasTable('password_resets')) {
             Schema::drop('password_resets');
         }
 
@@ -26,8 +25,7 @@ class RemoveLaravelPasswordRecoveryTable extends Migration
      */
     public function down()
     {
-        $table = Schema::hasTable('password_resets');
-        if(!$table) {
+        if (!Schema::hasTable('password_resets')) {
             DB::query(
                 'CREATE TABLE `password_resets` (
                   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

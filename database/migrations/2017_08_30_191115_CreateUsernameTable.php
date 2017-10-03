@@ -12,18 +12,17 @@ class CreateUsernameTable extends Migration
      */
     public function up()
     {
-        if(Schema::connection('mysql_champ')->hasTable('usernames')) {
-            Schema::connection('mysql_champ')->drop('usernames');
+        if(!Schema::connection('mysql_champ')->hasTable('usernames')) {
+            Schema::connection('mysql_champ')->create('usernames', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+                $table->increments('id');
+                $table->string('username')->unique();
+                $table->string('avatar_url');
+                $table->integer('player_id');
+                $table->integer('tournament_id');
+                $table->timestamps();
+            });
         }
-        Schema::connection('mysql_champ')->create('usernames', function (Blueprint $table) {
-            $table->engine = "InnoDB";
-            $table->increments('id');
-            $table->string('username')->unique();
-            $table->string('avatar_url');
-            $table->integer('player_id');
-            $table->integer('tournament_id');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -33,6 +32,8 @@ class CreateUsernameTable extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_champ')->drop('usernames');
+        if(!Schema::connection('mysql_champ')->hasTable('usernames')) {
+            Schema::connection('mysql_champ')->drop('usernames');
+        }
     }
 }
