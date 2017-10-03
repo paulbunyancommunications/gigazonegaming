@@ -116,13 +116,13 @@ class PlayersController extends Controller
      */
     public function update(PlayerRequest $request, Player $player) //have to update it to my request
     {
-        $verify = new VerifySummonerName();
-        if(!$verify->VerifySummonerName($request["username"])){
-            return Redirect::back()
-                ->withInput()
-                ->with('error', trans('Summoner Name Error - '.$request["username"].' - is not a real summoner name'))
-                ->with("thePlayer", $player);
-        }
+//        $verify = new VerifySummonerName();
+//        if(!$verify->VerifySummonerName($request["username"])){
+//            return Redirect::back()
+//                ->withInput()
+//                ->with('error', trans('Summoner Name Error - '.$request["username"].' - is not a real summoner name'))
+//                ->with("thePlayer", $player);
+//        }
         list($request, $theAssociation) = $this->UserCleanUp($request);
 
         list($playerArray, $success, $errors) = $this->getPlayerInfoAndErrors($request, $player, $theAssociation);
@@ -251,7 +251,6 @@ class PlayersController extends Controller
         for ($i=0; $i < count(Player::routables()); $i++) {
             // routable should be lowercase to match the incoming input
             $routable = strtolower(Player::routables()[$i]);
-
             // if this routable exist and is an array
             // then loop through and catch values
             // that are not defaults.
@@ -259,12 +258,12 @@ class PlayersController extends Controller
 
                 foreach ($cleanedRequest[$routable . '_id'] as $k => $v) {
                     if (is_numeric($v)) {
-                        $theAssociationRequest[$routable] = $v;
+                        $theAssociationRequest[$routable][] = $v;
                     }
                 }
 
             } elseif (isset($cleanedRequest[$routable . '_id']) && is_string($cleanedRequest[$routable . '_id'])) {
-                $theAssociationRequest[$routable] = $cleanedRequest[$routable . '_id'];
+                $theAssociationRequest[$routable][] = $cleanedRequest[$routable . '_id'];
             }
         }
 
