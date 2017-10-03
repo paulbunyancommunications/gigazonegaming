@@ -60,19 +60,18 @@ class Tournament extends Model
 
         static::deleting(function ($tournament) {
             /** @var Tournament $tournament */
-
             $hasTable = false;
             if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
                 $hasTable = true;
             }
-//        dd($game);
             if ($tournament) {
                 $teams = $tournament->teams();
-                foreach ($teams as $team){
+                foreach ($teams as $team) {
                     $team->delete();
                 }
                 if($hasTable) {
-                    if (PlayerRelation::where([
+                    if (
+                    PlayerRelation::where([
                         ["relation_id", "=", $tournament->id],
                         ["relation_type", "=", Tournament::class],
                     ])->exists()
@@ -83,7 +82,6 @@ class Tournament extends Model
                         ])->delete();
                     }
                 }
-                $tournament->delete();
             }
 
 
