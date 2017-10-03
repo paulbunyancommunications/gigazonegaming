@@ -172,11 +172,11 @@ node {
             sh "curl --silent -k https://gist.githubusercontent.com/paulbunyannet/f896924537ec984ffaface03e4041000/raw > ${env.WORKSPACE}/cs.sh"
             sh "cd ${env.WORKSPACE}; bash cs.sh"
             echo "${Globals.WORKSPACE}";
+            sh "cd ${Globals.WORKSPACE}; php composer.phar self-update"
             sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs --no-scripts; php artisan clear-compiled; php artisan optimize"
             sh "cd ${Globals.WORKSPACE}; php composer.phar dump-autoload -o"
             sh "cd ${Globals.WORKSPACE}/tests/; mkdir _output"
             sh "cd ${Globals.WORKSPACE}/tests/; chmod 777 -R _output/"
-            sh "cd ${Globals.WORKSPACE}; php composer.phar update --ignore-platform-reqs"
             sh "rm -f ${Globals.WORKSPACE}/cs.sh"
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
@@ -297,8 +297,9 @@ node {
         try {
             // add any backend installers here....
             sh "chmod 444 ${env.WORKSPACE}/composer.json"
-            sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer install"
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer install --no-progress --no-suggest -o"
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer dump-autoload --optimize"
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code composer update --no-progress --no-suggest -o"
         } catch (error) {
             errorMessage(Globals.STAGE, error.getMessage())
         }
