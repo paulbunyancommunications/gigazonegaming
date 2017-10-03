@@ -40,7 +40,7 @@ class MakeChampionshipForeignKeys extends Migration
                 $table->foreign('tournament_id')->references('id')->on('tournaments');
             });
         }
-        
+
         /**
          * Add foreign keys for the individual players table to game
          */
