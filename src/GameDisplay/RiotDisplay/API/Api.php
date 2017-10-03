@@ -1,14 +1,10 @@
 <?php
-
 namespace GameDisplay\RiotDisplay\API;
-
 use GuzzleHttp\Message\Request;
 use GuzzleHttp\Client;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Cache;
-
 class Api{
-
 # Variables
 #----------------------------------------------------------------------
     private $apiKey;
@@ -23,12 +19,8 @@ class Api{
     private $IconId;
     private $DDragonVersion;
     private $championMasteries;
-
     #Request Counter
     private $counter = 0;
-
-
-
 # Constructor
 #----------------------------------------------------------------------
     /**
@@ -39,11 +31,8 @@ class Api{
         #set up api key ready for requests
         $this->setApiKey();
     }
-
-
 # Methods
 #----------------------------------------------------------------------
-
     /**All Request pass through this method and returns json encoded
      * @param $Url
      * @param int $counter
@@ -78,27 +67,22 @@ class Api{
                 break;
         }
     }
-
     /**Injects summoner and profiles this api for further requests
      * @param $summoner, $preFill
      */
     public function injectSummoner($summoner, $preFill){
         $this->setSummoner($summoner);
-
         #intailize summoner info for requests
         $this->requestSummonerIDAndIconId();
         If($preFill){
             #get the most updated version to grab icons from
             $this->requestDDragonVersion();
-
             #Grabes json array from states api for
             $this->requestLeagueV3Json();
-
             #Grabes json data for Champion Masteries
             $this->requestChampionMasterData();
         }
     }
-
     /**
      *Gets Current version of Data Dragon so that we can grabe the most updated images from there URL
      */
@@ -106,10 +90,8 @@ class Api{
         #Gets players states json
         $Url = 'https://ddragon.leagueoflegends.com/api/versions.json';
         $info = $this->apiRequest($Url);
-
         $this->DDragonVersion = $info[0];
     }
-
     /**
      * Gets the initial summoner static data with in one request to then be parsed latter by
      * getSoloRankedWinLoss(), getSoloRank(), getFLEXRankedWinLoss(), getFLEXRank()
@@ -125,9 +107,7 @@ class Api{
             Cache::put($this->summonerID.'LeagueV3Data', $Info, 200);
             $this->LeagueV3Json = $Info;
         }
-
     }
-
     /**
      *When the api is injected this method is called to get the initial ID and Icon ID need to make requests for the summoner
      */
@@ -157,12 +137,8 @@ class Api{
         else{
             throw new Exception("Summoner '$this->summoner' is not a valid name in North America");
         }
-
         #sets summoner ID for further use with the api.
-
-
     }
-
     public function requestChampionMasterData(){
         if(Cache::has($this->summonerID.'MasterieData')){
             $this->championMasteries = Cache::get($this->summonerID.'MasterieData');
@@ -176,7 +152,6 @@ class Api{
             $this->championMasteries = $Info;
         }
     }
-
     /**
      * Returns True if summoner is in game
      * @return bool
@@ -184,21 +159,16 @@ class Api{
     public function checkCurrentGameStatus(){
         $Url = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' . $this->summonerID . '?api_key=' . $this->apiKey;
         $Info = $this->apiRequest($Url);
-
         if($Info){
             $this->currentGameStatus = true;
             $this->currentGameInfo = $Info;
         }
-
         return $this->currentGameStatus;
     }
-
     public function __sleep()
     {
         return array('summoner', 'summonerID', 'apiKey', 'counter');
     }
-
-
 # Setters
 #----------------------------------------------------------------------
     /**
@@ -209,13 +179,12 @@ class Api{
         $this->apiKey = env("RIOT_API_KEY1", 'null');
     }
     /**
-    * @param mixed $summoner
-    */
+     * @param mixed $summoner
+     */
     public function setSummoner($summoner)
     {
         $this->summoner = $summoner;
     }
-
     public function setChampionId(){
         foreach($this->currentGameInfo->participants as $player){
             if($player->summonerId == $this->summonerID){
@@ -223,7 +192,6 @@ class Api{
             }
         }
     }
-
     /**
      * @param $ChampionId
      */
@@ -238,7 +206,6 @@ class Api{
             $this->championName = $data->data->{$ChampionId}->key;
         }
         else{
-            dd($data);
             #make the request serialize it.
             $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=true&api_key=" . $this->apiKey;
             $Info = $this->apiRequest($Url);
@@ -249,22 +216,17 @@ class Api{
             $this->championName = $Info->data->{$ChampionId}->key;
         }
     }
-
     /**
      * @param $ChampionName
      */
     public function setChampionIMG($ChampionName){
-
         $this->championImg = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" . $ChampionName . "_0.jpg";
     }
-
 # Getters
 #----------------------------------------------------------------------
     public function getSummonerId(){
         return $this->summonerID;
     }
-
-
     /**
      * @return mixed
      */
@@ -272,15 +234,12 @@ class Api{
     {
         return $this->IconId;
     }
-
     /**
      * @return string
      */
     public function getSummonerIcon(){
-
         return "https://ddragon.leagueoflegends.com/cdn/$this->DDragonVersion/img/profileicon/$this->IconId.png";
     }
-
     /**
      * @return string
      */
@@ -309,7 +268,6 @@ class Api{
         }
         return $soloRankWinsLosses;
     }
-
     /**
      * @return string
      */
@@ -338,7 +296,6 @@ class Api{
         }
         return $soloRank;
     }
-
     /**
      * @return string
      */
@@ -367,7 +324,6 @@ class Api{
         }
         return $FLEXRankWinsLosses;
     }
-
     /**
      * @return string
      */
@@ -396,7 +352,6 @@ class Api{
         }
         return $FLEXRank;
     }
-
     /**
      * @return mixed
      */
@@ -404,7 +359,6 @@ class Api{
     {
         return $this->championName;
     }
-
     /**
      * @return mixed
      */
@@ -417,7 +371,6 @@ class Api{
         }
         throw new Exception("Call checkCurrentGameStatus before calling this method. $this->summoner is not in game");
     }
-
     /**
      * @return mixed
      */
@@ -425,7 +378,6 @@ class Api{
     {
         return $this->apiKey;
     }
-
     /**
      * @return mixed
      */
@@ -433,7 +385,6 @@ class Api{
     {
         return $this->LeagueV3Json;
     }
-
     /**
      * @return mixed
      */
@@ -441,7 +392,6 @@ class Api{
     {
         return $this->summoner;
     }
-
     /**
      * @return mixed
      */
@@ -449,11 +399,9 @@ class Api{
     {
         return $this->DDragonVersion;
     }
-
     public function getChampionMasteries(){
         return $this->championMasteries;
     }
-
     /**
      *The top 3 champions in order from rank [1]to [3]
      * Returns two arrays. [0] is the champion Icon [1] is the champion splash art
@@ -475,6 +423,4 @@ class Api{
         }
         return [$championImgIconArray,$championImgSplashArt,$championRank,$championPoints];
     }
-
-
 }

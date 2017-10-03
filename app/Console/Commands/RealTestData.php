@@ -88,11 +88,11 @@ class RealTestData extends Command
 
     public function createProFreakz(){
         $Captain = Player::create([
-            'username' => "Pfkz Belgardex",
+            'username' => "Belgardex",
             'email' => "belgardeiain@gmail.com",
             'name' => 'Iain Belgarde',
             'phone' => '2182443092']);
-        $CaptainOfTeam = Player::where('username','Pfkz Belgardex')->first();
+        $CaptainOfTeam = Player::where('username','Belgardex')->first();
         #Team
         $team = Team::create([
             'tournament_id' => 1,
@@ -107,7 +107,7 @@ class RealTestData extends Command
             'Tournament' => 1,
             'team' => $team->id,
         ]);
-        $playerUserNameArray = array('Isske', 'Tuckerz', 'Pineapplesx', 'oO Salsa Oo');
+        $playerUserNameArray = array('Isske', 'Tuckerz', 'bishe', 'oO Salsa Oo');
         $playerEmailsArray = array('ikrasmusson@gmail.com','alyisg19@hotmail.com','codyjmattews@hotmail.com','bigsalsa21@hotmail.com');
         #creat players for team
         for($i = 0; $i < count($playerUserNameArray); $i++){

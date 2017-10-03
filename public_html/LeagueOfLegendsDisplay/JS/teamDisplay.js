@@ -5,7 +5,7 @@
 function fadInChampion() {
     setTimeout(
         function(){
-            for(let i=0;i<5;i++) {
+            for(var i=0;i<5;i++) {
                 $("#divA"+i).fadeOut(2000);
                 $("#divD"+i).fadeOut(2000);
             }
@@ -14,7 +14,7 @@ function fadInChampion() {
     );
     setTimeout(
         function() {
-            for(let i=0;i<5;i++) {
+            for(var i=0;i<5;i++) {
                 $("#divB"+i).fadeIn(2000);
                 $("#divE"+i).fadeIn(2000);
             }
@@ -25,7 +25,7 @@ function fadInChampion() {
 
 /* This function allows the display of victory or defeat at the end of the game */
 function displayWinLoss(){
-    let team = window.location.href;
+    var team = window.location.href;
     team = team.split("/");
     team = team[5];
     if(team === "team1") {
@@ -62,7 +62,7 @@ showBackground();
 function mobileDisplay(){
     if(document.getElementById("other")) {
         if ($(window).width() <= 530) {
-            for (let i = 0; i < 5; i++) {
+            for (var i = 0; i < 5; i++) {
                 $("#" + i + "-0").addClass("hidden");
                 $("#" + i + "-1").addClass("hidden");
                 $("#" + i + "-2").addClass("hidden");
@@ -71,7 +71,7 @@ function mobileDisplay(){
             setTimeout(function(){setBoxHeight();},1);
             $("#carouselControls").removeClass("hidden");
         }else{
-            for (let i = 0; i < 5; i++) {
+            for (var i = 0; i < 5; i++) {
                 $("#" + i + "-0").removeClass("hidden");
                 $("#" + i + "-1").removeClass("hidden");
                 $("#" + i + "-2").removeClass("hidden");
@@ -110,7 +110,7 @@ $(document).ready(function () {
 $(document).ready(GetData());
 function GetData() {
     if (!document.getElementById("other")) {
-        let team = window.location.href;
+        var team = window.location.href;
         team = team.split("/");
         team = team[5];
         ///Execute cache controller with ajax
@@ -127,6 +127,32 @@ function GetData() {
                     location.reload();
                 } else{
                     setTimeout(GetData,2000);
+                    $.ajax({
+                        method: "GET",
+                        type: "GET",
+                        url: "/app/GameDisplay/CarouselUpdate",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            team: team
+                        },
+                        success: function (data) {
+                            if(data){
+                                $('.carousel-inner').html("");
+                                console.log(data);
+                                var images = [];
+                                $("img").each(function(){
+                                    images.push($(this).attr('src'))
+                                });
+                                $('.carousel-inner').append("<div class='carousel-item active'><img class='d-block img-fluid' src=/" + data[0] + " alt='' style='margin-right:auto; margin-left: auto;'></div>");
+                                if(data.length === 1){
+                                    $('#carouselExampleSlidesOnly').attr('data-interval', false);
+                                }
+                                for(i=1;i<data.length;i++) {
+                                    $('.carousel-inner').append("<div class='carousel-item'><img class='d-block img-fluid' src=/" + data[i] + " alt='' style='margin-right:auto; margin-left: auto;'></div>");
+                                }
+                            }
+                        }
+                    })
                 }
             },
         })
@@ -137,7 +163,7 @@ function GetData() {
 
 /* This checks for when champions are entered into the cache as well as any other updated information*/
 function UpdateData(checkChamp) {
-    let team = window.location.href;
+    var team = window.location.href;
     team = team.split("/");
     team = team[5];
     ///Execute cache controller with ajax
@@ -160,8 +186,8 @@ function UpdateData(checkChamp) {
 
             //If Champions have been submitted
             else if (data[1] !== 'false') {
-                for (let i = 0; i < data[1].length; i++) {
-                    let champName = data[1][i].split("/");
+                for (var i = 0; i < data[1].length; i++) {
+                    var champName = data[1][i].split("/");
                     champName = champName[champName.length - 1].split("_");
                     if(champName[0] === "MonkeyKing"){
                         champName[0] = "Wukong";

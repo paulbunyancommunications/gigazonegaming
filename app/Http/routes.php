@@ -112,18 +112,20 @@ Route::group(['middleware' => ['WPAdmin']], function () {
 Route::get('/GameDisplay/{team}','GameDisplay\GameDisplayController@teamViewDisplay')->where('team', 'team1|team2');
 Route::get('/GameDisplay/getData','GameDisplay\GameDisplayController@getData');
 Route::get('/GameDisplay/Update','GameDisplay\GameDisplayController@updateData');
+Route::get('/GameDisplay/CarouselUpdate','GameDisplay\GameDisplayController@carouselUpdate');
 
 // Customer Page todo: Change name to "User" not Customer
-Route::get('/GameDisplay/getTeamName', function (){
+Route::get('/GameDisplay/getTeamName', function () {
     $teamNames = array();
     if (Cache::has('Team1Name') && Cache::has('Team2Name') && Cache::has('Team1Color') && Cache::has('Team2Color')) {
         array_push($teamNames, Cache::get('Team1Name'));
         array_push($teamNames, Cache::get('Team2Name'));
         array_push($teamNames, Cache::get('Team1Color'));
         array_push($teamNames, Cache::get('Team2Color'));
-        return $teamNames;
+        return response()->json($teamNames);
     }
-    return false;});
+    return response()->json(false);
+});
 Route::get('/GameDisplay', function (){return view('/LeagueOfLegends/customerPage');});
 
 Route::get('/player/login',function(){

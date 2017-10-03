@@ -60,7 +60,6 @@ class GameDisplayControllerTest extends \TestCase
 
     public function testTeamViewDisplayWithNoCacheForTeam1ShouldReturnAltPageWithSpecificTitleForTeam1(){
         $response = $this->call('GET', '/GameDisplay/team1');
-
         $this->assertSame($response->getStatusCode(),200);
         $title = explode("</Title>", explode('<Title>',$response->getContent())[1])[0];
         $this->assertSame($title, "Loading Team Display");

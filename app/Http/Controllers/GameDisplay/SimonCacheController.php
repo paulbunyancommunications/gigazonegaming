@@ -46,8 +46,6 @@ class SimonCacheController extends Controller
             $this->cacheContent($data['teamInfo'],$data['colors'],$data['teamName'],$data['players']);
             return $data;
         }
-
-
         $tournament = $req->tournament;
         $team = $req->team;
         $color = $req->color;
@@ -93,14 +91,11 @@ class SimonCacheController extends Controller
     /**
      * @param $tournament
      * @param $team
-     * @param $color
-     * @return array
      */
     public function buildTheTeams($tournament, $team)
     {
         //Makes an array of player objects
         $this->setPlayers($team, $tournament);
-        //$this->serializeTeam($team);
         $this->setLolArrays();
     }
 
