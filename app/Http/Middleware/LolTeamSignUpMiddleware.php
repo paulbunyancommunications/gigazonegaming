@@ -53,7 +53,7 @@ class LolTeamSignUpMiddleware
         }
         // get tournament by name
         $tournament = Tournament::where('name', $this->getTournament())->first();
-        $teams = $tournament->Teams()->get();
+        $teams = $tournament->teams()->get();
         $playerExist = [];
         $usernameExists = [];
         $j = 10;
