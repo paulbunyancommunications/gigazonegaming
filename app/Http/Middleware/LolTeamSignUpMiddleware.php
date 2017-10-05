@@ -34,6 +34,12 @@ class LolTeamSignUpMiddleware
         $theRequests = $request->all();
         $validator = Validator::make($theRequests, $rules->rules(), $rules->messages());
         $verifier = new VerifySummonerName();
+        $repeatedPlayers = [];
+        $tournament = null;
+        $playerExist = [];
+        $usernameExists = [];
+        $j = 10;
+        $verifiedSummonerName = [];
         if ($validator->fails()) {
             return Response::json(['error' => $validator->errors()->all()]);
         }
@@ -51,77 +57,76 @@ class LolTeamSignUpMiddleware
         if (!$this->getTournament()) {
             $this->setTournament($request->input('tournament'));
         }
+//        codecept_debug("we may have a tournament NOT!");
         // get tournament by name
-        $tournament = Tournament::where('name', $this->getTournament())->first();
-        $teams = $tournament->teams()->get();
-        $playerExist = [];
-        $usernameExists = [];
-        $j = 10;
-        $verifiedSummonerName = [];
+        if(Tournament::where('name', '=', $this->getTournament())->exists()) {
+//            codecept_debug("we have a tournament");
+            $tournament = Tournament::where('name', '=', $this->getTournament())->first();
+            $teams = $tournament->teams()->get();
 
-        if (isset($theRequests['email']) AND Player::where('email', '=', $theRequests['email'])->exists()) {
-            $id = Player::where('email', '=', $theRequests['email'])->first()->id;
-            $email =  $theRequests['email'];
-            $playerExist[$email] =  $id;
-        }
-        if (isset($theRequests['team-captain-lol-summoner-name']) AND Player::where('username', '=', $theRequests['team-captain-lol-summoner-name'])->exists()) {
-            $email = Player::where('username', '=', $theRequests['team-captain-lol-summoner-name'])->first()->email;
-            $username =  $theRequests['team-captain-lol-summoner-name'];
-            $usernameExists[$email] =  $username;
-            $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
-        } //if not don't even push it to the array so we run faster through each.
-        elseif(isset($theRequests['team-captain-lol-summoner-name']) and $theRequests['team-captain-lol-summoner-name']!=''){
-            $verifiedSummonerName[$theRequests['team-captain-lol-summoner-name']] = $verifier->VerifySummonerName($theRequests['team-captain-lol-summoner-name']);
-        }
-        for ($i = 0; $i <= $j; $i++) {
-            if (isset($theRequests['teammate-'.Numbers::toWord($i).'-email-address']) AND Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->exists()) {
-                $id = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->first()->id;
-                $email = $theRequests['teammate-'.Numbers::toWord($i).'-email-address'];
+            if (isset($theRequests['email']) AND Player::where('email', '=', $theRequests['email'])->exists()) {
+                $id = Player::where('email', '=', $theRequests['email'])->first()->id;
+                $email = $theRequests['email'];
                 $playerExist[$email] = $id;
-            }//if not dont even push it to the array so we run faster through each
-            if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-email-address']) AND Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'])->exists()) {
-                $id =  Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'])->first()->id;
-                $email =  $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'];
-                $playerExist[$email] =  $id;
-            }//if not dont even push it to the array so we run faster through each
-            if (isset($theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']) AND Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'])->exists()) {
-                $email = Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'])->first()->email;
-                $username = $theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name'];
+            }
+            if (isset($theRequests['team-captain-lol-summoner-name']) AND Player::where('username', '=', $theRequests['team-captain-lol-summoner-name'])->exists()) {
+                $email = Player::where('username', '=', $theRequests['team-captain-lol-summoner-name'])->first()->email;
+                $username = $theRequests['team-captain-lol-summoner-name'];
                 $usernameExists[$email] = $username;
                 $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
-            }//if not dont even push it to the array so we run faster through each
-            elseif(isset($theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']) AND $theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name'] != '' ){
-                $verifiedSummonerName[$theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']] = $verifier->VerifySummonerName($theRequests['teammate-'.Numbers::toWord($i).'-lol-summoner-name']);
+            } //if not don't even push it to the array so we run faster through each.
+            elseif (isset($theRequests['team-captain-lol-summoner-name']) and $theRequests['team-captain-lol-summoner-name'] != '') {
+                $verifiedSummonerName[$theRequests['team-captain-lol-summoner-name']] = $verifier->VerifySummonerName($theRequests['team-captain-lol-summoner-name']);
             }
-            if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']) AND Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->exists()) {
-                $email =  Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->first()->email;
-                $username =  $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'];
-                $usernameExists[$email] =  $username;
-                $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
-            }//if not dont even push it to the array so we run faster through each
-            elseif(isset($theRequests['alternate-'.Numbers::toWord($i).'-summoner-name']) AND $theRequests['alternate-'.Numbers::toWord($i).'-summoner-name'] != '' ){
-                $verifiedSummonerName[$theRequests['alternate-'.Numbers::toWord($i).'-summoner-name']] = $verifier->VerifySummonerName($theRequests['alternate-'.Numbers::toWord($i).'-summoner-name']);
+            for ($i = 0; $i <= $j; $i++) {
+                if (isset($theRequests['teammate-' . Numbers::toWord($i) . '-email-address']) AND Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->exists()) {
+                    $id = Player::where('email', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'])->first()->id;
+                    $email = $theRequests['teammate-' . Numbers::toWord($i) . '-email-address'];
+                    $playerExist[$email] = $id;
+                }//if not dont even push it to the array so we run faster through each
+                if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-email-address']) AND Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'])->exists()) {
+                    $id = Player::where('email', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'])->first()->id;
+                    $email = $theRequests['alternate-' . Numbers::toWord($i) . '-email-address'];
+                    $playerExist[$email] = $id;
+                }//if not dont even push it to the array so we run faster through each
+                if (isset($theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name']) AND Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'])->exists()) {
+                    $email = Player::where('username', '=', $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'])->first()->email;
+                    $username = $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'];
+                    $usernameExists[$email] = $username;
+                    $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
+                }//if not dont even push it to the array so we run faster through each
+                elseif (isset($theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name']) AND $theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name'] != '') {
+                    $verifiedSummonerName[$theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name']] = $verifier->VerifySummonerName($theRequests['teammate-' . Numbers::toWord($i) . '-lol-summoner-name']);
+                }
+                if (isset($theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']) AND Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->exists()) {
+                    $email = Player::where('username', '=', $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'])->first()->email;
+                    $username = $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'];
+                    $usernameExists[$email] = $username;
+                    $verifiedSummonerName[$username] = $verifier->VerifySummonerName($username);
+                }//if not dont even push it to the array so we run faster through each
+                elseif (isset($theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']) AND $theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name'] != '') {
+                    $verifiedSummonerName[$theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']] = $verifier->VerifySummonerName($theRequests['alternate-' . Numbers::toWord($i) . '-summoner-name']);
+                }
             }
-        }
-        $repeatedPlayers = [];
-        $teamExist = false; //this is because players could be also players in other tournanents or games but if there are  no teams in this tournament to go through, same players will generate an error, in this way it wont
-        if(count($playerExist) > 0) { //here we will check if the player already has a team in the same tournament in which they are signing in.
-            foreach ($playerExist as $email => $p_id) {
-                foreach ($teams as $team) {
-                    $teamExist = true;
-                    $relation = PlayerRelation::where([
-                        ['relation_type', "=", Team::class],
-                        ['relation_id', "=", $team->id],
-                        ['player_id', '=', $p_id]
-                    ])->exists();
-                    if ($relation) {
-                        $repeatedPlayers[] = $email;
-                    } elseif (isset($usernameExists[$email])) {
+            $teamExist = false; //this is because players could be also players in other tournanents or games but if there are  no teams in this tournament to go through, same players will generate an error, in this way it wont
+            if (count($playerExist) > 0) { //here we will check if the player already has a team in the same tournament in which they are signing in.
+                foreach ($playerExist as $email => $p_id) {
+                    foreach ($teams as $team) {
+                        $teamExist = true;
+                        $relation = PlayerRelation::where([
+                            ['relation_type', "=", Team::class],
+                            ['relation_id', "=", $team->id],
+                            ['player_id', '=', $p_id]
+                        ])->exists();
+                        if ($relation) {
+                            $repeatedPlayers[] = $email;
+                        } elseif (isset($usernameExists[$email])) {
+                            unset($usernameExists[$email]);
+                        }
+                    }
+                    if (!$teamExist and isset($usernameExists[$email])) {
                         unset($usernameExists[$email]);
                     }
-                }
-                if(!$teamExist and isset($usernameExists[$email])){
-                    unset($usernameExists[$email]);
                 }
             }
         }
