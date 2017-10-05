@@ -13,7 +13,6 @@ use App\Http\Middleware\Auth\SentinelRedirectIfAuthenticated;
 use App\Http\Middleware\Auth\SentinelStandardUser;
 use App\Http\Middleware\Auth\ValidateRole;
 use App\Http\Middleware\EncryptCookies;
-use App\Http\Middleware\LolTeamSignUpMiddleware;
 use App\Http\Middleware\TournamentSignupMiddleware;
 use App\Http\Middleware\UpdateRecipientMiddleware;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -73,7 +72,7 @@ class Kernel extends HttpKernel
         'WPAdmin' => WPAdminMiddleware::class,
         'UpdateRecipient' => UpdateRecipientMiddleware::class,
         'CCAddRecipient' => AddContactToConstantContactGigazoneGamingUpdatesMiddleware::class,
-        'LolTeamSignUp' => LolTeamSignUpMiddleware::class,
+
         'TournamentSignUp' => TournamentSignUpMiddleware::class,
         'auth' => SentinelAuthenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,

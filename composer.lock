@@ -1219,16 +1219,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.8.2",
+            "version": "8.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "ec918d3a819d386b59fae5aa465665f7dd0b8a75"
+                "reference": "7475e4816658bea470fe590f1b4b2db98b6510c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/ec918d3a819d386b59fae5aa465665f7dd0b8a75",
-                "reference": "ec918d3a819d386b59fae5aa465665f7dd0b8a75",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/7475e4816658bea470fe590f1b4b2db98b6510c2",
+                "reference": "7475e4816658bea470fe590f1b4b2db98b6510c2",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2017-09-20T09:10:15+00:00"
+            "time": "2017-10-04T10:08:33+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -5294,7 +5294,7 @@
                 "reference": "master"
             },
             "type": "git",
-            "time": "2017-07-20 22:08:29"
+            "time": "2017-07-20T22:08:29+00:00"
         },
         {
             "name": "phing/phing",

@@ -7,19 +7,19 @@
  * @author Nate Nolting <naten@paulbunyan.net>
  */
 
-Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function () {
-
-    // team sign up request
-    Route::post(
-        '/lol-team-sign-up',
-        [
-            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
-            'as' => 'lol-team-sign-up',
-            'middleware' => ['LolTeamSignUp']
-        ]
-    );
-
-});
+//Route::group(['middleware' => ['UpdateRecipient', 'CCAddRecipient']], function () {
+//
+//    // team sign up request
+//    Route::post(
+//        '/lol-team-sign-up',
+//        [
+//            'uses' => '\Pbc\FormMail\Http\Controllers\FormMailController@requestHandler',
+//            'as' => 'lol-team-sign-up',
+//            'middleware' => ['LolTeamSignUp']
+//        ]
+//    );
+//
+//});
 Route::group(['middleware' => ['TournamentSignUp', 'UpdateRecipient', 'CCAddRecipient']], function () {
     Route::post(
         '/gigazone-gaming-2017-overwatch-sign-up',
