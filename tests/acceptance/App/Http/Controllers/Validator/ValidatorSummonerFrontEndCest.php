@@ -58,20 +58,6 @@ class ValidatorSummonerFrontEndCest extends BaseAcceptance
         exec('php artisan db:seed --class=SignUpUniqueWithValidatorTesterSeeder');
     }
     /**
-    * ResetDb
-    */
-    protected function resetDBSignUp(AcceptanceTester $I)
-    {
-
-    }
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function _after(AcceptanceTester $I)
-    {
-        $this->resetDBSignUp($I);
-    }
-    /**
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */

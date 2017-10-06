@@ -1,7 +1,6 @@
 <?php
 namespace Tests\Acceptance\App\Http\Controllers\Validator;
 use \AcceptanceTester;
-use App\Models\Championship\Tournament;
 use \BaseAcceptance;
 
 /**
@@ -62,20 +61,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
     protected function populateDBSignUp(AcceptanceTester $I)
     {
         exec('php artisan db:seed --class=SignUpUniqueWithValidatorTesterSeeder');
-    }
-    /**
-    * ResetDb
-    */
-    protected function resetDBSignUp(AcceptanceTester $I)
-    {
-
-    }
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function _after(AcceptanceTester $I)
-    {
-        $this->resetDBSignUp($I);
     }
     /**
      * Test the form with the participation flag
