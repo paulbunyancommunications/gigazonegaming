@@ -12,7 +12,7 @@ class ChampionOverridePageCest extends \BaseAcceptance
         $this->populateDB($I);
         $I->loginToWordpress($I, "admin","password",3);
         $I->amOnPage('/app/gamedisplay/override');
-        $I->waitForJs('return jQuery.active == 0', 10);
+        $I->checkIfJQueryIsWorking($I);
     }
 
     public function _after(AcceptanceTester $I)
