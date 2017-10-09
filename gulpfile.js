@@ -1,191 +1,204 @@
-'use strict';
-
-var path = require("path");
+/**
+ * @todo figure out live reload
+ */
 var rootDir = __dirname;
-var themeFolder = path.join(rootDir,'public_html/wp-content/themes/gigazone-gaming');
-var resourceRoot = path.join(rootDir, 'resources');
-var themeResourceFolder = path.join(resourceRoot, 'wp-content/themes/gigazone-gaming');
-var appFolder = path.join(rootDir,'public_html/app/content');
-var appResourceFolder = path.join(resourceRoot,'assets');
 
-var sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
-    elixir = require('laravel-elixir'),
-    gulp = require('gulp'),
-    coffee = require('gulp-coffee'),
-    gutil = require('gulp-util'),
-    haml = require('gulp-ruby-haml'),
-    rename = require("gulp-rename"),
-    del = require('del'),
-    livereload = require('gulp-livereload'),
-    uglify = require('gulp-uglify'),
-    cleanCSS = require('gulp-clean-css'),
-    sourcemaps = require('gulp-sourcemaps');
-require('gulp-util');
-require('laravel-elixir-livereload');
+var gulp          = require('gulp');
+var plugins       = require('gulp-load-plugins');
+var env           = require('gulp-env');
+var util          = require('gulp-util');
+var path          = require("path");
+var debug         = require('gulp-debug');
+var sass          = require('gulp-sass');
+var autoprefixer  = require('gulp-autoprefixer');
+var coffee        = require('gulp-coffee');
+var gutil         = require('gulp-util');
+var del           = require('del');
+var livereload    = require('gulp-livereload');
+var uglify        = require('gulp-uglify');
+var cleanCSS      = require('gulp-clean-css');
+var sourcemaps    = require('gulp-sourcemaps');
+var webpack       = require('gulp-webpack');
+var logger        = require('gulp-logger');
+var shell         = require('gulp-shell');
+var _             = require('underscore');
+var watch         = require('gulp-watch');
+var plumber       = require('gulp-plumber');
+var batch         = require('gulp-batch');
+var wait          = require('gulp-wait');
+var browser       = require('browser-sync').create();
+var beep          = require('beepbeep')
+var themeFolder   = path.join(rootDir, 'public_html/wp-content/themes/gigazone-gaming');
+var appFolder     = path.join(rootDir, 'public_html/app/content');
+var resourceRoot  = path.join(rootDir, 'resources');
+var bowerDirectory= path.join(rootDir, 'public_html/bower_components');
+var npmDirectory  = path.join(rootDir, 'node_modules');
+var themeResourceFolder = path.join(resourceRoot, 'wp-content/themes/gigazone-gaming');
+var appResourceFolder   = path.join(resourceRoot, 'assets');
+var composerDirectory   = path.join(rootDir, 'vendor');
+
+// File to copy directly from the resource folder to the public folder
+var sourceFiles = {
+  'theme-twig': [themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views'],
+  'theme-js': [themeResourceFolder + '/js/**/*.js', themeFolder + '/js'],
+  'app-js': [appResourceFolder + '/js/**/*.js', appFolder + '/js']
+};
+// Location of coffeescript files
+var coffeeFiles = {
+  'theme-coffee': [path.join(themeResourceFolder + '/coffee/**/*.coffee'), themeFolder + '/js/'],
+  'app-coffee': [path.join(appResourceFolder + '/coffee/**/*.coffee'), appFolder + '/js/']
+};
+// Location of the distrbution js files
+var distJs = {
+  'theme-js': [path.join(themeFolder, '/js/**/*.js'), path.join(themeFolder, 'dist/js')],
+  'app-js': [path.join(appFolder, '/js/**/*.js'), path.join(appFolder, 'dist/js')]
+};
+
+// Location of distrbution css files
+var distCss = {
+  'theme-css': [path.join(themeFolder + '/css/**/*.css'), path.join(themeFolder, 'dist/css')],
+  'app-css': [path.join(appFolder + '/css/**/*.css'), path.join(appFolder, 'dist/css')]
+
+};
+
+// Sass file locations
+var sassFiles = {
+  'theme-sass': [path.join(themeResourceFolder, 'sass/*.scss'), path.join(themeFolder, 'css')],
+  'app-sass': [path.join(appResourceFolder, 'sass/*.scss'), path.join(appFolder, 'css')]
+};
+
+// Sass config
+var sassConfig = {
+  outputStyle: (process.env.APP_ENV === 'production' ? 'compressed' : 'nested'),
+  indentWidth: 4,
+  indentType: 'space',
+  includePaths: [
+      path.join(themeResourceFolder, 'sass/vendor/')
+  ]
+}
+
 require('dotenv').config();
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
- |
- */
-var Task = elixir.Task;
+// build task
+gulp.task('build', gulp.series(compileSass, compileCoffee));
 
-/**
- * Coffee Extension, needed due to the fact that the new coffee
- * task in elixir will always combine js files,
- */
-elixir.extend('blueMountain', function (src, outputDir) {
+// copy task
+gulp.task('copy', gulp.series(copyVendorFiles, copySourceFiles));
 
-    new Task('blueMountain', function () {
-        return gulp.src(src + '/**/*.coffee')
-            .pipe(coffee({bare: true}).on('error', gutil.log))
-            .pipe(gulp.dest(outputDir));
-    }).watch(path.join(src, '/**/*.coffee'));
+// Default task
+gulp.task('default', gulp.series('build', server, watcher));
 
-});
-
-/**
- * HAML task, take all haml files and parse to twig
- */
-elixir.extend('hamlToTwig', function (src, outputDir) {
-
-    new Task('hamlToTwig', function () {
-        gulp.src(src + '/**/*.haml')
-            .pipe(haml({format: 'html5', style: 'default'}).on('error', gutil.log))
-            .pipe(rename(function (path) {
-                path.extname = ".twig";
-                return path;
-            }))
-            .pipe(gulp.dest(outputDir));
-    }).watch(path.join(src, '**/*.haml'));
-});
-
-/**
- * Copy files from one destination to another
- */
-elixir.extend('copyFiles', function(src, output){
-    new Task('copyFiles', function() {
-        return gulp.src(src)
-            .pipe(gulp.dest(output))
-    }).watch(src);
-});
+// Production task
+gulp.task('production', gulp.series('build', latestCommitHash, uglifyJs, compileCleanCss));
 
 
-/**
- * Minify Js Files
- */
-elixir.extend('minifyJs', function(src){
-    new Task('minifyJs', function() {
-        return gulp.src(src + '/**/*.js')
-            .pipe(uglify().on('error', gutil.log))
-            .pipe(gulp.dest(src))
+// Latest git hash task
+function latestCommitHash() {
+    return gulp.src('./', {read: false})
+        .pipe(shell(['chmod +x git_log.txt; echo $(git log -n 1 --pretty=format:"%H") > git_log.txt; echo $(head -n 1 git_log.txt) > ' + themeFolder + '/latest_git_commit_hash.txt']))
+};
+
+// Copy files from the copyFiles array
+function copyVendorFiles() {
+  return new Promise(function(resolve, reject) {
+      gulp.src('./', {read:false})
+          .pipe(shell('rm -rf '+bowerDirectory+' || true && bower update --allow-root --force --silent'))
+          .pipe(shell('bash .npm_copy_libraries.sh 2>&1 /dev/null'))
+
+      resolve();
     });
-});
+}
 
+function copySourceFiles()
+{
+  return new Promise(function(resolve, reject) {
+    _.mapObject(sourceFiles, function (val) {
+        return gulp.src([val[0]])
+            .pipe(gulp.dest(val[1]))
+            .pipe(wait(1500));
+    });
+      resolve();
+    });
+}
 
+// Compile sass to css
+function compileSass() {
 
-/**
- * Clean CSS
- */
-elixir.extend('cleanCss', function(src){
-   new Task('cleanCss', function() {
-       gulp.src(src + '/style.css')
-           .pipe(cleanCSS({}).on('error', gutil.log))
-           .pipe(gulp.dest(src));
-   })
-});
+  return new Promise(function(resolve, reject) {
 
-/**
- * Compile sass file to css with eyeglass
- * https://github.com/sass-eyeglass/eyeglass/blob/master/site-src/docs/integrations/gulp.md
- */
-elixir.extend('sassy', function(source, destination, options){
-    new Task('sassy', function() {
-        return gulp.src(source)
+    _.mapObject(sassFiles, function (val) {
+        return gulp.src([val[0]])
+            .pipe(wait(1500))
             .pipe(sourcemaps.init())
-            .pipe(sass(options).on("error", sass.logError))
-            .pipe(autoprefixer({
-                browsers: ['last 2 versions'],
-                cascade: false
-            }))
+            .pipe(sass(sassConfig).on("error", sass.logError))
+            .pipe(autoprefixer())
             .pipe(sourcemaps.write('./maps'))
-            .pipe(gulp.dest(destination));
-    }).watch(source)
-});
+            .pipe(gulp.dest(val[1]));
+    });
+    resolve();
+  });
+};
 
-/**
- * Delete task to remove files/folders
- * https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md
- */
-elixir.extend('delete', function(toClean){
-    new Task('delete', function(){
-        return del(toClean)
-    })
-});
+// Compile sass to css
+function compileCoffee() {
 
-/**
- * Main gulp elixir task
- */
-elixir(function (mix) {
+  return new Promise(function(resolve, reject) {
+    _.mapObject(coffeeFiles, function (val) {
+        return gulp.src([val[0]])
+            .pipe(coffee({bare: true}).on('error', gutil.log))
+            .pipe(gulp.dest(val[1]))
+    });
+    resolve();
+  });
+};
 
-    /** ================================================
-     * Copy Boostrap css and js files to themes and app folder
-     ================================================ */
 
-    mix
-    /** ================================================
-     * Compile Theme SASS -> CSS
-     ================================================ */
-       .sassy(path.join(themeResourceFolder, 'sass/**/*.scss'), path.join(themeFolder, 'css'), {
-           outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
-           indentWidth: 4,
-           indentType: 'space',
-           includePaths: [
-               path.join(themeResourceFolder, 'sass/libraries')
-           ]
-       })
-        // get rid of the left over sass folder
-        .delete(path.join(themeFolder, 'css/sass'))
+// cleanup css
+function compileCleanCss() {
+  return new Promise(function(resolve, reject) {
+    _.mapObject(distCss, function (val) {
+        return gulp.src([val[0]])
+            .pipe(cleanCSS({}).on('error', gutil.log))
+            .pipe(gulp.dest(val[1]))
+    });
+    resolve();
+  });
+};
 
-        /** ================================================
-        * Compile App SASS -> CSS
-        ================================================ */
-        .sassy(path.join(appResourceFolder, 'sass/**/*.scss'), path.join(appFolder, 'css'), {
-            outputStyle: (process.env.APP_ENV === 'production' ? 'compressed': 'nested'),
-            indentWidth: 4,
-            indentType: 'space',
-            includePaths: [
-                path.join(appResourceFolder, 'sass/libraries')
-            ]
-        })
-        // get rid of the left over sass folder
-        .delete(path.join(appFolder, 'css/sass'))
+// upglify js
+function uglifyJs() {
 
-        // compile theme coffee files to js
-        .blueMountain(themeResourceFolder + '/coffee', themeFolder + '/js')
-        // compile app coffee files to js
-        .blueMountain(appResourceFolder + '/coffee', appFolder + '/js')
-        // copy twig views from resources to theme folder
-        .copyFiles(themeResourceFolder + '/twig/**/*.twig', themeFolder + '/views')
-        // copy js files from resources to theme folder
-        .copyFiles(appResourceFolder + '/js/**/*.js', appFolder + '/js');
+    return new Promise(function(resolve, reject) {
+    _.mapObject(distJs, function (val) {
+        return gulp.src([val[0]])
+            .pipe(uglify().on('error', gutil.log))
+            .pipe(gulp.dest(val[1]))
+    });
+    resolve();
+  });
+};
 
-    /** ================================================
-     * If app it set to production then minimize things
-     ================================================ */
-        if(process.env.APP_ENV === 'local' || process.env.APP_ENV === 'production') {
-            mix.cleanCss(themeFolder + '/css')
-               .minifyJs(themeFolder + '/js')
-                .minifyJs(appFolder + '/js')
-                .cleanCss(appFolder + '/css');
-        }
-    //mix.livereload([themeFolder + '/**/*.*'], {options: {basePath: "/wp-content/themes/greater-bemidji"}});
-    mix.livereload(['app/**/*', 'public_html/**/*', 'resources/views/**/*'], {});
-});
+
+function server(done) {
+  browser.init({
+    files: ['{src,app,public_html/wp-content}/**/*.php'],
+    host: process.env.SERVER_NAME,
+    proxy: 'https://' + process.env.SERVER_NAME,
+    browser: 'google chrome',
+    https: true,
+    open: true,
+    reloadDelay: 1000
+  });
+  done();
+};
+
+function watcher() {
+    // Watch template files
+    gulp.watch([resourceRoot+'/**/*.php', resourceRoot+'**/*.twig', themeFolder+'**/*.php']).on('all', gulp.series('copy', browser.reload));
+    // watch js files
+    gulp.watch([appResourceFolder+'/js/**/*.js',themeResourceFolder+'/js/**/*.js']).on('all', gulp.series('copy', browser.reload));
+    // watch Sass files that are not a library
+    gulp.watch([appResourceFolder+'/sass/**/*.scss',themeResourceFolder+'/sass/**/*.scss']).on('all', gulp.series(compileSass, browser.reload));
+    // watch coffee files
+    gulp.watch([appResourceFolder+'/coffee/**/*.coffee',themeResourceFolder+'/coffee/**/*.coffee']).on('all', gulp.series(compileCoffee, browser.reload));
+}
