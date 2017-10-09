@@ -329,6 +329,9 @@ node {
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"php artisan migrate\"";
             if (fileExists('yarn.lock')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn\"";
+                if (fileExists('gulpfile.js')) {
+                    sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn run gulp production\"";
+                }
             }
             if (fileExists('gruntfile.js')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"grunt\"";
