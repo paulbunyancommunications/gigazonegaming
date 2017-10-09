@@ -151,3 +151,7 @@ install.sh.old
 !/tests/_output/records.html
 records.html
 phlint.phar
+/git_log.txt
+/public_html/wp-content/themes/gigazone-gaming/latest_git_commit_hash.txt
+/public_html/wp-content/themes/gigazone-gaming/dist/
+public_html/app/content/dist
