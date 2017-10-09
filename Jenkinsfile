@@ -312,7 +312,7 @@ node {
         startMessage(Globals.STAGE)
         try {
             // add any front end installers here....
-            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root; gulp\""
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root; yarn run gulp production\""
         } catch (error){
             errorMessage(Globals.STAGE, error.getMessage())
         }
