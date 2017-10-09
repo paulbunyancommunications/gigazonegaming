@@ -327,10 +327,12 @@ node {
         startMessage(Globals.STAGE)
             //migrate before running anything
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"php artisan migrate\"";
+            def gulp='true'
             if (fileExists('yarn.lock')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn\"";
                 if (fileExists('gulpfile.js')) {
                     sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn run gulp production\"";
+                    gulp='false'
                 }
             }
             if (fileExists('gruntfile.js')) {
@@ -339,8 +341,10 @@ node {
             if (fileExists('bower.json')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"bower install --allow-root\"";
             }
-            if (fileExists('gulpfile.js')) {
-                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
+            if (gulp=='true') {
+                if (fileExists('gulpfile.js')) {
+                    sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
+                }
             }
     }
     /**
