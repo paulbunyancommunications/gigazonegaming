@@ -83,10 +83,10 @@
       "package": {
         "name": "lopo/duplicate-post",
         "type": "wordpress-plugin",
-        "version": "3.0.3",
+        "version": "3.2",
         "dist": {
           "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip"
+          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -178,7 +178,6 @@
     "paulbunyannet/autoversion": "~1.0",
     "pmenard/media-tags": "3.2.0.2",
     "nacin/link-manager": "0.1-beta",
-    "lopo/duplicate-post": "*",
     "paulbunyannet/bandolier": "~1.5",
     "twig/twig": "^1.24",
     "cocur/slugify": "^1.4",
@@ -207,7 +206,8 @@
     "guzzlehttp/guzzle": "~5.3|~6.0",
     "brandonwamboldt/utilphp": "1.1.*",
     "league/commonmark": "^0.15.0",
-    "disqus/disqus-comment-system": "^2.87"
+    "disqus/disqus-comment-system": "^2.87",
+    "lopo/duplicate-post": "^3.2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "06fe2138a396651f8375fb5e30d74746",
+    "content-hash": "6c073276128a80adf29d4436e5159686",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -2206,10 +2206,10 @@
         },
         {
             "name": "lopo/duplicate-post",
-            "version": "3.0.3",
+            "version": "3.2",
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.zip",
                 "reference": null,
                 "shasum": null
             },
