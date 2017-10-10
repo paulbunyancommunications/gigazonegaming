@@ -23,10 +23,10 @@
       "package": {
         "name": "wordpress/wordpress",
         "type": "webroot",
-        "version": "4.7.6",
+        "version": "4.8.2",
         "dist": {
           "type": "zip",
-          "url": "https://wordpress.org/wordpress-4.7.6.zip"
+          "url": "https://wordpress.org/wordpress-4.8.2.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -83,10 +83,10 @@
       "package": {
         "name": "lopo/duplicate-post",
         "type": "wordpress-plugin",
-        "version": "3.0.3",
+        "version": "3.2",
         "dist": {
           "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.0.3.zip"
+          "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -113,7 +113,7 @@
       "package": {
         "name": "figureone/insert-pages",
         "type": "wordpress-plugin",
-        "version": "3.1.6",
+        "version": "3.2.5",
         "dist": {
           "type": "zip",
           "url": "https://downloads.wordpress.org/plugin/insert-pages.zip"
@@ -143,10 +143,10 @@
       "package": {
         "name": "disqus/disqus-comment-system",
         "type": "wordpress-plugin",
-        "version": "2.86",
+        "version": "2.87",
         "dist": {
           "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip"
+          "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.87.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -172,20 +172,17 @@
     "laravel/framework": "5.2.*",
     "cartalyst/sentinel": "2.0.*",
     "doctrine/dbal": "~2.5",
-    "wordpress/wordpress": "4.7.6",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
     "paulbunyannet/autoversion": "~1.0",
     "pmenard/media-tags": "3.2.0.2",
     "nacin/link-manager": "0.1-beta",
-    "lopo/duplicate-post": "*",
     "paulbunyannet/bandolier": "~1.5",
     "twig/twig": "^1.24",
     "cocur/slugify": "^1.4",
     "archetyped/cornerstone": "*",
     "anahkiasen/underscore-php": "^2.0",
     "mungobbq/enable-media-replace": "*",
-    "figureone/insert-pages": "*",
     "tedivm/stash": "^0.14.1",
     "wp/rest-api": "*",
     "vlucas/phpdotenv": "^2.2",
@@ -207,7 +204,10 @@
     "guzzlehttp/guzzle": "~5.3|~6.0",
     "brandonwamboldt/utilphp": "1.1.*",
     "league/commonmark": "^0.15.0",
-    "disqus/disqus-comment-system": "*"
+    "disqus/disqus-comment-system": "^2.87",
+    "lopo/duplicate-post": "^3.2",
+    "wordpress/wordpress": "4.8.2",
+    "figureone/insert-pages": "3.2.5"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
