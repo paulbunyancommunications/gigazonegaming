@@ -3,3 +3,7 @@ modules:
     enabled:
         - \Helper\Integration
         - DbHelper
+        - Db:
+           populate: true
+           cleanup: true
+           reconnect: true
