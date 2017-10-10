@@ -139,4 +139,26 @@ class Team extends Model
         $teamCount = $this->players()->count();
         return $maxPlayers["max_players"] > $teamCount; //if team is full this will eval to true, otherwise will eval to false
     }
+    /**
+     * @param $id
+     * @return mixed
+     */
+    static public function whereId($id)
+    {
+        if (Team::find($id)->exists()) {
+            return Team::find($id)->first();
+        }
+        return false;
+    }
+    /**
+     * @param $name
+     * @return mixed
+     */
+    static public function whereName($name)
+    {
+        if (Team::where('name','=', $name)->exists()) {
+            return Team::where('name','=', $name)->first();
+        }
+        return false;
+    }
 }

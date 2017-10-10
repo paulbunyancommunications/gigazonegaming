@@ -134,18 +134,24 @@ class Game extends Model
     }
     /**
      * @param $id
-     * @return Game
+     * @return mixed
      */
     static public function whereId($id)
     {
-        return Game::find($id)->first();
+        if (Game::find($id)->exists()) {
+            return Game::find($id)->first();
+        }
+        return false;
     }
     /**
      * @param $name
-     * @return Game
+     * @return mixed
      */
     static public function whereName($name)
     {
+        if(Game::where('name', '=', $name)->exists()){
         return Game::where('name', '=', $name)->first();
+        }
+        return false;
     }
 }

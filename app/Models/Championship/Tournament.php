@@ -133,19 +133,25 @@ class Tournament extends Model
     }
     /**
      * @param $id
-     * @return Tournament
+     * @return mixed
      */
     static public function whereId($id)
     {
-        return Tournament::find($id)->first();
+        if (Tournament::find($id)->exists()) {
+            return Tournament::find($id)->first();
+        }
+        return false;
     }
     /**
      * @param $name
-     * @return Tournament
+     * @return mixed
      */
     static public function whereName($name)
     {
-        return Tournament::where('name','=', $name)->first();
+        if (Tournament::where('name','=', $name)->exists()) {
+            return Tournament::where('name','=', $name)->first();
+        }
+        return false;
     }
 
 }
