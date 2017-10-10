@@ -43,23 +43,20 @@ class Game extends Model
             if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
                 $hasTable = true;
             }
-//        dd($game);
-            if ($game) {
-                $tournaments = $game->tournaments();
-                foreach ($tournaments as $tournament){
-                    $tournament->delete();
-                }
-                if($hasTable) {
-                    if (PlayerRelation::where([
+            $tournaments = Tournament::where("game_id","=",$game->id)->get();
+            foreach ($tournaments as $tournament){
+                $tournament->delete();
+            }
+            if($hasTable) {
+                if (PlayerRelation::where([
+                    ["relation_id", "=", $game->id],
+                    ["relation_type", "=", Game::class],
+                ])->exists()
+                ) {
+                    PlayerRelation::where([
                         ["relation_id", "=", $game->id],
                         ["relation_type", "=", Game::class],
-                    ])->exists()
-                    ) {
-                        PlayerRelation::where([
-                            ["relation_id", "=", $game->id],
-                            ["relation_type", "=", Game::class],
-                        ])->delete();
-                    }
+                    ])->delete();
                 }
             }
 
@@ -130,7 +127,7 @@ class Game extends Model
      */
     public function scopeById($query, $id)
     {
-        return $query->find($id)->first();
+        return $query->where('id', '=', intval($id))->first();
     }
     /**
      * @param $id
@@ -138,8 +135,8 @@ class Game extends Model
      */
     static public function whereId($id)
     {
-        if (Game::find($id)->exists()) {
-            return Game::find($id)->first();
+        if (Game::where('id', '=', intval($id))->exists()) {
+            return Game::where('id', '=', intval($id))->first();
         }
         return null;
     }
@@ -150,7 +147,7 @@ class Game extends Model
     static public function whereName($name)
     {
         if(Game::where('name', '=', $name)->exists()){
-        return Game::where('name', '=', $name)->first();
+            return Game::where('name', '=', $name)->first();
         }
         return null;
     }

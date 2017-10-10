@@ -145,8 +145,8 @@ class Team extends Model
      */
     static public function whereId($id)
     {
-        if (Team::find($id)->exists()) {
-            return Team::find($id)->first();
+        if (Team::where('id', '=', intval($id))->exists()) {
+            return Team::where('id', '=', intval($id))->first();
         }
         return null;
     }
