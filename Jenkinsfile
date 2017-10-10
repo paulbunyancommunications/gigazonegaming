@@ -312,7 +312,7 @@ node {
         startMessage(Globals.STAGE)
         try {
             // add any front end installers here....
-            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root; gulp\""
+            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn; bower install --allow-root; yarn run gulp production\""
         } catch (error){
             errorMessage(Globals.STAGE, error.getMessage())
         }
@@ -327,8 +327,13 @@ node {
         startMessage(Globals.STAGE)
             //migrate before running anything
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"php artisan migrate\"";
+            def gulp='true'
             if (fileExists('yarn.lock')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn\"";
+                if (fileExists('gulpfile.js')) {
+                    sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"yarn run gulp production\"";
+                    gulp='false'
+                }
             }
             if (fileExists('gruntfile.js')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"grunt\"";
@@ -336,8 +341,10 @@ node {
             if (fileExists('bower.json')) {
                 sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"bower install --allow-root\"";
             }
-            if (fileExists('gulpfile.js')) {
-                sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
+            if (gulp=='true') {
+                if (fileExists('gulpfile.js')) {
+                    sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"gulp\"";
+                }
             }
     }
     /**

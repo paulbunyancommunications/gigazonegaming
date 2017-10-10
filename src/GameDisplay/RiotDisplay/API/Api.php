@@ -219,7 +219,10 @@ class Api{
      */
     Public function setChampionName($ChampionId){
         $data = '';
-        $path = dirname(dirname(dirname(dirname(__DIR__))))."/storage/app/Champions/ChampionNamesToId.bin";
+        $root = dirname(dirname(dirname(dirname(__DIR__))));
+        $path = $root."/storage/app/Champions/ChampionNamesToId.bin";
+        $mode = 0777;
+
         if(file_exists($path)){
             $data = file_get_contents($path);
             $data = json_decode($data);
@@ -231,7 +234,7 @@ class Api{
             #make the request serialize it.
             $Url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=true&api_key=" . $this->apiKey;
             $Info = $this->apiRequest($Url);
-            file_put_contents($path, json_encode($Info));
+            \Pbc\Bandolier\Type\Paths::filePutContents($path, json_encode($Info));
             if(!isset($Info->data->{$ChampionId}->key)){
                 throw new Exception("Champion id: $ChampionId does not exists");
             }

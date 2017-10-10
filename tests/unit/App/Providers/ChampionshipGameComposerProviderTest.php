@@ -38,13 +38,15 @@ class ChampionshipGameComposerProviderTest extends \TestCase
      */
     public function teams_will_return_an_array_of_teams()
     {
-        factory(Team::class, 10)->create();
         $app = Mockery::mock('\Illuminate\Contracts\Foundation\Application');
         $provider = new ChampionshipGameComposerProvider($app);
-
         $teams = $provider->teams();
+        $countA = count($teams);
+        factory(Team::class, 10)->create();
+        $teams = $provider->teams();
+        $countB = count($teams);
         $this->assertTrue(is_array($teams));
-        $this->assertCount(10, $teams);
+        $this->assertEquals($countA,($countB-10));
 
     }
 
@@ -59,7 +61,6 @@ class ChampionshipGameComposerProviderTest extends \TestCase
         factory(Player::class)->create(['team_id' => $team->id]);
         $app = Mockery::mock('\Illuminate\Contracts\Foundation\Application');
         $provider = new ChampionshipGameComposerProvider($app);
-
         $teams = $provider->teams();
     }
 }

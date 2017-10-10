@@ -3,3 +3,8 @@ modules:
     enabled:
         - \Helper\Integration
         - DbHelper
+        - Laravel5
+        - Db:
+           populate: true
+           cleanup: true
+           reconnect: true

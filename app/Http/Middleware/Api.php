@@ -22,6 +22,7 @@ class Api
           '209.191.200.106', //gigazonegaming
           '192.168.56.1', //testing if you need another for testing, add a comma and add an extra string
           'gigazonegaming.com',
+          'gigazonegaming.localhost', //for the testing env
           'web',//for docker. This wont change unless we change it so this is a good place holder for any site, kinda localhost but not really.
         ];
         //https://laracasts.com/discuss/channels/general-discussion/laravel-5-referrer-url/replies/105536

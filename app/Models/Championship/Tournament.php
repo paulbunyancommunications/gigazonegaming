@@ -64,26 +64,23 @@ class Tournament extends Model
             if(\Schema::connection('mysql_champ')->hasTable('player_relations')) {
                 $hasTable = true;
             }
-            if ($tournament) {
-                $teams = $tournament->teams();
-                foreach ($teams as $team) {
-                    $team->delete();
-                }
-                if($hasTable) {
-                    if (
+            $teams = Team::where("tournament_id","=",$tournament->id)->get();
+            foreach ($teams as $team) {
+                $team->delete();
+            }
+            if($hasTable) {
+                if (
+                PlayerRelation::where([
+                    ["relation_id", "=", $tournament->id],
+                    ["relation_type", "=", Tournament::class],
+                ])->exists()
+                ) {
                     PlayerRelation::where([
                         ["relation_id", "=", $tournament->id],
                         ["relation_type", "=", Tournament::class],
-                    ])->exists()
-                    ) {
-                        PlayerRelation::where([
-                            ["relation_id", "=", $tournament->id],
-                            ["relation_type", "=", Tournament::class],
-                        ])->delete();
-                    }
+                    ])->delete();
                 }
             }
-
 
         });
     }
@@ -121,7 +118,7 @@ class Tournament extends Model
      */
     public function teams()
     {
-        return $this->hasMany('App\Models\Championship\Team');
+        return $this->hasMany('App\Models\Championship\Team', 'tournament_id', 'id');
     }
 
     /**
@@ -130,6 +127,28 @@ class Tournament extends Model
     public function getTeamsAttribute()
     {
         return $this->teams()->get();
+    }
+    /**
+     * @param $id
+     * @return mixed
+     */
+    static public function whereId($id)
+    {
+        if (Tournament::where('id', '=', intval($id))->exists()) {
+            return Tournament::where('id', '=', intval($id))->first();
+        }
+        return null;
+    }
+    /**
+     * @param $name
+     * @return mixed
+     */
+    static public function whereName($name)
+    {
+        if (Tournament::where('name','=', $name)->exists()) {
+            return Tournament::where('name','=', $name)->first();
+        }
+        return null;
     }
 
 }
