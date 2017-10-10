@@ -121,15 +121,31 @@ class Game extends Model
      */
     public function scopeByName($query, $name)
     {
-        return $query->where('name', $name)->first();
+        return $query->where('name', '=', $name)->first();
     }
     /**
      * @param $query
-     * @param $name
+     * @param $id
      * @return mixed
      */
-    public function scopeById($query, $name)
+    public function scopeById($query, $id)
     {
-        return $query->where('name', $name)->first();
+        return $query->find($id)->first();
+    }
+    /**
+     * @param $id
+     * @return Game
+     */
+    static public function whereId($id)
+    {
+        return Game::find($id);
+    }
+    /**
+     * @param $name
+     * @return Game
+     */
+    static public function whereName($name)
+    {
+        return Game::where('name', '=', $name);
     }
 }
