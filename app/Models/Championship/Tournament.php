@@ -140,7 +140,7 @@ class Tournament extends Model
         if (Tournament::find($id)->exists()) {
             return Tournament::find($id)->first();
         }
-        return false;
+        return null;
     }
     /**
      * @param $name
@@ -151,7 +151,7 @@ class Tournament extends Model
         if (Tournament::where('name','=', $name)->exists()) {
             return Tournament::where('name','=', $name)->first();
         }
-        return false;
+        return null;
     }
 
 }

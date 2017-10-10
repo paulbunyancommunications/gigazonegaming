@@ -141,7 +141,7 @@ class Game extends Model
         if (Game::find($id)->exists()) {
             return Game::find($id)->first();
         }
-        return false;
+        return null;
     }
     /**
      * @param $name
@@ -152,6 +152,6 @@ class Game extends Model
         if(Game::where('name', '=', $name)->exists()){
         return Game::where('name', '=', $name)->first();
         }
-        return false;
+        return null;
     }
 }

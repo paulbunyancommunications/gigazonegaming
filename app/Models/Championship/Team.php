@@ -148,7 +148,7 @@ class Team extends Model
         if (Team::find($id)->exists()) {
             return Team::find($id)->first();
         }
-        return false;
+        return null;
     }
     /**
      * @param $name
@@ -159,6 +159,6 @@ class Team extends Model
         if (Team::where('name','=', $name)->exists()) {
             return Team::where('name','=', $name)->first();
         }
-        return false;
+        return null;
     }
 }
