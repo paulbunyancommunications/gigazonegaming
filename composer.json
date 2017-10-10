@@ -113,7 +113,7 @@
       "package": {
         "name": "figureone/insert-pages",
         "type": "wordpress-plugin",
-        "version": "3.1.6",
+        "version": "3.2.5",
         "dist": {
           "type": "zip",
           "url": "https://downloads.wordpress.org/plugin/insert-pages.zip"
@@ -184,7 +184,6 @@
     "archetyped/cornerstone": "*",
     "anahkiasen/underscore-php": "^2.0",
     "mungobbq/enable-media-replace": "*",
-    "figureone/insert-pages": "*",
     "tedivm/stash": "^0.14.1",
     "wp/rest-api": "*",
     "vlucas/phpdotenv": "^2.2",
@@ -207,7 +206,8 @@
     "brandonwamboldt/utilphp": "1.1.*",
     "league/commonmark": "^0.15.0",
     "disqus/disqus-comment-system": "^2.87",
-    "lopo/duplicate-post": "^3.2"
+    "lopo/duplicate-post": "^3.2",
+    "figureone/insert-pages": "3.2.5"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

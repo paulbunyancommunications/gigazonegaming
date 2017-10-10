@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c073276128a80adf29d4436e5159686",
+    "content-hash": "c6abc2f3077671830e215dab5cbf6bcf",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -1155,7 +1155,7 @@
         },
         {
             "name": "figureone/insert-pages",
-            "version": "3.1.6",
+            "version": "3.2.5",
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/insert-pages.zip",
