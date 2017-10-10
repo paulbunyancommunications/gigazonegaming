@@ -46,7 +46,7 @@ class ChampionshipGameComposerProviderTest extends \TestCase
         $teams = $provider->teams();
         $countB = count($teams);
         $this->assertTrue(is_array($teams));
-        $this->assertCount($countA, $countB);
+        $this->assertEquals($countA,($countB-10));
 
     }
 
