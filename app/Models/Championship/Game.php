@@ -138,7 +138,7 @@ class Game extends Model
      */
     static public function whereId($id)
     {
-        return Game::find($id);
+        return Game::find($id)->first();
     }
     /**
      * @param $name
@@ -146,6 +146,6 @@ class Game extends Model
      */
     static public function whereName($name)
     {
-        return Game::where('name', '=', $name);
+        return Game::where('name', '=', $name)->first();
     }
 }

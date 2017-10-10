@@ -131,5 +131,21 @@ class Tournament extends Model
     {
         return $this->teams()->get();
     }
+    /**
+     * @param $id
+     * @return Tournament
+     */
+    static public function whereId($id)
+    {
+        return Tournament::find($id)->first();
+    }
+    /**
+     * @param $name
+     * @return Tournament
+     */
+    static public function whereName($name)
+    {
+        return Tournament::where('name','=', $name)->first();
+    }
 
 }
