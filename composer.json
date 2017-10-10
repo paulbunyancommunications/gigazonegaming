@@ -143,10 +143,10 @@
       "package": {
         "name": "disqus/disqus-comment-system",
         "type": "wordpress-plugin",
-        "version": "2.86",
+        "version": "2.87",
         "dist": {
           "type": "zip",
-          "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip"
+          "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.87.zip"
         },
         "require": {
           "composer/installers": "v1.0.7"
@@ -207,7 +207,7 @@
     "guzzlehttp/guzzle": "~5.3|~6.0",
     "brandonwamboldt/utilphp": "1.1.*",
     "league/commonmark": "^0.15.0",
-    "disqus/disqus-comment-system": "*"
+    "disqus/disqus-comment-system": "^2.87"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

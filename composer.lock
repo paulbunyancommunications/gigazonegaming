@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2cf1103743632c9ed54bd89e30624135",
+    "content-hash": "06fe2138a396651f8375fb5e30d74746",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -590,10 +590,10 @@
         },
         {
             "name": "disqus/disqus-comment-system",
-            "version": "2.86",
+            "version": "2.87",
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.86.zip",
+                "url": "https://downloads.wordpress.org/plugin/disqus-comment-system.2.87.zip",
                 "reference": null,
                 "shasum": null
             },
