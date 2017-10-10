@@ -108,11 +108,9 @@ class GamesControllerTest extends \TestCase
 //        );
         $response = $this->call('GET', '/api/game/' . time(), []);
         $content = $response->getContent();
-        $content = $response->getContent();
         $this->assertJson($content);
-        $parse = json_decode($response->getContent());
-
-        $this->assertContains('error', $parse, true);
+        $parse = json_decode($content);
+        $this->assertContains('error', $content, true);
         $this->assertContains('No query results for model', $parse->error[0], true);
     }
 }
