@@ -23,10 +23,10 @@
       "package": {
         "name": "wordpress/wordpress",
         "type": "webroot",
-        "version": "4.7.6",
+        "version": "4.8.2",
         "dist": {
           "type": "zip",
-          "url": "https://wordpress.org/wordpress-4.7.6.zip"
+          "url": "https://wordpress.org/wordpress-4.8.2.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -172,7 +172,6 @@
     "laravel/framework": "5.2.*",
     "cartalyst/sentinel": "2.0.*",
     "doctrine/dbal": "~2.5",
-    "wordpress/wordpress": "4.7.6",
     "fancyguy/webroot-installer": "1.0.0",
     "symfony/yaml": "~2.4",
     "paulbunyannet/autoversion": "~1.0",
@@ -207,7 +206,8 @@
     "league/commonmark": "^0.15.0",
     "disqus/disqus-comment-system": "^2.87",
     "lopo/duplicate-post": "^3.2",
-    "figureone/insert-pages": "3.2.5"
+    "figureone/insert-pages": "3.2.5",
+    "wordpress/wordpress": "4.8.2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
