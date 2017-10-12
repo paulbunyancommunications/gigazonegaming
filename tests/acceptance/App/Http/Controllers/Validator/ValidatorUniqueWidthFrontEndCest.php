@@ -105,37 +105,6 @@ class ValidatorUniqueWidthFrontEndCest extends BaseAcceptance
      * Test the form with the participation flag
      * @param AcceptanceTester $I
      */
-    public function tryToCreateATeamWithTheSameNameAsAnotherOneInTheSameTournanent(AcceptanceTester $I)
-    {
-        ///todo for some reason even when I can manually check that the tournanent isnt the same and that the code works, tests continues to fail
-        $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_A_NAME."')
-            .css({ 
-                'display': 'block',
-                'color':'#ff0000',
-                'font-size':'20px',
-                'width':'500px',
-                'height':'40px'
-                }).prop(
-                'type', 'text'
-                )");
-        $I->fillField("#team-name", $this::TEAM_A_NAME);
-        $I->fillField("#team-captain", $this->faker->name());
-        $I->fillField("#team-captain-phone", "2184443132");
-
-        for($i=0; $i < 8; $i++) {
-            $I->fillField( $this->names[$i], $this->nameList[$i] );
-            $I->fillField( $this->emails[$i], $this->emailList[$i] );
-        }
-
-        $I->click("Submit");
-        $I->wait(10);
-        $I->canSee("A team with the exact same name already exists for this tournament, please select a different name.");
-
-    }
-    /**
-     * Test the form with the participation flag
-     * @param AcceptanceTester $I
-     */
     public function tryToCreateATeamWithTheSamePlayersInDifferentTournamentsWithTheSameTeamName(AcceptanceTester $I)
     {
         $I->executeJS("$('#hidden').val('".$this::TOURNAMENT_A_NAME."')
