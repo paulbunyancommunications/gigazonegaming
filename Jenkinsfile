@@ -24,8 +24,7 @@ class Globals {
     static String COMMIT_MESSAGE       = "Commit message";
     /* Array of directories to make writable */
     static String[] WRITABLE_DIRS      = [];
-    static String[] testingSuites = ["acceptance","functional","integration", "static_analysis","unit"];
-
+    static String[] testingSuites   =   [];
 }
 
 
@@ -111,6 +110,7 @@ node {
     Globals.SCM_URL = SCM_URL
     Globals.ARCHIVE_NAME="${env.JOB_NAME}-${env.BUILD_NUMBER}-${Globals.SCM_BRANCH}"
     Globals.WRITABLE_DIRS = ["database", "groovy", "temp", "storage", "cache", "mailings", "tests/_output", "css", "js", "tests"] as String[]
+    Globals.testingSuites = ["acceptance","functional","integration", "static_analysis","unit"] as String[]
 
     stage('Setup'){
         /**
@@ -218,7 +218,7 @@ node {
         Globals.STAGE='Environment: fix folder permissions'
         startMessage(Globals.STAGE)
         try {
-            for (i = 0; i <Globals.WRITABLE_DIRS.length; i++) {
+            for (i = 0; i < Globals.WRITABLE_DIRS.length; i++) {
                 echo "Making writable directory ${env.WORKSPACE}/${Globals.WRITABLE_DIRS[i]}"
                 sh "mkdir ${env.WORKSPACE}/${Globals.WRITABLE_DIRS[i]} || true"
                 sh "chmod -fR 777 ${env.WORKSPACE}/${Globals.WRITABLE_DIRS[i]}";
@@ -357,7 +357,7 @@ node {
         try {
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --coverage --coverage-xml --no-interaction\"";
         } catch (error) {
-            for (i = 0; i <Globals.testingPaths.length; i++) {
+            for (i = 0; i < Globals.testingPaths.length; i++) {
                 def testFolder = new File("${env.WORKSPACE}/tests/${Globals.testingSuites[i]}")
                 // If it doesn't exist
                 if( testFolder.exists() ) {
