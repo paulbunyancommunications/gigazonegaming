@@ -24,6 +24,7 @@ class Globals {
     static String COMMIT_MESSAGE       = "Commit message";
     /* Array of directories to make writable */
     static String[] WRITABLE_DIRS      = [];
+    static String[] testingSuites = ["acceptance","functional","integration", "static_analysis","unit"];
 
 }
 
@@ -356,7 +357,25 @@ node {
         try {
             sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --coverage --coverage-xml --no-interaction\"";
         } catch (error) {
-            sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run --verbose --steps --debug --no-interaction -g failed\"";
+            for (i = 0; i <Globals.testingPaths.length; i++) {
+                def testFolder = new File("${env.WORKSPACE}/tests/${Globals.testingSuites[i]}")
+                // If it doesn't exist
+                if( testFolder.exists() ) {
+                    try {
+                        Globals.STAGE2='Tests: Run ${Globals.testingSuites[i]} tests'
+                        startMessage(Globals.STAGE2)
+                        sh "cd ${env.WORKSPACE}; docker-compose exec -T code bash -c \"vendor/bin/codecept run ${env.WORKSPACE}/tests/${Globals.testingSuites[i]} --verbose --steps --debug --no-interaction\"";
+                    } catch (error3) {
+                        def myError = error.getMessage();
+                        echo "--------------------------------------------------------------";
+                        echo "--------------------------------------------------------------";
+                        echo "There was an error -------------------------------------------";
+                        echo "${myError}";
+                        echo "--------------------------------------------------------------";
+                        echo "--------------------------------------------------------------";
+                    }
+                 }
+            }
             errorMessage(Globals.STAGE, error.getMessage())
         }
 
