@@ -24,7 +24,6 @@ class Globals {
    static String COMMIT_MESSAGE       = "Commit message";
    /* Array of directories to make writable */
    static String[] WRITABLE_DIRS      = [];
-
 }
 
 
