@@ -23,10 +23,10 @@
       "package": {
         "name": "wordpress/wordpress",
         "type": "webroot",
-        "version": "4.8.2",
+        "version": "4.8.3",
         "dist": {
           "type": "zip",
-          "url": "https://wordpress.org/wordpress-4.8.2.zip"
+          "url": "https://wordpress.org/wordpress-4.8.3.zip"
         },
         "require": {
           "fancyguy/webroot-installer": "1.0.0"
@@ -113,7 +113,7 @@
       "package": {
         "name": "figureone/insert-pages",
         "type": "wordpress-plugin",
-        "version": "3.2.5",
+        "version": "3.2.6",
         "dist": {
           "type": "zip",
           "url": "https://downloads.wordpress.org/plugin/insert-pages.zip"
@@ -206,8 +206,8 @@
     "league/commonmark": "^0.15.0",
     "disqus/disqus-comment-system": "^2.87",
     "lopo/duplicate-post": "^3.2",
-    "wordpress/wordpress": "4.8.2",
-    "figureone/insert-pages": "3.2.5"
+    "wordpress/wordpress": "^4.8",
+    "figureone/insert-pages": "^3.2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
