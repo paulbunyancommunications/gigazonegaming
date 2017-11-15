@@ -51,6 +51,21 @@
     {
       "type": "package",
       "package": {
+        "name": "automattic/wp-super-cache",
+        "type": "wordpress-plugin",
+        "version": "1.5.8",
+        "dist": {
+          "type": "zip",
+          "url": "https://downloads.wordpress.org/plugin/wp-super-cache.1.5.8.zip"
+        },
+        "require": {
+          "composer/installers": "v1.0.7"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
         "name": "nacin/link-manager",
         "type": "wordpress-plugin",
         "version": "0.1-beta",
@@ -207,7 +222,8 @@
     "disqus/disqus-comment-system": "^2.87",
     "lopo/duplicate-post": "^3.2",
     "wordpress/wordpress": "^4.8",
-    "figureone/insert-pages": "^3.2"
+    "figureone/insert-pages": "^3.2",
+    "automattic/wp-super-cache": "^1.5"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
